@@ -1,7 +1,6 @@
 parameters:
-    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
-    pim_catalog.odm_repository.product.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
-    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\HybridProductRepository
+    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AssociationRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
@@ -89,7 +88,7 @@ services:
             - { name: pim_serializer.normalizer }
 
     pim_catalog.repository.product:
-        class: %pim_catalog.odm_repository.product.class%
+        class: %pim_catalog.repository.product.class%
         factory_service: pim_catalog.object_manager.product
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
