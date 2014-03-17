@@ -1,12 +1,19 @@
 parameters:
-    pim_catalog.repository.association.class:                       Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
-    pim_catalog.repository.product.class:                           Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
-    pim_catalog.doctrine.completeness_generator.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
-    pim_catalog.event_listener.mongodb.localizable.class:           Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
-    pim_catalog.event_listener.mongodb.scopable.class:              Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
-    pim_catalog.doctrine.mongodb.flexible_query_builder.class:      Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
-    pim_catalog.event_listener.mongodb.entities_type.class:         Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
-    pim_catalog.event_listener.mongodb.entity_type.class:           Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
+    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
+    pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
+    pim_catalog.event_listener.mongodb.localizable.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
+    pim_catalog.event_listener.mongodb.scopable.class:               Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
+    pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
+    pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
+    pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductNormalizedDataSubscriber
+    pim_catalog.mongodb.normalizer.family.class:                     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
+    pim_catalog.mongodb.normalizer.completeness.class:               Pim\Bundle\CatalogBundle\MongoDB\Normalizer\CompletenessNormalizer
+    pim_catalog.mongodb.normalizer.product.class:                    Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductNormalizer
+    pim_catalog.mongodb.normalizer.product_value.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
+    pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
+    pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
+    pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -18,14 +25,21 @@ services:
     pim_catalog.doctrine.completeness_generator:
         class: %pim_catalog.doctrine.completeness_generator.class%
         arguments:
-            - '@doctrine_mongodb'
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%
+            - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_catalog.factory.completeness'
+            - '@validator'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%
         arguments:
             - '@pim_catalog.factory.referenced_collection'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.mongodb.normalize_product_data:
+        class: %pim_catalog.event_listener.mongodb.normalize_product_data.class%
+        arguments:
+            - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
@@ -50,5 +64,47 @@ services:
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
-    pim_catalog.doctrine.flexible_query_builder:
-        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
+    # Normalizers
+    pim_catalog.mongodb.normalizer.product:
+        class: %pim_catalog.mongodb.normalizer.product.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.product_value:
+        class: %pim_catalog.mongodb.normalizer.product_value.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.attribute_option:
+        class: %pim_catalog.mongodb.normalizer.attribute_option.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.product_price:
+        class: %pim_catalog.mongodb.normalizer.product_price.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.family:
+        class: %pim_catalog.mongodb.normalizer.family.class%
+        public: false
+        arguments:
+            - '@pim_serializer.normalizer.label_translation'
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.completeness:
+        class: %pim_catalog.mongodb.normalizer.completeness.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.repository.media:
+        class: %doctrine.document_repository.class%
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.media.class%]

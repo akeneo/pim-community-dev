@@ -15,7 +15,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 class JobInstanceNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 

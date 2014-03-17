@@ -2,7 +2,11 @@ db = db.getSiblingDB("akeneo_pim");
 
 var familyRequirement = {
    "ecommerce": {
-        "locales": ["fr_FR", "en_US"],
+        "id" : 1,
+        "locales": [
+            {"id": 1, "code": "fr_FR"},
+            {"id": 2, "code": "en_US"}
+        ],
         "requirements":[
             {"attributeId": 1, "backend": "varchar"},
             {"attributeId": 2, "backend": "varchar"},
@@ -10,10 +14,14 @@ var familyRequirement = {
             {"attributeId": 4, "backend": "varchar"},
             {"attributeId": 5, "backend": "varchar"}
         ],
-        "currencies": ["USD","EUR"]
+        "currencies": ["USD", "EUR"]
    },
    "mobile" : {
-        "locales": ["fr_FR", "en_US"],
+        "id" : 2,
+        "locales": [
+            {"id": 1, "code": "fr_FR"},
+            {"id": 2, "code": "en_US"}
+        ],
         "requirements":[
             {"attributeId": 1, "backend": "varchar"},
             {"attributeId": 4, "backend": "varchar"},
@@ -25,19 +33,18 @@ var familyRequirement = {
 
 var familyId = 1;
 
-db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(function(product) {
-    var completeness = {};
+db.pim_catalog_product.find({'familyId' : familyId}).limit(100000).forEach(function(product) {
+    var stats = [];
 
     for (channelCode in familyRequirement) {
         channel = familyRequirement[channelCode];
 
-        completeness[channelCode] = {};
+        stats[channelCode] = {};
         for (i = 0; i < channel.locales.length; i++) {
-            locale = channel.locales[i];
-            completeness[channelCode][locale] = {};
-            completeness[channelCode][locale].requirementsCount = channel.requirements.length;
-            completeness[channelCode][locale].filledCount = 0;
-            completeness[channelCode][locale].missingAttributes = [];
+            localeCode = channel.locales[i].code;
+            stats[channelCode][localeCode] = {};
+            stats[channelCode][localeCode].requiredCount = channel.requirements.length;
+            stats[channelCode][localeCode].filledCount = 0;
         }
     }
 
@@ -46,13 +53,17 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(functi
             channel = familyRequirement[channelCode];
             requirements = channel.requirements;
 
-            for (i = 0; i < requirements.length; i++) {
-                attributeId = requirements[i].attributeId;
+            for (i = 0; i < channel.locales.length; i++) {
+                localeCode = channel.locales[i].code;
 
-                if (value.attributeId == attributeId) {
-                    backend = requirements[i].backend;
-                    for (j = 0; j < channel.locales.length; j++) {
-                        locale = channel.locales[j];
+                for (j = 0; j < requirements.length; j++) {
+                    attributeId = requirements[j].attributeId;
+
+                    if ((value.attributeId == attributeId) &&
+                        (!("locale" in value) || (value.locale == localeCode)) &&
+                        (!("scope" in value) || (value.scope == channelCode))) {
+
+                        backend = requirements[j].backend;
 
                         if (backend in value) {
                             if (backend == "prices") {
@@ -68,16 +79,11 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(functi
                                 }
 
                                 if (priceFilled) {
-                                    completeness[channelCode][locale].filledCount++;
-                                }
-                                else {
-                                    completeness[channelCode][locale].missingAttributes.push(attributeId);
+                                    stats[channelCode][localeCode].filledCount++;
                                 }
                             } else {
-                                completeness[channelCode][locale].filledCount++;
+                                stats[channelCode][localeCode].filledCount++;
                             }
-                        } else {
-                            completeness[channelCode][locale].missingAttributes.push(attributeId);
                         }
                     }
                 }
@@ -85,18 +91,29 @@ db.pim_catalog_product.find({'familyId' : familyId}).limit(10000).forEach(functi
         }
     });
 
+    completenesses = [];
     for (channelCode in familyRequirement) {
         channel = familyRequirement[channelCode];
 
         for (i = 0; i < channel.locales.length; i++) {
             locale = channel.locales[i];
-            requirementsCount =  completeness[channelCode][locale].requirementsCount;
-            filledCount =  completeness[channelCode][locale].filledCount;
-            completeness[channelCode][locale].missingCount = requirementsCount - filledCount;
-            completeness[channelCode][locale].ratio = (filledCount / requirementsCount)*100;
+            localeCode = locale.code;
+
+            completeness = {};
+            completeness.channel = channel.id;
+            completeness.locale = locale.id;
+
+            filledCount = stats[channelCode][localeCode].filledCount;
+            requiredCount = stats[channelCode][localeCode].requiredCount;
+
+            completeness.requiredCount = requiredCount;
+            completeness.missingCount = requiredCount - filledCount;
+            completeness.ratio = (filledCount / requiredCount)*100;
+
+            completenesses.push(completeness);
         }
     }
 
-    product.completeness = completeness;
+    product.completenesses = completenesses;
     db.pim_catalog_product.save(product);
 });

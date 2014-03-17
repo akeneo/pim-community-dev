@@ -51,6 +51,14 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * @return ProductRepositoryInterface
+     */
+    public function getProductRepository()
+    {
+        return $this->productManager->getProductRepository();
+    }
+
+    /**
      * @param string $code
      *
      * @return Attribute
@@ -64,18 +72,18 @@ class ProductFilterUtility extends BaseFilterUtility
     }
 
     /**
-     * Applies filter to query by flexible attribute
+     * Applies filter to query by attribute
      *
      * @param FilterDatasourceAdapterInterface $ds
      * @param string                           $field
      * @param mixed                            $value
      * @param string                           $operator
      */
-    public function applyFlexibleFilter(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
+    public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
 
         $attribute  = $this->getAttribute($field);
-        $repository = $this->productManager->getFlexibleRepository();
+        $repository = $this->productManager->getProductRepository();
         if ($attribute) {
             $repository->applyFilterByAttribute($ds->getQueryBuilder(), $attribute, $value, $operator);
         } else {

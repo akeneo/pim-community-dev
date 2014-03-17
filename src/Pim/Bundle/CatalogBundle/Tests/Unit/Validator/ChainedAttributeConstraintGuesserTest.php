@@ -28,7 +28,7 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }
@@ -39,7 +39,7 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
     public function testAddConstraintGuesser()
     {
         $this->target->addConstraintGuesser(
-            $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface')
+            $this->getMock('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface')
         );
         $this->assertCount(1, $this->target->getConstraintGuessers());
     }
@@ -57,9 +57,9 @@ class ChainedAttributeConstraintGuesserTest extends ConstraintGuesserTest
      */
     public function testGuessConstraintsUsingRegisteredGuessers()
     {
-        $guesser1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface');
-        $guesser2 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface');
-        $guesser3 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface');
+        $guesser1 = $this->getMock('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface');
+        $guesser2 = $this->getMock('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface');
+        $guesser3 = $this->getMock('Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface');
 
         $guesser1->expects($this->any())->method('supportAttribute')->will($this->returnValue(true));
         $guesser2->expects($this->any())->method('supportAttribute')->will($this->returnValue(false));

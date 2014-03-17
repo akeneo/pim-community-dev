@@ -33,7 +33,6 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
         $loader->load('datagrid_listeners.yml');
-        $loader->load('repositories.yml');
         $loader->load('colors.yml');
         $loader->load('attribute_icons.yml');
 

@@ -1,13 +1,14 @@
 # 1.1.0 -
 
 ## Features
-- Implement saving, applying and removing datagrid views
+- Implement creating, updating, applying and removing datagrid views
 
 ## Improvements
 - Removed useless ```app/entities``` directory
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
+- MongoDB support (WIP)
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -19,16 +20,31 @@
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
 - Remove deprecated fallback property of Locale entity
+- Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
+- Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
 - Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
-- Move src/Pim/Bundle/FilterBundle/Filter/ScopeFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/ScopeFilter.php
-- Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js
-- Move src/Pim/Bundle/FilterBundle/Filter/ProductCompletenessFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CompletenessFilter.php
-- Move src/Pim/Bundle/FilterBundle/Filter/ProductGroupsFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/GroupsFilter.php
-- Move src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/category-filter.js -> src/Pim/Bundle/FilterBundle/Resources/public/js/datafilter/filter/product_category-filter.js
-- Move src/Pim/Bundle/FilterBundle/Filter/CategoryFilter.php -> src/Pim/Bundle/FilterBundle/Filter/Product/CategoryFilter.php
-- Move src/Pim/Bundle/FilterBundle/Filter/Flexible/FilterUtility.php -> src/Pim/Bundle/FilterBundle/Filter/ProductFilterUtility.php and remove the flexibleEntityName argument of applyFlexibleFilter
+- Move FilterBundle/Filter/ScopeFilter.php, ProductCompletenessFilter.php, ProductGroupsFilter.php, CategoryFilter.php -> FilterBundle/Filter/Product/ScopeFilter.php, CompletenessFilter, GroupsFilter.php, CategoryFilter.php
+- Move FilterBundle/Resources/public/js/datafilter/filter/scope-filter.js, category-filter.js -> FilterBundle/Resources/public/js/datafilter/filter/product_scope-filter.js, product_category-filter.js
+- Move FilterBundle/Filter/Flexible/FilterUtility.php -> Filter/ProductFilterUtility.php, remove the flexibleEntityName argument of applyFlexibleFilter, rename applyFlexibleFilter to applyFilterByAttribute
+- Add methods applyFilterByGroupIds and applyFilterByFamilyIds in ProductRepositoryInterface
+- ProductValueNonBlank renamed to ProductValueComplete
+- Remove the AclHelper $aclHelper argument from the DataGridBundle/Extension/Pager/Orm/Pager.php constructor
+- Moved CustomEntityBundle to its own repository
+- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*` and specialize the implementation
+- Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
+- Move `FilterBundle/Filter/Flexible/*` -> `FilterBundle/Filter/ProductValue/*`
+- Remove unused FilterBundle/Filter/ProductValue/EntityFilter
+- Replace FlexibleManager by ProductManager in ContextConfigurator constructor arguments
+- Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
+- Replace service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
+- Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
+- Update ProductValueInerface, add getData, setData and getAttribute methods
+
+# 1.0.1
+## Bug Fixes
+- Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
 
 # 1.0.0 - "Hare We Go" (2014-03-06)
 

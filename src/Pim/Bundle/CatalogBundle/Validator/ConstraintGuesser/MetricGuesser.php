@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetric;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**

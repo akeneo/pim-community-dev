@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Constraint
@@ -22,7 +20,7 @@ class ChainedAttributeConstraintGuesser implements ConstraintGuesserInterface
      */
     public function supportAttribute(AbstractAttribute $attribute)
     {
-        return $attribute instanceof Attribute;
+        return true;
     }
 
     /**

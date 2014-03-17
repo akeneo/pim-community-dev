@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'oro/pageable-collection'],
-    function(_, mediator, AbstractListener, PageableCollection) {
+    ['underscore', 'oro/mediator', 'oro/datagrid/abstract-listener', 'pim/datagrid/state'],
+    function(_, mediator, AbstractListener, DatagridState) {
         'use strict';
 
         /**
@@ -21,9 +21,7 @@ define(
                 this.gridName       = options.gridName;
                 this.$gridContainer = options.$gridContainer;
 
-                if (typeof Storage !== 'undefined' && sessionStorage) {
-                    this.subscribe();
-                }
+                this.subscribe();
             },
 
             subscribe: function () {
@@ -44,12 +42,13 @@ define(
                     'datagrid_filters:rendered',
                     function (collection) {
                         collection.trigger('updateState', collection);
-                    }
+
+                        // We have to use a timeout here because the toolbar is hidden right after triggering this event
+                        setTimeout(_.bind(function() {
+                            this.$gridContainer.find('div.toolbar, div.filter-box').show();
+                        }, this), 20);
+                    }, this
                 );
-
-                this.$gridContainer.find('.no-data').hide();
-
-                collection.fetch();
             },
 
             saveGridState: function (collection) {
@@ -60,7 +59,7 @@ define(
                     }
 
                     var encodedStateData = collection.encodeStateData(collection.state);
-                    sessionStorage.setItem(this.gridName, encodedStateData);
+                    DatagridState.set(this.gridName, 'filters', encodedStateData);
                 }
             },
 
@@ -71,23 +70,6 @@ define(
 
         StateListener.init = function ($gridContainer, gridName) {
             new StateListener({ $gridContainer: $gridContainer, gridName: gridName });
-        };
-
-        StateListener.prepareGrid = function (gridName) {
-            if (typeof Storage !== 'undefined' && sessionStorage) {
-                var $gridContainer = $('#grid-' + gridName);
-                var metadata       = $gridContainer.data('metadata');
-
-                if (metadata.options.view_filters) {
-                    sessionStorage.setItem(gridName, metadata.options.view_filters);
-                }
-
-                var state = sessionStorage.getItem(gridName);
-                if (state) {
-                    var storedState = new PageableCollection().decodeStateData(state);
-                    $gridContainer.data('metadata').state = storedState;
-                }
-            }
         };
 
         return StateListener;

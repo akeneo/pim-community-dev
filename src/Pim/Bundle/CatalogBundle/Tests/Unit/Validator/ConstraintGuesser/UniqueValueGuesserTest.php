@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\ConstraintGuesser;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\UniqueValueGuesser;
 
 /**
@@ -28,7 +28,7 @@ class UniqueValueGuesserTest extends ConstraintGuesserTest
     public function testInstanceOfContraintGuesserInterface()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface',
+            'Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface',
             $this->target
         );
     }

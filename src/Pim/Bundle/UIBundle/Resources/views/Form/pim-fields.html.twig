@@ -144,7 +144,7 @@
     </table>
 {% endblock %}
 
-{% block oro_media_row %}
+{% block pim_enrich_media_row %}
     {% spaceless %}
 
     {% set empty = not form.vars.value or not form.vars.value.filePath %}
@@ -319,7 +319,7 @@
 {% endspaceless %}
 {% endblock switch_widget %}
 
-{% block pim_flexibleentity_metric_row %}
+{% block pim_enrich_metric_row %}
 {% spaceless %}
     <div class="control-group">
         {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.data.vars.id} }) }}
@@ -332,7 +332,7 @@
         </div>
     </div>
 {% endspaceless %}
-{% endblock pim_flexibleentity_metric_row %}
+{% endblock pim_enrich_metric_row %}
 
 {% block pim_enrich_price_collection_row %}
     {{ form_row(form, { attr: { class: 'hide' }}) }}

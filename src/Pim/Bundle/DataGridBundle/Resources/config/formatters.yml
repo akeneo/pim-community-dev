@@ -7,6 +7,7 @@ parameters:
     pim_datagrid.extension.formatter.property.flexible_image_property.class:   Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleImageProperty
     pim_datagrid.extension.formatter.property.flexible_metric_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleMetricProperty
     pim_datagrid.extension.formatter.property.flexible_boolean_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleBooleanProperty
+    pim_datagrid.extension.formatter.property.flexible_date_property.class:    Pim\Bundle\DataGridBundle\Extension\Formatter\Property\FlexibleDateProperty
 
 services:
     pim_datagrid.extension.formatter.property.flexible_field_property:
@@ -64,3 +65,10 @@ services:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: flexible_boolean }
+
+    pim_datagrid.extension.formatter.property.flexible_date_property:
+        class: %pim_datagrid.extension.formatter.property.flexible_date_property.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: flexible_date }

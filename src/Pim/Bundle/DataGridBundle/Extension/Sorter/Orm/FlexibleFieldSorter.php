@@ -27,8 +27,8 @@ class FlexibleFieldSorter implements SorterInterface
     protected $attributeRepository;
 
     /**
-     * @param ProductRepositoryInterface $productRepository
-     * @param AttributeRepository        $attributeRepository
+     * @param ProductRepositoryInterface $prodRepository
+     * @param AttributeRepository        $attRepository
      */
     public function __construct(ProductRepositoryInterface $prodRepository, AttributeRepository $attRepository)
     {

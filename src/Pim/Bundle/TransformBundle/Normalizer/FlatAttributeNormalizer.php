@@ -21,7 +21,7 @@ class FlatAttributeNormalizer extends AttributeNormalizer
     const ALL_LOCALES         = 'All';
 
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 

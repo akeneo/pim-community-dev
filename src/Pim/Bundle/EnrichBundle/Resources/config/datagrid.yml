@@ -2,8 +2,6 @@ datagrid:
     translatable-entity-grid:
         options:
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             type:              pim_orm
             repository_method: createDatagridQueryBuilder
@@ -156,8 +154,6 @@ datagrid:
         options:
             entityHint: channel
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_channel_index
             type: pim_orm
@@ -230,10 +226,6 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
-                - pim/datagrid/state-listener
-            exportAction:
-                label: Export CSV
-                icon:  download
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
@@ -241,12 +233,13 @@ datagrid:
             repository_method: createDatagridQueryBuilder
         columns:
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -319,28 +312,12 @@ datagrid:
                 launcherOptions:
                     icon: trash
 
-            quick_export:
+            quick_export_csv:
                 type: export
-                label: Export CSV
+                label: CSV (all)
                 icon: download
                 data_identifier: p
-                route: pim_datagrid_export_flexible_index
-                route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                context:
-                    withHeader: true
-                    heterogeneous: true
-                handler: pim_datagrid.extension.mass_action.handler.export
-                messages:
-                    empty_selection: No products selected
-
-            quick_export_2:
-                type: export
-                label: Export CSV
-                icon: download
-                data_identifier: p
-                route: pim_datagrid_export_flexible_index
+                route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
@@ -361,6 +338,7 @@ datagrid:
             columns:
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -375,7 +353,7 @@ datagrid:
         filters:
             columns:
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -385,7 +363,7 @@ datagrid:
                 groups:
                     type:      product_groups
                     label:     Groups
-                    data_name: filterGroups
+                    data_name: groups
                     options:
                         field_options:
                             multiple: true
@@ -417,12 +395,12 @@ datagrid:
                 created:
                     type:             date
                     data_name:        p.created
-                    label: Created At
+                    label:            Created At
                     filter_by_having: true
                 updated:
                     type:             date
                     data_name:        p.updated
-                    label: Updated At
+                    label:            Updated At
                     filter_by_having: true
 
     product-group-grid:
@@ -455,12 +433,13 @@ datagrid:
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -487,6 +466,7 @@ datagrid:
                     data_name: in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -506,7 +486,7 @@ datagrid:
                     data_name: in_group
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -573,12 +553,13 @@ datagrid:
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -605,6 +586,7 @@ datagrid:
                     data_name: in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -624,7 +606,7 @@ datagrid:
                     data_name: in_group
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -666,8 +648,6 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_family_index
             type: pim_orm
@@ -736,8 +716,6 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_currency_index
             type: pim_orm
@@ -790,8 +768,6 @@ datagrid:
     locale-grid:
         options:
             entityHint: locale
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_locale_index
             type: pim_orm
@@ -829,8 +805,6 @@ datagrid:
     group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm
@@ -899,8 +873,6 @@ datagrid:
     variant-group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm
@@ -993,12 +965,13 @@ datagrid:
                 frontend_type: html
                 editable:      true
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -1025,6 +998,7 @@ datagrid:
                     data_name: is_associated
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
                     data_name: p.enabled
                 completeness:
@@ -1044,7 +1018,7 @@ datagrid:
                     data_name:        is_associated
                     filter_by_having: true
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:

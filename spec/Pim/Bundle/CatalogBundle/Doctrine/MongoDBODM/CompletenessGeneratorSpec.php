@@ -1,0 +1,162 @@
+<?php
+
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
+
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ODM\MongoDB\DocumentManager;
+
+use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
+class CompletenessGeneratorSpec extends ObjectBehavior
+{
+    public function let(
+        DocumentManager $manager,
+        CompletenessFactory $completenessFactory,
+        ValidatorInterface $validator,
+        ProductInterface $product,
+        ProductValue $value,
+        Attribute $varchar,
+        Family $family,
+        AttributeRequirement $requireVarcharEcommerce,
+        AttributeRequirement $requireVarcharMobile,
+        AttributeRequirement $requirePrice,
+        Channel $ecommerce,
+        Channel $mobile,
+        Locale $enUs,
+        Locale $frFr,
+        Locale $nlNl,
+        ConstraintViolationListInterface $noViolation,
+        ConstraintViolationListInterface $withViolations
+    ) {
+        $varchar->getCode()->willReturn('attr_varchar');
+
+        $product->getFamily()->willReturn($family);
+
+        $enUs->getCode()->willReturn('en_US');
+        $frFr->getCode()->willReturn('fr_FR');
+        $nlNl->getCode()->willReturn('nl_NL');
+
+        $ecommerce->getCode()->willReturn('ecommerce');
+        $ecommerce->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
+
+        $mobile->getCode()->willReturn('mobile');
+        $mobile->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
+
+        $requireVarcharEcommerce->getChannel()->willReturn($ecommerce);
+        $requireVarcharEcommerce->getAttribute()->willReturn($varchar);
+        $requireVarcharEcommerce->isRequired()->willReturn(true);
+
+        $requireVarcharMobile->getChannel()->willReturn($mobile);
+        $requireVarcharMobile->getAttribute()->willReturn($varchar);
+        $requireVarcharMobile->isRequired()->willReturn(true);
+
+        $noViolation->count()->willReturn(0);
+        $withViolations->count()->willReturn(1);
+
+        $product->getValue(Argument::cetera())->willReturn($value);
+
+        $this->beConstructedWith($manager, $completenessFactory, $validator);
+    }
+
+    public function it_is_a_completeness_generator()
+    {
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
+    }
+
+    public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager)
+    {
+        $manager->flush($product)->shouldBeCalled();
+        $product->setCompletenesses(new ArrayCollection())->shouldBeCalled();
+
+        $this->schedule($product);
+    }
+
+    public function it_builds_product_completenesses_with_one_channel_and_three_locales (
+        ProductInterface $product,
+        ValidatorInterface $validator,
+        CompletenessFactory $completenessFactory,
+        Family $family,
+        AttributeRequirement $requireVarcharEcommerce,
+        Channel $ecommerce,
+        Locale $frFr,
+        Locale $enUs,
+        Locale $nlNl,
+        ConstraintViolationListInterface $noViolation,
+        ConstraintViolationListInterface $withViolations
+    ) {
+        $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce));
+
+        $violationsList = array($noViolation, $withViolations, $withViolations);
+
+        $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
+            return array_shift($violationsList);
+        });
+
+        $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $nlNl, 1, 1)->shouldBeCalled();
+
+        $this->buildProductCompletenesses($product);
+    }
+
+    public function it_doesnt_build_product_completenesses_without_family (
+        ProductInterface $product,
+        ValidatorInterface $validator,
+        DocumentManager $manager
+    ) {
+        $product->getFamily()->willReturn(null);
+
+        $manager->flush($product)->shouldNotBeCalled();
+        $product->setCompletenesses(new ArrayCollection())->shouldNotBeCalled();
+
+        $this->generateProductCompletenesses($product);
+    }
+    public function it_builds_product_completenesses_with_two_channels_and_three_locales (
+        ProductInterface $product,
+        ValidatorInterface $validator,
+        CompletenessFactory $completenessFactory,
+        Family $family,
+        AttributeRequirement $requireVarcharEcommerce,
+        AttributeRequirement $requireVarcharMobile,
+        Channel $ecommerce,
+        Channel $mobile,
+        Locale $frFr,
+        Locale $enUs,
+        Locale $nlNl,
+        ConstraintViolationListInterface $noViolation,
+        ConstraintViolationListInterface $withViolations
+    ) {
+        $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce, $requireVarcharMobile));
+
+        $violationsList = array($noViolation, $withViolations, $noViolation, $noViolation, $noViolation, $withViolations);
+
+        $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
+            return array_shift($violationsList);
+        });
+
+        $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
+        $completenessFactory->build($ecommerce, $nlNl, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($mobile, $enUs, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($mobile, $frFr, 0, 1)->shouldBeCalled();
+        $completenessFactory->build($mobile, $nlNl, 1, 1)->shouldBeCalled();
+
+        $this->buildProductCompletenesses($product);
+    }
+}

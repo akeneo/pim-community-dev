@@ -15,6 +15,13 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 interface CompletenessGeneratorInterface
 {
     /**
+     * Generate completeness for a product
+     *
+     * @param ProductInterface $product
+     */
+    public function generateProductCompletenesses(ProductInterface $product);
+
+    /**
      * Generate missing completeness according to the criteria
      * The limit is used to do batch generation to avoid
      * locking the Completeness during a too long time
