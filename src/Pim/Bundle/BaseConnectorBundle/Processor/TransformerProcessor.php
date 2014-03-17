@@ -85,7 +85,6 @@ class TransformerProcessor extends AbstractConfigurableStepElement implements
      */
     public function process($item)
     {
-        var_dump($item);
         $this->mapValues($item);
         $entity = $this->transform($item);
 
