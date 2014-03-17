@@ -142,7 +142,7 @@ require(
             'margin-right': '10px',
             'border-right': '1px solid #ccc'
         }));
-        $openButton.append($('<span>', { 'class': 'caret pull-right' }));
+        $openButton.append($('<i>', { 'class': 'icon-caret-down', 'css': { 'position': 'absolute', 'top': '6px', 'right': '6px' } }));
 
         var $updateButtton = $('#update-view');
         $updateButtton.on('click', function() {
