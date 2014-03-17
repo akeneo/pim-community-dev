@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\Validator\Constraints;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueCompleteValidator;

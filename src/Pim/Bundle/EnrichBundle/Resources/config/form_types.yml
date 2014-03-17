@@ -86,6 +86,16 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_price_collection }
 
+    pim_enrich.form.type.metric:
+        class: %pim_enrich.form.type.product_value_metric.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_metric }
+
+    pim_enrich.form.type.media:
+        class: %pim_enrich.form.type.product_value_media.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_media }
+
     pim_enrich.form.type.category:
         class: %pim_enrich.form.type.category.class%
         arguments:
@@ -178,31 +188,10 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_image }
 
-    pim_enrich.form.type.datagrid_configuration:
-        class: %pim_enrich.form.type.datagrid_configuration.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_datagrid_configuration }
-
-    pim_enrich.form.type.datagrid_view:
-        class: %pim_enrich.form.type.datagrid_view.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_datagrid_view }
-
     pim_enrich.form.type.light_entity:
         class: %pim_enrich.form.type.light_entity.class%
         tags:
             - { name: form.type, alias: light_entity }
-
-    # Form extensions
-    pim_enrich.extension.type.media:
-        class: %pim_enrich.extension.type.media.class%
-        tags:
-            - { name: form.type_extension, alias: oro_media }
-
-    pim_enrich.extension.type.metric:
-        class: %pim_enrich.extension.type.metric.class%
-        tags:
-            - { name: form.type_extension, alias: pim_flexibleentity_metric }
 
     # Attribute property types
     pim_enrich.form.type.scopable:
@@ -224,7 +213,7 @@ services:
     pim_enrich.form.subscriber.attribute:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
         arguments:
-            - '@pim_flexibleentity.attributetype.factory'
+            - '@pim_catalog.factory.attribute_type'
 
     pim_enrich.form.subscriber.attribute_requirements:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%

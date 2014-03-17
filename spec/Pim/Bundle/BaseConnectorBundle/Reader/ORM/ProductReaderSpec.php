@@ -25,7 +25,7 @@ class ProductReaderSpec extends ObjectBehavior
         MetricConverter $metricConverter,
         StepExecution $stepExecution
     ) {
-        $productManager->getFlexibleRepository()->willReturn($repository);
+        $productManager->getProductRepository()->willReturn($repository);
 
         $this->beConstructedWith($productManager, $channelManager, $completenessManager, $metricConverter);
 

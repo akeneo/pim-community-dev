@@ -44,8 +44,8 @@ class ProductType extends AbstractType
             'pim_enrich_localized_collection',
             array(
                 'type'               => 'pim_product_value',
-                'allow_add'          => true,
-                'allow_delete'       => true,
+                'allow_add'          => false,
+                'allow_delete'       => false,
                 'by_reference'       => false,
                 'cascade_validation' => true,
                 'currentLocale'      => $options['currentLocale'],

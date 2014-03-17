@@ -3,9 +3,7 @@ parameters:
     pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
-    pim_catalog.event_listener.orm.localizable.class:              Pim\Bundle\CatalogBundle\EventListener\ORM\LocalizableListener
-    pim_catalog.event_listener.orm.scopable.class:                 Pim\Bundle\CatalogBundle\EventListener\ORM\ScopableListener
-    pim_catalog.doctrine.orm.flexible_query_builder.class:         Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder
+    pim_catalog.doctrine.product_query_builder.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -28,19 +26,8 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
-    pim_catalog.event_listener.orm.localizable:
-        class: %pim_catalog.event_listener.orm.localizable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    pim_catalog.event_listener.orm.scopable:
-        class: %pim_catalog.event_listener.orm.scopable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
-
-    pim_catalog.doctrine.flexible_query_builder:
-        class: %pim_catalog.doctrine.orm.flexible_query_builder.class%
+    pim_catalog.repository.media:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.media.class%]

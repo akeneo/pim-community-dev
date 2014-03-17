@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Datasource\MongoDbOdm;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 
 /**
  * MongoDB ODM datasource adapter
@@ -34,6 +35,33 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
     {
         $this->qb                = $qb;
         $this->expressionBuilder = null;
+    }
+
+    /**
+     * Return value format depending on comparison type
+     *
+     * @param string $comparisonType
+     *
+     * @return string
+     */
+    public function getFormatByComparisonType($comparisonType)
+    {
+        switch ($comparisonType) {
+            case TextFilterType::TYPE_STARTS_WITH:
+                $format = '/^%s/i';
+                break;
+            case TextFilterType::TYPE_ENDS_WITH:
+                $format = '/%s$/i';
+                break;
+            case TextFilterType::TYPE_CONTAINS:
+            case TextFilterType::TYPE_NOT_CONTAINS:
+                $format = '/%s/i';
+                break;
+            default:
+                $format = '%s';
+        }
+
+        return $format;
     }
 
     /**

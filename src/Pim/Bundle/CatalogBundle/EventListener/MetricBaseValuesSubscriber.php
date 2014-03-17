@@ -3,11 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Doctrine\ORM\Event\LifecycleEventArgs;
-
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
-
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
@@ -79,15 +77,15 @@ class MetricBaseValuesSubscriber implements EventSubscriber
      */
     protected function createMetricBaseValues(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $object = $args->getObject();
 
-        if ($entity instanceof Metric && $entity->getUnit()) {
-            $baseUnit = $this->manager->getStandardUnitForFamily($entity->getFamily());
+        if ($object instanceof Metric && $object->getUnit()) {
+            $baseUnit = $this->manager->getStandardUnitForFamily($object->getFamily());
             $baseData = $this->converter
-                ->setFamily($entity->getFamily())
-                ->convertBaseToStandard($entity->getUnit(), $entity->getData());
+                ->setFamily($object->getFamily())
+                ->convertBaseToStandard($object->getUnit(), $object->getData());
 
-            $entity
+            $object
                 ->setBaseData($baseData)
                 ->setBaseUnit($baseUnit);
         }
