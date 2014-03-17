@@ -18,7 +18,7 @@
 
     <target name="build-docs-behat" depends="prepare,composer,vendors,link-pim-docs,install-all-behat,behat-docs"/>
 
-    <target name="build-code-quality" depends="prepare,lint,check-interfaces,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -76,7 +76,7 @@
         <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
             <arg value="${basedir}/src" />
         </exec>
-        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
+        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="false">
             <arg value="${basedir}/spec" />
         </exec>
     </target>
