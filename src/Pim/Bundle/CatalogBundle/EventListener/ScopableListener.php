@@ -1,21 +1,20 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
 /**
- * Aims to inject selected locale into loaded product
+ * Aims to inject selected scope into loaded product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocalizableListener implements EventSubscriber
+class ScopableListener implements EventSubscriber
 {
     /**
      * @var ContainerInterface $container
@@ -27,9 +26,9 @@ class LocalizableListener implements EventSubscriber
      *
      * @param ContainerInterface $container
      *
-     * @return LocalizableListener
+     * @return ScopableListener
      */
-    public function setContainer($container)
+    public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
 
@@ -43,9 +42,7 @@ class LocalizableListener implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            'postLoad'
-        );
+        return ['postLoad'];
     }
 
     /**
@@ -54,13 +51,12 @@ class LocalizableListener implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $isProduct = ($entity instanceof Product);
-        $isAttributeOption = ($entity instanceof AttributeOption);
+        $object = $args->getObject();
 
-        if ($isProduct || $isAttributeOption) {
-            $productManager = $this->container->get('pim_catalog.manager.product');
-            $entity->setLocale($productManager->getLocale());
+        if (!$object instanceof ProductInterface) {
+            return;
         }
+
+        $object->setScope($this->container->get('pim_catalog.manager.product')->getScope());
     }
 }
