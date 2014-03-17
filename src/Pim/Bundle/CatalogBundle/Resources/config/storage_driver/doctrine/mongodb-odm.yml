@@ -1,6 +1,6 @@
 parameters:
-    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\AssociationRepository
-    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
+    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AssociationRepository
+    pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
@@ -11,6 +11,7 @@ parameters:
     pim_catalog.mongodb.normalizer.product_value.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
     pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
+    pim_catalog.mongodb.normalizer.media.class:                      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
     pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
@@ -73,6 +74,12 @@ services:
         tags:
             - { name: pim_serializer.normalizer }
 
+    pim_catalog.mongodb.normalizer.media:
+        class: %pim_catalog.mongodb.normalizer.media.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
     pim_catalog.mongodb.normalizer.family:
         class: %pim_catalog.mongodb.normalizer.family.class%
         public: false
@@ -86,6 +93,16 @@ services:
         public: false
         tags:
             - { name: pim_serializer.normalizer }
+
+    pim_catalog.repository.product:
+        class: %pim_catalog.repository.product.class%
+        factory_service: pim_catalog.object_manager.product
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.product.class%]
+        calls:
+            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+            - [setCategoryClass, ['%pim_catalog.entity.category.class%']]
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%

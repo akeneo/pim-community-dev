@@ -12,7 +12,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 Use Pim\Bundle\UserBundle\Context\UserContext;
 
 class ChoiceFilterSpec extends ObjectBehavior
@@ -109,7 +109,7 @@ class ChoiceFilterSpec extends ObjectBehavior
         Form $form,
         FlexibleManager $flexibleManager,
         AttributeRepository $attributeRepository,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         $utility,
         $factory
     ) {

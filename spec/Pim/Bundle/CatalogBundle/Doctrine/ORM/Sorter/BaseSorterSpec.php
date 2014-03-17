@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 class BaseSorterSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class BaseSorterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\SorterInterface');
     }
 
-    function it_adds_a_sorter_in_the_query(QueryBuilder $queryBuilder, Attribute $sku)
+    function it_adds_a_sorter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)
     {
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');

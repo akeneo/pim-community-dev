@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 class UserContextSpec extends ObjectBehavior
 {
@@ -30,8 +30,8 @@ class UserContextSpec extends ObjectBehavior
         Locale $de,
         Channel $ecommerce,
         Channel $mobile,
-        Category $firstTree,
-        Category $secondTree
+        CategoryInterface $firstTree,
+        CategoryInterface $secondTree
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);

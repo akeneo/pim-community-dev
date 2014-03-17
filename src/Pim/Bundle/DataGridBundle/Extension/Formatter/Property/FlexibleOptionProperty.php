@@ -18,7 +18,7 @@ class FlexibleOptionProperty extends FlexibleFieldProperty
     {
         $data = $this->getBackendData($value);
 
-        if (count($data['optionValues']) === 1) {
+        if (isset($data['optionValues']) && count($data['optionValues']) === 1) {
             return $data['optionValues'][0]['value'];
         }
 

@@ -29,3 +29,5 @@ parameters:
     installer_data:       PimInstallerBundle:demo_dev
     # use PimInstallerBundle:minimal for minimal data set
     mass_edit_limit:      1000
+
+    error_reporting_email: ~

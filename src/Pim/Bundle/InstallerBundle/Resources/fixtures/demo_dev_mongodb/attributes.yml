@@ -65,7 +65,7 @@ attributes:
         useableAsGridColumn: true
         useableAsGridFilter: true
         dateMin:             '2012-01-01'
-        dateMax:             '2014-01-01'
+        dateMax:             '2015-01-01'
         sortOrder:           5
     file_upload:
         labels:

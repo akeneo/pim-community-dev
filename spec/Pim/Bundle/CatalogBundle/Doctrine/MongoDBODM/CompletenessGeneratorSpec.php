@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -31,7 +31,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         ValidatorInterface $validator,
         ProductInterface $product,
         ProductValue $value,
-        Attribute $varchar,
+        AbstractAttribute $varchar,
         Family $family,
         AttributeRequirement $requireVarcharEcommerce,
         AttributeRequirement $requireVarcharMobile,
