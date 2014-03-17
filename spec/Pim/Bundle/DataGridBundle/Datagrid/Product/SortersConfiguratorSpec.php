@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
@@ -67,7 +67,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $this->configure();
     }
 
-    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, Attribute $sku, Attribute $name)
+    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, AbstractAttribute $sku, AbstractAttribute $name)
     {
         $attributes = [
             'sku' => [

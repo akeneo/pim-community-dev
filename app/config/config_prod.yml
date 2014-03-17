@@ -27,7 +27,7 @@ monolog:
             handler: swift
         swift:
             type:       native_mailer
-            from_email: techteam@akeneo.com
-            to_email:   techteam@akeneo.com
+            from_email: %error_reporting_email%
+            to_email:   %error_reporting_email%
             subject:    An Error Occurred!
             level:      debug

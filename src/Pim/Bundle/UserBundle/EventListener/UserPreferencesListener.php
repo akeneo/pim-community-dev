@@ -7,7 +7,7 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Doctrine\ORM\UnitOfWork;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 
@@ -114,7 +114,7 @@ class UserPreferencesListener implements EventSubscriber
             $this->onChannelRemoved($entity);
         }
 
-        if ($entity instanceof Category && $entity->isRoot()) {
+        if ($entity instanceof CategoryInterface && $entity->isRoot()) {
             $this->onTreeRemoved($entity);
         }
     }
@@ -190,11 +190,11 @@ class UserPreferencesListener implements EventSubscriber
     /**
      * Update default tree of users using a tree that will be removed
      *
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return null
      */
-    protected function onTreeRemoved(Category $category)
+    protected function onTreeRemoved(CategoryInterface $category)
     {
         $users = $this->findUsersBy(array('defaultTree' => $category));
         $trees = $this->container->get('pim_catalog.manager.category')->getTrees();

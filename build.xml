@@ -18,7 +18,7 @@
 
     <target name="build-docs-behat" depends="prepare,composer,vendors,link-pim-docs,install-all-behat,behat-docs"/>
 
-    <target name="build-code-quality" depends="prepare,lint,check-interfaces,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
+    <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
     <target name="clean" description="Cleanup build artifacts">
         <delete dir="${basedir}/app/build/api"/>
@@ -73,12 +73,12 @@
     </target>
 
     <target name="check-interfaces" description="Check if the interfaces are being used">
-        <apply executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
+        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
             <arg value="${basedir}/src" />
-        </apply>
-        <apply executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="true">
+        </exec>
+        <exec executable="${basedir}/app/Resources/jenkins/interface_check.sh" failonerror="false">
             <arg value="${basedir}/spec" />
-        </apply>
+        </exec>
     </target>
 
     <target name="phploc" description="Measure project size using PHPLOC">

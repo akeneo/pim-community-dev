@@ -73,5 +73,4 @@ class ProductQueryUtility
 
         return $attributeCode.$suffix;
     }
-
 }

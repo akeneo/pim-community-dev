@@ -31,3 +31,5 @@ parameters:
 
     uservoice_key:        ~
     mass_edit_limit:      1000
+
+    error_reporting_email: ~

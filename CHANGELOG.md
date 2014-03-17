@@ -9,6 +9,7 @@
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
 - MongoDB support (WIP)
+- Allow to add many quick export on datagrids
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -42,6 +43,7 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInterface, add getData, setData and getAttribute methods
 - Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
+- Move mass export in specific controller
 
 # 1.0.2
 ## Bug Fixes

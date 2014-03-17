@@ -55,7 +55,8 @@
 
                     nested_switch_bar.html(nested_switch_label);
                     nested_switch_bar.append(switch_wrapper.bootstrapSwitch());
-                    this.get_container_ul().after(nested_switch_bar);
+                    this.get_container().after(nested_switch_bar);
+                    this.get_container().parent().css('padding-bottom', '65px');
 
                 }, this))
                 ;

@@ -77,4 +77,3 @@ services:
 
     pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.product_query_builder.class%
-

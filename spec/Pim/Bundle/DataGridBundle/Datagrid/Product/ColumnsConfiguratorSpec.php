@@ -1,13 +1,12 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Datagrid\product;
+namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
