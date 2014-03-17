@@ -36,7 +36,7 @@ services:
             - { name: oro_datagrid.extension.mass_action.type, type: export }
 
     pim_datagrid.extension.mass_action.type.edit:
-        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Redirect\EditMassAction
+        class: Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Redirect\EditMassAction
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
