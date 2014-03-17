@@ -6,7 +6,7 @@ use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
-use Pim\Bundle\FlexibleEntityBundle\Doctrine\ORM\FlexibleQueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -27,9 +27,9 @@ class ProductRepository extends FlexibleEntityRepository implements
     ReferableEntityRepositoryInterface
 {
     /**
-     * @param FlexibleQueryBuilder
+     * @param ProductQueryBuilder
      */
-    protected $flexibleQB;
+    protected $productQB;
 
     /**
      * @var string
@@ -623,7 +623,7 @@ SQL;
      */
     public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
 
     /**
@@ -631,7 +631,7 @@ SQL;
      */
     public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
     }
 
     /**
@@ -639,7 +639,7 @@ SQL;
      */
     public function applySorterByAttribute($qb, Attribute $attribute, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
@@ -647,7 +647,7 @@ SQL;
      */
     public function applySorterByField($qb, $field, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -691,13 +691,13 @@ SQL;
     /**
      * Set flexible query builder
      *
-     * @param FlexibleQueryBuilder $flexibleQB
+     * @param ProductQueryBuilder $productQB
      *
      * @return FlexibleEntityRepository
      */
-    public function setFlexibleQueryBuilder($flexibleQB)
+    public function setProductQueryBuilder($productQB)
     {
-        $this->flexibleQB = $flexibleQB;
+        $this->productQB = $productQB;
 
         return $this;
     }
@@ -756,20 +756,20 @@ SQL;
     /**
      * @param QueryBuilder $qb
      *
-     * @return FlexibleQueryBuilder
+     * @return ProductQueryBuilder
      */
-    protected function getFlexibleQueryBuilder($qb)
+    protected function getProductQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
+        if (!$this->productQB) {
             throw new \LogicException('Flexible query builder must be configured');
         }
 
-        $this->flexibleQB
+        $this->productQB
             ->setQueryBuilder($qb)
             ->setLocale($this->getLocale())
             ->setScope($this->getScope());
 
-        return $this->flexibleQB;
+        return $this->productQB;
     }
 
     /**

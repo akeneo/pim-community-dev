@@ -58,6 +58,9 @@ class MassActionDispatcher extends OroMassActionDispatcher
     /**
      * Get mass action from mass action and datagrid names
      *
+     * @param string $actionName
+     * @param string $datagridName
+     *
      * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
      */
     public function getMassActionByNames($actionName, $datagridName)

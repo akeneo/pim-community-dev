@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Tests\Unit\Manager;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser;
+use Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser;
 
 /**
  * Test related class
@@ -76,12 +76,12 @@ class AttributeManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * Get a mock of AttributeTypeFactory
      *
-     * @return Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory
+     * @return Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory
      */
     protected function getAttributeTypeFactoryMock()
     {
         $factory = $this
-            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
         $guesser = new AttributeConstraintGuesser();

@@ -3,9 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
@@ -44,7 +43,7 @@ class PriceCollectionType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $options['type']         = 'pim_enrich_price';

@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
+use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
 use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
@@ -88,9 +89,19 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductRepository
+     *
      * @return ProductRepositoryInterface
      */
     public function getFlexibleRepository()
+    {
+        return $this->getProductRepository();
+    }
+
+    /**
+     * @return ProductRepositoryInterface
+     */
+    public function getProductRepository()
     {
         return $this->repository;
     }
@@ -102,7 +113,7 @@ class ProductManager extends FlexibleManager
     {
         parent::setLocale($code);
 
-        $this->getFlexibleRepository()->setLocale($code);
+        $this->getProductRepository()->setLocale($code);
 
         return $this;
     }
@@ -114,7 +125,7 @@ class ProductManager extends FlexibleManager
     {
         parent::setScope($code);
 
-        $this->getFlexibleRepository()->setScope($code);
+        $this->getProductRepository()->setScope($code);
 
         return $this;
     }
@@ -129,7 +140,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findOneByWithValues($id);
+        $product = $this->getProductRepository()->findOneByWithValues($id);
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
@@ -148,7 +159,7 @@ class ProductManager extends FlexibleManager
      */
     public function findByIds(array $ids)
     {
-        $products = $this->getFlexibleRepository()->findByIds($ids);
+        $products = $this->getProductRepository()->findByIds($ids);
 
         foreach ($products as $product) {
             $this->builder->addMissingProductValues($product);
@@ -169,7 +180,7 @@ class ProductManager extends FlexibleManager
     {
         $code = $this->getIdentifierAttribute()->getCode();
 
-        $products = $this->getFlexibleRepository()->findAllByAttributes(array(), array($code => $identifier));
+        $products = $this->getProductRepository()->findAllByAttributes(array(), array($code => $identifier));
         $product = reset($products);
 
         if ($product) {
@@ -257,25 +268,103 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Create a product (alias of createFlexible)
+     * Create a product
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     public function createProduct()
     {
-        $product = $this->createFlexible();
+        $class = $this->getProductName();
+        $valueClass = $this->getProductValueName();
+
+        $product = new $class();
+        $product->setLocale($this->getLocale());
+        $product->setScope($this->getScope());
+
+        $product->setValueClass($valueClass);
+
+        $event = new FilterFlexibleEvent($this, $product);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
 
         return $product;
     }
 
     /**
-     * Create a product value (alias of createFlexibleValue)
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
+     */
+    public function createFlexible()
+    {
+        return $this->createProduct();
+    }
+
+    /**
+     * Create a product value
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
     public function createProductValue()
     {
-        return $this->createFlexibleValue();
+        $class = $this->getProductValueName();
+        $value = new $class();
+
+        $event = new FilterFlexibleValueEvent($this, $value);
+        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
+
+        return $value;
+    }
+
+    /**
+     * Create a product value
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProductvalue
+     */
+    public function createFlexibleValue()
+    {
+        return $this->createProductValue();
+    }
+
+    /**
+     * Get product FQCN
+     *
+     * @return string
+     */
+    public function getProductName()
+    {
+        return $this->flexibleConfig['flexible_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductName
+     */
+    public function getFlexibleName()
+    {
+        return $this->getProductName();
+    }
+
+    /**
+     * Get product value FQCN
+     *
+     * @return string
+     */
+    public function getProductValueName()
+    {
+        return $this->flexibleConfig['flexible_value_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductValueName
+     */
+    public function getFlexibleValueName()
+    {
+        return $this->getProductValueName();
     }
 
     /**
@@ -349,7 +438,7 @@ class ProductManager extends FlexibleManager
      */
     public function removeAll(array $ids)
     {
-        $products = $this->getFlexibleRepository()->findByIds($ids);
+        $products = $this->getProductRepository()->findByIds($ids);
         foreach ($products as $product) {
             $this->objectManager->remove($product);
         }
@@ -411,26 +500,6 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function createFlexible()
-    {
-        $class = $this->getFlexibleName();
-        $valueClass = $this->getFlexibleValueName();
-
-        $flexible = new $class();
-        $flexible->setLocale($this->getLocale());
-        $flexible->setScope($this->getScope());
-
-        $flexible->setValueClass($valueClass);
-
-        $event = new FilterFlexibleEvent($this, $flexible);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
-
-        return $flexible;
-    }
-
-    /**
      * Count products linked to a node.
      * You can define if you just want to get the property of the actual node
      * or with its children with the direct parameter
@@ -451,7 +520,7 @@ class ProductManager extends FlexibleManager
             $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
         }
 
-        return $this->getFlexibleRepository()->getProductsCountInCategory($category, $categoryQb);
+        return $this->getProductRepository()->getProductsCountInCategory($category, $categoryQb);
     }
 
     /**
@@ -473,7 +542,7 @@ class ProductManager extends FlexibleManager
             $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, true);
         }
 
-        return $this->getFlexibleRepository()->getProductIdsInCategory($category, $categoryQb);
+        return $this->getProductRepository()->getProductIdsInCategory($category, $categoryQb);
     }
 
     /**
@@ -485,7 +554,7 @@ class ProductManager extends FlexibleManager
      */
     public function valueExists(ProductValueInterface $value)
     {
-        return $this->getFlexibleRepository()->valueExists($value);
+        return $this->getProductRepository()->valueExists($value);
     }
 
     /**
@@ -502,8 +571,8 @@ class ProductManager extends FlexibleManager
     public function findCommonAttributes(array $productIds)
     {
         $attributes = array_merge(
-            $this->getFlexibleRepository()->findFamilyCommonAttributeIds($productIds),
-            $this->getFlexibleRepository()->findValuesCommonAttributeIds($productIds)
+            $this->getProductRepository()->findFamilyCommonAttributeIds($productIds),
+            $this->getProductRepository()->findValuesCommonAttributeIds($productIds)
         );
 
         $attributeIds = array();

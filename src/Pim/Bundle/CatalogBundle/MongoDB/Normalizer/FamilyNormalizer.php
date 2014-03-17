@@ -15,17 +15,17 @@ use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
  */
 class FamilyNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer */
-    protected $translationNormalizer;
+    /** @var TranslationNormalizer $transNormalizer */
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -33,7 +33,7 @@ class FamilyNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        return ['code' => $object->getCode()] + $this->translationNormalizer->normalize($object, $format, $context);
+        return ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**

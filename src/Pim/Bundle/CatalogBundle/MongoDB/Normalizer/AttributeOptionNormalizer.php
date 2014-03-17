@@ -19,7 +19,10 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $data = ['code' => $object->getCode()];
+        $data = [
+            'id'   => $object->getId(),
+            'code' => $object->getCode()
+        ];
         foreach ($object->getOptionValues() as $value) {
             $data[$value->getLocale()]= $value->getValue();
         }

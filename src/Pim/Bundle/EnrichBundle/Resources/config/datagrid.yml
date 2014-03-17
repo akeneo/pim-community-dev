@@ -2,8 +2,6 @@ datagrid:
     translatable-entity-grid:
         options:
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             type:              pim_orm
             repository_method: createDatagridQueryBuilder
@@ -156,8 +154,6 @@ datagrid:
         options:
             entityHint: channel
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_channel_index
             type: pim_orm
@@ -230,7 +226,6 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
-                - pim/datagrid/state-listener
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
@@ -317,12 +312,12 @@ datagrid:
                 launcherOptions:
                     icon: trash
 
-            quick_export:
+            quick_export_csv:
                 type: export
-                label: Quick Export
+                label: CSV (all)
                 icon: download
                 data_identifier: p
-                route: pim_datagrid_export_flexible_index
+                route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
@@ -653,8 +648,6 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_family_index
             type: pim_orm
@@ -723,8 +716,6 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_currency_index
             type: pim_orm
@@ -777,8 +768,6 @@ datagrid:
     locale-grid:
         options:
             entityHint: locale
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_locale_index
             type: pim_orm
@@ -816,8 +805,6 @@ datagrid:
     group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm
@@ -886,8 +873,6 @@ datagrid:
     variant-group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm

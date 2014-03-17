@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Attribute manager

@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Flexible product
@@ -540,6 +539,9 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
         return $this->getIdentifier()->getData();
     }
 
+    /**
+     * @param mixed $normalizedData
+     */
     public function setNormalizedData($normalizedData)
     {
         $this->normalizedData = $normalizedData;

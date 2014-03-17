@@ -23,7 +23,7 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
             ->getEntityManager()
             ->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
             ->getEligibleProductIds(
-                $this->productManager->getFlexibleName(),
+                $this->productManager->getProductName(),
                 $variantGroupId
             );
         if (count($productIds) === 0) {

@@ -1,8 +1,16 @@
 parameters:
-    pim_datagrid.controller.export.class: Pim\Bundle\DataGridBundle\Controller\ExportController
-    pim_datagrid.controller.flexible_export.class: Pim\Bundle\DataGridBundle\Controller\FlexibleExportController
+    pim_datagrid.controller.datagrid.class:       Pim\Bundle\DataGridBundle\Controller\DatagridController
+    pim_datagrid.controller.export.class:         Pim\Bundle\DataGridBundle\Controller\ExportController
+    pim_datagrid.controller.product_export.class: Pim\Bundle\DataGridBundle\Controller\ProductExportController
+    pim_datagrid.controller.datagrid_view.class:  Pim\Bundle\DataGridBundle\Controller\DatagridViewController
 
 services:
+    pim_datagrid.controller.datagrid:
+        scope: request
+        class: %pim_datagrid.controller.datagrid.class%
+        arguments:
+            - '@templating'
+
     pim_datagrid.controller.export:
         abstract: false
         class: %pim_datagrid.controller.export.class%
@@ -13,10 +21,17 @@ services:
             - '@oro_datagrid.mass_action.dispatcher'
             - '@pim_serializer'
 
-    pim_datagrid.controller.flexible_export:
-        class: %pim_datagrid.controller.flexible_export.class%
+    pim_datagrid.controller.product_export:
+        class: %pim_datagrid.controller.product_export.class%
         parent: pim_datagrid.controller.export
         scope: request
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'
+
+    pim_datagrid.controller.datagrid_view:
+        scope: request
+        class: %pim_datagrid.controller.datagrid_view.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_datagrid.manager.datagrid_view'

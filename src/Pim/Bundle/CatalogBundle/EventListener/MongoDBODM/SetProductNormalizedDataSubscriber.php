@@ -73,7 +73,7 @@ class SetProductNormalizedDataSubscriber implements EventSubscriber
     /**
      * Update product normalized data
      *
-     * @param LifecycleEventArgs $args
+     * @param ProductInterface $product
      */
     protected function updateNormalizedData(ProductInterface $product)
     {

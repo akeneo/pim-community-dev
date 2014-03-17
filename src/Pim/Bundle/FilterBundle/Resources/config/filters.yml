@@ -9,15 +9,14 @@ parameters:
     pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
     pim_filter.product_category_filter.class:     Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter
 
-    pim_filter.flexible_string.class:     Pim\Bundle\FilterBundle\Filter\Flexible\StringFilter
-    pim_filter.flexible_choice.class:     Pim\Bundle\FilterBundle\Filter\Flexible\ChoiceFilter
-    pim_filter.flexible_number.class:     Pim\Bundle\FilterBundle\Filter\Flexible\NumberFilter
-    pim_filter.flexible_entity.class:     Pim\Bundle\FilterBundle\Filter\Flexible\EntityFilter
-    pim_filter.flexible_date.class:       Pim\Bundle\FilterBundle\Filter\Flexible\DateRangeFilter
-    pim_filter.flexible_datetime.class:   Pim\Bundle\FilterBundle\Filter\Flexible\DateTimeRangeFilter
-    pim_filter.flexible_boolean.class:    Pim\Bundle\FilterBundle\Filter\Flexible\BooleanFilter
-    pim_filter.flexible_metric.class:     Pim\Bundle\FilterBundle\Filter\Flexible\MetricFilter
-    pim_filter.flexible_price.class:      Pim\Bundle\FilterBundle\Filter\Flexible\PriceFilter
+    pim_filter.product_value_string.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\StringFilter
+    pim_filter.product_value_choice.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter
+    pim_filter.product_value_number.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\NumberFilter
+    pim_filter.product_value_date.class:       Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_value_datetime.class:   Pim\Bundle\FilterBundle\Filter\ProductValue\DateTimeRangeFilter
+    pim_filter.product_value_boolean.class:    Pim\Bundle\FilterBundle\Filter\ProductValue\BooleanFilter
+    pim_filter.product_value_metric.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\MetricFilter
+    pim_filter.product_value_price.class:      Pim\Bundle\FilterBundle\Filter\ProductValue\PriceFilter
 
 services:
     pim_filter.ajax_choice_filter:
@@ -73,66 +72,58 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_completeness }
 
-    pim_filter.flexible_string:
-        class: %pim_filter.flexible_string.class%
+    pim_filter.product_value_string:
+        class: %pim_filter.product_value_string.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_string }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_string }
 
-    pim_filter.flexible_choice:
-        class: %pim_filter.flexible_choice.class%
+    pim_filter.product_value_choice:
+        class: %pim_filter.product_value_choice.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
             - '@pim_user.context.user'
             - %pim_catalog.entity.attribute_option.class%
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_choice }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_choice }
 
-    pim_filter.flexible_number:
-        class: %pim_filter.flexible_number.class%
+    pim_filter.product_value_number:
+        class: %pim_filter.product_value_number.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_number }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_number }
 
-    pim_filter.flexible_entity:
-        class: %pim_filter.flexible_entity.class%
+    pim_filter.product_value_date:
+        class: %pim_filter.product_value_date.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_entity }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_date }
 
-    pim_filter.flexible_date:
-        class: %pim_filter.flexible_date.class%
+    pim_filter.product_value_datetime:
+        class: %pim_filter.product_value_datetime.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_date }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_datetime }
 
-    pim_filter.flexible_datetime:
-        class: %pim_filter.flexible_datetime.class%
+    pim_filter.product_value_boolean:
+        class: %pim_filter.product_value_boolean.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_datetime }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_boolean }
 
-    pim_filter.flexible_boolean:
-        class: %pim_filter.flexible_boolean.class%
-        arguments:
-            - '@form.factory'
-            - '@pim_filter.product_utility'
-        tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_boolean }
-
-    pim_filter.flexible_metric:
-        class: %pim_filter.flexible_metric.class%
+    pim_filter.product_value_metric:
+        class: %pim_filter.product_value_metric.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
@@ -140,12 +131,12 @@ services:
             - '@akeneo_measure.manager'
             - '@akeneo_measure.measure_converter'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_metric }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_metric }
 
-    pim_filter.flexible_price:
-        class: %pim_filter.flexible_price.class%
+    pim_filter.product_value_price:
+        class: %pim_filter.product_value_price.class%
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: flexible_price }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_value_price }

@@ -34,7 +34,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array($suffix)));
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString', 'setData', 'getData', 'getAttribute'))
             ->getMock();
 
         if (!$suffix) {
@@ -72,7 +72,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
             ->method('getSuffixes')
             ->will($this->returnValue(array()));
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString'))
+            ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString', 'getData', 'setData', 'getAttribute'))
             ->getMock();
 
         $transformer = new PricesTransformer();

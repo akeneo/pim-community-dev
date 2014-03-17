@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser;
 
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**

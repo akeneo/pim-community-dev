@@ -19,7 +19,7 @@ Feature: Product creation
     Then I should see the SKU and Family fields
     And I fill in the following information in the popin:
       | SKU | caterpillar_1 |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I should see "Family: N/A"
     And I should see "caterpillar_1"
 
@@ -27,5 +27,5 @@ Feature: Product creation
     Given I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     Then I should see validation error "This value is already set on another product."
