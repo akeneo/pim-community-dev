@@ -10,6 +10,7 @@
 - Define specific route and configuration for datagrid quick exports
 - MongoDB support (WIP)
 - Allow to add many quick export on datagrids
+- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 
 ## Bug fixes
 - Fixed verbose option always used
