@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
@@ -22,7 +22,7 @@ class BaseFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FilterInterface');
     }
 
-    function it_adds_a_in_filter_in_the_query(Builder $queryBuilder, Attribute $sku)
+    function it_adds_a_in_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $sku)
     {
         $sku->getCode()->willReturn('sku');
         $sku->isLocalizable()->willReturn(false);
