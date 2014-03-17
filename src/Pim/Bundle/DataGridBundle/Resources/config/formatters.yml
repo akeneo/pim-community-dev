@@ -17,7 +17,7 @@ services:
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_field }
 
-    pim_datagrid.extension.formatter.property.product_value.attribute_option_property:
+    pim_datagrid.extension.formatter.property.product_value.attribute_options_property:
         class: %pim_datagrid.extension.formatter.property.product_value.attribute_options_property.class%
         arguments:
             - '@translator'
