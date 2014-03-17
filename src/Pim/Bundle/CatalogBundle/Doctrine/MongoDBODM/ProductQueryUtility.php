@@ -26,18 +26,15 @@ class ProductQueryUtility
      *
      * @return string
      */
-    public static function getNormalizedValueField(AbstractAttribute $attribute, $locale, $scope)
+    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, $locale, $scope)
     {
-        $suffix = '';
-
-        if ($attribute->isLocalizable()) {
-            $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
-        }
-        if ($attribute->isScopable()) {
-            $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
-        }
-
-        return $attribute->getCode() . $suffix;
+        return self::getNormalizedValueField(
+            $attribute->getCode(),
+            $attribute->isLocalizable(),
+            $attribute->isScopable(),
+            $locale,
+            $scope
+        );
     }
 
     /**
@@ -51,4 +48,30 @@ class ProductQueryUtility
     {
         return self::getNormalizedValueField($value->getAttribute(), $value->getLocale(), $value->getScope());
     }
+
+    /**
+     * Normalize the field name from properties
+     *
+     * @param string  $attributeCode
+     * @param boolean $localizable
+     * @param boolean $scopable
+     * @param string  $locale
+     * @param string  $scope
+     *
+     * @return string
+     */
+    public static function getNormalizedValueField($attributeCode, $localizable, $scopable, $locale, $scope)
+    {
+        $suffix = '';
+
+        if ($localizable) {
+            $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
+        }
+        if ($scopable) {
+            $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
+        }
+
+        return $attributeCode.$suffix;
+    }
+
 }
