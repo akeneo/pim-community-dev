@@ -42,7 +42,8 @@
 - Replace tag `pim_flexibleentity.attributetype` by `pim_catalog.attribute_type`
 - Replace service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
-- Update ProductValueInerface, add getData, setData and getAttribute methods
+- Update ProductValueInterface, add getData, setData and getAttribute methods
+- Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
 - Move mass export in specific controller
 - Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
 
