@@ -1,6 +1,6 @@
 # 1.0.2
 ## Bug Fixes
-- Added an option to specify the attribute's class name in completeness generator
+- Removed hardcoded attribute table from ORM/CompletenessGenerator.php
 
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
