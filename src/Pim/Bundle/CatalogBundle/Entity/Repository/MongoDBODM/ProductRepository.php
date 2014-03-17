@@ -21,8 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\Attribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface
+class ProductRepository extends DocumentRepository implements ReferableEntityRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -109,28 +108,37 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * {@inheritdoc}
+     * Return a cursor on the product ids belonging the categories
+     * with category ids provided
+     *
+     * @param array $categoriesIds
+     *
+     * @return Cursor mongoDB cursor on the Ids
      */
-    public function getProductCountByTree(ProductInterface $product)
+    public function getProductIdsInCategories(array $categoryIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        //return array();
+        if (count($categoryIds) === 0) {
+            return 0;
+        }
+
+        $qb = $this->createQueryBuilder()
+            ->hydrate(false)
+            ->field('categories')->in($categoryIds)
+            ->select('_id');
+
+        return $qb->getQuery()->execute();
     }
 
     /**
-     * {@inheritdoc}
+     * Return the number of products matching the categories ids provided
+     *
+     * @param array $categoriesIds
+     *
+     * @return int $productsCount
      */
-    public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    public function getProductsCountInCategories(array $categoriesIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        return;
+        return $this->getProductIdsInCategories($categoriesIds)->count();
     }
 
     /**
@@ -353,7 +361,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByIds($qb, $productIds, $include)
+    public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
             $qb->addAnd($qb->expr()->field('id')->in($productIds));
@@ -365,7 +373,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, $groupIds)
+    public function applyFilterByGroupIds($qb, array $groupIds)
     {
         $qb->addAnd($qb->expr()->field('groups')->in($groupIds));
     }
@@ -373,7 +381,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, $familyIds)
+    public function applyFilterByFamilyIds($qb, array $familyIds)
     {
         $qb->addAnd($qb->expr()->field('family')->in($familyIds));
     }

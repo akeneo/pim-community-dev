@@ -653,7 +653,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByIds($qb, $productIds, $include)
+    public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
         if ($include) {
@@ -669,7 +669,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, $groupIds)
+    public function applyFilterByGroupIds($qb, array $groupIds)
     {
         $rootAlias  = $qb->getRootAlias();
         $groupAlias = 'filterGroups';
@@ -680,7 +680,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, $familyIds)
+    public function applyFilterByFamilyIds($qb, array $familyIds)
     {
         $rootAlias  = $qb->getRootAlias();
         $familyAlias = 'filterFamily';

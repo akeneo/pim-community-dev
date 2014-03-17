@@ -170,7 +170,10 @@ class HybridProductRepository implements ProductRepositoryInterface,
      */
     public function getProductIdsInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        $products = $this->odmRepository->getProductIdsInCategories($categoryIds);
+        return array_keys(iterator_to_array($products));
     }
 
     /**
@@ -178,7 +181,35 @@ class HybridProductRepository implements ProductRepositoryInterface,
      */
     public function getProductsCountInCategory(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $categoryIds = $this->getCategoryIds($category, $categoryQb);
+
+        return $this->odmRepository->getProductsCountInCategories($categoryIds);
+    }
+
+    /**
+     * Return categories ids provided by the categoryQb or by the provided category
+     *
+     * @param CategoryInterface $category
+     * @param OrmQueryBuilder   $categoryQb
+     *
+     * @return array $categoryIds
+     */
+    protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    {
+        $categoryIds = array();
+
+        if (null !== $categoryQb) {
+            $categoryAlias = $categoryQb->getRootAlias();
+            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+        } else {
+            $categories = array(array('id' => $category->getId()));
+        }
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 
     /**
@@ -356,7 +387,7 @@ class HybridProductRepository implements ProductRepositoryInterface,
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByIds($qb, $productIds, $include)
+    public function applyFilterByIds($qb, array $productIds, $include)
     {
         return $this->odmRepository->applyFilterByIds($qb, $productIds, $include);
     }
@@ -364,7 +395,7 @@ class HybridProductRepository implements ProductRepositoryInterface,
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, $groupIds)
+    public function applyFilterByGroupIds($qb, array $groupIds)
     {
         return $this->odmRepository->applyFilterByGroupIds($qb, $groupIds);
     }
@@ -372,7 +403,7 @@ class HybridProductRepository implements ProductRepositoryInterface,
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, $familyIds)
+    public function applyFilterByFamilyIds($qb, array $familyIds)
     {
         return $this->odmRepository->applyFilterByFamilyIds($qb, $familyIds);
     }
