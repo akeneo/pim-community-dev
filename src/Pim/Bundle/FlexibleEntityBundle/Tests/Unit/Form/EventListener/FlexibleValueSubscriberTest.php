@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\EventListener;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Symfony\Component\Form\FormEvents;
@@ -45,7 +45,7 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $this->formFactory = $this->getMockBuilder('Symfony\Component\Form\FormFactoryInterface')
             ->getMock();
         $this->attributeTypeFactory = $this
-            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
         $this->flexibleManagerRegistry = $this
@@ -128,10 +128,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
         $attribute->expects($this->once())
             ->method('getAttributeType')
             ->will($this->returnValue($attributeTypeName));
-        $data = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface')
+        $data = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
             ->getMock();
         $data->expects($this->once())
-            ->method('getAttribute')
+            ->method('getAttribute', 'getData', 'setData', '__toString')
             ->will($this->returnValue($attribute));
 
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')

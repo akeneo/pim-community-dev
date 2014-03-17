@@ -3,8 +3,6 @@ parameters:
     pim_catalog.odm_repository.product.class:                        Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
     pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\HybridProductRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
-    pim_catalog.event_listener.mongodb.localizable.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\LocalizableListener
-    pim_catalog.event_listener.mongodb.scopable.class:               Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ScopableListener
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.event_listener.mongodb.normalize_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductNormalizedDataSubscriber
@@ -14,7 +12,7 @@ parameters:
     pim_catalog.mongodb.normalizer.product_value.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer
     pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
-    pim_catalog.doctrine.mongodb.flexible_query_builder.class:       Pim\Bundle\FlexibleEntityBundle\Doctrine\MongoDBODM\FlexibleQueryBuilder
+    pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
     pim_catalog.object_manager.product:
@@ -50,23 +48,6 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
-
-    pim_catalog.event_listener.mongodbodm.localizable:
-        class: %pim_catalog.event_listener.mongodb.localizable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
-
-    pim_catalog.event_listener.mongodbodm.scopable:
-        class: %pim_catalog.event_listener.mongodb.scopable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine_mongodb.odm.event_subscriber }
-
-    pim_catalog.doctrine.flexible_query_builder:
-        class: %pim_catalog.doctrine.mongodb.flexible_query_builder.class%
 
     # Normalizers
     pim_catalog.mongodb.normalizer.product:
@@ -122,3 +103,8 @@ services:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
 
+    pim_catalog.repository.media:
+        class: %doctrine.document_repository.class%
+        factory_service: doctrine.odm.mongodb.document_manager
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.media.class%]

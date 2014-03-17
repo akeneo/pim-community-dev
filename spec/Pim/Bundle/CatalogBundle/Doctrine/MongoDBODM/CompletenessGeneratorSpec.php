@@ -115,6 +115,18 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->buildProductCompletenesses($product);
     }
 
+    public function it_doesnt_build_product_completenesses_without_family (
+        ProductInterface $product,
+        ValidatorInterface $validator,
+        DocumentManager $manager
+    ) {
+        $product->getFamily()->willReturn(null);
+
+        $manager->flush($product)->shouldNotBeCalled();
+        $product->setCompletenesses(new ArrayCollection())->shouldNotBeCalled();
+
+        $this->generateProductCompletenesses($product);
+    }
     public function it_builds_product_completenesses_with_two_channels_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,

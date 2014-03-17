@@ -139,7 +139,7 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      */
     protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity, array $criteria)
     {
-        $repository = $this->manager->getFlexibleRepository();
+        $repository = $this->manager->getProductRepository();
         $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
 
         $matchingProducts = array_filter(

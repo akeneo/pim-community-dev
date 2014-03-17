@@ -114,7 +114,7 @@ class ProductTransformer extends EntityTransformer
      */
     protected function findEntity($class, array $data)
     {
-        return $this->productManager->getFlexibleRepository()->findByReference(
+        return $this->productManager->getProductRepository()->findByReference(
             $data[$this->identifierAttribute->getCode()]
         );
     }
@@ -169,7 +169,7 @@ class ProductTransformer extends EntityTransformer
     protected function setProductValues($class, $entity, array $data)
     {
         $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
-        $flexibleValueClass = $this->productManager->getFlexibleValueName();
+        $flexibleValueClass = $this->productManager->getProductValueName();
         $this->transformedColumns[$flexibleValueClass] = array();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
@@ -282,7 +282,7 @@ class ProductTransformer extends EntityTransformer
             return;
         }
 
-        $class = $this->productManager->getFlexibleName();
+        $class = $this->productManager->getProductName();
         $columnsInfo = $this->columnInfoTransformer->transform($class, $labels);
 
         $this->attributes += $this->attributeCache->getAttributes($columnsInfo);
@@ -328,7 +328,7 @@ class ProductTransformer extends EntityTransformer
     {
         return array_merge(
             parent::getTransformedColumnsInfo($class),
-            $this->transformedColumns[$this->productManager->getFlexibleValueName()]
+            $this->transformedColumns[$this->productManager->getProductValueName()]
         );
     }
 }

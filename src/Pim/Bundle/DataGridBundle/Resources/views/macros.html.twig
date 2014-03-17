@@ -1,38 +1,54 @@
-{#
-    Datagrid macro to load state listener before the grid builders
-#}
 {% macro renderGrid(name, params = {}, renderParams = {}) %}
-    {% set metaData = oro_datagrid_metadata(name, params) %}
-    {% set listenerName = 'pim/datagrid/state-listener' %}
-    {% set listenerActive = listenerName in metaData.requireJSModules %}
-    {% set emptyData = {
-        data: [],
-        options: {
-            totalRecords: 0
-        }
-    } %}
+    {% import 'OroDataGridBundle::macros.html.twig' as oroDataGrid %}
+    {{ oroDataGrid.renderGrid(name, params, renderParams) }}
+{% endmacro %}
 
-    <div id="grid-{{ name }}" data-type="datagrid" data-data="{% if listenerActive %}{{ emptyData|json_encode }}{% else %}{{ oro_datagrid_data(name, params)|escape }}{% endif %}"
-         {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}
-         data-metadata="{{ metaData|json_encode }}"></div>
+{#
+    Datagrid macro to load the grid asynchronously
+#}
+{% macro renderStatefulGrid(name, params = {}, renderParams = {}) %}
+    <div id="grid-{{ name }}" data-type="datagrid" {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}></div>
     <script type="text/javascript">
-        {% if listenerActive %}
-            require(
-                ['{{ listenerName }}'],
-                function (StateListener) {
-                    $(function() {
-                        StateListener.prepareGrid('{{ name }}');
+        require(
+            ['jquery', 'routing', 'oro/datagrid-builder', 'oro/pageable-collection', 'pim/datagrid/state'],
+            function ($, Routing, datagridBuilder, PageableCollection, DatagridState) {
+                'use strict';
+                $(function() {
+                    var urlParams = {{ params|json_encode|raw }};
+                    urlParams.alias = '{{ name }}';
+                    urlParams.params = {{ params|json_encode|raw }};
+
+                    var state = DatagridState.get('{{ name }}', ['view', 'filters', 'columns']);
+
+                    if (state.view) {
+                        urlParams['{{ name }}[_parameters][view][id]'] = state.view;
+                    }
+
+                    if (state.filters) {
+                        var collection = new PageableCollection();
+                        var filters = collection.decodeStateData(state.filters);
+                        collection.processFiltersParams(urlParams, filters, '{{ name }}[_filter]');
+                    }
+
+                    if (state.columns) {
+                        urlParams['{{ name }}[_parameters][view][columns]'] = state.columns;
+                    }
+
+                    $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
+                        $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
+
+                        var modules = resp.metadata.requireJSModules;
+                        modules.push('pim/datagrid/state-listener');
+                        require(modules, function () {
+                            var builders = _.toArray(arguments);
+                            $(function () {
+                                datagridBuilder(builders);
+                            });
+                        });
                     });
-                }
-            );
-        {% endif %}
-        require(['jquery', 'oro/datagrid-builder'].concat({{ metaData.requireJSModules|json_encode|raw }}),
-        function ($, datagridBuilder) {
-            var builders = _.toArray(arguments).slice(2);
-            $(function () {
-                datagridBuilder(builders);
-            });
-        });
+                });
+            }
+        );
     </script>
 {% endmacro %}
 

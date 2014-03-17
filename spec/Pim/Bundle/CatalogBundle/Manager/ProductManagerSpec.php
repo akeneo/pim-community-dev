@@ -64,7 +64,7 @@ class ProductManagerSpec extends ObjectBehavior
 
     function it_has_a_product_repository(ProductRepositoryInterface $repository)
     {
-        $this->getFlexibleRepository()->shouldReturn($repository);
+        $this->getProductRepository()->shouldReturn($repository);
     }
 
     function it_has_a_locale()

@@ -42,9 +42,9 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
     protected $scope;
 
     /**
-     * @param FlexibleQueryBuilder
+     * @param ProductQueryBuilder
      */
-    protected $flexibleQB;
+    protected $productQB;
 
     /**
      * {@inheritdoc}
@@ -256,7 +256,7 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value);
+        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
         $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
         $foundValueId = null;
@@ -291,9 +291,9 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
     /**
      * {@inheritdoc}
      */
-    public function setFlexibleQueryBuilder($flexibleQB)
+    public function setProductQueryBuilder($productQB)
     {
-        $this->flexibleQB = $flexibleQB;
+        $this->productQB = $productQB;
 
         return $this;
 
@@ -302,18 +302,18 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
     /**
      * {@inheritdoc}
      */
-    protected function getFlexibleQueryBuilder($qb)
+    protected function getProductQueryBuilder($qb)
     {
-        if (!$this->flexibleQB) {
+        if (!$this->productQB) {
             throw new \LogicException('Flexible query builder must be configured');
         }
 
-        $this->flexibleQB
+        $this->productQB
             ->setQueryBuilder($qb)
             ->setLocale($this->getLocale())
             ->setScope($this->getScope());
 
-        return $this->flexibleQB;
+        return $this->productQB;
     }
 
     /**
@@ -331,7 +331,7 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
      */
     public function applyFilterByAttribute($qb, Attribute $attribute, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
     }
 
     /**
@@ -339,7 +339,7 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
      */
     public function applyFilterByField($qb, $field, $value, $operator = '=')
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
+        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
     }
 
     /**
@@ -347,7 +347,7 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
      */
     public function applySorterByAttribute($qb, Attribute $attribute, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
@@ -355,7 +355,7 @@ class ProductRepository extends DocumentRepository implements ReferableEntityRep
      */
     public function applySorterByField($qb, $field, $direction)
     {
-        $this->getFlexibleQueryBuilder($qb)->addFieldSorter($field, $direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

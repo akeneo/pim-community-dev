@@ -1,5 +1,6 @@
 parameters:
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
+    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
 
 services:
     pim_catalog.repository.association:
@@ -73,4 +74,7 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.locale.class%]
+
+    pim_catalog.doctrine.product_query_builder:
+        class: %pim_catalog.doctrine.product_query_builder.class%
 

@@ -35,6 +35,6 @@ class UploadType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', 'oro_media');
+        $builder->add('file', 'pim_enrich_media');
     }
 }

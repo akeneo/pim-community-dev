@@ -23,6 +23,7 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_attribute_option(AttributeOption $option, AttributeOptionValue $valueUs, AttributeOptionValue $valueFr)
     {
+        $option->getId()->willReturn(42);
         $option->getCode()->willReturn('red');
         $valueUs->getLocale()->willReturn('en_US');
         $valueUs->getValue()->willReturn('Red');
@@ -30,6 +31,6 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $valueFr->getValue()->willReturn('Rouge');
         $option->getOptionValues()->willReturn([$valueUs, $valueFr]);
 
-        $this->normalize($option, 'mongodb_json', [])->shouldReturn(['code' => 'red', 'en_US' => 'Red', 'fr_FR' => 'Rouge']);
+        $this->normalize($option, 'mongodb_json', [])->shouldReturn(['id' => 42, 'code' => 'red', 'en_US' => 'Red', 'fr_FR' => 'Rouge']);
     }
 }
