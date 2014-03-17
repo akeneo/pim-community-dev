@@ -252,7 +252,7 @@ interface ProductRepositoryInterface
      * @param array   $productIds product ids
      * @param boolean $include    true for in, false for not in
      */
-    public function applyFilterByIds($qb, $productIds, $include);
+    public function applyFilterByIds($qb, array $productIds, $include);
 
     /**
      * Apply a filter by group ids
@@ -260,7 +260,7 @@ interface ProductRepositoryInterface
      * @param mixed $qb       query builder to update
      * @param array $groupIds group ids
      */
-    public function applyFilterByGroupIds($qb, $groupIds);
+    public function applyFilterByGroupIds($qb, array $groupIds);
 
     /**
      * Apply a filter by family ids
@@ -268,7 +268,7 @@ interface ProductRepositoryInterface
      * @param mixed $qb        query builder to update
      * @param array $familyIds family ids
      */
-    public function applyFilterByFamilyIds($qb, $familyIds);
+    public function applyFilterByFamilyIds($qb, array $familyIds);
 
     /**
      * Apply a filter by attribute value

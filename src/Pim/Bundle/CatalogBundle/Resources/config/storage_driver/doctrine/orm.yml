@@ -27,6 +27,14 @@ services:
         tags:
             - { name: doctrine.event_subscriber }
 
+    pim_catalog.repository.product:
+        class: %pim_catalog.repository.product.class%
+        factory_service: pim_catalog.object_manager.product
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.product.class%]
+        calls:
+            - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
+
     pim_catalog.repository.media:
         class: %doctrine.entity_repository.class%
         factory_service: doctrine.orm.entity_manager
