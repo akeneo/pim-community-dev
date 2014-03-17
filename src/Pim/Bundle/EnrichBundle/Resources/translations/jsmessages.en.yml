@@ -58,3 +58,6 @@ error:
         export profile:   Cannot delete this export profile
         user:             Cannot delete this user
         role:             Cannot delete this role
+
+# Quick export labels
+pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
