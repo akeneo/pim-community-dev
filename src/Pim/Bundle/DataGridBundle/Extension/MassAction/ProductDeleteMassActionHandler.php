@@ -2,33 +2,27 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
 
-use Doctrine\ORM\EntityManager;
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
+
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
+
+
 /**
- * Overriden DeleteMassActionHandler to fix mass product deletion issue
+ * Product mass delete action handler
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteMassActionHandler implements MassActionHandlerInterface
+class ProductDeleteMassActionHandler implements MassActionHandlerInterface
 {
-    /**
-     * @var integer
-     */
-    const FLUSH_BATCH_SIZE = 100;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
     /**
      * @var TranslatorInterface
      */
@@ -40,13 +34,15 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
 
     /**
-     * @param EntityManager       $entityManager
-     * @param TranslatorInterface $translator
+     * Constructor
+     *
+     * @param ProductRepositoryInterface $repository
+     * @param TranslatorInterface        $translator
      */
-    public function __construct(EntityManager $entityManager, TranslatorInterface $translator)
+    public function __construct(ProductRepositoryInterface $repository, TranslatorInterface $translator)
     {
-        $this->entityManager = $entityManager;
-        $this->translator    = $translator;
+        $this->repository = $repository;
+        $this->translator = $translator;
     }
 
     /**
@@ -54,31 +50,16 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(MassActionMediatorInterface $mediator)
     {
-        $iteration             = 0;
-
-
         $entityIdsHydrator = new EntityIdsHydrator();
 
         $datasource = $mediator->getDatagrid()->getDatasource();
         $datasource->setHydrator($entityIdsHydrator);
 
-        $results = $datasource->getResults();
+        $productIds = array_keys($datasource->getResults());
+        $countProducts = count($results);
 
-        var_dump($results);
 
-//         $results = $mediator->getDatagrid()->getDatasource()->getQueryBuilder()->getQuery()->execute();
-
-        foreach ($results as $result) {
-//             $this->entityManager->remove($result);
-            $iteration++;
-            if ($iteration % self::FLUSH_BATCH_SIZE == 0) {
-//                 $this->entityManager->flush();
-            }
-        }
-//         $this->entityManager->flush();
-//         $this->entityManager->clear();
-
-        return $this->getResponse($mediator, $iteration);
+        return $this->getResponse($mediator, $countProducts);
     }
 
     /**

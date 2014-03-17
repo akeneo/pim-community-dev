@@ -31,6 +31,6 @@ class EntityIdsHydrator implements HydratorInterface
 
         $results = $queryBuilder->getQuery()->getArrayResult();
 
-        return array_keys($results);
+        return $results;
     }
 }
