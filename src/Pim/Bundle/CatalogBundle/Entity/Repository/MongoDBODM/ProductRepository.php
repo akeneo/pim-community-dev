@@ -195,7 +195,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     {
         $categoryIds = $this->getCategoryIds($category, $categoryQb);
 
-        $products = $this->odmRepository->getProductIdsInCategories($categoryIds);
+        $products = $this->getProductIdsInCategories($categoryIds);
         return array_keys(iterator_to_array($products));
     }
 
@@ -206,7 +206,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     {
         $categoryIds = $this->getCategoryIds($category, $categoryQb);
 
-        return $this->odmRepository->getProductsCountInCategories($categoryIds);
+        return $this->getProductsCountInCategories($categoryIds);
     }
 
     /**
