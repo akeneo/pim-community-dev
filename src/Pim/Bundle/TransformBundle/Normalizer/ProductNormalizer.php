@@ -3,7 +3,6 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Routing\Router;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -22,89 +21,14 @@ class ProductNormalizer implements NormalizerInterface
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var Router $router
-     */
-    protected $router;
-
-    /**
-     * @var Channel $channel
-     */
-    protected $channel;
-
-    /**
-     * @var string Locale code
-     */
-    protected $locale;
-
-    /**
-     * TODO : make that normalizer useable without channel and router (use context ?)
-     *
-     * Constructor
-     *
-     * @param Router $router
-     */
-    public function __construct(Router $router)
-    {
-        $this->router = $router;
-    }
-
-    /**
-     * Set channel to return product data for
-     *
-     * @param string $channel Channel code
-     *
-     * @return ProductNormalizer
-     */
-    public function setChannel(Channel $channel = null)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * Set locale to return product data for
-     *
-     * @param string $locale Locale code
-     *
-     * @return ProductNormalizer
-     */
-    public function setLocale($locale = null)
-    {
-        if ($this->channel) {
-            $localeCodes = $this->getLocales();
-
-            if (in_array($locale, $localeCodes) || $locale === null) {
-                $this->locale = $locale;
-
-                return $this;
-            }
-        }
-
-        throw new \LogicException('This locale is not available for this channel');
-    }
-
-    /**
-     * Get an array of available locale codes
-     * @return array
-     */
-    public function getLocales()
-    {
-        return $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
-            function ($locale) {
-                return $locale->getCode();
-            }
-        )->toArray();
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function normalize($product, $format = null, array $context = array())
     {
-        $values = $this->filterValues($product->getValues());
+        $locales  = isset($context['locales']) ? $context['locales'] : [];
+        $channels = isset($context['channels']) ? $context['channels'] : [];
+        $values = $this->filterValues($product->getValues(), $channels, $locales);
         $attributes = $this->getAttributes($values);
-        $locales = $this->getLocales();
 
         $data = array();
 
@@ -126,48 +50,33 @@ class ProductNormalizer implements NormalizerInterface
             }
         }
 
-        $identifier = $product->getIdentifier();
-
-        if ($this->router) {
-            $data['resource'] = $this->router->generate(
-                'oro_api_get_product',
-                array(
-                    'scope' => $this->channel->getCode(),
-                    'identifier' => $identifier->getData()
-                ),
-                true
-            );
+        if (isset($context['resource'])) {
+            $data['resource'] = $context['resource'];
         }
 
-        return array($identifier->getData() => $data);
+        return $data;
     }
 
     /**
      * Returns a subset of values that match the channel and locale requirements
      *
      * @param ArrayCollection $values
+     * @param string[]        $channels
+     * @param string[]        $locales
      *
      * @return ArrayCollection
      */
-    public function filterValues($values)
+    public function filterValues($values, array $channels = [], array $locales = [])
     {
-        if (!$this->channel) {
-            throw new \LogicException('You must specify a channel to return the product for');
-        }
-
-        $channelCode = $this->channel->getCode();
-
         $values = $values->filter(
-            function ($value) use ($channelCode) {
-                return (!$value->getAttribute()->isScopable() || $value->getScope() == $channelCode);
+            function ($value) use ($channels) {
+                return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
             }
         );
 
-        $localeCodes = $this->getLocales();
-
         $values = $values->filter(
-            function ($value) use ($localeCodes) {
-                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $localeCodes));
+            function ($value) use ($locales) {
+                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $locales));
             }
         );
 

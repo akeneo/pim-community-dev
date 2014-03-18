@@ -37,8 +37,6 @@ services:
     # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
-        arguments:
-            - '@router'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
