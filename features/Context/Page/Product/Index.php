@@ -96,20 +96,4 @@ class Index extends Grid
 
         $elt->click();
     }
-
-    /**
-     * Press the mass edit button
-     */
-    public function massEdit()
-    {
-        $this->pressButton('Mass Edit');
-    }
-
-    /**
-     * Press the mass delete button
-     */
-    public function massDelete()
-    {
-        $this->pressButton('Delete');
-    }
 }

@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step\Then;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
@@ -281,15 +281,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeAbleToSortTheRowsBy($columns)
     {
         $steps = array(
-            new Then(sprintf('the rows should be sortable by %s', $columns))
+            new Step\Then(sprintf('the rows should be sortable by %s', $columns))
         );
         $columns = $this->getMainContext()->listToArray($columns);
 
         foreach ($columns as $column) {
-            $steps[] = new Then(sprintf('I sort by "%s" value ascending', $column));
-            $steps[] = new Then(sprintf('the rows should be sorted ascending by %s', $column));
-            $steps[] = new Then(sprintf('I sort by "%s" value descending', $column));
-            $steps[] = new Then(sprintf('the rows should be sorted descending by %s', $column));
+            $steps[] = new Step\Then(sprintf('I sort by "%s" value ascending', $column));
+            $steps[] = new Step\Then(sprintf('the rows should be sorted ascending by %s', $column));
+            $steps[] = new Step\Then(sprintf('I sort by "%s" value descending', $column));
+            $steps[] = new Step\Then(sprintf('the rows should be sorted descending by %s', $column));
         }
 
         return $steps;
@@ -309,11 +309,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
-            $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
-            $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
-            $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
-            $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
-            $steps[] = new Then(sprintf('I hide the filter "%s"', $filter));
+            $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
+            $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
+            $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
+            $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
+            $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
         }
 
         return $steps;
@@ -562,13 +562,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @When /^I mass-edit products (.*)$/
      */
-    public function iMassEditProducts($products)
+    public function iMassEdit($products)
     {
         foreach ($this->listToArray($products) as $product) {
-            $this->getCurrentPage()->selectRow($product);
+            $this->datagrid->selectRow($product);
         }
 
-        $this->getCurrentPage()->massEdit();
+        $this->datagrid->massEdit();
         $this->wait();
     }
 
@@ -580,7 +580,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iSelectProducts($products)
     {
         foreach ($this->listToArray($products) as $product) {
-            $this->getCurrentPage()->selectRow($product);
+            $this->datagrid->selectRow($product);
         }
     }
 
@@ -592,10 +592,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassDeleteProducts($products)
     {
         foreach ($this->listToArray($products) as $product) {
-            $this->getCurrentPage()->selectRow($product);
+            $this->datagrid->selectRow($product);
         }
 
-        return new Step\Then('I click on mass delete button');
+        return new Step\Then('I press mass delete button');
     }
 
     /**
@@ -603,7 +603,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iPressMassDeleteButton()
     {
-        $this->getCurrentPage()->massDelete();
+        $this->datagrid->massDelete();
         $this->wait();
     }
 
@@ -652,5 +652,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
+    }
+
+    /**
+     * @param string $list
+     *
+     * @return array
+     */
+    private function listToArray($list)
+    {
+        return $this->getMainContext()->listToArray($list);
     }
 }
