@@ -152,9 +152,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
                 }
 
-                $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
+                $attribute = $req->getAttribute();
+                $value = $product->getValue(
+                    $attribute->getCode(),
+                    $attribute->isLocalizable() ? $locale : null,
+                    $attribute->isScopable() ? $channel : null
+                );
 
-                if ($this->validator->validateValue($value, $completeConstraint)->count() > 0) {
+                if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
                     $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
                 }
             }
