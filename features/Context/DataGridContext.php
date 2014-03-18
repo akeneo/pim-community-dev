@@ -564,13 +564,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iMassEditProducts($products)
     {
-        $page = $this->getPage('Product index');
-
         foreach ($this->listToArray($products) as $product) {
-            $page->selectRow($product);
+            $this->getCurrentPage()->selectRow($product);
         }
 
-        $page->massEdit();
+        $this->getCurrentPage()->massEdit();
         $this->wait();
     }
 
@@ -581,10 +579,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectProducts($products)
     {
-        $page = $this->getPage('Product index');
-
         foreach ($this->listToArray($products) as $product) {
-            $page->selectRow($product);
+            $this->getCurrentPage()->selectRow($product);
         }
     }
 
@@ -595,23 +591,19 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iMassDeleteProducts($products)
     {
-        $page = $this->getPage('Product index');
-
         foreach ($this->listToArray($products) as $product) {
-            $page->selectRow($product);
+            $this->getCurrentPage()->selectRow($product);
         }
 
         return new Step\Then('I click on mass delete button');
     }
 
     /**
-     * @When /^I click on mass delete button$/
+     * @When /^I press mass-delete button$/
      */
-    public function iClickOnMassDeleteButton()
+    public function iPressMassDeleteButton()
     {
-        $page = $this->getPage('Product index');
-
-        $page->massDelete();
+        $this->getCurrentPage()->massDelete();
         $this->wait();
     }
 
