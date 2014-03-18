@@ -24,8 +24,8 @@ services:
     pim_datagrid.extension.mass_action.handler.delete:
         class: %pim_datagrid.extension.mass_action.handler.delete.product.class%
         arguments:
-            - @pim_catalog.repository.product
-            - @translator
+            - '@pim_catalog.repository.product'
+            - '@translator'
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
