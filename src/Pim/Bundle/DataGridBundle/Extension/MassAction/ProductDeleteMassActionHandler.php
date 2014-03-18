@@ -2,17 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-
 use Symfony\Component\Translation\TranslatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-
-
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
-
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
-
 
 /**
  * Product mass delete action handler
@@ -75,6 +70,8 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
     }
 
     /**
+     * Prepare mass action response
+     *
      * @param MassActionMediatorInterface $mediator
      * @param integer                     $entitiesCount
      *
