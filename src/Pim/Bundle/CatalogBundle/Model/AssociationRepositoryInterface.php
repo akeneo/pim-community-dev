@@ -20,5 +20,5 @@ interface AssociationRepositoryInterface
      *
      * @return mixed
      */
-    public function countForAssociationType(AssociationType $associationType);
+    public function getCountForType(AssociationType $associationType);
 }

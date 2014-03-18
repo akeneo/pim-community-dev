@@ -46,3 +46,8 @@ services:
         factory_service: pim_catalog.object_manager.association
         factory_method: getRepository
         arguments: [%pim_catalog.entity.association.class%]
+
+    pim_catalog.manager.association:
+        class: %pim_catalog.manager.association.class%
+        arguments:
+            - '@pim_catalog.repository.association'

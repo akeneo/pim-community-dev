@@ -90,4 +90,4 @@ services:
     pim_catalog.manager.association:
         class: %pim_catalog.manager.association.class%
         arguments:
-            - '@pim_catalog.repository.association'
+            - '@pim_catalog.repository.product'

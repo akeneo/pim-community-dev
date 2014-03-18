@@ -1,5 +1,4 @@
 parameters:
-    pim_catalog.repository.association.class:                        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AssociationRepository
     pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
@@ -110,10 +109,7 @@ services:
         factory_method: getRepository
         arguments: [%pim_catalog.entity.media.class%]
 
-    pim_catalog.repository.association:
-        class: %pim_catalog.repository.association.class%
-        factory_service: pim_catalog.object_manager.association
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.association.class%]
-        calls:
-            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+    pim_catalog.manager.association:
+        class: %pim_catalog.manager.association.class%
+        arguments:
+            - '@pim_catalog.repository.product'
