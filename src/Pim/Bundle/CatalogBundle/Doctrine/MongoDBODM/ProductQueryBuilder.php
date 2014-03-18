@@ -104,6 +104,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $customFilters = [
             'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
             'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+            'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+            'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter'
         ];
 
         if (isset($customFilters[$attributeType])) {

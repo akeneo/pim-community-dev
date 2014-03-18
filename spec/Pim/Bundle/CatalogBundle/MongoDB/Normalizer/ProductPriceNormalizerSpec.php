@@ -25,6 +25,6 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
         $price->getData()->willReturn('12.75');
         $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($price, 'mongodb_json', [])->shouldReturn(['data' => '12.75', 'currency' => 'EUR']);
+        $this->normalize($price, 'mongodb_json', [])->shouldReturn(['EUR' => ['data' => '12.75', 'currency' => 'EUR']]);
     }
 }

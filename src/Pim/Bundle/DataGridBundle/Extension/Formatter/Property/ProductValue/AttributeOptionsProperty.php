@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 /**
- * Flexible field property, able to render attribute type which use options as backend
+ * Able to render attribute type which use options as backend
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleOptionsProperty extends FlexibleFieldProperty
+class AttributeOptionsProperty extends FieldProperty
 {
     /**
      * {@inheritdoc}
@@ -21,7 +21,8 @@ class FlexibleOptionsProperty extends FlexibleFieldProperty
         $optionValues = [];
         foreach ($data as $option) {
             if (isset($option['optionValues']) && count($option['optionValues']) === 1) {
-                $optionValues[] = $option['optionValues'][0]['value'];
+                $optionValue = current($option['optionValues']);
+                $optionValues[]= $optionValue['value'];
             } else {
                 $optionValues[] = '['.$option['code'].']';
             }
