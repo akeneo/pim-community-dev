@@ -42,11 +42,11 @@ class ProductNormalizer implements NormalizerInterface
             );
 
             foreach ($attributeValues as $value) {
-                $valueLocales = $value->getLocale() ? array($value->getLocale()): $locales;
-                $valueData = $this->normalizeValueData($value->getData());
-                foreach ($valueLocales as $valueLocale) {
-                    $data[$code][$valueLocale] = $valueData;
-                }
+                $data[$code][] = [
+                    'value'  => $this->normalizeValueData($value->getData()),
+                    'locale' => $value->getLocale(),
+                    'scope'  => $value->getScope()
+                ];
             }
         }
 

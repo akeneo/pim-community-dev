@@ -46,7 +46,7 @@ class ProductController extends FOSRestController
 
         foreach ($channels as $index => $channelCode) {
             if (!in_array($channelCode, $channelCodes)) {
-                unset($channels[$channelCode]);
+                unset($channels[$index]);
             }
         }
 
