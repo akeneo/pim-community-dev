@@ -47,7 +47,7 @@ class AppKernel extends OroKernel
 
         $pimDepBundles = array(
             // Uncomment the following line to use MongoDB implementation
-            // new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
+            new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle(),
             new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
             new APY\JsFormValidationBundle\APYJsFormValidationBundle(),
             new Akeneo\Bundle\MeasureBundle\AkeneoMeasureBundle(),
