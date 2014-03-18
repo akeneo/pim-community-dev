@@ -45,7 +45,7 @@ class ProductController extends FOSRestController
 
             foreach ($channels as $channel) {
                 if (!in_array($channel, $availableChannels)) {
-                    return new Response('', 403);
+                    return new Response(sprintf('Channel "%s" does not exist or is not available', $channel), 403);
                 }
             }
         } else {
@@ -58,7 +58,7 @@ class ProductController extends FOSRestController
 
             foreach ($locales as $locale) {
                 if (!in_array($locale, $availableLocales)) {
-                    return new Response('', 403);
+                    return new Response(sprintf('Locale "%s" does not exist or is not available', $locale), 403);
                 }
             }
         } else {
@@ -83,7 +83,7 @@ class ProductController extends FOSRestController
         $product = $manager->findByIdentifier($identifier);
 
         if (!$product) {
-            return new Response('', 404);
+            return new Response(sprintf('Product "%s" not found', $identifier), 404);
         }
 
         $serializer = $this->get('pim_serializer');
