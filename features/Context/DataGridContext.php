@@ -558,44 +558,74 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $products
+     * @param string $entities
      *
-     * @When /^I mass-edit products (.*)$/
+     * @When /^I mass-edit products? (.*)$/
      */
-    public function iMassEdit($products)
+    public function iMassEdit($entities)
     {
-        foreach ($this->listToArray($products) as $product) {
-            $this->datagrid->selectRow($product);
-        }
+        return [
+            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then('I press mass-edit button')
+        ];
+    }
 
+    /**
+     * @When /^I press mass-edit button$/
+     */
+    public function iPressMassEditButton()
+    {
         $this->datagrid->massEdit();
         $this->wait();
     }
 
     /**
-     * @param string $products
+     * @param string $entities
      *
-     * @Then /^I select products (.*)$/
+     * @Then /^I select rows? (.*)$/
      */
-    public function iSelectProducts($products)
+    public function iSelectRows($entities)
     {
-        foreach ($this->listToArray($products) as $product) {
-            $this->datagrid->selectRow($product);
+        foreach ($this->listToArray($entities) as $entity) {
+            $this->datagrid->selectRow($entity);
         }
     }
 
     /**
-     * @param string $products
+     * @Then /^I select all visible products$/
+     */
+    public function iSelectAllVisible()
+    {
+        $this->datagrid->selectAllVisible();
+    }
+
+    /**
+     * @Then /^I select none product$/
+     */
+    public function iSelectNone()
+    {
+        $this->datagrid->selectNone();
+    }
+
+    /**
+     * @Then /^I select all products$/
+     */
+    public function iSelectAll()
+    {
+        $this->datagrid->selectAll();
+    }
+
+    /**
+     * @param string $entities
      *
      * @When /^I mass-delete products? (.*)$/
      */
-    public function iMassDeleteProducts($products)
+    public function iMassDelete($entities)
     {
-        foreach ($this->listToArray($products) as $product) {
-            $this->datagrid->selectRow($product);
-        }
-
-        return new Step\Then('I press mass-delete button');
+        return [
+            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then('I press mass-delete button')
+        ];
     }
 
     /**
