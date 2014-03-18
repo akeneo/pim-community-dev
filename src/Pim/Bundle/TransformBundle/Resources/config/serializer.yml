@@ -10,6 +10,7 @@ parameters:
     pim_serializer.normalizer.product_value.class:          Pim\Bundle\TransformBundle\Normalizer\ProductValueNormalizer
     pim_serializer.normalizer.product_price.class:          Pim\Bundle\TransformBundle\Normalizer\ProductPriceNormalizer
     pim_serializer.normalizer.metric.class:                 Pim\Bundle\TransformBundle\Normalizer\MetricNormalizer
+    pim_serializer.normalizer.media.class:                  Pim\Bundle\TransformBundle\Normalizer\MediaNormalizer
     pim_serializer.normalizer.datetime.class:               Pim\Bundle\TransformBundle\Normalizer\DateTimeNormalizer
     pim_serializer.normalizer.flat_product.class:           Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer
     pim_serializer.normalizer.category.class:               Pim\Bundle\TransformBundle\Normalizer\CategoryNormalizer
@@ -56,6 +57,11 @@ services:
 
     pim_serializer.normalizer.metric:
         class: %pim_serializer.normalizer.metric.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pim_serializer.normalizer.media:
+        class: %pim_serializer.normalizer.media.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
