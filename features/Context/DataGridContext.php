@@ -587,7 +587,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $products
      *
-     * @When /^I mass-delete products (.*)$/
+     * @When /^I mass-delete products? (.*)$/
      */
     public function iMassDeleteProducts($products)
     {
@@ -595,7 +595,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $this->datagrid->selectRow($product);
         }
 
-        return new Step\Then('I press mass delete button');
+        return new Step\Then('I press mass-delete button');
     }
 
     /**
