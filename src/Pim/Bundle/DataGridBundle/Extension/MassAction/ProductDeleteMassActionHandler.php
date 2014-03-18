@@ -56,8 +56,9 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
         $datasource->setHydrator($entityIdsHydrator);
 
         $productIds = array_keys($datasource->getResults());
-        $countProducts = count($results);
+        $countProducts = count($productIds);
 
+        $this->repository->deleteProducts($productIds);
 
         return $this->getResponse($mediator, $countProducts);
     }
