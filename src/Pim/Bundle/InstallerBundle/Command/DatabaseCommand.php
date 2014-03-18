@@ -179,11 +179,11 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor
-/*            ->runCommand('oro:search:create-index')
+            ->runCommand('oro:search:create-index')
             ->runCommand(
                 'pim:search:reindex',
                 array('locale' => $this->getContainer()->getParameter('locale'))
-            )*/
+            )
             ->runCommand('pim:versioning:refresh')
             ->runCommand('pim:completeness:calculate');
 

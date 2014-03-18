@@ -246,10 +246,8 @@ class ProductController extends AbstractDoctrineController
                 $this->getAvailableAttributesForm($product->getAttributes())->createView(),
             'product'          => $product,
             'trees'            => $trees,
-            //'created'          => $this->auditManager->getOldestLogEntry($product),
-            'created'          => null,
-            //'updated'          => $this->auditManager->getNewestLogEntry($product),
-            'updated'          => null,
+            'created'          => $this->auditManager->getOldestLogEntry($product),
+            'updated'          => $this->auditManager->getNewestLogEntry($product),
             'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
