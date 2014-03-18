@@ -123,6 +123,21 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         return $qb->getQuery()->execute();
     }
 
+    public function findOneBy(array $criteria)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $pqb = $this->getProductQueryBuilder($qb);
+        foreach ($criteria as $field => $data) {
+            if (is_array($data)) {
+                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
+            } else {
+                $pqb->addFieldFilter($field, '=', $data);
+            }
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -347,10 +362,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
         return $this->locale;
     }
 
@@ -375,10 +386,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
         return $this->scope;
     }
 

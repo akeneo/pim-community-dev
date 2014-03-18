@@ -65,9 +65,15 @@ class ProductQueryUtility
         $suffix = '';
 
         if ($localizable) {
+            if (null === $locale) {
+                throw new \LogicException('Locale is not configured');
+            }
             $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
         }
         if ($scopable) {
+            if (null === $scope) {
+                throw new \LogicException('Scope is not configured');
+            }
             $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
         }
 
