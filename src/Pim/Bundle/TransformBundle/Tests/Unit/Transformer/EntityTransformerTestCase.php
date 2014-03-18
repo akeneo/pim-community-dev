@@ -25,10 +25,10 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->doctrine = $this->getMock('Symfony\Bridge\Doctrine\RegistryInterface');
+        $this->doctrine = $this->getMock('Doctrine\Common\Persistence\ManagerRegistry');
         $this->manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->doctrine->expects($this->any())
-            ->method('getManager')
+            ->method('getManagerForClass')
             ->will($this->returnValue($this->manager));
         $this->metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')
             ->disableOriginalConstructor()
@@ -74,7 +74,7 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
                 ->getMock();
         }
 
-        $this->doctrine
+        $this->manager
             ->expects($this->any())
             ->method('getRepository')
             ->with($this->equalTo('stdClass'))

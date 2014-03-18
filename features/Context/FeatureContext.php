@@ -10,6 +10,7 @@ use Behat\Behat\Exception\BehaviorException;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Gherkin\Node\PyStringNode;
+use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 
 /**
  * Main feature context
@@ -58,8 +59,19 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         } else {
             $excludedTables = array();
         }
-        $purger = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
-        $purger->purge();
+
+        if ('doctrine/mongodb-odm' === $this->getStorageDriver()) {
+            $purgers[] = new MongoDBPurger($this->getDocumentManager());
+            $excludedTables[] = 'pim_catalog_product';
+            $excludedTables[] = 'pim_catalog_product_value';
+            $excludedTables[] = 'pim_catalog_media';
+        }
+
+        $purgers[] = new SelectiveORMPurger($this->getEntityManager(), $excludedTables);
+
+        foreach ($purgers as $purger) {
+            $purger->purge();
+        }
     }
 
     /**
@@ -67,7 +79,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function closeConnection()
     {
-        $this->getEntityManager()->getConnection()->close();
+        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
+            $connection->close();
+        }
     }
 
     /**
@@ -98,6 +112,31 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public function getEntityManager()
     {
         return $this->getContainer()->get('doctrine')->getManager();
+    }
+
+
+    /**
+     * @return ObjectManager
+     */
+    public function getDocumentManager()
+    {
+        return $this->getContainer()->get('doctrine_mongodb')->getManager();
+    }
+
+    /**
+     * @return Doctrine\Common\Persistence\ManagerRegistry
+     */
+    public function getSmartRegistry()
+    {
+        return $this->getContainer()->get('pim_catalog.doctrine.smart_manager_registry');
+    }
+
+    /**
+     * @return string
+     */
+    public function getStorageDriver()
+    {
+        return $this->getContainer()->getParameter('pim_catalog.storage_driver');
     }
 
     /**

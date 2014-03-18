@@ -122,9 +122,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $stats = array();
 
-        $requirements = $product->getFamily()->getAttributeRequirements();
+        if (null === $family = $product->getFamily()) {
+            return $stats;
+        }
 
-        foreach ($requirements as $req) {
+        foreach ($family->getAttributeRequirements() as $req) {
             if (!$req->isRequired()) {
                 continue;
             }
@@ -137,7 +139,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $stats[$channel]['required_count'] = 0;
             }
 
-            $completeConstraint = new ProductValueComplete(array('channel' => $channel));
+            $completeConstraint = new ProductValueComplete(array('channel' => $req->getChannel()));
 
             $stats[$channel]['required_count']++;
 
@@ -150,9 +152,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                     $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
                 }
 
-                $value = $product->getValue($req->getAttribute()->getCode(), $locale, $channel);
+                $attribute = $req->getAttribute();
+                $value = $product->getValue(
+                    $attribute->getCode(),
+                    $attribute->isLocalizable() ? $locale : null,
+                    $attribute->isScopable() ? $channel : null
+                );
 
-                if ($this->validator->validateValue($value, $completeConstraint)->count() > 0) {
+                if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
                     $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
                 }
             }

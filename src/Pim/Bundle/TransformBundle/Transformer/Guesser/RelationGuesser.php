@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
+use Doctrine\ORM\Mapping\ClassMetadataInfo as ORMClassMetadataInfo;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadataInfo as ODMMongoDBClassMetadataInfo;
 
 /**
  * Guesser for entity transformer
@@ -33,7 +35,7 @@ class RelationGuesser implements GuesserInterface
      * @param PropertyTransformerInterface $transformer
      * @param RegistryInterface            $doctrine
      */
-    public function __construct(PropertyTransformerInterface $transformer, RegistryInterface $doctrine)
+    public function __construct(PropertyTransformerInterface $transformer, ManagerRegistry $doctrine)
     {
         $this->transformer = $transformer;
         $this->doctrine = $doctrine;
@@ -42,7 +44,24 @@ class RelationGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
+    {
+        if ($metadata instanceof ORMClassMetadataInfo) {
+            return $this->getORMTransformerInfo($columnInfo, $metadata);
+        }
+
+        if ($metadata instanceof ODMMongoDBClassMetadataInfo) {
+            return $this->getODMTransformerInfo($columnInfo, $metadata);
+        }
+    }
+
+    /**
+     * @param ColumnInfoInterface  $columnInfo
+     * @param ORMClassMetadataInfo $metadata
+     *
+     * @return array
+     */
+    private function getORMTransformerInfo(ColumnInfoInterface $columnInfo, ORMClassMetadataInfo $metadata)
     {
         if (!$metadata->hasAssociation($columnInfo->getPropertyPath())) {
             return;
@@ -57,8 +76,31 @@ class RelationGuesser implements GuesserInterface
             $this->transformer,
             array(
                 'class'    => $mapping['targetEntity'],
-                'multiple' => (ClassMetadataInfo::MANY_TO_MANY == $mapping['type'])
+                'multiple' => (ORMClassMetadataInfo::MANY_TO_MANY === $mapping['type'])
             )
         );
+    }
+
+    /**
+     * @param ColumnInfoInterface         $columnInfo
+     * @param ODMMongoDBClassMetadataInfo $metadata
+     *
+     * @return array
+     */
+    private function getODMTransformerInfo(ColumnInfoInterface $columnInfo, ODMMongoDBClassMetadataInfo $metadata)
+    {
+        $fieldName = $columnInfo->getPropertyPath();
+
+        if (in_array($metadata->getTypeOfField($fieldName), ['entity', 'entities'])) {
+            $mapping = $metadata->getFieldMapping($fieldName);
+
+            return array(
+                $this->transformer,
+                array(
+                    'class'    => $mapping['targetEntity'],
+                    'multiple' => 'entities' === $metadata->getTypeOfField($fieldName)
+                )
+            );
+        }
     }
 }

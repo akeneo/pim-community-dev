@@ -252,7 +252,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Return a cursor on the product ids belonging the categories
      * with category ids provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryIds
      *
      * @return Cursor mongoDB cursor on the Ids
      */
