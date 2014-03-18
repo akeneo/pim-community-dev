@@ -45,6 +45,7 @@
 - Update ProductValueInerface, add getData, setData and getAttribute methods
 - Move mass export in specific controller
 - Remove DeleteMassActionHandler, replaced by ProductDeleteMassActionHandler
+- Add deleteProductIds in ProductRepository
 
 # 1.0.2
 ## Bug Fixes
