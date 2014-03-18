@@ -3,6 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -13,41 +15,41 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @var SerializerInterface */
+    protected $serializer;
+
     /**
-     * @var array $supportedFormats
+     * @var string[] $supportedFormats
      */
-    protected $supportedFormats = array('json', 'xml');
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function setSerializer(SerializerInterface $serializer)
     {
+        $this->serializer = $serializer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($product, $format = null, array $context = [])
+    {
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new \LogicException('Serializer must be a normalizer');
+        }
+
         $locales  = isset($context['locales']) ? $context['locales'] : [];
         $channels = isset($context['channels']) ? $context['channels'] : [];
         $values = $this->filterValues($product->getValues(), $channels, $locales);
-        $attributes = $this->getAttributes($values);
 
-        $data = array();
+        $data = [];
 
-        foreach ($attributes as $attribute) {
-            $code = $attribute->getCode();
-
-            $attributeValues = $values->filter(
-                function ($value) use ($code) {
-                    return $value->getAttribute()->getCode() == $code;
-                }
-            );
-
-            foreach ($attributeValues as $value) {
-                $data[$code][] = [
-                    'value'  => $this->normalizeValueData($value->getData()),
-                    'locale' => $value->getLocale(),
-                    'scope'  => $value->getScope()
-                ];
-            }
+        foreach ($values as $value) {
+            $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
         }
 
         if (isset($context['resource'])) {
@@ -84,63 +86,10 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Returns an array of all attrbutes for the provided values
-     *
-     * @param ArrayCollection $values
-     *
-     * @return array
-     */
-    public function getAttributes($values)
-    {
-        $attributes = $values->map(
-            function ($value) {
-                return $value->getAttribute();
-            }
-        );
-
-        $uniqueAttributes = array();
-        foreach ($attributes as $attribute) {
-            if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
-                $uniqueAttributes[$attribute->getCode()] = $attribute;
-            }
-        }
-
-        return $uniqueAttributes;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function supportsNormalization($data, $format = null)
     {
         return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
-    }
-
-    /**
-     * Prepares value data form serialization
-     *
-     * @param mixed $data Data to normalize
-     *
-     * @return mixed $data Normalized data
-     */
-    protected function normalizeValueData($data)
-    {
-        if ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $items = array();
-            foreach ($data as $item) {
-                $items[] = (string) $item;
-            }
-
-            return implode(', ', $items);
-        }
-
-        if (method_exists($data, '__toString')) {
-            return (string) $data;
-        }
-        if ($data instanceof \DateTime) {
-            return $data->format('c');
-        }
-
-        return $data;
     }
 }
