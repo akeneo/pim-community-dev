@@ -843,13 +843,15 @@ SQL;
      */
     public function deleteProducts(array $productIds)
     {
+        if (empty($productIds)) {
+            throw new \LogicException('No products to remove');
+        }
+
         $qb = $this->createQueryBuilder('p');
         $qb
             ->delete($this->_entityName, 'p')
             ->where($qb->expr()->in('p.id', $productIds));
 
-        $result = $qb->getQuery()->execute();
-
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        return $qb->getQuery()->execute();
     }
 }

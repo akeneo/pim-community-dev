@@ -55,10 +55,16 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
         $datasource = $mediator->getDatagrid()->getDatasource();
         $datasource->setHydrator($entityIdsHydrator);
 
+        // hydrator uses index by id
         $productIds = array_keys($datasource->getResults());
-        $countProducts = count($productIds);
 
-        $this->repository->deleteProducts($productIds);
+        try {
+            $countProducts = $this->repository->deleteProducts($productIds);
+        } catch (\Exception $e) {
+            $errorMessage = $e->getMessage();
+
+            return new MassActionResponse(false, $errorMessage);
+        }
 
         return $this->getResponse($mediator, $countProducts);
     }
