@@ -132,7 +132,7 @@ services:
         public: false
         arguments:
             - '@pim_transform.transformer.property.relation'
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
             - { name: pim_transform.transformer.guesser, priority: 50 }
 
