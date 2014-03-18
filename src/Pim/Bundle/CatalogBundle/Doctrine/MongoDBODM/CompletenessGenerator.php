@@ -139,7 +139,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $stats[$channel]['required_count'] = 0;
             }
 
-            $completeConstraint = new ProductValueComplete(array('channel' => $channel));
+            $completeConstraint = new ProductValueComplete(array('channel' => $req->getChannel()));
 
             $stats[$channel]['required_count']++;
 
