@@ -64,7 +64,7 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
         $productIds = array_keys($datasource->getResults());
 
         try {
-            $countProducts = $this->repository->deleteProducts($productIds);
+            $countProducts = $this->repository->deleteProductIds($productIds);
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 

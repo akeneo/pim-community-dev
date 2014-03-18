@@ -315,5 +315,5 @@ interface ProductRepositoryInterface
      *
      * @throws \LogicException
      */
-    public function deleteProducts(array $productIds);
+    public function deleteProductIds(array $productIds);
 }

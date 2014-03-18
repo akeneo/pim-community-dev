@@ -518,7 +518,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function deleteProducts(array $productIds)
+    public function deleteProductIds(array $productIds)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }

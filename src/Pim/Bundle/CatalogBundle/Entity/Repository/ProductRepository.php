@@ -841,7 +841,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function deleteProducts(array $productIds)
+    public function deleteProductIds(array $productIds)
     {
         if (empty($productIds)) {
             throw new \LogicException('No products to remove');
