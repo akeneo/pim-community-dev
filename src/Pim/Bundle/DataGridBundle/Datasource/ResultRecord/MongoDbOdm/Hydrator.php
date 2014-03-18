@@ -172,7 +172,7 @@ class Hydrator implements HydratorInterface
         $backendType = $attribute['backendType'];
         $value = $result[$attributeCode];
 
-        if ($attribute['attributeType'] === 'pim_catalog_date') {
+        if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $date = new \DateTime();
             $date->setTimestamp($mongoDate->sec);
