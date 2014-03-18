@@ -163,15 +163,27 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $categoryTable = $this->entityManager->getClassMetadata($this->categoryClass)->getTableName();
 
         $categoryIds = implode(',', $categoryIds);
-        $sql = "SELECT".
-               "    tree.id AS tree_id,".
-               "    COUNT(category.id) AS product_count".
-               "  FROM $categoryTable tree".
-               "  LEFT JOIN $categoryTable category".
-               "    ON category.root = tree.id".
-               " AND category.id IN ($categoryIds)".
-               " WHERE tree.parent_id IS NULL".
-               " GROUP BY tree.id";
+
+        if (!empty($categoryIds)) {
+            $sql = "SELECT".
+                   "    tree.id AS tree_id,".
+                   "    COUNT(category.id) AS product_count".
+                   "  FROM $categoryTable tree".
+                   "  LEFT JOIN $categoryTable category".
+                   "    ON category.root = tree.id".
+                   " AND category.id IN ($categoryIds)".
+                   " WHERE tree.parent_id IS NULL".
+                   " GROUP BY tree.id";
+        } else {
+            $sql = "SELECT".
+                   "    tree.id AS tree_id,".
+                   "    '0' AS product_count".
+                   "  FROM $categoryTable tree".
+                   "  LEFT JOIN $categoryTable category".
+                   "    ON category.root = tree.id".
+                   " WHERE tree.parent_id IS NULL".
+                   " GROUP BY tree.id";
+        }
 
         $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->execute();

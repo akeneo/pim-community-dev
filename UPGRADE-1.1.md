@@ -67,7 +67,7 @@ With 1.1 :
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_string
