@@ -312,6 +312,8 @@ interface ProductRepositoryInterface
      * Delete a list of product ids
      *
      * @param integer[] $productIds
+     *
+     * @throws \LogicException
      */
     public function deleteProducts(array $productIds);
 }
