@@ -32,7 +32,7 @@ services:
         abstract: true
         parent: pim_enrich.controller.abstract
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_enrich.controller.attribute_group:
         scope: request

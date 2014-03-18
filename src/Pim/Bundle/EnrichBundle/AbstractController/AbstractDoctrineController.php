@@ -13,6 +13,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Base abstract controller for managing entities
@@ -48,7 +49,7 @@ abstract class AbstractDoctrineController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine
+        ManagerRegistry $doctrine
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator);
 
@@ -82,7 +83,7 @@ abstract class AbstractDoctrineController extends AbstractController
      */
     protected function getRepository($className)
     {
-        return $this->getManager()->getRepository($className);
+        return $this->doctrine->getManagerForClass($className)->getRepository($className);
     }
 
     /**
