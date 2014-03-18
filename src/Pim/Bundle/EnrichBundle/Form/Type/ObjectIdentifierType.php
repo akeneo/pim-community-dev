@@ -43,7 +43,7 @@ class ObjectIdentifierType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(
-            new EntityToIdentifierTransformer($options['repository'], $options['multiple']),
+            new EntityToIdentifierTransformer($options['repository'], $options['multiple'], null, $options['delimiter']),
             true
         );
     }
@@ -54,7 +54,7 @@ class ObjectIdentifierType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver
-            ->setDefaults(['repository_options' => [], 'multiple' => true])
+            ->setDefaults(['repository_options' => [], 'multiple' => true, 'delimiter' => ','])
             ->setRequired(['repository'])
             ->setAllowedValues(
                 array(
