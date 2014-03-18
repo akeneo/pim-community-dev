@@ -29,8 +29,6 @@ class EntityIdsHydrator implements HydratorInterface
             ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
             ->groupBy($rootIdExpr);
 
-        $results = $queryBuilder->getQuery()->getArrayResult();
-
-        return $results;
+        return $queryBuilder->getQuery()->getArrayResult();
     }
 }
