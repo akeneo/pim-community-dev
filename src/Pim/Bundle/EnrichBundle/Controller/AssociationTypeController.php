@@ -19,6 +19,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
 use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
 /**
@@ -41,6 +42,11 @@ class AssociationTypeController extends AbstractDoctrineController
     protected $assocTypeForm;
 
     /**
+     * @var AssociationManager
+     */
+    protected $assocManager;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -51,6 +57,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param RegistryInterface        $doctrine
+     * @param AssociationManager       $assocManager
      * @param AssociationTypeHandler   $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
@@ -63,6 +70,7 @@ class AssociationTypeController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         RegistryInterface $doctrine,
+        AssociationManager $assocManager,
         AssociationTypeHandler $assocTypeHandler,
         Form $assocTypeForm
     ) {
@@ -76,6 +84,8 @@ class AssociationTypeController extends AbstractDoctrineController
             $translator,
             $doctrine
         );
+
+        $this->assocManager     = $assocManager;
 
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
@@ -148,10 +158,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             return $this->redirectToRoute('pim_enrich_association_type_edit', array('id' => $id));
         }
-
-        $usageCount = $this
-            ->getRepository('Pim\Bundle\CatalogBundle\Model\Association')
-            ->countForAssociationType($associationType);
+        $usageCount = $this->assocManager->countForAssociationType($associationType);
 
         return array(
             'form'       => $this->assocTypeForm->createView(),

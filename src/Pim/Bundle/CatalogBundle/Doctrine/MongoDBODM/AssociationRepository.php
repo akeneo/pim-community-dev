@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
@@ -18,11 +19,29 @@ class AssociationRepository extends DocumentRepository implements AssociationRep
  ReferableEntityRepositoryInterface
 {
     /**
+     * ORM EntityManager to access ORM entities
+     *
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * Set the EntityManager
+     *
+     * @param EntityManager $entityManager
+     *
+     * @return ProductRepository $this
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+    /**
      * {@inheritdoc}
      */
     public function countForAssociationType(AssociationType $associationType)
     {
-        throw new \Exception('Not yet implemented');
+        return "12345";
     }
 
     /**

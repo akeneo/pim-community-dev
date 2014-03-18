@@ -109,3 +109,11 @@ services:
         factory_service: doctrine.odm.mongodb.document_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.media.class%]
+
+    pim_catalog.repository.association:
+        class: %pim_catalog.repository.association.class%
+        factory_service: pim_catalog.object_manager.association
+        factory_method: getRepository
+        arguments: [%pim_catalog.entity.association.class%]
+        calls:
+            - [setEntityManager, ['@doctrine.orm.entity_manager']]
