@@ -55,6 +55,12 @@ class RelationGuesser implements GuesserInterface
         }
     }
 
+    /**
+     * @param ColumnInfoInterface  $columnInfo
+     * @param ORMClassMetadataInfo $metadata
+     *
+     * @return array
+     */
     private function getORMTransformerInfo(ColumnInfoInterface $columnInfo, ORMClassMetadataInfo $metadata)
     {
         if (!$metadata->hasAssociation($columnInfo->getPropertyPath())) {
@@ -75,6 +81,12 @@ class RelationGuesser implements GuesserInterface
         );
     }
 
+    /**
+     * @param ColumnInfoInterface         $columnInfo
+     * @param ODMMongoDBClassMetadataInfo $metadata
+     *
+     * @return array
+     */
     private function getODMTransformerInfo(ColumnInfoInterface $columnInfo, ODMMongoDBClassMetadataInfo $metadata)
     {
         $fieldName = $columnInfo->getPropertyPath();
