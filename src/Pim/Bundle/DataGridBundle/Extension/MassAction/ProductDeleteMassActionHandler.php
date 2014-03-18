@@ -24,12 +24,17 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
 class ProductDeleteMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * @var TranslatorInterface
+     * @var TranslatorInterface $translator
      */
     protected $translator;
 
     /**
-     * @var string
+     * @var ProductRepositoryInterface $repository
+     */
+    protected $repository;
+
+    /**
+     * @var string $responseMessage
      */
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
 
@@ -63,7 +68,7 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 
-            return new MassActionResponse(false, $errorMessage);
+            return new MassActionResponse(false, $this->translator->trans($errorMessage));
         }
 
         return $this->getResponse($mediator, $countProducts);
@@ -71,26 +76,22 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
 
     /**
      * @param MassActionMediatorInterface $mediator
-     * @param int                         $entitiesCount
+     * @param integer                     $entitiesCount
      *
      * @return MassActionResponse
      */
     protected function getResponse(MassActionMediatorInterface $mediator, $entitiesCount = 0)
     {
         $massAction      = $mediator->getMassAction();
-        $responseMessage = $massAction->getOptions()->offsetGetByPath('[messages][success]', $this->responseMessage);
-
-        $successful = $entitiesCount > 0;
-        $options    = ['count' => $entitiesCount];
+        $responseMessage = $massAction->getOptions()->offsetGetByPath(
+            '[messages][success]',
+            $this->responseMessage
+        );
 
         return new MassActionResponse(
-            $successful,
-            $this->translator->transChoice(
-                $responseMessage,
-                $entitiesCount,
-                ['%count%' => $entitiesCount]
-            ),
-            $options
+            true,
+            $this->translator->trans($responseMessage),
+            ['count' => $entitiesCount]
         );
     }
 }
