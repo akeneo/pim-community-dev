@@ -23,7 +23,7 @@ class PriceFilter extends BaseFilter
 
         $field = $this->getNormalizedValueField($attribute);
         $field = sprintf('%s.%s', $field, $currency);
-        
+
         $fieldData = sprintf('%s.data', $field);
 
         switch ($operator) {
