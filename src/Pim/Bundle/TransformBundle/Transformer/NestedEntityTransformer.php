@@ -6,6 +6,7 @@ use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Transformer for nested entities
@@ -31,7 +32,7 @@ class NestedEntityTransformer extends EntityTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
