@@ -837,4 +837,19 @@ SQL;
 
         return $qb;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProducts(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->delete($this->_entityName, 'p')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        $result = $qb->getQuery()->execute();
+
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
