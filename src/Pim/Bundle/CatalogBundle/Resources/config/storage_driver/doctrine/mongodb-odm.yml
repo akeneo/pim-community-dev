@@ -12,6 +12,7 @@ parameters:
     pim_catalog.mongodb.normalizer.attribute_option.class:           Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
     pim_catalog.mongodb.normalizer.media.class:                      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
+    pim_catalog.mongodb.normalizer.datetime.class:                   Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
     pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
 
 services:
@@ -90,6 +91,12 @@ services:
 
     pim_catalog.mongodb.normalizer.completeness:
         class: %pim_catalog.mongodb.normalizer.completeness.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.datetime:
+        class: %pim_catalog.mongodb.normalizer.datetime.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }
