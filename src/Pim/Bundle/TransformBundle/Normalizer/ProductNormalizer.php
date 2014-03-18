@@ -60,6 +60,14 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function supportsNormalization($data, $format = null)
+    {
+        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
+    }
+
+    /**
      * Returns a subset of values that match the channel and locale requirements
      *
      * @param ArrayCollection $values
@@ -68,7 +76,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return ArrayCollection
      */
-    public function filterValues($values, array $channels = [], array $locales = [])
+    protected function filterValues($values, array $channels = [], array $locales = [])
     {
         $values = $values->filter(
             function ($value) use ($channels) {
@@ -83,13 +91,5 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         );
 
         return $values;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsNormalization($data, $format = null)
-    {
-        return $data instanceof ProductInterface && in_array($format, $this->supportedFormats);
     }
 }
