@@ -34,6 +34,16 @@ class ProductValueComplete extends Constraint
      */
     public function getChannel()
     {
+        if (!$this->channel instanceof \Pim\Bundle\CatalogBundle\Entity\Channel) {
+            throw new \LogicException(
+                sprintf(
+                    'Expecting $channel to be an instance of "\Pim\Bundle\CatalogBundle\Entity\Channel", ' .
+                    'got "%s"',
+                    is_object($this->channel) ? get_class($this->channel) : (string) $this->channel
+                )
+            );
+        }
+
         return $this->channel;
     }
 
