@@ -154,8 +154,14 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         return $this;
     }
 
-    public function setHydrator($hydrator)
+    /**
+     * Set hydrator
+     * @param HydratorInterface $hydrator
+     */
+    public function setHydrator(HydratorInterface $hydrator)
     {
         $this->hydrator = $hydrator;
+
+        return $this;
     }
 }
