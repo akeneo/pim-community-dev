@@ -558,6 +558,64 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $products
+     *
+     * @When /^I mass-edit products (.*)$/
+     */
+    public function iMassEditProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        $page->massEdit();
+        $this->wait();
+    }
+
+    /**
+     * @param string $products
+     *
+     * @Then /^I select products (.*)$/
+     */
+    public function iSelectProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+    }
+
+    /**
+     * @param string $products
+     *
+     * @When /^I mass-delete products (.*)$/
+     */
+    public function iMassDeleteProducts($products)
+    {
+        $page = $this->getPage('Product index');
+
+        foreach ($this->listToArray($products) as $product) {
+            $page->selectRow($product);
+        }
+
+        return new Step\Then('I click on mass delete button');
+    }
+
+    /**
+     * @When /^I click on mass delete button$/
+     */
+    public function iClickOnMassDeleteButton()
+    {
+        $page = $this->getPage('Product index');
+
+        $page->massDelete();
+        $this->wait();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message
