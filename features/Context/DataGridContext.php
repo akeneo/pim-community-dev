@@ -575,7 +575,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iPressMassEditButton()
     {
-        $this->datagrid->massEdit();
+        $this->getCurrentPage()->massEdit();
         $this->wait();
     }
 
@@ -586,8 +586,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRows($entities)
     {
-        foreach ($this->listToArray($entities) as $entity) {
-            $this->datagrid->selectRow($entity);
+        foreach ($this->$this->getMainContext()->listToArray($entities) as $entity) {
+            $this->getCurrentPage()->selectRow($entity);
         }
     }
 
@@ -596,7 +596,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectAllVisible()
     {
-        $this->datagrid->selectAllVisible();
+        $this->getCurrentPage()->selectAllVisible();
     }
 
     /**
@@ -604,7 +604,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectNone()
     {
-        $this->datagrid->selectNone();
+        $this->getCurrentPage()->selectNone();
     }
 
     /**
@@ -612,7 +612,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectAll()
     {
-        $this->datagrid->selectAll();
+        $this->getCurrentPage()->selectAll();
     }
 
     /**
@@ -633,7 +633,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iPressMassDeleteButton()
     {
-        $this->datagrid->massDelete();
+        $this->getCurrentPage()->massDelete();
         $this->wait();
     }
 
@@ -682,15 +682,5 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
-    }
-
-    /**
-     * @param string $list
-     *
-     * @return array
-     */
-    private function listToArray($list)
-    {
-        return $this->getMainContext()->listToArray($list);
     }
 }
