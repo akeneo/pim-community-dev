@@ -35,30 +35,34 @@ class ProductController extends FOSRestController
      */
     public function getAction(Request $request, $identifier)
     {
-        $userContext = $this->get('pim_user.context.user');
-        $channels    = array_keys($userContext->getChannelChoicesWithUserChannel());
-        $locales     = $userContext->getUserLocaleCodes();
+        $userContext       = $this->get('pim_user.context.user');
+        $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
+        $availableLocales  = $userContext->getUserLocaleCodes();
 
-        $channelCodes = $request->get('channels', $request->get('channel', []));
-        if ($channelCodes) {
-            $channelCodes = explode(',', $channelCodes);
-        }
+        $channels = $request->get('channels', $request->get('channel', null));
+        if ($channels !== null) {
+            $channels = explode(',', $channels);
 
-        foreach ($channels as $index => $channelCode) {
-            if (!in_array($channelCode, $channelCodes)) {
-                unset($channels[$index]);
+            foreach ($channels as $channel) {
+                if (!in_array($channel, $availableChannels)) {
+                    return new Response('', 403);
+                }
             }
+        } else {
+            $channels = $availableChannels;
         }
 
-        $localeCodes = $request->get('locales', $request->get('locale', []));
-        if ($localeCodes) {
-            $localeCodes = explode(',', $localeCodes);
-        }
+        $locales = $request->get('locales', $request->get('locale', null));
+        if ($locales !== null) {
+            $locales = explode(',', $locales);
 
-        foreach ($locales as $index => $localeCode) {
-            if (!in_array($localeCode, $localeCodes)) {
-                unset($locales[$index]);
+            foreach ($locales as $locale) {
+                if (!in_array($locale, $availableLocales)) {
+                    return new Response('', 403);
+                }
             }
+        } else {
+            $locales = $availableLocales;
         }
 
         return $this->handleGetRequest($identifier, $channels, $locales);
