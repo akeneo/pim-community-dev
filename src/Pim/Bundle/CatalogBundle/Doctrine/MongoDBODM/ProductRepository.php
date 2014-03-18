@@ -96,7 +96,31 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $limit = null,
         $offset = null
     ) {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+
+        foreach ($attributes as $attribute => $value) {
+            $qb->field($attribute)->equals($value);
+        }
+
+        if ($criteria) {
+            foreach ($criteria as $field => $value) {
+                $qb->field('normalizedData.'.$field)->equals($value);
+            }
+        }
+
+        if ($orderBy) {
+            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($limit) {
+            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($offset) {
+            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        return $qb->getQuery()->execute();
     }
 
     /**
@@ -112,7 +136,17 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        foreach ($channel->getLocales() as $locale) {
+            $qb->addOr(
+                $qb
+                    ->expr()
+                    ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))
+                    ->equals(100)
+            );
+        }
+
+        return $qb;
     }
 
     /**
