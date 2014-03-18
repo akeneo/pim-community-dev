@@ -122,7 +122,12 @@ class SmartManagerRegistry implements ManagerRegistry
      */
     public function getConnections()
     {
-        throw new \LogicException('Not smart enough');
+        $connections = [];
+        foreach ($this->getManagers() as $manager) {
+            $connections[] = $manager->getConnection();
+        }
+
+        return $connections;
     }
 
     /**

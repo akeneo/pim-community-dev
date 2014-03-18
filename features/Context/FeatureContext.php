@@ -79,8 +79,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function closeConnection()
     {
-        $this->getEntityManager()->getConnection()->close();
-        $this->getDocumentManager()->getConnection()->close();
+        foreach ($this->getSmartRegistry()->getConnections() as $connection) {
+            $connection->close();
+        }
     }
 
     /**
