@@ -586,7 +586,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iSelectRows($entities)
     {
-        foreach ($this->$this->getMainContext()->listToArray($entities) as $entity) {
+        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
             $this->getCurrentPage()->selectRow($entity);
         }
     }
