@@ -228,7 +228,7 @@ class EntityTransformer implements EntityTransformerInterface
      */
     protected function findEntity($class, array $data)
     {
-        $repository = $this->doctrine->getRepository($class);
+        $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
 
         if ($repository instanceof ReferableEntityRepositoryInterface) {
             $reference = implode(
@@ -245,9 +245,7 @@ class EntityTransformer implements EntityTransformerInterface
                 )
             );
 
-            return $this->doctrine->getRepository($class)->findByReference($reference);
-        } else {
-            return null;
+            return $repository->findByReference($reference);
         }
     }
 

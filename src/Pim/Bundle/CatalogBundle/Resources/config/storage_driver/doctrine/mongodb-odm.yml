@@ -13,6 +13,7 @@ parameters:
     pim_catalog.mongodb.normalizer.product_price.class:              Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
     pim_catalog.mongodb.normalizer.media.class:                      Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
     pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
+    pim_catalog.doctrine.smart_manager_registry.class:               Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
 
 services:
     pim_catalog.object_manager.product:
@@ -109,3 +110,9 @@ services:
         factory_service: doctrine.odm.mongodb.document_manager
         factory_method: getRepository
         arguments: [%pim_catalog.entity.media.class%]
+
+    pim_catalog.doctrine.smart_manager_registry:
+        class: %pim_catalog.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]
+            - [addRegistry, ['@doctrine_mongodb']]
