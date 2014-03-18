@@ -13,6 +13,7 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Transforms an array in an entity
@@ -67,7 +68,7 @@ class EntityTransformer implements EntityTransformerInterface
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer
@@ -176,7 +177,7 @@ class EntityTransformer implements EntityTransformerInterface
             }
             $this->transformers[$class][$label] = $this->guesser->getTransformerInfo(
                 $columnInfo,
-                $this->doctrine->getManager()->getClassMetadata($class)
+                $this->doctrine->getManagerForClass($class)->getClassMetadata($class)
             );
             if (!$this->transformers[$class][$label]) {
                 throw new UnknownColumnException(array($label));
@@ -227,7 +228,7 @@ class EntityTransformer implements EntityTransformerInterface
      */
     protected function findEntity($class, array $data)
     {
-        $repository = $this->doctrine->getRepository($class);
+        $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
 
         if ($repository instanceof ReferableEntityRepositoryInterface) {
             $reference = implode(
@@ -244,9 +245,7 @@ class EntityTransformer implements EntityTransformerInterface
                 )
             );
 
-            return $this->doctrine->getRepository($class)->findByReference($reference);
-        } else {
-            return null;
+            return $repository->findByReference($reference);
         }
     }
 

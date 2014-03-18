@@ -262,15 +262,12 @@ class ProductBuilder
         $values = array();
         foreach ($attributes as $attribute) {
             $requiredValues = array();
-            if ($attribute->isScopable() and $attribute->isLocalizable()) {
+            if ($attribute->isScopable() && $attribute->isLocalizable()) {
                 $requiredValues = $this->getScopeToLocaleRows($attribute);
-
             } elseif ($attribute->isScopable()) {
                 $requiredValues = $this->getScopeRows($attribute);
-
             } elseif ($attribute->isLocalizable()) {
                 $requiredValues = $this->getLocaleRows($attribute);
-
             } else {
                 $requiredValues[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null);
             }
@@ -322,16 +319,20 @@ class ProductBuilder
                 $prices = $value->getPrices();
 
                 foreach ($activeCurrencies as $activeCurrency) {
-                    if (!isset($prices[$activeCurrency])) {
+                    $hasPrice = $prices->filter(function ($price) use ($activeCurrency) {
+                        return $activeCurrency === $price->getCurrency();
+                    })->count() > 0;
+
+                    if (!$hasPrice) {
                         $this->addPriceForCurrency($value, $activeCurrency);
                     }
                 }
 
-                foreach ($prices as $currency => $price) {
-                    if (!in_array($currency, $activeCurrencies)) {
+                $prices->forAll(function ($key, $price) use ($activeCurrencies, $value) {
+                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
                         $value->removePrice($price);
                     }
-                }
+                });
             }
         }
     }

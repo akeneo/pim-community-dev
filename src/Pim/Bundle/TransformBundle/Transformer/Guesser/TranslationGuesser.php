@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
@@ -33,7 +33,7 @@ class TranslationGuesser implements GuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         if ((!$columnInfo->getLocale() && !count($columnInfo->getSuffixes())) ||
             !$metadata->hasAssociation('translations')

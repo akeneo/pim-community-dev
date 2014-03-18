@@ -3,6 +3,7 @@ parameters:
     pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
     pim_catalog.event_listener.localizable.class:                  Pim\Bundle\CatalogBundle\EventListener\LocalizableListener
     pim_catalog.event_listener.scopable.class:                     Pim\Bundle\CatalogBundle\EventListener\ScopableListener
+    pim_catalog.doctrine.smart_manager_registry.class:             Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
 
 services:
     # Subscribers
@@ -80,3 +81,8 @@ services:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
             - '@pim_user.context.user'
+
+    pim_catalog.doctrine.smart_manager_registry:
+        class: %pim_catalog.doctrine.smart_manager_registry.class%
+        calls:
+            - [addRegistry, ['@doctrine']]

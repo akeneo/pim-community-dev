@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Attribute transformer
@@ -41,7 +41,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param EntityCache                    $entityCache
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
