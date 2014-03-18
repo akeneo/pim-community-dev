@@ -96,6 +96,9 @@ class SmartManagerRegistry implements ManagerRegistry
         throw new \Exception('No manager were found for '. $class);
     }
 
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function addRegistry(ManagerRegistry $registry)
     {
         $this->registries[] = $registry;
