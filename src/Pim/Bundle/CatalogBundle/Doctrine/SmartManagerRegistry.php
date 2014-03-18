@@ -5,7 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * 
+ * Doctrine manager registry which is able to get object manager
+ * for any registered registries.
+ *
+ * Common use case is to register the entity and document registry in it
+ * and use the getManagerForClass() method to grab the correct manager.
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -35,7 +40,12 @@ class SmartManagerRegistry implements ManagerRegistry
      */
     public function getManagers()
     {
-        return $this->managers;
+        $managers = [];
+        foreach ($this->registries as $registry) {
+            $managers = array_merge(array_values($registry->getManagers()), $managers);
+        }
+
+        return $managers;
     }
 
     /**
