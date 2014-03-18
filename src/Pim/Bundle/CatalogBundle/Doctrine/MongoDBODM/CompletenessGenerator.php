@@ -122,9 +122,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $stats = array();
 
-        $requirements = $product->getFamily()->getAttributeRequirements();
+        if (null === $family = $product->getFamily()) {
+            return $stats;
+        }
 
-        foreach ($requirements as $req) {
+        foreach ($family->getAttributeRequirements() as $req) {
             if (!$req->isRequired()) {
                 continue;
             }
