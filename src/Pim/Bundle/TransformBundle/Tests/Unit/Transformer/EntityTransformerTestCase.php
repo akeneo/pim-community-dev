@@ -29,7 +29,6 @@ abstract class EntityTransformerTestCase extends \PHPUnit_Framework_TestCase
         $this->manager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
         $this->doctrine->expects($this->any())
             ->method('getManagerForClass')
-            ->with($this->equalTo('stdClass'))
             ->will($this->returnValue($this->manager));
         $this->metadata = $this->getMockBuilder('Doctrine\ORM\Mapping\ClassMetadataInfo')
             ->disableOriginalConstructor()
