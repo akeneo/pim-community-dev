@@ -19,7 +19,7 @@ final class CatalogEvents
      *
      * @var string
      */
-    const CREATE_PRODUCT  = 'pim_catalog.create_product';
+    const CREATE_PRODUCT = 'pim_catalog.create_product';
 
     /**
      * This event is thrown each time a product value is created in the system.
@@ -29,5 +29,5 @@ final class CatalogEvents
      *
      * @var string
      */
-    const CREATE_PRODUCT_VALUE     = 'pim_catalog.create_product_value';
+    const CREATE_PRODUCT_VALUE = 'pim_catalog.create_product_value';
 }
