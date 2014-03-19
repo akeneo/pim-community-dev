@@ -182,7 +182,8 @@ class MassEditActionOperator
     {
         set_time_limit(0);
         $products = $qb->getQuery()->getResult();
-        $this->manager->saveAll($products, false);
+        $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
+        $this->manager->saveAll($products, false, true, $scheduleCompleteness);
     }
 
     /**

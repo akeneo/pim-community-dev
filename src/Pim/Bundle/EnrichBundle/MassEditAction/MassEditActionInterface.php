@@ -40,4 +40,11 @@ interface MassEditActionInterface
      * @param QueryBuilder $qb
      */
     public function perform(QueryBuilder $qb);
+
+    /**
+     * Indicates whether the operation requires recalculation of the product completeness
+     *
+     * @return boolean
+     */
+    public function affectsCompleteness();
 }

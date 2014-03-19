@@ -260,9 +260,7 @@ datagrid:
                 frontend_type: date
             groups:
                 label:         Groups
-                type:          flexible_twig
-                template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
-                frontend_type: html
+                type:          product_groups
                 selector:      product_groups
         properties:
             id: ~
@@ -302,6 +300,7 @@ datagrid:
                 label: Delete
                 entity_name: product
                 data_identifier: p
+                handler: pim_datagrid.extension.mass_action.handler.delete
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?

@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
- * Skip the normalization of a media or a file when normalize a product value as mongodb_json
+ * Normalizes a media or a file when normalizes a product value as mongodb_json
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

@@ -254,7 +254,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Return a cursor on the product ids belonging the categories
      * with category ids provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryIds
      *
      * @return Cursor mongoDB cursor on the Ids
      */
@@ -552,5 +552,13 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             ->select('_id');
 
         return $qb->getQuery()->execute()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProductIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

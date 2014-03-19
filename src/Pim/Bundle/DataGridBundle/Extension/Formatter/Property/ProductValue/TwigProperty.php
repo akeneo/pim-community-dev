@@ -1,15 +1,15 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property;
+namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 
 /**
- * Flexible field property that allow to configure a related template for value rendering
+ * Allows to configure a related template for value rendering
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleTwigProperty extends FlexibleFieldProperty
+class TwigProperty extends FieldProperty
 {
     /**
      * @var string

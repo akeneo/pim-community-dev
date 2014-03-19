@@ -62,32 +62,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     protected $indexedValuesOutdated = true;
 
     /**
-     * Value class used to create new value
-     *
-     * @var string
-     */
-    protected $valueClass;
-
-    /**
      * Constructor
      */
     public function __construct()
     {
         $this->values = new ArrayCollection();
-    }
-
-    /**
-     * Set value class
-     *
-     * @param string $valueClass
-     *
-     * @return AbstractEntityFlexible
-     */
-    public function setValueClass($valueClass)
-    {
-        $this->valueClass = $valueClass;
-
-        return $this;
     }
 
     /**

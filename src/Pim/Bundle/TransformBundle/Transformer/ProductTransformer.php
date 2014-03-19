@@ -13,6 +13,7 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInter
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Specialized ORMTransformer for products
@@ -85,7 +86,7 @@ class ProductTransformer extends EntityTransformer
      * @param CachedReader                   $associationReader
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,

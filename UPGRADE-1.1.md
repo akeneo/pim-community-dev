@@ -37,6 +37,7 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `@pim_flexibleentity.validator.attribute_constraint_guesser` by `@pim_catalog.validator.attribute_constraint_guesser`
  - service `oro_media` by `pim_enrich_media`
  - service `pim_flexibleentity_metric` by `pim_enrich_metric`
+ - service `pim_flexibleentity.listener.timestampable` by `pim_catalog.event_listener.timestampable`
 
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 
@@ -67,7 +68,7 @@ With 1.1 :
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        flexible_field
+            type:        product_value_field
             selector:    flexible_values
         filter:
             type:        product_value_string

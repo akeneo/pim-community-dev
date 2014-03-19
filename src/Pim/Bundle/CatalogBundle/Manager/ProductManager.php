@@ -224,16 +224,18 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface $product     The product to save
      * @param boolean          $recalculate Whether or not to directly recalculate the completeness
      * @param boolean          $flush       Whether or not to flush the entity manager
+     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
      */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true)
+    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
     {
         $this->objectManager->persist($product);
 
         if ($flush) {
             $this->objectManager->flush();
         }
-        $this->completenessManager->schedule($product);
-
+        if ($schedule) {
+            $this->completenessManager->schedule($product);
+        }
         if ($recalculate) {
             $this->completenessManager->generateProductCompletenesses($product);
         }
@@ -245,11 +247,12 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface[] $products    The products to save
      * @param boolean            $recalculate Whether or not to directly recalculate the completeness
      * @param boolean            $flush       Whether or not to flush the entity manager
+     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
      */
-    public function saveAll(array $products, $recalculate = false, $flush = true)
+    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
     {
         foreach ($products as $product) {
-            $this->save($product, $recalculate, false);
+            $this->save($product, $recalculate, false, $schedule);
         }
 
         if ($flush) {
@@ -275,13 +278,10 @@ class ProductManager extends FlexibleManager
     public function createProduct()
     {
         $class = $this->getProductName();
-        $valueClass = $this->getProductValueName();
 
         $product = new $class();
         $product->setLocale($this->getLocale());
         $product->setScope($this->getScope());
-
-        $product->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $product);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);

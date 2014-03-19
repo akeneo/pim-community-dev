@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 
 /**
@@ -17,7 +17,7 @@ class ArrayGuesser extends TypeGuesser
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         return (count($columnInfo->getSuffixes()) > 0)
             ? parent::getTransformerInfo($columnInfo, $metadata)

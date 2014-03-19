@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
  * Attribute option guesser
@@ -28,7 +28,7 @@ class AttributeOptionGuesser extends RelationGuesser
      * @param RegistryInterface            $doctrine
      * @param string                       $valueClass
      */
-    public function __construct(PropertyTransformerInterface $transformer, RegistryInterface $doctrine, $valueClass)
+    public function __construct(PropertyTransformerInterface $transformer, ManagerRegistry $doctrine, $valueClass)
     {
         $this->valueClass = $valueClass;
         parent::__construct($transformer, $doctrine);
@@ -37,7 +37,7 @@ class AttributeOptionGuesser extends RelationGuesser
     /**
      * {@inheritdoc}
      */
-    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadataInfo $metadata)
+    public function getTransformerInfo(ColumnInfoInterface $columnInfo, ClassMetadata $metadata)
     {
         if ($this->valueClass != $metadata->getName() ||
             !in_array($columnInfo->getPropertyPath(), array('option', 'options'))
