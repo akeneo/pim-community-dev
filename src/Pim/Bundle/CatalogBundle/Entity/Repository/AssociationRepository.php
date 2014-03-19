@@ -19,7 +19,7 @@ class AssociationRepository extends EntityRepository implements AssociationRepos
     /**
      * {@inheritdoc}
      */
-    public function getCountForType(AssociationType $associationType)
+    public function countForAssociationType(AssociationType $associationType)
     {
         $qb = $this->createQueryBuilder('pa');
 

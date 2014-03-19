@@ -532,7 +532,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getCountForType(AssociationType $associationType)
+    public function countForAssociationType(AssociationType $associationType)
     {
         $assocMatch = [
             '$and' => [
