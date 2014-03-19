@@ -61,6 +61,16 @@
                 <include name="parameters*.yml" />
             </fileset>
         </replaceregexp>
+        <replaceregexp match="database_user:.*$" replace="database_user: %database.user%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="database_password:.*$" replace="database_password: %database.password%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
         <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
                 <include name="parameters*.yml" />
@@ -234,6 +244,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-docs-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -247,6 +259,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -260,6 +274,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-10-dev-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -273,6 +289,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-pr-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -286,6 +304,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-coverage-" />
             <arg value="${basedir}/bin/behat --ansi --strict" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -323,6 +343,11 @@
             <arg value="--no-progress" />
             <arg value="--prefer-dist" />
             <arg value="--optimize-autoloader" />
+            <env key="SYMFONY__DATABASE__NAME" value="akeneo_ci_pim_behat" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+            <env key="SYMFONY__MONGODB__DATABASE" value="akeneo_ci_pim_behat" />
+            <env key="SYMFONY__UPLOAD_DIR" value="product" />
         </exec>
     </target>
 
