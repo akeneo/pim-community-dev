@@ -841,16 +841,16 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function deleteProductIds(array $productIds)
+    public function deleteFromIds(array $ids)
     {
-        if (empty($productIds)) {
+        if (empty($ids)) {
             throw new \LogicException('No products to remove');
         }
 
         $qb = $this->createQueryBuilder('p');
         $qb
             ->delete($this->_entityName, 'p')
-            ->where($qb->expr()->in('p.id', $productIds));
+            ->where($qb->expr()->in('p.id', $ids));
 
         return $qb->getQuery()->execute();
     }
