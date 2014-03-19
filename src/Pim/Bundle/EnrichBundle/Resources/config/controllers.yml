@@ -136,6 +136,7 @@ services:
         class: %pim_enrich.controller.association_type.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@pim_catalog.manager.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
 
