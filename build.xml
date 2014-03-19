@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <property environment="env"/>
-    <property name="jobName" value="${env.JOB_NAME}" />
-
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
+
     <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
@@ -52,9 +50,19 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
-        <copy todir="${basedir}/app/config/">
-            <fileset dir="/var/lib/jenkins/apps-conf/${jobName}/" />
-        </copy>
+        <copy file="${basedir}/app/config/parameters.yml.dist" tofile="${basedir}/app/config/parameters_test.yml" />
+        <replaceregexp
+            file="${basedir}/app/config/parameters_test.yml"
+            match="database_name:.*$"
+            replace="database_name: %database.name%"
+            byline="true"
+        />
+        <replaceregexp
+            file="${basedir}/app/config/parameters_test.yml"
+            match="upload_dir:.*$"
+            replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%"
+            byline="true"
+        />
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
@@ -315,12 +323,33 @@
         </exec>
     </target>
 
-    <target name="activate-mongo" description="Activate the mongo bundle">
+    <target name="activate-mongo" depends="prepare" description="Activate the mongo bundle">
         <replace
             file="${basedir}/app/AppKernel.php"
             token="// new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
             value="new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
             failOnNoReplacements="true"
+        />
+
+        <replaceregexp
+            file="${basedir}/app/config/parameters_test.yml"
+            match="# mongodb"
+            replace="mongodb"
+            flags="g"
+        />
+
+        <replaceregexp
+            file="${basedir}/app/config/parameters_test.yml"
+            match="mongodb_database:.*$"
+            replace="mongodb_database: %mongodb.database%"
+            byline="true"
+        />
+
+        <replaceregexp
+            file="${basedir}/app/config/config.yml"
+            match="storage_driver: 'doctrine/orm'"
+            replace="storage_driver: 'doctrine/mongodb-odm'"
+            flags="g"
         />
     </target>
 

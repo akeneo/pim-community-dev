@@ -61,10 +61,7 @@ FEATURES_NAMES=""
 
 # Install the assets and db on all environments
 cd $APP_ROOT
-sed -i -e 's/database_name:.*$/database_name: "%database.name%"/' app/config/parameters_test.yml
-sed -i -e 's#upload_dir:.*$#upload_dir: "%kernel.root_dir%/uploads/%upload.dir%"#' app/config/parameters_test.yml
 for PROC in `seq 1 $CONCURRENCY`; do
-    export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
     mysqldump -u root $ORIGINAL_DB_NAME | mysql -u root $DB_PREFIX$PROC
     eval PID_$PROC=0
@@ -91,6 +88,7 @@ for FEATURE in $FEATURES; do
                 if [ $? -ne 0 ]; then
                     export SYMFONY__DATABASE__NAME=$DB_PREFIX$PROC
                     export SYMFONY__UPLOAD__DIR=product_$PROC
+                    export SYMFONY__MONGODB__DATABASE=$DB_PREFIX$PROC
                     ($BEHAT_CMD --profile=$PROFILE_PREFIX$PROC $FEATURE_NAME 2>&1 | tee -a $OUTPUT) &
                     RESULT=$!
                     eval PID_$PROC=$RESULT
