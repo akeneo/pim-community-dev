@@ -37,6 +37,8 @@ parameters:
 
     pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
 
+    pim_enrich.form.type.object_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType
+
     pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
     pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler
     pim_enrich.form.handler.family.class:           Pim\Bundle\EnrichBundle\Form\Handler\FamilyHandler
