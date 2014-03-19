@@ -336,8 +336,7 @@ class ProductController extends AbstractDoctrineController
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->getManagerForClass('PimCatalogBundle:Product')->remove($product);
-        $this->getManagerForClass('PimCatalogBundle:Product')->flush();
+        $this->remove($product);
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {

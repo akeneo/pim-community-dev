@@ -164,7 +164,7 @@ class AttributeGroupController extends AbstractDoctrineController
                 $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
-                    $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->persist($group);
+                    $this->persist($group, false);
                 }
             }
             $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
@@ -186,8 +186,7 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
-        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->remove($group);
-        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
+        $this->remove($group);
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');

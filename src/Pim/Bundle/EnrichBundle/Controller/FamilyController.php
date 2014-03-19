@@ -212,8 +212,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAction(Family $family)
     {
-        $this->getManagerForClass('PimCatalogBundle:Family')->remove($family);
-        $this->getManagerForClass('PimCatalogBundle:Family')->flush();
+        $this->remove($family);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

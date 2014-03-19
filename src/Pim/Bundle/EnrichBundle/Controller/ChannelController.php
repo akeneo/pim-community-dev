@@ -152,10 +152,9 @@ class ChannelController extends AbstractDoctrineController
 
         foreach ($channel->getLocales() as $locale) {
             $channel->removeLocale($locale);
-            $this->getManagerForClass('PimCatalogBundle:Channel')->persist($locale);
+            $this->persist($locale, false);
         }
-        $this->getManagerForClass('PimCatalogBundle:Channel')->remove($channel);
-        $this->getManagerForClass('PimCatalogBundle:Channel')->flush();
+        $this->remove($channel);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

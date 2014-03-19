@@ -163,8 +163,7 @@ class GroupTypeController extends AbstractDoctrineController
         } elseif (count($groupType->getGroups()) > 0) {
             throw new DeleteException($this->getTranslator()->trans('flash.group type.cant remove used'));
         } else {
-            $this->getManagerForClass('PimCatalogBundle:GroupType')->remove($groupType);
-            $this->getManagerForClass('PimCatalogBundle:GroupType')->flush();
+            $this->remove($groupType);
         }
 
         if ($this->getRequest()->isXmlHttpRequest()) {

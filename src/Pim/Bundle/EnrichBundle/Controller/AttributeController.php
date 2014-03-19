@@ -221,7 +221,7 @@ class AttributeController extends AbstractDoctrineController
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->getManagerForClass('PimCatalogBundle:Attribute')->persist($attribute);
+                    $this->persist($attribute, false);
                 }
             }
             $this->getManagerForClass('PimCatalogBundle:Attribute')->flush();
@@ -264,8 +264,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->getManagerForClass('PimCatalogBundle:AttributeOption')->persist($option);
-                $this->getManagerForClass('PimCatalogBundle:AttributeOption')->flush();
+                $this->persist($option);
                 $response = array(
                     'status' => 1,
                     'option' => array(
@@ -299,8 +298,7 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 
-        $this->getManagerForClass('PimCatalogBundle:Attribute')->remove($attribute);
-        $this->getManagerForClass('PimCatalogBundle:Attribute')->flush();
+        $this->remove($attribute);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

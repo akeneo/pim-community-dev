@@ -176,8 +176,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function removeAction(AssociationType $associationType)
     {
-        $this->getManagerForClass('PimCatalogBundle:AssociationType')->remove($associationType);
-        $this->getManagerForClass('PimCatalogBundle:AssociationType')->flush();
+        $this->remove($associationType);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

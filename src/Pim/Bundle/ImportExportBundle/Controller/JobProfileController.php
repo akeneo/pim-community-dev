@@ -126,8 +126,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->persist($jobInstance);
-                $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->flush();
+                $this->persist($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -221,8 +220,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->persist($jobInstance);
-                $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->flush();
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -266,8 +264,7 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
-        $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->remove($jobInstance);
-        $this->getManagerForClass('AkeneoBatchBundle:JobInstance')->flush();
+        $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -302,8 +299,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-            $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->persist($jobExecution);
-            $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->flush();
+            $this->persist($jobExecution);
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
