@@ -37,7 +37,7 @@ class InitializeValuesListener implements EventSubscriberInterface
     public function onCreateProduct(FilterProductEvent $event)
     {
         $product = $event->getProduct();
-        $manager = $event->getManager();
+        $manager = $event->getProductManager();
 
         $findBy = ['required' => true];
         $attributes = $manager->getAttributeRepository()->findBy($findBy);

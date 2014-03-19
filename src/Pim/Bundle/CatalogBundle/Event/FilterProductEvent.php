@@ -38,6 +38,14 @@ class FilterProductEvent extends Event
     }
 
     /**
+     * @return ProductManager
+     */
+    public function getProductManager()
+    {
+        return $this->manager;
+    }
+
+    /**
      * @return ProductInterface
      */
     public function getProduct()
