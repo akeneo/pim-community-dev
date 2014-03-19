@@ -8,7 +8,7 @@ services:
     pim_transform.cache.entity_cache:
         class: %pim_transform.cache.entity_cache.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_transform.cache.attribute_cache:
         class: %pim_transform.cache.attribute_cache.class%

@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;

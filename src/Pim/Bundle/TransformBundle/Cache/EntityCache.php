@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -33,9 +33,9 @@ class EntityCache
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
+     * @param ManagerRegistry $doctrine
      */
-    public function __construct(RegistryInterface $doctrine)
+    public function __construct(ManagerRegistry $doctrine)
     {
         $this->doctrine = $doctrine;
     }

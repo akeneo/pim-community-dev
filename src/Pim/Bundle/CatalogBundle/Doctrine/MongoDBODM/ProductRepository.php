@@ -8,11 +8,13 @@ use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
@@ -23,7 +25,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface
+ ReferableEntityRepositoryInterface, AssociationRepositoryInterface
 {
     /**
      * Flexible entity config
@@ -252,7 +254,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Return a cursor on the product ids belonging the categories
      * with category ids provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryIds
      *
      * @return Cursor mongoDB cursor on the Ids
      */
@@ -525,5 +527,38 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function applyFilterByFamilyIds($qb, array $familyIds)
     {
         $qb->addAnd($qb->expr()->field('family')->in($familyIds));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countForAssociationType(AssociationType $associationType)
+    {
+        $assocMatch = [
+            '$and' => [
+                ['associationType' => $associationType->getId()],
+                [
+                    '$or' => [
+                        [ 'products' => [ '$ne'=> [] ] ],
+                        [ 'groups'   => [ '$ne'=> [] ] ]
+                    ]
+                ]
+            ]
+        ];
+
+        $qb = $this->createQueryBuilder()
+            ->hydrate(false)
+            ->field('associations')->elemMatch($assocMatch)
+            ->select('_id');
+
+        return $qb->getQuery()->execute()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProductIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

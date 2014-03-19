@@ -190,8 +190,8 @@ class FlatProductNormalizer implements NormalizerInterface
         $normalized = array();
         $fieldName = $this->getFieldValue($value);
 
-        foreach ($value->getPrices() as $currency => $price) {
-            $normalized[sprintf('%s-%s', $fieldName, $currency)] = $price->getData();
+        foreach ($value->getPrices() as $price) {
+            $normalized[sprintf('%s-%s', $fieldName, $price->getCurrency())] = $price->getData();
         }
 
         return $normalized;

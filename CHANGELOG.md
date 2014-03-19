@@ -11,6 +11,8 @@
 - MongoDB support (WIP)
 - Allow to add many quick export on datagrids
 - Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
+- Optimize products mass deletion
+- Improve get product REST API
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -46,10 +48,16 @@
 - Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
 - Move mass export in specific controller
 - Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
+- Remove DeleteMassActionHandler, replaced by ProductDeleteMassActionHandler
+- Add deleteProductIds in ProductRepository
+- Change product REST API data and url format
+- Remove incomplete REST API for getting multiple products
+- Remove Router dependency from json ProductNormalizer
 
 # 1.0.2
 ## Bug Fixes
 - Removed hardcoded attribute table from ORM/CompletenessGenerator.php
+- Fixed of ProductValue's attributes' exclusion on completeness's computation
 
 # 1.0.1
 ## Bug Fixes

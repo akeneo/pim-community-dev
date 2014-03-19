@@ -53,6 +53,7 @@ class MediaController extends AbstractDoctrineController
      * @param ImagineInterface         $imagine
      * @param FilterManager            $filterManager
      * @param CacheManager             $cacheManager
+     * @param ObjectRepository         $mediaRepository
      */
     public function __construct(
         Request $request,
