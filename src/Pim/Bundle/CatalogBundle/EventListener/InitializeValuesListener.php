@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
