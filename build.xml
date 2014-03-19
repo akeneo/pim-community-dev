@@ -52,8 +52,9 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
-        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
-        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
+        <copy todir="${basedir}/app/config/">
+            <fileset dir="/var/lib/jenkins/apps-conf/${jobName}/" />
+        </copy>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
