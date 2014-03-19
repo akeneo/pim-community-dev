@@ -3,7 +3,6 @@ parameters:
     pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
     pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    pim_flexibleentity.listener.has_required_value.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
     pim_flexibleentity.listener.outdate_indexed_values.class:         Pim\Bundle\FlexibleEntityBundle\EventListener\OutdateIndexedValuesListener
 
 services:
@@ -17,15 +16,6 @@ services:
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
-
-
-    # ensure that required value has been set
-    pim_flexibleentity.listener.has_required_value:
-        class: %pim_flexibleentity.listener.has_required_value.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
-        tags:
-            - { name: doctrine.event_subscriber }
 
     # Mark entity indexedValues as outdated once one of its value has been loaded from DB
     pim_flexibleentity.listener.outdate_indexed_values:
