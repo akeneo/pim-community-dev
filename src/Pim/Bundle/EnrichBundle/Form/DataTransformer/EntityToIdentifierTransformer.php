@@ -61,9 +61,6 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
         }
 
         if ($this->multiple) {
-            if (is_string($value) && (null !== $this->delimiter)) {
-                $value = explode($this->delimiter, $value);
-            }
             if (!is_array($value)) {
                 throw new UnexpectedTypeException($value, 'array');
             }
