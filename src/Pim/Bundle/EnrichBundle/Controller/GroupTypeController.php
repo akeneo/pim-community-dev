@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -51,7 +51,7 @@ class GroupTypeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param GroupTypeHandler         $groupTypeHandler
      * @param Form                     $groupTypeForm
      */
@@ -63,7 +63,7 @@ class GroupTypeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         GroupTypeHandler $groupTypeHandler,
         Form $groupTypeForm
     ) {
@@ -163,8 +163,8 @@ class GroupTypeController extends AbstractDoctrineController
         } elseif (count($groupType->getGroups()) > 0) {
             throw new DeleteException($this->getTranslator()->trans('flash.group type.cant remove used'));
         } else {
-            $this->getManager()->remove($groupType);
-            $this->getManager()->flush();
+            $this->getManagerForClass('PimCatalogBundle:GroupType')->remove($groupType);
+            $this->getManagerForClass('PimCatalogBundle:GroupType')->flush();
         }
 
         if ($this->getRequest()->isXmlHttpRequest()) {

@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -25,7 +24,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 abstract class AbstractDoctrineController extends AbstractController
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
@@ -39,7 +38,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      */
     public function __construct(
         Request $request,
@@ -59,7 +58,7 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Returns the Doctrine registry service.
      *
-     * @return RegistryInterface
+     * @return ManagerRegistry
      */
     protected function getDoctrine()
     {
@@ -74,6 +73,18 @@ abstract class AbstractDoctrineController extends AbstractController
     protected function getManager()
     {
         return $this->doctrine->getManager();
+    }
+
+    /**
+     * Returns the Doctrine manager for the given class
+     *
+     * @param string $class
+     *
+     * @return ObjectManager
+     */
+    protected function getManagerForClass($class)
+    {
+        return $this->doctrine->getManagerForClass($class);
     }
 
     /**

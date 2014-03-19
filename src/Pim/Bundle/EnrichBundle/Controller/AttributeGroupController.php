@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -56,7 +56,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
      * @param string                   $attributeClass
@@ -69,7 +69,7 @@ class AttributeGroupController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         AttributeGroupHandler $formHandler,
         Form $form,
         $attributeClass
@@ -164,10 +164,10 @@ class AttributeGroupController extends AbstractDoctrineController
                 $group = $this->getRepository('PimCatalogBundle:AttributeGroup')->find((int) $id);
                 if ($group) {
                     $group->setSortOrder((int) $sort);
-                    $this->getManager()->persist($group);
+                    $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->persist($group);
                 }
             }
-            $this->getManager()->flush();
+            $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
 
             return new Response(1);
         }
@@ -186,8 +186,8 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
-        $this->getManager()->remove($group);
-        $this->getManager()->flush();
+        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->remove($group);
+        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
 
         if ($request->get('_redirectBack')) {
             $referer = $request->headers->get('referer');
@@ -248,7 +248,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $group->addAttribute($attribute);
         }
 
-        $this->getManager()->flush();
+        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
 
         $this->addFlash('success', 'flash.attribute group.attributes added');
 
@@ -276,7 +276,7 @@ class AttributeGroupController extends AbstractDoctrineController
         }
 
         $group->removeAttribute($attribute);
-        $this->getManager()->flush();
+        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

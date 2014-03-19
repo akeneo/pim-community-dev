@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -51,7 +51,7 @@ class ChannelController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param ChannelHandler           $channelHandler
      * @param Form                     $channelForm
      */
@@ -63,7 +63,7 @@ class ChannelController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ChannelHandler $channelHandler,
         Form $channelForm
     ) {
@@ -152,10 +152,10 @@ class ChannelController extends AbstractDoctrineController
 
         foreach ($channel->getLocales() as $locale) {
             $channel->removeLocale($locale);
-            $this->getManager()->persist($locale);
+            $this->getManagerForClass('PimCatalogBundle:Channel')->persist($locale);
         }
-        $this->getManager()->remove($channel);
-        $this->getManager()->flush();
+        $this->getManagerForClass('PimCatalogBundle:Channel')->remove($channel);
+        $this->getManagerForClass('PimCatalogBundle:Channel')->flush();
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
