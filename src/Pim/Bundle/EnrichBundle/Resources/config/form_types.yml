@@ -25,7 +25,7 @@ services:
         class: %pim_enrich.form.type.product_value.class%
         arguments:
             - %pim_catalog.entity.product_value.class%
-            - '@pim_flexibleentity.value_form.value_subscriber'
+            - '@pim_enrich.form.subscriber.add_value_field_subscriber'
             - '@pim_enrich.form.type.product.view'
         tags:
             - { name: form.type, alias: pim_product_value }
@@ -228,3 +228,9 @@ services:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
         arguments:
             - '@pim_catalog.manager.channel'
+
+    pim_enrich.form.subscriber.add_value_field_subscriber:
+        class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
+        arguments:
+            - '@form.factory'
+            - '@pim_catalog.factory.attribute_type'

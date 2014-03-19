@@ -50,7 +50,7 @@ parameters:
 
     pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
     pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
-
+    pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
     pim_enrich.mass_edit_action.operator.class:               Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator
     pim_enrich.mass_edit_action.change_status.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeStatus
     pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\EditCommonAttributes
