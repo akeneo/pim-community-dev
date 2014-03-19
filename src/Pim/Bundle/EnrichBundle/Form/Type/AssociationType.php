@@ -41,7 +41,7 @@ class AssociationType extends AbstractType
     /**
      * Costructor
      *
-     * @param string $productClass
+     * @param string                     $productClass
      * @param ProductRepositoryInterface $productRepository
      * @param EntityManager              $entityManager
      * @param string                     $assocTypeClass
