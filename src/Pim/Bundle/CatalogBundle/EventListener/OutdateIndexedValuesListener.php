@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
