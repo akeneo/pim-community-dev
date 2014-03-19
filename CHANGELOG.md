@@ -1,6 +1,7 @@
 # 1.0.2
 ## Bug Fixes
 - Removed hardcoded attribute table from ORM/CompletenessGenerator.php
+- Fixed of ProductValue's attributes' exclusion on completeness's computation
 
 ## Bug Fixes
 - Removed hardcoded Attribute from ChainedAttributeConstraintGuesser
