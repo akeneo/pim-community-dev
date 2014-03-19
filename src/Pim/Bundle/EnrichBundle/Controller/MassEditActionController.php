@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormError;
 
 use Doctrine\ORM\AbstractQuery;
@@ -62,7 +62,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param FormFactoryInterface       $formFactory
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
-     * @param RegistryInterface          $doctrine
+     * @param ManagerRegistry            $doctrine
      * @param MassEditActionOperator     $operator
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
@@ -76,7 +76,7 @@ class MassEditActionController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         MassEditActionOperator $operator,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,

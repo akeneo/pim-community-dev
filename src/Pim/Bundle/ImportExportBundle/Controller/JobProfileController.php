@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -68,7 +68,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
      * @param string                   $jobType
      * @param string                   $rootDir
@@ -83,7 +83,7 @@ class JobProfileController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
         $jobType,
         $rootDir,
@@ -126,8 +126,7 @@ class JobProfileController extends AbstractDoctrineController
             $form->handleRequest($request);
 
             if ($form->isValid()) {
-                $this->getManager()->persist($jobInstance);
-                $this->getManager()->flush();
+                $this->persist($jobInstance);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $this->getJobType()));
 
@@ -221,8 +220,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $this->getManager()->persist($jobInstance);
-                $this->getManager()->flush();
+                $this->persist($jobInstance);
 
                 $this->addFlash(
                     'success',
@@ -266,8 +264,7 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
-        $this->getManager()->remove($jobInstance);
-        $this->getManager()->flush();
+        $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -302,8 +299,7 @@ class JobProfileController extends AbstractDoctrineController
         if ($uploadMode === true || $violations->count() === 0) {
             $jobExecution = new JobExecution();
             $jobExecution->setJobInstance($jobInstance);
-            $this->getManager()->persist($jobExecution);
-            $this->getManager()->flush();
+            $this->persist($jobExecution);
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
