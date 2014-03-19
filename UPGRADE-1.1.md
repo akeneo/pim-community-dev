@@ -40,6 +40,7 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `pim_flexibleentity.listener.timestampable` by `pim_catalog.event_listener.timestampable`
  - service `pim_flexibleentity.listener.listener.initialize_values` by `pim_catalog.event_listener.initialize_values`
  - service `pim_flexibleentity.listener.outdate_indexed_values` by `pim_catalog.event_listener.outdate_indexed_values`
+ - service `pim_flexibleentity.value_form.value_subscriber` by `pim_enrich.form.subscriber.add_value_field_subscriber`
 
 Following events have been replaced :
  - `FilterFlexibleEvent` by `FilterProductEvent`

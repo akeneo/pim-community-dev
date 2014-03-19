@@ -1,17 +1,9 @@
 parameters:
     pim_flexibleentity.flexible_config:                               ~
     pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
 
 services:
-    pim_flexibleentity.value_form.value_subscriber:
-        class: %pim_flexibleentity.value_form.value_subscriber.class%
-        arguments:
-            - '@form.factory'
-            - '@pim_catalog.factory.attribute_type'
-            - '@pim_flexibleentity.registry'
-
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
