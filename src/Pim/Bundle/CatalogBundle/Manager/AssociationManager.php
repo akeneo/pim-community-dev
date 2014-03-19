@@ -30,9 +30,9 @@ class AssociationManager
      *
      * @return int
      */
-    public function getCountForType(AssociationType $type)
+    public function countForAssociationType(AssociationType $type)
     {
-        return $this->repository->getCountForType($type);
+        return $this->repository->countForAssociationType($type);
 
     }
 }

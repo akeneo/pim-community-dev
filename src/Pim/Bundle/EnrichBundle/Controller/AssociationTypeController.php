@@ -158,7 +158,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             return $this->redirectToRoute('pim_enrich_association_type_edit', array('id' => $id));
         }
-        $usageCount = $this->assocManager->getCountForType($associationType);
+        $usageCount = $this->assocManager->countForAssociationType($associationType);
 
         return array(
             'form'       => $this->assocTypeForm->createView(),
