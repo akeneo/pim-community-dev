@@ -86,8 +86,3 @@ services:
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
             - %pim_catalog.entity.completeness.class%
-
-    pim_catalog.manager.association:
-        class: %pim_catalog.manager.association.class%
-        arguments:
-            - '@pim_catalog.repository.product'
