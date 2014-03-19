@@ -5,6 +5,7 @@ parameters:
     pim_catalog.event_listener.scopable.class:                     Pim\Bundle\CatalogBundle\EventListener\ScopableListener
     pim_catalog.event_listener.timestampable.class:                Pim\Bundle\CatalogBundle\EventListener\TimestampableListener
     pim_catalog.event_listener.initialize_values.class:            Pim\Bundle\CatalogBundle\EventListener\InitializeValuesListener
+    pim_catalog.event_listener.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventListener\OutdateIndexedValuesListener
 
 services:
     # Subscribers
@@ -50,3 +51,9 @@ services:
         class: %pim_catalog.event_listener.initialize_values.class%
         tags:
             - { name: kernel.event_subscriber}
+
+    pim_catalog.event_listener.outdate_indexed_values:
+        class: %pim_catalog.event_listener.outdate_indexed_values.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
