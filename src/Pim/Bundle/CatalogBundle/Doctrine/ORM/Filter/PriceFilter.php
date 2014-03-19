@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
 use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Price filter

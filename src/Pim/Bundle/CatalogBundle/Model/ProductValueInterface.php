@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product value interface

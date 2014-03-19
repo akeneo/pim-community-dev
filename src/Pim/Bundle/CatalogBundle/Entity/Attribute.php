@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;

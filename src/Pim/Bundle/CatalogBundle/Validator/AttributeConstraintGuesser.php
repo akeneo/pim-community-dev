@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Validator;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Symfony\Component\Validator\Constraints;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 

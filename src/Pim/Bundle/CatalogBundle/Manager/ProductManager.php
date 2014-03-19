@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;

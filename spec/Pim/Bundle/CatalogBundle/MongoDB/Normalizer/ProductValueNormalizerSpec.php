@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
