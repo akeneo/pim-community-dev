@@ -61,9 +61,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         $data = [];
 
         $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
-        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : null;
-        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : null;
-        $data[self::FIELD_ENABLED]  = (int) $product->isEnabled();
+        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
+        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
+        $data[self::FIELD_ENABLED]  = $product->isEnabled();
 
         $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
 
