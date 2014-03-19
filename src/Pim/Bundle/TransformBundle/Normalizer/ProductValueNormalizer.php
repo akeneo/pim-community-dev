@@ -44,6 +44,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         ];
 
         if ($entity->getData() instanceof Collection) {
+            $data['values'] = [];
             foreach ($entity->getData() as $item) {
                 $data['values'][] = $this->serializer->normalize($item, $format, $context);
             }

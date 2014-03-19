@@ -57,6 +57,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
+        $context['entity'] = 'product';
         $data = [];
 
         $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
