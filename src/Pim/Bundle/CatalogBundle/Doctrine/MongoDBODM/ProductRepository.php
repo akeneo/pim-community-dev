@@ -301,7 +301,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Return a cursor on the product ids belonging the categories
      * with category ids provided
      *
-     * @param array $categoriesIds
+     * @param array $categoryIds
      *
      * @return Cursor mongoDB cursor on the Ids
      */
@@ -566,5 +566,13 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function applyFilterByFamilyIds($qb, array $familyIds)
     {
         $qb->addAnd($qb->expr()->field('family')->in($familyIds));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProductIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

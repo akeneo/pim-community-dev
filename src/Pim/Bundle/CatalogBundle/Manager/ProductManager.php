@@ -288,13 +288,10 @@ class ProductManager extends FlexibleManager
     public function createProduct()
     {
         $class = $this->getProductName();
-        $valueClass = $this->getProductValueName();
 
         $product = new $class();
         $product->setLocale($this->getLocale());
         $product->setScope($this->getScope());
-
-        $product->setValueClass($valueClass);
 
         $event = new FilterFlexibleEvent($this, $product);
         $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
