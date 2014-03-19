@@ -46,6 +46,8 @@ Following events have been replaced :
  - `FilterFlexibleEvent` by `FilterProductEvent`
  - `FilterFlexibleValueEvent` by `FilterProductValueEvent`
 
+The class `Pim/Bundle/CatalogBundle/Model/AbstractAttribute` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractAttribute`
+
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 
 DataGridBundle
