@@ -186,4 +186,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $this->documentManager->flush($product);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForFamily(Family $family)
+    {
+        throw new \LogicException("Not implemented yet !");
+    }
 }

@@ -41,3 +41,27 @@ Feature: Display the completeness of a product
       | mobile  | French (France)         | warning | 2 missing values | 60%   |
       | tablet  | English (United States) | warning | 6 missing values | 25%   |
       | tablet  | French (France)         | warning | 4 missing values | 50%   |
+
+  Scenario: Remove completeness when family requirements changed
+    Given I am on the "sneakers" family page
+    And I visit the "Attributes" tab
+    And I switch the attribute "Rating" requirement in channel "Mobile"
+    And I save the family
+    And I am on the "sneakers" product page
+    When I visit the "Completeness" tab
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale                  | state   | message            | ratio |
+      | mobile  | English (United States) | success | Not yet calculated |       |
+      | mobile  | French (France)         | success | Not yet calculated |       |
+      | tablet  | English (United States) | warning | 1 missing value    | 89%   |
+      | tablet  | French (France)         | warning | 2 missing values   | 78%   |
+    When I am on the "sandals" product page
+    And I visit the "Completeness" tab
+    Then I should see the completeness summary
+    And I should see the completeness:
+      | channel | locale                  | state   | message          | ratio |
+      | mobile  | English (United States) | warning | 3 missing values | 40%   |
+      | mobile  | French (France)         | warning | 2 missing values | 60%   |
+      | tablet  | English (United States) | warning | 6 missing values | 25%   |
+      | tablet  | French (France)         | warning | 4 missing values | 50%   |
