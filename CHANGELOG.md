@@ -57,6 +57,7 @@
 # 1.0.2
 ## Bug Fixes
 - Removed hardcoded attribute table from ORM/CompletenessGenerator.php
+- Fixed of ProductValue's attributes' exclusion on completeness's computation
 
 # 1.0.1
 ## Bug Fixes

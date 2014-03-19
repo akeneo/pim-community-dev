@@ -441,9 +441,11 @@ MAIN_SQL;
                     function ($name) use ($prefix) {
                         return sprintf('%s.%s', $prefix, $name);
                     },
-                    array_diff(
+                    array_filter(
                         $this->getClassMetadata($className)->getColumnNames(),
-                        array('id', 'locale_code', 'scope_code')
+                        function ($value) {
+                            return (strpos($value, 'value_') === 0);
+                        }
                     )
                 );
         }
