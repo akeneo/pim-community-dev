@@ -16,8 +16,17 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @const string */
     const FAMILY_FIELD = 'family';
+
+    /** @const string */
     const COMPLETENESSES_FIELD = 'completenesses';
+
+    /** @const string */
+    const CREATED_FIELD = 'created';
+
+    /** @const string */
+    const UPDATED_FIELD = 'updated';
 
     /** @var SerializerInterface */
     protected $serializer;
@@ -31,7 +40,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $data = [self::FAMILY_FIELD => $this->serializer->normalize($object->getFamily(), $format, $context)];
+        $data = [
+            self::FAMILY_FIELD => $this->serializer->normalize($object->getFamily(), $format, $context),
+            self::CREATED_FIELD => $this->serializer->normalize($object->getCreated(), $format, $context),
+            self::UPDATED_FIELD => $this->serializer->normalize($object->getUpdated(), $format, $context)
+        ];
 
         foreach ($object->getValues() as $value) {
             $data = array_merge(
