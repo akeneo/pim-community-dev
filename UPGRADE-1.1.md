@@ -41,6 +41,10 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `pim_flexibleentity.listener.listener.initialize_values` by `pim_catalog.event_listener.initialize_values`
  - service `pim_flexibleentity.listener.outdate_indexed_values` by `pim_catalog.event_listener.outdate_indexed_values`
 
+Following events have been replaced :
+ - `FilterFlexibleEvent` by `FilterProductEvent`
+ - `FilterFlexibleValueEvent` by `FilterProductValueEvent`
+
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 
 DataGridBundle

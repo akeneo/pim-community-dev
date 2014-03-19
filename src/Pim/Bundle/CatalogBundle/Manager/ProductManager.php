@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
-use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
+use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
+use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -283,8 +283,8 @@ class ProductManager extends FlexibleManager
         $product->setLocale($this->getLocale());
         $product->setScope($this->getScope());
 
-        $event = new FilterFlexibleEvent($this, $product);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
+        $event = new FilterProductEvent($this, $product);
+        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT, $event);
 
         return $product;
     }
@@ -309,8 +309,8 @@ class ProductManager extends FlexibleManager
         $class = $this->getProductValueName();
         $value = new $class();
 
-        $event = new FilterFlexibleValueEvent($this, $value);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
+        $event = new FilterProductValueEvent($this, $value);
+        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT_VALUE, $event);
 
         return $value;
     }

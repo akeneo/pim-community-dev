@@ -3,15 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
-use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Aims to add all values / required values when create or load a new flexible :
- * - required : an empty (or default value) for each required attribute
- * - all : an empty (or default value) for each attribute
+ * Aims to add all values / required values when create or load a new product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -27,44 +25,39 @@ class InitializeValuesListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FlexibleEntityEvents::CREATE_FLEXIBLE => array('onCreateFlexibleEntity'),
+            CatalogEvents::CREATE_PRODUCT => array('onCreateProduct'),
         );
     }
 
     /**
      * Add values for each attribute
-     * @param FilterFlexibleEvent $event
+     *
+     * @param FilterProductEvent $event
      */
-    public function onCreateFlexibleEntity(FilterFlexibleEvent $event)
+    public function onCreateProduct(FilterProductEvent $event)
     {
-        $flexible = $event->getEntity();
-        $manager  = $event->getManager();
+        $product = $event->getProduct();
+        $manager = $event->getProductManager();
 
-        if ($flexible instanceof FlexibleInterface and $manager->getFlexibleInitMode() !== 'empty') {
-            $findBy = array('entityType' => $manager->getFlexibleName());
-            if ($manager->getFlexibleInitMode() === 'required_attributes') {
-                $findBy['required'] = true;
-            }
-
-            $attributes = $manager->getAttributeRepository()->findBy($findBy);
-            $this->addValues($manager, $flexible, $attributes);
-        }
+        $findBy = ['required' => true];
+        $attributes = $manager->getAttributeRepository()->findBy($findBy);
+        $this->addValues($manager, $product, $attributes);
     }
 
     /**
-     * @param FlexibleManager   $manager    the object manager
-     * @param FlexibleInterface $flexible   the entity
-     * @param array             $attributes the attributes
+     * @param ProductManager   $manager    the product manager
+     * @param ProductInterface $product    the entity
+     * @param array            $attributes the attributes
      */
-    protected function addValues(FlexibleManager $manager, FlexibleInterface $flexible, $attributes)
+    protected function addValues(ProductManager $manager, ProductInterface $product, $attributes)
     {
         foreach ($attributes as $attribute) {
-            $value = $manager->createFlexibleValue();
+            $value = $manager->createProductValue();
             $value->setAttribute($attribute);
             if ($attribute->getDefaultValue() !== null) {
                 $value->setData($attribute->getDefaultValue());
             }
-            $flexible->addValue($value);
+            $product->addValue($value);
         }
     }
 }
