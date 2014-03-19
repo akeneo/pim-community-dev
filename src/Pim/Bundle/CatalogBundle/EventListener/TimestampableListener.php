@@ -1,12 +1,12 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Aims to add timestambable behavior
@@ -51,10 +51,10 @@ class TimestampableListener implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        if ($entity instanceof \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue) {
-            $flexible = $entity->getEntity();
-            if ($flexible !== null) {
-                $this->updateFlexibleFields($args->getEntityManager(), $flexible, array('updated'));
+        if ($entity instanceof ProductValueInterface) {
+            $product = $entity->getEntity();
+            if ($product !== null) {
+                $this->updateProductFields($args->getEntityManager(), $product, array('updated'));
             }
         }
 
@@ -66,11 +66,11 @@ class TimestampableListener implements EventSubscriber
     /**
      * Update flexible fields when a value is updated
      *
-     * @param ObjectManager $manager
-     * @param Flexible      $flexible
-     * @param array         $fields
+     * @param ObjectManager    $manager
+     * @param ProductInterface $product
+     * @param array            $fields
      */
-    protected function updateFlexibleFields(ObjectManager $manager, AbstractFlexible $flexible, $fields)
+    protected function updateProductFields(ObjectManager $manager, ProductInterface $product, $fields)
     {
         $uow     = $manager->getUnitOfWork();
         $now     = new \DateTime('now', new \DateTimeZone('UTC'));
@@ -78,6 +78,6 @@ class TimestampableListener implements EventSubscriber
         foreach ($fields as $field) {
             $changes[$field] = array(null, $now);
         }
-        $uow->scheduleExtraUpdate($flexible, $changes);
+        $uow->scheduleExtraUpdate($product, $changes);
     }
 }
