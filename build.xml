@@ -50,19 +50,22 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
+        <!--
+            We still need a parameters.yml otherwise composer will create it without comments,
+            thus raising a "You have requested a non-existent parameter "mongodb_server"." error.
+        -->
+        <copy file="${basedir}/app/config/parameters.yml.dist" tofile="${basedir}/app/config/parameters.yml" />
         <copy file="${basedir}/app/config/parameters.yml.dist" tofile="${basedir}/app/config/parameters_test.yml" />
-        <replaceregexp
-            file="${basedir}/app/config/parameters_test.yml"
-            match="database_name:.*$"
-            replace="database_name: %database.name%"
-            byline="true"
-        />
-        <replaceregexp
-            file="${basedir}/app/config/parameters_test.yml"
-            match="upload_dir:.*$"
-            replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%"
-            byline="true"
-        />
+        <replaceregexp match="database_name:.*$" replace="database_name: %database.name%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
@@ -331,19 +334,17 @@
             failOnNoReplacements="true"
         />
 
-        <replaceregexp
-            file="${basedir}/app/config/parameters_test.yml"
-            match="# mongodb"
-            replace="mongodb"
-            flags="g"
-        />
+        <replaceregexp match="# mongodb" replace="mongodb" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
 
-        <replaceregexp
-            file="${basedir}/app/config/parameters_test.yml"
-            match="mongodb_database:.*$"
-            replace="mongodb_database: %mongodb.database%"
-            byline="true"
-        />
+        <replaceregexp match="mongodb_database:.*$" replace="mongodb_database: %mongodb.database%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
 
         <replaceregexp
             file="${basedir}/app/config/config.yml"
