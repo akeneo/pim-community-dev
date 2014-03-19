@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
 use Doctrine\Common\Util\Inflector;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\TransformBundle\Exception\ColumnLabelException;
 
 /**

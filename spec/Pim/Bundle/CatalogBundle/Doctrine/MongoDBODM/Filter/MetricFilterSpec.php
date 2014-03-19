@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder

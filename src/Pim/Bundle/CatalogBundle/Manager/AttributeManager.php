@@ -76,7 +76,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     public function createAttribute($type = null)
     {

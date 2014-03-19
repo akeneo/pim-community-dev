@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * A normalizer to transform an AbstractAttribute entity into a flat array

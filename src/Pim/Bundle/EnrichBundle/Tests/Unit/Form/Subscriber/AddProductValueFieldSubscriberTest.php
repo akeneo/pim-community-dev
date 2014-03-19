@@ -111,7 +111,7 @@ class AddProductValueFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected function assertProductValueFormInit($dataClass, $valueFormData = null)
     {
         $attributeTypeName = 'test_attribute';
-        $attribute = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute')
+        $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\AbstractAttribute')
             ->getMock();
         $attribute->expects($this->once())
             ->method('getAttributeType')
