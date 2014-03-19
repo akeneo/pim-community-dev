@@ -20,7 +20,7 @@ Feature: Expose product data via a REST API
 
   Scenario: Successfully retrieve a product
     Given I am authenticating as "admin" with "admin_api_key" api key
-    And I send a GET request to "api/rest/products/sandals.json"
+    And I request information for product "sandals"
     Then the response code should be 200
     And the response should be valid json
     And the response should contain json:
@@ -49,6 +49,6 @@ Feature: Expose product data via a REST API
           ]}
         ]
       },
-      "resource":"http:\/\/akeneo-pim-behat.local\/api\/rest\/products\/sandals"
+      "resource":"{baseUrl}/api/rest/products/sandals"
     }
     """

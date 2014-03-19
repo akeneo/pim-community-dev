@@ -100,7 +100,12 @@ class MediaController extends AbstractDoctrineController
             throw $this->createNotFoundException(sprintf('Media "%s" not found', $filename));
         }
 
-        $path     = $media->getFilePath();
+        $path = $media->getFilePath();
+
+        if (!file_exists($path)) {
+            return new Response('', 404);
+        }
+
         $response = new Response(file_get_contents($path));
 
         if (($filter = $request->query->get('filter')) && 0 === strpos($media->getMimeType(), 'image')) {
