@@ -34,6 +34,7 @@ services:
         class: %pim_flexibleentity.listener.outdate_indexed_values.class%
         tags:
             - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
 
     # add default value
     pim_flexibleentity.listener.listener.default_value:
