@@ -526,4 +526,12 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     {
         $qb->addAnd($qb->expr()->field('family')->in($familyIds));
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProductIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
