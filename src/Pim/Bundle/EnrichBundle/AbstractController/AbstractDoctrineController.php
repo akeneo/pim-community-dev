@@ -98,6 +98,38 @@ abstract class AbstractDoctrineController extends AbstractController
     }
 
     /**
+     * Persist an object
+     *
+     * @param object  $object
+     * @param boolean $flush
+     */
+    protected function persist($object, $flush = true)
+    {
+        $manager = $this->doctrine->getManagerForClass(get_class($object));
+        $manager->persist($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * Remove an object
+     *
+     * @param object  $object
+     * @param boolean $flush
+     */
+    protected function remove($object, $flush = true)
+    {
+        $manager = $this->doctrine->getManagerForClass(get_class($object));
+        $manager->remove($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
      * Find an entity or throw a 404
      *
      * @param string  $className Example: 'PimCatalogBundle:Category'
