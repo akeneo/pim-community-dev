@@ -23,7 +23,7 @@ class DateTimeNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        $format = isset($context['format']) ? $context['format'] : \DateTime::ISO8601;
+        $format = isset($context['format']) ? $context['format'] : 'Y-m-d';
 
         return $object->format($format);
     }

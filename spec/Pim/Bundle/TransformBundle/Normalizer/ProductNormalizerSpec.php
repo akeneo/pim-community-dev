@@ -57,7 +57,8 @@ class ProductNormalizerSpec extends ObjectBehavior
             'groups' => [],
             'categories' => [],
             'enabled' => true,
-            'associations' => []
+            'associations' => [],
+            'values' => []
         ]);
     }
 
@@ -97,11 +98,13 @@ class ProductNormalizerSpec extends ObjectBehavior
             'categories' => [],
             'enabled' => true,
             'associations' => [],
-            'name' => [
-                [
-                    'locale' => null,
-                    'scope' => null,
-                    'value' => 'foo'
+            'values' => [
+                'name' => [
+                    [
+                        'locale' => null,
+                        'scope' => null,
+                        'value' => 'foo'
+                    ]
                 ]
             ]
         ]);

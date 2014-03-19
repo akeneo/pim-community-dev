@@ -32,6 +32,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @staticvar string */
     const FIELD_ASSOCIATIONS = 'associations';
 
+    /** @staticvar string */
+    const FIELD_VALUES = 'values';
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -67,7 +70,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
 
-        $data = $data + $this->normalizeValues($product->getValues(), $format, $context);
+        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
 
         if (isset($context['resource'])) {
             $data['resource'] = $context['resource'];

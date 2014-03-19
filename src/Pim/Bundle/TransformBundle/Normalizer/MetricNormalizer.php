@@ -25,9 +25,8 @@ class MetricNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = [])
     {
         return [
-            'data'   => $object->getData(),
-            'unit'   => $object->getUnit(),
-            'family' => $object->getFamily()
+            'data' => $object->getData(),
+            'unit' => $object->getUnit()
         ];
     }
 

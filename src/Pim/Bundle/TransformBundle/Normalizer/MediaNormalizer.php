@@ -24,7 +24,7 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = [])
     {
-        return ['filename' => $object->getOriginalFilename()];
+        return $object->getOriginalFilename();
     }
 
     /**

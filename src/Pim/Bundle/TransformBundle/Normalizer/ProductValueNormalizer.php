@@ -38,21 +38,20 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($entity, $format = null, array $context = [])
     {
-        $data = [
-            'locale' => $entity->getLocale(),
-            'scope'  => $entity->getScope()
-        ];
-
         if ($entity->getData() instanceof Collection) {
-            $data['values'] = [];
+            $value = [];
             foreach ($entity->getData() as $item) {
-                $data['values'][] = $this->serializer->normalize($item, $format, $context);
+                $value[] = $this->serializer->normalize($item, $format, $context);
             }
         } else {
-            $data['value'] = $this->serializer->normalize($entity->getData(), $format, $context);
+            $value = $this->serializer->normalize($entity->getData(), $format, $context);
         }
 
-        return $data;
+        return [
+            'locale' => $entity->getLocale(),
+            'scope'  => $entity->getScope(),
+            'value'  => $value
+        ];
     }
 
     /**

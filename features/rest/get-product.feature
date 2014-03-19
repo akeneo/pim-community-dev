@@ -31,22 +31,24 @@ Feature: Expose product data via a REST API
       "categories":[],
       "enabled":true,
       "associations":[],
-      "sku":[
-        {"locale":null,"scope":null,"value":"sandals"}
-      ],
-      "name":[
-        {"locale":"en_US","scope":null,"value":"My sandals"}
-      ],
-      "description":[
-        {"locale":"en_US","scope":"mobile","value":"My great sandals"},
-        {"locale":"en_US","scope":"tablet","value":"My great new sandals"}
-      ],
-      "price":[
-        {"locale":null,"scope":null,"values":[
-          {"data":"20.00","currency":"EUR"},
-          {"data":"30.00","currency":"USD"}
-        ]}
-      ],
+      "values": {
+        "sku":[
+          {"locale":null,"scope":null,"value":"sandals"}
+        ],
+        "name":[
+          {"locale":"en_US","scope":null,"value":"My sandals"}
+        ],
+        "description":[
+          {"locale":"en_US","scope":"mobile","value":"My great sandals"},
+          {"locale":"en_US","scope":"tablet","value":"My great new sandals"}
+        ],
+        "price":[
+          {"locale":null,"scope":null,"value":[
+            {"data":"20.00","currency":"EUR"},
+            {"data":"30.00","currency":"USD"}
+          ]}
+        ]
+      },
       "resource":"http:\/\/akeneo-pim-behat.local\/api\/rest\/products\/sandals"
     }
     """
