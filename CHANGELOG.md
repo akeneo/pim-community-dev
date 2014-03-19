@@ -53,6 +53,7 @@
 - Change product REST API data and url format
 - Remove incomplete REST API for getting multiple products
 - Remove Router dependency from json ProductNormalizer
+- Replace RegistryInterface with ManagerRegistry in controllers - retrieving the ObjectManager from the AbstractController now requires passing the class name (AbstractDoctrineController::getManagerForClass())
 
 # 1.0.2
 ## Bug Fixes
