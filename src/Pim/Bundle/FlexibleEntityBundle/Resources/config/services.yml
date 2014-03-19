@@ -3,7 +3,6 @@ parameters:
     pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
     pim_flexibleentity.value_form.value_subscriber.class:             Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber
     pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
-    pim_flexibleentity.listener.set_value_class.class:                Pim\Bundle\FlexibleEntityBundle\EventListener\SetValueClassListener
     pim_flexibleentity.listener.timestampable.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\TimestampableListener
     pim_flexibleentity.listener.has_required_value.class:             Pim\Bundle\FlexibleEntityBundle\EventListener\RequiredValueListener
     pim_flexibleentity.listener.default_value.class:                  Pim\Bundle\FlexibleEntityBundle\EventListener\DefaultValueListener
@@ -21,13 +20,6 @@ services:
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
-
-
-    # inject attributes into flexible entity
-    pim_flexibleentity.listener.set_value_class:
-        class: %pim_flexibleentity.listener.set_value_class.class%
-        tags:
-            - { name: doctrine.event_subscriber }
 
     # update created and updated at fields
     pim_flexibleentity.listener.timestampable:
