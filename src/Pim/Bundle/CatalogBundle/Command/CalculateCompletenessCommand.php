@@ -23,8 +23,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     {
         $this
             ->setName('pim:completeness:calculate')
-            ->setDescription('Launch the product completeness calculation')
-            ->addArgument('size', InputArgument::OPTIONAL, 'Max number of completenesses to calculate');
+            ->setDescription('Launch the product completeness calculation');
     }
 
     /**
@@ -33,9 +32,7 @@ class CalculateCompletenessCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln("<info>Generating missing completenesses...<info>");
-        $this->getCompletenessManager()->generateMissingCompletenesses(
-            $input->getArgument('size')
-        );
+        $this->getCompletenessManager()->generateMissingCompletenesses();
         $output->writeln("<info>Missing completenesses generated.<info>");
     }
 
