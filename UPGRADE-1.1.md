@@ -39,6 +39,7 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `pim_flexibleentity_metric` by `pim_enrich_metric`
  - service `pim_flexibleentity.listener.timestampable` by `pim_catalog.event_listener.timestampable`
  - service `pim_flexibleentity.listener.listener.initialize_values` by `pim_catalog.event_listener.initialize_values`
+ - service `pim_flexibleentity.listener.outdate_indexed_values` by `pim_catalog.event_listener.outdate_indexed_values`
 
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 
