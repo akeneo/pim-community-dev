@@ -83,7 +83,7 @@ abstract class AbstractDoctrineController extends AbstractController
      */
     protected function getRepository($className)
     {
-        return $this->doctrine->getManagerForClass($className)->getRepository($className);
+        return $this->doctrine->getRepository($className);
     }
 
     /**
