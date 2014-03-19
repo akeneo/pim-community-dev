@@ -43,3 +43,4 @@ services:
         class: %pim_catalog.event_listener.timestampable.class%
         tags:
             - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
