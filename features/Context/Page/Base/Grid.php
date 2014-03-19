@@ -703,4 +703,85 @@ class Grid extends Index
     {
         return $this->getElement('Configuration Popin')->moveColumn($source, $target);
     }
+
+    /**
+     * Press the mass edit button
+     */
+    public function massEdit()
+    {
+        $this->pressButton('Mass Edit');
+    }
+
+    /**
+     * Press the mass delete button
+     */
+    public function massDelete()
+    {
+        $this->pressButton('Delete');
+    }
+
+    /**
+     * Select all rows
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function selectAll()
+    {
+        if (!$allBtn = $this->getDropdownSelector()->find('css', 'button:contains("All")')) {
+            throw new \InvalidArgumentException('"All" button on dropdown row selector not found');
+        }
+
+        $allBtn->click();
+    }
+
+    /**
+     * Select all visible rows
+     */
+    public function selectAllVisible()
+    {
+        $this->clickOnDropdownSelector('All visible');
+    }
+
+    /**
+     * Unselect all rows
+     */
+    public function selectNone()
+    {
+        $this->clickOnDropdownSelector('None');
+    }
+
+    /**
+     * Get the dropdown row selector
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Behat\Mink\Element\NodeElement
+     */
+    protected function getDropdownSelector()
+    {
+        if (!$dropdown = $this->getElement('Grid')->find('css', 'th div.btn-group')) {
+            throw new \InvalidArgumentException('Grid dropdown row selector not found');
+        }
+
+        return $dropdown;
+    }
+
+    /**
+     * Click on an item of the dropdown selector
+     * @param string $item
+     * @throws \InvalidArgumentException
+     */
+    protected function clickOnDropdownSelector($item)
+    {
+        if (!$dropdown = $this->getDropdownSelector()->find('css', 'button.dropdown-toggle')) {
+            throw new \InvalidArgumentException('Dropdown row selector not found');
+        }
+
+        $dropdown->click();
+        if (!$listItem = $dropdown->getParent()->find('css', sprintf('li:contains("%s") a', $item))) {
+            throw new \InvalidArgumentException(sprintf('Item "%s" of dropdown row selector not found', $item));
+        }
+
+        $listItem->click();
+    }
 }

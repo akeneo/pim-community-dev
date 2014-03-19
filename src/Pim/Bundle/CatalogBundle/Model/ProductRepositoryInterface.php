@@ -307,4 +307,13 @@ interface ProductRepositoryInterface
      * @param string $direction direction to use
      */
     public function applySorterByField($qb, $field, $direction);
+
+    /**
+     * Delete a list of product ids
+     *
+     * @param integer[] $productIds
+     *
+     * @throws \LogicException
+     */
+    public function deleteProductIds(array $productIds);
 }

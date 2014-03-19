@@ -837,4 +837,21 @@ SQL;
 
         return $qb;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteProductIds(array $productIds)
+    {
+        if (empty($productIds)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->delete($this->_entityName, 'p')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb->getQuery()->execute();
+    }
 }

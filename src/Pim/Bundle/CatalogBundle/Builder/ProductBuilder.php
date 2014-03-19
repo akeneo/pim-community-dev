@@ -319,20 +319,24 @@ class ProductBuilder
                 $prices = $value->getPrices();
 
                 foreach ($activeCurrencies as $activeCurrency) {
-                    $hasPrice = $prices->filter(function ($price) use ($activeCurrency) {
-                        return $activeCurrency === $price->getCurrency();
-                    })->count() > 0;
+                    $hasPrice = $prices->filter(
+                        function ($price) use ($activeCurrency) {
+                            return $activeCurrency === $price->getCurrency();
+                        }
+                    )->count() > 0;
 
                     if (!$hasPrice) {
                         $this->addPriceForCurrency($value, $activeCurrency);
                     }
                 }
 
-                $prices->forAll(function ($key, $price) use ($activeCurrencies, $value) {
-                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
-                        $value->removePrice($price);
+                $prices->forAll(
+                    function ($key, $price) use ($activeCurrencies, $value) {
+                        if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                            $value->removePrice($price);
+                        }
                     }
-                });
+                );
             }
         }
     }
