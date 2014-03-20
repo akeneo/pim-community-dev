@@ -29,4 +29,19 @@ class ObjectMapper extends OroObjectMapper
 
         return $entities;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO enable the search indexing when using mongodb
+     */
+    public function getEntities()
+    {
+        $driver = $this->container->getParameter('pim_catalog.storage_driver');
+        if ('doctrine/mongodb-odm' === $driver) {
+            unset($this->mappingConfig['Pim\Bundle\CatalogBundle\Model\Product']);
+        }
+
+        return array_keys($this->mappingConfig);
+    }
 }

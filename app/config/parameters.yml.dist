@@ -33,3 +33,7 @@ parameters:
     mass_edit_limit:      1000
 
     error_reporting_email: ~
+
+    ## Uncomment to configure mongodb
+    # mongodb_server: 'mongodb://localhost:27017'
+    # mongodb_database: akeneo_pim

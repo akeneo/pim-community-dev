@@ -1,3 +1,0 @@
-parameters:
-    mongodb_server: 'mongodb://localhost:27017'
-    mongodb_database: akeneo_pim_test
