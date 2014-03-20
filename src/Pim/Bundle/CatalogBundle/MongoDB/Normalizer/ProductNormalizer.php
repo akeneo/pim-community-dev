@@ -40,12 +40,14 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $data = [
-            self::FAMILY_FIELD => $this->serializer->normalize($object->getFamily(), $format, $context),
-            self::CREATED_FIELD => $this->serializer->normalize($object->getCreated(), $format, $context),
-            self::UPDATED_FIELD => $this->serializer->normalize($object->getUpdated(), $format, $context)
-        ];
-
+        $data = [];
+        $data[self::FAMILY_FIELD]= $this->serializer->normalize($object->getFamily(), $format, $context);
+        if ($object->getCreated()) {
+            $data[self::CREATED_FIELD]= $this->serializer->normalize($object->getCreated(), $format, $context);
+        }
+        if ($object->getUpdated()) {
+            $data[self::UPDATED_FIELD]= $this->serializer->normalize($object->getUpdated(), $format, $context);
+        }
         foreach ($object->getValues() as $value) {
             $data = array_merge(
                 $data,
