@@ -13,30 +13,30 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
  */
 class HandlerRegistry
 {
-    /** @var array $handlerIds */
-    protected $handlerIds = array();
+    /** @var array $handlers */
+    protected $handlers = array();
 
     /**
      * Add handler service in registry
      *
-     * @param string $alias
-     * @param string $serviceId
+     * @param string                     $alias
+     * @param MassActionHandlerInterface $handler
      *
      * @throws \LogicException
      */
     public function addHandler($alias, MassActionHandlerInterface $handler)
     {
-        if (isset($this->handlerIds[$alias])) {
+        if (isset($this->handlers[$alias])) {
             throw new \LogicException(
-                sprintf('"%s" alias is already defined for service "%s"', $alias, $handler)
+                sprintf('"%s" alias is already defined for service handler "%s"', $alias, $handler)
             );
         }
 
-        $this->handlerIds[$alias] = $handler;
+        $this->handlers[$alias] = $handler;
     }
 
     /**
-     * Get handler service
+     * Get mass action handler
      *
      * @param string $alias
      *
@@ -46,10 +46,10 @@ class HandlerRegistry
      */
     public function getHandler($alias)
     {
-        if (!isset($this->handlerIds[$alias])) {
+        if (!isset($this->handlers[$alias])) {
             throw new \LogicException(sprintf('"%s" alias is unknown', $alias));
         }
 
-        return $this->handlerIds[$alias];
+        return $this->handlers[$alias];
     }
 }
