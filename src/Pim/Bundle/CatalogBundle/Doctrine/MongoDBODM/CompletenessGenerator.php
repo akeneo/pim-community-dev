@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
