@@ -44,26 +44,34 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $validator;
 
     /**
+     * @var string
+     */
+    protected $productClass;
+
+    /**
      * Constructor
      *
      * @param DocumentManager     $documentManager
      * @param CompletenessFactory $completenessFactory
      * @param ValidatorInterface  $validator
+     * @param String              $productClass
      */
     public function __construct(
         DocumentManager $documentManager,
         CompletenessFactory $completenessFactory,
-        ValidatorInterface $validator
+        ValidatorInterface $validator,
+        $productClass
     ) {
         $this->documentManager = $documentManager;
         $this->completenessFactory = $completenessFactory;
         $this->validator = $validator;
+        $this->productClass = $productClass;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function generateProductCompletenesses(ProductInterface $product)
+    public function generateMissingForProduct(ProductInterface $product)
     {
         if (null === $product->getFamily()) {
             return;
@@ -74,6 +82,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $product->setCompletenesses(new ArrayCollection($completenesses));
 
         $this->documentManager->flush($product);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateMissingForChannel(Channel $channel)
+    {
     }
 
     /**
@@ -172,10 +187,21 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(array $criteria = array(), $limit = null)
+    public function generateMissing()
     {
-        // @TODO Not implemented yet
-        return;
+    }
+
+    /**
+     * Generate missing completenesses for a channel if provided or a product
+     * if provided
+     *
+     */
+    protected function generate()
+    {
+        // Generate a full comprehensive family information
+        // Get all products without completeness for all defined channel and locale
+
+
     }
 
     /**
@@ -193,6 +219,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function scheduleForFamily(Family $family)
     {
-        throw new \LogicException("Not implemented yet !");
+        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+
+        $productQb
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('family')->equals($family->getId())
+            ->field('completenesses')->unsetField()
+            ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
     }
 }
