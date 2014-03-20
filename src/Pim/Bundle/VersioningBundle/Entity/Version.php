@@ -43,7 +43,7 @@ class Version
     protected $resourceName;
 
     /**
-     * @ORM\Column(name="resource_id", type="integer")
+     * @ORM\Column(name="resource_id", type="string", length=24)
      */
     protected $resourceId;
 

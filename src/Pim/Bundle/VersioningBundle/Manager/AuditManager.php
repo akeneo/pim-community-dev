@@ -29,6 +29,14 @@ class AuditManager
     }
 
     /**
+     * @return AuditRepository
+     */
+    public function getAuditRepository()
+    {
+        return $this->em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
+    }
+
+    /**
      * Return product logs
      *
      * @param object $versionable
@@ -37,10 +45,7 @@ class AuditManager
      */
     public function getLogEntries($versionable)
     {
-        $repo = $this->em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit');
-        $logs = $repo->getLogEntries($versionable);
-
-        return $logs;
+        return $this->getAuditRepository()->getLogEntries($versionable);
     }
 
     /**

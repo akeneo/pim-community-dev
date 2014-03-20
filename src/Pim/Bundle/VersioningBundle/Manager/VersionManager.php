@@ -36,19 +36,21 @@ class VersionManager
     }
 
     /**
+     * @return VersionRepository
+     */
+    public function getVersionRepository()
+    {
+        return $this->em->getRepository('PimVersioningBundle:Version');
+    }
+
+    /**
      * @param Version $version
      *
      * @return Version
      */
     public function getPreviousVersion(Version $version)
     {
-        /** @var Version $version */
-        $previous = $this->em->getRepository('PimVersioningBundle:Version')
-            ->findOneBy(
-                array('resourceId' => $version->getResourceId(), 'resourceName' => $version->getResourceName()),
-                array('loggedAt' => 'desc')
-            );
-
-        return $previous;
+        return $this->getVersionRepository()
+            ->findPreviousVersion($version->getResourceName(), $version->getResourceId());
     }
 }
