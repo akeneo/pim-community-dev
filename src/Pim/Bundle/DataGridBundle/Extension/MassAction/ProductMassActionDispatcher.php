@@ -80,18 +80,18 @@ class ProductMassActionDispatcher
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
+        $datagrid   = $this->manager->getDatagrid($datagridName);
+
         // set filter data
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
         // create datagrid and prepare query
-        $datagrid   = $this->manager->getDatagrid($datagridName);
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
 
         // Apply mass action parameters on qb
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $dataLocale = $this->container->get('request')->get('dataLocale', null);
-        $scopeCode  = isset($filters['scope']['value']) ?
-            $filters['scope']['value'] : null;
+        $scopeCode  = isset($filters['scope']['value']) ? $filters['scope']['value'] : null;
         $identifier = $this->getIdentifierField($massAction);
 
         $this->repository->applyMassActionParameters($qb, $identifier, $inset, $values, $dataLocale, $scopeCode);
