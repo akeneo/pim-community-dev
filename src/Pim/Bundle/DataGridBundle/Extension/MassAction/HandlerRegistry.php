@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
 /**
  * Handler registry
@@ -13,21 +13,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  */
 class HandlerRegistry
 {
-    /** @var ContainerInterface $container */
-    protected $container;
-
     /** @var array $handlerIds */
     protected $handlerIds = array();
-
-    /**
-     * Constructor
-     *
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     /**
      * Add handler service in registry
@@ -37,15 +24,15 @@ class HandlerRegistry
      *
      * @throws \LogicException
      */
-    public function addHandler($alias, $serviceId)
+    public function addHandler($alias, MassActionHandlerInterface $handler)
     {
         if (isset($this->handlerIds[$alias])) {
             throw new \LogicException(
-                sprintf('"%s" alias is already defined for service "%s"', $alias, $serviceId)
+                sprintf('"%s" alias is already defined for service "%s"', $alias, $handler)
             );
         }
 
-        $this->handlerIds[$alias] = $serviceId;
+        $this->handlerIds[$alias] = $handler;
     }
 
     /**
@@ -63,6 +50,6 @@ class HandlerRegistry
             throw new \LogicException(sprintf('"%s" alias is unknown', $alias));
         }
 
-        return $this->container->get($this->handlerIds[$alias]);
+        return $this->handlerIds[$alias];
     }
 }

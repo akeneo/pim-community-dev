@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
 /**
  * Handler for mass edit action
@@ -19,7 +22,7 @@ class EditMassActionHandler implements MassActionHandlerInterface
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function handle(MassActionMediatorInterface $mediator)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         return $mediator->getResults()->getSource();
     }
