@@ -154,7 +154,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $this->qb->sort('normalizedData'.$field, $direction);
+        $this->qb->sort('normalizedData.'.$field, $direction);
 
         return $this;
     }
