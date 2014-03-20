@@ -6,13 +6,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Base abstract controller for managing entities
@@ -24,7 +24,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 abstract class AbstractDoctrineController extends AbstractController
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
@@ -38,7 +38,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      */
     public function __construct(
         Request $request,
@@ -48,7 +48,7 @@ abstract class AbstractDoctrineController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine
+        ManagerRegistry $doctrine
     ) {
         parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator);
 
@@ -58,7 +58,7 @@ abstract class AbstractDoctrineController extends AbstractController
     /**
      * Returns the Doctrine registry service.
      *
-     * @return RegistryInterface
+     * @return ManagerRegistry
      */
     protected function getDoctrine()
     {
@@ -76,13 +76,57 @@ abstract class AbstractDoctrineController extends AbstractController
     }
 
     /**
+     * Returns the Doctrine manager for the given class
+     *
+     * @param string $class
+     *
+     * @return ObjectManager
+     */
+    protected function getManagerForClass($class)
+    {
+        return $this->doctrine->getManagerForClass($class);
+    }
+
+    /**
      * @param string $className
      *
      * @return ObjectRepository
      */
     protected function getRepository($className)
     {
-        return $this->getManager()->getRepository($className);
+        return $this->doctrine->getRepository($className);
+    }
+
+    /**
+     * Persist an object
+     *
+     * @param object  $object
+     * @param boolean $flush
+     */
+    protected function persist($object, $flush = true)
+    {
+        $manager = $this->doctrine->getManagerForClass(get_class($object));
+        $manager->persist($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * Remove an object
+     *
+     * @param object  $object
+     * @param boolean $flush
+     */
+    protected function remove($object, $flush = true)
+    {
+        $manager = $this->doctrine->getManagerForClass(get_class($object));
+        $manager->remove($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
     }
 
     /**

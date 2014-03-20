@@ -7,6 +7,8 @@ use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute as NewAbstractAttribute;
+
 /**
  * Abstract entity value, independent of storage
  *
@@ -22,7 +24,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
     protected $id;
 
     /**
-     * @var AbstractAttribute $attribute
+     * @var NewAbstractAttribute $attribute
      */
     protected $attribute;
 
@@ -94,12 +96,12 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
     /**
      * Set attribute
      *
-     * @param AbstractAttribute $attribute
+     * @param NewAbstractAttribute $attribute
      *
      * @return AbstractFlexibleValue
      * @throws LogicException
      */
-    public function setAttribute(AbstractAttribute $attribute = null)
+    public function setAttribute(NewAbstractAttribute $attribute = null)
     {
         if (is_object($this->attribute) && ($attribute != $this->attribute)) {
             throw new \LogicException(
@@ -114,7 +116,7 @@ abstract class AbstractFlexibleValue implements FlexibleValueInterface, Localiza
     /**
      * Get attribute
      *
-     * @return AbstractAttribute
+     * @return NewAbstractAttribute
      */
     public function getAttribute()
     {

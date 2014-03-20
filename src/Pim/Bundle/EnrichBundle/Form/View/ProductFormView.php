@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\View;
 use Symfony\Component\Form\FormView;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Custom form view for Product form

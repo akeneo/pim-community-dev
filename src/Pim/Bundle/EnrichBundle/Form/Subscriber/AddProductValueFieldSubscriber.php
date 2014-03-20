@@ -1,24 +1,23 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Form\EventListener;
+namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Symfony\Component\Form\FormInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Add a relevant form for each flexible entity value
+ * Add a relevant form for each product value
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleValueSubscriber implements EventSubscriberInterface
+class AddProductValueFieldSubscriber implements EventSubscriberInterface
 {
     /**
      * @var FormFactoryInterface
@@ -31,25 +30,15 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
     protected $attributeTypeFactory;
 
     /**
-     * @var FlexibleManagerRegistry
-     */
-    protected $registry;
-
-    /**
      * Constructor
      *
-     * @param FormFactoryInterface    $factory
-     * @param AttributeTypeFactory    $attributeTypeFactory
-     * @param FlexibleManagerRegistry $registry
+     * @param FormFactoryInterface $factory
+     * @param AttributeTypeFactory $attTypeFactory
      */
-    public function __construct(
-        FormFactoryInterface $factory,
-        AttributeTypeFactory $attributeTypeFactory,
-        FlexibleManagerRegistry $registry
-    ) {
+    public function __construct(FormFactoryInterface $factory, AttributeTypeFactory $attTypeFactory)
+    {
         $this->factory = $factory;
-        $this->attributeTypeFactory = $attributeTypeFactory;
-        $this->registry = $registry;
+        $this->attributeTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -71,28 +60,19 @@ class FlexibleValueSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        /** @var FlexibleValueInterface $value */
+        /** @var ProductValueInterface $value */
         $value = $event->getData();
         $form  = $event->getForm();
 
-        // skip form creation with no data
         if (null === $value) {
             return;
         }
 
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
         $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
+
         /** @var FormInterface $valueForm */
         $valueForm = $attributeType->buildValueFormType($this->factory, $value);
-
-        // Initialize subforms which connected to flexible entities
-        $dataClass = $valueForm->getConfig()->getDataClass();
-        if (is_subclass_of($dataClass, 'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')) {
-            $flexibleManager = $this->registry->getManager($dataClass);
-            $entity = $flexibleManager->createFlexible();
-            $valueForm->setData($entity);
-        }
-
         $form->add($valueForm);
     }
 }

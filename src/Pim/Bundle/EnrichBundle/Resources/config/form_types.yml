@@ -25,7 +25,7 @@ services:
         class: %pim_enrich.form.type.product_value.class%
         arguments:
             - %pim_catalog.entity.product_value.class%
-            - '@pim_flexibleentity.value_form.value_subscriber'
+            - '@pim_enrich.form.subscriber.add_value_field_subscriber'
             - '@pim_enrich.form.type.product.view'
         tags:
             - { name: form.type, alias: pim_product_value }
@@ -171,6 +171,10 @@ services:
         class: %pim_enrich.form.type.association.class%
         arguments:
             - %pim_catalog.entity.product.class%
+            - '@pim_catalog.repository.product'
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.association_type.class%
+            - %pim_catalog.entity.group.class%
         tags:
             - { name: form.type, alias: pim_enrich_association }
 
@@ -192,6 +196,11 @@ services:
         class: %pim_enrich.form.type.light_entity.class%
         tags:
             - { name: form.type, alias: light_entity }
+
+    pim_enrich.form.type.object_identifier:
+        class: %pim_enrich.form.type.object_identifier.class%
+        tags:
+            - { name: form.type, alias: pim_object_identifier }
 
     # Attribute property types
     pim_enrich.form.type.scopable:
@@ -219,3 +228,9 @@ services:
         class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
         arguments:
             - '@pim_catalog.manager.channel'
+
+    pim_enrich.form.subscriber.add_value_field_subscriber:
+        class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
+        arguments:
+            - '@form.factory'
+            - '@pim_catalog.factory.attribute_type'

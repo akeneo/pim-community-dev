@@ -228,7 +228,7 @@ class ValidDefaultValueValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $attributeType
      * @param array  $properties
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected function createAttribute($attributeType, $properties = array())
     {

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -75,7 +75,7 @@ class FamilyController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param ChannelManager           $channelManager
      * @param FamilyFactory            $factory
      * @param CompletenessManager      $completenessManager
@@ -91,7 +91,7 @@ class FamilyController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ChannelManager $channelManager,
         FamilyFactory $factory,
         CompletenessManager $completenessManager,
@@ -212,8 +212,7 @@ class FamilyController extends AbstractDoctrineController
      */
     public function removeAction(Family $family)
     {
-        $this->getManager()->remove($family);
-        $this->getManager()->flush();
+        $this->remove($family);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -243,7 +242,7 @@ class FamilyController extends AbstractDoctrineController
             $family->addAttribute($attribute);
         }
 
-        $this->getManager()->flush();
+        $this->getManagerForClass('PimCatalogBundle:Family')->flush();
 
         $this->addFlash('success', 'flash.family.attributes added');
 
@@ -274,7 +273,7 @@ class FamilyController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.family.label attribute not removable'));
         } else {
             $family->removeAttribute($attribute);
-            $this->getManager()->flush();
+            $this->getManagerForClass('PimCatalogBundle:Family')->flush();
         }
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

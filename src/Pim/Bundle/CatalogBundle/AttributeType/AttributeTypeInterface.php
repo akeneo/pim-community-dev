@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * The attribute type interface

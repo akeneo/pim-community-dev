@@ -10,7 +10,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Imagine\Image\ImagineInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
@@ -49,7 +49,7 @@ class MediaController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param ImagineInterface         $imagine
      * @param FilterManager            $filterManager
      * @param CacheManager             $cacheManager
@@ -63,7 +63,7 @@ class MediaController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ImagineInterface $imagine,
         FilterManager $filterManager,
         CacheManager $cacheManager,
@@ -100,7 +100,12 @@ class MediaController extends AbstractDoctrineController
             throw $this->createNotFoundException(sprintf('Media "%s" not found', $filename));
         }
 
-        $path     = $media->getFilePath();
+        $path = $media->getFilePath();
+
+        if (!file_exists($path)) {
+            return new Response('', 404);
+        }
+
         $response = new Response(file_get_contents($path));
 
         if (($filter = $request->query->get('filter')) && 0 === strpos($media->getMimeType(), 'image')) {

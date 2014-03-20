@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\TransformBundle\Normalizer\FlatAttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\FlatTranslationNormalizer;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
