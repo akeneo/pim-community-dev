@@ -8,7 +8,7 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
+    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
