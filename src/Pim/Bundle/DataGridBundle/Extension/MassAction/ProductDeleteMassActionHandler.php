@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+
 use Symfony\Component\Translation\TranslatorInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
@@ -48,38 +52,37 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function handle(MassActionMediatorInterface $mediator)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         $entityIdsHydrator = new EntityIdsHydrator();
 
-        $datasource = $mediator->getDatagrid()->getDatasource();
+        $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($entityIdsHydrator);
 
         // hydrator uses index by id
         $productIds = array_keys($datasource->getResults());
 
         try {
-            $countProducts = $this->repository->deleteProductIds($productIds);
+            $countProducts = $this->repository->deleteFromIds($productIds);
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 
             return new MassActionResponse(false, $this->translator->trans($errorMessage));
         }
 
-        return $this->getResponse($mediator, $countProducts);
+        return $this->getResponse($massAction, $countProducts);
     }
 
     /**
      * Prepare mass action response
      *
-     * @param MassActionMediatorInterface $mediator
-     * @param integer                     $entitiesCount
+     * @param MassActionInterface $massAction
+     * @param integer             $entitiesCount
      *
      * @return MassActionResponse
      */
-    protected function getResponse(MassActionMediatorInterface $mediator, $entitiesCount = 0)
+    protected function getResponse(MassActionInterface $massAction, $entitiesCount = 0)
     {
-        $massAction      = $mediator->getMassAction();
         $responseMessage = $massAction->getOptions()->offsetGetByPath(
             '[messages][success]',
             $this->responseMessage
