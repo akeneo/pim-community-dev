@@ -18,16 +18,41 @@ class VersionRepository extends EntityRepository
      * @param string $resourceName
      * @param string $resourceId
      *
+     * @return Version[]|null
+     */
+    public function getLogEntries($resourceName, $resourceId)
+    {
+        return $this->findBy(
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['loggedAt' => 'desc']
+        );
+    }
+
+    /**
+     * @param string $resourceName
+     * @param string $resourceId
+     *
      * @return Version|null
      */
-    public function findPreviousVersion($resourceName, $resourceId)
+    public function getOldestLogEntry($resourceName, $resourceId)
     {
-        $previous = $this
-            ->findOneBy(
-                array('resourceId' => $resourceId, 'resourceName' => $resourceName),
-                array('loggedAt' => 'desc')
-            );
+        return $this->findOneBy(
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['loggedAt' => 'asc']
+        );
+    }
 
-        return $previous;
+    /**
+     * @param string $resourceName
+     * @param string $resourceId
+     *
+     * @return Version|null
+     */
+    public function getNewestLogEntry($resourceName, $resourceId)
+    {
+        return $this->findOneBy(
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['loggedAt' => 'desc']
+        );
     }
 }

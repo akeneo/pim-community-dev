@@ -31,19 +31,101 @@ class VersionBuilder
     /**
      * Build a version from a versionable entity
      *
-     * @param object  $versionable
-     * @param User    $user
-     * @param integer $numVersion
+     * @param object       $versionable
+     * @param User         $user
+     * @param Version|null $previousVersion
+     * @param string|null  $context
      *
      * @return Version
      */
-    public function buildVersion($versionable, User $user, $numVersion)
+    public function buildVersion($versionable, User $user, Version $previousVersion = null, $context = null)
     {
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
-        // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $data         = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
 
-        return new Version($resourceName, $resourceId, $numVersion, $data, $user);
+        $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
+        $oldData       = $previousVersion ? $previousVersion->getData() : [];
+
+        // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
+        $data = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
+
+        $changeset = $this->buildDiffData($oldData, $data, $context);
+
+        return new Version($resourceName, $resourceId, $versionNumber, $data, $changeset, $user, $context);
+    }
+
+
+    /**
+     * Build diff data
+     *
+     * @param array       $oldData
+     * @param array       $newData
+     * @param string|null $context
+     *
+     * @return array
+     */
+    protected function buildDiffData(array $oldData, array $newData, $context = null)
+    {
+        $diffData = $this->filterDiffData($this->getMergedData($oldData, $newData));
+
+        if (!empty($diffData) && $context) {
+            $diffData['context'] = ['old' => '', 'new' => $context];
+        }
+
+        return $diffData;
+    }
+
+    /**
+     * Merge the old and new data
+     *
+     * @param array $oldData
+     * @param array $newData
+     *
+     * @return array
+     */
+    protected function getMergedData(array $oldData, array $newData)
+    {
+        $newData = array_map(
+            function ($newItem) {
+                return ['new' => $newItem];
+            },
+            $newData
+        );
+
+        $oldData = array_map(
+            function ($oldItem) {
+                return ['old' => $oldItem];
+            },
+            $oldData
+        );
+
+        $mergedData = array_merge_recursive($newData, $oldData);
+
+        return array_map(
+            function ($mergedItem) {
+                return [
+                    'old' => array_key_exists('old', $mergedItem) ? $mergedItem['old'] : '',
+                    'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
+                ];
+            },
+            $mergedData
+        );
+    }
+
+    /**
+     * Filter diff data to remove values that are the same
+     *
+     * @param array $diffData
+     *
+     * @return array
+     */
+    protected function filterDiffData(array $diffData)
+    {
+        return array_filter(
+            $diffData,
+            function ($diffItem) {
+                return $diffItem['old'] != $diffItem['new'];
+            }
+        );
     }
 }

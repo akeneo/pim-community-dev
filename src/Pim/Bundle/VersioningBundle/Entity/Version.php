@@ -53,6 +53,16 @@ class Version
     protected $data;
 
     /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $changeset;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $context;
+
+    /**
      * @ORM\Column(type="integer") */
     protected $version;
 
@@ -64,19 +74,30 @@ class Version
     /**
      * Constructor
      *
-     * @param string  $resourceName
-     * @param string  $resourceId
-     * @param integer $numVersion
-     * @param array   $data
-     * @param User    $user
+     * @param string      $resourceName
+     * @param string      $resourceId
+     * @param integer     $version
+     * @param array       $data
+     * @param array       $changeset
+     * @param User        $user
+     * @param string|null $context
      */
-    public function __construct($resourceName, $resourceId, $numVersion, $data, User $user)
-    {
+    public function __construct(
+        $resourceName,
+        $resourceId,
+        $version,
+        array $data,
+        array $changeset,
+        User $user,
+        $context = null
+    ) {
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
+        $this->version      = $version;
         $this->data         = $data;
-        $this->version      = $numVersion;
+        $this->changeset    = $changeset;
         $this->user         = $user;
+        $this->context      = $context;
         $this->loggedAt     = new \DateTime("now");
     }
 
@@ -120,5 +141,29 @@ class Version
     public function getData()
     {
         return $this->data;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChangeset()
+    {
+        return $this->changeset;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getContext()
+    {
+        return $this->context;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getLoggedAt()
+    {
+        return $this->loggedAt;
     }
 }

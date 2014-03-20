@@ -2,17 +2,10 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener\MongoDBODM;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
-use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 
@@ -26,14 +19,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 class AddProductVersionListener implements EventSubscriber
 {
     /**
-     * Default system user
-     *
-     * @var string
-     */
-    const DEFAULT_SYSTEM_USER = 'admin';
-
-    /**
-     * Entities to version
+     * Objects to version
      *
      * @var object[]
      */
@@ -45,29 +31,9 @@ class AddProductVersionListener implements EventSubscriber
     protected $versionedObjects = array();
 
     /**
-     * @var integer
-     */
-    protected $realTimeVersioning = true;
-
-    /**
-     * @var VersionBuilder
-     */
-    protected $versionBuilder;
-
-    /**
-     * @var AuditBuilder
-     */
-    protected $auditBuilder;
-
-    /**
      * @var VersionManager
      */
     protected $versionManager;
-
-    /**
-     * @var AuditManager
-     */
-    protected $auditManager;
 
     /**
      * @var SmartManagerRegistry
@@ -75,42 +41,15 @@ class AddProductVersionListener implements EventSubscriber
     protected $registry;
 
     /**
-     * @var SecurityContextInterface
-     */
-    protected $securityContext;
-
-    /**
-     * @var UserManager
-     */
-    protected $userManager;
-
-    /**
      * Constructor
      *
-     * @param VersionBuilder           $versionBuilder
-     * @param AuditBuilder             $auditBuilder
-     * @param VersionManager           $versionManager
-     * @param AuditManager             $auditManager
-     * @param SmartManagerRegistry     $registry
-     * @param SecurityContextInterface $securityContext
-     * @param UserManager              $userManager
+     * @param VersionManager       $versionManager
+     * @param SmartManagerRegistry $registry
      */
-    public function __construct(
-        VersionBuilder $versionBuilder,
-        AuditBuilder $auditBuilder,
-        VersionManager $versionManager,
-        AuditManager $auditManager,
-        SmartManagerRegistry $registry,
-        SecurityContextInterface $securityContext,
-        UserManager $userManager
-    ) {
-        $this->versionBuilder  = $versionBuilder;
-        $this->auditBuilder    = $auditBuilder;
-        $this->versionManager  = $versionManager;
-        $this->auditManager    = $auditManager;
-        $this->registry        = $registry;
-        $this->securityContext = $securityContext;
-        $this->userManager     = $userManager;
+    public function __construct(VersionManager $versionManager, SmartManagerRegistry $registry)
+    {
+        $this->versionManager = $versionManager;
+        $this->registry       = $registry;
     }
 
     /**
@@ -121,14 +60,6 @@ class AddProductVersionListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array('onFlush', 'postFlush');
-    }
-
-    /**
-     * @param boolean $mode
-     */
-    public function setRealTimeVersioning($mode)
-    {
-        $this->realTimeVersioning = $mode;
     }
 
     /**
@@ -164,47 +95,16 @@ class AddProductVersionListener implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        if (!empty($this->versionableObjects)) {
-            $user = $this->getUser();
-            if (!$user && $this->realTimeVersioning) {
-                $this->versionableObjects = array();
-            } else {
-                $this->processVersionableEntities($user);
-            }
-        }
+        $this->processVersionableObjects();
     }
 
     /**
-     * Get the current user
-     *
-     * @return User|null
+     * Process the versionable objects
      */
-    protected function getUser()
-    {
-        $token = $this->securityContext->getToken();
-
-        if ($token !== null) {
-            return $token->getUser();
-        }
-
-        return $this->userManager->findUserByUsername(self::DEFAULT_SYSTEM_USER);
-    }
-
-    /**
-     * @param User $user
-     */
-    protected function processVersionableEntities(User $user = null)
+    protected function processVersionableObjects()
     {
         foreach ($this->versionableObjects as $versionable) {
-            if ($this->realTimeVersioning) {
-                $this->createVersionAndAudit($versionable, $user);
-            } else {
-                $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
-                $user = $this->getUser();
-                $username = $user ? $user->getUserName() : self::DEFAULT_SYSTEM_USER;
-                $pending = new Pending($className, $versionable->getId(), $username);
-                $this->computeChangeSet($pending);
-            }
+            $this->createVersion($versionable);
             $this->versionedObjects[] = spl_object_hash($versionable);
         }
 
@@ -220,33 +120,17 @@ class AddProductVersionListener implements EventSubscriber
 
     /**
      * @param object $versionable
-     * @param User   $user
      */
-    public function createVersionAndAudit($versionable, User $user)
+    public function createVersion($versionable)
     {
-        $previous = $this->versionManager->getVersionRepository()
-            ->findPreviousVersion(get_class($versionable), $versionable->getId());
-        $prevVersionNumber = ($previous) ? $previous->getVersion() + 1 : 1;
-
-        $current = $this->versionBuilder->buildVersion($versionable, $user, $prevVersionNumber);
-        $this->computeChangeSet($current);
-
-        $previousAudit = $this->auditManager->getAuditRepository()
-            ->findOneBy(
-                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                array('loggedAt' => 'desc')
-            );
-        $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
-
-        $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
-        $diffData = $audit->getData();
-        if (!empty($diffData)) {
-            $this->computeChangeSet($audit);
+        $version = $this->versionManager->buildVersion($versionable);
+        if ($version) {
+            $this->computeChangeSet($version);
         }
     }
 
     /**
-     * Mark entity as to be versioned
+     * Mark object as to be versioned
      *
      * @param object $versionable
      */

@@ -26,7 +26,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_transform.cache.entity_cache'
-            - '@pim_versioning.event_listener.addversion'
+            - '@pim_versioning.manager.version'
         calls:
             - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
 

@@ -25,7 +25,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 
@@ -54,9 +54,9 @@ class ProductController extends AbstractDoctrineController
     protected $userContext;
 
     /**
-     * @var AuditManager
+     * @var VersionManager
      */
-    protected $auditManager;
+    protected $versionManager;
 
     /**
      * @var SecurityFacade
@@ -89,7 +89,7 @@ class ProductController extends AbstractDoctrineController
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
-     * @param AuditManager             $auditManager
+     * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      */
     public function __construct(
@@ -104,7 +104,7 @@ class ProductController extends AbstractDoctrineController
         ProductManager $productManager,
         CategoryManager $categoryManager,
         UserContext $userContext,
-        AuditManager $auditManager,
+        VersionManager $versionManager,
         SecurityFacade $securityFacade
     ) {
         parent::__construct(
@@ -118,11 +118,11 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager       = $productManager;
-        $this->categoryManager      = $categoryManager;
-        $this->userContext          = $userContext;
-        $this->auditManager         = $auditManager;
-        $this->securityFacade       = $securityFacade;
+        $this->productManager  = $productManager;
+        $this->categoryManager = $categoryManager;
+        $this->userContext     = $userContext;
+        $this->versionManager  = $versionManager;
+        $this->securityFacade  = $securityFacade;
 
         $this->productManager->setLocale($this->getDataLocale());
     }
@@ -246,8 +246,8 @@ class ProductController extends AbstractDoctrineController
                 $this->getAvailableAttributesForm($product->getAttributes())->createView(),
             'product'          => $product,
             'trees'            => $trees,
-            'created'          => $this->auditManager->getOldestLogEntry($product),
-            'updated'          => $this->auditManager->getNewestLogEntry($product),
+            'created'          => $this->versionManager->getOldestLogEntry($product),
+            'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
