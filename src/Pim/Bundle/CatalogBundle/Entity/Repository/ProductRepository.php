@@ -726,6 +726,9 @@ SQL;
             ->getResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneBy(array $criteria)
     {
         $qb = $this->createQueryBuilder('p');

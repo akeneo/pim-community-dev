@@ -125,6 +125,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneBy(array $criteria)
     {
         $qb = $this->createQueryBuilder('p');

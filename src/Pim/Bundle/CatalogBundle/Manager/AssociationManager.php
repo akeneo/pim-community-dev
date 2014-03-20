@@ -28,6 +28,8 @@ class AssociationManager
     /**
      * Get association count by association type
      *
+     * @param AssociationType $type
+     *
      * @return int
      */
     public function countForAssociationType(AssociationType $type)
