@@ -87,4 +87,13 @@ interface ProductQueryBuilderInterface
      * @return ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction);
+
+    /**
+     * Sort by family
+     *
+     * @param string $direction the direction to use
+     *
+     * @return ProductQueryBuilderInterface
+     */
+    public function addFamilySorter($direction);
 }

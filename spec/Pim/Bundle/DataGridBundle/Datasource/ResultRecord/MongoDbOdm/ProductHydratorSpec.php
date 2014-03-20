@@ -10,7 +10,7 @@ use Doctrine\ODM\MongoDB\Query\Query;
 /**
  * @require Doctrine\ODM\MongoDB\Query\Builder
  */
-class HydratorSpec extends ObjectBehavior
+class ProductHydratorSpec extends ObjectBehavior
 {
     function it_is_a_hydrator()
     {
