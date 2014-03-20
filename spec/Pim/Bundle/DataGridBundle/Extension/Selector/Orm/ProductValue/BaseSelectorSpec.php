@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
-class FlexibleValuesSelectorSpec extends ObjectBehavior
+class ValuesSelectorSpec extends ObjectBehavior
 {
     function it_should_be_a_selector()
     {
