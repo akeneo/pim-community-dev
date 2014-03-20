@@ -55,6 +55,12 @@ class Hydrator implements HydratorInterface
         $result['id']= $result['_id']->__toString();
         unset($result['_id']);
         $result['dataLocale']= $locale;
+        if (isset($result['created'])) {
+            $result['created']= $this->convertToDateTime($result['created']);
+        }
+        if (isset($result['updated'])) {
+            $result['updated']= $this->convertToDateTime($result['updated']);
+        }
 
         return $result;
     }
@@ -174,9 +180,7 @@ class Hydrator implements HydratorInterface
 
         if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
-            $date = new \DateTime();
-            $date->setTimestamp($mongoDate->sec);
-            $value[$backendType]= $date;
+            $value[$backendType]= $this->convertToDateTime($mongoDate);
         }
 
         return $value;
@@ -199,5 +203,18 @@ class Hydrator implements HydratorInterface
         }
 
         return $option;
+    }
+
+    /**
+     * @param \MongoDate $mongoDate
+     *
+     * @return \DateTime
+     */
+    protected function convertToDateTime(\MongoDate $mongoDate)
+    {
+        $date = new \DateTime();
+        $date->setTimestamp($mongoDate->sec);
+
+        return $date;
     }
 }
