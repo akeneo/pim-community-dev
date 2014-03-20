@@ -869,21 +869,11 @@ SQL;
         }
 
         $rootAlias = $qb->getRootAlias();
-        $from      = current($qb->getDQLPart('from'));
-        $entity    = $from->getFrom();
-
-        $qb->resetDQLPart('select');
-        $qb->select($rootAlias);
-        $qb->resetDQLPart('from');
-        $qb->from($entity, $rootAlias);
-
-        // apply data locale and scope code
-        if ($qb->getParameter('dataLocale')) {
-            $qb->setParameter('dataLocale', $localeCode);
-        }
-        if ($qb->getParameter('scopeCode')) {
-            $qb->setParameter('scopeCode', $scopeCode);
-        }
+        $qb
+            ->resetDQLPart('select')
+            ->resetDQLPart('from')
+            ->select($rootAlias)
+            ->from($this->_entityName, $rootAlias);
 
         // Remove 'entityIds' part from querybuilder (added by flexible pager)
         $whereParts = $qb->getDQLPart('where')->getParts();
