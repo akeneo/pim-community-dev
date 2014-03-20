@@ -852,10 +852,7 @@ SQL;
             ->delete($this->_entityName, 'p')
             ->where($qb->expr()->in('p.id', $ids));
 
-        var_dump($ids);
-        return 0;
-
-//         return $qb->getQuery()->execute();
+        return $qb->getQuery()->execute();
     }
 
     public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode)
