@@ -46,7 +46,7 @@ class CurrencyController extends AbstractDoctrineController
     {
         try {
             $currency->toggleActivation();
-            $this->getManager()->flush();
+            $this->getManagerForClass('PimCatalogBundle:Currency')->flush();
 
             $this->addFlash('success', 'flash.currency.updated');
         } catch (\Exception $e) {

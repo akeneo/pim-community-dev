@@ -32,7 +32,7 @@ services:
         abstract: true
         parent: pim_enrich.controller.abstract
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_enrich.controller.attribute_group:
         scope: request
@@ -136,6 +136,7 @@ services:
         class: %pim_enrich.controller.association_type.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - '@pim_catalog.manager.association'
             - '@pim_enrich.form.handler.association_type'
             - '@pim_enrich.form.association_type'
 

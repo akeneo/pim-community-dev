@@ -54,7 +54,7 @@ class WebApiContext extends BehatWebApiContext
         $this->setPlaceHolder('{identifier}', $product->getIdentifier());
         $this->setPlaceHolder('{baseUrl}', $this->url);
 
-        return array(new Step\Given("I send a GET request to \"api/rest/ecommerce/products/{identifier}.json\""));
+        return array(new Step\Given("I send a GET request to \"api/rest/products/{identifier}.json\""));
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -36,9 +36,9 @@ class OutdateIndexedValuesListener implements EventSubscriber
     {
         $object = $args->getObject();
         if ($object instanceof FlexibleValueInterface) {
-            $flexibleobject = $object->getEntity();
-            if (is_object($flexibleobject)) {
-                $flexibleobject->markIndexedValuesOutdated();
+            $flexibleObject = $object->getObject();
+            if (is_object($flexibleObject)) {
+                $flexibleObject->markIndexedValuesOutdated();
             }
         } elseif ($object instanceof FlexibleInterface) {
             $object->markIndexedValuesOutdated();

@@ -88,8 +88,8 @@ class SmartManagerRegistry implements ManagerRegistry
     public function getManagerForClass($class)
     {
         foreach ($this->registries as $registry) {
-            if ($result = $registry->getManagerForClass($class)) {
-                return $result;
+            if ($manager = $registry->getManagerForClass($class)) {
+                return $manager;
             }
         }
 

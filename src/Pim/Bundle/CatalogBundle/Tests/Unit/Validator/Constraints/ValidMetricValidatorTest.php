@@ -75,7 +75,7 @@ class ValidMetricValidatorTest extends \PHPUnit_Framework_TestCase
      * @param string $metricFamily
      * @param string $defaultMetricUnit
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected function createAttribute($metricFamily, $defaultMetricUnit = '')
     {

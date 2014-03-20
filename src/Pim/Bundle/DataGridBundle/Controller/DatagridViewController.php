@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -40,7 +40,7 @@ class DatagridViewController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param DatagridViewManager      $datagridViewManager
      */
     public function __construct(
@@ -51,7 +51,7 @@ class DatagridViewController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         DatagridViewManager $datagridViewManager
     ) {
         parent::__construct(
@@ -104,9 +104,7 @@ class DatagridViewController extends AbstractDoctrineController
 
                 return new JsonResponse(['errors' => $messages]);
             } else {
-                $em = $this->getManager();
-                $em->persist($view);
-                $em->flush();
+                $this->persist($view);
 
                 if ($creation) {
                     $this->addFlash('success', 'flash.datagrid view.created');
@@ -156,10 +154,7 @@ class DatagridViewController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 
-        $em = $this->getManager();
-        $em->remove($view);
-        $em->flush();
-
+        $this->remove($view);
         $this->addFlash('success', 'flash.datagrid view.removed');
 
         return new Response('', 204);

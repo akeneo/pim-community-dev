@@ -108,7 +108,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
     public function testFilterScenario()
     {
         $valueMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
-        $attributeMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attributeMock1 = $this->getMock('Pim\Bundle\CatalogBundle\Model\AbstractAttribute');
         $valueMock2 = clone $valueMock1;
         $attributeMock2 = clone $attributeMock1;
 
@@ -146,7 +146,7 @@ class FilterAttributesExtensionTest extends \PHPUnit_Framework_TestCase
     public function testFilterSkipScenario()
     {
         $valueMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface');
-        $attributeMock1 = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute');
+        $attributeMock1 = $this->getMock('Pim\Bundle\CatalogBundle\Model\AbstractAttribute');
         $valueMock2 = clone $valueMock1;
         $attributeMock2 = clone $attributeMock1;
 

@@ -23,6 +23,12 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     /** @var Boolean */
     protected $multiple;
 
+    /**
+     * Delimiter used by imploded array
+     * @var string
+     */
+    protected $delimiter;
+
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
@@ -36,11 +42,13 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     public function __construct(
         ObjectRepository $repository,
         $multiple,
-        PropertyAccessorInterface $propertyAccessor = null
+        PropertyAccessorInterface $propertyAccessor = null,
+        $delimiter = ','
     ) {
         $this->repository       = $repository;
         $this->multiple         = $multiple;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->delimiter        = $delimiter;
     }
 
     /**
@@ -78,6 +86,9 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if ($this->multiple) {
+            if (is_string($value) && (null !== $this->delimiter)) {
+                $value = explode($this->delimiter, $value);
+            }
             if (!is_array($value)) {
                 throw new UnexpectedTypeException($value, 'array');
             }

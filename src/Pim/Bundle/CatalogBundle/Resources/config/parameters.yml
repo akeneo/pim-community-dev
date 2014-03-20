@@ -12,5 +12,6 @@ parameters:
     pim_catalog.manager.locale.class:          Pim\Bundle\CatalogBundle\Manager\LocaleManager
     pim_catalog.manager.media.class:           Pim\Bundle\CatalogBundle\Manager\MediaManager
     pim_catalog.manager.product.class:         Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.manager.association.class:     Pim\Bundle\CatalogBundle\Manager\AssociationManager
 
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache
