@@ -25,7 +25,7 @@ class FieldSorter implements SorterInterface
      */
     public function __construct(ProductRepositoryInterface $prodRepository)
     {
-        $this->productRepository   = $prodRepository;
+        $this->productRepository = $prodRepository;
     }
 
     /**
