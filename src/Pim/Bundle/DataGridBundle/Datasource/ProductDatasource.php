@@ -83,6 +83,7 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
      */
     public function process(DatagridInterface $grid, array $config)
     {
+        $this->configuration = $config;
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
             $this->qb = $this->getRepository()->$method();
         } else {
@@ -170,14 +171,30 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     public function getRepository()
     {
         if (!$this->repository) {
-            $this->configuration = $config;
-            if (!isset($config['entity'])) {
-                throw new \Exception(get_class($this).' expects to be configured with entity');
-            }
-
-            $this->repository = $this->om->getRepository($config['entity']);
+            $this->repository = $this->om->getRepository($this->getConfiguration('entity'));
         }
 
         return $this->repository;
+    }
+
+    /**
+     * Get configuration
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    protected function getConfiguration($key)
+    {
+        if (!$this->configuration) {
+            throw new \LogicException('Datasource is not yet built. You need to call process method before');
+        }
+
+        if (!isset($this->configuration[$key])) {
+            throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
+        }
+
+        return $this->configuration[$key];
     }
 }
