@@ -103,7 +103,7 @@ class Hydrator implements HydratorInterface
      */
     protected function prepareLinkedData(array $result, $locale, $scope)
     {
-        $normalizedData = $result['normalizedData'];
+        $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
 
         $completenessCode = $scope.'-'.$locale;
         if (isset($normalizedData['completenesses'][$completenessCode])) {
@@ -111,7 +111,6 @@ class Hydrator implements HydratorInterface
         } else {
             $result['ratio'] = '-';
         }
-        unset($result['normalizedData']['completenesses']);
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
@@ -120,7 +119,6 @@ class Hydrator implements HydratorInterface
         } else {
             $result['familyLabel'] = '-';
         }
-        unset($result['normalizedData']['family']);
 
         return $result;
     }
