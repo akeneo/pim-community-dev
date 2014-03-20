@@ -154,6 +154,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->qb->sort('normalizedData'.$field, $direction);
+
+        return $this;
     }
 }
