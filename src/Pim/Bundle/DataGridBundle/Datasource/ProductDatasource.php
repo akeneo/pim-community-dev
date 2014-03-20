@@ -65,6 +65,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var array */
     protected $parameters = array();
 
+    /** @var ProductRepositoryInterface $repository */
+    protected $repository;
+
     /**
      * @param ObjectManager     $om
      * @param HydratorInterface $hydrator
@@ -80,18 +83,10 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
      */
     public function process(DatagridInterface $grid, array $config)
     {
-        $this->configuration = $config;
-        if (!isset($config['entity'])) {
-            throw new \Exception(get_class($this).' expects to be configured with entity');
-        }
-
-        $entity = $config['entity'];
-        $repository = $this->om->getRepository($entity);
-
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            $this->qb = $repository->$method();
+            $this->qb = $this->getRepository()->$method();
         } else {
-            $this->qb = $repository->createQueryBuilder('o');
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
@@ -163,5 +158,26 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         $this->hydrator = $hydrator;
 
         return $this;
+    }
+
+    /**
+     * Get the repository from the configuration
+     *
+     * @return ProductRepositoryInterface
+     *
+     * @throws \Exception
+     */
+    public function getRepository()
+    {
+        if (!$this->repository) {
+            $this->configuration = $config;
+            if (!isset($config['entity'])) {
+                throw new \Exception(get_class($this).' expects to be configured with entity');
+            }
+
+            $this->repository = $this->om->getRepository($config['entity']);
+        }
+
+        return $this->repository;
     }
 }
