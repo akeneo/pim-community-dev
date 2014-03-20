@@ -100,7 +100,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
-        // TODO : implement custom filters
         $customFilters = [
             'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
             'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
@@ -154,6 +153,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$field, $direction);
+
+        return $this;
     }
 }

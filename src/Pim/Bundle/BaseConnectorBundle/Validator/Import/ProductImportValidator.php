@@ -76,8 +76,13 @@ class ProductImportValidator extends ImportValidator
      */
     protected function validateProductValue(ProductInterface $product, ColumnInfoInterface $columnInfo)
     {
+        $value = $this->getProductValue($product, $columnInfo);
+        if (!$value) {
+            return new \Symfony\Component\Validator\ConstraintViolationList;
+        }
+
         return $this->validator->validateValue(
-            $this->getProductValue($product, $columnInfo)->getData(),
+            $value->getData(),
             $this->getAttributeConstraints($columnInfo->getAttribute())
         );
     }

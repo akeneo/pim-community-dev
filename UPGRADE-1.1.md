@@ -82,5 +82,5 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
 ```
