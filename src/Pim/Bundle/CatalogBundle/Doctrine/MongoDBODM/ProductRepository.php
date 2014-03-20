@@ -125,6 +125,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneBy(array $criteria)
     {
         $qb = $this->createQueryBuilder('p');
@@ -540,6 +543,22 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function applySorterByField($qb, $field, $direction)
     {
         $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByFamily($qb, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByCompleteness($qb, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addCompletenessSorter($direction);
     }
 
     /**

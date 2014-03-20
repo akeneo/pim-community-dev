@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Hydrator implements HydratorInterface
+class ProductHydrator implements HydratorInterface
 {
     /**
      * {@inheritdoc}
@@ -55,6 +55,9 @@ class Hydrator implements HydratorInterface
         $result['id']= $result['_id']->__toString();
         unset($result['_id']);
         $result['dataLocale']= $locale;
+        $result['created']= isset($result['created']) ? $this->convertToDateTime($result['created']) : null;
+        $result['updated']= isset($result['updated']) ? $this->convertToDateTime($result['updated']) : null;
+        $result['enabled']= isset($result['enabled']) ? $result['enabled'] : false;
 
         return $result;
     }
@@ -100,15 +103,14 @@ class Hydrator implements HydratorInterface
      */
     protected function prepareLinkedData(array $result, $locale, $scope)
     {
-        $normalizedData = $result['normalizedData'];
+        $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
 
         $completenessCode = $scope.'-'.$locale;
         if (isset($normalizedData['completenesses'][$completenessCode])) {
-            $result['ratio']= $normalizedData['completenesses'][$completenessCode];
+            $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
         } else {
             $result['ratio'] = '-';
         }
-        unset($result['normalizedData']['completenesses']);
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
@@ -117,7 +119,6 @@ class Hydrator implements HydratorInterface
         } else {
             $result['familyLabel'] = '-';
         }
-        unset($result['normalizedData']['family']);
 
         return $result;
     }
@@ -174,9 +175,7 @@ class Hydrator implements HydratorInterface
 
         if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
-            $date = new \DateTime();
-            $date->setTimestamp($mongoDate->sec);
-            $value[$backendType]= $date;
+            $value[$backendType]= $this->convertToDateTime($mongoDate);
         }
 
         return $value;
@@ -199,5 +198,18 @@ class Hydrator implements HydratorInterface
         }
 
         return $option;
+    }
+
+    /**
+     * @param \MongoDate $mongoDate
+     *
+     * @return \DateTime
+     */
+    protected function convertToDateTime(\MongoDate $mongoDate)
+    {
+        $date = new \DateTime();
+        $date->setTimestamp($mongoDate->sec);
+
+        return $date;
     }
 }

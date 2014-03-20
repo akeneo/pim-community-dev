@@ -12,7 +12,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Hydrator implements HydratorInterface
+class ProductHydrator implements HydratorInterface
 {
     /**
      * {@inheritdoc}
@@ -26,8 +26,11 @@ class Hydrator implements HydratorInterface
 
         $rows    = [];
         foreach ($results as $result) {
-            $entityFields = $result[0];
-            unset($result[0]);
+            $entityFields = [];
+            if (isset($result[0])) {
+                $entityFields = $result[0];
+                unset($result[0]);
+            }
             $otherFields = $result;
             $result = $entityFields + $otherFields;
             if (isset($result['values'])) {

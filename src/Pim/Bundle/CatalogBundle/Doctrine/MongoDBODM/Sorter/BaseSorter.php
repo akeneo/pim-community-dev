@@ -16,9 +16,6 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
  */
 class BaseSorter implements SorterInterface
 {
-    /** @var string */
-    const NORMALIZED_FIELD = 'normalizedData';
-
     /** @var QueryBuilder */
     protected $qb;
 
@@ -48,7 +45,7 @@ class BaseSorter implements SorterInterface
     public function add(AbstractAttribute $attribute, $direction)
     {
         $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
-        $this->qb->sort(self::NORMALIZED_FIELD.'.'.$sortField, $direction);
+        $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$sortField, $direction);
 
         return $this;
     }

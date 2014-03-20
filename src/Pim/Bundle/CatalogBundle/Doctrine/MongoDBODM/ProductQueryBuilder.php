@@ -153,6 +153,31 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$field, $direction);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFamilySorter($direction)
+    {
+        $field = sprintf("%s.family.label.%s", ProductQueryUtility::NORMALIZED_FIELD, $this->getLocale());
+        $this->qb->sort($field, $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addCompletenessSorter($direction)
+    {
+        $field = sprintf(
+            "%s.completenesses.%s-%s",
+            ProductQueryUtility::NORMALIZED_FIELD,
+            $this->getScope(),
+            $this->getLocale()
+        );
+        $this->qb->sort($field, $direction);
     }
 }

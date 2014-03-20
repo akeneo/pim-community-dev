@@ -16,9 +16,6 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
  */
 class BaseFilter implements FilterInterface
 {
-    /** @var string */
-    const NORMALIZED_FIELD = 'normalizedData';
-
     /**
      * QueryBuilder
      * @var QueryBuilder
@@ -80,6 +77,6 @@ class BaseFilter implements FilterInterface
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
 
-        return sprintf('%s.%s', self::NORMALIZED_FIELD, $field);
+        return sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
     }
 }

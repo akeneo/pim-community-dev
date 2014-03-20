@@ -6,7 +6,6 @@ use Doctrine\ORM\QueryBuilder;
 
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product repository interface
@@ -307,6 +306,22 @@ interface ProductRepositoryInterface
      * @param string $direction direction to use
      */
     public function applySorterByField($qb, $field, $direction);
+
+    /**
+     * Apply a sort by family
+     *
+     * @param mixed  $qb        query builder to update
+     * @param string $direction direction to use
+     */
+    public function applySorterByFamily($qb, $direction);
+
+    /**
+     * Apply a sort by completeness
+     *
+     * @param mixed  $qb        query builder to update
+     * @param string $direction direction to use
+     */
+    public function applySorterByCompleteness($qb, $direction);
 
     /**
      * Delete a list of product ids

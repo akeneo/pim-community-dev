@@ -653,6 +653,24 @@ SQL;
     /**
      * {@inheritdoc}
      */
+    public function applySorterByFamily($qb, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByCompleteness($qb, $direction)
+    {
+        $joinAlias = 'sorterCompleteness';
+        $this->addCompleteness($qb, $joinAlias);
+        $qb->addOrderBy($joinAlias.'.ratio', $direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -726,6 +744,9 @@ SQL;
             ->getResult();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function findOneBy(array $criteria)
     {
         $qb = $this->createQueryBuilder('p');
@@ -776,7 +797,7 @@ SQL;
     protected function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
-            throw new \LogicException('Flexible query builder must be configured');
+            throw new \LogicException('Product query builder must be configured');
         }
 
         $this->productQB

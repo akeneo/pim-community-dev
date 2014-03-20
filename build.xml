@@ -8,7 +8,7 @@
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
+    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
@@ -357,11 +357,11 @@
         </exec>
     </target>
 
-
     <target name="vendors" description="Install vendors">
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="install" />
             <arg value="--no-progress" />
+            <arg value="--no-interaction" />
             <arg value="--prefer-dist" />
             <arg value="--optimize-autoloader" />
             <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
@@ -369,6 +369,17 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
             <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
             <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
+        </exec>
+    </target>
+
+    <target name="vendors-no-scripts" description="Install vendors">
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="install" />
+            <arg value="--no-progress" />
+            <arg value="--no-interaction" />
+            <arg value="--prefer-dist" />
+            <arg value="--optimize-autoloader" />
+            <arg value="--no-scripts" />
         </exec>
     </target>
 

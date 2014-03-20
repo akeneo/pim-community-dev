@@ -114,7 +114,6 @@ class CompletenessManager
         }
     }
 
-
     /**
      * Returns an array containing all completeness info and missing attributes for a product
      *

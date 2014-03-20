@@ -56,6 +56,7 @@
 - Remove Router dependency from json ProductNormalizer
 - Replace RegistryInterface with ManagerRegistry in controllers - retrieving the ObjectManager from the AbstractController now requires passing the class name (AbstractDoctrineController::getManagerForClass())
 - Change Completeness Manager and Repository function names to something more coherent (generateMissingForxxx)
+- Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 
 # 1.0.2
 ## Bug Fixes
