@@ -26,8 +26,11 @@ class ProductHydrator implements HydratorInterface
 
         $rows    = [];
         foreach ($results as $result) {
-            $entityFields = $result[0];
-            unset($result[0]);
+            $entityFields = [];
+            if (isset($result[0])) {
+                $entityFields = $result[0];
+                unset($result[0]);
+            }
             $otherFields = $result;
             $result = $entityFields + $otherFields;
             if (isset($result['values'])) {
