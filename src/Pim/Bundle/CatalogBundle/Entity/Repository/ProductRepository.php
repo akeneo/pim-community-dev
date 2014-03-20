@@ -858,7 +858,7 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode)
+    public function applyMassActionParameters($qb, $identifier, $inset, $values)
     {
         if ($values) {
             $valueWhereCondition =

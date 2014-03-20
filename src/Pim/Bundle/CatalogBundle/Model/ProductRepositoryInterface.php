@@ -324,8 +324,6 @@ interface ProductRepositoryInterface
      * @param string  $identifier
      * @param boolean $inset
      * @param array   $values
-     * @param string  $localeCode
-     * @param string  $scopeCode
      */
-    public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode);
+    public function applyMassActionParameters($qb, $identifier, $inset, $values);
 }
