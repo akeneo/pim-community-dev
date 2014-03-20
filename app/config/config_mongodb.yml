@@ -7,6 +7,4 @@ doctrine_mongodb:
     document_managers:
         default:
             auto_mapping: true
-
-pim_catalog:
-    storage_driver: 'doctrine/mongodb-odm'
+    auto_generate_hydrator_classes: true

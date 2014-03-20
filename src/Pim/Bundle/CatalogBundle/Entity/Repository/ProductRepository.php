@@ -726,6 +726,21 @@ SQL;
             ->getResult();
     }
 
+    public function findOneBy(array $criteria)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $pqb = $this->getProductQueryBuilder($qb);
+        foreach ($criteria as $field => $data) {
+            if (is_array($data)) {
+                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
+            } else {
+                $pqb->addFieldFilter($field, '=', $data);
+            }
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
     /**
      * Load a flexible entity with its attribute values
      *

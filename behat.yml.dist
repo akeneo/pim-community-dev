@@ -87,6 +87,74 @@ jenkins-4:
     filters:
         tags: ~skip&&~doc
 
+jenkins-mongodb-1:
+    context:
+        parameters:
+            base_url: http://pim-behat-mongodb-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-mongodb-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-mongodb-2:
+    context:
+        parameters:
+            base_url: http://pim-behat-mongodb-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-mongodb-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-mongodb-3:
+    context:
+        parameters:
+            base_url: http://pim-behat-mongodb-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-mongodb-3.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-mongodb-4:
+    context:
+        parameters:
+            base_url: http://pim-behat-mongodb-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-behat-mongodb-4.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
 jenkins-pr-1:
     context:
         parameters:

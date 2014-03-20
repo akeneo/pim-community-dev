@@ -178,10 +178,20 @@ class ProductManager extends FlexibleManager
      */
     public function findByIdentifier($identifier)
     {
-        $code = $this->getIdentifierAttribute()->getCode();
+        $products = $this->getProductRepository()->findOneBy(
+            [
+                [
+                    'attribute' => $this->getIdentifierAttribute(),
+                    'value' => $identifier
+                ]
+            ]
+        );
 
-        $products = $this->getProductRepository()->findAllByAttributes(array(), array($code => $identifier));
-        $product = reset($products);
+        if ($products instanceof \Doctrine\ODM\MongoDB\Cursor) {
+            $product = $products->getNext();
+        } else {
+            $product = reset($products);
+        }
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
