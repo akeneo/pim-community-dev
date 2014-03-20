@@ -25,7 +25,7 @@ services:
             - '@pim_catalog.repository.product'
 
     # Handlers
-    pim_datagrid.extension.mass_action.handler.delete:
+    pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
 
     pim_datagrid.extension.mass_action.handler.edit:
