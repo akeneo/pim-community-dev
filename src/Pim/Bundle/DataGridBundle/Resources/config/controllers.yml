@@ -18,7 +18,7 @@ services:
         scope: request
         arguments:
             - '@request'
-            - '@pim_datagrid.mass_action.product_dispatcher'
+            - '@pim_datagrid.mass_action.dispatcher'
             - '@pim_serializer'
 
     pim_datagrid.controller.product_export:
@@ -41,4 +41,4 @@ services:
         class: %pim_datagrid.controller.mass_action.class%
         arguments:
             - '@request'
-            - '@pim_datagrid.mass_action.product_dispatcher'
+            - '@pim_datagrid.mass_action.dispatcher'

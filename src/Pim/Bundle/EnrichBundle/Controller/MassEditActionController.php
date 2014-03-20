@@ -9,9 +9,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormError;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\From;
 
@@ -19,8 +19,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
 
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
@@ -79,7 +79,7 @@ class MassEditActionController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         MassEditActionOperator $operator,
         MassActionParametersParser $parametersParser,
-        ProductMassActionDispatcher $massActionDispatcher,
+        MassActionDispatcher $massActionDispatcher,
         $massEditLimit
     ) {
         parent::__construct(

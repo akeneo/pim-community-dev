@@ -15,13 +15,13 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 
 /**
- * Product mass action dispatcher
+ * Mass action dispatcher
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductMassActionDispatcher
+class MassActionDispatcher
 {
     /** @var MassActionHandlerRegistry $handlerRegistry */
     protected $handlerRegistry;

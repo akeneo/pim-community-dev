@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 /**
  * Datagrid controller for export action
@@ -39,7 +39,7 @@ class ExportController
      */
     public function __construct(
         Request $request,
-        ProductMassActionDispatcher $massActionDispatcher,
+        MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
         $this->request              = $request;

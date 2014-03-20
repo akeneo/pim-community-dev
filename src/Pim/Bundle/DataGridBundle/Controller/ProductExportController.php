@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 /**
  * Override ExportController for product exports
@@ -30,7 +30,7 @@ class ProductExportController extends ExportController
      */
     public function __construct(
         Request $request,
-        ProductMassActionDispatcher $massActionDispatcher,
+        MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
         ProductManager $productManager
     ) {

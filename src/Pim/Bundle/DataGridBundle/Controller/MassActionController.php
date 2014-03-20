@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
 /**
  * Mass action controller for edit and delete actions
@@ -19,16 +19,16 @@ class MassActionController
     protected $request;
 
     /**
-     * @var ProductMassActionDispatcher $massActionDispatcher
+     * @var MassActionDispatcher $massActionDispatcher
      */
     protected $massActionDispatcher;
 
     /**
      * Constructor
      *
-     * @param ProductMassActionDispatcher $massActionDispatcher
+     * @param MassActionDispatcher $massActionDispatcher
      */
-    public function __construct(Request $request, ProductMassActionDispatcher $massActionDispatcher)
+    public function __construct(Request $request, MassActionDispatcher $massActionDispatcher)
     {
         $this->request              = $request;
         $this->massActionDispatcher = $massActionDispatcher;
