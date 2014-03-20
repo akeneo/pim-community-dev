@@ -14,7 +14,7 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat-mongodb"/>
 
     <target name="build-behat-10-dev" depends="prepare,composer,vendors,install-all-behat,behat-10-dev"/>
 
@@ -270,6 +270,21 @@
         </exec>
     </target>
 
+    <target name="behat-mongodb" description="Run acceptance tests with Behat">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="4" />
+            <arg value="noxdebug" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_behat_mongodb_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-" />
+            <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+        </exec>
+    </target>
+
     <target name="behat-10-dev" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <!-- Concurrency -->
@@ -417,7 +432,6 @@
           <arg value="pim:install" />
           <arg value="--env=behat" />
           <arg value="--force" />
-          <arg value="-v" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
           <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
