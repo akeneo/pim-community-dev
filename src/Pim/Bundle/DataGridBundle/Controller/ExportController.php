@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
 
 /**
  * Datagrid controller for export action
@@ -22,9 +21,6 @@ class ExportController
 {
     /** @var Request $request */
     protected $request;
-
-    /** @var MassActionParametersParser $parametersParser */
-    protected $parametersParser;
 
     /** @var MassActionDispatcher $massActionDispatcher */
     protected $massActionDispatcher;
@@ -39,18 +35,15 @@ class ExportController
      * Constructor
      *
      * @param Request                    $request
-     * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param SerializerInterface        $serializer
      */
     public function __construct(
         Request $request,
-        MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher,
+        ProductMassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer
     ) {
         $this->request              = $request;
-        $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->serializer           = $serializer;
     }
@@ -114,15 +107,7 @@ class ExportController
         return function () {
             flush();
 
-            $parameters  = $this->parametersParser->parse($this->request);
-            $requestData = array_merge($this->request->query->all(), $this->request->request->all());
-
-            $results = $this->massActionDispatcher->dispatch(
-                $this->request->get('gridName'),
-                $this->request->get('actionName'),
-                $parameters,
-                $requestData
-            );
+            $results = $this->massActionDispatcher->dispatch($this->request);
 
             echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
 

@@ -321,6 +321,7 @@ datagrid:
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
+                handler: quick_export
                 context:
                     withHeader: true
                     heterogeneous: true

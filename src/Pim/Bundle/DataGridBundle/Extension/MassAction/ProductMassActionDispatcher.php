@@ -160,7 +160,7 @@ class ProductMassActionDispatcher
     {
         $datagrid = $this->manager->getDatagrid($datagridName);
 
-        return parent::getMassActionByName($actionName, $datagrid);
+        return $this->getMassActionByName($actionName, $datagrid);
     }
 
     /**

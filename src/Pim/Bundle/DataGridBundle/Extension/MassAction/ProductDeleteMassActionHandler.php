@@ -6,7 +6,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;

@@ -18,8 +18,7 @@ services:
         scope: request
         arguments:
             - '@request'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - '@oro_datagrid.mass_action.dispatcher'
+            - '@pim_datagrid.mass_action.product_dispatcher'
             - '@pim_serializer'
 
     pim_datagrid.controller.product_export:

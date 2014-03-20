@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
 /**
@@ -21,10 +22,18 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      *
      * @return mixed
      */
-    public function handle(DatagridInterface $datagrid)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
         $qb = $datagrid->getDatasource()->getQueryBuilder();
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @return boolean
+     */
+    public function needSelectionReset()
+    {
+        return false;
     }
 }
