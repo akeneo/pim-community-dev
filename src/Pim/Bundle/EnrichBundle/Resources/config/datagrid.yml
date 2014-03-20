@@ -301,7 +301,7 @@ datagrid:
                 entity_name: product
                 data_identifier: p
                 route: pim_datagrid_mass_action
-                handler: pim_datagrid.extension.mass_action.handler.delete
+                handler: mass_delete
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?

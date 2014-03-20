@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -14,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\HandlerRegistry;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
 /**
@@ -25,9 +25,8 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
  */
 class ProductMassActionDispatcher
 {
-    // TODO: Must be replaced by handler registry
-    /** @var ContainerInterface $container */
-    protected $container;
+    /** @var HandlerRegistry $handlerRegistry */
+    protected $handlerRegistry;
 
     /** @var Manager $manager */
     protected $manager;
@@ -41,18 +40,18 @@ class ProductMassActionDispatcher
     /**
      * Constructor
      *
-     * @param ContainerInterface         $container
+     * @param HandlerRegistry            $handlerRegistry
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
-        ContainerInterface $container,
+        HandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
         MassActionParametersParser $parametersParser
     ) {
-        $this->container        = $container;
+        $this->handlerRegistry  = $handlerRegistry;
         $this->manager          = $manager;
         $this->requestParams    = $requestParams;
         $this->parametersParser = $parametersParser;
@@ -83,7 +82,7 @@ class ProductMassActionDispatcher
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
         // create datagrid, prepare query and apply mass action parameters
-        $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $identifier = $this->getIdentifierField($massAction);
 
@@ -132,22 +131,14 @@ class ProductMassActionDispatcher
      * @param MassActionInterface $massAction
      *
      * @return MassActionHandlerInterface
-     * @throws \LogicException
-     * @throws UnexpectedTypeException
      *
-     * TODO: This method must be replace by an HandlerRegistry
+     * @throws UnexpectedTypeException
      */
     protected function getMassActionHandler(MassActionInterface $massAction)
     {
-        $handlerServiceId = $massAction->getOptions()->offsetGet('handler');
-        if (!$handlerServiceId) {
-            throw new \LogicException(sprintf('There is no handler for mass action "%s"', $massAction->getName()));
-        }
-        if (!$this->container->has($handlerServiceId)) {
-            throw new \LogicException(sprintf('Mass action handler service "%s" not exist', $handlerServiceId));
-        }
+        $handlerAlias = $massAction->getOptions()->offsetGet('handler');
+        $handler      = $this->handlerRegistry->getHandler($handlerAlias);
 
-        $handler = $this->container->get($handlerServiceId);
         if (!$handler instanceof MassActionHandlerInterface) {
             throw new UnexpectedTypeException($handler, 'MassActionHandlerInterface');
         }

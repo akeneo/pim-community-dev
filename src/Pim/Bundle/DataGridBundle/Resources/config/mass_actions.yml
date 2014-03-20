@@ -5,6 +5,7 @@ parameters:
     pim_datagrid.extension.mass_action.handler.export.class:         Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.product.class: Pim\Bundle\DataGridBundle\Extension\MassAction\ProductDeleteMassActionHandler
     pim_datagrid.mass_action.product_dispatcher.class:               Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher
+    pim_datagrid.extension.mass_action.handler.registry.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\HandlerRegistry
 
 services:
     # override mass action dispatcher
@@ -19,7 +20,7 @@ services:
     pim_datagrid.mass_action.product_dispatcher:
         class: %pim_datagrid.mass_action.product_dispatcher.class%
         arguments:
-            - '@service_container'
+            - '@pim_datagrid.extension.mass_action.handler.registry'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
@@ -27,14 +28,20 @@ services:
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: quick_export }
 
     pim_datagrid.extension.mass_action.handler.edit:
         class: %pim_datagrid.extension.mass_action.handler.edit.class%
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_edit }
 
     pim_datagrid.extension.mass_action.handler.delete:
         class: %pim_datagrid.extension.mass_action.handler.delete.product.class%
         arguments:
             - '@translator'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
@@ -48,3 +55,9 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
+
+    # Handler registry
+    pim_datagrid.extension.mass_action.handler.registry:
+        class: %pim_datagrid.extension.mass_action.handler.registry.class%
+        arguments:
+            - '@service_container'
