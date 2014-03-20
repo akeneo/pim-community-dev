@@ -22,7 +22,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 
 class ProductMassActionDispatcher
 {
