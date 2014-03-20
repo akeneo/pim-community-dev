@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
  * Mark the indexed values for the object as outdated once a value has been loaded from the DB
@@ -35,12 +35,12 @@ class OutdateIndexedValuesListener implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof FlexibleValueInterface) {
-            $flexibleObject = $object->getObject();
-            if (is_object($flexibleObject)) {
+        if ($object instanceof AbstractEntityFlexibleValue) {
+            $flexibleObject = $object->getEntity();
+            if ($flexibleObject instanceof AbstractEntityFlexible) {
                 $flexibleObject->markIndexedValuesOutdated();
             }
-        } elseif ($object instanceof FlexibleInterface) {
+        } elseif ($object instanceof AbstractEntityFlexible) {
             $object->markIndexedValuesOutdated();
         }
     }
