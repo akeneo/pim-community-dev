@@ -8,12 +8,15 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\MongoDB\Query\Builder;
+use Doctrine\MongoDB\Query\Expr;
 
 /**
  * Generate the completeness when Product are in MongoDBODM
@@ -49,23 +52,31 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $productClass;
 
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
      * Constructor
      *
      * @param DocumentManager     $documentManager
      * @param CompletenessFactory $completenessFactory
      * @param ValidatorInterface  $validator
-     * @param String              $productClass
+     * @param string              $productClass
+     * @param ChannelManager      $channelManager
      */
     public function __construct(
         DocumentManager $documentManager,
         CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
-        $productClass
+        $productClass,
+        ChannelManager $channelManager
     ) {
         $this->documentManager = $documentManager;
         $this->completenessFactory = $completenessFactory;
         $this->validator = $validator;
         $this->productClass = $productClass;
+        $this->channelManager = $channelManager;
     }
 
     /**
@@ -202,7 +213,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     protected function generate(ProductInterface $product = null, Channel $channel = null)
     {
-        $products = $this->getMissingQuery($product, $channel);
+        $productsQb = $this->documentManager->createQueryBuilder($this->productClass);
+
+        $this->applyFindMissingQuery($productsQb, $product, $channel);
+
+        $products = $productsQb->getQuery()->execute();
 
         foreach ($products as $product) {
             $this->generateMissingForProduct($product);
@@ -210,29 +225,29 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * Get the query part to search for product where the completenesses
+     * Apply the query part to search for product where the completenesses
      * are missing. Apply only to the channel or product if provided.
      *
+     * @param Builder $productsQb
      * @param Product $product
      * @param Channel $channel
-     *
-     * @return Expr $findQuery
      */
-    protected function getFindMissingQuery(ProductInterface $product = null, Channel $channel = null)
-    {
-        $findQuery = new Expr();
+    protected function applyFindMissingQuery(
+        Builder $productsQb,
+        ProductInterface $product = null,
+        Channel $channel = null
+    ) {
         if (null !== $product) {
-            $findQuery->field('_id')->equals($product->getId());
+            $productsQb->field('_id')->equals($product->getId());
         } else {
             $combinations = $this->getCombinations($channel);
-            $find->addOr();
             
+            $orItems = new Expr();
             foreach ($combinations as $combination) {
-                $findQuery->field('normalizedData.completenesses.'.$combination)->exists(false);
+                $orItems->field('normalizedData.completenesses.'.$combination)->exists(false);
             }
+            $productsQb->addOr($orItems);
         }
-
-        return $findQuery;
     }
 
     /**
@@ -248,14 +263,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $channels = array();
         $combinations = array();
 
+        if (null !== $channel) {
+            $channels = [$channel];
+        } else {
+            $channels = $this->channelManager->getFullChannels();
+        }
+
         foreach ($channels as $channel)
         {
-            if (null !== $channel) {
-                $channels = [$channel];
-            } else {
-                $channels = $this->channelManager->getFullChannels();
-            }
-
             $locales = $channel->getLocales();
             foreach ($locales as $locale) {
                 $combinations[] = $channel->getCode().'-'.$locale->getCode();
