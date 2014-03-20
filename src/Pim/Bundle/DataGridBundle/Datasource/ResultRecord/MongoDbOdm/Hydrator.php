@@ -107,7 +107,7 @@ class Hydrator implements HydratorInterface
 
         $completenessCode = $scope.'-'.$locale;
         if (isset($normalizedData['completenesses'][$completenessCode])) {
-            $result['ratio']= $normalizedData['completenesses'][$completenessCode];
+            $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
         } else {
             $result['ratio'] = '-';
         }
