@@ -28,12 +28,4 @@ class ExportMassActionHandler implements MassActionHandlerInterface
 
         return $qb->getQuery()->execute();
     }
-
-    /**
-     * @return boolean
-     */
-    public function needSelectionReset()
-    {
-        return false;
-    }
 }
