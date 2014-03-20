@@ -28,11 +28,6 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
     protected $translator;
 
     /**
-     * @var ProductRepositoryInterface $repository
-     */
-    protected $repository;
-
-    /**
      * @var string $responseMessage
      */
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
@@ -40,12 +35,10 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * Constructor
      *
-     * @param ProductRepositoryInterface $repository
      * @param TranslatorInterface        $translator
      */
-    public function __construct(ProductRepositoryInterface $repository, TranslatorInterface $translator)
+    public function __construct(TranslatorInterface $translator)
     {
-        $this->repository = $repository;
         $this->translator = $translator;
     }
 
@@ -63,7 +56,8 @@ class ProductDeleteMassActionHandler implements MassActionHandlerInterface
         $productIds = array_keys($datasource->getResults());
 
         try {
-            $countProducts = $this->repository->deleteFromIds($productIds);
+            $repository = $datasource->getRepository()->deleteFromIds($productIds);
+            $countProducts = $repository->deleteFromIds($productIds);
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 
