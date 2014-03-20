@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
- * Flexible option selector
+ * Product value options selector
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleOptionSelector implements SelectorInterface
+class OptionsSelector implements SelectorInterface
 {
     /**
      * @param SelectorInterface $predecessor
@@ -32,17 +32,17 @@ class FlexibleOptionSelector implements SelectorInterface
 
         $datasource->getQueryBuilder()
             ->leftJoin(
-                'values.option',
-                'simpleoption'
+                'values.options',
+                'multioptions'
             )
-            ->addSelect('simpleoption')
+            ->addSelect('multioptions')
 
             ->leftJoin(
-                'simpleoption.optionValues',
-                'simpleoptionvalues',
+                'multioptions.optionValues',
+                'multioptionvalues',
                 'WITH',
-                'simpleoptionvalues.locale = :dataLocale OR simpleoptionvalues.locale IS NULL'
+                'multioptionvalues.locale = :dataLocale OR multioptionvalues.locale IS NULL'
             )
-            ->addSelect('simpleoptionvalues');
+            ->addSelect('multioptionvalues');
     }
 }

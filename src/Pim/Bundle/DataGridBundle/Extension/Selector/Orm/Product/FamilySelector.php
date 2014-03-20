@@ -1,37 +1,32 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
- * Flexible media selector
+ * Product family selector
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleMediaSelector implements SelectorInterface
+class FamilySelector implements SelectorInterface
 {
-    /**
-     * @param SelectorInterface $predecessor
-     */
-    public function __construct(SelectorInterface $predecessor)
-    {
-        $this->predecessor = $predecessor;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
-        $this->predecessor->apply($datasource, $configuration);
+        $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
 
         $datasource->getQueryBuilder()
-            ->leftJoin('values.media', 'media')
-            ->addSelect('media');
+            ->leftJoin($rootAlias.'.family', 'family')
+            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
+
+        $datasource->getQueryBuilder()
+            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
     }
 }
