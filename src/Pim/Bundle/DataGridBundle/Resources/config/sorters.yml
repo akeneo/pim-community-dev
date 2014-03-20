@@ -1,9 +1,9 @@
 parameters:
-    pim_datagrid.extension.sorter.orm.field_sorter.class:                Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FieldSorter
-    pim_datagrid.extension.sorter.product.field_sorter.class:            Pim\Bundle\DataGridBundle\Extension\Sorter\Product\FieldSorter
-    pim_datagrid.extension.sorter.product.value_sorter.class:            Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter
-    pim_datagrid.extension.sorter.orm.product_completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductCompletenessSorter
-    pim_datagrid.extension.sorter.orm.product_family_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\ProductFamilySorter
+    pim_datagrid.extension.sorter.orm.field_sorter.class:            Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FieldSorter
+    pim_datagrid.extension.sorter.product.field_sorter.class:        Pim\Bundle\DataGridBundle\Extension\Sorter\Product\FieldSorter
+    pim_datagrid.extension.sorter.product.value_sorter.class:        Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter
+    pim_datagrid.extension.sorter.product.completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Product\CompletenessSorter
+    pim_datagrid.extension.sorter.product.family_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Product\FamilySorter
 
 services:
     pim_datagrid.extension.sorter.orm.field_sorter:
@@ -26,14 +26,16 @@ services:
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_value }
 
-    pim_datagrid.extension.sorter.orm.product_completeness_sorter:
-        class: %pim_datagrid.extension.sorter.orm.product_completeness_sorter.class%
+    pim_datagrid.extension.sorter.product.completeness_sorter:
+        class: %pim_datagrid.extension.sorter.product.completeness_sorter.class%
         arguments:
             - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_completeness }
 
-    pim_datagrid.extension.sorter.orm.product_family_sorter:
-        class: %pim_datagrid.extension.sorter.orm.product_family_sorter.class%
+    pim_datagrid.extension.sorter.product.family_sorter:
+        class: %pim_datagrid.extension.sorter.product.family_sorter.class%
+        arguments:
+            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_family }
