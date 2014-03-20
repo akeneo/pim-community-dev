@@ -20,6 +20,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class SetProductNormalizedDataSubscriber implements EventSubscriber
 {
+    /** @var NormalizerInterface */
+    protected $normalizer;
+
     /**
      * @param NormalizerInterface $normalizer
      */

@@ -17,6 +17,9 @@ class ProductQueryUtility
     /** @var string */
     const FIELD_TOKEN_SEPARATOR = '-';
 
+    /** @var string */
+    const NORMALIZED_FIELD = 'normalizedData';
+
     /**
      * Normalize the field name from attribute and locale
      *
@@ -65,9 +68,15 @@ class ProductQueryUtility
         $suffix = '';
 
         if ($localizable) {
+            if (null === $locale) {
+                throw new \LogicException('Locale is not configured');
+            }
             $suffix = sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $locale);
         }
         if ($scopable) {
+            if (null === $scope) {
+                throw new \LogicException('Scope is not configured');
+            }
             $suffix .= sprintf(self::FIELD_TOKEN_SEPARATOR.'%s', $scope);
         }
 

@@ -96,8 +96,7 @@ class AppKernel extends OroKernel
         }
 
         if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
-            $loader->load(__DIR__.'/config/mongodb/parameters_'.$this->getEnvironment().'.yml');
-            $loader->load(__DIR__ .'/config/mongodb/config.yml');
+            $loader->load(__DIR__ .'/config/config_mongodb.yml');
         }
     }
 }

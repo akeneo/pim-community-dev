@@ -98,7 +98,46 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         $limit = null,
         $offset = null
     ) {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+
+        foreach ($attributes as $attribute => $value) {
+            $qb->field($attribute)->equals($value);
+        }
+
+        if ($criteria) {
+            foreach ($criteria as $field => $value) {
+                $qb->field('normalizedData.'.$field)->equals($value);
+            }
+        }
+
+        if ($orderBy) {
+            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($limit) {
+            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($offset) {
+            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    public function findOneBy(array $criteria)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $pqb = $this->getProductQueryBuilder($qb);
+        foreach ($criteria as $field => $data) {
+            if (is_array($data)) {
+                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
+            } else {
+                $pqb->addFieldFilter($field, '=', $data);
+            }
+        }
+
+        return $qb->getQuery()->execute();
     }
 
     /**
@@ -114,7 +153,17 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function buildByChannelAndCompleteness(Channel $channel)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        foreach ($channel->getLocales() as $locale) {
+            $qb->addOr(
+                $qb
+                    ->expr()
+                    ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))
+                    ->equals(100)
+            );
+        }
+
+        return $qb;
     }
 
     /**
@@ -315,10 +364,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getLocale()
     {
-        if (!$this->locale) {
-            $this->locale = $this->flexibleConfig['default_locale'];
-        }
-
         return $this->locale;
     }
 
@@ -343,10 +388,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getScope()
     {
-        if (!$this->scope) {
-            $this->scope = $this->flexibleConfig['default_scope'];
-        }
-
         return $this->scope;
     }
 

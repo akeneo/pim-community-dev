@@ -88,6 +88,9 @@ swiftmailer:
     password:                 "%mailer_password%"
     spool:                    { type: memory }
 
+pim_catalog:
+    storage_driver: 'doctrine/orm'
+
 services:
     oro.cache.abstract:
         abstract:  true

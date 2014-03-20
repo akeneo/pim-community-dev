@@ -6,7 +6,7 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:
             type:        product_value_field
@@ -14,7 +14,7 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
             type:        product_value_field
@@ -22,7 +22,7 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
             type:        product_value_option
@@ -33,7 +33,7 @@ parameters:
             options:
                 field_options:
                     multiple: true
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
             type:        product_value_options
@@ -44,7 +44,7 @@ parameters:
             options:
                 field_options:
                     multiple: true
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
             type:        product_value_field
@@ -52,7 +52,7 @@ parameters:
         filter:
             type:        product_value_number
             parent_type: number
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
             type:          product_value_boolean
@@ -62,7 +62,7 @@ parameters:
         filter:
             type:        product_value_boolean
             parent_type: boolean
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_date:
         column:
             type:          product_value_date
@@ -71,7 +71,7 @@ parameters:
         filter:
             type:          product_value_date
             parent_type:   date
-        sorter:            flexible_field
+        sorter:            product_value
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
             type:          product_value_field

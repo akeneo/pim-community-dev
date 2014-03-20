@@ -2,13 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Doctrine\Common\EventSubscriber;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
+use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 
 /**
- * Mark the indexed values for the entity as outdated once a value has been loaded from the DB
+ * Mark the indexed values for the object as outdated once a value has been loaded from the DB
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -35,12 +35,12 @@ class OutdateIndexedValuesListener implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $object = $args->getObject();
-        if ($object instanceof FlexibleValueInterface) {
-            $flexibleEntity = $object->getEntity();
-            if (is_object($flexibleEntity)) {
-                $flexibleEntity->markIndexedValuesOutdated();
+        if ($object instanceof AbstractEntityFlexibleValue) {
+            $flexibleObject = $object->getEntity();
+            if ($flexibleObject instanceof AbstractEntityFlexible) {
+                $flexibleObject->markIndexedValuesOutdated();
             }
-        } elseif ($object instanceof FlexibleInterface) {
+        } elseif ($object instanceof AbstractEntityFlexible) {
             $object->markIndexedValuesOutdated();
         }
     }
