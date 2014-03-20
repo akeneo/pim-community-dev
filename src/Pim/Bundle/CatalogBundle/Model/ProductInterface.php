@@ -2,14 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
-
-use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Product interface
@@ -20,6 +18,20 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 interface ProductInterface extends FlexibleInterface
 {
+    /**
+     * Get created datetime
+     *
+     * @return \DateTime
+     */
+    public function getCreated();
+
+    /**
+     * Get updated created datetime
+     *
+     * @return \DateTime
+     */
+    public function getUpdated();
+
     /**
      * Get family
      *

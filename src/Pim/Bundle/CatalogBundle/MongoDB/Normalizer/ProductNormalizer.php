@@ -16,8 +16,20 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @const string */
     const FAMILY_FIELD = 'family';
+
+    /** @const string */
     const COMPLETENESSES_FIELD = 'completenesses';
+
+    /** @const string */
+    const ENABLED_FIELD = 'enabled';
+
+    /** @const string */
+    const CREATED_FIELD = 'created';
+
+    /** @const string */
+    const UPDATED_FIELD = 'updated';
 
     /** @var SerializerInterface */
     protected $serializer;
@@ -31,8 +43,14 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $data = [self::FAMILY_FIELD => $this->serializer->normalize($object->getFamily(), $format, $context)];
-
+        $data = [];
+        $data[self::FAMILY_FIELD]= $this->serializer->normalize($object->getFamily(), $format, $context);
+        if ($object->getCreated()) {
+            $data[self::CREATED_FIELD]= $this->serializer->normalize($object->getCreated(), $format, $context);
+        }
+        if ($object->getUpdated()) {
+            $data[self::UPDATED_FIELD]= $this->serializer->normalize($object->getUpdated(), $format, $context);
+        }
         foreach ($object->getValues() as $value) {
             $data = array_merge(
                 $data,
@@ -48,6 +66,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             );
         }
         $data[self::COMPLETENESSES_FIELD] = $completenesses;
+        $data[self::ENABLED_FIELD] = (int) $object->isEnabled();
 
         return $data;
     }

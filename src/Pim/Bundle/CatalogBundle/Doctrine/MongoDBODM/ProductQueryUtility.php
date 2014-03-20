@@ -17,6 +17,9 @@ class ProductQueryUtility
     /** @var string */
     const FIELD_TOKEN_SEPARATOR = '-';
 
+    /** @var string */
+    const NORMALIZED_FIELD = 'normalizedData';
+
     /**
      * Normalize the field name from attribute and locale
      *
