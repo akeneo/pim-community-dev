@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
@@ -21,7 +22,6 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
  */
 class ProductMassActionDispatcher
 {
@@ -35,39 +35,42 @@ class ProductMassActionDispatcher
     /** @var RequestParameters $requestParams */
     protected $requestParams;
 
+    /** @var MassActionParametersParser $parametersParser */
+    protected $parametersParser;
+
     /**
      * Constructor
      *
      * @param ContainerInterface         $container
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
+     * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
         ContainerInterface $container,
         ManagerInterface $manager,
-        RequestParameters $requestParams
+        RequestParameters $requestParams,
+        MassActionParametersParser $parametersParser
     ) {
-        $this->container     = $container;
-        $this->manager       = $manager;
-        $this->requestParams = $requestParams;
+        $this->container        = $container;
+        $this->manager          = $manager;
+        $this->requestParams    = $requestParams;
+        $this->parametersParser = $parametersParser;
     }
 
     /**
      * Dispatch datagrid mass action
      *
-     * @param string $datagridName
-     * @param string $actionName
-     * @param array  $parameters
-     * @param array  $data
-     *
      * @throws \LogicException
      *
      * @return MassActionResponseInterface
-     *
-     * TODO: Dispatcher can knows the @request to get all these parameters
      */
-    public function dispatch($datagridName, $actionName, array $parameters, array $data)
+    public function dispatch($request)
     {
+        $parameters   = $this->parametersParser->parse($request);
+        $datagridName = $request->get('gridName');
+        $actionName   = $request->get('actionName');
+
         $inset   = isset($parameters['inset'])   ? $parameters['inset']   : true;
         $values  = isset($parameters['values'])  ? $parameters['values']  : [];
         $filters = isset($parameters['filters']) ? $parameters['filters'] : [];
@@ -76,22 +79,16 @@ class ProductMassActionDispatcher
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
-        $datagrid   = $this->manager->getDatagrid($datagridName);
-
-        // set filter data
+        $datagrid = $this->manager->getDatagrid($datagridName);
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        // create datagrid and prepare query
-        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-
-        // Apply mass action parameters on qb
+        // create datagrid, prepare query and apply mass action parameters
+        $datagrid->getAcceptedDatasource()->getQueryBuilder();
         $massAction = $this->getMassActionByName($actionName, $datagrid);
-        $dataLocale = $this->container->get('request')->get('dataLocale', null);
-        $scopeCode  = isset($filters['scope']['value']) ? $filters['scope']['value'] : null;
         $identifier = $this->getIdentifierField($massAction);
 
         $repository = $datagrid->getDatasource()->getRepository();
-        $repository->applyMassActionParameters($qb, $identifier, $inset, $values, $dataLocale, $scopeCode);
+        $repository->applyMassActionParameters($qb, $identifier, $inset, $values);
 
         // perform mass action
         $handler = $this->getMassActionHandler($massAction);

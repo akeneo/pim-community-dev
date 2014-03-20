@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
 
 /**
@@ -19,42 +18,28 @@ class MassActionController
     /** @var Request $request */
     protected $request;
 
-    /** @var MassActionParametersParser $parametersParser */
-    protected $parametersParser;
-
-    /** @var ProductMassActionDispatcher $massActionDispatcher */
+    /**
+     * @var ProductMassActionDispatcher $massActionDispatcher
+     */
     protected $massActionDispatcher;
 
     /**
      * Constructor
      *
-     * @param Request                     $request
-     * @param MassActionParametersParser  $parametersParser
      * @param ProductMassActionDispatcher $massActionDispatcher
      */
-    public function __construct(
-        Request $request,
-        MassActionParametersParser $parametersParser,
-        ProductMassActionDispatcher $massActionDispatcher
-    ) {
+    public function __construct(Request $request, ProductMassActionDispatcher $massActionDispatcher)
+    {
         $this->request              = $request;
-        $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
     }
 
     /**
      * Mass delete action
      */
-    public function massActionAction($gridName, $actionName)
+    public function massActionAction()
     {
-        $parameters = $this->parametersParser->parse($this->request);
-
-        $requestData = array_merge(
-            $this->request->query->all(),
-            $this->request->request->all()
-        );
-
-        $response = $this->massActionDispatcher->dispatch($gridName, $actionName, $parameters, $requestData);
+        $response = $this->massActionDispatcher->dispatch($this->request);
 
         $data = [
             'successful' => $response->isSuccessful(),

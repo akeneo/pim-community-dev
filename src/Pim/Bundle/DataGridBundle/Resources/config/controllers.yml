@@ -42,5 +42,4 @@ services:
         class: %pim_datagrid.controller.mass_action.class%
         arguments:
             - '@request'
-            - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.mass_action.product_dispatcher'

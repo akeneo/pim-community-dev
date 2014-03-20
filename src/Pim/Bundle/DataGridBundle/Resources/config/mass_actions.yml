@@ -22,6 +22,7 @@ services:
             - '@service_container'
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
+            - '@oro_datagrid.mass_action.parameters_parser'
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
