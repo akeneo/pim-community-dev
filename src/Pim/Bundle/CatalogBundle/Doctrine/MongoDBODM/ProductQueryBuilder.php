@@ -163,6 +163,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFamilySorter($direction)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $field = sprintf("%s.family.label.%s", ProductQueryUtility::NORMALIZED_FIELD, $this->getLocale());
+        $this->qb->sort($field, $direction);
     }
 }
