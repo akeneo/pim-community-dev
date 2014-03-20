@@ -1,5 +1,4 @@
 parameters:
-    pim_datagrid.mass_action.dispatcher.class:                       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.type.export.class:            Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
     pim_datagrid.extension.mass_action.handler.edit.class:           Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:         Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
@@ -8,14 +7,6 @@ parameters:
     pim_datagrid.extension.mass_action.handler.registry.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
 services:
-    # override mass action dispatcher
-    oro_datagrid.mass_action.dispatcher:
-        class: %pim_datagrid.mass_action.dispatcher.class%
-        arguments:
-            - '@service_container'
-            - '@oro_datagrid.datagrid.manager'
-            - '@oro_datagrid.datagrid.request_params'
-
     # Dispatchers
     pim_datagrid.mass_action.product_dispatcher:
         class: %pim_datagrid.mass_action.product_dispatcher.class%
