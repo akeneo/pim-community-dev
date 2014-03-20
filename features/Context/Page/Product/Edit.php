@@ -362,12 +362,11 @@ class Edit extends Form
             ->find('css', 'div.progress-cell');
 
         if ("" === $ratio) {
-            if (is_object(
-                $completenessCell->find('css', 'div.progress'))) {
-                    throw new \InvalidArgumentException(
-                        sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
-                    );
-                }
+            if (is_object($completenessCell->find('css', 'div.progress'))) {
+                throw new \InvalidArgumentException(
+                    sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
+                );
+            }
         } else {
             $title = $completenessCell
                 ->find('css', 'div.progress')
