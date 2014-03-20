@@ -23,7 +23,7 @@ use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
  */
 class ProductMassActionDispatcher
 {
-    /** @var HandlerRegistry $handlerRegistry */
+    /** @var MassActionHandlerRegistry $handlerRegistry */
     protected $handlerRegistry;
 
     /** @var Manager $manager */
@@ -38,7 +38,7 @@ class ProductMassActionDispatcher
     /**
      * Constructor
      *
-     * @param HandlerRegistry            $handlerRegistry
+     * @param MassActionHandlerRegistry  $handlerRegistry
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser

@@ -5,7 +5,7 @@ parameters:
     pim_datagrid.extension.mass_action.handler.export.class:         Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.product.class: Pim\Bundle\DataGridBundle\Extension\MassAction\ProductDeleteMassActionHandler
     pim_datagrid.mass_action.product_dispatcher.class:               Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher
-    pim_datagrid.extension.mass_action.handler.registry.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\HandlerRegistry
+    pim_datagrid.extension.mass_action.handler.registry.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
 services:
     # override mass action dispatcher
