@@ -19,7 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
 
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
@@ -79,7 +79,7 @@ class MassEditActionController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         MassEditActionOperator $operator,
         MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher,
+        ProductMassActionDispatcher $massActionDispatcher,
         $massEditLimit
     ) {
         parent::__construct(
@@ -312,12 +312,7 @@ class MassEditActionController extends AbstractDoctrineController
             $parameters  = $this->parametersParser->parse($request);
             $requestData = array_merge($request->query->all(), $request->request->all());
 
-            $qb = $this->massActionDispatcher->dispatch(
-                $requestData['gridName'],
-                $requestData['actionName'],
-                $parameters,
-                $requestData
-            );
+            $qb = $this->massActionDispatcher->dispatch($request);
 
             $this->gridQB = $qb;
         }

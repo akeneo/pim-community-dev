@@ -334,6 +334,7 @@ datagrid:
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
                 data_identifier: p
+                handler: product_mass_edit
         sorters:
             columns:
                 family:
