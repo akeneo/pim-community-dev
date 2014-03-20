@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
@@ -99,6 +100,20 @@ class CompletenessManager
             $this->generator->schedule($product);
         }
     }
+
+    /**
+     * Schedule recalculation of completenesses for all product
+     * of a family
+     *
+     * @param Family $family
+     */
+    public function scheduleForFamily(Family $family)
+    {
+        if ($family->getId()) {
+            $this->generator->scheduleForFamily($family);
+        }
+    }
+
 
     /**
      * Returns an array containing all completeness info and missing attributes for a product
