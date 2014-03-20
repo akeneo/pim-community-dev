@@ -318,11 +318,14 @@ interface ProductRepositoryInterface
     public function deleteFromIds(array $ids);
 
     /**
+     * Apply mass action parameters on query builder
      *
-     * @param unknown_type $inset
-     * @param unknown_type $values
-     * @param unknown_type $dataLocale
-     * @param unknown_type $scopeCode
+     * @param mixed   $qb
+     * @param string  $identifier
+     * @param boolean $inset
+     * @param array   $values
+     * @param string  $localeCode
+     * @param string  $scopeCode
      */
     public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode);
 }

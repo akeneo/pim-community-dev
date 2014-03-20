@@ -855,6 +855,9 @@ SQL;
         return $qb->getQuery()->execute();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode)
     {
         if ($values) {
