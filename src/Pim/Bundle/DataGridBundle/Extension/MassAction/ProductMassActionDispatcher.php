@@ -42,18 +42,15 @@ class ProductMassActionDispatcher
      * @param ContainerInterface         $container
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
-     * @param ProductRepositoryInterface $repository
      */
     public function __construct(
         ContainerInterface $container,
         ManagerInterface $manager,
-        RequestParameters $requestParams,
-        ProductRepositoryInterface $repository
+        RequestParameters $requestParams
     ) {
         $this->container     = $container;
         $this->manager       = $manager;
         $this->requestParams = $requestParams;
-        $this->repository    = $repository;
     }
 
     /**
@@ -94,7 +91,8 @@ class ProductMassActionDispatcher
         $scopeCode  = isset($filters['scope']['value']) ? $filters['scope']['value'] : null;
         $identifier = $this->getIdentifierField($massAction);
 
-        $this->repository->applyMassActionParameters($qb, $identifier, $inset, $values, $dataLocale, $scopeCode);
+        $repository = $datagrid->getDatasource()->getRepository();
+        $repository->applyMassActionParameters($qb, $identifier, $inset, $values, $dataLocale, $scopeCode);
 
         // perform mass action
         $handler = $this->getMassActionHandler($massAction);
