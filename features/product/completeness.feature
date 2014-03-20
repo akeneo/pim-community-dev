@@ -51,11 +51,11 @@ Feature: Display the completeness of a product
     When I visit the "Completeness" tab
     Then I should see the completeness summary
     And I should see the completeness:
-      | channel | locale                  | state   | message            | ratio |
-      | mobile  | English (United States) | success | Not yet calculated |       |
-      | mobile  | French (France)         | success | Not yet calculated |       |
-      | tablet  | English (United States) | warning | 1 missing value    | 89%   |
-      | tablet  | French (France)         | warning | 2 missing values   | 78%   |
+      | channel | locale                  | state | message            | ratio |
+      | mobile  | English (United States) |       | Not yet calculated |       |
+      | mobile  | French (France)         |       | Not yet calculated |       |
+      | tablet  | English (United States) |       | Not yet calculated |       |
+      | tablet  | French (France)         |       | Not yet calculated |       |
     When I am on the "sandals" product page
     And I visit the "Completeness" tab
     Then I should see the completeness summary
