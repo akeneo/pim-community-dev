@@ -55,12 +55,9 @@ class Hydrator implements HydratorInterface
         $result['id']= $result['_id']->__toString();
         unset($result['_id']);
         $result['dataLocale']= $locale;
-        if (isset($result['created'])) {
-            $result['created']= $this->convertToDateTime($result['created']);
-        }
-        if (isset($result['updated'])) {
-            $result['updated']= $this->convertToDateTime($result['updated']);
-        }
+        $result['created']= isset($result['created']) ? $this->convertToDateTime($result['created']) : null;
+        $result['updated']= isset($result['updated']) ? $this->convertToDateTime($result['updated']) : null;
+        $result['enabled']= isset($result['enabled']) ? $result['enabled'] : false;
 
         return $result;
     }
