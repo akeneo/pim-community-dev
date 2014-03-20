@@ -66,9 +66,9 @@ class CompletenessManager
      *
      * @param ProductInterface $product
      */
-    public function generateProductCompletenesses(ProductInterface $product)
+    public function generateMissingForProduct(ProductInterface $product)
     {
-        $this->generator->generateProductCompletenesses($product);
+        $this->generator->generateMissingForProduct($product);
     }
 
     /**
@@ -76,17 +76,17 @@ class CompletenessManager
      *
      * @param Channel $channel
      */
-    public function generateChannelCompletenesses(Channel $channel)
+    public function generateMissingForChannel(Channel $channel)
     {
-        $this->generator->generate(array('channelId' => $channel->getId()));
+        $this->generator->generateMissingForChannel($channel);
     }
 
     /**
      * Insert missing completenesses
      */
-    public function generateMissingCompletenesses()
+    public function generateMissing()
     {
-        $this->generator->generate();
+        $this->generator->generateMissing();
     }
 
     /**
