@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -579,5 +580,23 @@ MAIN_SQL;
         );
         $query->setParameter('product', $product);
         $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForFamily(Family $family)
+    {
+        $sql = '
+            DELETE c FROM pim_catalog_completeness c
+              JOIN %product_interface% p ON p.id = c.product_id
+             WHERE p.family_id = :family_id';
+
+        $sql = strtr($sql, $this->getTableReplacements()) .';';
+
+        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt->bindValue('family_id', $family->getId());
+
+        $stmt->execute();
     }
 }

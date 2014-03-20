@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use PIm\Bundle\CatalogBundle\Manager\CompletenessManager;
 
 /**
  * Form handler for family
@@ -32,17 +33,28 @@ class FamilyHandler
     protected $manager;
 
     /**
+     * @var CompletenessManager
+     */
+    protected $completenessManager;
+
+    /**
      * Constructor for handler
      *
      * @param FormInterface $form
      * @param Request       $request
      * @param ObjectManager $objectManager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $objectManager)
-    {
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $objectManager,
+        CompletenessManager $completenessManager
+    ) {
         $this->form    = $form;
         $this->request = $request;
         $this->manager = $objectManager;
+
+        $this->completenessManager = $completenessManager;
     }
 
     /**
@@ -77,6 +89,7 @@ class FamilyHandler
     protected function onSuccess(Family $family)
     {
         $this->manager->persist($family);
+        $this->completenessManager->scheduleForFamily($family);
         $this->manager->flush();
     }
 }

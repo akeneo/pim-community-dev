@@ -19,6 +19,7 @@
 - Fixed issue on attribute option removal
 - Fixed identifier is required attribute
 - Fixed get common attributes with common values
+- Fixed completeness not removed from changed family
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)

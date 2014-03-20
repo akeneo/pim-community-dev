@@ -63,3 +63,4 @@ services:
             - '@pim_enrich.form.family'
             - '@request'
             - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.manager.completeness'
