@@ -2,6 +2,26 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+
+use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
+
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
+
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
+
+use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
 
 class ProductMassActionDispatcher
@@ -19,15 +39,21 @@ class ProductMassActionDispatcher
     /**
      * Constructor
      *
-     * @param ContainerInterface $container
-     * @param Manager $manager
-     * @param RequestParameters $requestParams
+     * @param ContainerInterface         $container
+     * @param Manager                    $manager
+     * @param RequestParameters          $requestParams
+     * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ContainerInterface $container, Manager $manager, RequestParameters $requestParams)
-    {
+    public function __construct(
+        ContainerInterface $container,
+        ManagerInterface $manager,
+        RequestParameters $requestParams,
+        ProductRepositoryInterface $repository
+    ) {
         $this->container     = $container;
         $this->manager       = $manager;
         $this->requestParams = $requestParams;
+        $this->repository    = $repository;
     }
 
     /**
@@ -55,16 +81,25 @@ class ProductMassActionDispatcher
         }
 
         // set filter data
-        $this->request->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
+        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        // create datagrid and get mass action
+        // create datagrid and prepare query
         $datagrid   = $this->manager->getDatagrid($datagridName);
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+
+        // Apply mass action parameters on qb
         $massAction = $this->getMassActionByName($actionName, $datagrid);
+        $dataLocale = $this->container->get('request')->get('dataLocale', null);
+        $scopeCode  = isset($filters['scope']['value']) ?
+            $filters['scope']['value'] : null;
+        $identifier = $this->getIdentifierField($massAction);
+
+        $this->repository->applyMassActionParameters($qb, $identifier, $inset, $values, $dataLocale, $scopeCode);
 
         // perform mass action
         $handler = $this->getMassActionHandler($massAction);
 
-        return $handler->handler($datagrid);
+        return $handler->handle($datagrid, $massAction);
     }
 
     /**
@@ -124,5 +159,39 @@ class ProductMassActionDispatcher
         }
 
         return $handler;
+    }
+
+    /**
+     * Get mass action from mass action and datagrid names
+     *
+     * @param string $actionName
+     * @param string $datagridName
+     *
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     *
+     * TODO: Need some clean up and optimization
+     */
+    public function getMassActionByNames($actionName, $datagridName)
+    {
+        $datagrid = $this->manager->getDatagrid($datagridName);
+
+        return parent::getMassActionByName($actionName, $datagrid);
+    }
+
+    /**
+     * @param Actions\MassActionInterface $massAction
+     *
+     * @throws \LogicException
+     *
+     * @return string
+     */
+    protected function getIdentifierField(MassActionInterface $massAction)
+    {
+        $identifier = $massAction->getOptions()->offsetGet('data_identifier');
+        if (!$identifier) {
+            throw new \LogicException(sprintf('Mass action "%s" must define identifier name', $massAction->getName()));
+        }
+
+        return $identifier;
     }
 }
