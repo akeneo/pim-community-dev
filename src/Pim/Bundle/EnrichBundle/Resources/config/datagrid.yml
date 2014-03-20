@@ -339,13 +339,16 @@ datagrid:
                     sorter:    product_family
                 enabled:
                     data_name: p.enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
                     data_name: p.created
+                    sorter:    product_field
                 updated:
                     data_name: p.updated
+                    sorter:    product_field
             default:
                 id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
         filters:
@@ -467,13 +470,16 @@ datagrid:
                     sorter:    product_family
                 enabled:
                     data_name: p.enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
                     data_name: p.created
+                    sorter:    product_field
                 updated:
                     data_name: p.updated
+                    sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -587,13 +593,16 @@ datagrid:
                     sorter:    product_family
                 enabled:
                     data_name: p.enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
                     data_name: p.created
+                    sorter:    product_field
                 updated:
                     data_name: p.updated
+                    sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -999,13 +1008,16 @@ datagrid:
                     sorter:    product_family
                 enabled:
                     data_name: p.enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
                     data_name: p.created
+                    sorter:    product_field
                 updated:
                     data_name: p.updated
+                    sorter:    product_field
             default:
                 is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
