@@ -179,6 +179,27 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function addFamilySorter($direction)
+    {
+        $rootAlias = $this->qb->getRootAlias();
+
+        $prefix    = 'sorter';
+        $field     = $prefix.'familyLabel';
+        $family    = $prefix.'family';
+        $trans     = $prefix.'familyTranslations';
+
+        $this->qb
+            ->leftJoin($rootAlias.'.family', $family)
+            ->leftJoin($family.'.translations', $trans, 'WITH', $trans.'.locale = :dataLocale');
+        $this->qb
+            ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
+
+        $this->qb->addOrderBy($field, $direction);
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name

@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Hydrator implements HydratorInterface
+class ProductHydrator implements HydratorInterface
 {
     /**
      * {@inheritdoc}
@@ -107,7 +107,7 @@ class Hydrator implements HydratorInterface
 
         $completenessCode = $scope.'-'.$locale;
         if (isset($normalizedData['completenesses'][$completenessCode])) {
-            $result['ratio']= $normalizedData['completenesses'][$completenessCode];
+            $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
         } else {
             $result['ratio'] = '-';
         }
