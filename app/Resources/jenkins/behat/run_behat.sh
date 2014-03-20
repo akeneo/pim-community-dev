@@ -64,6 +64,7 @@ cd $APP_ROOT
 for PROC in `seq 1 $CONCURRENCY`; do
     cp app/config/config_behat.yml app/config/config_behat$PROC.yml
     mysqldump -u root $ORIGINAL_DB_NAME | mysql -u root $DB_PREFIX$PROC
+    echo "db.dropDatabase()" | mongo $DB_PREFIX$PROC
     eval PID_$PROC=0
 done
 cd -
