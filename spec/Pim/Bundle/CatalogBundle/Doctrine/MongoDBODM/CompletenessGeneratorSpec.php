@@ -45,6 +45,8 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         ConstraintViolationListInterface $withViolations
     ) {
         $varchar->getCode()->willReturn('attr_varchar');
+        $varchar->isLocalizable()->willReturn(true);
+        $varchar->isScopable()->willReturn(true);
 
         $product->getFamily()->willReturn($family);
 
@@ -82,7 +84,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager)
     {
         $manager->flush($product)->shouldBeCalled();
-        $product->setCompletenesses(new ArrayCollection())->shouldBeCalled();
+        $product->setCompletenesses(Argument::type('Doctrine\Common\Collections\ArrayCollection'))->shouldBeCalled();
 
         $this->schedule($product);
     }
