@@ -2,28 +2,27 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
-
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
 
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
-
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 
-use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
-
-use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
-
-use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-
-use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
-
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
+/**
+ * Product mass action dispatcher
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ */
 class ProductMassActionDispatcher
 {
     // TODO: Must be replaced by handler registry

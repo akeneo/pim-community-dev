@@ -3,12 +3,9 @@
 namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-
-use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
-
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\ProductMassActionDispatcher;
 
 /**
  * Mass action controller for edit and delete actions
