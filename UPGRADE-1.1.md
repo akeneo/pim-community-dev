@@ -38,6 +38,15 @@ To be consistent, services aliases / tags have been changed, if you use the foll
  - service `oro_media` by `pim_enrich_media`
  - service `pim_flexibleentity_metric` by `pim_enrich_metric`
  - service `pim_flexibleentity.listener.timestampable` by `pim_catalog.event_listener.timestampable`
+ - service `pim_flexibleentity.listener.listener.initialize_values` by `pim_catalog.event_listener.initialize_values`
+ - service `pim_flexibleentity.listener.outdate_indexed_values` by `pim_catalog.event_listener.outdate_indexed_values`
+ - service `pim_flexibleentity.value_form.value_subscriber` by `pim_enrich.form.subscriber.add_value_field_subscriber`
+
+Following events have been replaced :
+ - `FilterFlexibleEvent` by `FilterProductEvent`
+ - `FilterFlexibleValueEvent` by `FilterProductValueEvent`
+
+The class `Pim/Bundle/CatalogBundle/Model/AbstractAttribute` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractAttribute`
 
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 

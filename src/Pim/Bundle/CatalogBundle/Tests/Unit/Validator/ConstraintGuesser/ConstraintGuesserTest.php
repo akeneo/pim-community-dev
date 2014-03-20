@@ -14,7 +14,7 @@ abstract class ConstraintGuesserTest extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock(array $options = array())
     {

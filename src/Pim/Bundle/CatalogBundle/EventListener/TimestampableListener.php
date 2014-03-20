@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -36,10 +36,10 @@ class TimestampableListener implements EventSubscriber
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        if ($entity instanceof TimestampableInterface) {
-            $entity->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
-            $entity->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+        $object = $args->getObject();
+        if ($object instanceof TimestampableInterface) {
+            $object->setCreated(new \DateTime('now', new \DateTimeZone('UTC')));
+            $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
 
@@ -49,22 +49,22 @@ class TimestampableListener implements EventSubscriber
      */
     public function preUpdate(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
+        $object = $args->getObject();
 
-        if ($entity instanceof ProductValueInterface) {
-            $product = $entity->getEntity();
+        if ($object instanceof ProductValueInterface) {
+            $product = $object->getObject();
             if ($product !== null) {
-                $this->updateProductFields($args->getEntityManager(), $product, array('updated'));
+                $this->updateProductFields($args->getObjectManager(), $product, array('updated'));
             }
         }
 
-        if ($entity instanceof \Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
-            $entity->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
+        if ($object instanceof \Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
+            $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
 
     /**
-     * Update flexible fields when a value is updated
+     * Update product fields when a value is updated (ORM specific)
      *
      * @param ObjectManager    $manager
      * @param ProductInterface $product
@@ -72,12 +72,15 @@ class TimestampableListener implements EventSubscriber
      */
     protected function updateProductFields(ObjectManager $manager, ProductInterface $product, $fields)
     {
-        $uow     = $manager->getUnitOfWork();
-        $now     = new \DateTime('now', new \DateTimeZone('UTC'));
-        $changes = array();
-        foreach ($fields as $field) {
-            $changes[$field] = array(null, $now);
+        $uow = $manager->getUnitOfWork();
+        // ORM specific, for Document the value is embedded
+        if (method_exists($uow, 'scheduleExtraUpdate')) {
+            $now     = new \DateTime('now', new \DateTimeZone('UTC'));
+            $changes = array();
+            foreach ($fields as $field) {
+                $changes[$field] = array(null, $now);
+            }
+            $uow->scheduleExtraUpdate($product, $changes);
         }
-        $uow->scheduleExtraUpdate($product, $changes);
     }
 }

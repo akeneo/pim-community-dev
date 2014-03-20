@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;

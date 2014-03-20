@@ -3,12 +3,6 @@ parameters:
     doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
 
 services:
-    pim_catalog.repository.association:
-        class: %pim_catalog.repository.association.class%
-        factory_service: pim_catalog.object_manager.association
-        factory_method: getRepository
-        arguments: [%pim_catalog.entity.association.class%]
-
     pim_catalog.repository.association_type:
         class: %doctrine.entity_repository.class%
         factory_service: doctrine.orm.entity_manager

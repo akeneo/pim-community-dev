@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -18,7 +18,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\VersioningBundle\Manager\AuditManager;
@@ -82,7 +82,7 @@ class AttributeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param AttributeHandler         $attributeHandler
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
@@ -98,7 +98,7 @@ class AttributeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         AttributeHandler $attributeHandler,
         Form $attributeForm,
         AttributeManager $attributeManager,
@@ -221,10 +221,10 @@ class AttributeController extends AbstractDoctrineController
                 $attribute = $this->getRepository($this->attributeManager->getAttributeClass())->find((int) $id);
                 if ($attribute) {
                     $attribute->setSortOrder((int) $sort);
-                    $this->getManager()->persist($attribute);
+                    $this->persist($attribute, false);
                 }
             }
-            $this->getManager()->flush();
+            $this->getManagerForClass('PimCatalogBundle:Attribute')->flush();
 
             return new Response(1);
         }
@@ -264,8 +264,7 @@ class AttributeController extends AbstractDoctrineController
         if ($request->isMethod('POST')) {
             $form->submit($request);
             if ($form->isValid()) {
-                $this->getManager()->persist($option);
-                $this->getManager()->flush();
+                $this->persist($option);
                 $response = array(
                     'status' => 1,
                     'option' => array(
@@ -299,8 +298,7 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 
-        $this->getManager()->remove($attribute);
-        $this->getManager()->flush();
+        $this->remove($attribute);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);

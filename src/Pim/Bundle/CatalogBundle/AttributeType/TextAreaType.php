@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Text area attribute type

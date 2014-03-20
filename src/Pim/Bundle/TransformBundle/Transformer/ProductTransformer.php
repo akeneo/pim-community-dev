@@ -45,7 +45,7 @@ class ProductTransformer extends EntityTransformer
     protected $associationReader;
 
     /**
-     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected $identifierAttribute;
 
