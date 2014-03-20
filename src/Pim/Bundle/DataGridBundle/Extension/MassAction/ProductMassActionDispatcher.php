@@ -44,7 +44,7 @@ class ProductMassActionDispatcher
      * @param MassActionParametersParser $parametersParser
      */
     public function __construct(
-        HandlerRegistry $handlerRegistry,
+        MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
         MassActionParametersParser $parametersParser
