@@ -189,20 +189,82 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissing()
     {
+        $this->generate();
     }
 
     /**
      * Generate missing completenesses for a channel if provided or a product
-     * if provided
+     * if provided.
+     *
+     * @param Product $product
+     * @param Channel $channel
      *
      */
-    protected function generate()
+    protected function generate(ProductInterface $product = null, Channel $channel = null)
     {
-        // Generate a full comprehensive family information
-        // Get all products without completeness for all defined channel and locale
+        $products = $this->getMissingQuery($product, $channel);
 
-
+        foreach ($products as $product) {
+            $this->generateMissingForProduct($product);
+        }
     }
+
+    /**
+     * Get the query part to search for product where the completenesses
+     * are missing. Apply only to the channel or product if provided.
+     *
+     * @param Product $product
+     * @param Channel $channel
+     *
+     * @return Expr $findQuery
+     */
+    protected function getFindMissingQuery(ProductInterface $product = null, Channel $channel = null)
+    {
+        $findQuery = new Expr();
+        if (null !== $product) {
+            $findQuery->field('_id')->equals($product->getId());
+        } else {
+            $combinations = $this->getCombinations($channel);
+            $find->addOr();
+            
+            foreach ($combinations as $combination) {
+                $findQuery->field('normalizedData.completenesses.'.$combination)->exists(false);
+            }
+        }
+
+        return $findQuery;
+    }
+
+    /**
+     * Generate a list of potential completeness value from existing channel
+     * or from the provided channel
+     *
+     * @param Channel $channel
+     *
+     * @return array
+     */
+    protected function getCombinations(Channel $channel = null)
+    {
+        $channels = array();
+        $combinations = array();
+
+        foreach ($channels as $channel)
+        {
+            if (null !== $channel) {
+                $channels = [$channel];
+            } else {
+                $channels = $this->channelManager->getFullChannels();
+            }
+
+            $locales = $channel->getLocales();
+            foreach ($locales as $locale) {
+                $combinations[] = $channel->getCode().'-'.$locale->getCode();
+            }
+        }
+
+        return $combinations;
+    }
+
 
     /**
      * {@inheritdoc}
