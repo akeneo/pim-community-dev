@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -34,9 +33,9 @@ class ExportController
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
+     * @param Request              $request
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface  $serializer
      */
     public function __construct(
         Request $request,

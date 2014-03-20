@@ -13,8 +13,6 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\HandlerRegistry;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
 
 /**
  * Product mass action dispatcher
