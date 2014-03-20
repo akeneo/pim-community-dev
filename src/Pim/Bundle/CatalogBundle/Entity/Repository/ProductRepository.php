@@ -852,6 +852,55 @@ SQL;
             ->delete($this->_entityName, 'p')
             ->where($qb->expr()->in('p.id', $ids));
 
-        return $qb->getQuery()->execute();
+        var_dump($ids);
+        return 0;
+
+//         return $qb->getQuery()->execute();
+    }
+
+    public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode)
+    {
+        if ($values) {
+            $valueWhereCondition =
+                $inset
+                ? $qb->expr()->in($identifier, $values)
+                : $qb->expr()->notIn($identifier, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
+
+        $rootAlias = $qb->getRootAlias();
+        $from      = current($qb->getDQLPart('from'));
+        $entity    = $from->getFrom();
+
+        $qb->resetDQLPart('select');
+        $qb->select($rootAlias);
+        $qb->resetDQLPart('from');
+        $qb->from($entity, $rootAlias);
+
+        // apply data locale and scope code
+        if ($qb->getParameter('dataLocale')) {
+            $qb->setParameter('dataLocale', $localeCode);
+        }
+        if ($qb->getParameter('scopeCode')) {
+            $qb->setParameter('scopeCode', $scopeCode);
+        }
+
+        // Remove 'entityIds' part from querybuilder (added by flexible pager)
+        $whereParts = $qb->getDQLPart('where')->getParts();
+        $qb->resetDQLPart('where');
+
+        foreach ($whereParts as $part) {
+            if (!is_string($part) || !strpos($part, 'entityIds')) {
+                $qb->andWhere($part);
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
     }
 }

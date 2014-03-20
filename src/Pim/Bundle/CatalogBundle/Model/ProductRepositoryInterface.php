@@ -316,4 +316,13 @@ interface ProductRepositoryInterface
      * @throws \LogicException
      */
     public function deleteFromIds(array $ids);
+
+    /**
+     *
+     * @param unknown_type $inset
+     * @param unknown_type $values
+     * @param unknown_type $dataLocale
+     * @param unknown_type $scopeCode
+     */
+    public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode);
 }

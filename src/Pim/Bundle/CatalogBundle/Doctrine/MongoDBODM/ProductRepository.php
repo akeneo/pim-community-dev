@@ -538,4 +538,12 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
 
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $identifier, $inset, $values, $localeCode, $scopeCode)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
