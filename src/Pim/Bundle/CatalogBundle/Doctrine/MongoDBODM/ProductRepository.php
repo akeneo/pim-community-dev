@@ -545,6 +545,22 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
+    public function applySorterByFamily($qb, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByCompleteness($qb, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addCompletenessSorter($direction);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {

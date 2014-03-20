@@ -157,4 +157,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFamilySorter($direction)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
