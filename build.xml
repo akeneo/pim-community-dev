@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <property environment="env"/>
-    <property name="jobName" value="${env.JOB_NAME}" />
+    <property name="symfony.database.name" value="akeneo_ci_pim_behat" />
+    <property name="symfony.database.user" value="root" />
+    <property name="symfony.database.password" value="" />
+    <property name="symfony.mongodb.database" value="akeneo_ci_pim_behat" />
+    <property name="symfony.upload.dir" value="product" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
+
     <target name="build-phpunit" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit,phpspec,phpspec-junit"/>
 
     <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
+    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat-mongodb"/>
 
     <target name="build-behat-10-dev" depends="prepare,composer,vendors,install-all-behat,behat-10-dev"/>
 
@@ -52,8 +56,32 @@
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
         <mkdir dir="${basedir}/app/cache" />
-        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters.yml" />
-        <copy file="/var/lib/jenkins/apps-conf/${jobName}/parameters.yml" tofile="${basedir}/app/config/parameters_test.yml" />
+        <!--
+            We still need a parameters.yml otherwise composer will create it without comments,
+            thus raising a "You have requested a non-existent parameter "mongodb_database"." error.
+        -->
+        <copy file="${basedir}/app/config/parameters.yml.dist" tofile="${basedir}/app/config/parameters.yml" />
+        <copy file="${basedir}/app/config/parameters.yml.dist" tofile="${basedir}/app/config/parameters_test.yml" />
+        <replaceregexp match="database_name:.*$" replace="database_name: %database.name%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="database_user:.*$" replace="database_user: %database.user%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="database_password:.*$" replace="database_password: %database.password%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
@@ -222,6 +250,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-docs-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -235,6 +265,23 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+        </exec>
+    </target>
+
+    <target name="behat-mongodb" description="Run acceptance tests with Behat">
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <!-- Concurrency -->
+            <arg value="4" />
+            <arg value="noxdebug" />
+            <!-- DB Prefix -->
+            <arg value="akeneo_ci_pim_behat_mongodb_" />
+            <!-- Profile Prefix -->
+            <arg value="jenkins-mongodb-" />
+            <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -248,6 +295,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-10-dev-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -261,6 +310,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-pr-" />
             <arg value="${basedir}/bin/behat --ansi" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -274,6 +325,8 @@
             <!-- Profile Prefix -->
             <arg value="jenkins-coverage-" />
             <arg value="${basedir}/bin/behat --ansi --strict" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>
     </target>
 
@@ -311,15 +364,39 @@
             <arg value="--no-progress" />
             <arg value="--prefer-dist" />
             <arg value="--optimize-autoloader" />
+            <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+            <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+            <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+            <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
-    <target name="activate-mongo" description="Activate the mongo bundle">
+    <target name="activate-mongo" depends="prepare" description="Activate the mongo bundle">
         <replace
             file="${basedir}/app/AppKernel.php"
             token="// new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
             value="new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"
             failOnNoReplacements="true"
+        />
+
+        <replaceregexp match="# mongodb" replace="mongodb" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*" />
+            </fileset>
+        </replaceregexp>
+
+        <replaceregexp match="mongodb_database:.*$" replace="mongodb_database: %mongodb.database%" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*" />
+            </fileset>
+        </replaceregexp>
+
+        <replaceregexp
+            file="${basedir}/app/config/config.yml"
+            match="storage_driver: 'doctrine/orm'"
+            replace="storage_driver: 'doctrine/mongodb-odm'"
+            flags="g"
         />
     </target>
 
@@ -328,6 +405,11 @@
           <arg value="pim:install" />
           <arg value="--task=db" />
           <arg value="--force" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
@@ -337,6 +419,11 @@
           <arg value="--task=db" />
           <arg value="--env=test" />
           <arg value="--force" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
@@ -345,6 +432,11 @@
           <arg value="pim:install" />
           <arg value="--env=behat" />
           <arg value="--force" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
@@ -352,15 +444,35 @@
         <exec executable="app/console">
           <arg value="doctrine:fixtures:load" />
           <arg value="--no-interaction" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
         <exec executable="app/console">
           <arg value="oro:search:create-index" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
         <exec executable="app/console">
           <arg value="oro:search:index" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
         <exec executable="app/console">
           <arg value="oro:search:reindex" />
+          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
+          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
+          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
+          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
+          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
         </exec>
     </target>
 
