@@ -165,8 +165,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
      * Get the repository from the configuration
      *
      * @return ProductRepositoryInterface
-     *
-     * @throws \Exception
      */
     public function getRepository()
     {
@@ -179,6 +177,8 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
 
     /**
      * Get configuration
+     *
+     * @param string $key
      *
      * @return mixed
      *
