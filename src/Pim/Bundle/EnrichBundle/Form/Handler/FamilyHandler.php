@@ -40,9 +40,10 @@ class FamilyHandler
     /**
      * Constructor for handler
      *
-     * @param FormInterface $form
-     * @param Request       $request
-     * @param ObjectManager $objectManager
+     * @param FormInterface       $form
+     * @param Request             $request
+     * @param ObjectManager       $objectManager
+     * @param CompletenessManager $completenessManager
      */
     public function __construct(
         FormInterface $form,

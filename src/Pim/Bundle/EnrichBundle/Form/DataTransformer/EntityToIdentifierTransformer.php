@@ -38,6 +38,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * @param ObjectRepository          $repository
      * @param Boolean                   $multiple
      * @param PropertyAccessorInterface $propertyAccessor
+     * @param string                    $delimiter
      */
     public function __construct(
         ObjectRepository $repository,
