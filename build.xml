@@ -278,7 +278,7 @@
             <!-- DB Prefix -->
             <arg value="akeneo_ci_pim_behat_mongodb_" />
             <!-- Profile Prefix -->
-            <arg value="jenkins-" />
+            <arg value="jenkins-mongodb-" />
             <arg value="${basedir}/bin/behat --ansi" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
