@@ -7,9 +7,6 @@ use Doctrine\Common\Persistence\ObjectRepository;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleValueEvent;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
@@ -251,9 +248,6 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
         $flexible->setLocale($this->getLocale());
         $flexible->setScope($this->getScope());
 
-        $event = new FilterFlexibleEvent($this, $flexible);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
-
         return $flexible;
     }
 
@@ -266,9 +260,6 @@ class FlexibleManager implements LocalizableInterface, ScopableInterface
     {
         $class = $this->getFlexibleValueName();
         $value = new $class();
-
-        $event = new FilterFlexibleValueEvent($this, $value);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_VALUE, $event);
 
         return $value;
     }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Tests\Unit\Form\EventListener;
+namespace Pim\Bundle\EnrichBundle\Tests\Unit\Form\Subscriber;
 
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
-use Pim\Bundle\FlexibleEntityBundle\Form\EventListener\FlexibleValueSubscriber;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry;
+use Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormFactoryInterface;
 
@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormFactoryInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
+class AddProductValueFieldSubscriberTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var FormFactoryInterface
@@ -28,9 +28,9 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
     protected $attributeTypeFactory;
 
     /**
-     * @var FlexibleManagerRegistry
+     * @var ProductManager
      */
-    protected $flexibleManagerRegistry;
+    protected $productManager;
 
     /**
      * @var FlexibleValueSubscriber
@@ -48,14 +48,14 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
             ->getMockBuilder('Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->flexibleManagerRegistry = $this
-            ->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry')
+        $this->productManager = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->subscriber = new FlexibleValueSubscriber(
+        $this->subscriber = new AddProductValueFieldSubscriber(
             $this->formFactory,
             $this->attributeTypeFactory,
-            $this->flexibleManagerRegistry
+            $this->productManager
         );
     }
 
@@ -87,7 +87,7 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSetDataNoFlexibleAttrs()
     {
-        $this->assertAttrbiuteValueFormInit('Acme\TestBundle\Entity\Test');
+        $this->assertProductValueFormInit('Acme\TestBundle\Entity\Test');
     }
 
     /**
@@ -95,24 +95,12 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     public function testPreSetDataWithFlexibleAttribute()
     {
-        $dataClass = 'Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible';
+        $dataClass = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
 
-        $attributeEntity = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface')
+        $productEntity = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\Product')
             ->getMock();
 
-        $flexibleManager = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $flexibleManager->expects($this->once())
-            ->method('createFlexible')
-            ->will($this->returnValue($attributeEntity));
-
-        $this->flexibleManagerRegistry->expects($this->once())
-            ->method('getManager')
-            ->with($dataClass)
-            ->will($this->returnValue($flexibleManager));
-
-        $this->assertAttrbiuteValueFormInit($dataClass, $attributeEntity);
+        $this->assertProductValueFormInit($dataClass, $productEntity);
 
     }
 
@@ -120,10 +108,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
      * @param string $dataClass
      * @param object $valueFormData
      */
-    protected function assertAttrbiuteValueFormInit($dataClass, $valueFormData = null)
+    protected function assertProductValueFormInit($dataClass, $valueFormData = null)
     {
         $attributeTypeName = 'test_attribute';
-        $attribute = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute')
+        $attribute = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\AbstractAttribute')
             ->getMock();
         $attribute->expects($this->once())
             ->method('getAttributeType')
@@ -136,22 +124,10 @@ class FlexibleValueSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $config = $this->getMockBuilder('Symfony\Component\Form\FormConfigInterface')
             ->getMock();
-        $config->expects($this->once())
-            ->method('getDataClass')
-            ->will($this->returnValue($dataClass));
 
         $valueForm = $this->getMockBuilder('Symfony\Component\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
-        $valueForm->expects($this->once())
-            ->method('getConfig')
-            ->will($this->returnValue($config));
-
-        if ($valueFormData) {
-            $valueForm->expects($this->once())
-                ->method('setData')
-                ->with($valueFormData);
-        }
 
         $attributeType = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface')
             ->getMock();

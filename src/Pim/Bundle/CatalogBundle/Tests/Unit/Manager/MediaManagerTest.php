@@ -295,7 +295,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
      * @param boolean $localizable
      * @param boolean $scopable
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($code, $localizable = false, $scopable = false)
     {

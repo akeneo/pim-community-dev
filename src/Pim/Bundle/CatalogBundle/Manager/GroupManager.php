@@ -46,7 +46,7 @@ class GroupManager
     /**
      * Get available axis
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
      */
     public function getAvailableAxis()
     {
