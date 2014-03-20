@@ -469,16 +469,16 @@ datagrid:
                     data_name: familyLabel
                     sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
                     sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
                     sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
                     sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
@@ -592,16 +592,16 @@ datagrid:
                     data_name: familyLabel
                     sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
                     sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
                     sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
                     sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
@@ -1007,16 +1007,16 @@ datagrid:
                     data_name: familyLabel
                     sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
                     sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
                     sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
                     sorter:    product_field
             default:
                 is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
