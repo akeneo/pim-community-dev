@@ -65,6 +65,7 @@
 - Change MassActionDispatcher::dispatch parameters
 - Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
 - Move mass action handlers to its own `Handler` directory
+- Create PimDatasourceInterface extending OroDatasourceInterface
 
 # 1.0.2
 ## Bug Fixes
