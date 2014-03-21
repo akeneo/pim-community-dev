@@ -109,7 +109,7 @@ class ProductHydrator implements HydratorInterface
         if (isset($normalizedData['completenesses'][$completenessCode])) {
             $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
         } else {
-            $result['ratio'] = '-';
+            $result['ratio'] = null;
         }
 
         if (isset($normalizedData['family'])) {
