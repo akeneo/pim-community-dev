@@ -617,7 +617,19 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function deleteProductIds(array $productIds)
+    public function deleteFromIds(array $ids)
+    {
+        if (empty($ids)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $identifier, $inset, $values)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
