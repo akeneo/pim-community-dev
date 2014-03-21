@@ -55,7 +55,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this
             ->getOptions()
             ->offsetGet('handler')
-            ->shouldReturn('pim_datagrid.extension.mass_action.handler.export');
+            ->shouldReturn('quick_export');
     }
 
     function it_should_overwrite_default_values()
