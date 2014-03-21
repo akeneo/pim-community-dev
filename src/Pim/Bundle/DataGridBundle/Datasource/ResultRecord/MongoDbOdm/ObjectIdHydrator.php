@@ -26,7 +26,7 @@ class ObjectIdHydrator implements HydratorInterface
 
         $rows = array();
         foreach ($results as $key => $result) {
-            $rows[$key] = $key;
+            $rows[] = $key;
         }
 
         return $rows;

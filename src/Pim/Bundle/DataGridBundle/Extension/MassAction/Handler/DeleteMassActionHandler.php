@@ -56,28 +56,28 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $datasource->setHydrator($this->hydrator);
 
         // hydrator uses index by id
-        $productIds = array_keys($datasource->getResults());
+        $objectIds = $datasource->getResults();
 
         try {
-            $countProducts = $datasource->getRepository()->deleteFromIds($productIds);
+            $countRemoved = $datasource->getRepository()->deleteFromIds($objectIds);
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 
             return new MassActionResponse(false, $this->translator->trans($errorMessage));
         }
 
-        return $this->getResponse($massAction, $countProducts);
+        return $this->getResponse($massAction, $countRemoved);
     }
 
     /**
      * Prepare mass action response
      *
      * @param MassActionInterface $massAction
-     * @param integer             $entitiesCount
+     * @param integer             $countRemoved
      *
      * @return MassActionResponse
      */
-    protected function getResponse(MassActionInterface $massAction, $entitiesCount = 0)
+    protected function getResponse(MassActionInterface $massAction, $countRemoved = 0)
     {
         $responseMessage = $massAction->getOptions()->offsetGetByPath(
             '[messages][success]',
@@ -87,7 +87,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         return new MassActionResponse(
             true,
             $this->translator->trans($responseMessage),
-            ['count' => $entitiesCount]
+            ['count' => $countRemoved]
         );
     }
 }

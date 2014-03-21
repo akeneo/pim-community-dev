@@ -15,11 +15,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 class ExportMassActionHandler implements MassActionHandlerInterface
 {
     /**
-     * Return the datagrid QueryBuilder to use for quick export
-     *
-     * @param MassActionMediatorInterface $mediator
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
