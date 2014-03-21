@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\FlexibleEntityBundle\Exception\FlexibleConfigurationException;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
+use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute as NewAbstractAttribute;
