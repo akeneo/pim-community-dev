@@ -41,7 +41,7 @@ class MassActionEvent extends Event
      *
      * @return DatagridInterface
      */
-    public function getDatasource()
+    public function getDatagrid()
     {
         return $this->datagrid;
     }
