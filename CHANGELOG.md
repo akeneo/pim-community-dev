@@ -66,6 +66,8 @@
 - Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
 - Move mass action handlers to its own `Handler` directory
 - Create PimDatasourceInterface extending OroDatasourceInterface
+- Redefine DeleteMassAction, EditMassAction and ExportMassAction
+- Remove data_identifier property defined on datagrid.yml for mass actions
 
 # 1.0.2
 ## Bug Fixes
