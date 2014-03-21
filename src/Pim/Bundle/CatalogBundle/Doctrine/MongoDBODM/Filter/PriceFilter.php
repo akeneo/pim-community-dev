@@ -16,7 +16,7 @@ class PriceFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         list($data, $currency) = explode(' ', $value);
         $data = (float) $data;

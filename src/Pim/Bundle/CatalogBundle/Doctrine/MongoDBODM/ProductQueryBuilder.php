@@ -115,7 +115,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         $filter = new $filterClass($this->qb, $this->locale, $this->scope);
-        $filter->add($attribute, $operator, $value);
+        $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
     }

@@ -16,7 +16,7 @@ class EntityFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $field = $this->getNormalizedValueField($attribute);
         $field = sprintf('%s.id', $field);

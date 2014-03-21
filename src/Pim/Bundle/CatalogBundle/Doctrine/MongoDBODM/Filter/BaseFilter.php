@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\AbstractFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 
@@ -14,7 +14,7 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements FilterInterface
+class BaseFilter implements AbstractFilterInterface
 {
     /**
      * QueryBuilder
@@ -57,7 +57,7 @@ class BaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $field = $this->getNormalizedValueField($attribute);
         if (strpos($value, '/') !== false) {
