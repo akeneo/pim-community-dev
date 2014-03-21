@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
-use Doctrine\ORM\AbstractQuery;
-
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
@@ -36,11 +34,35 @@ class Reader extends AbstractConfigurableStepElement implements
 
     /**
      * Set query used by the reader
-     * @param AbstractQuery $query
+     *
+     * @param mixed $query
+     *
+     * @throws InvalidArgumentException
      */
-    public function setQuery(AbstractQuery $query)
+    public function setQuery($query)
     {
+        if (!is_a($query, 'Doctrine\ORM\AbstractQuery', true) && !is_a($query, 'Doctrine\MongoDB\Query\Query', true)) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    '$query must be either a Doctrine\ORM\AbstractQuery or ' .
+                    'a Doctrine\ODM\MongoDB\Query\Query instance, got "%s"',
+                    is_object($query) ? get_class($query) : $query
+                )
+            );
+        }
         $this->query = $query;
+    }
+
+    /**
+     * Get query to execute
+     *
+     * @return Doctrine\ORM\AbstractQuery|Doctrine\MongoDB\Query\Query
+     *
+     * @throws ORMReaderException
+     */
+    public function getQuery()
+    {
+        return $this->query;
     }
 
     /**
@@ -55,30 +77,19 @@ class Reader extends AbstractConfigurableStepElement implements
             if (!$this->results instanceof \Iterator) {
                 $this->results = new \ArrayIterator($this->results);
             }
+            if (is_a($this->results, 'Doctrine\MongoDB\Cursor', true)) {
+                // MongoDB Cursor are not positionned on first element (whereas ArrayIterator is)
+                // as long as getNext() hasn't be called
+                $this->results->getNext();
+            }
         }
 
-        $this->results->next();
         if ($result = $this->results->current()) {
+            $this->results->next();
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
         return $result;
-    }
-
-    /**
-     * Get query to execute
-     *
-     * @return \Doctrine\ORM\AbstractQuery
-     *
-     * @throws ORMReaderException
-     */
-    protected function getQuery()
-    {
-        if (!$this->query) {
-            throw new ORMReaderException('Need a query to read database');
-        }
-
-        return $this->query;
     }
 
     /**

@@ -37,7 +37,7 @@ class EntityReader extends Reader
     /**
      * {@inheritdoc}
      */
-    protected function getQuery()
+    public function getQuery()
     {
         if (!$this->query) {
             $this->query = $this->em
