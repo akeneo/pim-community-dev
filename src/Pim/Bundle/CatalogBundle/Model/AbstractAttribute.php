@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
 
 /**

@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Export action handler
@@ -15,12 +16,28 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 class ExportMassActionHandler implements MassActionHandlerInterface
 {
     /**
+     * @var HydratorInterface $hydrator
+     */
+    protected $hydrator;
+
+    /**
+     * Constructor
+     *
+     * @param HydratorInterface $hydrator
+     */
+    public function __construct(HydratorInterface $hydrator)
+    {
+        $this->hydrator = $hydrator;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        $qb = $datagrid->getDatasource()->getQueryBuilder();
+        $datasource = $datagrid->getDatasource();
+        $datasource->setHydrator($this->hydrator);
 
-        return $qb->getQuery()->execute();
+        return $datasource->getResults();
     }
 }

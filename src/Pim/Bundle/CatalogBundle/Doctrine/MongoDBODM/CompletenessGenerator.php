@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -167,8 +166,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Generate stats on product completeness for a channel
      *
-     * @param Channel $channel
-     * @param Attributerequ
+     * @param Channel          $channel
+     * @param ProductInterface $product
      *
      * @return array $stats
      */
@@ -197,7 +196,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 }
 
                 $attribute = $req->getAttribute();
-                $value = $product->getValue( $attribute->getCode(), $localeCode, $channel->getCode());
+                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
 
                 if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
                     $stats['locales'][$localeCode]['missing_count'] ++;
@@ -222,7 +221,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param Product $product
      * @param Channel $channel
-     *
      */
     protected function generate(ProductInterface $product = null, Channel $channel = null)
     {
