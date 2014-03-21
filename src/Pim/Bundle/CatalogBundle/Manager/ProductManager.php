@@ -637,7 +637,7 @@ class ProductManager
      *
      * @param array $productIds
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\Attribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
      */
     public function findCommonAttributes(array $productIds)
     {
