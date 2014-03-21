@@ -63,6 +63,16 @@ class ProductManager
     protected $eventDispatcher;
 
     /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @var string
+     */
+    protected $scope;
+
+    /**
      * Constructor
      *
      * @param array                      $flexibleConfig      Flexible Config
@@ -114,12 +124,29 @@ class ProductManager
     }
 
     /**
+     * Get product configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->flexibleConfig;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setLocale($code)
     {
-        parent::setLocale($code);
-
+        $this->locale = $code;
         $this->getProductRepository()->setLocale($code);
 
         return $this;
@@ -128,10 +155,17 @@ class ProductManager
     /**
      * {@inheritdoc}
      */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setScope($code)
     {
-        parent::setScope($code);
-
+        $this->scope = $code;
         $this->getProductRepository()->setScope($code);
 
         return $this;
@@ -385,6 +419,16 @@ class ProductManager
     }
 
     /**
+     * Get attribute FQCN
+     *
+     * @return string
+     */
+    public function getAttributeName()
+    {
+        return $this->flexibleConfig['attribute_class'];
+    }
+
+    /**
      * @param ProductInterface $product
      */
     public function handleMedia(ProductInterface $product)
@@ -514,6 +558,16 @@ class ProductManager
     public function getEntityManager()
     {
         return $this->entityManager;
+    }
+
+    /**
+     * Get object manager
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->objectManager;
     }
 
     /**
