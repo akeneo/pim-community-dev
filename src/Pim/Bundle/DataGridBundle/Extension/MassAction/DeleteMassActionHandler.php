@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
 
 /**
