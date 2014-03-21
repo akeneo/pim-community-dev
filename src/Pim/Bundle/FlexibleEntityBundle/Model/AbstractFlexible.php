@@ -4,7 +4,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
+use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 
 /**
  * Abstract entity, independent of storage

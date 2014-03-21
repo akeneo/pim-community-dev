@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
+use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -58,7 +58,7 @@ class TimestampableListener implements EventSubscriber
             }
         }
 
-        if ($object instanceof \Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface) {
+        if ($object instanceof \Pim\Bundle\CatalogBundle\Model\TimestampableInterface) {
             $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
