@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Datasource\Orm;
 
-use Oro\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter as OroOrmFilterDatasourceAdapter;
+use Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter as OroOrmFilterDatasourceAdapter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 
 /**
@@ -12,7 +12,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter
+class OrmFilterDatasourceAdapter extends OroOrmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
 {
     /**
      * Return value format depending on comparison type
