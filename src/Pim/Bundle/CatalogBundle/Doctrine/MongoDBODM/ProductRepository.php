@@ -642,5 +642,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             $qb->field('_id');
             $valueWhereCondition = $inset ? $qb->in($values) : $qb->notIn($values);
         }
+
+        $qb->limit(null);
     }
 }
