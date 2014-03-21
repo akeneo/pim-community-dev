@@ -6,9 +6,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
- * Add current user to version builder
+ * Add current user to version manager
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -22,18 +23,17 @@ class AddUserListener implements EventSubscriberInterface
     protected $securityContext;
 
     /**
-     * Version listener
-     * @var AddVersionListener
+     * @var VersionManager
      */
-    protected $listener;
+    protected $versionManager;
 
     /**
-     * @param AddVersionListener       $listener
+     * @param VersionManager           $versionManager
      * @param SecurityContextInterface $securityContext
      */
-    public function __construct(AddVersionListener $listener, SecurityContextInterface $securityContext = null)
+    public function __construct(VersionManager $versionManager, SecurityContextInterface $securityContext = null)
     {
-        $this->listener        = $listener;
+        $this->versionManager  = $versionManager;
         $this->securityContext = $securityContext;
     }
 
@@ -58,7 +58,7 @@ class AddUserListener implements EventSubscriberInterface
 
         $token = $this->securityContext->getToken();
         if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $this->listener->setUsername($token);
+            $this->versionManager->setUser($token->getUser());
         }
     }
 }

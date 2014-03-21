@@ -1,5 +1,4 @@
 services:
-
     pim_versioning.update_guesser.attribute_group:
         class: %pim_versioning.update_guesser.attribute_group.class%
         tags:

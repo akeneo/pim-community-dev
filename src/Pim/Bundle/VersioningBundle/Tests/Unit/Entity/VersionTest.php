@@ -29,7 +29,15 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $resourceName  = get_class($versionable);
         $resourceId    = $versionable->getId();
         $numVersion    = 2;
-        $this->version = new Version($resourceName, $resourceId, $numVersion, '{"field":  "value"}', $user);
+        $this->version = new Version(
+            $resourceName,
+            $resourceId,
+            $numVersion,
+            ['field' => 'value'],
+            ['field' => 'value'],
+            $user,
+            'foo'
+        );
     }
 
     /**
@@ -39,7 +47,9 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->version->getResourceId(), 1);
         $this->assertEquals($this->version->getVersion(), 2);
-        $this->assertEquals($this->version->getData(), '{"field":  "value"}');
+        $this->assertEquals($this->version->getData(), ['field' => 'value']);
+        $this->assertEquals($this->version->getChangeset(), ['field' => 'value']);
+        $this->assertEquals($this->version->getContext(), 'foo');
     }
 
     /**
