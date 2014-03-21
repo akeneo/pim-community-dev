@@ -390,15 +390,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label:            Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label:            Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
 
     product-group-grid:
         options:
@@ -507,15 +507,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -630,15 +630,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -1045,13 +1045,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
