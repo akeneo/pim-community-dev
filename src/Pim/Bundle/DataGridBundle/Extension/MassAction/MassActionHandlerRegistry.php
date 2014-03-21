@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
  * MassActionHandler registry

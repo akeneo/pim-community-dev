@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
