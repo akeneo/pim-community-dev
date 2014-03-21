@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
@@ -22,7 +22,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends FlexibleEntityRepository implements
+class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
@@ -35,6 +35,90 @@ class ProductRepository extends FlexibleEntityRepository implements
      * @var string
      */
     private $identifierCode;
+
+    /**
+     * Locale code
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * Scope code
+     * @var string
+     */
+    protected $scope;
+
+    /**
+     * Get flexible entity config
+     *
+     * @return array $config
+     */
+    public function getFlexibleConfig()
+    {
+        return $this->flexibleConfig;
+    }
+
+    /**
+     * Set flexible entity config
+     *
+     * @param array $config
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setFlexibleConfig($config)
+    {
+        $this->flexibleConfig = $config;
+
+        return $this;
+    }
+
+    /**
+     * Return asked locale code or default one
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set locale code
+     *
+     * @param string $code
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setLocale($code)
+    {
+        $this->locale = $code;
+
+        return $this;
+    }
+
+    /**
+     * Return asked scope code or default one
+     *
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * Set scope code
+     *
+     * @param string $code
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setScope($code)
+    {
+        $this->scope = $code;
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
@@ -711,7 +795,7 @@ SQL;
      *
      * @param ProductQueryBuilder $productQB
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setProductQueryBuilder($productQB)
     {

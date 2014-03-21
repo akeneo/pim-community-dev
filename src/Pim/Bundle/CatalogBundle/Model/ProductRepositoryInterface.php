@@ -3,7 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\ORM\QueryBuilder;
-
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
+use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
@@ -14,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductRepositoryInterface
+interface ProductRepositoryInterface extends LocalizableInterface, ScopableInterface
 {
     /**
      * Get flexible entity config
@@ -28,7 +29,7 @@ interface ProductRepositoryInterface
      *
      * @param array $config
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setFlexibleConfig($config);
 
@@ -44,7 +45,7 @@ interface ProductRepositoryInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setLocale($code);
 
@@ -60,7 +61,7 @@ interface ProductRepositoryInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setScope($code);
 
@@ -240,7 +241,7 @@ interface ProductRepositoryInterface
      *
      * @param ProductQueryBuilder $productQB
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setProductQueryBuilder($productQB);
 

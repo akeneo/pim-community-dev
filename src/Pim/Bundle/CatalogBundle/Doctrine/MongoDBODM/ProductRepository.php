@@ -351,7 +351,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param array $config
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setFlexibleConfig($config)
     {
@@ -375,7 +375,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setLocale($code)
     {
@@ -399,7 +399,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setScope($code)
     {
