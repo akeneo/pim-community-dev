@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
- * Add context in audit data
+ * Add context in version data
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -43,7 +43,7 @@ class AddContextListener implements EventSubscriberInterface
     }
 
     /**
-     * Add context in data audit builder
+     * Add context in version manager
      *
      * @param JobExecutionEvent $event
      */
