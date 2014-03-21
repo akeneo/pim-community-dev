@@ -638,11 +638,13 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyMassActionParameters($qb, $inset, $values)
     {
+        // manage inset for selected entities
         if ($values) {
             $qb->field('_id');
             $valueWhereCondition = $inset ? $qb->in($values) : $qb->notIn($values);
         }
 
+        // remove limit of the query
         $qb->limit(null);
     }
 }
