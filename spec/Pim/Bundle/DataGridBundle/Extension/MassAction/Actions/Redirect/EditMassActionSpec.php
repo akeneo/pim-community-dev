@@ -15,7 +15,7 @@ class EditMassActionSpec extends ObjectBehavior
 
         $this->shouldThrow(
             new \LogicException('There is no option "route" for action "edit".')
-        );
+        )->duringSetOptions($options);;
     }
 
     function it_should_define_default_values()
