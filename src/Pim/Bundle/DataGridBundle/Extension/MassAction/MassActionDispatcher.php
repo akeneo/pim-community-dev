@@ -2,15 +2,9 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Subscriber\MassActionSubscriber;
-
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
-
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-
 use Symfony\Component\EventDispatcher\EventDispatcher;
-
 use Symfony\Component\HttpFoundation\Request;
+
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -21,6 +15,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Subscriber\MassActionSubscriber;
 
 /**
  * Mass action dispatcher
@@ -43,6 +40,9 @@ class MassActionDispatcher
     /** @var MassActionParametersParser $parametersParser */
     protected $parametersParser;
 
+    /** @var EventDispatcher $eventDispatcher */
+    protected $eventDispatcher;
+
     /**
      * Constructor
      *
@@ -50,6 +50,7 @@ class MassActionDispatcher
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param EventDispatcher            $eventDispatcher
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
@@ -94,8 +95,9 @@ class MassActionDispatcher
         $response = $this->performMassAction($datagrid, $actionName, $inset, $values);
 
         $massActionEvent = new MassActionEvent();
+        // TODO: Must be done in DI
         $this->eventDispatcher->addSubscriber(new MassActionSubscriber());
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_ACTION_POST_DISPATCH, $massActionEvent);
+        $this->eventDispatcher->dispatch(MassActionEvents::MASS_ACTION_POST_HANDLER, $massActionEvent);
 
         return $response;
     }
