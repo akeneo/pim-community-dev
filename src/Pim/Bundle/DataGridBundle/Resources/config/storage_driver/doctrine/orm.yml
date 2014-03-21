@@ -1,5 +1,5 @@
 parameters:
-    pim_datagrid.datasource.product.result_record.hydrator.class:   Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
+    pim_datagrid.datasource.result_record.hydrator.product.class:   Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ProductHydrator
     pim_datagrid.datasource.result_record.hydrator.object_id.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectIdHydrator
     pim_filter.datasource.product_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
     pim_datagrid.extension.pager.product.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager

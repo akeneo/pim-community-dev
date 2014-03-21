@@ -1,8 +1,8 @@
 parameters: ~
 
 services:
-    pim_datagrid.datasource.product.result_record.hydrator:
-        class: %pim_datagrid.datasource.product.result_record.hydrator.class%
+    pim_datagrid.datasource.result_record.hydrator.product:
+        class: %pim_datagrid.datasource.result_record.hydrator.product.class%
 
     pim_datagrid.datasource.result_record.hydrator.object_id:
         class: %pim_datagrid.datasource.result_record.hydrator.object_id.class%
