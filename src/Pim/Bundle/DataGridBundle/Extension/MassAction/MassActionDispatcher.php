@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
-
+use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -59,11 +58,13 @@ class MassActionDispatcher
     /**
      * Dispatch datagrid mass action
      *
+     * @param Request $request
+     *
      * @throws \LogicException
      *
      * @return MassActionResponseInterface
      */
-    public function dispatch($request)
+    public function dispatch(Request $request)
     {
         $parameters   = $this->parametersParser->parse($request);
         $datagridName = $request->get('gridName');

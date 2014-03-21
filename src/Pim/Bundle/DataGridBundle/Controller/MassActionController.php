@@ -26,6 +26,7 @@ class MassActionController
     /**
      * Constructor
      *
+     * @param Request              $request
      * @param MassActionDispatcher $massActionDispatcher
      */
     public function __construct(Request $request, MassActionDispatcher $massActionDispatcher)
@@ -36,6 +37,8 @@ class MassActionController
 
     /**
      * Mass delete action
+     *
+     * @return JsonResponse
      */
     public function massActionAction()
     {

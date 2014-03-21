@@ -22,11 +22,10 @@ class ProductExportController extends ExportController
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
-     * @param ProductManager             $productManager
+     * @param Request              $request
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface  $serializer
+     * @param ProductManager       $productManager
      */
     public function __construct(
         Request $request,
