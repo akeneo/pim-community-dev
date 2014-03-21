@@ -66,7 +66,8 @@ class CsvEncoder implements EncoderInterface
 
         $output = fopen('php://temp', 'r+');
 
-        if (isset($data[0]) && is_array($data[0])) {
+        $first = reset($data);
+        if (isset($first) && is_array($first)) {
             $columns = $this->getColumns($data);
             if ($this->withHeader && !$this->hasHeader) {
                 $this->encodeHeader($columns, $output, $this->delimiter, $this->enclosure);

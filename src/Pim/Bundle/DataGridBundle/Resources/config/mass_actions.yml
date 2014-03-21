@@ -20,6 +20,8 @@ services:
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
+        arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: quick_export }
 
