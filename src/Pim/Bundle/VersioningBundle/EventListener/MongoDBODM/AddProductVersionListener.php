@@ -124,7 +124,7 @@ class AddProductVersionListener implements EventSubscriber
     public function createVersion($versionable)
     {
         $version = $this->versionManager->buildVersion($versionable);
-        if ($version && !empty($version->getChangeset())) {
+        if ($version && $version->getChangeset()) {
             $this->computeChangeSet($version);
         }
     }
