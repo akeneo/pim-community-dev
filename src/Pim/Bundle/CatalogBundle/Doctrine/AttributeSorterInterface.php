@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface SorterInterface
+interface AttributeSorterInterface
 {
     /**
      * Sort by attribute value
@@ -19,7 +19,7 @@ interface SorterInterface
      * @param AbstractAttribute $attribute the attribute to sort on
      * @param string            $direction the direction to use
      *
-     * @return SorterInterface
+     * @return AttributeSorterInterface
      */
-    public function add(AbstractAttribute $attribute, $direction);
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction);
 }

@@ -143,7 +143,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
-        $sorter->add($attribute, $direction);
+        $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
     }
