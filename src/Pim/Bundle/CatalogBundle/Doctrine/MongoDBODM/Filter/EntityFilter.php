@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 
 /**
  * Entity filter
@@ -11,8 +13,40 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityFilter extends BaseFilter
+class EntityFilter implements AttributeFilterInterface
 {
+    /**
+     * QueryBuilder
+     * @var QueryBuilder
+     */
+    protected $qb;
+
+    /**
+     * Locale code
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * Scope code
+     * @var string
+     */
+    protected $scope;
+
+    /**
+     * Instanciate a filter
+     *
+     * @param QueryBuilder $qb
+     * @param string       $locale
+     * @param scope        $scope
+     */
+    public function __construct(QueryBuilder $qb, $locale, $scope)
+    {
+        $this->qb     = $qb;
+        $this->locale = $locale;
+        $this->scope  = $scope;
+    }
+
     /**
      * {@inheritdoc}
      */

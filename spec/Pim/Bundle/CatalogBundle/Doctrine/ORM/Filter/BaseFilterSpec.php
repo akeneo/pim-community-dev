@@ -17,7 +17,7 @@ class BaseFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
     function it_adds_a_like_filter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)
@@ -35,6 +35,6 @@ class BaseFilterSpec extends ObjectBehavior
 
         $queryBuilder->innerJoin('p.values', 'filtersku1', 'WITH', $condition)->shouldBeCalled();
 
-        $this->add($sku, 'LIKE', 'My Sku');
+        $this->addAttributeFilter($sku, 'LIKE', 'My Sku');
     }
 }
