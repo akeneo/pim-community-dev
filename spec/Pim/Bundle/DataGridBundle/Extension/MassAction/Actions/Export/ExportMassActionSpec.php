@@ -59,7 +59,6 @@ class ExportMassActionSpec extends ObjectBehavior
         $context     = array('baz' => 'qux');
         $params = array(
             'route_parameters' => $routeParams,
-            'frontend_type'    => 'my_frontend',
             'context'          => $context,
             'route'            => 'my_route',
             'handler'          => 'my_handler'
@@ -69,7 +68,6 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->setOptions($options)->shouldNotThrow(Argument::any());
 
         $this->getOptions()->getName()->shouldReturn('export');
-        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('my_frontend');
         $this->getOptions()->offsetGet('context')->shouldReturn($context);
         $this->getOptions()->offsetGet('route')->shouldReturn('my_route');
         $this->getOptions()->offsetGet('route_parameters')->shouldReturn($routeParams);
@@ -81,13 +79,24 @@ class ExportMassActionSpec extends ObjectBehavior
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $context     = array('baz' => 'qux');
         $params = array(
-                'route_parameters' => $routeParams,
-                'context'          => $context
+            'route_parameters' => $routeParams,
+            'context'          => $context
         );
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
 
         $this->getExportContext()->shouldReturn($context);
+    }
+
+    function it_should_be_impossible_to_override_frontend()
+    {
+        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
+        $params = array('route_parameters' => $routeParams, 'frontend_type' => 'bar');
+        $options = ActionConfiguration::createNamed('edit', $params);
+
+        $this->setOptions($options)->shouldNotThrow(Argument::any());
+
+        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('export');
     }
 }
