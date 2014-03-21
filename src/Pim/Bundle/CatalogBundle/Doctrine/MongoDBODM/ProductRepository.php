@@ -623,7 +623,14 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             throw new \LogicException('No products to remove');
         }
 
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->remove()
+            ->field('_id')->in($ids);
+
+        $result = $qb->getQuery()->execute();
+
+        return $result['n'];
     }
 
     /**
@@ -631,6 +638,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyMassActionParameters($qb, $inset, $values)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        if ($values) {
+            $qb->field('_id');
+            $valueWhereCondition = $inset ? $qb->in($values) : $qb->notIn($values);
+        }
     }
 }
