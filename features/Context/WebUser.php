@@ -1034,7 +1034,7 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeDisabled(Product $product)
     {
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
         }
@@ -1047,7 +1047,7 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeEnabled(Product $product)
     {
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
         }
@@ -1063,7 +1063,7 @@ class WebUser extends RawMinkContext
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
         assertEquals(
