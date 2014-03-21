@@ -17,12 +17,17 @@ class EntityFilterSpec extends ObjectBehavior
         $this->beConstructedWith($queryBuilder, 'en_US', 'mobile');
     }
 
-    function it_is_a_filter()
+    function it_is_an_attribute_filter()
     {
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
-    function it_adds_a_in_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $color)
+    function it_is_a_field_filter()
+    {
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
+    }
+
+    function it_adds_a_in_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $color)
     {
         $color->getCode()->willReturn('color');
         $color->isLocalizable()->willReturn(true);
@@ -31,5 +36,13 @@ class EntityFilterSpec extends ObjectBehavior
         $queryBuilder->in([1, 2])->willReturn($queryBuilder);
 
         $this->addAttributeFilter($color, 'IN', [1, 2]);
+    }
+
+    function it_adds_a_in_filter_on_a_field_in_the_query(Builder $queryBuilder)
+    {
+        $queryBuilder->field('family')->willReturn($queryBuilder);
+        $queryBuilder->in([1, 2])->willReturn($queryBuilder);
+
+        $this->addFieldFilter('family', 'IN', [1, 2]);
     }
 }

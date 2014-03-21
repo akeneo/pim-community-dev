@@ -578,7 +578,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByGroupIds($qb, array $groupIds)
     {
-        $qb->addAnd($qb->expr()->field('groups')->in($groupIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
     }
 
     /**
@@ -586,7 +586,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByFamilyIds($qb, array $familyIds)
     {
-        $qb->addAnd($qb->expr()->field('family')->in($familyIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
     }
 
     /**

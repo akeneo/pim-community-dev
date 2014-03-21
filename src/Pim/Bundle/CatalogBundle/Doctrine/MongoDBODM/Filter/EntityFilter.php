@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -14,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityFilter implements AttributeFilterInterface
+class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /**
      * QueryBuilder
@@ -57,6 +58,16 @@ class EntityFilter implements AttributeFilterInterface
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.id', $field);
         $value = array_map('intval', $value);
+        $this->qb->field($field)->in($value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
         $this->qb->field($field)->in($value);
 
         return $this;
