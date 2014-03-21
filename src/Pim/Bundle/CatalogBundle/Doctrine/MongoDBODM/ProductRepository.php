@@ -629,7 +629,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $identifier, $inset, $values)
+    public function applyMassActionParameters($qb, $inset, $values)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
