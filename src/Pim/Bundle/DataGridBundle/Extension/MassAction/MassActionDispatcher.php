@@ -13,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
  * Mass action dispatcher
@@ -126,20 +127,16 @@ class MassActionDispatcher
     }
 
     /**
+     * Get mass action handler from handler registry
+     *
      * @param MassActionInterface $massAction
      *
      * @return MassActionHandlerInterface
-     *
-     * @throws UnexpectedTypeException
      */
     protected function getMassActionHandler(MassActionInterface $massAction)
     {
         $handlerAlias = $massAction->getOptions()->offsetGet('handler');
         $handler      = $this->handlerRegistry->getHandler($handlerAlias);
-
-        if (!$handler instanceof MassActionHandlerInterface) {
-            throw new UnexpectedTypeException($handler, 'MassActionHandlerInterface');
-        }
 
         return $handler;
     }
