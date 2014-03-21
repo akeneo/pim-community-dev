@@ -34,7 +34,7 @@ class CompletenessFactory
 
         $completeness->setMissingCount($missingCount);
         $completeness->setRequiredCount($requiredCount);
-        $completeness->setRatio(($requiredCount - $missingCount) / $requiredCount * 100);
+        $completeness->setRatio(round(($requiredCount - $missingCount) / $requiredCount * 100));
 
         return $completeness;
     }
