@@ -13,6 +13,7 @@
 - Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
 - Improve get product REST API
+- Improve entity history context display for entities updated during import jobs
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -64,6 +65,7 @@
 - Add methods deleteFromIds and applyMassActionParameters in ProductRepository classes
 - Change MassActionDispatcher::dispatch parameters
 - Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
+- Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
 
 # 1.0.2
 ## Bug Fixes
