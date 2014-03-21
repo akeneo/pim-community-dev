@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
@@ -58,7 +59,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateProductCompletenesses(ProductInterface $product)
+    public function generateMissingForProduct(ProductInterface $product)
     {
         $this->generate(array('productId' => $product->getId()));
     }
@@ -66,7 +67,26 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(array $criteria = array(), $limit = null)
+    public function generateMissingForChannel(Channel $channel)
+    {
+        $this->generate(array('channelId' => $channel->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateMissing()
+    {
+        $this->generate();
+    }
+
+    /**
+     * Generate completeness for product where it's missing,
+     * applying the criteria if provided to reduce the product set
+     *
+     * @param array $criteria
+     */
+    protected function generate(array $criteria = array())
     {
         $this->prepareCompletePrices($criteria);
         $this->prepareMissingCompletenesses($criteria);

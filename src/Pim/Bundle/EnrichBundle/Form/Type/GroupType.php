@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindGroupProductsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Type for group form
@@ -20,9 +21,9 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 class GroupType extends AbstractType
 {
     /**
-     * @var string
+     * @var ProductRepositoryInterface
      */
-    protected $productClass;
+    protected $productRepository;
 
     /**
      * @var string
@@ -32,13 +33,13 @@ class GroupType extends AbstractType
     /**
      * Constructor
      *
-     * @param string $productClass
-     * @param string $attributeClass
+     * @param ProductRepositoryInterface $productRepository
+     * @param string                     $attributeClass
      */
-    public function __construct($productClass, $attributeClass)
+    public function __construct(ProductRepositoryInterface $productRepository, $attributeClass)
     {
-        $this->productClass = $productClass;
-        $this->attributeClass = $attributeClass;
+        $this->productRepository = $productRepository;
+        $this->attributeClass    = $attributeClass;
     }
 
     /**
@@ -145,22 +146,22 @@ class GroupType extends AbstractType
         $builder
             ->add(
                 'appendProducts',
-                'oro_entity_identifier',
+                'pim_object_identifier',
                 array(
-                    'class'    => $this->productClass,
-                    'required' => false,
-                    'mapped'   => false,
-                    'multiple' => true
+                    'repository' => $this->productRepository,
+                    'required'   => false,
+                    'mapped'     => false,
+                    'multiple'   => true
                 )
             )
             ->add(
                 'removeProducts',
-                'oro_entity_identifier',
+                'pim_object_identifier',
                 array(
-                    'class'    => $this->productClass,
-                    'required' => false,
-                    'mapped'   => false,
-                    'multiple' => true
+                    'repository' => $this->productRepository,
+                    'required'   => false,
+                    'mapped'     => false,
+                    'multiple'   => true
                 )
             )
             ->addEventSubscriber(new BindGroupProductsSubscriber());

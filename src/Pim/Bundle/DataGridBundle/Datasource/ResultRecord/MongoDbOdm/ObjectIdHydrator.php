@@ -18,6 +18,17 @@ class ObjectIdHydrator implements HydratorInterface
      */
     public function hydrate($queryBuilder, $options)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $queryBuilder
+            ->hydrate(false)
+            ->select('_id');
+
+        $results = $queryBuilder->getQuery()->execute();
+
+        $rows = array();
+        foreach ($results as $key => $result) {
+            $rows[] = $key;
+        }
+
+        return $rows;
     }
 }
