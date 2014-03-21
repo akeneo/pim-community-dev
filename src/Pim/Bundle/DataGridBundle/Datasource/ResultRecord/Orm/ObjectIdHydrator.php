@@ -16,20 +16,20 @@ class ObjectIdHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($queryBuilder, $options)
+    public function hydrate($qb, $options)
     {
-        $rootAlias = current($queryBuilder->getRootAliases());
+        $rootAlias = current($qb->getRootAliases());
         $rootIdExpr = sprintf('%s.id', $rootAlias);
 
-        $from = current($queryBuilder->getDQLPart('from'));
+        $from = current($qb->getDQLPart('from'));
 
-        $queryBuilder
+        $qb
             ->select($rootIdExpr)
             ->resetDQLPart('from')
             ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
             ->groupBy($rootIdExpr);
 
-        $results = $queryBuilder->getQuery()->getArrayResult();
+        $results = $qb->getQuery()->getArrayResult();
 
         return array_keys($results);
     }

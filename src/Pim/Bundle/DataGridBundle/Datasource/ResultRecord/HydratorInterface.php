@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 
 /**
- * Allows to hydrate results of query as ResultRecord array
+ * Allows to hydrate results of query as ResultRecord array or otherwise
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -16,10 +16,10 @@ interface HydratorInterface
     /**
      * Execute the query and hydrate as result record array
      *
-     * @param mixed $queryBuilder
+     * @param mixed $qb
      * @param array $options
      *
      * @return ResultRecord[]
      */
-    public function hydrate($queryBuilder, $options);
+    public function hydrate($qb, $options);
 }
