@@ -130,7 +130,7 @@ class AddVersionListener implements EventSubscriber
     public function createVersion(EntityManager $em, $versionable)
     {
         $version = $this->versionManager->buildVersion($versionable);
-        if ($version) {
+        if ($version && !empty($version->getChangeset())) {
             $this->computeChangeSet($em, $version);
         }
     }
