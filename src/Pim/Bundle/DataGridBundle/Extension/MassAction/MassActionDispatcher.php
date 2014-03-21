@@ -79,15 +79,28 @@ class MassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        // create datagrid, prepare query and apply mass action parameters
-        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
+        return $this->performMassAction($datagrid, $actionName, $inset, $values);
+    }
+
+    /**
+     * Prepare query builder, apply mass action parameters and call handler
+     *
+     * @param DatagridInterface $datagrid
+     * @param string            $actionName
+     * @param boolean           $inset
+     * @param string            $values
+     *
+     * @return MassActionResponseInterface
+     */
+    protected function performMassAction(DatagridInterface $datagrid, $actionName, $inset, $values)
+    {
+        $qb         = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $identifier = $this->getIdentifierField($massAction);
 
         $repository = $datagrid->getDatasource()->getRepository();
         $repository->applyMassActionParameters($qb, $identifier, $inset, $values);
 
-        // perform mass action
         $handler = $this->getMassActionHandler($massAction);
 
         return $handler->handle($datagrid, $massAction);
