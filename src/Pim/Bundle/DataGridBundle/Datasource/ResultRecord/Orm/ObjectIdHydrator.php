@@ -29,6 +29,8 @@ class ObjectIdHydrator implements HydratorInterface
             ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
             ->groupBy($rootIdExpr);
 
-        return $queryBuilder->getQuery()->getArrayResult();
+        $results = $queryBuilder->getQuery()->getArrayResult();
+
+        return array_keys($results);
     }
 }

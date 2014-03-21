@@ -56,7 +56,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $datasource->setHydrator($this->hydrator);
 
         // hydrator uses index by id
-        $objectIds = array_keys($datasource->getResults());
+        $objectIds = $datasource->getResults();
 
         try {
             $countRemoved = $datasource->getRepository()->deleteFromIds($objectIds);
