@@ -97,10 +97,9 @@ class MassActionDispatcher
     {
         $qb         = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         $massAction = $this->getMassActionByName($actionName, $datagrid);
-        $identifier = $this->getIdentifierField($massAction);
 
         $repository = $datagrid->getDatasource()->getRepository();
-        $repository->applyMassActionParameters($qb, $identifier, $inset, $values);
+        $repository->applyMassActionParameters($qb, $inset, $values);
 
         $handler = $this->getMassActionHandler($massAction);
 
@@ -169,22 +168,5 @@ class MassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
 
         return $this->getMassActionByName($actionName, $datagrid);
-    }
-
-    /**
-     * @param Actions\MassActionInterface $massAction
-     *
-     * @throws \LogicException
-     *
-     * @return string
-     */
-    protected function getIdentifierField(MassActionInterface $massAction)
-    {
-        $identifier = $massAction->getOptions()->offsetGet('data_identifier');
-        if (!$identifier) {
-            throw new \LogicException(sprintf('Mass action "%s" must define identifier name', $massAction->getName()));
-        }
-
-        return $identifier;
     }
 }
