@@ -1139,28 +1139,38 @@ datagrid:
             type: orm
             query:
                 select:
-                    - a.id
-                    - a.data as data
-                    - a.loggedAt
-                    - a.version
+                    - v.id
+                    - v.changeset as changeset
+                    - v.loggedAt
+                    - v.version
                     - >
                       CONCAT(
                         CONCAT(
                             CONCAT(u.firstName, ' '),
                             CONCAT(u.lastName, ' ')
                         ),
-                        CONCAT(' - ', u.email)
+                        CONCAT(
+                            CONCAT(' - ', u.email),
+                            CASE WHEN v.context IS NOT NULL THEN
+                                CONCAT(
+                                    CONCAT(' (', v.context),
+                                    ')'
+                                )
+                            ELSE
+                                ''
+                            END
+                        )
                       ) as author
                 from:
-                    - { table: OroDataAuditBundle:Audit, alias: a }
+                    - { table: PimVersioningBundle:Version, alias: v }
                 join:
                     left:
                         user:
-                            join: a.user
+                            join: v.user
                             alias: u
                 where:
                     and:
-                        - a.objectClass = :objectClass AND a.objectId = :objectId
+                        - v.resourceName = :objectClass AND v.resourceId = :objectId
         columns:
             version:
                 label: Version
@@ -1179,20 +1189,20 @@ datagrid:
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/old.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
             new:
                 label: New values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
         sorters:
             columns:
                 version:
-                    data_name: a.version
+                    data_name: v.version
                 author:
                     data_name: author
                 loggedAt:
-                    data_name: a.loggedAt
+                    data_name: v.loggedAt
             default:
                 loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

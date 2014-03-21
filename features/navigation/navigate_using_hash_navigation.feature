@@ -28,7 +28,6 @@ Feature: Navigate the application in hash navigation mode
       | pim_importexport_export_execution_index |
       | pim_importexport_import_profile_index   |
       | pim_importexport_import_execution_index |
-      | oro_dataaudit_index                     |
       | oro_pinbar_help                         |
       | oro_user_create                         |
       | oro_user_group_create                   |
