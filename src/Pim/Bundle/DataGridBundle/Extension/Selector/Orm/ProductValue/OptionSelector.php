@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
- * Flexible prices selector
+ * Product value option selector
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexiblePricesSelector implements SelectorInterface
+class OptionSelector implements SelectorInterface
 {
     /**
      * @param SelectorInterface $predecessor
@@ -31,7 +31,18 @@ class FlexiblePricesSelector implements SelectorInterface
         $this->predecessor->apply($datasource, $configuration);
 
         $datasource->getQueryBuilder()
-            ->leftJoin('values.prices', 'prices')
-            ->addSelect('prices');
+            ->leftJoin(
+                'values.option',
+                'simpleoption'
+            )
+            ->addSelect('simpleoption')
+
+            ->leftJoin(
+                'simpleoption.optionValues',
+                'simpleoptionvalues',
+                'WITH',
+                'simpleoptionvalues.locale = :dataLocale OR simpleoptionvalues.locale IS NULL'
+            )
+            ->addSelect('simpleoptionvalues');
     }
 }
