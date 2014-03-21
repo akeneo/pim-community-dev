@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Model\Behavior;
+namespace Pim\Bundle\CatalogBundle\Model;
 
 /**
  * Localizable interface, implemented by class which can be localized
