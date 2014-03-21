@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -42,7 +43,8 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         Locale $frFr,
         Locale $nlNl,
         ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations
+        ConstraintViolationListInterface $withViolations,
+        ChannelManager $channelManager
     ) {
         $varchar->getCode()->willReturn('attr_varchar');
         $varchar->isLocalizable()->willReturn(true);
@@ -72,8 +74,9 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $withViolations->count()->willReturn(1);
 
         $product->getValue(Argument::cetera())->willReturn($value);
+        $channelManager->getFullChannels()->willReturn(array($ecommerce, $mobile));
 
-        $this->beConstructedWith($manager, $completenessFactory, $validator);
+        $this->beConstructedWith($manager, $completenessFactory, $validator, 'pim_product_class', $channelManager);
     }
 
     public function it_is_a_completeness_generator()
@@ -127,7 +130,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $manager->flush($product)->shouldNotBeCalled();
         $product->setCompletenesses(new ArrayCollection())->shouldNotBeCalled();
 
-        $this->generateProductCompletenesses($product);
+        $this->generateMissingForProduct($product);
     }
     public function it_builds_product_completenesses_with_two_channels_and_three_locales (
         ProductInterface $product,

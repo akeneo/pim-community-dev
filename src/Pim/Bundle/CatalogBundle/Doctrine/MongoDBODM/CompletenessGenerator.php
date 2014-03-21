@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -118,16 +119,13 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         foreach ($stats as $channelStats) {
             $channel = $channelStats['object'];
             $channelData = $channelStats['data'];
-            $channelRequiredCount = $channelStats['required_count'];
+            $channelRequiredCount = $channelData['required_count'];
 
-            foreach ($channelData as $localeStats) {
-                $locale = $localeStats['object'];
-                $localeData = $localeStats['data'];
-
+            foreach ($channelData['locales'] as $localeStats) {
                 $completeness = $this->completenessFactory->build(
                     $channel,
-                    $locale,
-                    $localeData['missing_count'],
+                    $localeStats['object'],
+                    $localeStats['missing_count'],
                     $channelRequiredCount
                 );
 
@@ -148,46 +146,61 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function collectStats(ProductInterface $product)
     {
         $stats = array();
+        $family = $product->getFamily();
 
-        if (null === $family = $product->getFamily()) {
+        if (null === $family) {
             return $stats;
         }
 
-        foreach ($family->getAttributeRequirements() as $req) {
-            if (!$req->isRequired()) {
+        $channels = $this->channelManager->getFullChannels();
+
+        foreach ($channels as $channel) {
+            $channelCode = $channel->getCode();
+
+            $stats[$channelCode]['object'] = $channel;
+            $stats[$channelCode]['data'] = $this->collectChannelStats($channel, $product);
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Generate stats on product completeness for a channel
+     *
+     * @param Channel $channel
+     * @param Attributerequ
+     *
+     * @return array $stats
+     */
+    protected function collectChannelStats(Channel $channel, ProductInterface $product)
+    {
+        $stats = array();
+        $locales = $channel->getLocales();
+        $completeConstraint = new ProductValueComplete(array('channel' => $channel));
+        $stats['required_count'] = 0;
+        $stats['locales'] = array();
+        $requirements = $product->getFamily()->getAttributeRequirements();
+
+        foreach ($requirements as $req) {
+            if (!$req->isRequired() || $req->getChannel() != $channel) {
                 continue;
             }
-            $channel = $req->getChannel()->getCode();
-            $locales = $req->getChannel()->getLocales();
+            $stats['required_count']++;
 
-            if (!isset($stats[$channel])) {
-                $stats[$channel]['object'] = $req->getChannel();
-                $stats[$channel]['data'] = array();
-                $stats[$channel]['required_count'] = 0;
-            }
+            foreach ($locales as $locale) {
+                $localeCode = $locale->getCode();
 
-            $completeConstraint = new ProductValueComplete(array('channel' => $req->getChannel()));
-
-            $stats[$channel]['required_count']++;
-
-            foreach ($locales as $localeObject) {
-                $locale = $localeObject->getCode();
-                if (!isset($stats[$channel]['data'][$locale])) {
-                    $stats[$channel]['data'][$locale] = array();
-                    $stats[$channel]['data'][$locale]['object'] = $localeObject;
-                    $stats[$channel]['data'][$locale]['data'] = array();
-                    $stats[$channel]['data'][$locale]['data']['missing_count'] = 0;
+                if (!isset($stats['locales'][$localeCode])) {
+                    $stats['locales'][$localeCode] = array();
+                    $stats['locales'][$localeCode]['object'] = $locale;
+                    $stats['locales'][$localeCode]['missing_count'] = 0;
                 }
 
                 $attribute = $req->getAttribute();
-                $value = $product->getValue(
-                    $attribute->getCode(),
-                    $attribute->isLocalizable() ? $locale : null,
-                    $attribute->isScopable() ? $channel : null
-                );
+                $value = $product->getValue( $attribute->getCode(), $localeCode, $channel->getCode());
 
                 if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
-                    $stats[$channel]['data'][$locale]['data']['missing_count'] ++;
+                    $stats['locales'][$localeCode]['missing_count'] ++;
                 }
             }
         }
@@ -271,8 +284,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $channels = $this->channelManager->getFullChannels();
         }
 
-        foreach ($channels as $channel)
-        {
+        foreach ($channels as $channel) {
             $locales = $channel->getLocales();
             foreach ($locales as $locale) {
                 $combinations[] = $channel->getCode().'-'.$locale->getCode();
@@ -281,7 +293,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         return $combinations;
     }
-
 
     /**
      * {@inheritdoc}
