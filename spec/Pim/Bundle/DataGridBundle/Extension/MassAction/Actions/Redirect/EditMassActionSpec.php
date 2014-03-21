@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class EditMassActionSpec extends ObjectBehavior
 {
-    function it_should_have_required_route_parameter()
+    function it_should_have_required_route()
     {
         $params = array();
         $options = ActionConfiguration::createNamed('edit', $params);
