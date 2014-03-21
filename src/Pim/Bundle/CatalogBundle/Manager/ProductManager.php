@@ -85,7 +85,7 @@ class ProductManager extends FlexibleManager
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
-        $this->repository->setFlexibleConfig($this->flexibleConfig);
+        $this->repository->setConfiguration($this->flexibleConfig);
     }
 
     /**

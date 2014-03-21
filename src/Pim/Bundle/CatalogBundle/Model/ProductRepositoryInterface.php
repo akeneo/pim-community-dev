@@ -18,20 +18,20 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 interface ProductRepositoryInterface extends LocalizableInterface, ScopableInterface
 {
     /**
-     * Get flexible entity config
+     * Get entity configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig();
+    public function getConfiguration();
 
     /**
-     * Set flexible entity config
+     * Set entity configuration
      *
      * @param array $config
      *
      * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config);
+    public function setConfiguration($config);
 
     /**
      * Return asked locale code or default one

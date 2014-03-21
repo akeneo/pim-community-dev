@@ -337,11 +337,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Get flexible entity config
+     * Get configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig()
+    public function getConfiguration()
     {
         return $this->flexibleConfig;
     }
@@ -353,7 +353,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config)
+    public function setConfiguration($config)
     {
         $this->flexibleConfig = $config;
 

@@ -49,23 +49,23 @@ class ProductRepository extends EntityRepository implements
     protected $scope;
 
     /**
-     * Get flexible entity config
+     * Get entity configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig()
+    public function getConfiguration()
     {
         return $this->flexibleConfig;
     }
 
     /**
-     * Set flexible entity config
+     * Set entity configuration
      *
      * @param array $config
      *
      * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config)
+    public function setConfiguration($config)
     {
         $this->flexibleConfig = $config;
 
