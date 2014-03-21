@@ -20,7 +20,7 @@ class EditMassAction extends RedirectMassAction
     public function setOptions(ActionConfiguration $options)
     {
         if (empty($options['handler'])) {
-            $options['handler'] = 'pim_datagrid.extension.mass_action.handler.edit';
+            $options['handler'] = 'mass_edit';
         }
 
         return parent::setOptions($options);

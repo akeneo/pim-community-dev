@@ -68,6 +68,8 @@
 - Move mass action handlers to its own `Handler` directory
 - Create PimDatasourceInterface extending OroDatasourceInterface
 - Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
+- Redefine DeleteMassAction, EditMassAction and ExportMassAction
+- Remove data_identifier property defined on datagrid.yml for mass actions
 
 # 1.0.2
 ## Bug Fixes

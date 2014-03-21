@@ -299,9 +299,6 @@ datagrid:
                 type: delete
                 label: Delete
                 entity_name: product
-                data_identifier: p
-                route: pim_datagrid_mass_action
-                handler: mass_delete
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?
@@ -316,12 +313,10 @@ datagrid:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_all
                 icon: download
-                data_identifier: p
                 route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
-                handler: quick_export
                 context:
                     withHeader: true
                     heterogeneous: true
@@ -333,8 +328,6 @@ datagrid:
                 label: Mass Edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
-                data_identifier: p
-                handler: mass_edit
         sorters:
             columns:
                 family:
