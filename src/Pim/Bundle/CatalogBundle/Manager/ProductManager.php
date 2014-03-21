@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -25,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager extends FlexibleManager
+class ProductManager
 {
     /**
      * @var MediaManager $mediaManager
@@ -53,6 +52,17 @@ class ProductManager extends FlexibleManager
     protected $entityManager;
 
     /**
+     * Product entity config
+     * @var array
+     */
+    protected $flexibleConfig;
+
+    /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      *
      * @param array                      $flexibleConfig      Flexible Config
@@ -74,12 +84,9 @@ class ProductManager extends FlexibleManager
         ProductBuilder $builder,
         ProductRepositoryInterface $repo
     ) {
-        parent::__construct(
-            $flexibleConfig,
-            $objectManager,
-            $eventDispatcher
-        );
-
+        $this->flexibleConfig      = $flexibleConfig;
+        $this->objectManager       = $objectManager;
+        $this->eventDispatcher     = $eventDispatcher;
         $this->entityManager       = $entityManager;
         $this->mediaManager        = $mediaManager;
         $this->completenessManager = $completenessManager;
