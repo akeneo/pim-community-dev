@@ -3,7 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 
 /**
  * Mass action event allows to do add easily some extra code
@@ -15,27 +15,27 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 class MassActionEvent extends Event
 {
     /**
-     * @var DatasourceInterface $datasource
+     * @var DatagridInterface $datagrid
      */
     protected $datasource;
 
     /**
      * Constructor
      *
-     * @param DatasourceInterface $datasource
+     * @param DatagridInterface $datagrid
      */
-    public function __construct(DatasourceInterface $datasource)
+    public function __construct(DatagridInterface $datagrid)
     {
-        $this->datasource = $datasource;
+        $this->datagrid = $datagrid;
     }
 
     /**
-     * Get datasource
+     * Get datagrid
      *
-     * @return DatasourceInterface
+     * @return DatagridInterface
      */
     public function getDatasource()
     {
-        return $this->datasource;
+        return $this->datagrid;
     }
 }
