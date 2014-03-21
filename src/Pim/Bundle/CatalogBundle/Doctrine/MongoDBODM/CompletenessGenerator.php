@@ -241,12 +241,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $productsQb->field('_id')->equals($product->getId());
         } else {
             $combinations = $this->getCombinations($channel);
-            
-            $orItems = new Expr();
-            foreach ($combinations as $combination) {
-                $orItems->field('normalizedData.completenesses.'.$combination)->exists(false);
+
+            if (!empty($combinations)) {
+                $orItems = new Expr();
+                foreach ($combinations as $combination) {
+                    $orItems->field('normalizedData.completenesses.'.$combination)->exists(false);
+                }
+                $productsQb->addOr($orItems);
             }
-            $productsQb->addOr($orItems);
         }
     }
 
