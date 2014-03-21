@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
 use Symfony\Component\Translation\TranslatorInterface;
 
@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
 
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
 
 /**
@@ -19,6 +20,11 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\EntityIdsHydrator;
  */
 class DeleteMassActionHandler implements MassActionHandlerInterface
 {
+    /**
+     * @var HydratorInterface $hydrator
+     */
+    protected $hydrator;
+
     /**
      * @var TranslatorInterface $translator
      */
@@ -32,10 +38,12 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * Constructor
      *
+     * @param HydratorInterface   $hydrator
      * @param TranslatorInterface $translator
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(HydratorInterface $hydrator, TranslatorInterface $translator)
     {
+        $this->hydrator   = $hydrator;
         $this->translator = $translator;
     }
 
@@ -44,10 +52,8 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        $entityIdsHydrator = new EntityIdsHydrator();
-
         $datasource = $datagrid->getDatasource();
-        $datasource->setHydrator($entityIdsHydrator);
+        $datasource->setHydrator($this->hydrator);
 
         // hydrator uses index by id
         $productIds = array_keys($datasource->getResults());

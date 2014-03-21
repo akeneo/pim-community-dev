@@ -1,8 +1,8 @@
 parameters:
     pim_datagrid.extension.mass_action.type.export.class:      Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
-    pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
-    pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
-    pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
+    pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
+    pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
+    pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
     pim_datagrid.mass_action.dispatcher.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class: Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
@@ -30,6 +30,7 @@ services:
     pim_datagrid.extension.mass_action.handler.delete:
         class: %pim_datagrid.extension.mass_action.handler.delete.class%
         arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@translator'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
