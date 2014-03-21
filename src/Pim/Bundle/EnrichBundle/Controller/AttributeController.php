@@ -21,7 +21,7 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler;
 
@@ -55,9 +55,9 @@ class AttributeController extends AbstractDoctrineController
     protected $localeManager;
 
     /**
-     * @var AuditManager
+     * @var VersionManager
      */
-    protected $auditManager;
+    protected $versionManager;
 
     /**
      * @var array
@@ -87,7 +87,7 @@ class AttributeController extends AbstractDoctrineController
      * @param Form                     $attributeForm
      * @param AttributeManager         $attributeManager
      * @param LocaleManager            $localeManager
-     * @param AuditManager             $auditManager
+     * @param VersionManager           $versionManager
      * @param array                    $measuresConfig
      */
     public function __construct(
@@ -103,7 +103,7 @@ class AttributeController extends AbstractDoctrineController
         Form $attributeForm,
         AttributeManager $attributeManager,
         LocaleManager $localeManager,
-        AuditManager $auditManager,
+        VersionManager $versionManager,
         $measuresConfig
     ) {
         parent::__construct(
@@ -121,7 +121,7 @@ class AttributeController extends AbstractDoctrineController
         $this->attributeForm    = $attributeForm;
         $this->attributeManager = $attributeManager;
         $this->localeManager    = $localeManager;
-        $this->auditManager     = $auditManager;
+        $this->versionManager   = $versionManager;
         $this->measuresConfig   = $measuresConfig;
     }
 
@@ -195,8 +195,8 @@ class AttributeController extends AbstractDoctrineController
             'locales'         => $this->localeManager->getActiveLocales(),
             'disabledLocales' => $this->localeManager->getDisabledLocales(),
             'measures'        => $this->measuresConfig,
-            'created'         => $this->auditManager->getOldestLogEntry($attribute),
-            'updated'         => $this->auditManager->getNewestLogEntry($attribute),
+            'created'         => $this->versionManager->getOldestLogEntry($attribute),
+            'updated'         => $this->versionManager->getNewestLogEntry($attribute),
         );
     }
 
