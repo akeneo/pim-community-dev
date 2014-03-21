@@ -65,6 +65,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var array */
     protected $parameters = array();
 
+    /** @var ProductRepositoryInterface $repository */
+    protected $repository;
+
     /**
      * @param ObjectManager     $om
      * @param HydratorInterface $hydrator
@@ -81,17 +84,10 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     public function process(DatagridInterface $grid, array $config)
     {
         $this->configuration = $config;
-        if (!isset($config['entity'])) {
-            throw new \Exception(get_class($this).' expects to be configured with entity');
-        }
-
-        $entity = $config['entity'];
-        $repository = $this->om->getRepository($entity);
-
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            $this->qb = $repository->$method();
+            $this->qb = $this->getRepository()->$method();
         } else {
-            $this->qb = $repository->createQueryBuilder('o');
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
@@ -165,5 +161,42 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         $this->hydrator = $hydrator;
 
         return $this;
+    }
+
+    /**
+     * Get the repository from the configuration
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function getRepository()
+    {
+        if (!$this->repository) {
+            $this->repository = $this->om->getRepository($this->getConfiguration('entity'));
+        }
+
+        return $this->repository;
+    }
+
+    /**
+     * Get configuration
+     *
+     * @param string $key
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    protected function getConfiguration($key)
+    {
+        if (!$this->configuration) {
+            throw new \LogicException('Datasource is not yet built. You need to call process method before');
+        }
+
+        if (!isset($this->configuration[$key])) {
+            throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
+        }
+
+        return $this->configuration[$key];
     }
 }

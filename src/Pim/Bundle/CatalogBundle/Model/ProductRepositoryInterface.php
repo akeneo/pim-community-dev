@@ -326,9 +326,19 @@ interface ProductRepositoryInterface
     /**
      * Delete a list of product ids
      *
-     * @param integer[] $productIds
+     * @param integer[] $ids
      *
      * @throws \LogicException
      */
-    public function deleteProductIds(array $productIds);
+    public function deleteFromIds(array $ids);
+
+    /**
+     * Apply mass action parameters on query builder
+     *
+     * @param mixed   $qb
+     * @param string  $identifier
+     * @param boolean $inset
+     * @param array   $values
+     */
+    public function applyMassActionParameters($qb, $identifier, $inset, $values);
 }

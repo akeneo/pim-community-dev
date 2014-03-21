@@ -1,17 +1,17 @@
 <?php
 
-namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace spec\Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use Pim\Bundle\DataGridBundle\Extension\Selector\Orm\FlexibleValuesSelector;
+use Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\BaseSelector;
 
-class FlexibleOptionsSelectorSpec extends ObjectBehavior
+class OptionsSelectorSpec extends ObjectBehavior
 {
-    function let(FlexibleValuesSelector $predecessor)
+    function let(BaseSelector $predecessor)
     {
         $this->beConstructedWith($predecessor);
     }
@@ -21,7 +21,7 @@ class FlexibleOptionsSelectorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
     }
 
-    function it_applies_join_on_datasource_query(FlexibleValuesSelector $predecessor, OrmDatasource $datasource, DatagridConfiguration $configuration, QueryBuilder $queryBuilder)
+    function it_applies_join_on_datasource_query(BaseSelector $predecessor, OrmDatasource $datasource, DatagridConfiguration $configuration, QueryBuilder $queryBuilder)
     {
         $datasource->getQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->leftJoin('values.options', 'multioptions')->willReturn($queryBuilder);
