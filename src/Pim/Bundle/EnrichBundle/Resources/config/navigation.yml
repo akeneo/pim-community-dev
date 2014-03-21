@@ -110,6 +110,8 @@ oro_menu_config:
             display: false
         oro_calendar_view_default:
             display: false
+        audit_list:
+            display: false
 
     tree:
         application_menu:
