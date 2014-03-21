@@ -49,7 +49,7 @@ class VersionBuilder
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
         $data = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
 
-        $changeset = $this->buildDiffData($oldData, $data, $context);
+        $changeset = $this->buildDiffData($oldData, $data);
 
         return new Version($resourceName, $resourceId, $versionNumber, $data, $changeset, $user, $context);
     }
@@ -58,21 +58,14 @@ class VersionBuilder
     /**
      * Build diff data
      *
-     * @param array       $oldData
-     * @param array       $newData
-     * @param string|null $context
+     * @param array $oldData
+     * @param array $newData
      *
      * @return array
      */
-    protected function buildDiffData(array $oldData, array $newData, $context = null)
+    protected function buildDiffData(array $oldData, array $newData)
     {
-        $diffData = $this->filterDiffData($this->getMergedData($oldData, $newData));
-
-        if (!empty($diffData) && $context) {
-            $diffData['context'] = ['old' => '', 'new' => $context];
-        }
-
-        return $diffData;
+        return $this->filterDiffData($this->getMergedData($oldData, $newData));
     }
 
     /**
