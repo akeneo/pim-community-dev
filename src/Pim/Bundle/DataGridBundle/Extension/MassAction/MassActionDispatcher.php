@@ -13,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
  * Mass action dispatcher
@@ -96,10 +97,9 @@ class MassActionDispatcher
     {
         $qb         = $datagrid->getAcceptedDatasource()->getQueryBuilder();
         $massAction = $this->getMassActionByName($actionName, $datagrid);
-        $identifier = $this->getIdentifierField($massAction);
 
         $repository = $datagrid->getDatasource()->getRepository();
-        $repository->applyMassActionParameters($qb, $identifier, $inset, $values);
+        $repository->applyMassActionParameters($qb, $inset, $values);
 
         $handler = $this->getMassActionHandler($massAction);
 
@@ -139,20 +139,16 @@ class MassActionDispatcher
     }
 
     /**
+     * Get mass action handler from handler registry
+     *
      * @param MassActionInterface $massAction
      *
      * @return MassActionHandlerInterface
-     *
-     * @throws UnexpectedTypeException
      */
     protected function getMassActionHandler(MassActionInterface $massAction)
     {
         $handlerAlias = $massAction->getOptions()->offsetGet('handler');
         $handler      = $this->handlerRegistry->getHandler($handlerAlias);
-
-        if (!$handler instanceof MassActionHandlerInterface) {
-            throw new UnexpectedTypeException($handler, 'MassActionHandlerInterface');
-        }
 
         return $handler;
     }
@@ -172,22 +168,5 @@ class MassActionDispatcher
         $datagrid = $this->manager->getDatagrid($datagridName);
 
         return $this->getMassActionByName($actionName, $datagrid);
-    }
-
-    /**
-     * @param Actions\MassActionInterface $massAction
-     *
-     * @throws \LogicException
-     *
-     * @return string
-     */
-    protected function getIdentifierField(MassActionInterface $massAction)
-    {
-        $identifier = $massAction->getOptions()->offsetGet('data_identifier');
-        if (!$identifier) {
-            throw new \LogicException(sprintf('Mass action "%s" must define identifier name', $massAction->getName()));
-        }
-
-        return $identifier;
     }
 }

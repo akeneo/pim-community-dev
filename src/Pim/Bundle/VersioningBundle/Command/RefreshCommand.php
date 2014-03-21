@@ -94,8 +94,10 @@ class RefreshCommand extends ContainerAwareCommand
         $em = $this->getEntityManager();
         $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
         $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
+        $versionManager = $this->getVersionManager();
+        $versionManager->setUser($user);
         if (!in_array(spl_object_hash($versionable), $this->versionedEntities)) {
-            $this->getAddVersionListener()->createVersionAndAudit($em, $versionable, $user);
+            $versionManager->buildVersion($versionable);
             $this->versionedEntities[] = spl_object_hash($versionable);
         }
         $em->remove($pending);
@@ -112,9 +114,9 @@ class RefreshCommand extends ContainerAwareCommand
     /**
      * @return AddVersionListener
      */
-    protected function getAddVersionListener()
+    protected function getVersionManager()
     {
-        return $this->getContainer()->get('pim_versioning.event_listener.addversion');
+        return $this->getContainer()->get('pim_versioning.manager.version');
     }
 
     /**

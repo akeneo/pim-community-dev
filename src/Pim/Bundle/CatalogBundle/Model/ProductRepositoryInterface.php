@@ -336,9 +336,8 @@ interface ProductRepositoryInterface
      * Apply mass action parameters on query builder
      *
      * @param mixed   $qb
-     * @param string  $identifier
      * @param boolean $inset
      * @param array   $values
      */
-    public function applyMassActionParameters($qb, $identifier, $inset, $values);
+    public function applyMassActionParameters($qb, $inset, $values);
 }

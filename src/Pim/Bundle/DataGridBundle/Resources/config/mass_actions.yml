@@ -1,8 +1,9 @@
 parameters:
     pim_datagrid.extension.mass_action.type.export.class:      Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassAction
-    pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\EditMassActionHandler
-    pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\ExportMassActionHandler
-    pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\DeleteMassActionHandler
+    pim_datagrid.extension.mass_action.type.delete.class:      Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction
+    pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
+    pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
+    pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
     pim_datagrid.mass_action.dispatcher.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class: Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
@@ -47,6 +48,12 @@ services:
         scope: prototype
         tags:
             - { name: oro_datagrid.extension.mass_action.type, type: edit }
+
+    pim_datagrid.extension.mass_action.type.delete:
+        class: %pim_datagrid.extension.mass_action.type.delete.class%
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.mass_action.type, type: delete }
 
     # Handler registry
     pim_datagrid.extension.mass_action.handler.registry:

@@ -894,17 +894,17 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyMassActionParameters($qb, $identifier, $inset, $values)
+    public function applyMassActionParameters($qb, $inset, $values)
     {
+        $rootAlias = $qb->getRootAlias();
         if ($values) {
             $valueWhereCondition =
                 $inset
-                ? $qb->expr()->in($identifier, $values)
-                : $qb->expr()->notIn($identifier, $values);
+                ? $qb->expr()->in($rootAlias, $values)
+                : $qb->expr()->notIn($rootAlias, $values);
             $qb->andWhere($valueWhereCondition);
         }
 
-        $rootAlias = $qb->getRootAlias();
         $qb
             ->resetDQLPart('select')
             ->resetDQLPart('from')
