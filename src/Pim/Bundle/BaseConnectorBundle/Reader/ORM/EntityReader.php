@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
 
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\Reader;
 
 /**
  * ORM Reader for simple entities without query join

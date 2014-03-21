@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\ORM;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

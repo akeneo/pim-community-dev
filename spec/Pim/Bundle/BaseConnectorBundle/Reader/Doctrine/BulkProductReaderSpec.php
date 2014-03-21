@@ -1,21 +1,21 @@
 <?php
 
-namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\ORM;
+namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
-use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\AbstractQuery;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
-class ProductReaderSpec extends ObjectBehavior
+class BulkProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductManager $productManager,
@@ -32,13 +32,18 @@ class ProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
+    function it_is_a_product_reader()
+    {
+        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader');
+    }
+
     function it_has_a_channel()
     {
         $this->setChannel('mobile');
         $this->getChannel()->shouldReturn('mobile');
     }
 
-    function it_reads_products_one_by_one(
+    function it_reads_all_products_at_once(
         $channelManager,
         $repository,
         Channel $channel,
@@ -53,8 +58,7 @@ class ProductReaderSpec extends ObjectBehavior
         $query->execute()->willReturn(array($sku1, $sku2));
 
         $this->setChannel('foobar');
-        $this->read()->shouldReturn($sku1);
-        $this->read()->shouldReturn($sku2);
+        $this->read()->shouldReturn(array($sku1, $sku2));
         $this->read()->shouldReturn(null);
     }
 

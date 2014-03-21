@@ -1,14 +1,14 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Reads products one by one
@@ -40,18 +40,18 @@ class ProductReader extends Reader
     protected $metricConverter;
 
     /**
-     * @param ProductManager      $productManager
-     * @param ChannelManager      $channelManager
-     * @param CompletenessManager $completenessManager
-     * @param MetricConverter     $metricConverter
+     * @param ProductRepositoryInterface $repository
+     * @param ChannelManager             $channelManager
+     * @param CompletenessManager        $completenessManager
+     * @param MetricConverter            $metricConverter
      */
     public function __construct(
-        ProductManager $productManager,
+        ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter
     ) {
-        $this->productManager      = $productManager;
+        $this->repository          = $repository;
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
@@ -73,7 +73,7 @@ class ProductReader extends Reader
 
             $this->completenessManager->generateChannelCompletenesses($this->channel);
 
-            $this->query = $this->getProductRepository()
+            $this->query = $this->repository
                 ->buildByChannelAndCompleteness($this->channel)
                 ->getQuery();
         }
@@ -122,15 +122,5 @@ class ProductReader extends Reader
                 )
             )
         );
-    }
-
-    /**
-     * Get the product repository
-     *
-     * @return \Doctrine\ORM\EntityRepository
-     */
-    protected function getProductRepository()
-    {
-        return $this->productManager->getProductRepository();
     }
 }

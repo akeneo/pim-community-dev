@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Doctrine\ORM\AbstractQuery;
 
@@ -52,9 +52,13 @@ class Reader extends AbstractConfigurableStepElement implements
             $this->executed = true;
 
             $this->results = $this->getQuery()->execute();
+            if (!$this->results instanceof \Iterator) {
+                $this->results = new \ArrayIterator($this->results);
+            }
         }
 
-        if ($result = array_shift($this->results)) {
+        $this->results->next();
+        if ($result = $this->results->current()) {
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
