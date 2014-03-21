@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
-use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
+use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
  * Repository for attribute entity
@@ -13,7 +13,7 @@ use Doctrine\ORM\AbstractQuery;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends FlexibleAttributeRepository implements
+class AttributeRepository extends EntityRepository implements
     ReferableEntityRepositoryInterface,
     ChoicesProviderInterface
 {

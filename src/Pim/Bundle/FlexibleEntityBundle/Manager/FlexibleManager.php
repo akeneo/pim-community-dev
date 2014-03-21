@@ -9,8 +9,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\LocalizableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
+use Pim\Bundle\CatalogBundle\Model\ScopableInterface;
 use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
 
 /**
@@ -19,6 +19,8 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use CatalogBundle/ProductManager
  */
 class FlexibleManager implements LocalizableInterface, ScopableInterface
 {
