@@ -21,6 +21,6 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_should_throw_an_exception_if_try_to_delete_without_product_ids()
     {
-        $this->shouldThrow(new \LogicException('No products to remove'))->duringDeleteProductIds(array());
+        $this->shouldThrow(new \LogicException('No products to remove'))->duringDeleteFromIds(array());
     }
 }

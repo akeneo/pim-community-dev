@@ -877,17 +877,56 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function deleteProductIds(array $productIds)
+    public function deleteFromIds(array $ids)
     {
-        if (empty($productIds)) {
+        if (empty($ids)) {
             throw new \LogicException('No products to remove');
         }
 
         $qb = $this->createQueryBuilder('p');
         $qb
             ->delete($this->_entityName, 'p')
-            ->where($qb->expr()->in('p.id', $productIds));
+            ->where($qb->expr()->in('p.id', $ids));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $identifier, $inset, $values)
+    {
+        if ($values) {
+            $valueWhereCondition =
+                $inset
+                ? $qb->expr()->in($identifier, $values)
+                : $qb->expr()->notIn($identifier, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
+
+        $rootAlias = $qb->getRootAlias();
+        $qb
+            ->resetDQLPart('select')
+            ->resetDQLPart('from')
+            ->select($rootAlias)
+            ->from($this->_entityName, $rootAlias);
+
+        // Remove 'entityIds' part from querybuilder (added by flexible pager)
+        $whereParts = $qb->getDQLPart('where')->getParts();
+        $qb->resetDQLPart('where');
+
+        foreach ($whereParts as $part) {
+            if (!is_string($part) || !strpos($part, 'entityIds')) {
+                $qb->andWhere($part);
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
     }
 }
