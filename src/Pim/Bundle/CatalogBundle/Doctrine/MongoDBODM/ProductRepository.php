@@ -31,7 +31,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Flexible entity config
      * @var array
      */
-    protected $flexibleConfig;
+    protected $configuration;
 
     /**
      * Locale code
@@ -337,13 +337,13 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Get flexible entity config
+     * Get configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig()
+    public function getConfiguration()
     {
-        return $this->flexibleConfig;
+        return $this->configuration;
     }
 
     /**
@@ -351,11 +351,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param array $config
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config)
+    public function setConfiguration($config)
     {
-        $this->flexibleConfig = $config;
+        $this->configuration = $config;
 
         return $this;
     }
@@ -375,7 +375,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setLocale($code)
     {
@@ -399,7 +399,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setScope($code)
     {

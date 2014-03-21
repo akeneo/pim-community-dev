@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -25,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager extends FlexibleManager
+class ProductManager
 {
     /**
      * @var MediaManager $mediaManager
@@ -53,9 +52,30 @@ class ProductManager extends FlexibleManager
     protected $entityManager;
 
     /**
+     * Product entity config
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
+     * @var string
+     */
+    protected $locale;
+
+    /**
+     * @var string
+     */
+    protected $scope;
+
+    /**
      * Constructor
      *
-     * @param array                      $flexibleConfig      Flexible Config
+     * @param array                      $configuration       Product config
      * @param ObjectManager              $objectManager       Storage manager for product
      * @param EntityManager              $entityManager       Entity manager for other entitites
      * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
@@ -65,7 +85,7 @@ class ProductManager extends FlexibleManager
      * @param ProductRepositoryInterface $repo                Product repository
      */
     public function __construct(
-        $flexibleConfig,
+        $configuration,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
@@ -74,18 +94,15 @@ class ProductManager extends FlexibleManager
         ProductBuilder $builder,
         ProductRepositoryInterface $repo
     ) {
-        parent::__construct(
-            $flexibleConfig,
-            $objectManager,
-            $eventDispatcher
-        );
-
+        $this->configuration      = $configuration;
+        $this->objectManager       = $objectManager;
+        $this->eventDispatcher     = $eventDispatcher;
         $this->entityManager       = $entityManager;
         $this->mediaManager        = $mediaManager;
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
-        $this->repository->setFlexibleConfig($this->flexibleConfig);
+        $this->repository->setConfiguration($this->configuration);
     }
 
     /**
@@ -107,12 +124,29 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Get product configuration
+     *
+     * @return array
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setLocale($code)
     {
-        parent::setLocale($code);
-
+        $this->locale = $code;
         $this->getProductRepository()->setLocale($code);
 
         return $this;
@@ -121,10 +155,17 @@ class ProductManager extends FlexibleManager
     /**
      * {@inheritdoc}
      */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function setScope($code)
     {
-        parent::setScope($code);
-
+        $this->scope = $code;
         $this->getProductRepository()->setScope($code);
 
         return $this;
@@ -344,7 +385,7 @@ class ProductManager extends FlexibleManager
      */
     public function getProductName()
     {
-        return $this->flexibleConfig['flexible_class'];
+        return $this->configuration['flexible_class'];
     }
 
     /**
@@ -364,7 +405,7 @@ class ProductManager extends FlexibleManager
      */
     public function getProductValueName()
     {
-        return $this->flexibleConfig['flexible_value_class'];
+        return $this->configuration['flexible_value_class'];
     }
 
     /**
@@ -375,6 +416,16 @@ class ProductManager extends FlexibleManager
     public function getFlexibleValueName()
     {
         return $this->getProductValueName();
+    }
+
+    /**
+     * Get attribute FQCN
+     *
+     * @return string
+     */
+    public function getAttributeName()
+    {
+        return $this->configuration['attribute_class'];
     }
 
     /**
@@ -510,6 +561,16 @@ class ProductManager extends FlexibleManager
     }
 
     /**
+     * Get object manager
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->objectManager;
+    }
+
+    /**
      * Count products linked to a node.
      * You can define if you just want to get the property of the actual node
      * or with its children with the direct parameter
@@ -576,7 +637,7 @@ class ProductManager extends FlexibleManager
      *
      * @param array $productIds
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\Attribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
      */
     public function findCommonAttributes(array $productIds)
     {

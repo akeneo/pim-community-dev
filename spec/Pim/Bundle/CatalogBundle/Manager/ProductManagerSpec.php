@@ -56,11 +56,6 @@ class ProductManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_flexible_manager()
-    {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager');
-    }
-
     function it_has_a_product_repository(ProductRepositoryInterface $repository)
     {
         $this->getProductRepository()->shouldReturn($repository);
@@ -116,7 +111,7 @@ class ProductManagerSpec extends ObjectBehavior
 
     function it_checks_value_existence($repository, ProductValueInterface $value)
     {
-        $repository->setFlexibleConfig($this->getFlexibleConfig())->shouldBeCalled();
+        $repository->setConfiguration($this->getConfiguration())->shouldBeCalled();
         $repository->valueExists($value)->willReturn(true);
         $this->valueExists($value)->shouldReturn(true);
 
