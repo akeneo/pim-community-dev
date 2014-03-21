@@ -5,7 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\ScopableInterface;
+use Pim\Bundle\CatalogBundle\Model\ScopableInterface;
 
 /**
  * Base repository for flexible entity
