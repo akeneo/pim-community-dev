@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class ExportMassActionSpec extends ObjectBehavior
 {
-    function it_must_implements_export_mass_action_interface()
+    function it_must_implement_export_mass_action_interface()
     {
         $this->shouldBeAnInstanceOf(
             'Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionInterface'
@@ -37,7 +37,7 @@ class ExportMassActionSpec extends ObjectBehavior
         )->duringSetOptions($options);
     }
 
-    function it_should_defined_default_values()
+    function it_should_define_default_values()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $params = array('route_parameters' => $routeParams);
