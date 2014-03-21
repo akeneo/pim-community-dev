@@ -50,10 +50,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('context')->shouldReturn(array());
         $this->getOptions()->offsetGet('route')->shouldReturn('pim_datagrid_export_index');
         $this->getOptions()->offsetGet('route_parameters')->shouldReturn($routeParams);
-        $this
-            ->getOptions()
-            ->offsetGet('handler')
-            ->shouldReturn('quick_export');
+        $this->getOptions()->offsetGet('handler')->shouldReturn('quick_export');
     }
 
     function it_should_overwrite_default_values()
