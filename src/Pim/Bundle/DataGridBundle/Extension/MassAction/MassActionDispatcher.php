@@ -95,7 +95,7 @@ class MassActionDispatcher
 
         $response = $this->performMassAction($datagrid, $massAction, $inset, $values);
 
-        $massActionEvent = new MassActionEvent($datagrid);
+        $massActionEvent = new MassActionEvent($datagrid, $massAction);
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_ACTION_POST_HANDLER, $massActionEvent);
 
         return $response;
