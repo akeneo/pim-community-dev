@@ -18,4 +18,20 @@ class DeleteMassAction extends AjaxMassAction
      * @var array $requiredOptions
      */
     protected $requiredOptions = ['handler', 'entity_name'];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOptions(ActionConfiguration $options)
+    {
+        if (empty($options['handler'])) {
+            $options['handler'] = 'mass_delete';
+        }
+
+        if (empty($options['route'])) {
+            $options['route'] = 'pim_datagrid_mass_action';
+        }
+
+        return parent::setOptions($options);
+    }
 }
