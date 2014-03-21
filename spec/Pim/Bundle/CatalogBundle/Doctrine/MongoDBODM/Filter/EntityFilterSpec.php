@@ -19,7 +19,7 @@ class EntityFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FilterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
     function it_adds_a_in_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $color)
@@ -30,6 +30,6 @@ class EntityFilterSpec extends ObjectBehavior
         $queryBuilder->field('normalizedData.color-en_US.id')->willReturn($queryBuilder);
         $queryBuilder->in([1, 2])->willReturn($queryBuilder);
 
-        $this->add($color, 'IN', [1, 2]);
+        $this->addAttributeFilter($color, 'IN', [1, 2]);
     }
 }

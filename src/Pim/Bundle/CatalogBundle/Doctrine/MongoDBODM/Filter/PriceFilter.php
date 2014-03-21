@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 
 /**
  * Price filter
@@ -54,9 +56,9 @@ class PriceFilter implements AttributeFilterInterface
         list($data, $currency) = explode(' ', $value);
         $data = (float) $data;
 
-        $field = $this->getNormalizedValueField($attribute);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $field = sprintf('%s.%s', $field, $currency);
-
         $fieldData = sprintf('%s.data', $field);
 
         switch ($operator) {

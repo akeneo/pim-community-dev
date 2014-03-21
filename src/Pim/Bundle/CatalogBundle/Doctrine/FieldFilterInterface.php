@@ -18,7 +18,7 @@ interface FieldFilterInterface
      * @param string|array $operator the used operator
      * @param string|array $value    the value(s) to filter
      *
-     * @return AttributeFilterInterface
+     * @return FieldFilterInterface
      */
-    public function addFieldFilter(string $field, $operator, $value);
+    public function addFieldFilter($field, $operator, $value);
 }

@@ -4,6 +4,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 
 /**
  * Metric filter
@@ -53,7 +55,8 @@ class MetricFilter implements AttributeFilterInterface
     {
         $data = (float) $value;
 
-        $field = $this->getNormalizedValueField($attribute);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 
         switch ($operator) {
