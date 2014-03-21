@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 
 /**
@@ -14,7 +15,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
+class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
     /**
      * @var string
@@ -29,22 +30,20 @@ class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
     /** @var array */
     protected $parameters = array();
 
+    /** @var array grid configuration */
+    protected $configuration;
+
     /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
     {
-        if (!isset($config['entity'])) {
-            throw new \Exception(get_class($this).' expects to be configured with entity');
-        }
-
-        $entity = $config['entity'];
-        $repository = $this->em->getRepository($entity);
+        $this->configuration = $config;
 
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            $this->qb = $repository->$method();
+            $this->qb = $this->getRepository()->$method();
         } else {
-            $this->qb = $repository->createQueryBuilder('o');
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $grid->setDatasource(clone $this);
@@ -83,5 +82,50 @@ class OrmDatasource extends OroOrmDatasource implements ParameterizableInterface
         $this->qb->setParameters($parameters);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHydrator(HydratorInterface $hydrator)
+    {
+        $this->hydrator = $hydrator;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepository()
+    {
+        if (!$this->repository) {
+            $this->repository = $this->em->getRepository($this->getConfiguration('entity'));
+        }
+
+        return $this->repository;
+    }
+
+    /**
+     * Get configuration
+     *
+     * @param string $key
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    protected function getConfiguration($key)
+    {
+        if (!$this->configuration) {
+            throw new \LogicException('Datasource is not yet built. You need to call process method before');
+        }
+
+        if (!isset($this->configuration[$key])) {
+            throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
+        }
+
+        return $this->configuration[$key];
     }
 }
