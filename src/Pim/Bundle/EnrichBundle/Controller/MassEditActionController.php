@@ -309,9 +309,6 @@ class MassEditActionController extends AbstractDoctrineController
     protected function getGridQB(Request $request)
     {
         if (null === $this->gridQB) {
-            $parameters  = $this->parametersParser->parse($request);
-            $requestData = array_merge($request->query->all(), $request->request->all());
-
             $qb = $this->massActionDispatcher->dispatch($request);
 
             $this->gridQB = $qb;
