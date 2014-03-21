@@ -19,5 +19,5 @@ final class MassActionEvents
      *
      * @staticvar string
      */
-    const MASS_ACTION_POST_HANDLER = 'pim_datagrid.mass_action.post_handler';
+    const MASS_ACTION_POST_HANDLER = 'pim_datagrid.extension.mass_action.post_handler';
 }
