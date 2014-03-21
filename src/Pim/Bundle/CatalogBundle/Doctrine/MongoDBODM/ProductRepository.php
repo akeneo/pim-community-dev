@@ -31,7 +31,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * Flexible entity config
      * @var array
      */
-    protected $flexibleConfig;
+    protected $configuration;
 
     /**
      * Locale code
@@ -343,7 +343,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getConfiguration()
     {
-        return $this->flexibleConfig;
+        return $this->configuration;
     }
 
     /**
@@ -355,7 +355,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function setConfiguration($config)
     {
-        $this->flexibleConfig = $config;
+        $this->configuration = $config;
 
         return $this;
     }

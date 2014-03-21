@@ -55,7 +55,7 @@ class ProductManager
      * Product entity config
      * @var array
      */
-    protected $flexibleConfig;
+    protected $configuration;
 
     /**
      * @var EventDispatcherInterface $eventDispatcher
@@ -75,7 +75,7 @@ class ProductManager
     /**
      * Constructor
      *
-     * @param array                      $flexibleConfig      Flexible Config
+     * @param array                      $configuration       Product config
      * @param ObjectManager              $objectManager       Storage manager for product
      * @param EntityManager              $entityManager       Entity manager for other entitites
      * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
@@ -85,7 +85,7 @@ class ProductManager
      * @param ProductRepositoryInterface $repo                Product repository
      */
     public function __construct(
-        $flexibleConfig,
+        $configuration,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
@@ -94,7 +94,7 @@ class ProductManager
         ProductBuilder $builder,
         ProductRepositoryInterface $repo
     ) {
-        $this->flexibleConfig      = $flexibleConfig;
+        $this->configuration      = $configuration;
         $this->objectManager       = $objectManager;
         $this->eventDispatcher     = $eventDispatcher;
         $this->entityManager       = $entityManager;
@@ -102,7 +102,7 @@ class ProductManager
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
-        $this->repository->setConfiguration($this->flexibleConfig);
+        $this->repository->setConfiguration($this->configuration);
     }
 
     /**
@@ -130,7 +130,7 @@ class ProductManager
      */
     public function getConfiguration()
     {
-        return $this->flexibleConfig;
+        return $this->configuration;
     }
 
     /**
@@ -385,7 +385,7 @@ class ProductManager
      */
     public function getProductName()
     {
-        return $this->flexibleConfig['flexible_class'];
+        return $this->configuration['flexible_class'];
     }
 
     /**
@@ -405,7 +405,7 @@ class ProductManager
      */
     public function getProductValueName()
     {
-        return $this->flexibleConfig['flexible_value_class'];
+        return $this->configuration['flexible_value_class'];
     }
 
     /**
@@ -425,7 +425,7 @@ class ProductManager
      */
     public function getAttributeName()
     {
-        return $this->flexibleConfig['attribute_class'];
+        return $this->configuration['attribute_class'];
     }
 
     /**

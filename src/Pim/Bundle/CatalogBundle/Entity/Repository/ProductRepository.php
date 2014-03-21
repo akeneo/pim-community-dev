@@ -55,7 +55,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getConfiguration()
     {
-        return $this->flexibleConfig;
+        return $this->configuration;
     }
 
     /**
@@ -67,7 +67,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function setConfiguration($config)
     {
-        $this->flexibleConfig = $config;
+        $this->configuration = $config;
 
         return $this;
     }
