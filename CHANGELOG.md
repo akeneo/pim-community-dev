@@ -66,6 +66,7 @@
 - Change MassActionDispatcher::dispatch parameters
 - Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
 - Move mass action handlers to its own `Handler` directory
+- Create PimDatasourceInterface extending OroDatasourceInterface
 - Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
 
 # 1.0.2
