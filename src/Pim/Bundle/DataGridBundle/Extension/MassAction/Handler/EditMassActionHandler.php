@@ -16,8 +16,6 @@ class EditMassActionHandler implements MassActionHandlerInterface
 {
     /**
      * {@inheritdoc}
-     *
-     * @return \Doctrine\ORM\QueryBuilder
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {

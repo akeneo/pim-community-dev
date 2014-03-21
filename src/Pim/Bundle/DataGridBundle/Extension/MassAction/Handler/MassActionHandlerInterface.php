@@ -19,7 +19,7 @@ interface MassActionHandlerInterface
      *
      * @param DatagridInterface $datagrid
      *
-     * @return MassActionResponseInterface
+     * @return mixed
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction);
 }
