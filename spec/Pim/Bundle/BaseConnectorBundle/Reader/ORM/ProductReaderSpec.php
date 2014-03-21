@@ -73,7 +73,7 @@ class ProductReaderSpec extends ObjectBehavior
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn(array($sku1, $sku2));
 
-        $completenessManager->generateChannelCompletenesses($channel)->shouldBeCalledTimes(1);
+        $completenessManager->generateMissingForChannel($channel)->shouldBeCalledTimes(1);
 
         $this->setChannel('foobar');
         $this->read();
