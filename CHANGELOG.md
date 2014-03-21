@@ -57,6 +57,17 @@
 - Replace RegistryInterface with ManagerRegistry in controllers - retrieving the ObjectManager from the AbstractController now requires passing the class name (AbstractDoctrineController::getManagerForClass())
 - Change Completeness Manager and Repository function names to something more coherent (generateMissingForxxx)
 - Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
+- Move `DataGridBundle/Extension/Sorter/Orm/FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
+- Move `DataGridBundle/Extension/Selector/Orm/*` to `DataGridBundle/Extension/Selector/Orm/Product` and `DataGridBundle/Extension/Selector/Orm/ProductValue`
+- Change mass action route for products and create own controller for these mass actions
+- Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
+- Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
+- Create MassActionHandlerInterface instead of using OroPlatform one
+- Add methods deleteFromIds and applyMassActionParameters in ProductRepository classes
+- Change MassActionDispatcher::dispatch parameters
+- Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
+- Move mass action handlers to its own `Handler` directory
+- Create PimDatasourceInterface extending OroDatasourceInterface
 
 # 1.0.2
 ## Bug Fixes

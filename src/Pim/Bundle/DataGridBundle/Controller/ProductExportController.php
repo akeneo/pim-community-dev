@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
@@ -31,14 +30,12 @@ class ProductExportController extends ExportController
      */
     public function __construct(
         Request $request,
-        MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
         ProductManager $productManager
     ) {
         parent::__construct(
             $request,
-            $parametersParser,
             $massActionDispatcher,
             $serializer
         );

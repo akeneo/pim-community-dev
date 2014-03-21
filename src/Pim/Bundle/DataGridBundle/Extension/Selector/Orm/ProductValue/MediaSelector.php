@@ -1,19 +1,19 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm;
+namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 
 /**
- * Flexible metric selector
+ * Product value media selector
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlexibleMetricSelector implements SelectorInterface
+class MediaSelector implements SelectorInterface
 {
     /**
      * @param SelectorInterface $predecessor
@@ -31,7 +31,7 @@ class FlexibleMetricSelector implements SelectorInterface
         $this->predecessor->apply($datasource, $configuration);
 
         $datasource->getQueryBuilder()
-            ->leftJoin('values.metric', 'metric')
-            ->addSelect('metric');
+            ->leftJoin('values.media', 'media')
+            ->addSelect('media');
     }
 }

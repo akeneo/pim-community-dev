@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
+namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediatorInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 
 /**
  * Export action handler
@@ -21,9 +21,9 @@ class ExportMassActionHandler implements MassActionHandlerInterface
      *
      * @return mixed
      */
-    public function handle(MassActionMediatorInterface $mediator)
+    public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
-        $qb = $mediator->getResults()->getSource();
+        $qb = $datagrid->getDatasource()->getQueryBuilder();
 
         return $qb->getQuery()->execute();
     }
