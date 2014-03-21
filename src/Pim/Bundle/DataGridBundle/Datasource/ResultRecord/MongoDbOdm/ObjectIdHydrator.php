@@ -24,11 +24,6 @@ class ObjectIdHydrator implements HydratorInterface
 
         $results = $queryBuilder->getQuery()->execute();
 
-        $rows = array();
-        foreach ($results as $key => $result) {
-            $rows[] = $key;
-        }
-
-        return $rows;
+        return array_keys($results->toArray());
     }
 }
