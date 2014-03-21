@@ -7,6 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository

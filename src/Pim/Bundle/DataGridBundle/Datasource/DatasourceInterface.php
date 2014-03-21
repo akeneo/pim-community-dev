@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
