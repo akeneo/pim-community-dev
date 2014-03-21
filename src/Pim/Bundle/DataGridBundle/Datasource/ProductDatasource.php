@@ -3,12 +3,12 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * Product datasource, allows to prepare query builder from repository
@@ -151,10 +151,7 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     }
 
     /**
-     * Set hydrator
-     * @param HydratorInterface $hydrator
-     *
-     * @return ProductDatasource
+     * {@inheritdoc}
      */
     public function setHydrator(HydratorInterface $hydrator)
     {
@@ -164,9 +161,7 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     }
 
     /**
-     * Get the repository from the configuration
-     *
-     * @return ProductRepositoryInterface
+     * {@inheritdoc}
      */
     public function getRepository()
     {
