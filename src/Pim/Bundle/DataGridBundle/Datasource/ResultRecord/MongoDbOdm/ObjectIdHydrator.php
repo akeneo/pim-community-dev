@@ -16,13 +16,11 @@ class ObjectIdHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($queryBuilder, $options)
+    public function hydrate($qb, $options)
     {
-        $queryBuilder
-            ->hydrate(false)
-            ->select('_id');
+        $qb->hydrate(false)->select('_id');
 
-        $results = $queryBuilder->getQuery()->execute();
+        $results = $qb->getQuery()->execute();
 
         return array_keys($results->toArray());
     }

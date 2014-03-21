@@ -18,13 +18,13 @@ class ProductHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($queryBuilder, $options)
+    public function hydrate($qb, $options)
     {
         $locale = $options['locale_code'];
         $scope  = $options['scope_code'];
         $config = $options['attributes_configuration'];
 
-        $query   = $queryBuilder->hydrate(false)->getQuery();
+        $query   = $qb->hydrate(false)->getQuery();
         $results = $query->execute();
 
         $attributes = [];
