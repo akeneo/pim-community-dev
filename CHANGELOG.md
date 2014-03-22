@@ -14,6 +14,7 @@
 - Optimize products mass deletion
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
+- Dispatch event post handler on the mass action dispatcher
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -73,6 +74,7 @@
 - Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
 - Redefine DeleteMassAction, EditMassAction and ExportMassAction
 - Remove data_identifier property defined on datagrid.yml for mass actions
+- Rename parameter $queryBuilder as $qb in HydratorInterface
 
 # 1.0.2
 ## Bug Fixes

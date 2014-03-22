@@ -168,7 +168,7 @@ jenkins-pr-1:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
 
@@ -185,7 +185,7 @@ jenkins-pr-2:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
 
@@ -202,7 +202,7 @@ jenkins-pr-3:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
 
@@ -219,7 +219,7 @@ jenkins-pr-4:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-pr/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
 
@@ -236,7 +236,7 @@ jenkins-coverage-1:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-coverage/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
 
@@ -253,7 +253,7 @@ jenkins-docs-1:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-docs/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~skip-doc
 
@@ -270,7 +270,7 @@ jenkins-docs-2:
     formatter:
         name: Context\SummaryFormatter,junit
         parameters:
-            output_path: null,app/build/logs/behat-docs/
+            output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~skip-doc
 

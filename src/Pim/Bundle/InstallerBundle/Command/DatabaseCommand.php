@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Database preparing command
@@ -93,6 +94,15 @@ class DatabaseCommand extends ContainerAwareCommand
                 'doctrine:schema:update',
                 array('--force' => true, '--no-interaction' => true)
             );
+
+
+        $storageDriver = $this->getContainer()->getParameter('pim_catalog.storage_driver');
+
+        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $storageDriver) {
+            $this->commandExecutor
+                ->runCommand('doctrine:mongodb:schema:drop')
+                ->runCommand('doctrine:mongodb:schema:create');
+        }
 
         $this
             ->loadFixturesStep($input, $output)

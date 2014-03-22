@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
-use Pim\Bundle\CatalogBundle\Model\ScopableInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 

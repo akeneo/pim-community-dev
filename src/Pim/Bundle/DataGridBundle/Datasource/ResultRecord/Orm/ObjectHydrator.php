@@ -1,27 +1,23 @@
 <?php
 
-namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
+namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm;
 
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
- * Hydrate results of Doctrine ODM query as array of ids
+ * Object hydrator for ORM implementation
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ObjectIdHydrator implements HydratorInterface
+class ObjectHydrator implements HydratorInterface
 {
     /**
      * {@inheritdoc}
      */
     public function hydrate($qb, $options)
     {
-        $qb->hydrate(false)->select('_id');
-
-        $results = $qb->getQuery()->execute();
-
-        return array_keys($results->toArray());
+        return $qb->getQuery()->execute();
     }
 }

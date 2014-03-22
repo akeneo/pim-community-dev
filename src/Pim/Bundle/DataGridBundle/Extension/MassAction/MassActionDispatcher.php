@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\HttpFoundation\File\Exception\UnexpectedTypeException;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
@@ -14,6 +15,9 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Subscriber\MassActionSubscriber;
 
 /**
  * Mass action dispatcher
@@ -36,6 +40,9 @@ class MassActionDispatcher
     /** @var MassActionParametersParser $parametersParser */
     protected $parametersParser;
 
+    /** @var EventDispatcher $eventDispatcher */
+    protected $eventDispatcher;
+
     /**
      * Constructor
      *
@@ -43,27 +50,32 @@ class MassActionDispatcher
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
+     * @param EventDispatcher            $eventDispatcher
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser
+        MassActionParametersParser $parametersParser,
+        EventDispatcher $eventDispatcher
     ) {
         $this->handlerRegistry  = $handlerRegistry;
         $this->manager          = $manager;
         $this->requestParams    = $requestParams;
         $this->parametersParser = $parametersParser;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
      * Dispatch datagrid mass action
      *
+     * @param Request $request
+     *
      * @throws \LogicException
      *
      * @return MassActionResponseInterface
      */
-    public function dispatch($request)
+    public function dispatch(Request $request)
     {
         $parameters   = $this->parametersParser->parse($request);
         $datagridName = $request->get('gridName');
@@ -77,26 +89,35 @@ class MassActionDispatcher
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
-        $datagrid = $this->manager->getDatagrid($datagridName);
+        $datagrid   = $this->manager->getDatagrid($datagridName);
+        $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        return $this->performMassAction($datagrid, $actionName, $inset, $values);
+        $response = $this->performMassAction($datagrid, $massAction, $inset, $values);
+
+        $massActionEvent = new MassActionEvent($datagrid, $massAction);
+        $this->eventDispatcher->dispatch(MassActionEvents::MASS_ACTION_POST_HANDLER, $massActionEvent);
+
+        return $response;
     }
 
     /**
      * Prepare query builder, apply mass action parameters and call handler
      *
-     * @param DatagridInterface $datagrid
-     * @param string            $actionName
-     * @param boolean           $inset
-     * @param string            $values
+     * @param DatagridInterface   $datagrid
+     * @param MassActionInterface $massAction
+     * @param boolean             $inset
+     * @param string              $values
      *
      * @return MassActionResponseInterface
      */
-    protected function performMassAction(DatagridInterface $datagrid, $actionName, $inset, $values)
-    {
-        $qb         = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        $massAction = $this->getMassActionByName($actionName, $datagrid);
+    protected function performMassAction(
+        DatagridInterface $datagrid,
+        MassActionInterface $massAction,
+        $inset,
+        $values
+    ) {
+        $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
 
         $repository = $datagrid->getDatasource()->getRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
