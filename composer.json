@@ -9,6 +9,9 @@
         "php": ">=5.3.3",
         "symfony/symfony": ">=2.1.0"
     },
+    "require-dev": {
+        "phpspec/phpspec": "dev-develop@dev"
+    },
     "autoload": {
         "psr-0": { "Akeneo\\Bundle\\MeasureBundle": "" }
     },
