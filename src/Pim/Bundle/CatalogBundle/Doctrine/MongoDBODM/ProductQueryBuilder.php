@@ -169,31 +169,20 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$field, $direction);
+        $customSorters = [
+            'family'         => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
+            'completenesses' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
+        ];
+
+        if (isset($customSorters[$field])) {
+            $sorterClass = $customSorters[$field];
+        } else {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
+        }
+
+        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter->addFieldSorter($field, $direction);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFamilySorter($direction)
-    {
-        $field = sprintf("%s.family.label.%s", ProductQueryUtility::NORMALIZED_FIELD, $this->getLocale());
-        $this->qb->sort($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addCompletenessSorter($direction)
-    {
-        $field = sprintf(
-            "%s.completenesses.%s-%s",
-            ProductQueryUtility::NORMALIZED_FIELD,
-            $this->getScope(),
-            $this->getLocale()
-        );
-        $this->qb->sort($field, $direction);
     }
 }

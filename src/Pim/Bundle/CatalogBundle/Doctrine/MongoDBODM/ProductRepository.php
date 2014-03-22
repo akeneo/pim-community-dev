@@ -550,7 +550,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByFamily($qb, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
     }
 
     /**
@@ -558,7 +558,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByCompleteness($qb, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addCompletenessSorter($direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
     }
 
     /**
