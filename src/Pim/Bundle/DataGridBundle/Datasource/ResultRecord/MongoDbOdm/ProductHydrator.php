@@ -126,7 +126,6 @@ class ProductHydrator implements HydratorInterface
             $result['familyLabel'] = '-';
         }
 
-
         return $result;
     }
 
