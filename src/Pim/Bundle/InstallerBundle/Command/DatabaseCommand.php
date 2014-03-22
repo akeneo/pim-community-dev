@@ -95,7 +95,6 @@ class DatabaseCommand extends ContainerAwareCommand
                 array('--force' => true, '--no-interaction' => true)
             );
 
-
         $storageDriver = $this->getContainer()->getParameter('pim_catalog.storage_driver');
 
         if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $storageDriver) {

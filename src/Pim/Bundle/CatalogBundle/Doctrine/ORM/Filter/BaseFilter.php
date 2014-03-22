@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements FilterInterface
+class BaseFilter implements AttributeFilterInterface
 {
     /**
      * QueryBuilder
@@ -58,7 +58,7 @@ class BaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;

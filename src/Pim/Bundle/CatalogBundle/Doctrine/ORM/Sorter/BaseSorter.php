@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\SorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseSorter implements SorterInterface
+class BaseSorter implements AttributeSorterInterface
 {
     /**
      * QueryBuilder
@@ -58,7 +58,7 @@ class BaseSorter implements SorterInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;

@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FilterInterface
+interface AttributeFilterInterface
 {
     /**
      * Add an attribute to filter
@@ -20,7 +20,7 @@ interface FilterInterface
      * @param string|array      $operator  the used operator
      * @param string|array      $value     the value(s) to filter
      *
-     * @return FilterInterface
+     * @return AttributeFilterInterface
      */
-    public function add(AbstractAttribute $attribute, $operator, $value);
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value);
 }

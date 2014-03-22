@@ -2,10 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
  * Base filter
@@ -14,7 +15,7 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements FilterInterface
+class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /**
      * QueryBuilder
@@ -35,12 +36,6 @@ class BaseFilter implements FilterInterface
     protected $scope;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate a filter
      *
      * @param QueryBuilder $qb
@@ -57,26 +52,26 @@ class BaseFilter implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $field = $this->getNormalizedValueField($attribute);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
+        $this->addFieldFilter($field, $operator, $value);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+
         if (strpos($value, '/') !== false) {
             $value = new \MongoRegex($value);
         }
         $this->qb->field($field)->equals($value);
 
         return $this;
-    }
-
-    /**
-     * @param AbstractAttribute $attribute
-     *
-     * @return string
-     */
-    protected function getNormalizedValueField(AbstractAttribute $attribute)
-    {
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
-
-        return sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
     }
 }

@@ -17,7 +17,7 @@ class MetricSorter extends BaseSorter
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $direction)
+    public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';
         $joinAlias   = $aliasPrefix.'V'.$attribute->getCode().$this->aliasCounter++;
