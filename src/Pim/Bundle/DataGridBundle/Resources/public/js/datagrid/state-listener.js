@@ -25,7 +25,7 @@ define(
             },
 
             subscribe: function () {
-                mediator.once('datagrid_collection_set_after', this.afterCollectionSet, this)
+                mediator.once('datagrid_collection_set_after', this.afterCollectionSet, this);
                 mediator.on('grid_load:complete', this.saveGridState, this);
 
                 this.$gridContainer.on('preExecute:reset:' + this.gridName, this.onGridReset.bind(this));
@@ -37,7 +37,7 @@ define(
                 mediator.off('grid_load:complete', this.saveGridState, this);
             },
 
-            afterCollectionSet: function (collection) {
+            afterCollectionSet: function () {
                 mediator.once(
                     'datagrid_filters:rendered',
                     function (collection) {
@@ -53,7 +53,7 @@ define(
 
             saveGridState: function (collection) {
                 if (collection.inputName === this.gridName) {
-                    var $filterBox = $('#grid-' + this.gridName).find('.filter-box');
+                    var $filterBox = this.$gridContainer.find('.filter-box');
                     if ($filterBox.length && !$filterBox.is(':visible')) {
                         $filterBox.show();
                     }

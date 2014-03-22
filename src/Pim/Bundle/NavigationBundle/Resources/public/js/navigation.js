@@ -7,10 +7,9 @@
 define(
     ['oronavigation/js/navigation', 'oro/messenger'],
     function(OroNavigation, messenger) {
+        'use strict';
 
-        var QUERY_STRING_REGEX = /^[^\?]+\??/,
-            URL_PATH_REGEX = /\?.+/,
-            flashMessages = [],
+        var flashMessages = [],
             parent = OroNavigation.prototype,
             instance,
             Navigation = OroNavigation.extend({

@@ -29,9 +29,9 @@ define(
                 } else {
                     messenger.notificationFlashMessage('error', $field.data('error-message'));
                 }
-            }
+            };
             new DialogForm(fieldId, callback);
-        }
+        };
 
         return {
             init: init

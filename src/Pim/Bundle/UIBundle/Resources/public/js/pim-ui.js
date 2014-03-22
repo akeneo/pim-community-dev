@@ -1,6 +1,8 @@
 define(
     ['jquery', 'pim/initselect2', 'wysiwyg', 'bootstrap', 'bootstrap.bootstrapswitch', 'bootstrap-tooltip'],
     function ($, initSelect2, wysiwyg) {
+        'use strict';
+
         return function ($target) {
             // Apply Select2
             initSelect2.init($target);

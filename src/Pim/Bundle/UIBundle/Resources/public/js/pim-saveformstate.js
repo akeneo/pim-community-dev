@@ -1,6 +1,8 @@
 define(
     ['jquery'],
     function ($) {
+        'use strict';
+
         var formId, cb;
         function saveFormState() {
             var $form        = $('#' + formId),

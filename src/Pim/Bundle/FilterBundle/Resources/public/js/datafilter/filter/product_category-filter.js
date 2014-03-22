@@ -46,7 +46,7 @@ define(
             /**
              * @inheritDoc
              */
-            initialize: function(options) {
+            initialize: function() {
                 mediator.once('datagrid_filters:rendered', this._init, this);
 
                 NumberFilter.prototype.initialize.apply(this, arguments);
@@ -119,7 +119,7 @@ define(
             /**
              * On tree updated
              */
-            _onTreeUpdated: function (e, data) {
+            _onTreeUpdated: function () {
                 if (!_.isEqual(this.value, this._getTreeState())) {
                     this._updateState();
                     this._triggerUpdate();
@@ -129,7 +129,7 @@ define(
             /**
              * @inheritDoc
              */
-            _triggerUpdate: function(newValue, oldValue) {
+            _triggerUpdate: function() {
                 this.trigger('update');
             },
 
