@@ -17,7 +17,6 @@ use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Subscriber\MassActionSubscriber;
 
 /**
  * Mass action dispatcher
