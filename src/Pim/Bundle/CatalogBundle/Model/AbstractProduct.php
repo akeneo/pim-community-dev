@@ -174,7 +174,6 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         return $this;
     }
 
-
     /**
      * Add value, override to deal with relation owner side
      *

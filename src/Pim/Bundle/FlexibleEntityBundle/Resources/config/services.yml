@@ -6,4 +6,3 @@ services:
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
-

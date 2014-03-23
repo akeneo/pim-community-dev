@@ -124,7 +124,6 @@ abstract class AbstractAttribute implements TimestampableInterface
         $this->properties   = array();
     }
 
-
     /**
      * Get id
      *
