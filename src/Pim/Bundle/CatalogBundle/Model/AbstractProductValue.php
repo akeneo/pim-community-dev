@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -107,7 +107,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store simple option value
      *
-     * @var Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption $option
+     * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
      */
     protected $option;
 
@@ -482,11 +482,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Set option, used for simple select to set single option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AttributeOption $option
      *
      * @return AbstractProductValue
      */
-    public function setOption(AbstractEntityAttributeOption $option = null)
+    public function setOption(AttributeOption $option = null)
     {
         $this->option = $option;
 
@@ -496,7 +496,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get related option, used for simple select to set single option
      *
-     * @return AbstractEntityAttributeOption
+     * @return AttributeOption
      */
     public function getOption()
     {
@@ -530,11 +530,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Add option, used for multi select to add many options
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AttributeOption $option
      *
      * @return AbstractProduct
      */
-    public function addOption(AbstractEntityAttributeOption $option)
+    public function addOption(AttributeOption $option)
     {
         $this->options[] = $option;
 
