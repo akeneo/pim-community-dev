@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute as NewAbstractAttribute;
-
 /**
  * Abstract entity attribute, independent of storage
  *
@@ -13,6 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute as NewAbstractAttribute;
  *
   * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use CatalogBundle/AbstractAttribute
  */
-abstract class AbstractAttribute extends NewAbstractAttribute
+abstract class AbstractAttribute
 {
 }

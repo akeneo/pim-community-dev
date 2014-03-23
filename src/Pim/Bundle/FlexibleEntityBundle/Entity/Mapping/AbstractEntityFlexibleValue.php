@@ -26,9 +26,9 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     protected $id;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Attribute")
+     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\Attribute")
      * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;

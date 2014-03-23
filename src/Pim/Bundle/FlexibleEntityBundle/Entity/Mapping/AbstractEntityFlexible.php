@@ -5,7 +5,7 @@ namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**

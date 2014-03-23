@@ -26,7 +26,7 @@ abstract class AbstractEntityAttributeOption extends AbstractAttributeOption
     protected $id;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $attribute
+     * @var \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute $attribute
      *
      * @ORM\ManyToOne(targetEntity="AbstractEntityAttribute")
      */

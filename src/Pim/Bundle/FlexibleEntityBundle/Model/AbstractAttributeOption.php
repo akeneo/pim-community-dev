@@ -3,8 +3,7 @@
 namespace Pim\Bundle\FlexibleEntityBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
-
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute as NewAbstractAttribute;
+use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
 
 /**
  * Abstract entity attribute option, independent of storage
@@ -21,7 +20,7 @@ abstract class AbstractAttributeOption implements LocalizableInterface
     protected $id;
 
     /**
-     * @var NewAbstractAttribute $attribute
+     * @var AbstractAttribute $attribute
      */
     protected $attribute;
 
@@ -73,7 +72,7 @@ abstract class AbstractAttributeOption implements LocalizableInterface
     /**
      * Get attribute
      *
-     * @return NewAbstractAttribute
+     * @return AbstractAttribute
      */
     public function getAttribute()
     {
@@ -83,11 +82,11 @@ abstract class AbstractAttributeOption implements LocalizableInterface
     /**
      * Set attribute
      *
-     * @param NewAbstractAttribute $attribute
+     * @param AbstractAttribute $attribute
      *
      * @return AbstractAttributeOption
      */
-    public function setAttribute(NewAbstractAttribute $attribute = null)
+    public function setAttribute(AbstractAttribute $attribute = null)
     {
         $this->attribute = $attribute;
 
