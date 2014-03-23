@@ -97,7 +97,7 @@ class AttributeManager
     /**
      * Create an attribute option
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
      */
     public function createAttributeOption()
     {
@@ -109,7 +109,7 @@ class AttributeManager
     /**
      * Create an attribute option value
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
      */
     public function createAttributeOptionValue()
     {
