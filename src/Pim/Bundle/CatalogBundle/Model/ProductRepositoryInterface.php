@@ -87,7 +87,7 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      *
      * @param integer $id
      *
-     * @return AbstractFlexible|null
+     * @return Product|null
      * @throws NonUniqueResultException
      */
     public function findOneByWithValues($id);

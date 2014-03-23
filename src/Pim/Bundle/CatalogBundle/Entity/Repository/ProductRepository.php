@@ -851,7 +851,7 @@ SQL;
      *
      * @param integer $id
      *
-     * @return AbstractFlexible|null
+     * @return Product|null
      * @throws NonUniqueResultException
      */
     public function findOneByWithValues($id)

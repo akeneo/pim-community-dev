@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Flexible product
+ * Product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -226,7 +226,7 @@ class Product extends AbstractProduct implements ReferableInterface
      *
      * @param string $locale
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\mixed|string
+     * @return mixed|string
      */
     public function getLabel($locale = null)
     {
