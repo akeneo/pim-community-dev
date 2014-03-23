@@ -1,6 +1,7 @@
 define(
     ['jquery', 'oro/formatter/datetime', 'jquery-ui-full'],
     function ($, datetimeFormatter) {
+        'use strict';
 
         var init = function(id) {
             var $field = $('#' + id);

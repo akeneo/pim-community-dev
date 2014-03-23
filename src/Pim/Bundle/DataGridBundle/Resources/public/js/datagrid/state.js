@@ -73,6 +73,6 @@ define(
 
                 return this;
             }
-        }
+        };
     }
 );

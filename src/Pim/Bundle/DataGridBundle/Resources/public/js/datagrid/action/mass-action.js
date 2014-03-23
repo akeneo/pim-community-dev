@@ -1,6 +1,6 @@
 /* global define */
-define(['oro/datagrid/mass-action'],
-function(MassAction) {
+define(['underscore', 'oro/datagrid/mass-action'],
+function(_, MassAction) {
     'use strict';
 
     /**
@@ -17,7 +17,7 @@ function(MassAction) {
             var selectionState = this.datagrid.getSelectionState();
             var collection = this.datagrid.collection;
             var idValues = _.map(selectionState.selectedModels, function(model) {
-                return model.get(this.identifierFieldName)
+                return model.get(this.identifierFieldName);
             }, this);
 
             var params = {
@@ -29,7 +29,7 @@ function(MassAction) {
 
             var locale = decodeURIComponent(this.datagrid.collection.url).split('dataLocale]=').pop();
             if (locale) {
-                params['dataLocale']= locale;
+                params.dataLocale = locale;
             }
 
             return params;

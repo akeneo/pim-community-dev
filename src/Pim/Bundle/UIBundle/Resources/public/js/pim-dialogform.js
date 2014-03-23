@@ -56,7 +56,7 @@ define(
                                 type: 'post',
                                 data: $(formId).serialize(),
                                 success: function (data) {
-                                    processResponse(data, $dialog);
+                                    processResponse(data);
                                 }
                             });
                         }
@@ -102,7 +102,7 @@ define(
                 return true;
             }
 
-            function processResponse(data, $dialog) {
+            function processResponse(data) {
                 if (isJSON(data)) {
                     data = $.parseJSON(data);
                     destroyDialog();

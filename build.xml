@@ -231,7 +231,7 @@
             <arg value="${behat.xdebug}" />
             <arg value="${symfony.database.name}_" />
             <arg value="${behat.profile.prefix}-" />
-            <arg value="${basedir}/bin/behat --ansi" />
+            <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>

@@ -560,6 +560,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @param string $entities
      *
+     * @return Then[]
+     *
      * @When /^I mass-edit products? (.*)$/
      */
     public function iMassEdit($entities)
@@ -617,6 +619,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
 
     /**
      * @param string $entities
+     *
+     * @return Then[]
      *
      * @When /^I mass-delete products? (.*)$/
      */

@@ -344,6 +344,11 @@ class Form extends Base
         return $this->getElement('Updates grid')->findAll('css', 'tbody tr');
     }
 
+    /**
+     * @param string $attribute
+     *
+     * @return null
+     */
     public function expandAttribute($attribute)
     {
         if (null === $label = $this->find('css', sprintf('label:contains("%s")', $attribute))) {

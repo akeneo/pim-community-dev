@@ -146,7 +146,7 @@ define(
                     }).disableSelection();
 
                     modal.on('cancel', this.subscribe.bind(this));
-                    modal.on('ok', _.bind(function(e) {
+                    modal.on('ok', _.bind(function() {
                         var values = _.map($('#columns li'), function (el) {
                             return $(el).data('value');
                         });
