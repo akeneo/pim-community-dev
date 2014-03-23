@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -20,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, ReferableInterface
+class Product extends AbstractProduct implements ReferableInterface
 {
     /**
      * @var ArrayCollection $values
