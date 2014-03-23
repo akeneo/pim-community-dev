@@ -11,7 +11,8 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface, TimestampableInterface
+abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
+    TimestampableInterface
 {
     /** @var mixed $id */
     protected $id;

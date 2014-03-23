@@ -342,5 +342,4 @@ class AttributeOption implements ReferableInterface
 
         return $value;
     }
-
 }

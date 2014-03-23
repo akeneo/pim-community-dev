@@ -614,5 +614,4 @@ abstract class AbstractProductValue implements ProductValueInterface
 
         return (string) $data;
     }
-
 }
