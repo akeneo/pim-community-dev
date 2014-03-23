@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Entity\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Entity\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Mark the indexed values for the object as outdated once a value has been loaded from the DB
