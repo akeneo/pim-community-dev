@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ScopableInterface;
 use Pim\Bundle\CatalogBundle\Model\LocalizableInterface;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
