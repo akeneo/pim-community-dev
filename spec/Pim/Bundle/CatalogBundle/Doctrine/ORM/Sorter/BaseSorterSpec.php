@@ -17,7 +17,7 @@ class BaseSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\SorterInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface');
     }
 
     function it_adds_a_sorter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)
@@ -39,7 +39,7 @@ class BaseSorterSpec extends ObjectBehavior
         $queryBuilder->leftJoin('p.values', 'sorterVsku1', 'WITH', $condition)->shouldBeCalled();
         $queryBuilder->addOrderBy('sorterVsku1.varchar', 'DESC')->shouldBeCalled();
 
-        $this->add($sku, 'DESC');
+        $this->addAttributeSorter($sku, 'DESC');
     }
 
 }

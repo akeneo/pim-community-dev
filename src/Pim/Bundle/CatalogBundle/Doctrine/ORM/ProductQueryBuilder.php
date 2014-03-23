@@ -126,7 +126,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         $filter = new $filterClass($this->qb, $this->locale, $this->scope);
-        $filter->add($attribute, $operator, $value);
+        $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
     }
@@ -162,7 +162,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
-        $sorter->add($attribute, $direction);
+        $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
     }

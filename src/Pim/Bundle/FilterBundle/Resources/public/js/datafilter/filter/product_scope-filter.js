@@ -1,6 +1,6 @@
 define(
-    ['underscore', 'oro/mediator', 'oro/datafilter/select-filter'],
-    function (_, mediator, SelectFilter) {
+    ['jquery', 'underscore', 'oro/mediator', 'oro/datafilter/select-filter'],
+    function ($, _, mediator, SelectFilter) {
         'use strict';
 
         /**
@@ -22,7 +22,7 @@ define(
              */
             contextSearch: false,
 
-            initialize: function(options) {
+            initialize: function() {
                 SelectFilter.prototype.initialize.apply(this, arguments);
 
                 mediator.once('datagrid_filters:rendered', this.moveFilter.bind(this));

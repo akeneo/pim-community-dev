@@ -1,8 +1,10 @@
 define(
     ['jquery', 'jquery.slimbox'],
     function($) {
+        'use strict';
+
         var maxFilenameLength = 20;
-        init = function(id) {
+        var init = function(id) {
             var $el = $('#' + id);
             if (!$el.length) {
                 return;

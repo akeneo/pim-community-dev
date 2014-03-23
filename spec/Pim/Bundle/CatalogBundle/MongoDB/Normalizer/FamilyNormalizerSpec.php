@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
@@ -28,14 +29,18 @@ class FamilyNormalizerSpec extends ObjectBehavior
 
     function it_normalizes_family(
         TranslationNormalizer $normalizer,
-        Family $family
+        Family $family,
+        AbstractAttribute $sku
     ) {
+        $sku->getCode()->willReturn('sku');
         $family->getCode()->willReturn('mongo');
+        $family->getAttributeAsLabel()->willReturn($sku);
         $normalizer->normalize($family, 'mongodb_json', [])->willReturn(['label' => 'translations']);
 
         $this->normalize($family, 'mongodb_json', [])->shouldReturn([
             'code' => 'mongo',
-            'label' => 'translations'
+            'label' => 'translations',
+            'attributeAsLabel' => 'sku'
         ]);
     }
 }

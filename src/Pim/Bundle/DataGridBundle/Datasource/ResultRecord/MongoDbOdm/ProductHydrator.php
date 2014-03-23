@@ -116,6 +116,12 @@ class ProductHydrator implements HydratorInterface
             $family = $normalizedData['family'];
             $result['familyLabel']= isset($family['label'][$locale]) ?
                 $family['label'][$locale] : '['.$family['code'].']';
+            if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] != null) {
+                $attributeCode = $family['attributeAsLabel'];
+                $attributeAsLabel = $result[$attributeCode];
+                $backendType = $attributeAsLabel['attribute']['backendType'];
+                $result['productLabel']= $attributeAsLabel[$backendType];
+            }
         } else {
             $result['familyLabel'] = '-';
         }
