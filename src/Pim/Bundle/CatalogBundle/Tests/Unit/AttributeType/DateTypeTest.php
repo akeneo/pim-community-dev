@@ -50,7 +50,7 @@ class DateTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $data = '12/06/2013';
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => $data,
                 'backendType' => $this->backendType,

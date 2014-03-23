@@ -35,7 +35,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Create attribute type to test
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface
      */
     abstract protected function createAttributeType();
 
@@ -97,9 +97,9 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
-    protected function getFlexibleValueMock(array $options)
+    protected function getProductValueMock(array $options)
     {
         $options = array_merge(
             array(
@@ -137,7 +137,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      * @param mixed  $defaultValue
      * @param array  $attributeOptions
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface
      */
     protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
     {

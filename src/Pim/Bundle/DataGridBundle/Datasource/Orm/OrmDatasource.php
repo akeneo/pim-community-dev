@@ -34,6 +34,9 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
     /** @var array grid configuration */
     protected $configuration;
 
+    /** @var EntityRepository $repository */
+    protected $repository;
+
     /**
      * {@inheritdoc}
      */

@@ -1,116 +1,96 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
+namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexibleValue;
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Base Doctrine ORM entity attribute value
+ * Abstract product value
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @ExclusionPolicy("all")
  */
-abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
+abstract class AbstractProductValue implements ProductValueInterface
 {
     /**
      * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute $attribute
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\CatalogBundle\Entity\Attribute")
-     * @ORM\JoinColumn(name="attribute_id", referencedColumnName="id", onDelete="CASCADE")
      */
     protected $attribute;
+
+    /**
+     * @var mixed $data
+     */
+    protected $data;
 
     /**
      * @var Entity $entity
      *
      * This field must by overrided in concret value class
-     *
-     * @ORM\ManyToOne(targetEntity="AbstractEntityFlexible", inversedBy="values")
      */
     protected $entity;
 
     /**
      * Locale code
      * @var string $locale
-     *
-     * @ORM\Column(name="locale_code", type="string", length=20, nullable=true)
      */
     protected $locale;
 
     /**
      * Scope code
      * @var string $scope
-     *
-     * @ORM\Column(name="scope_code", type="string", length=20, nullable=true)
      */
     protected $scope;
 
     /**
      * Store varchar value
      * @var string $varchar
-     *
-     * @ORM\Column(name="value_string", type="string", length=255, nullable=true)
      */
     protected $varchar;
 
     /**
      * Store integer value
      * @var integer $integer
-     *
-     * @ORM\Column(name="value_integer", type="integer", nullable=true)
      */
     protected $integer;
 
     /**
      * Store decimal value
      * @var double $decimal
-     *
-     * @ORM\Column(name="value_decimal", type="decimal", precision=14, scale=4, nullable=true)
      */
     protected $decimal;
 
     /**
      * Store boolean value
      * @var boolean $boolean
-     *
-     * @ORM\Column(name="value_boolean", type="boolean", nullable=true)
      */
     protected $boolean;
 
     /**
      * Store text value
      * @var string $text
-     *
-     * @ORM\Column(name="value_text", type="text", nullable=true)
      */
     protected $text;
 
     /**
      * Store date value
      * @var date $date
-     *
-     * @ORM\Column(name="value_date", type="date", nullable=true)
      */
     protected $date;
 
     /**
      * Store datetime value
      * @var date $datetime
-     *
-     * @ORM\Column(name="value_datetime", type="datetime", nullable=true)
      */
     protected $datetime;
 
@@ -120,22 +100,13 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      * This field must by overrided in concret value class
      *
      * @var options ArrayCollection
-     *
-     * @ORM\ManyToMany(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption")
-     * @ORM\JoinTable(name="pim_flexibleentity_values_options",
-     *      joinColumns={@ORM\JoinColumn(name="value_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="option_id", referencedColumnName="id")}
-     * )
      */
     protected $options;
 
     /**
      * Store simple option value
      *
-     * @var Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption $option
-     *
-     * @ORM\ManyToOne(targetEntity="Pim\Bundle\FlexibleEntityBundle\Entity\AttributeOption", cascade="persist")
-     * @ORM\JoinColumn(name="option_id", referencedColumnName="id", onDelete="SET NULL")
+     * @var Pim\Bundle\CatalogBundle\Entity\AttributeOption $option
      */
     protected $option;
 
@@ -156,9 +127,121 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     }
 
     /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return AbstractProductValue
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasData()
+    {
+        return !is_null($this->getData());
+    }
+
+    /**
+     * Set attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return AbstractProductValue
+     * @throws LogicException
+     */
+    public function setAttribute(AbstractAttribute $attribute = null)
+    {
+        if (is_object($this->attribute) && ($attribute != $this->attribute)) {
+            throw new \LogicException(
+                sprintf('An attribute (%s) has already been set for this value', $this->attribute->getCode())
+            );
+        }
+        $this->attribute = $attribute;
+
+        return $this;
+    }
+
+    /**
+     * Get attribute
+     *
+     * @return AbstractAttribute
+     */
+    public function getAttribute()
+    {
+        return $this->attribute;
+    }
+
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set used locale
+     * @param string $locale
+     */
+    public function setLocale($locale)
+    {
+        if ($locale and $this->getAttribute() and $this->getAttribute()->isLocalizable() === false) {
+            $attributeCode = $this->getAttribute()->getCode();
+            throw new FlexibleConfigurationException(
+                "This value '".$this->getId()."' can't be localized, see attribute '".$attributeCode."' configuration"
+            );
+        }
+
+        $this->locale = $locale;
+    }
+
+    /**
+     * Get used scope
+     * @return string $scope
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * Set used scope
+     * @param string $scope
+     */
+    public function setScope($scope)
+    {
+        if ($scope and $this->getAttribute() and $this->getAttribute()->isScopable() === false) {
+            $attributeCode = $this->getAttribute()->getCode();
+            throw new FlexibleConfigurationException(
+                "This value '".$this->getId()."' can't be scopped, see attribute '".$attributeCode."' configuration"
+            );
+        }
+
+        $this->scope = $scope;
+    }
+
+    /**
      * Get entity
      *
-     * @return AbstractFlexible $entity
+     * @return AbstractProduct $entity
      */
     public function getEntity()
     {
@@ -168,11 +251,11 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Set entity
      *
-     * @param AbstractFlexible $entity
+     * @param AbstractProduct $entity
      *
      * @return EntityAttributeValue
      */
-    public function setEntity(AbstractFlexible $entity = null)
+    public function setEntity(AbstractProduct $entity = null)
     {
         $this->entity = $entity;
 
@@ -398,11 +481,11 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Set option, used for simple select to set single option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AttributeOption $option
      *
-     * @return AbstractEntityFlexibleValue
+     * @return AbstractProductValue
      */
-    public function setOption(AbstractEntityAttributeOption $option = null)
+    public function setOption(AttributeOption $option = null)
     {
         $this->option = $option;
 
@@ -412,7 +495,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Get related option, used for simple select to set single option
      *
-     * @return AbstractEntityAttributeOption
+     * @return AttributeOption
      */
     public function getOption()
     {
@@ -434,7 +517,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @param ArrayCollection $options
      *
-     * @return AbstractEntityFlexibleValue
+     * @return AbstractProductValue
      */
     public function setOptions($options)
     {
@@ -446,11 +529,11 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Add option, used for multi select to add many options
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AttributeOption $option
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
-    public function addOption(AbstractEntityAttributeOption $option)
+    public function addOption(AttributeOption $option)
     {
         $this->options[] = $option;
 
@@ -480,11 +563,11 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
     /**
      * Set collections data from value object
      *
-     * @param AbstractEntityFlexibleValue $value
+     * @param AbstractProductValue $value
      *
-     * @return AbstractEntityFlexibleValue
+     * @return AbstractProductValue
      */
-    public function setCollections(AbstractEntityFlexibleValue $value = null)
+    public function setCollections(AbstractProductValue $value = null)
     {
         $this->collection = $value->getCollections();
 
@@ -496,7 +579,7 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
      *
      * @param Collection[] $collection
      *
-     * @return AbstractEntityFlexibleValue
+     * @return AbstractProductValue
      */
     public function setCollection($collection)
     {
@@ -532,4 +615,5 @@ abstract class AbstractEntityFlexibleValue extends AbstractFlexibleValue
 
         return (string) $data;
     }
+
 }

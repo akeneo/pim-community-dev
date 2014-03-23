@@ -526,7 +526,7 @@ class ProductManager
 
     /**
      * FIXME_MONGO: Use an AttributeManager instead of using the same
-     * objectManager than the one used by the FlexibleEntity
+     * objectManager than the one used by the Product
      *
      * All methods overload below are linked to that issue
      */
