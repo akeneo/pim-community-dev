@@ -100,6 +100,7 @@ class Creation extends Form
     /**
      * Remove a specific option name
      * @param string $optionName
+     *
      * @throws \InvalidArgumentException
      */
     public function removeOption($optionName)
@@ -128,7 +129,9 @@ class Creation extends Form
     /**
      * Get a specific option row from the option code
      * @param string $optionName
+     *
      * @throws \InvalidArgumentException
+     *
      * @return \Behat\Mink\Element\NodeElement
      */
     protected function getOptionElement($optionName)

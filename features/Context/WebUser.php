@@ -162,7 +162,7 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $category
+     * @param string $attribute
      *
      * @Given /^I expand the "([^"]*)" attribute$/
      */
@@ -363,6 +363,7 @@ class WebUser extends RawMinkContext
 
     /**
      * @param string $optionName
+     *
      * @Then /^I remove the "([^"]*)" option$/
      */
     public function iRemoveTheOption($optionName)
@@ -1664,6 +1665,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param PyStringNode $string
+     *
      * @Given /^I execute javascript:$/
      */
     public function iExecuteJavascript(PyStringNode $string)
