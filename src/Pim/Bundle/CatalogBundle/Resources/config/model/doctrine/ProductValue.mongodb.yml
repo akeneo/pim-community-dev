@@ -1,13 +1,5 @@
 Pim\Bundle\CatalogBundle\Model\ProductValue:
     type: embeddedDocument
-    indexes:
-        value_idx:
-            options:
-                unique: true
-            keys:
-                attribute:
-                locale:
-                scope:
     fields:
         id:
             id: true
