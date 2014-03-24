@@ -14,7 +14,7 @@
 - Optimize products mass deletion
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
-- Dispatch event post handler on the mass action dispatcher
+- Dispatch event pre/post handler for each mass action
 
 ## Bug fixes
 - Fixed verbose option always used
