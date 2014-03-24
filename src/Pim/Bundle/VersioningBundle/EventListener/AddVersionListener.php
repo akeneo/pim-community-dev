@@ -107,10 +107,6 @@ class AddVersionListener implements EventSubscriber
     protected function processVersionableEntities(EntityManager $em)
     {
         foreach ($this->versionableEntities as $versionable) {
-            if ($this->versionManager->isRealTimeVersioning()) {
-                $em->refresh($versionable);
-            }
-
             $this->createVersion($em, $versionable);
             $this->versionedEntities[] = spl_object_hash($versionable);
         }
