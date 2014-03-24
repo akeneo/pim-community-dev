@@ -65,6 +65,18 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     protected $categoryClass;
 
     /**
+     * Attribute class
+     *
+     * @var string
+     */
+    protected $attributeClass;
+
+    /**
+     * @var string
+     */
+    private $identifierCode;
+
+    /**
      * Set the EntityManager
      *
      * @param EntityManager $entityManager
@@ -74,6 +86,8 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
+
+        return $this;
     }
 
     /**
@@ -86,6 +100,22 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function setCategoryClass($categoryClass)
     {
         $this->categoryClass = $categoryClass;
+
+        return $this;
+    }
+
+    /**
+     * Set the attribute class
+     *
+     * @param string $attributeClass
+     *
+     * @return ProductRepository $this
+     */
+    public function setAttributeClass($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+
+        return $this;
     }
 
     /**
@@ -140,7 +170,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             }
         }
 
-        return $qb->getQuery()->execute();
+        return $qb->getQuery()->execute()->getNext();
     }
 
     /**
@@ -413,9 +443,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findOneByWithValues($id)
     {
-        // FIXME_MONGO Shortcut, but must do the same thing
-        // than the ORM one
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return $this->find($id);
     }
 
@@ -424,8 +451,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return null;
+        return $this->findOneBy(array($this->getIdentifierCode() => $code));
     }
 
     /**
@@ -455,6 +481,28 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             (0 !== count($result)) &&
             ($value->getId() === $foundValueId)
         );
+    }
+
+    /**
+     * Returns the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode()
+    {
+        if (!isset($this->identifierCode)) {
+            $this->identifierCode = $this->entityManager
+                ->createQuery(
+                    sprintf(
+                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
+                        $this->attributeClass
+                    )
+                )
+                ->setParameter('identifier_type', 'pim_catalog_identifier')
+                ->getSingleScalarResult();
+        }
+
+        return $this->identifierCode;
     }
 
     /**
