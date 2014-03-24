@@ -27,6 +27,8 @@ services:
 
     pim_datagrid.extension.mass_action.handler.edit:
         class: %pim_datagrid.extension.mass_action.handler.edit.class%
+        arguments:
+            - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
 
