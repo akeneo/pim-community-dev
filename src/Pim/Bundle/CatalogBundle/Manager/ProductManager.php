@@ -228,6 +228,10 @@ class ProductManager
             ]
         );
 
+        if (is_array($product)) {
+            $product = reset($product);
+        }
+
         if ($product) {
             $this->builder->addMissingProductValues($product);
         }
