@@ -15,7 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Product repository
@@ -197,6 +199,62 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
         }
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('family')->equals($family->getId());
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForAttribute(AbstractAttribute $attribute)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('values.attribute')->equals((int) $attribute->getId());
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForCategory(CategoryInterface $category)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('categories')->in([$category->getId()]);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForGroup(Group $group)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('groups')->in([$group->getId()]);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllForAssociation(Association $association)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
