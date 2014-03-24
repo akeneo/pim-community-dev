@@ -16,18 +16,20 @@ services:
             - '@oro_datagrid.datagrid.manager'
             - '@oro_datagrid.datagrid.request_params'
             - '@oro_datagrid.mass_action.parameters_parser'
-            - '@event_dispatcher'
 
     # Handlers
     pim_datagrid.extension.mass_action.handler.export:
         class: %pim_datagrid.extension.mass_action.handler.export.class%
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object'
+            - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: quick_export }
 
     pim_datagrid.extension.mass_action.handler.edit:
         class: %pim_datagrid.extension.mass_action.handler.edit.class%
+        arguments:
+            - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
 
@@ -36,6 +38,7 @@ services:
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@translator'
+            - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
 
