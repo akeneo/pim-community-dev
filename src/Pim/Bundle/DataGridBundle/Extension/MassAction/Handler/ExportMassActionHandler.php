@@ -39,7 +39,7 @@ class ExportMassActionHandler implements MassActionHandlerInterface
     public function __construct(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
     {
         $this->hydrator        = $hydrator;
-        $this->eventDispatcher = $eventdispatcher;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
