@@ -152,7 +152,43 @@ class ProductBuilder
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
-        $value->addPrice(new ProductPrice(null, $currency));
+        if (!$this->hasPriceForCurrency($value, $currency)) {
+            $value->addPrice(new ProductPrice(null, $currency));
+        }
+
+        return $this->getPriceForCurrency($value, $currency);
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return boolean
+     */
+    private function hasPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return null|ProductPrice
+     */
+    private function getPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return $price;
+            }
+        }
     }
 
     /**

@@ -13,6 +13,18 @@ use Pim\Bundle\TransformBundle\Transformer\Property\PricesTransformer;
  */
 class PricesTransformerTest extends \PHPUnit_Framework_TestCase
 {
+    protected $builder;
+    protected $transformer;
+
+    protected function setUp()
+    {
+        $this->builder = $this
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Builder\ProductBuilder')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->transformer = new PricesTransformer($this->builder);
+    }
+
     public function getSetValuesData()
     {
         return array(
@@ -38,15 +50,16 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
 
         if (!$suffix) {
-            $object->expects($this->once())
-                ->method('setPrices')
-                ->with($this->equalTo(array()));
+            $this->builder->expects($this->once())
+                ->method('removePricesNotInCurrency')
+                ->with($object, array_keys($expectedPrices));
         }
-        $object->expects($this->exactly(count($expectedPrices)))
+
+        $this->builder->expects($this->exactly(count($expectedPrices)))
             ->method('addPriceForCurrency')
             ->will(
                 $this->returnCallback(
-                    function ($currency) use ($expectedPrices) {
+                    function ($value, $currency) use ($expectedPrices) {
                         $price = $this->getMockForPrice($currency, $expectedPrices[$currency]);
                         $price->expects($this->once())
                             ->method('setData')
@@ -57,8 +70,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $transformer = new PricesTransformer();
-        $transformer->setValue($object, $columnInfo, $data);
+        $this->transformer->setValue($object, $columnInfo, $data);
     }
 
     /**
@@ -75,8 +87,7 @@ class PricesTransformerTest extends \PHPUnit_Framework_TestCase
             ->setMethods(array('setPrices', 'addPriceForCurrency', '__toString', 'getData', 'setData', 'getAttribute'))
             ->getMock();
 
-        $transformer = new PricesTransformer();
-        $transformer->setValue($object, $columnInfo, '12.O2 cur1,15');
+        $this->transformer->setValue($object, $columnInfo, '12.O2 cur1,15');
     }
 
     protected function getMockForPrice($currency, $data = null)

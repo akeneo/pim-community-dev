@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 
 /**
  * Prices attribute transformer
@@ -14,10 +15,16 @@ use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
  */
 class PricesTransformer extends DefaultTransformer implements EntityUpdaterInterface
 {
+    protected $builder;
+
+    public function __construct(ProductBuilder $builder)
+    {
+        $this->builder = $builder;
+    }
+
     /**
      * {@inheritdoc}
      */
-
     public function setValue($object, ColumnInfoInterface $columnInfo, $data, array $options = array())
     {
         $suffixes = $columnInfo->getSuffixes();
@@ -29,12 +36,13 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
             } elseif (is_string($data)) {
                 $data = $this->parseFlatPrices($data);
             }
-            $object->setPrices(array());
+
+            $this->builder->removePricesNotInCurrency($object, array_keys($data));
             foreach ($data as $currency => $value) {
-                $object->addPriceForCurrency($currency)->setData($value);
+                $this->builder->addPriceForCurrency($object, $currency)->setData($value);
             }
         } else {
-            $object->addPriceForCurrency($currency)->setData($data);
+            $this->builder->addPriceForCurrency($object, $currency)->setData($data);
         }
     }
 

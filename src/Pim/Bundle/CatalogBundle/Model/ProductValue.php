@@ -201,11 +201,9 @@ class ProductValue extends AbstractProductValue
      *
      * @return ProductValue
      */
-    public function setPrices($prices)
+    public function setPrices(ArrayCollection $prices)
     {
-        foreach ($prices as $price) {
-            $this->addPrice($price);
-        }
+        $this->prices = $prices;
 
         return $this;
     }
@@ -253,7 +251,7 @@ class ProductValue extends AbstractProductValue
      */
     public function removePrice(ProductPrice $price)
     {
-        $this->prices->remove($price->getCurrency());
+        $this->prices->removeElement($price);
 
         return $this;
     }
