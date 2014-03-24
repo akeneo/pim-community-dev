@@ -1,1 +1,104 @@
 ---
+export profile:
+  overview: Обзор профилей экспорта
+  create: Создать профиль экспорта
+  edit: Редактировать профиль экспорта
+import profile:
+  overview: Обзор профилей импорта
+  create: Создать профиль импорта
+  edit: Редактировать профиль импорта
+Job: Работа
+Connector: Соединитель
+pim_import_export:
+  status:
+    - Готов
+  batch_status:
+    1: ЗАВЕРШЕНО
+    2: НАЧИНАЕТСЯ
+    3: НАЧАТО
+    4: ОСТАНАВЛИВАЕТСЯ
+    5: ОСТАНОВЛЕНО
+    6: НЕ УДАЛОСЬ
+    7: ОТМЕНЕНО
+    8: НЕИЗВЕСТНО
+  download_archive:
+    archive: Скачать созданный файл|скачать созданные файлы
+    output: Скачать созданный файл|скачать созданные файлы
+    input: 'скачать файл чтения|скачать  файлы чтения'
+    invalid: Скачать недопустимые значения
+pim_title.export_profile.index: Управление профилями экспорта
+pim_title.export_profile.edit: 'Профиль экспорта %job.label% | Редактировать'
+pim_title.export_profile.show: 'Профиль экспорта %job.label% | Показать'
+pim_title.export_execution.index: История запусков экспорта
+pim_title.export_execution.show: Запуск экспорта | Детали
+pim_title.import_profile.index: Управление профилями импорта
+pim_title.import_profile.edit: 'Профиль импорта %job.label% | Редактировать'
+pim_title.import_profile.show: 'Профиль импорта %job.label% | Показать'
+pim_title.import_execution.index: История запусков импорта
+pim_title.import_execution.show: Запуск импорта | Детали
+export report:
+  overview: Отчеты экспорта
+import report:
+  overview: отчеты импорта
+pim_importexport:
+  acl:
+    export_profile:
+      index: Посмотреть список профилей экспорта
+      create: Создать профиль экспорта
+      show: Показать профиль экспорта
+      edit: Редактировать профиль экспорта
+      remove: Удалить профиль экспорта
+      launch: Запуск исполнения профиля экспорта
+    import_profile:
+      index: Просмотр списка профилей импорта
+      create: Создать профиль импорта
+      show: Показать профиль импорта
+      edit: Редактировать профиль импорта
+      remove: Удалить профиль импорта
+      launch: Запуск исполнения профиля импорта
+    export_execution:
+      index: Посмотреть список отчетов об экспорте
+      show: Подробный просмотр отчета об экспорте
+      dl_log: Скачать журнал экспорта
+      dl_files: Скачать экспортированные файлы
+    import_execution:
+      index: Посмотреть список отчетов импорта
+      show: Подробный просмотр отчета импорта
+      dl_log: Скачать журнал отчетов импорта
+      dl_files: Скачать импортированные файлы
+btn:
+  create:
+    export profile: Создать профиль экспорта
+    import profile: Создать профиль импорта
+Upload and import: Загрузить и импортировать
+confirmation:
+  remove:
+    export profile: 'Вы уверены, что хотите удалить профиль экспорта "%name%"?'
+    import profile: 'Вы уверены, что вы хотите удалить профиль импорта "%name%"?'
+flash:
+  export:
+    created: Экспорт был успешно создан
+    removed: Экспорт был удален
+    updated: Экспорт был успешно обновлен
+  import:
+    created: Импорт был успешно создан
+    removed: Импорт был успешно удален
+    updated: Импорт был успешно обновлен
+pim_menu:
+  item:
+    export_history: История экспорта
+    export_profile: Профили экспорта
+    import_history: История импорта
+    import_profile: Профили импорта
+General properties: Общие свойства
+History: История
+pane.accordion:
+  properties: Свойства
+  global_settings: Глобальные настройки
+popin.create:
+  export_profile.title: Создать новый профиль экспорта
+  import_profile.title: Создать новый профиль импорта
+Display item: Показать элемент
+Hide item: Скрыть элемент
+Collecting data about job execution...: Сбор данных о выполнении задания...
+You must select a file to upload: Необходимо выбрать файл для загрузки

@@ -236,6 +236,7 @@ Edit: Bearbeiten
 Remove: Entfernen
 Delete: Löschen
 Parameters: Parameter
+System: System
 Values: Werte
 General parameters: Allgemeine Parameter
 Backend parameters: Backend Parameter
@@ -258,6 +259,7 @@ Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
 Yes: "1"
+No: Nein
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Create: Anlegen
@@ -335,6 +337,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Gruppentypen
   edit: 'Gruppentypen %group type.label% | Bearbeiten'
+pim_title.mass_edit_action:
+  choose: Massenbearbeitung | Auswählen
+  configure: Massenbearbeitung | Konfigurieren
+pim_title.dashboard: Dashboard
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -517,3 +523,30 @@ Attribute as label: Attribut als Label
 Available Columns: Verfügbare Spalten
 Displayed Columns: Angezeigten Spalten
 Is associated: Ist verbunden
+Complete: Vollständig
+Created At: Angelegt am
+Updated At: Aktualisiert am
+Disabled: Deaktiviert
+Status: Status
+Change History: Änderungshistorie
+Action: Aktion
+Version: Version
+Author: Autor
+Deleted: Gelöscht
+System configuration: Systemkonfiguration
+General setup: Allgemeine Konfiguration
+Language: Sprache
+Timezone: Zeitzone
+Currency: Währung
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: Gemeinde
+      state: Staat
+      island: Insel
+      county: Landkreis
+      prefecture: Präfektur
+      do_si: do_si
+      department: Abteilung
+      district: Bezirk
+      province: Provinz
