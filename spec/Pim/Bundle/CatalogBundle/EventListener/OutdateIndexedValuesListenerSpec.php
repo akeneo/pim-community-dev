@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\EventListener;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 class OutdateIndexedValuesListenerSpec extends ObjectBehavior
 {
@@ -22,8 +22,8 @@ class OutdateIndexedValuesListenerSpec extends ObjectBehavior
 
     function it_marks_flexible_value_entity_outdated(
         LifecycleEventArgs $args,
-        AbstractEntityFlexibleValue $value,
-        AbstractEntityFlexible $entity
+        AbstractProductValue $value,
+        AbstractProduct $entity
     ) {
         $args->getObject()->willReturn($value);
         $value->getEntity()->willReturn($entity);
@@ -35,7 +35,7 @@ class OutdateIndexedValuesListenerSpec extends ObjectBehavior
 
     function it_marks_flexible_entity_outdated(
         LifecycleEventArgs $args,
-        AbstractEntityFlexible $entity
+        AbstractProduct $entity
     ) {
         $args->getObject()->willReturn($entity);
 

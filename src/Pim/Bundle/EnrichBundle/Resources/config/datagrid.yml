@@ -299,8 +299,6 @@ datagrid:
                 type: delete
                 label: Delete
                 entity_name: product
-                data_identifier: p
-                handler: pim_datagrid.extension.mass_action.handler.delete
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?
@@ -315,7 +313,6 @@ datagrid:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_all
                 icon: download
-                data_identifier: p
                 route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
@@ -331,7 +328,6 @@ datagrid:
                 label: Mass Edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
-                data_identifier: p
         sorters:
             columns:
                 family:
@@ -394,15 +390,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label:            Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label:            Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
 
     product-group-grid:
         options:
@@ -511,15 +507,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -634,15 +630,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -1049,13 +1045,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
@@ -1136,28 +1134,38 @@ datagrid:
             type: orm
             query:
                 select:
-                    - a.id
-                    - a.data as data
-                    - a.loggedAt
-                    - a.version
+                    - v.id
+                    - v.changeset as changeset
+                    - v.loggedAt
+                    - v.version
                     - >
                       CONCAT(
                         CONCAT(
                             CONCAT(u.firstName, ' '),
                             CONCAT(u.lastName, ' ')
                         ),
-                        CONCAT(' - ', u.email)
+                        CONCAT(
+                            CONCAT(' - ', u.email),
+                            CASE WHEN v.context IS NOT NULL THEN
+                                CONCAT(
+                                    CONCAT(' (', v.context),
+                                    ')'
+                                )
+                            ELSE
+                                ''
+                            END
+                        )
                       ) as author
                 from:
-                    - { table: OroDataAuditBundle:Audit, alias: a }
+                    - { table: PimVersioningBundle:Version, alias: v }
                 join:
                     left:
                         user:
-                            join: a.user
+                            join: v.user
                             alias: u
                 where:
                     and:
-                        - a.objectClass = :objectClass AND a.objectId = :objectId
+                        - v.resourceName = :objectClass AND v.resourceId = :objectId
         columns:
             version:
                 label: Version
@@ -1176,20 +1184,20 @@ datagrid:
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/old.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
             new:
                 label: New values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
         sorters:
             columns:
                 version:
-                    data_name: a.version
+                    data_name: v.version
                 author:
                     data_name: author
                 loggedAt:
-                    data_name: a.loggedAt
+                    data_name: v.loggedAt
             default:
                 loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

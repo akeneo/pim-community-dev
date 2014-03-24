@@ -54,7 +54,7 @@ class NumberTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $data = 5;
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => $data,
                 'backendType' => $this->backendType,

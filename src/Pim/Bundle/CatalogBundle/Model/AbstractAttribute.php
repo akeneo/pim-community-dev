@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\Behavior\TimestampableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttributeOption;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Abstract entity attribute, independent of storage
@@ -103,6 +103,26 @@ abstract class AbstractAttribute implements TimestampableInterface
      * @var array $properties
      */
     protected $properties;
+
+    /**
+     * @var array $options
+     */
+    protected $options;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->options      = new ArrayCollection();
+        $this->required     = false;
+        $this->unique       = false;
+        $this->defaultValue = null;
+        $this->searchable   = false;
+        $this->localizable  = false;
+        $this->scopable     = false;
+        $this->properties   = array();
+    }
 
     /**
      * Get id
@@ -467,13 +487,14 @@ abstract class AbstractAttribute implements TimestampableInterface
     /**
      * Add option
      *
-     * @param AbstractAttributeOption $option
+     * @param AttributeOption $option
      *
      * @return AbstractAttribute
      */
-    public function addOption(AbstractAttributeOption $option)
+    public function addOption(AttributeOption $option)
     {
         $this->options[] = $option;
+        $option->setAttribute($this);
 
         return $this;
     }
@@ -481,11 +502,11 @@ abstract class AbstractAttribute implements TimestampableInterface
     /**
      * Remove option
      *
-     * @param AbstractAttributeOption $option
+     * @param AttributeOption $option
      *
      * @return AbstractAttribute
      */
-    public function removeOption(AbstractAttributeOption $option)
+    public function removeOption(AttributeOption $option)
     {
         $this->options->removeElement($option);
 

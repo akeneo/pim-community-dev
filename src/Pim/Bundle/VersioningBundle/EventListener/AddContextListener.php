@@ -6,10 +6,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
- * Add context in audit data
+ * Add context in version data
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -18,18 +18,18 @@ use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
 class AddContextListener implements EventSubscriberInterface
 {
     /**
-     * @var AuditBuilder
+     * @var VersionManager
      */
-    protected $auditBuilder;
+    protected $versionManager;
 
     /**
      * Constructor
      *
-     * @param AuditBuilder $builder
+     * @param VersionManager $versionManager
      */
-    public function __construct($builder)
+    public function __construct(VersionManager $versionManager)
     {
-        $this->auditBuilder = $builder;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -43,16 +43,15 @@ class AddContextListener implements EventSubscriberInterface
     }
 
     /**
-     * Add context in data audit builder
+     * Add context in version manager
      *
      * @param JobExecutionEvent $event
      */
     public function addContext(JobExecutionEvent $event)
     {
-        $jobExecution = $event->getJobExecution();
-        $jobInstance  = $jobExecution->getJobInstance();
+        $jobInstance = $event->getJobExecution()->getJobInstance();
         if ($jobInstance->getType() === JobInstance::TYPE_IMPORT) {
-            $this->auditBuilder->setContext(
+            $this->versionManager->setContext(
                 sprintf('%s "%s"', JobInstance::TYPE_IMPORT, $jobInstance->getCode())
             );
         }

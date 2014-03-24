@@ -13,7 +13,7 @@ define(
 
             getActiveNode = function(skipVirtual) {
                 if (skipVirtual) {
-                    return selectedNode > 0 ? selectedNode : selectedTree
+                    return selectedNode > 0 ? selectedNode : selectedTree;
                 }
 
                 return selectedNode !== 0 ? selectedNode : selectedTree;

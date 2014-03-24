@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexible;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -12,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Flexible product
+ * Product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -20,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
  *
  * @ExclusionPolicy("all")
  */
-class Product extends AbstractEntityFlexible implements ProductInterface, ReferableInterface
+class Product extends AbstractProduct implements ReferableInterface
 {
     /**
      * @var ArrayCollection $values
@@ -227,7 +226,7 @@ class Product extends AbstractEntityFlexible implements ProductInterface, Refera
      *
      * @param string $locale
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\mixed|string
+     * @return mixed|string
      */
     public function getLabel($locale = null)
     {

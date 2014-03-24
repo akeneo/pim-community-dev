@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\ORM\QueryBuilder;
-
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
@@ -14,23 +13,23 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductRepositoryInterface
+interface ProductRepositoryInterface extends LocalizableInterface, ScopableInterface
 {
     /**
-     * Get flexible entity config
+     * Get entity configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig();
+    public function getConfiguration();
 
     /**
-     * Set flexible entity config
+     * Set entity configuration
      *
      * @param array $config
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config);
+    public function setConfiguration($config);
 
     /**
      * Return asked locale code or default one
@@ -44,7 +43,7 @@ interface ProductRepositoryInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setLocale($code);
 
@@ -60,7 +59,7 @@ interface ProductRepositoryInterface
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setScope($code);
 
@@ -88,7 +87,7 @@ interface ProductRepositoryInterface
      *
      * @param integer $id
      *
-     * @return AbstractFlexible|null
+     * @return Product|null
      * @throws NonUniqueResultException
      */
     public function findOneByWithValues($id);
@@ -240,7 +239,7 @@ interface ProductRepositoryInterface
      *
      * @param ProductQueryBuilder $productQB
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setProductQueryBuilder($productQB);
 
@@ -326,9 +325,18 @@ interface ProductRepositoryInterface
     /**
      * Delete a list of product ids
      *
-     * @param integer[] $productIds
+     * @param integer[] $ids
      *
      * @throws \LogicException
      */
-    public function deleteProductIds(array $productIds);
+    public function deleteFromIds(array $ids);
+
+    /**
+     * Apply mass action parameters on query builder
+     *
+     * @param mixed   $qb
+     * @param boolean $inset
+     * @param array   $values
+     */
+    public function applyMassActionParameters($qb, $inset, $values);
 }

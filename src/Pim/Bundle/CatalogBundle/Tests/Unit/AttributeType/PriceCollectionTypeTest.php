@@ -36,7 +36,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => 'bar',
                 'backendType' => 'foo'

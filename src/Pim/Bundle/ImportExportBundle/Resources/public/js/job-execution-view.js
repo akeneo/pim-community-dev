@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'routing'],
-    function ($, Backbone, _, Routing) {
+    ['jquery', 'backbone', 'underscore'],
+    function ($, Backbone, _) {
         'use strict';
         var interval;
 

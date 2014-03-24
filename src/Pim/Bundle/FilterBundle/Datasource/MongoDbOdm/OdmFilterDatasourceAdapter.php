@@ -4,8 +4,8 @@ namespace Pim\Bundle\FilterBundle\Datasource\MongoDbOdm;
 
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
+use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * MongoDB ODM datasource adapter

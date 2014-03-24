@@ -769,6 +769,7 @@ class Grid extends Index
     /**
      * Click on an item of the dropdown selector
      * @param string $item
+     *
      * @throws \InvalidArgumentException
      */
     protected function clickOnDropdownSelector($item)

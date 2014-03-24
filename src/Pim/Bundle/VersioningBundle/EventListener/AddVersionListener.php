@@ -6,10 +6,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Builder\AuditBuilder;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
@@ -23,13 +20,6 @@ use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 class AddVersionListener implements EventSubscriber
 {
     /**
-     * Default system user, used for batches
-     *
-     * @var string
-     */
-    const DEFAULT_SYSTEM_USER = 'admin';
-
-    /**
      * Entities to version
      *
      * @var object[]
@@ -42,24 +32,9 @@ class AddVersionListener implements EventSubscriber
     protected $versionedEntities = array();
 
     /**
-     * @var string
+     * @var VersionManager
      */
-    protected $username = self::DEFAULT_SYSTEM_USER;
-
-    /**
-     * @var integer
-     */
-    protected $realTimeVersioning = true;
-
-    /**
-     * @var VersionBuilder
-     */
-    protected $versionBuilder;
-
-    /**
-     * @var AuditBuilder
-     */
-    protected $auditBuilder;
+    protected $versionManager;
 
     /**
      * @var ChainedUpdateGuesser
@@ -69,14 +44,12 @@ class AddVersionListener implements EventSubscriber
     /**
      * Constructor
      *
-     * @param VersionBuilder       $vBuilder
-     * @param AuditBuilder         $aBuilder
+     * @param VersionManager       $versionManager
      * @param ChainedUpdateGuesser $guesser
      */
-    public function __construct(VersionBuilder $vBuilder, AuditBuilder $aBuilder, ChainedUpdateGuesser $guesser)
+    public function __construct(VersionManager $versionManager, ChainedUpdateGuesser $guesser)
     {
-        $this->versionBuilder = $vBuilder;
-        $this->auditBuilder   = $aBuilder;
+        $this->versionManager = $versionManager;
         $this->guesser        = $guesser;
     }
 
@@ -88,30 +61,6 @@ class AddVersionListener implements EventSubscriber
     public function getSubscribedEvents()
     {
         return array('onFlush', 'postFlush');
-    }
-
-    /**
-     * @param mixed $username
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function setUsername($username)
-    {
-        if (is_string($username)) {
-            $this->username = $username;
-        } elseif (is_object($username) && method_exists($username, 'getUsername')) {
-            $this->username = (string) $username->getUsername();
-        } else {
-            throw new \InvalidArgumentException("Username must be a string, or object should have method: getUsername");
-        }
-    }
-
-    /**
-     * @param boolean $mode
-     */
-    public function setRealTimeVersioning($mode)
-    {
-        $this->realTimeVersioning = $mode;
     }
 
     /**
@@ -149,65 +98,40 @@ class AddVersionListener implements EventSubscriber
     public function postFlush(PostFlushEventArgs $args)
     {
         $em = $args->getEntityManager();
-        if (!empty($this->versionableEntities)) {
-            if ($this->username) {
-                $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $this->username));
-                if (!$user and $this->realTimeVersioning) {
-                    $this->versionableEntities = array();
-
-                    return;
-                }
-                $this->processVersionableEntities($em, $user);
-            }
-        }
+        $this->processVersionableEntities($em);
     }
 
     /**
      * @param EntityManager $em
-     * @param User          $user
      */
-    protected function processVersionableEntities(EntityManager $em, User $user)
+    protected function processVersionableEntities(EntityManager $em)
     {
         foreach ($this->versionableEntities as $versionable) {
-            if ($this->realTimeVersioning) {
+            if ($this->versionManager->isRealTimeVersioning()) {
                 $em->refresh($versionable);
-                $this->createVersionAndAudit($em, $versionable, $user);
-            } else {
-                $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
-                $pending = new Pending($className, $versionable->getId(), $this->username);
-                $this->computeChangeSet($em, $pending);
             }
+
+            $this->createVersion($em, $versionable);
             $this->versionedEntities[] = spl_object_hash($versionable);
         }
+
+        $versionedCount = count($this->versionableEntities);
         $this->versionableEntities = array();
-        $em->flush();
+
+        if ($versionedCount) {
+            $em->flush();
+        }
     }
 
     /**
      * @param EntityManager $em
      * @param object        $versionable
-     * @param User          $user
      */
-    public function createVersionAndAudit(EntityManager $em, $versionable, User $user)
+    protected function createVersion(EntityManager $em, $versionable)
     {
-        $previous = $em->getRepository('PimVersioningBundle:Version')
-            ->findPreviousVersion(get_class($versionable), $versionable->getId());
-        $prevVersionNumber = ($previous) ? $previous->getVersion() + 1 : 1;
-
-        $current = $this->versionBuilder->buildVersion($versionable, $user, $prevVersionNumber);
-        $this->computeChangeSet($em, $current);
-
-        $previousAudit = $em->getRepository('Oro\Bundle\DataAuditBundle\Entity\Audit')
-            ->findOneBy(
-                array('objectId' => $current->getResourceId(), 'objectName' => $current->getResourceName()),
-                array('loggedAt' => 'desc')
-            );
-        $versionNumber = ($previousAudit) ? $previousAudit->getVersion() + 1 : 1;
-
-        $audit = $this->auditBuilder->buildAudit($current, $previous, $versionNumber);
-        $diffData = $audit->getData();
-        if (!empty($diffData)) {
-            $this->computeChangeSet($em, $audit);
+        $version = $this->versionManager->buildVersion($versionable);
+        if ($version && $version->getChangeset()) {
+            $this->computeChangeSet($em, $version);
         }
     }
 

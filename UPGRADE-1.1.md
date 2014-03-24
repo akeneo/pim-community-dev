@@ -46,7 +46,10 @@ Following events have been replaced :
  - `FilterFlexibleEvent` by `FilterProductEvent`
  - `FilterFlexibleValueEvent` by `FilterProductValueEvent`
 
-The class `Pim/Bundle/CatalogBundle/Model/AbstractAttribute` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractAttribute`
+The following classes have been replaced :
+ - `Pim/Bundle/CatalogBundle/Model/AbstractAttribute` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractAttribute`
+ - `Pim/Bundle/CatalogBundle/Model/AbstractProduct` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractFlexible`
+ - `Pim/Bundle/CatalogBundle/Model/AbstractProductValue` replaces `Pim/Bundle/FlexibleEntityBundle/Model/AbstractFlexibleValue`
 
 You could also search for `@deprecated` and ensure that you use new methods to avoid future issues.
 

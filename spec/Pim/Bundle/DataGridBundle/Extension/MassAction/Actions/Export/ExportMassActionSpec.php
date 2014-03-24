@@ -2,15 +2,13 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export;
 
-use Prophecy\Argument;
-
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class ExportMassActionSpec extends ObjectBehavior
 {
-    function it_must_implements_export_mass_action_interface()
+    function it_must_implement_export_mass_action_interface()
     {
         $this->shouldBeAnInstanceOf(
             'Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionInterface'
@@ -39,7 +37,7 @@ class ExportMassActionSpec extends ObjectBehavior
         )->duringSetOptions($options);
     }
 
-    function it_should_defined_default_values()
+    function it_should_define_default_values()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $params = array('route_parameters' => $routeParams);
@@ -52,10 +50,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('context')->shouldReturn(array());
         $this->getOptions()->offsetGet('route')->shouldReturn('pim_datagrid_export_index');
         $this->getOptions()->offsetGet('route_parameters')->shouldReturn($routeParams);
-        $this
-            ->getOptions()
-            ->offsetGet('handler')
-            ->shouldReturn('pim_datagrid.extension.mass_action.handler.export');
+        $this->getOptions()->offsetGet('handler')->shouldReturn('quick_export');
     }
 
     function it_should_overwrite_default_values()
@@ -64,7 +59,6 @@ class ExportMassActionSpec extends ObjectBehavior
         $context     = array('baz' => 'qux');
         $params = array(
             'route_parameters' => $routeParams,
-            'frontend_type'    => 'my_frontend',
             'context'          => $context,
             'route'            => 'my_route',
             'handler'          => 'my_handler'
@@ -74,7 +68,6 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->setOptions($options)->shouldNotThrow(Argument::any());
 
         $this->getOptions()->getName()->shouldReturn('export');
-        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('my_frontend');
         $this->getOptions()->offsetGet('context')->shouldReturn($context);
         $this->getOptions()->offsetGet('route')->shouldReturn('my_route');
         $this->getOptions()->offsetGet('route_parameters')->shouldReturn($routeParams);
@@ -86,13 +79,24 @@ class ExportMassActionSpec extends ObjectBehavior
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $context     = array('baz' => 'qux');
         $params = array(
-                'route_parameters' => $routeParams,
-                'context'          => $context
+            'route_parameters' => $routeParams,
+            'context'          => $context
         );
         $options = ActionConfiguration::createNamed('export', $params);
 
         $this->setOptions($options)->shouldNotThrow(Argument::any());
 
         $this->getExportContext()->shouldReturn($context);
+    }
+
+    function it_should_be_impossible_to_override_frontend()
+    {
+        $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
+        $params = array('route_parameters' => $routeParams, 'frontend_type' => 'bar');
+        $options = ActionConfiguration::createNamed('edit', $params);
+
+        $this->setOptions($options)->shouldNotThrow(Argument::any());
+
+        $this->getOptions()->offsetGet('frontend_type')->shouldReturn('export');
     }
 }

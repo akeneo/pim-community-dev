@@ -4,6 +4,8 @@
  *
 /* Group: jstree nested_switch plugin */
 (function ($) {
+    'use strict';
+
     var nested_switch_id = 'nested_switch_input';
 
     $.jstree.plugin('nested_switch', {

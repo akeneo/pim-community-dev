@@ -3,6 +3,7 @@ parameters:
     pim_datagrid.controller.export.class:         Pim\Bundle\DataGridBundle\Controller\ExportController
     pim_datagrid.controller.product_export.class: Pim\Bundle\DataGridBundle\Controller\ProductExportController
     pim_datagrid.controller.datagrid_view.class:  Pim\Bundle\DataGridBundle\Controller\DatagridViewController
+    pim_datagrid.controller.mass_action.class:    Pim\Bundle\DataGridBundle\Controller\MassActionController
 
 services:
     pim_datagrid.controller.datagrid:
@@ -17,8 +18,7 @@ services:
         scope: request
         arguments:
             - '@request'
-            - '@oro_datagrid.mass_action.parameters_parser'
-            - '@oro_datagrid.mass_action.dispatcher'
+            - '@pim_datagrid.mass_action.dispatcher'
             - '@pim_serializer'
 
     pim_datagrid.controller.product_export:
@@ -35,3 +35,10 @@ services:
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@pim_datagrid.manager.datagrid_view'
+
+    pim_datagrid.controller.mass_action:
+        scope: request
+        class: %pim_datagrid.controller.mass_action.class%
+        arguments:
+            - '@request'
+            - '@pim_datagrid.mass_action.dispatcher'

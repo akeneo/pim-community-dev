@@ -17,7 +17,7 @@ class MetricFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function add(AbstractAttribute $attribute, $operator, $value)
+    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;

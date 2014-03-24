@@ -25,16 +25,14 @@ class ExportMassAction extends WidgetMassAction implements ExportMassActionInter
      */
     public function setOptions(ActionConfiguration $options)
     {
-        if (empty($options['frontend_type'])) {
-            $options['frontend_type'] = 'export';
-        }
+        $options['frontend_type'] = 'export';
 
         if (empty($options['route'])) {
             $options['route'] = 'pim_datagrid_export_index';
         }
 
         if (empty($options['handler'])) {
-            $options['handler'] = 'pim_datagrid.extension.mass_action.handler.export';
+            $options['handler'] = 'quick_export';
         }
 
         if (empty($options['context'])) {

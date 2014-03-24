@@ -1,5 +1,7 @@
 define(['oro/navigation/dotmenu/view', 'oro/mediator'],
     function(OroDotmenuView, mediator) {
+        'use strict';
+
         return OroDotmenuView.extend({
             initialize: function() {
                 this.$tabsContainer = this.$('.pin-menus .nav-tabs');
@@ -23,4 +25,4 @@ define(['oro/navigation/dotmenu/view', 'oro/mediator'],
             }
         });
     }
-)
+);

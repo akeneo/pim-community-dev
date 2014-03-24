@@ -18,13 +18,13 @@ class ProductHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($queryBuilder, $options)
+    public function hydrate($qb, $options)
     {
         $locale = $options['locale_code'];
         $scope  = $options['scope_code'];
         $config = $options['attributes_configuration'];
 
-        $query   = $queryBuilder->hydrate(false)->getQuery();
+        $query   = $qb->hydrate(false)->getQuery();
         $results = $query->execute();
 
         $attributes = [];
@@ -109,13 +109,19 @@ class ProductHydrator implements HydratorInterface
         if (isset($normalizedData['completenesses'][$completenessCode])) {
             $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
         } else {
-            $result['ratio'] = '-';
+            $result['ratio'] = null;
         }
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
             $result['familyLabel']= isset($family['label'][$locale]) ?
                 $family['label'][$locale] : '['.$family['code'].']';
+            if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] != null) {
+                $attributeCode = $family['attributeAsLabel'];
+                $attributeAsLabel = $result[$attributeCode];
+                $backendType = $attributeAsLabel['attribute']['backendType'];
+                $result['productLabel']= $attributeAsLabel[$backendType];
+            }
         } else {
             $result['familyLabel'] = '-';
         }

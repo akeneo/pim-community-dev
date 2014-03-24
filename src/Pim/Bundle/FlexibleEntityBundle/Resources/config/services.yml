@@ -1,14 +1,8 @@
 parameters:
     pim_flexibleentity.flexible_config:                               ~
     pim_flexibleentity.registry.class:                                Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManagerRegistry
-    pim_flexibleentity.filterAttributes.twig.extension.class:         Pim\Bundle\FlexibleEntityBundle\Twig\FilterAttributesExtension
 
 services:
     # manager registry
     pim_flexibleentity.registry:
         class: %pim_flexibleentity.registry.class%
-
-    pim_flexibleentity.filterAttributes.twig.extension:
-        class: %pim_flexibleentity.filterAttributes.twig.extension.class%
-        tags:
-            - { name: twig.extension }

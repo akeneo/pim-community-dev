@@ -10,7 +10,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\EntityCache;
-use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
  * Product writer using ORM method
@@ -29,9 +29,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $productManager;
 
     /**
-     * @var AddVersionListener
+     * @var VersionManager
      */
-    protected $addVersionListener;
+    protected $versionManager;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
@@ -68,23 +68,23 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         'Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution',
         'Oro\\Bundle\\UserBundle\\Entity\\User',
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
-        'Pim\\Bundle\\FlexibleEntityBundle\\Entity\\Attribute',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
 
     /**
-     * @param ProductManager     $productManager
-     * @param EntityCache        $entityCache
-     * @param AddVersionListener $addVersionListener
+     * @param ProductManager $productManager
+     * @param EntityCache    $entityCache
+     * @param VersionManager $versionManager
      */
     public function __construct(
         ProductManager $productManager,
         EntityCache $entityCache,
-        AddVersionListener $addVersionListener
+        VersionManager $versionManager
     ) {
-        $this->productManager     = $productManager;
-        $this->entityCache        = $entityCache;
-        $this->addVersionListener = $addVersionListener;
+        $this->productManager = $productManager;
+        $this->entityCache    = $entityCache;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -138,7 +138,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $items)
     {
-        $this->addVersionListener->setRealTimeVersioning($this->realTimeVersioning);
+        $this->versionManager->setRealTimeVersioning($this->realTimeVersioning);
         foreach ($items as $item) {
             $this->incrementCount($item);
         }

@@ -13,6 +13,8 @@
 - Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
 - Improve get product REST API
+- Improve entity history context display for entities updated during import jobs
+- Dispatch event post handler on the mass action dispatcher
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -55,8 +57,24 @@
 - Remove incomplete REST API for getting multiple products
 - Remove Router dependency from json ProductNormalizer
 - Replace RegistryInterface with ManagerRegistry in controllers - retrieving the ObjectManager from the AbstractController now requires passing the class name (AbstractDoctrineController::getManagerForClass())
+- Change Completeness Manager and Repository function names to something more coherent (generateMissingForxxx)
+- Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Sorter/Orm/FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Selector/Orm/*` to `DataGridBundle/Extension/Selector/Orm/Product` and `DataGridBundle/Extension/Selector/Orm/ProductValue`
+- ProductRepository doesn't extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
+- Change mass action route for products and create own controller for these mass actions
+- Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
+- Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
+- Create MassActionHandlerInterface instead of using OroPlatform one
+- Add methods deleteFromIds and applyMassActionParameters in ProductRepository classes
+- Change MassActionDispatcher::dispatch parameters
+- Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
+- Move mass action handlers to its own `Handler` directory
+- Create PimDatasourceInterface extending OroDatasourceInterface
+- Use PimVersioningBundle:Version for all entity audits instead of OroDataAuditBundle:Audit, replace AuditManager with VersionManager, drop AuditBuilder and refactor listeners that create object versions
+- Redefine DeleteMassAction, EditMassAction and ExportMassAction
+- Remove data_identifier property defined on datagrid.yml for mass actions
+- Rename parameter $queryBuilder as $qb in HydratorInterface
 
 # 1.0.2
 ## Bug Fixes

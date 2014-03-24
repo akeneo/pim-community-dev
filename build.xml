@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="pim" default="build">
-    <property name="symfony.database.name" value="akeneo_ci_pim_behat" />
-    <property name="symfony.database.user" value="root" />
-    <property name="symfony.database.password" value="" />
-    <property name="symfony.mongodb.database" value="akeneo_ci_pim_behat" />
     <property name="symfony.upload.dir" value="product" />
 
     <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
@@ -14,15 +10,7 @@
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
-    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat-mongodb"/>
-
-    <target name="build-behat-10-dev" depends="prepare,composer,vendors,install-all-behat,behat-10-dev"/>
-
-    <target name="build-behat-pr" depends="prepare,composer,vendors,install-all-behat,behat-pr"/>
-
-    <target name="build-behat-coverage" depends="prepare,composer,vendors,install-all-behat,behat-coverage"/>
-
-    <target name="build-docs-behat" depends="prepare,composer,vendors,link-pim-docs,install-all-behat,behat-docs"/>
+    <target name="build-behat-mongo" depends="prepare,composer,require-mongo,activate-mongo,vendors,install-all-behat,behat"/>
 
     <target name="build-code-quality" depends="prepare,check-interfaces,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdoc"/>
 
@@ -49,9 +37,6 @@
         <mkdir dir="${basedir}/app/build/logs/phpunit"/>
         <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
-        <mkdir dir="${basedir}/app/build/logs/behat-pr"/>
-        <mkdir dir="${basedir}/app/build/logs/behat-coverage"/>
-        <mkdir dir="${basedir}/app/build/logs/behat-docs"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -240,91 +225,13 @@
         <exec executable="${basedir}/app/Resources/jenkins/pim-docs/link-pim-docs.sh" failonerror="true" />
     </target>
 
-    <target name="behat-docs" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="2" />
-            <arg value="noxdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_docs_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-docs-" />
-            <arg value="${basedir}/bin/behat --ansi" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
-        </exec>
-    </target>
-
     <target name="behat" description="Run acceptance tests with Behat">
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="4" />
-            <arg value="noxdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_behat_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-" />
-            <arg value="${basedir}/bin/behat --ansi" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
-        </exec>
-    </target>
-
-    <target name="behat-mongodb" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="4" />
-            <arg value="noxdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_behat_mongodb_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-mongodb-" />
-            <arg value="${basedir}/bin/behat --ansi" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
-        </exec>
-    </target>
-
-    <target name="behat-10-dev" description="Run acceptance tests with Behat">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="4" />
-            <arg value="noxdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_behat_10_dev_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-10-dev-" />
-            <arg value="${basedir}/bin/behat --ansi" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
-        </exec>
-    </target>
-
-    <target name="behat-pr" description="Run acceptance tests with Behat for the pull request">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="2" />
-            <arg value="noxdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_pr_behat_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-pr-" />
-            <arg value="${basedir}/bin/behat --ansi" />
-            <env key="SYMFONY__DATABASE__USER" value="root" />
-            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
-        </exec>
-    </target>
-
-    <target name="behat-coverage" description="Run acceptance tests with Behat and produce coverage">
-        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
-            <!-- Concurrency -->
-            <arg value="1" />
-            <arg value="xdebug" />
-            <!-- DB Prefix -->
-            <arg value="akeneo_ci_pim_pr_behat_" />
-            <!-- Profile Prefix -->
-            <arg value="jenkins-coverage-" />
-            <arg value="${basedir}/bin/behat --ansi --strict" />
+            <arg value="${behat.concurrency}" />
+            <arg value="${behat.xdebug}" />
+            <arg value="${symfony.database.name}_" />
+            <arg value="${behat.profile.prefix}-" />
+            <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
         </exec>

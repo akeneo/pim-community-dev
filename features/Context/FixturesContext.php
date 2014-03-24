@@ -1142,6 +1142,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $product
+     * @param string $family
+     *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
      */
     public function iSetProductFamilyTo($product, $family)
@@ -1685,6 +1688,9 @@ class FixturesContext extends RawMinkContext
         return $this->getMainContext()->getEntityManager();
     }
 
+    /**
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
     private function getSmartRegistry()
     {
         return $this->getMainContext()->getSmartRegistry();
@@ -1758,11 +1764,18 @@ class FixturesContext extends RawMinkContext
         return $this->getMainContext()->listToArray($list);
     }
 
+    /**
+     * @param object $object
+     */
     private function refresh($object)
     {
         $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
     }
 
+    /**
+     * @param object  $object
+     * @param boolean $flush
+     */
     private function persist($object, $flush = true)
     {
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
@@ -1773,6 +1786,10 @@ class FixturesContext extends RawMinkContext
         }
     }
 
+    /**
+     * @param object  $object
+     * @param boolean $flush
+     */
     private function remove($object, $flush = true)
     {
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));

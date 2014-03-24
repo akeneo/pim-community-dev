@@ -28,10 +28,10 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
  ReferableEntityRepositoryInterface, AssociationRepositoryInterface
 {
     /**
-     * Flexible entity config
+     * Product config
      * @var array
      */
-    protected $flexibleConfig;
+    protected $configuration;
 
     /**
      * Locale code
@@ -337,25 +337,25 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Get flexible entity config
+     * Get configuration
      *
      * @return array $config
      */
-    public function getFlexibleConfig()
+    public function getConfiguration()
     {
-        return $this->flexibleConfig;
+        return $this->configuration;
     }
 
     /**
-     * Set flexible entity config
+     * Set product config
      *
      * @param array $config
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFlexibleConfig($config)
+    public function setConfiguration($config)
     {
-        $this->flexibleConfig = $config;
+        $this->configuration = $config;
 
         return $this;
     }
@@ -375,7 +375,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setLocale($code)
     {
@@ -399,7 +399,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      *
      * @param string $code
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
     public function setScope($code)
     {
@@ -492,7 +492,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     protected function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
-            throw new \LogicException('Flexible query builder must be configured');
+            throw new \LogicException('Product query builder must be configured');
         }
 
         $this->productQB
@@ -550,7 +550,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByFamily($qb, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
     }
 
     /**
@@ -558,7 +558,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applySorterByCompleteness($qb, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addCompletenessSorter($direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
     }
 
     /**
@@ -578,7 +578,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByGroupIds($qb, array $groupIds)
     {
-        $qb->addAnd($qb->expr()->field('groups')->in($groupIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
     }
 
     /**
@@ -586,7 +586,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function applyFilterByFamilyIds($qb, array $familyIds)
     {
-        $qb->addAnd($qb->expr()->field('family')->in($familyIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
     }
 
     /**
@@ -617,8 +617,34 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function deleteProductIds(array $productIds)
+    public function deleteFromIds(array $ids)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        if (empty($ids)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->remove()
+            ->field('_id')->in($ids);
+
+        $result = $qb->getQuery()->execute();
+
+        return $result['n'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyMassActionParameters($qb, $inset, $values)
+    {
+        // manage inset for selected entities
+        if ($values) {
+            $qb->field('_id');
+            $inset ? $qb->in($values) : $qb->notIn($values);
+        }
+
+        // remove limit of the query
+        $qb->limit(null);
     }
 }

@@ -4,8 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Value for an attribute
@@ -16,7 +15,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
  *
  * @ExclusionPolicy("all")
  */
-class ProductValue extends AbstractEntityFlexibleValue implements ProductValueInterface
+class ProductValue extends AbstractProductValue
 {
     /**
      * @var ProductInterface $entity
@@ -113,11 +112,11 @@ class ProductValue extends AbstractEntityFlexibleValue implements ProductValueIn
     /**
      * Remove an option
      *
-     * @param AbstractEntityAttributeOption $option
+     * @param AttributeOption $option
      *
      * @return ProductValue
      */
-    public function removeOption(AbstractEntityAttributeOption $option)
+    public function removeOption(AttributeOption $option)
     {
         $this->options->removeElement($option);
 

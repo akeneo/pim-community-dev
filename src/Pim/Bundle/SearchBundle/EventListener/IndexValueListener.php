@@ -5,7 +5,7 @@ namespace Pim\Bundle\SearchBundle\EventListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Oro\Bundle\SearchBundle\Engine\AbstractEngine;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Allow to index product when a value is updated
@@ -65,7 +65,7 @@ class IndexValueListener
         $uow = $args->getEntityManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            if ($entity instanceof FlexibleValueInterface and $flexible = $entity->getEntity()) {
+            if ($entity instanceof ProductValueInterface and $flexible = $entity->getEntity()) {
                 if ($this->isSupported($flexible) and $flexible->getId() and !$uow->isScheduledForUpdate($flexible)) {
                     $this->getSearchEngine()->save($flexible, $this->realtime, true);
                 }

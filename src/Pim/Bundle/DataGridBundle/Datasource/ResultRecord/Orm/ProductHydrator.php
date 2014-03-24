@@ -17,11 +17,11 @@ class ProductHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($queryBuilder, $options)
+    public function hydrate($qb, $options)
     {
         $localeCode = $options['locale_code'];
 
-        $query = $queryBuilder->getQuery();
+        $query = $qb->getQuery();
         $results = $query->getArrayResult();
 
         $rows    = [];
