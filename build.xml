@@ -290,7 +290,7 @@
         </exec>
     </target>
 
-    <target name="activate-mongo" depends="prepare" description="Activate the mongo bundle">
+    <target name="activate-mongo" description="Activate the mongo bundle">
         <replace
             file="${basedir}/app/AppKernel.php"
             token="// new Doctrine\Bundle\MongoDBBundle\DoctrineMongoDBBundle()"

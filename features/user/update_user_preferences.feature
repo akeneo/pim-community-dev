@@ -7,7 +7,7 @@ Feature: Update user preferences
     Given an "apparel" catalog configuration
     And I am logged in as "admin"
 
-  @javascript
+  @skip @javascript
   Scenario: Successfully delete a tree used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab
@@ -25,7 +25,7 @@ Feature: Update user preferences
     And I should see "2014 collection"
     And I should not see "2013 collection"
 
-  @javascript
+  @skip @javascript
   Scenario: Successfully delete a channel used by a user
     Given I edit the "Peter" user
     And I visit the "Additional" tab
@@ -40,7 +40,7 @@ Feature: Update user preferences
     And I should see "Ecommerce"
     And I should not see "Print"
 
-  @javascript
+  @skip @javascript
   Scenario: Successfully disable a locale used by a user
     Given I edit the "Julia" user
     And I visit the "Additional" tab

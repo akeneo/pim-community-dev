@@ -429,9 +429,6 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findOneByWithValues($id)
     {
-        // FIXME_MONGO Shortcut, but must do the same thing
-        // than the ORM one
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return $this->find($id);
     }
 

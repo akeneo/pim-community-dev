@@ -119,7 +119,7 @@ services:
         arguments:
             - '@pim_enrich.mass_edit_action.operator'
             - '@oro_datagrid.mass_action.parameters_parser'
-            - '@pim_datagrid.mass_action.dispatcher'
+            - '@pim_datagrid.extension.mass_action.dispatcher'
             - %mass_edit_limit%
 
     pim_enrich.controller.group:
