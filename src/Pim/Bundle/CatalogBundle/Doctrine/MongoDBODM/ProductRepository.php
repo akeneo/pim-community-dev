@@ -24,8 +24,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface, AssociationRepositoryInterface
+class ProductRepository extends DocumentRepository implements
+    ProductRepositoryInterface,
+    ReferableEntityRepositoryInterface,
+    AssociationRepositoryInterface
 {
     /**
      * Product config
@@ -63,6 +65,9 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      * @var string
      */
     protected $categoryClass;
+
+    /** @var Attribute */
+    protected $identifier;
 
     /**
      * Set the EntityManager
@@ -140,7 +145,18 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             }
         }
 
-        return $qb->getQuery()->execute();
+        $result = $qb->getQuery()->execute();
+
+        if ($result->count() > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return $result->getNext();
     }
 
     /**
@@ -420,12 +436,32 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
+     * Set identifier attribute
+     *
+     * @param AbstractAttribute $identifier
+     */
+    public function setIdentifierAttribute(AbstractAttribute $identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findByReference($code)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return null;
+        if (!$this->identifier) {
+            throw new \LogicException('Identifier must be set before finding by reference');
+        }
+
+        return $this->findOneBy(
+            [
+                [
+                    'attribute' => $this->identifier,
+                    'value' => $code,
+                ]
+            ]
+        );
     }
 
     /**
@@ -433,8 +469,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getReferenceProperties()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        if (!$this->identifier) {
+            throw new \LogicException('Identifier must be set before getting reference properties');
+        }
+
+        return array($this->identifier->getCode());
     }
 
     /**

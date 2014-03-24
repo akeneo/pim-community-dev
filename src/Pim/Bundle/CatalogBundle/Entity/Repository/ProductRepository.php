@@ -48,6 +48,9 @@ class ProductRepository extends EntityRepository implements
      */
     protected $scope;
 
+    /** @var AbstractAttribute */
+    protected $identifier;
+
     /**
      * Get entity configuration
      *
@@ -342,20 +345,32 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
+     * Set identifier attribute
+     *
+     * @param AbstractAttribute $identifier
+     */
+    public function setIdentifierAttribute(AbstractAttribute $identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findByReference($code)
     {
-        return $this->createQueryBuilder('p')
-            ->select('p')
-            ->innerJoin('p.values', 'v')
-            ->innerJoin('v.attribute', 'a')
-            ->where('a.attributeType=:attribute_type')
-            ->andWhere('v.varchar=:code')
-            ->setParameter('attribute_type', 'pim_catalog_identifier')
-            ->setParameter('code', $code)
-            ->getQuery()
-            ->getOneOrNullResult();
+        if (!$this->identifier) {
+            throw new \LogicException('Identifier must be set before finding by reference');
+        }
+
+        return $this->findOneBy(
+            [
+                [
+                    'attribute' => $this->identifier,
+                    'value' => $code,
+                ]
+            ]
+        );
     }
 
     /**
@@ -363,29 +378,11 @@ class ProductRepository extends EntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifierCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->getAttributeClass()
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
+        if (!$this->identifier) {
+            throw new \LogicException('Identifier must be set before getting reference properties');
         }
 
-        return $this->identifierCode;
+        return array($this->identifier->getCode());
     }
 
     /**
@@ -843,7 +840,18 @@ SQL;
             }
         }
 
-        return $qb->getQuery()->execute();
+        $result = $qb->getQuery()->execute();
+
+        if (count($result) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return reset($result);
     }
 
     /**
