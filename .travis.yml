@@ -9,10 +9,6 @@ matrix:
         - php: "5.5"
         - php: hhvm
 
-cache:
-    directories:
-        - vendor
-
 before_script:
     - composer self-update --no-interaction
     - composer require  --no-update doctrine/mongodb-odm-bundle 3.0.*@dev
