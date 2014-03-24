@@ -56,8 +56,8 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
     protected function parseFlatPrices($data)
     {
         $prices = array();
-        foreach (preg_split('/\s*,\s*/', $data) as $price) {
-            $parts = preg_split('/\s+/', $price);
+        foreach (explode(',', $data) as $price) {
+            $parts = explode(' ', trim($price));
             if (count($parts) > 1) {
                 $prices[$parts[1]] = $parts[0];
             } else {
