@@ -33,9 +33,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $data;
 
     /**
-     * @var Entity $entity
-     *
-     * This field must by overrided in concret value class
+     * @var ProductInterface $entity
      */
     protected $entity;
 
@@ -110,11 +108,26 @@ abstract class AbstractProductValue implements ProductValueInterface
     protected $option;
 
     /**
-     * To implement collection attribute storage, this field must be overridden in concret value class
+     * Store upload values
      *
-     * @var ArrayCollection
+     * @var Media $media
      */
-    protected $collection;
+    protected $media;
+
+    /**
+     * Store metric value
+     *
+     * @var Metric $metric
+     */
+    protected $metric;
+
+    /**
+     * Store prices value
+     *
+     * @var ArrayCollection $prices
+     */
+    protected $prices;
+
 
     /**
      * Constructor
@@ -122,7 +135,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->collection = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     /**
@@ -540,49 +553,15 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Get Collection attribute values
+     * Remove an option
      *
-     * @return Collection[]
+     * @param AttributeOption $option
+     *
+     * @return ProductValue
      */
-    public function getCollections()
+    public function removeOption(AttributeOption $option)
     {
-        return $this->collection;
-    }
-
-    /**
-     * Get Collection attribute values
-     *
-     * @return Collection[]
-     */
-    public function getCollection()
-    {
-        return $this->collection;
-    }
-
-    /**
-     * Set collections data from value object
-     *
-     * @param AbstractProductValue $value
-     *
-     * @return AbstractProductValue
-     */
-    public function setCollections(AbstractProductValue $value = null)
-    {
-        $this->collection = $value->getCollections();
-
-        return $this;
-    }
-
-    /**
-     * Set collection attribute values
-     *
-     * @param Collection[] $collection
-     *
-     * @return AbstractProductValue
-     */
-    public function setCollection($collection)
-    {
-        $this->collection = $collection;
+        $this->options->removeElement($option);
 
         return $this;
     }
@@ -613,5 +592,152 @@ abstract class AbstractProductValue implements ProductValueInterface
         }
 
         return (string) $data;
+    }
+
+    /**
+     * Get media
+     *
+     * @return Media
+     */
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
+    /**
+     * Set media
+     *
+     * @param Media $media
+     *
+     * @return ProductValue
+     */
+    public function setMedia(Media $media)
+    {
+        $media->setValue($this);
+        $this->media = $media;
+
+        return $this;
+    }
+
+    /**
+     * Get metric
+     *
+     * @return Metric
+     */
+    public function getMetric()
+    {
+        return $this->metric;
+    }
+
+    /**
+     * Set metric
+     *
+     * @param Metric $metric
+     *
+     * @return ProductValue
+     */
+    public function setMetric($metric)
+    {
+        $this->metric = $metric;
+
+        return $this;
+    }
+
+    /**
+     * Get prices
+     *
+     * @return array
+     */
+    public function getPrices()
+    {
+        return $this->prices;
+    }
+
+    /**
+     * Get the price matching the given currency
+     *
+     * @param string $currency
+     *
+     * @return boolean|Price
+     */
+    public function getPrice($currency)
+    {
+        return isset($this->prices[$currency]) ? $this->prices[$currency] : null;
+    }
+
+    /**
+     * Set prices, used for multi select to retrieve many options
+     *
+     * @param ArrayCollection $prices
+     *
+     * @return ProductValue
+     */
+    public function setPrices($prices)
+    {
+        foreach ($prices as $price) {
+            $this->addPrice($price);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add price
+     *
+     * @param ProductPrice $price
+     *
+     * @return ProductValue
+     */
+    public function addPrice(ProductPrice $price)
+    {
+        $this->prices[$price->getCurrency()] = $price;
+        $price->setValue($this);
+
+        return $this;
+    }
+
+    /**
+     * Adds a price for the given currency, or returns the existing price
+     *
+     * @param string $currency
+     *
+     * @return ProductPrice
+     *
+     * @deprecated This method will be removed in 1.2, use ProductBuilder::addPriceForCurrency() instead
+     */
+    public function addPriceForCurrency($currency)
+    {
+        $prices = $this->getPrices();
+        if (!isset($prices[$currency])) {
+            $this->addPrice(new ProductPrice(null, $currency));
+        }
+
+        return $this->prices[$currency];
+    }
+
+    /**
+     * Remove price
+     *
+     * @param ProductPrice $price
+     *
+     * @return ProductValue
+     */
+    public function removePrice(ProductPrice $price)
+    {
+        $this->prices->remove($price->getCurrency());
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isRemovable()
+    {
+        if (null === $this->entity) {
+            return true;
+        }
+
+        return $this->entity->isAttributeRemovable($this->attribute);
     }
 }
