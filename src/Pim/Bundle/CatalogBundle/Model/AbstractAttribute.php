@@ -1426,8 +1426,7 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
      */
     public function setAttributeType($type)
     {
-        parent::setAttributeType($type);
-
+        $this->attributeType = $type;
         if ($this->attributeType === 'pim_catalog_identifier') {
             $this->required = true;
         }
