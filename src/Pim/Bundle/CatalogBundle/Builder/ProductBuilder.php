@@ -160,6 +160,21 @@ class ProductBuilder
     }
 
     /**
+     * Remove extra prices that are not in the currencies passed in arguments
+     *
+     * @param ProductValueInterface $value
+     * @param array                 $currencies
+     */
+    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (!in_array($price->getCurrency(), $currencies)) {
+                $value->removePrice($price);
+            }
+        }
+    }
+
+    /**
      * @param ProductValueInterface $value
      * @param string                $currency
      *
