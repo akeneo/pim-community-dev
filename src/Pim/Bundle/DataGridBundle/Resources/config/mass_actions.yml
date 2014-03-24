@@ -35,6 +35,7 @@ services:
         arguments:
             - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@translator'
+            - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
 

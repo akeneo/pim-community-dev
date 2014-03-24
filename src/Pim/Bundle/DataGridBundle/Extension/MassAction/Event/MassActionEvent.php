@@ -26,15 +26,25 @@ class MassActionEvent extends Event
     protected $massAction;
 
     /**
+     * Entities or documents which are impacted by mass action
+     * Can be just ids if needed
+     *
+     * @var array $objects
+     */
+    protected $objects;
+
+    /**
      * Constructor
      *
      * @param DatagridInterface   $datagrid
      * @param MassActionInterface $massAction
+     * @param array               $objects
      */
-    public function __construct(DatagridInterface $datagrid, MassActionInterface $massAction)
+    public function __construct(DatagridInterface $datagrid, MassActionInterface $massAction, array $objects)
     {
         $this->datagrid   = $datagrid;
         $this->massAction = $massAction;
+        $this->objects    = $objects;
     }
 
     /**
@@ -55,5 +65,15 @@ class MassActionEvent extends Event
     public function getMassAction()
     {
         return $this->massAction;
+    }
+
+    /**
+     * Get objects
+     *
+     * @return array
+     */
+    public function getObjects()
+    {
+        return $this->objects;
     }
 }

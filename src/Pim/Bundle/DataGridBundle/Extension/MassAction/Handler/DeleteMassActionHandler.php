@@ -2,13 +2,16 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Mass delete action handler
@@ -30,6 +33,11 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     protected $translator;
 
     /**
+     * @var EventDispatcher $eventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * @var string $responseMessage
      */
     protected $responseMessage = 'oro.grid.mass_action.delete.success_message';
@@ -39,11 +47,16 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      *
      * @param HydratorInterface   $hydrator
      * @param TranslatorInterface $translator
+     * @param EventDispatcherInterface     $eventDispatcher
      */
-    public function __construct(HydratorInterface $hydrator, TranslatorInterface $translator)
-    {
-        $this->hydrator   = $hydrator;
-        $this->translator = $translator;
+    public function __construct(
+        HydratorInterface $hydrator,
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->hydrator        = $hydrator;
+        $this->translator      = $translator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -51,6 +64,10 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
      */
     public function handle(DatagridInterface $datagrid, MassActionInterface $massAction)
     {
+        // dispatch pre handler event
+        $massActionEvent = new MassActionEvent($datagrid, $massAction, array());
+        $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_PRE_HANDLER, $massActionEvent);
+
         $datasource = $datagrid->getDatasource();
         $datasource->setHydrator($this->hydrator);
 
@@ -64,6 +81,10 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
 
             return new MassActionResponse(false, $this->translator->trans($errorMessage));
         }
+
+        // dispatch post handler event
+        $massActionEvent = new MassActionEvent($datagrid, $massAction, $objectIds);
+        $this->eventDispatcher->dispatch(MassActionEvents::MASS_DELETE_POST_HANDLER, $massActionEvent);
 
         return $this->getResponse($massAction, $countRemoved);
     }
