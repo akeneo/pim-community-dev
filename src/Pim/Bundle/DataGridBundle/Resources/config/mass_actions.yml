@@ -4,13 +4,13 @@ parameters:
     pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
-    pim_datagrid.mass_action.dispatcher.class:                 Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
+    pim_datagrid.extension.mass_action.dispatcher.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class: Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
 services:
     # Dispatchers
-    pim_datagrid.mass_action.dispatcher:
-        class: %pim_datagrid.mass_action.dispatcher.class%
+    pim_datagrid.extension.mass_action.dispatcher:
+        class: %pim_datagrid.extension.mass_action.dispatcher.class%
         arguments:
             - '@pim_datagrid.extension.mass_action.handler.registry'
             - '@oro_datagrid.datagrid.manager'
