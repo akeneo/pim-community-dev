@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 
 /**
- * Product value, business code is in AbstractProductValue
+ * Product value, business code is in AbstractProductValue, this class can be overriden in projects
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
