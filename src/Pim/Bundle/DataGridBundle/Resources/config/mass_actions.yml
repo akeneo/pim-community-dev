@@ -64,5 +64,3 @@ services:
     # Handler registry
     pim_datagrid.extension.mass_action.handler.registry:
         class: %pim_datagrid.extension.mass_action.handler.registry.class%
-        arguments:
-            - '@service_container'
