@@ -57,4 +57,22 @@ class ProductExportController extends ExportController
             $this->getFormat()
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function quickExportCallback()
+    {
+        return function () {
+            flush();
+
+            $qb = $this->massActionDispatcher->dispatch($this->request);
+
+            $results = $qb->getQuery()->getResults();
+
+            echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
+
+            flush();
+        };
+    }
 }
