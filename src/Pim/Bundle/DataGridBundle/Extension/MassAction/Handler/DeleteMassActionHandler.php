@@ -2,16 +2,16 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
-
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 
 /**
  * Mass delete action handler
