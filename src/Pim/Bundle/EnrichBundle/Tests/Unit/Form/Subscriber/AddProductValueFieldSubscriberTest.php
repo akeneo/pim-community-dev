@@ -33,7 +33,7 @@ class AddProductValueFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     protected $productManager;
 
     /**
-     * @var FlexibleValueSubscriber
+     * @var AddProductValueFieldSubscriber
      */
     protected $subscriber;
 
@@ -93,7 +93,7 @@ class AddProductValueFieldSubscriberTest extends \PHPUnit_Framework_TestCase
     /**
      * Test related method
      */
-    public function testPreSetDataWithFlexibleAttribute()
+    public function testPreSetDataWithProduct()
     {
         $dataClass = 'Pim\Bundle\CatalogBundle\Model\ProductInterface';
 

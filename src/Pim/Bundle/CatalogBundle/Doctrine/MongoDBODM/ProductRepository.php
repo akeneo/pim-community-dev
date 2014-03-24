@@ -28,7 +28,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
  ReferableEntityRepositoryInterface, AssociationRepositoryInterface
 {
     /**
-     * Flexible entity config
+     * Product config
      * @var array
      */
     protected $configuration;
@@ -347,7 +347,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     }
 
     /**
-     * Set flexible entity config
+     * Set product config
      *
      * @param array $config
      *
@@ -492,7 +492,7 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     protected function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
-            throw new \LogicException('Flexible query builder must be configured');
+            throw new \LogicException('Product query builder must be configured');
         }
 
         $this->productQB

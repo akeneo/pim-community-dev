@@ -1,64 +1,47 @@
 <?php
 
-namespace Pim\Bundle\FlexibleEntityBundle\Entity\Mapping;
+namespace Pim\Bundle\CatalogBundle\Model;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractFlexible;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 
 /**
- * Base Doctrine ORM entity
+ * Abstract product
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-abstract class AbstractEntityFlexible extends AbstractFlexible
+abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
+    TimestampableInterface
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    /** @var mixed $id */
     protected $id;
 
-    /**
-     * @var datetime $created
-     *
-     * @ORM\Column(type="datetime")
-     */
+    /** @var datetime $created */
     protected $created;
 
-    /**
-     * @var datetime $updated
-     *
-     * @ORM\Column(type="datetime")
-     */
+    /** @var datetime $updated */
     protected $updated;
 
     /**
-     * @var ArrayCollection
-     *
-     * @ORM\OneToMany(targetEntity="AbstractEntityFlexibleValue", mappedBy="entity", cascade={"persist", "remove"})
+     * Not persisted but allow to force locale for values
+     * @var string $locale
      */
+    protected $locale;
+
+    /**
+     * Not persisted but allow to force scope for values
+     * @var string $scope
+     */
+    protected $scope;
+
+    /** @var ArrayCollection */
     protected $values;
 
-    /**
-     * @var array
-     *
-     * Values indexed by attribute_code
-     */
+    /** @var array */
     protected $indexedValues;
 
-    /**
-     * @var boolean
-     *
-     * States that the indexedValues are outdated
-     */
+    /** @var boolean */
     protected $indexedValuesOutdated = true;
 
     /**
@@ -70,13 +53,131 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     }
 
     /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return AbstractProduct
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
+     * Get created datetime
+     *
+     * @return datetime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set created datetime
+     *
+     * @param datetime $created
+     *
+     * @return TimestampableInterface
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get updated datetime
+     *
+     * @return datetime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }
+
+    /**
+     * Set updated datetime
+     *
+     * @param datetime $updated
+     *
+     * @return TimestampableInterface
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get used locale
+     * @return string $locale
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set used locale
+     *
+     * @param string $locale
+     *
+     * @return LocalizableInterface
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
+    }
+
+    /**
+     * Get used scope
+     * @return string $scope
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
+     * Set used scope
+     *
+     * @param string $scope
+     *
+     * @return ScopableInterface
+     */
+    public function setScope($scope)
+    {
+        $this->scope = $scope;
+
+        return $this;
+    }
+
+    /**
      * Add value, override to deal with relation owner side
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
-    public function addValue(FlexibleValueInterface $value)
+    public function addValue(ProductValueInterface $value)
     {
         $this->values[] = $value;
         $this->indexedValues[$value->getAttribute()->getCode()][] = $value;
@@ -88,11 +189,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Remove value
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
-    public function removeValue(FlexibleValueInterface $value)
+    public function removeValue(ProductValueInterface $value)
     {
         $this->removeIndexedValue($value);
         $this->values->removeElement($value);
@@ -103,11 +204,11 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Remove a value from the indexedValues array
      *
-     * @param FlexibleValueInterface $value
+     * @param ProductValueInterface $value
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
-    protected function removeIndexedValue(FlexibleValueInterface $value)
+    protected function removeIndexedValue(ProductValueInterface $value)
     {
         $attributeCode = $value->getAttribute()->getCode();
         $possibleValues =& $this->indexedValues[$attributeCode];
@@ -161,7 +262,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
     /**
      * Mark the indexed as outdated
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
     public function markIndexedValuesOutdated()
     {
@@ -175,7 +276,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * is to make sure that the values are initialized
      * (loaded from DB)
      *
-     * @return AbstractEntityFlexible
+     * @return AbstractProduct
      */
     protected function indexValuesIfNeeded()
     {
@@ -197,7 +298,7 @@ abstract class AbstractEntityFlexible extends AbstractFlexible
      * @param string $localeCode
      * @param string $scopeCode
      *
-     * @return FlexibleValueInterface
+     * @return ProductValueInterface
      */
     public function getValue($attributeCode, $localeCode = null, $scopeCode = null)
     {

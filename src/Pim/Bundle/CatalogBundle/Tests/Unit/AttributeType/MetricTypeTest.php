@@ -60,7 +60,7 @@ class MetricTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $data = true;
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data' => $data,
                 'backendType' => $this->backendType,
