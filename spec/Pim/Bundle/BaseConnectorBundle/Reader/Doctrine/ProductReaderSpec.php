@@ -5,7 +5,6 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -14,20 +13,18 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class ProductReaderSpec extends ObjectBehavior
 {
     function let(
-        ProductManager $productManager,
-        ProductRepository $repository,
+        ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution
     ) {
-        $productManager->getProductRepository()->willReturn($repository);
-
-        $this->beConstructedWith($productManager, $channelManager, $completenessManager, $metricConverter);
+        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter);
 
         $this->setStepExecution($stepExecution);
     }

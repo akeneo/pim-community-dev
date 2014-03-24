@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -14,27 +13,25 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class BulkProductReaderSpec extends ObjectBehavior
 {
     function let(
-        ProductManager $productManager,
-        ProductRepository $repository,
+        ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution
     ) {
-        $productManager->getProductRepository()->willReturn($repository);
-
-        $this->beConstructedWith($productManager, $channelManager, $completenessManager, $metricConverter);
+        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter);
 
         $this->setStepExecution($stepExecution);
     }
 
     function it_is_a_product_reader()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader');
     }
 
     function it_has_a_channel()
