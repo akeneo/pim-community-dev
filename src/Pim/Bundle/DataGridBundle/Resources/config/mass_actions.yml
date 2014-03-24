@@ -4,7 +4,6 @@ parameters:
     pim_datagrid.extension.mass_action.handler.edit.class:           Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:         Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.class:         Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
-    pim_datagrid.extension.mass_action.handler.product_export.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ProductExportMassActionHandler
     pim_datagrid.extension.mass_action.dispatcher.class:             Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
 
@@ -28,8 +27,9 @@ services:
             - { name: pim_datagrid.extension.mass_action.handler, alias: quick_export }
 
     pim_datagrid.extension.mass_action.handler.product_export:
-        class: %pim_datagrid.extension.mass_action.handler.product_export.class%
+        class: %pim_datagrid.extension.mass_action.handler.export.class%
         arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object_id'
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: product_quick_export }
