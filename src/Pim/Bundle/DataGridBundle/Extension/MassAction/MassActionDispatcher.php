@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
@@ -39,9 +38,6 @@ class MassActionDispatcher
     /** @var MassActionParametersParser $parametersParser */
     protected $parametersParser;
 
-    /** @var EventDispatcher $eventDispatcher */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      *
@@ -49,20 +45,17 @@ class MassActionDispatcher
      * @param Manager                    $manager
      * @param RequestParameters          $requestParams
      * @param MassActionParametersParser $parametersParser
-     * @param EventDispatcher            $eventDispatcher
      */
     public function __construct(
         MassActionHandlerRegistry $handlerRegistry,
         ManagerInterface $manager,
         RequestParameters $requestParams,
-        MassActionParametersParser $parametersParser,
-        EventDispatcher $eventDispatcher
+        MassActionParametersParser $parametersParser
     ) {
         $this->handlerRegistry  = $handlerRegistry;
         $this->manager          = $manager;
         $this->requestParams    = $requestParams;
         $this->parametersParser = $parametersParser;
-        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -92,12 +85,7 @@ class MassActionDispatcher
         $massAction = $this->getMassActionByName($actionName, $datagrid);
         $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        $response = $this->performMassAction($datagrid, $massAction, $inset, $values);
-
-        $massActionEvent = new MassActionEvent($datagrid, $massAction);
-        $this->eventDispatcher->dispatch(MassActionEvents::MASS_ACTION_POST_HANDLER, $massActionEvent);
-
-        return $response;
+        return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
 
     /**
