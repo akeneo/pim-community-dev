@@ -7,7 +7,6 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
-use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Abstract product attribute

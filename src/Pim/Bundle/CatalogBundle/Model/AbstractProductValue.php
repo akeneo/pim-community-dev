@@ -128,7 +128,6 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     protected $prices;
 
-
     /**
      * Constructor
      */
