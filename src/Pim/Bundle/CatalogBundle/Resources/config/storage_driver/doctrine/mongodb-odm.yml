@@ -14,8 +14,8 @@ parameters:
     pim_catalog.doctrine.product_query_builder.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
     pim_catalog.doctrine.smart_manager_registry.class:               Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
 
-    pim_catalog.event_listener.mongodb.normalize_product_data.class:         Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetProductNormalizedDataSubscriber
-    pim_catalog.event_listener.mongodb.update_product_normalized_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateProductNormalizedDataSubscriber
+    pim_catalog.event_listener.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetNormalizedProductDataSubscriber
+    pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -126,15 +126,15 @@ services:
             - [addRegistry, ['@doctrine']]
             - [addRegistry, ['@doctrine_mongodb']]
 
-    pim_catalog.event_listener.mongodb.normalize_product_data:
-        class: %pim_catalog.event_listener.mongodb.normalize_product_data.class%
+    pim_catalog.event_listener.mongodb.set_normalized_product_data:
+        class: %pim_catalog.event_listener.mongodb.set_normalized_product_data.class%
         arguments:
             - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
 
-    pim_catalog.event_listener.mongodb.update_product_normalized_data:
-        class: %pim_catalog.event_listener.mongodb.update_product_normalized_data.class%
+    pim_catalog.event_listener.mongodb.update_normalized_product_data:
+        class: %pim_catalog.event_listener.mongodb.update_normalized_product_data.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_serializer'

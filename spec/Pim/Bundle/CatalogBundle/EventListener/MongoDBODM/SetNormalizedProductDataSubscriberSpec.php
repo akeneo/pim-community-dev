@@ -14,7 +14,7 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
 /**
  * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
  */
-class SetProductNormalizedDataSubscriberSpec extends ObjectBehavior
+class SetNormalizedProductDataSubscriberSpec extends ObjectBehavior
 {
     function let(NormalizerInterface $normalizer)
     {
