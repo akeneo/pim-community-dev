@@ -3,9 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
  * Family sorter
