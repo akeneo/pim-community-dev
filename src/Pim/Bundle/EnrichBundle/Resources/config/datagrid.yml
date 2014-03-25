@@ -320,7 +320,6 @@ datagrid:
                     _contentType: text/csv
                 context:
                     withHeader: true
-                    heterogeneous: true
                 messages:
                     empty_selection: No products selected
 
