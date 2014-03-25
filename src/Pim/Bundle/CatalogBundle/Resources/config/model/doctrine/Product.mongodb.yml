@@ -34,5 +34,6 @@ Pim\Bundle\CatalogBundle\Model\Product:
             embedded: true
             type: many
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValue
+            mappedBy: entity
         normalizedData:
             type: hash

@@ -8,7 +8,7 @@ connector:
                 export:
                     title:     pim_base_connector.jobs.csv_product_export.export.title
                     services:
-                        reader:    pim_base_connector.reader.orm.bulk_product
+                        reader:    pim_base_connector.reader.doctrine.bulk_product
                         processor: pim_base_connector.processor.csv_serializer.product
                         writer:    pim_base_connector.writer.product_file
         csv_category_export:
