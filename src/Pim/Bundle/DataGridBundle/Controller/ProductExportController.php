@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -25,6 +29,12 @@ class ProductExportController extends ExportController
     /** @var LocaleManager $localeManager */
     protected $localeManager;
 
+    /** @var CurrencyManager $currencyManager */
+    protected $currencyManager;
+
+    /** @var AssociationTypeManager $associationTypeManager */
+    protected $associationTypeManager;
+
     /**
      * Constructor
      *
@@ -39,7 +49,9 @@ class ProductExportController extends ExportController
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
         ProductManager $productManager,
-        LocaleManager $localeManager
+        LocaleManager $localeManager,
+        CurrencyManager $currencyManager,
+        AssociationTypeManager $associationTypeManager
     ) {
         parent::__construct(
             $request,
@@ -47,8 +59,10 @@ class ProductExportController extends ExportController
             $serializer
         );
 
-        $this->productManager = $productManager;
-        $this->localeManager  = $localeManager;
+        $this->productManager  = $productManager;
+        $this->localeManager   = $localeManager;
+        $this->currencyManager = $currencyManager;
+        $this->associationTypeManager = $associationTypeManager;
     }
 
     /**
@@ -114,6 +128,12 @@ class ProductExportController extends ExportController
         $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
 
+        $associationTypes = $this->associationTypeManager->getAssociationTypes();
+        foreach ($associationTypes as $associationType) {
+            $fieldsList[] = sprintf('%s-groups', $associationType->getCode());
+            $fieldsList[] = sprintf('%s-products', $associationType->getCode());
+        }
+
         return $fieldsList;
     }
 
@@ -138,6 +158,10 @@ class ProductExportController extends ExportController
                 $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
             } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
                 array_unshift($fieldsList, $attCode);
+            } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
+                foreach ($this->currencyManager->getActiveCodeChoices() as $currencyCode) {
+                    $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
+                }
             } else {
                 $fieldsList[] = $attCode;
             }
