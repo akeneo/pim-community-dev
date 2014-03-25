@@ -33,12 +33,6 @@ class FamilySorter implements FieldSorterInterface
     protected $scope;
 
     /**
-     * Alias counter, to avoid duplicate alias name
-     * @return integer
-     */
-    protected $aliasCounter = 1;
-
-    /**
      * Instanciate a sorter
      *
      * @param QueryBuilder $qb
