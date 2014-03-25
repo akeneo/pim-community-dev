@@ -483,9 +483,10 @@ datagrid:
         filters:
             columns:
                 in_group:
-                    type:      boolean
-                    label:     In group
-                    data_name: in_group
+                    type:        product_in_group
+                    parent_type: boolean
+                    label:       In group
+                    data_name:   in_group
                     filter_by_having: true
                 family:
                     type:      product_family
