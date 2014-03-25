@@ -17,9 +17,9 @@ Feature: Update product when removing an option of a choice attribute
     And I remove the "Converse" option
     And I save the attribute
     When I edit the "foo" product
-    Then the product manufacturer should be empty
+    Then the product Manufacturer should be empty
     When I visit the "History" tab
-    Then I should see history
+    Then I should see history:
       | version | property     | value |
       | 2       | manufacturer |       |
 
@@ -31,8 +31,9 @@ Feature: Update product when removing an option of a choice attribute
     And I visit the "Values" tab
     And I remove the "cold" option
     And I save the attribute
-    Then the product "Weather conditions" should be snowy
+    When I edit the "foo" product
+    Then the product Weather conditions should be "Snowy"
     When I visit the "History" tab
-    Then I should see history
+    Then I should see history:
       | version | property           | value |
       | 2       | weather_conditions | snowy |

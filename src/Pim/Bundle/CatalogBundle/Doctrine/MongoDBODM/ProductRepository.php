@@ -344,7 +344,7 @@ class ProductRepository extends DocumentRepository implements
             ->hydrate(false)
             ->findAndUpdate()
             ->field('values.options')->in([$id])
-            ->field('values.$')->pull(['options' => $id])
+            ->field('values.$.options')->pull($id)
             ->getQuery()
             ->execute();
     }
