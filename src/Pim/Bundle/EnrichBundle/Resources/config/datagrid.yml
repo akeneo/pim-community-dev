@@ -366,9 +366,10 @@ datagrid:
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
@@ -494,9 +495,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
@@ -617,14 +619,16 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
                                 1: Enabled
                                 0: Disabled
+
                 completeness:
                     type:      product_completeness
                     label:     Complete
@@ -1032,9 +1036,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
