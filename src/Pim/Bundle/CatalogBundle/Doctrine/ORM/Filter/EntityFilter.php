@@ -39,4 +39,17 @@ class EntityFilter extends BaseFilter
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
+        $rootAlias  = $this->qb->getRootAlias();
+        $entityAlias = 'filter'.$field;
+        $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
+        $this->qb->andWhere($this->qb->expr()->in($entityAlias.'.id', $value));
+
+        return $this;
+    }
 }

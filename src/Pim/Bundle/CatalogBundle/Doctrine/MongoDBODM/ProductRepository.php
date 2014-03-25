@@ -740,38 +740,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByFamily($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByCompleteness($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
@@ -784,17 +752,17 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, array $groupIds)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
+    public function applySorterByField($qb, $field, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
