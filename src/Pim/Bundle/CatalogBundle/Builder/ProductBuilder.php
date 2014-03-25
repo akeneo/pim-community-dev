@@ -152,7 +152,58 @@ class ProductBuilder
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
-        $value->addPrice(new ProductPrice(null, $currency));
+        if (!$this->hasPriceForCurrency($value, $currency)) {
+            $value->addPrice(new ProductPrice(null, $currency));
+        }
+
+        return $this->getPriceForCurrency($value, $currency);
+    }
+
+    /**
+     * Remove extra prices that are not in the currencies passed in arguments
+     *
+     * @param ProductValueInterface $value
+     * @param array                 $currencies
+     */
+    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (!in_array($price->getCurrency(), $currencies)) {
+                $value->removePrice($price);
+            }
+        }
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return boolean
+     */
+    private function hasPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return null|ProductPrice
+     */
+    private function getPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return $price;
+            }
+        }
     }
 
     /**

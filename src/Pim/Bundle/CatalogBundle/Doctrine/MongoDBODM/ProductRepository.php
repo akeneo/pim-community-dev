@@ -24,8 +24,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface, AssociationRepositoryInterface
+class ProductRepository extends DocumentRepository implements
+    ProductRepositoryInterface,
+    ReferableEntityRepositoryInterface,
+    AssociationRepositoryInterface
 {
     /**
      * Product config
@@ -64,17 +66,11 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     protected $categoryClass;
 
-    /**
-     * Attribute class
-     *
-     * @var string
-     */
-    protected $attributeClass;
+    /** @var string */
+    protected $identifier;
 
-    /**
-     * @var string
-     */
-    private $identifierCode;
+    /** @var string */
+    protected $attributeClass;
 
     /**
      * Set the EntityManager
@@ -86,8 +82,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-
-        return $this;
     }
 
     /**
@@ -100,8 +94,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function setCategoryClass($categoryClass)
     {
         $this->categoryClass = $categoryClass;
-
-        return $this;
     }
 
     /**
@@ -170,7 +162,18 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             }
         }
 
-        return $qb->getQuery()->execute()->getNext();
+        $result = $qb->getQuery()->execute();
+
+        if ($result->count() > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return $result->getNext();
     }
 
     /**
@@ -451,7 +454,14 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
-        return $this->findOneBy(array($this->getIdentifierCode() => $code));
+        return $this->findOneBy(
+            [
+                [
+                    'attribute' => $this->getIdentifier(),
+                    'value' => $code,
+                ]
+            ]
+        );
     }
 
     /**
@@ -459,8 +469,33 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getReferenceProperties()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        return array($this->getIdentifier()->getCode());
+    }
+
+    /**
+     * Returns the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        if (!isset($this->identifier)) {
+            if (!$this->entityManager) {
+                throw new \LogicException('Entity Manager must be set before getting reference properties');
+            }
+
+            $this->identifier = $this->entityManager
+                ->createQuery(
+                    sprintf(
+                        'SELECT a FROM %s a WHERE a.attributeType=:identifier_type ',
+                        $this->attributeClass
+                    )
+                )
+                ->setParameter('identifier_type', 'pim_catalog_identifier')
+                ->getSingleResult();
+        }
+
+        return $this->identifier;
     }
 
     /**
@@ -481,28 +516,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             (0 !== count($result)) &&
             ($value->getId() === $foundValueId)
         );
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->entityManager
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->attributeClass
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
-        }
-
-        return $this->identifierCode;
     }
 
     /**

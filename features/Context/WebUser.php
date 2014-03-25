@@ -1153,7 +1153,6 @@ class WebUser extends RawMinkContext
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-        $this->wait();
     }
 
     /**
