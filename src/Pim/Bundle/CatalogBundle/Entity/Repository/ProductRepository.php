@@ -718,14 +718,6 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCompleteness($qb, $operator, $value)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('completeness', $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);

@@ -621,14 +621,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCompleteness($qb, $operator, $value)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('completenesses', $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);

@@ -62,7 +62,7 @@ class CompletenessFilter extends BooleanFilter
                 break;
         }
 
-        $this->repository->applyFilterByCompleteness($qb, $operator, '100');
+        $this->repository->applyFilterByField($qb, 'completeness', '100', $operator);
 
         return true;
     }
