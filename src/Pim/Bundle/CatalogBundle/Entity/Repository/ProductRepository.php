@@ -972,6 +972,9 @@ SQL;
         return $attributeIds;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getFullProducts(array $productIds, array $attributeIds = array())
     {
         $qb = $this->createQueryBuilder('p');
