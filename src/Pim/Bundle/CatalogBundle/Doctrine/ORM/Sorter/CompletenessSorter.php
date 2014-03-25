@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
-use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 
 /**
  * Completeness sorter
@@ -15,13 +15,22 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
  */
 class CompletenessSorter implements FieldSorterInterface
 {
-    /** @var QueryBuilder */
+    /**
+     * QueryBuilder
+     * @var QueryBuilder
+     */
     protected $qb;
 
-    /** @var string */
+    /**
+     * Locale code
+     * @var string
+     */
     protected $locale;
 
-    /** @var string */
+    /**
+     * Scope code
+     * @var string
+     */
     protected $scope;
 
     /**
@@ -43,14 +52,10 @@ class CompletenessSorter implements FieldSorterInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $field = sprintf(
-            "%s.%s.%s-%s",
-            ProductQueryUtility::NORMALIZED_FIELD,
-            'completenesses',
-            $this->scope,
-            $this->locale
-        );
-        $this->qb->sort($field, $direction);
+        $alias = 'sorterCompleteness';
+        $util = new CompletenessJoin($this->qb);
+        $util->addJoins($alias);
+        $this->qb->addOrderBy($alias.'.ratio', $direction);
 
         return $this;
     }

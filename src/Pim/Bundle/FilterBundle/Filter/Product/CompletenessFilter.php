@@ -50,22 +50,19 @@ class CompletenessFilter extends BooleanFilter
             return false;
         }
 
-        $qb        = $ds->getQueryBuilder();
-        $joinAlias = 'filterCompleteness';
-        $field     = $joinAlias.'.ratio';
-        $this->repository->addCompleteness($qb, $joinAlias);
+        $qb = $ds->getQueryBuilder();
 
         switch ($data['value']) {
             case BooleanFilterType::TYPE_YES:
-                $expression = $qb->expr()->eq($field, '100');
+                $operator = '=';
                 break;
             case BooleanFilterType::TYPE_NO:
             default:
-                $expression = $qb->expr()->lt($field, '100');
+                $operator = '<';
                 break;
         }
 
-        $this->applyFilterToClause($ds, $expression);
+        $this->repository->applyFilterByField($qb, 'completeness', '100', $operator);
 
         return true;
     }
