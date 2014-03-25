@@ -740,14 +740,6 @@ SQL;
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function applySorterByCompleteness($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('completeness', $direction);
-    }
-
-    /**
      * Set flexible query builder
      *
      * @param ProductQueryBuilder $productQB

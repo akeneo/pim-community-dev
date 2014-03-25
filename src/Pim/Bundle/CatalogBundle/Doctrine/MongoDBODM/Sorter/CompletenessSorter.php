@@ -46,7 +46,7 @@ class CompletenessSorter implements FieldSorterInterface
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
-            $field,
+            'completenesses',
             $this->scope,
             $this->locale
         );

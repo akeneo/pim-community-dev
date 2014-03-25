@@ -645,14 +645,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applySorterByCompleteness($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function countForAssociationType(AssociationType $associationType)
     {
         $assocMatch = [

@@ -307,14 +307,6 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
     public function applySorterByField($qb, $field, $direction);
 
     /**
-     * Apply a sort by completeness
-     *
-     * @param mixed  $qb        query builder to update
-     * @param string $direction direction to use
-     */
-    public function applySorterByCompleteness($qb, $direction);
-
-    /**
      * Delete a list of product ids
      *
      * @param integer[] $ids
