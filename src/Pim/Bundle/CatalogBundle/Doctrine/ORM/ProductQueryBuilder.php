@@ -136,9 +136,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $field = current($this->qb->getRootAliases()).'.'.$field;
-        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
-        $this->qb->andWhere($condition);
+        $customFilters = [];
+        if (isset($customFilters[$field])) {
+            $filterClass = $customFilters[$field];
+        } else {
+            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
+        }
+
+        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
     }
@@ -197,23 +203,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
 
         $this->qb->addOrderBy($field, $direction);
-    }
-
-    /**
-     * Prepare criteria condition with field, operator and value
-     *
-     * @param string|array $field    the backend field name
-     * @param string|array $operator the operator used to filter
-     * @param string|array $value    the value(s) to filter
-     *
-     * @return string
-     * @throws ProductQueryException
-     */
-    protected function prepareCriteriaCondition($field, $operator, $value)
-    {
-        $filter = new BaseFilter($this->qb, $this->locale, $this->scope);
-
-        return $filter->prepareCriteriaCondition($field, $operator, $value);
     }
 
     /**
