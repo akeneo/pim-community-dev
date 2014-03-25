@@ -2,15 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
+use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 

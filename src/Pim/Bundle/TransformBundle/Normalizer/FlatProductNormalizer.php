@@ -40,6 +40,7 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @var array */
     protected $results = array();
 
+    /** @var array $fields */
     protected $fields = array();
 
     /**
