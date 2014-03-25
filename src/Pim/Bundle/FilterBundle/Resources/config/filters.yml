@@ -9,6 +9,7 @@ parameters:
     pim_filter.product_completeness_filter.class: Pim\Bundle\FilterBundle\Filter\Product\CompletenessFilter
     pim_filter.product_category_filter.class:     Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter
     pim_filter.product_date_filter.class:         Pim\Bundle\FilterBundle\Filter\ProductValue\DateRangeFilter
+    pim_filter.product_enabled_filter.class:      Pim\Bundle\FilterBundle\Filter\Product\EnabledFilter
 
     pim_filter.product_value_string.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\StringFilter
     pim_filter.product_value_choice.class:     Pim\Bundle\FilterBundle\Filter\ProductValue\ChoiceFilter
@@ -80,6 +81,14 @@ services:
             - '@pim_filter.product_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_date }
+
+    pim_filter.product_enabled_filter:
+        class: %pim_filter.product_enabled_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_enabled }
 
     pim_filter.product_value_string:
         class: %pim_filter.product_value_string.class%

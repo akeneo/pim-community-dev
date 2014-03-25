@@ -109,7 +109,7 @@ services:
         class: %pim_transform.transformer.property.prices.class%
         public: false
         arguments:
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.builder.product'
 
     pim_transform.transformer.property.metric:
         class: %pim_transform.transformer.property.metric.class%
