@@ -721,6 +721,38 @@ SQL;
     /**
      * {@inheritdoc}
      */
+    public function applyFilterByIds($qb, array $productIds, $include)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        if ($include) {
+            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+
+        } else {
+            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByGroupIds($qb, array $groupIds)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByFamilyIds($qb, array $familyIds)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
@@ -750,38 +782,6 @@ SQL;
         $joinAlias = 'sorterCompleteness';
         $this->addCompleteness($qb, $joinAlias);
         $qb->addOrderBy($joinAlias.'.ratio', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByIds($qb, array $productIds, $include)
-    {
-        $rootAlias  = $qb->getRootAlias();
-        if ($include) {
-            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
-            $qb->andWhere($expression);
-
-        } else {
-            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
-            $qb->andWhere($expression);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByGroupIds($qb, array $groupIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
     }
 
     /**
