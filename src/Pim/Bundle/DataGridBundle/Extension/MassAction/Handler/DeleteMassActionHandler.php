@@ -45,9 +45,9 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
     /**
      * Constructor
      *
-     * @param HydratorInterface   $hydrator
-     * @param TranslatorInterface $translator
-     * @param EventDispatcherInterface     $eventDispatcher
+     * @param HydratorInterface        $hydrator
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         HydratorInterface $hydrator,

@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements AttributeFilterInterface
+class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /**
      * QueryBuilder
@@ -77,8 +78,18 @@ class BaseFilter implements AttributeFilterInterface
     }
 
     /**
-     * TODO : should become protected
-     *
+     * {@inheritdoc}
+     */
+    public function addFieldFilter($field, $operator, $value)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $condition = $this->prepareCriteriaCondition($field, $operator, $value);
+        $this->qb->andWhere($condition);
+
+        return $this;
+    }
+
+    /**
      * Prepare criteria condition with field, operator and value
      *
      * @param string|array $field    the backend field name
@@ -88,7 +99,7 @@ class BaseFilter implements AttributeFilterInterface
      * @return string
      * @throws ProductQueryException
      */
-    public function prepareCriteriaCondition($field, $operator, $value)
+    protected function prepareCriteriaCondition($field, $operator, $value)
     {
         if (is_array($operator)) {
             return $this->prepareMultiCriteriaCondition($field, $operator, $value);

@@ -24,8 +24,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends DocumentRepository implements ProductRepositoryInterface,
- ReferableEntityRepositoryInterface, AssociationRepositoryInterface
+class ProductRepository extends DocumentRepository implements
+    ProductRepositoryInterface,
+    ReferableEntityRepositoryInterface,
+    AssociationRepositoryInterface
 {
     /**
      * Product config
@@ -64,6 +66,12 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     protected $categoryClass;
 
+    /** @var string */
+    protected $identifier;
+
+    /** @var string */
+    protected $attributeClass;
+
     /**
      * Set the EntityManager
      *
@@ -86,6 +94,20 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     public function setCategoryClass($categoryClass)
     {
         $this->categoryClass = $categoryClass;
+    }
+
+    /**
+     * Set the attribute class
+     *
+     * @param string $attributeClass
+     *
+     * @return ProductRepository $this
+     */
+    public function setAttributeClass($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+
+        return $this;
     }
 
     /**
@@ -140,7 +162,18 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
             }
         }
 
-        return $qb->getQuery()->execute();
+        $result = $qb->getQuery()->execute();
+
+        if ($result->count() > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return $result->getNext();
     }
 
     /**
@@ -413,9 +446,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findOneByWithValues($id)
     {
-        // FIXME_MONGO Shortcut, but must do the same thing
-        // than the ORM one
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
         return $this->find($id);
     }
 
@@ -424,8 +454,14 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function findByReference($code)
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return null;
+        return $this->findOneBy(
+            [
+                [
+                    'attribute' => $this->getIdentifier(),
+                    'value' => $code,
+                ]
+            ]
+        );
     }
 
     /**
@@ -433,8 +469,33 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
      */
     public function getReferenceProperties()
     {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
+        return array($this->getIdentifier()->getCode());
+    }
+
+    /**
+     * Returns the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        if (!isset($this->identifier)) {
+            if (!$this->entityManager) {
+                throw new \LogicException('Entity Manager must be set before getting reference properties');
+            }
+
+            $this->identifier = $this->entityManager
+                ->createQuery(
+                    sprintf(
+                        'SELECT a FROM %s a WHERE a.attributeType=:identifier_type ',
+                        $this->attributeClass
+                    )
+                )
+                ->setParameter('identifier_type', 'pim_catalog_identifier')
+                ->getSingleResult();
+        }
+
+        return $this->identifier;
     }
 
     /**
@@ -532,38 +593,6 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByFamily($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByCompleteness($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
@@ -576,17 +605,17 @@ class ProductRepository extends DocumentRepository implements ProductRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, array $groupIds)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
+    public function applySorterByField($qb, $field, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

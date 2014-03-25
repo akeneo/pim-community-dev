@@ -1153,7 +1153,6 @@ class WebUser extends RawMinkContext
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-        $this->wait();
     }
 
     /**
@@ -1528,7 +1527,23 @@ class WebUser extends RawMinkContext
         );
 
         foreach ($expectedLines as $index => $expectedLine) {
-            $actualLine = $actualLines[$index];
+            $found = false;
+            reset($actualLines);
+            while (!$found && $actualLine = current($actualLines)) {
+                if (reset($actualLine) === reset($expectedLine) || 0 === $index) {
+                    $found = true;
+                }
+                next($actualLines);
+            }
+            if (!$found) {
+                throw new \Exception(
+                    sprintf(
+                        'Could not find a line starting with "%s" in %s',
+                        reset($expectedLine),
+                        $path
+                    )
+                );
+            }
             sort($expectedLine);
             sort($actualLine);
             assertSame(

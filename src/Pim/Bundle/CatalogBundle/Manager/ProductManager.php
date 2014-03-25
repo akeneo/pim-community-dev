@@ -219,7 +219,7 @@ class ProductManager
      */
     public function findByIdentifier($identifier)
     {
-        $products = $this->getProductRepository()->findOneBy(
+        $product = $this->getProductRepository()->findOneBy(
             [
                 [
                     'attribute' => $this->getIdentifierAttribute(),
@@ -227,12 +227,6 @@ class ProductManager
                 ]
             ]
         );
-
-        if ($products instanceof \Doctrine\ODM\MongoDB\Cursor) {
-            $product = $products->getNext();
-        } else {
-            $product = reset($products);
-        }
 
         if ($product) {
             $this->builder->addMissingProductValues($product);

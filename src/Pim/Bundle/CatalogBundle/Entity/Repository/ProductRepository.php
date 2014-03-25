@@ -578,41 +578,6 @@ SQL;
     }
 
     /**
-     * Add completeness joins to query builder
-     *
-     * @param QueryBuilder $qb                the query builder
-     * @param string       $completenessAlias the join alias
-     */
-    public function addCompleteness(QueryBuilder $qb, $completenessAlias)
-    {
-        $rootAlias         = $qb->getRootAlias();
-        $localeAlias       = $completenessAlias.'Locale';
-        $channelAlias      = $completenessAlias.'Channel';
-
-        $qb
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                $localeAlias,
-                'WITH',
-                $localeAlias.'.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                $channelAlias,
-                'WITH',
-                $channelAlias.'.code = :scopeCode'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
-                $completenessAlias,
-                'WITH',
-                $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
-                $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
-                $completenessAlias.'.product = '.$rootAlias.'.id'
-            );
-    }
-
-    /**
      * Returns true if a ProductValue with the provided value alread exists,
      * false otherwise.
      *
@@ -721,40 +686,6 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByFamily($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByCompleteness($qb, $direction)
-    {
-        $joinAlias = 'sorterCompleteness';
-        $this->addCompleteness($qb, $joinAlias);
-        $qb->addOrderBy($joinAlias.'.ratio', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -771,23 +702,17 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, array $groupIds)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
-        $rootAlias  = $qb->getRootAlias();
-        $groupAlias = 'filterGroups';
-        $qb->leftJoin($rootAlias.'.groups', $groupAlias);
-        $qb->andWhere($qb->expr()->in($groupAlias.'.id', $groupIds));
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
+    public function applySorterByField($qb, $field, $direction)
     {
-        $rootAlias  = $qb->getRootAlias();
-        $familyAlias = 'filterFamily';
-        $qb->leftJoin($rootAlias.'.family', $familyAlias);
-        $qb->andWhere($qb->expr()->in($familyAlias.'.id', $familyIds));
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -843,7 +768,18 @@ SQL;
             }
         }
 
-        return $qb->getQuery()->execute();
+        $result = $qb->getQuery()->execute();
+
+        if (count($result) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return reset($result);
     }
 
     /**

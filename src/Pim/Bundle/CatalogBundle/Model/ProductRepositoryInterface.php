@@ -253,22 +253,6 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
     public function applyFilterByIds($qb, array $productIds, $include);
 
     /**
-     * Apply a filter by group ids
-     *
-     * @param mixed $qb       query builder to update
-     * @param array $groupIds group ids
-     */
-    public function applyFilterByGroupIds($qb, array $groupIds);
-
-    /**
-     * Apply a filter by family ids
-     *
-     * @param mixed $qb        query builder to update
-     * @param array $familyIds family ids
-     */
-    public function applyFilterByFamilyIds($qb, array $familyIds);
-
-    /**
      * Apply a filter by attribute value
      *
      * @param mixed             $qb             query builder to update
@@ -305,22 +289,6 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      * @param string $direction direction to use
      */
     public function applySorterByField($qb, $field, $direction);
-
-    /**
-     * Apply a sort by family
-     *
-     * @param mixed  $qb        query builder to update
-     * @param string $direction direction to use
-     */
-    public function applySorterByFamily($qb, $direction);
-
-    /**
-     * Apply a sort by completeness
-     *
-     * @param mixed  $qb        query builder to update
-     * @param string $direction direction to use
-     */
-    public function applySorterByCompleteness($qb, $direction);
 
     /**
      * Delete a list of product ids

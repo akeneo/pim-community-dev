@@ -1,12 +1,5 @@
 Pim\Bundle\CatalogBundle\Model\Completeness:
     type: embeddedDocument
-    indexes:
-        completeness_idx:
-            options:
-                unique: true
-            keys:
-                channel:
-                locale:
     fields:
         id:
             id: true

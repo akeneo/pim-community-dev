@@ -1,31 +1,40 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
+namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
- * Completeness sorter
+ * Completeness filter
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessSorter implements FieldSorterInterface
+class CompletenessFilter implements FieldFilterInterface
 {
-    /** @var QueryBuilder */
+    /**
+     * QueryBuilder
+     * @var QueryBuilder
+     */
     protected $qb;
 
-    /** @var string */
+    /**
+     * Locale code
+     * @var string
+     */
     protected $locale;
 
-    /** @var string */
+    /**
+     * Scope code
+     * @var string
+     */
     protected $scope;
 
     /**
-     * Instanciate a sorter
+     * Instanciate a filter
      *
      * @param QueryBuilder $qb
      * @param string       $locale
@@ -41,16 +50,22 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * {@inheritdoc}
      */
-    public function addFieldSorter($field, $direction)
+    public function addFieldFilter($field, $operator, $value)
     {
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
-            'completenesses',
+            $field,
             $this->scope,
             $this->locale
         );
-        $this->qb->sort($field, $direction);
+        $value = intval($value);
+
+        if ($operator === '=') {
+            $this->qb->field($field)->equals($value);
+        } else {
+            $this->qb->field($field)->lt($value);
+        }
 
         return $this;
     }

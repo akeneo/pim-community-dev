@@ -6,6 +6,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 
 /**
@@ -15,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseSorter implements AttributeSorterInterface
+class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
 {
     /**
      * QueryBuilder
@@ -81,6 +82,17 @@ class BaseSorter implements AttributeSorterInterface
 
         // Reapply previous join after the orderBy related join
         $this->applyJoins($joinsSet);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addFieldSorter($field, $direction)
+    {
+        $field = current($this->qb->getRootAliases()).'.'.$field;
+        $this->qb->addOrderBy($field, $direction);
 
         return $this;
     }

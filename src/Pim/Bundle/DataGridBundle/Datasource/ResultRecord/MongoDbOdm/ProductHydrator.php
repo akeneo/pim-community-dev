@@ -118,9 +118,14 @@ class ProductHydrator implements HydratorInterface
                 $family['label'][$locale] : '['.$family['code'].']';
             if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] != null) {
                 $attributeCode = $family['attributeAsLabel'];
-                $attributeAsLabel = $result[$attributeCode];
-                $backendType = $attributeAsLabel['attribute']['backendType'];
-                $result['productLabel']= $attributeAsLabel[$backendType];
+                if (isset($result[$attributeCode])) {
+                    $attributeAsLabel = $result[$attributeCode];
+                    $backendType = $attributeAsLabel['attribute']['backendType'];
+                    $result['productLabel']= isset($attributeAsLabel[$backendType]) ?
+                        $attributeAsLabel[$backendType] : null;
+                } else {
+                    $result['productLabel'] = null;
+                }
             }
         } else {
             $result['familyLabel'] = '-';

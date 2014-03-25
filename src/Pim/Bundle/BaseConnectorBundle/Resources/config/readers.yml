@@ -1,7 +1,7 @@
 parameters:
-    pim_base_connector.reader.orm.product.class:       Pim\Bundle\BaseConnectorBundle\Reader\ORM\ProductReader
-    pim_base_connector.reader.orm.bulk_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\ORM\BulkProductReader
-    pim_base_connector.reader.orm.entity.class:        Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
+    pim_base_connector.reader.doctrine.product.class:      Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader
+    pim_base_connector.reader.doctrine.bulk_product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
+    pim_base_connector.reader.orm.entity.class:            Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
 
     pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
@@ -13,17 +13,17 @@ parameters:
     pim_base_connector.reader.cached.class:            Pim\Bundle\BaseConnectorBundle\Reader\CachedReader
 
 services:
-    pim_base_connector.reader.orm.product:
-        class: %pim_base_connector.reader.orm.product.class%
+    pim_base_connector.reader.doctrine.product:
+        class: %pim_base_connector.reader.doctrine.product.class%
         arguments:
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
 
-    pim_base_connector.reader.orm.bulk_product:
-        parent: pim_base_connector.reader.orm.product
-        class: %pim_base_connector.reader.orm.bulk_product.class%
+    pim_base_connector.reader.doctrine.bulk_product:
+        parent: pim_base_connector.reader.doctrine.product
+        class: %pim_base_connector.reader.doctrine.bulk_product.class%
 
     pim_base_connector.reader.orm.category:
         class: %pim_base_connector.reader.orm.entity.class%

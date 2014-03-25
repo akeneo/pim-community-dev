@@ -126,10 +126,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $customFilters = [
-            'created' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-            'updated' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-            'family'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'groups'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter'
+            'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
+            'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
+            'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+            'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
         ];
 
         if (isset($customFilters[$field])) {
@@ -170,8 +171,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldSorter($field, $direction)
     {
         $customSorters = [
-            'family'         => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
-            'completenesses' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
+            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
+            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
         ];
 
         if (isset($customSorters[$field])) {
