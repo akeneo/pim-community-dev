@@ -976,7 +976,7 @@ SQL;
     {
         $qb = $this->createQueryBuilder('p');
         $qb
-            ->select('p, f, v, pr, m, o, os')
+            ->select('p, f, v, pr, m, o, os, c, assoc, g')
             ->leftJoin('p.family', 'f')
             ->leftJoin('p.values', 'v')
             ->leftJoin('v.prices', 'pr')
@@ -984,10 +984,10 @@ SQL;
             ->leftJoin('v.option', 'o')
             ->leftJoin('v.options', 'os')
             ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
-            ->where($qb->expr()->in('p.id', $productIds))
-            ->orderBy('a.id');
-
-        // TODO: Add joins on groups/variant/association
+            ->leftJoin('p.categories', 'c')
+            ->leftJoin('p.associations', 'assoc')
+            ->leftJoin('p.groups', 'g')
+            ->where($qb->expr()->in('p.id', $productIds));
 
         return $qb->getQuery()->execute();
     }
