@@ -121,7 +121,8 @@ class ProductHydrator implements HydratorInterface
                 if (isset($result[$attributeCode])) {
                     $attributeAsLabel = $result[$attributeCode];
                     $backendType = $attributeAsLabel['attribute']['backendType'];
-                    $result['productLabel']= $attributeAsLabel[$backendType];
+                    $result['productLabel']= isset($attributeAsLabel[$backendType]) ?
+                        $attributeAsLabel[$backendType] : null;
                 } else {
                     $result['productLabel'] = null;
                 }
