@@ -773,10 +773,7 @@ SQL;
      */
     public function applyFilterByGroupIds($qb, array $groupIds)
     {
-        $rootAlias  = $qb->getRootAlias();
-        $groupAlias = 'filterGroups';
-        $qb->leftJoin($rootAlias.'.groups', $groupAlias);
-        $qb->andWhere($qb->expr()->in($groupAlias.'.id', $groupIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
     }
 
     /**
@@ -784,10 +781,7 @@ SQL;
      */
     public function applyFilterByFamilyIds($qb, array $familyIds)
     {
-        $rootAlias  = $qb->getRootAlias();
-        $familyAlias = 'filterFamily';
-        $qb->leftJoin($rootAlias.'.family', $familyAlias);
-        $qb->andWhere($qb->expr()->in($familyAlias.'.id', $familyIds));
+        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
     }
 
     /**

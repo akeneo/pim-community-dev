@@ -136,7 +136,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $customFilters = [];
+        $customFilters = [
+            'family' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'groups' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter'
+        ];
         if (isset($customFilters[$field])) {
             $filterClass = $customFilters[$field];
         } else {
