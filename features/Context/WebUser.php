@@ -1526,36 +1526,50 @@ class WebUser extends RawMinkContext
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
 
-        foreach ($expectedLines as $index => $expectedLine) {
+
+        if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
+            throw new \Exception(
+                sprintf(
+                    'Header in the file %s does not match expected one: %s',
+                    $path,
+                    implode(' | ', $actualLines[0])
+                )
+            );
+        }
+        unset($actualLines[0]);
+        unset($expectedLines[0]);
+
+        foreach ($expectedLines as $expectedLine) {
             $found = false;
-            reset($actualLines);
-            while (!$found && $actualLine = current($actualLines)) {
-                if (reset($actualLine) === reset($expectedLine) || 0 === $index) {
+            foreach ($actualLines as $index => $actualLine) {
+                // Order of columns is not ensured
+                // Sorting the line values allows to have two identical lines
+                // with values in different orders
+                sort($expectedLine);
+                sort($actualLine);
+
+                // Same thing for the rows
+                // Order of the rows is not reliable
+                // So we generate a hash for the current line and ensured that
+                // the generated file contains a line with the same hash
+                if (md5(json_encode($actualLine)) === md5(json_encode($expectedLine))) {
                     $found = true;
+
+                    // Unset line to prevent comparing it twice
+                    unset($actualLines[$index]);
+
+                    break;
                 }
-                next($actualLines);
             }
             if (!$found) {
                 throw new \Exception(
                     sprintf(
-                        'Could not find a line starting with "%s" in %s',
-                        reset($expectedLine),
+                        'Could not find a line containing "%s" in %s',
+                        implode(' | ', $expectedLine),
                         $path
                     )
                 );
             }
-            sort($expectedLine);
-            sort($actualLine);
-            assertSame(
-                $expectedLine,
-                $actualLine,
-                sprintf(
-                    'Expecting row %d to be "%s", found "%s"',
-                    $index,
-                    implode($delimiter, $expectedLine),
-                    implode($delimiter, $actualLine)
-                )
-            );
         }
     }
 
