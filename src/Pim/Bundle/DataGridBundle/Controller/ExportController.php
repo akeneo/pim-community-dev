@@ -117,7 +117,6 @@ class ExportController
      */
     protected function quickExport()
     {
-
         $results = $this->massActionDispatcher->dispatch($this->request);
 
         echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
