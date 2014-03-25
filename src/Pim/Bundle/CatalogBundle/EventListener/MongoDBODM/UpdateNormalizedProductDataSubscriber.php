@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Doctrine\ORM\Event\PostFlushEventArgs;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -63,7 +64,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['onFlush'];
+        return ['onFlush', 'postFlush'];
     }
 
     /**
@@ -92,7 +93,13 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
             $this->scheduleRelatedProducts($entity);
         }
+    }
 
+    /**
+     * @param PostFlushEventArgs $args
+     */
+    public function postFlush(PostFlushEventArgs $args)
+    {
         $this->processPendingProducts();
     }
 
