@@ -4,8 +4,11 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
+
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
+use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 
 /**
  * Override ExportController for product exports
@@ -19,6 +22,9 @@ class ProductExportController extends ExportController
     /** @var ProductManager $productManager */
     protected $productManager;
 
+    /** @var LocaleManager $localeManager */
+    protected $localeManager;
+
     /**
      * Constructor
      *
@@ -26,12 +32,14 @@ class ProductExportController extends ExportController
      * @param MassActionDispatcher $massActionDispatcher
      * @param SerializerInterface  $serializer
      * @param ProductManager       $productManager
+     * @param LocaleManager        $localeManager
      */
     public function __construct(
         Request $request,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
-        ProductManager $productManager
+        ProductManager $productManager,
+        LocaleManager $localeManager
     ) {
         parent::__construct(
             $request,
@@ -40,6 +48,7 @@ class ProductExportController extends ExportController
         );
 
         $this->productManager = $productManager;
+        $this->localeManager  = $localeManager;
     }
 
     /**
