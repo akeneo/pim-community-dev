@@ -36,6 +36,12 @@ Feature: Remove a category
     And I should see flash message "Category successfully removed"
     When I expand the "Winter collection" category
     Then I should not see "Winter boots"
+    When I edit the "caterpillar_2" product
+    Then the category of "caterpillar_2" should be ""
+    When I visit the "History" tab
+    Then I should see history:
+      | version | property   | value |
+      | 2       | categories |       |
 
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page
