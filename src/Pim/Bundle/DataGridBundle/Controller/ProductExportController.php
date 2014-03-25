@@ -82,17 +82,6 @@ class ProductExportController extends ExportController
     /**
      * {@inheritdoc}
      */
-    protected function quickExportCallback()
-    {
-        return function () {
-            flush();
-
-            $this->quickExport();
-
-            flush();
-        };
-    }
-
     protected function quickExport()
     {
         $productIds = $this->massActionDispatcher->dispatch($this->request);
@@ -105,8 +94,7 @@ class ProductExportController extends ExportController
 
         // prepare context from attributes list
         $fieldsList = $this->prepareFieldsList($attributesList);
-        $context    = $this->getContext() + ['fields' => $fieldsList, 'scopeCode' => 'ecommerce'];
-        // TODO: Remove hard coded scope code
+        $context    = $this->getContext() + ['fields' => $fieldsList];
 
         // batch output to avoid memory leak
         $offset = 0;
@@ -119,6 +107,13 @@ class ProductExportController extends ExportController
         }
     }
 
+    /**
+     * Prepare fields list for CSV headers
+     *
+     * @param array $attributesList
+     *
+     * @return array
+     */
     protected function prepareFieldsList(array $attributesList = array())
     {
         $fieldsList = $this->prepareAttributesList($attributesList);
@@ -135,13 +130,19 @@ class ProductExportController extends ExportController
         return $fieldsList;
     }
 
+    /**
+     * Prepare attributes list for CSV headers
+     *
+     * @param array $attributesList
+     *
+     * @return array
+     */
     protected function prepareAttributesList(array $attributesList)
     {
-        // TODO: Remove hard coded scope code
-        $scopeCode = 'ecommerce';
-
+        $scopeCode   = $this->productManager->getScope();
         $localeCodes = $this->localeManager->getActiveCodes();
-        $fieldsList = array();
+        $fieldsList  = array();
+
         foreach ($attributesList as $attribute) {
             $attCode = $attribute->getCode();
             if ($attribute->isLocalizable() && $attribute->isScopable()) {
