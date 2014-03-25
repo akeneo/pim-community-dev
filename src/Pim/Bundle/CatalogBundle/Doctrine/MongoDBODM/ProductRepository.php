@@ -575,6 +575,16 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @return QueryBuilder
+     */
+    public function createGroupDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder();
+
+        return $qb;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
