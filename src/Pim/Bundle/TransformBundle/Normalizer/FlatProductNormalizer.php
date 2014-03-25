@@ -40,6 +40,8 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @var array */
     protected $results;
 
+    protected $fields = array();
+
     /**
      * Constructor
      *
@@ -65,7 +67,12 @@ class FlatProductNormalizer implements NormalizerInterface
             $localeCodes = $context['localeCodes'];
         }
 
-        $this->results = $this->normalizeValue($object->getIdentifier());
+        if (isset($context['fields']) && !empty($context['fields'])) {
+            $this->fields  = array_fill_keys($context['fields'], '');
+            $this->results = $this->fields;
+        }
+
+        $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
@@ -113,35 +120,45 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         $identifier = $product->getIdentifier();
 
-        $filteredValues = $product->getValues()->filter(
-            function ($value) use ($identifier, $scopeCode, $localeCodes) {
-                return (
-                    ($value !== $identifier) &&
-                    (
-                        ($scopeCode == null) ||
-                        (!$value->getAttribute()->isScopable()) ||
-                        ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
-                    ) &&
-                    (
-                        (count($localeCodes) == 0) ||
-                        (!$value->getAttribute()->isLocalizable()) ||
-                        ($value->getAttribute()->isLocalizable() && in_array($value->getLocale(), $localeCodes))
+        if (empty($this->fields)) {
+            $filteredValues = $product->getValues()->filter(
+                function ($value) use ($identifier, $scopeCode, $localeCodes) {
+                    return (
+                        ($value !== $identifier) &&
+                        (
+                            ($scopeCode == null) ||
+                            (!$value->getAttribute()->isScopable()) ||
+                            ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
+                        ) &&
+                        (
+                            (count($localeCodes) == 0) ||
+                            (!$value->getAttribute()->isLocalizable()) ||
+                            ($value->getAttribute()->isLocalizable() && in_array($value->getLocale(), $localeCodes))
 
-                    )
+                        )
+                    );
+                }
+            );
+
+            $normalizedValues = array();
+            foreach ($filteredValues as $value) {
+                $normalizedValues = array_merge(
+                    $normalizedValues,
+                    $this->normalizeValue($value)
                 );
             }
-        );
+            ksort($normalizedValues);
 
-        $normalizedValues = array();
-        foreach ($filteredValues as $value) {
-            $normalizedValues = array_merge(
-                $normalizedValues,
-                $this->normalizeValue($value)
-            );
+            $this->results = array_merge($this->results, $normalizedValues);
+        } else {
+            foreach ($product->getValues() as $value) {
+                $fieldValue = $this->getFieldValue($value);
+                if (isset($this->fields[$fieldValue])) {
+                    $normalizedValue = $this->normalizeValue($value);
+                    $this->results = array_merge($this->results, $normalizedValue);
+                }
+            }
         }
-        ksort($normalizedValues);
-
-        $this->results = array_merge($this->results, $normalizedValues);
     }
 
     /**
@@ -167,12 +184,16 @@ class FlatProductNormalizer implements NormalizerInterface
         } elseif ($data instanceof Media) {
             $data = $this->mediaManager->getExportPath($data);
         } elseif ($data instanceof Metric) {
-            $fieldName = $this->getFieldValue($value);
+            if (empty($this->fields)) {
+                $fieldName = $this->getFieldValue($value);
 
-            return array(
-                $fieldName                     => sprintf('%.4f', $data->getData()),
-                sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
-            );
+                return array(
+                    $fieldName                     => sprintf('%.4F', $data->getData()),
+                    sprintf('%s-unit', $fieldName) => ($data->getData() !== null) ? $data->getUnit() : '',
+                );
+            } else {
+                $data = ($data->getData() === null) ? '' : sprintf('%.4F %s', $data->getData(), $data->getUnit());
+            }
         }
 
         return array($this->getFieldValue($value) => (string) $data);
