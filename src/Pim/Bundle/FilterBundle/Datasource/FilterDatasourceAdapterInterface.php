@@ -21,4 +21,11 @@ interface FilterDatasourceAdapterInterface extends OroFilterDatasourceAdapterInt
      * @return string
      */
     public function getFormatByComparisonType($comparisonType);
+
+    /**
+     * Get query builder
+     *
+     * @return mixed
+     */
+    public function getQueryBuilder();
 }
