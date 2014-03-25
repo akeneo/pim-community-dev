@@ -66,8 +66,11 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var Attribute */
+    /** @var string */
     protected $identifier;
+
+    /** @var string */
+    protected $attributeClass;
 
     /**
      * Set the EntityManager
@@ -91,6 +94,20 @@ class ProductRepository extends DocumentRepository implements
     public function setCategoryClass($categoryClass)
     {
         $this->categoryClass = $categoryClass;
+    }
+
+    /**
+     * Set the attribute class
+     *
+     * @param string $attributeClass
+     *
+     * @return ProductRepository $this
+     */
+    public function setAttributeClass($attributeClass)
+    {
+        $this->attributeClass = $attributeClass;
+
+        return $this;
     }
 
     /**
@@ -433,28 +450,14 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Set identifier attribute
-     *
-     * @param AbstractAttribute $identifier
-     */
-    public function setIdentifierAttribute(AbstractAttribute $identifier)
-    {
-        $this->identifier = $identifier;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findByReference($code)
     {
-        if (!$this->identifier) {
-            throw new \LogicException('Identifier must be set before finding by reference');
-        }
-
         return $this->findOneBy(
             [
                 [
-                    'attribute' => $this->identifier,
+                    'attribute' => $this->getIdentifier(),
                     'value' => $code,
                 ]
             ]
@@ -466,11 +469,33 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getReferenceProperties()
     {
-        if (!$this->identifier) {
-            throw new \LogicException('Identifier must be set before getting reference properties');
+        return array($this->getIdentifier()->getCode());
+    }
+
+    /**
+     * Returns the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifier()
+    {
+        if (!isset($this->identifier)) {
+            if (!$this->entityManager) {
+                throw new \LogicException('Entity Manager must be set before getting reference properties');
+            }
+
+            $this->identifier = $this->entityManager
+                ->createQuery(
+                    sprintf(
+                        'SELECT a FROM %s a WHERE a.attributeType=:identifier_type ',
+                        $this->attributeClass
+                    )
+                )
+                ->setParameter('identifier_type', 'pim_catalog_identifier')
+                ->getSingleResult();
         }
 
-        return array($this->identifier->getCode());
+        return $this->identifier;
     }
 
     /**

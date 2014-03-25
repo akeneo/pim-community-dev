@@ -50,7 +50,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
 
         $this->flexibleRepository = $this->getMock(
             'Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface',
-            ['getReferenceProperties', 'findByReference', 'setIdentifierAttribute']
+            ['getReferenceProperties', 'findByReference']
         );
         $this->productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
