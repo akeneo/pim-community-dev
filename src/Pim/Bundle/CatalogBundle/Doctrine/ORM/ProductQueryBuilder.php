@@ -137,8 +137,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $customFilters = [
-            'family' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-            'groups' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter'
+            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
         ];
         if (isset($customFilters[$field])) {
             $filterClass = $customFilters[$field];
@@ -182,7 +183,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldSorter($field, $direction)
     {
         $customSorters = [
-            'family' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter'
+            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
+            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter'
         ];
 
         if (isset($customSorters[$field])) {
