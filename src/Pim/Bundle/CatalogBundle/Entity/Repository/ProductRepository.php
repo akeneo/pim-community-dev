@@ -771,7 +771,7 @@ SQL;
      */
     public function applySorterByFamily($qb, $direction)
     {
-        $this->getProductQueryBuilder($qb)->addFamilySorter($direction);
+        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
     }
 
     /**

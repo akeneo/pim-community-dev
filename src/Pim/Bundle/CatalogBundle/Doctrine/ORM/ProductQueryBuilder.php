@@ -182,6 +182,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldSorter($field, $direction)
     {
         $customSorters = [
+            'family' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter'
         ];
 
         if (isset($customSorters[$field])) {
@@ -194,27 +195,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $sorter->addFieldSorter($field, $direction);
 
         return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addFamilySorter($direction)
-    {
-        $rootAlias = $this->qb->getRootAlias();
-
-        $prefix    = 'sorter';
-        $field     = $prefix.'familyLabel';
-        $family    = $prefix.'family';
-        $trans     = $prefix.'familyTranslations';
-
-        $this->qb
-            ->leftJoin($rootAlias.'.family', $family)
-            ->leftJoin($family.'.translations', $trans, 'WITH', $trans.'.locale = :dataLocale');
-        $this->qb
-            ->addSelect('COALESCE('.$trans.'.label, CONCAT(\'[\', '.$family.'.code, \']\')) as '.$field);
-
-        $this->qb->addOrderBy($field, $direction);
     }
 
     /**
