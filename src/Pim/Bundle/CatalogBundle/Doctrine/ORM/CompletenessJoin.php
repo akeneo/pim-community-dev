@@ -20,7 +20,7 @@ class CompletenessJoin
     protected $qb;
 
     /**
-     * Instanciate a filter
+     * Instanciate the utility
      *
      * @param QueryBuilder $qb
      */
