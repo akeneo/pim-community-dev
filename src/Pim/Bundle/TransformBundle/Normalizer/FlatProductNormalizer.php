@@ -38,7 +38,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $supportedFormats = array('csv');
 
     /** @var array */
-    protected $results;
+    protected $results = array();
 
     protected $fields = array();
 
@@ -70,9 +70,9 @@ class FlatProductNormalizer implements NormalizerInterface
         if (isset($context['fields']) && !empty($context['fields'])) {
             $this->fields  = array_fill_keys($context['fields'], '');
             $this->results = $this->fields;
+        } else {
+            $this->results = $this->normalizeValue($object->getIdentifier());
         }
-
-        $this->normalizeValue($object->getIdentifier());
 
         $this->normalizeFamily($object->getFamily());
 
@@ -118,9 +118,9 @@ class FlatProductNormalizer implements NormalizerInterface
      */
     protected function normalizeValues(ProductInterface $product, $scopeCode, $localeCodes)
     {
-        $identifier = $product->getIdentifier();
-
         if (empty($this->fields)) {
+            $identifier = $product->getIdentifier();
+
             $filteredValues = $product->getValues()->filter(
                 function ($value) use ($identifier, $scopeCode, $localeCodes) {
                     return (
