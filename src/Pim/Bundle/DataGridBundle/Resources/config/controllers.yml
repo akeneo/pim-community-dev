@@ -27,7 +27,9 @@ services:
         scope: request
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_user.context.user'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.manager.association_type'
 
     pim_datagrid.controller.datagrid_view:
         scope: request

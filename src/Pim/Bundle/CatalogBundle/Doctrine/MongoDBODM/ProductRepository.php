@@ -676,4 +676,23 @@ class ProductRepository extends DocumentRepository implements
         // remove limit of the query
         $qb->limit(null);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('_id')->in($productIds);
+
+        return $qb->getQuery()->execute();
+    }
 }
