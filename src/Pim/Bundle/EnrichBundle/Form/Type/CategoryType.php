@@ -66,8 +66,8 @@ class CategoryType extends AbstractSegmentType
             'pim_translatable_field',
             array(
                 'field'             => 'label',
-                'translation_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
-                'entity_class'      => 'Pim\\Bundle\\CatalogBundle\\Entity\\Category',
+                'translation_class' => $this->translationClassName,
+                'entity_class'      => $this->className,
                 'property_path'     => 'translations'
             )
         );
