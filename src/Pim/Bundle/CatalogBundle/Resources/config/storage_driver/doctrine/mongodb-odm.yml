@@ -16,6 +16,7 @@ parameters:
 
     pim_catalog.event_listener.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
+    pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -140,4 +141,12 @@ services:
             - '@pim_serializer'
             - %pim_catalog.entity.product.class%
         tags:
-            - { name: doctrine.event_subscriber }
+            - { name: doctrine.event_subscriber, priority: 50 }
+
+    pim_catalog.event_listener.mongodb.product_related_entity_removal:
+        class: %pim_catalog.event_listener.mongodb.product_related_entity_removal.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
+        tags:
+            - { name: doctrine.event_subscriber, priority: 100 }

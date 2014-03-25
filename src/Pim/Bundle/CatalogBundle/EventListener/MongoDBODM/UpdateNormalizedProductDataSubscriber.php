@@ -30,20 +30,20 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     protected $entityMapping = [
         'Pim\Bundle\CatalogBundle\Model\Association'       => 'Association',
         'Pim\Bundle\CatalogBundle\Model\AbstractAttribute' => 'Attribute',
-        'Pim\Bundle\CatalogBundle\Model\CategoryInterface' => 'Category',
         'Pim\Bundle\CatalogBundle\Entity\Family'           => 'Family',
-        'Pim\Bundle\CatalogBundle\Entity\Group'            => 'Group',
     ];
 
     /**
-     * Documents to update
+     * Ids of documents to update
      *
-     * @var object[]
+     * @var string[]
      */
     protected $pendingProducts = array();
 
     /**
-     * @var integer[]
+     * Ids of updated documents
+     *
+     * @var string[]
      */
     protected $updatedProducts = array();
 
@@ -110,29 +110,28 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected function scheduleRelatedProducts($entity)
     {
-        $products = $this->getRelatedProducts($entity);
-        foreach ($products as $product) {
-            $oid = spl_object_hash($product);
-            if (!isset($this->pendingProducts[$oid]) && !in_array($oid, $this->updatedProducts)) {
-                $this->pendingProducts[$oid] = $product;
+        $productIds = $this->getRelatedProductIds($entity);
+        foreach ($productIds as $id) {
+            if (!in_array($id, $this->pendingProducts) && !in_array($id, $this->updatedProducts)) {
+                $this->pendingProducts[] = $id;
             }
         }
     }
 
     /**
-     * Find products related to the entity
+     * Find ids of products related to the entity
      *
      * @param object $entity
      *
      * @return array
      */
-    protected function getRelatedProducts($entity)
+    protected function getRelatedProductIds($entity)
     {
         $repository = $this->registry->getRepository($this->productClass);
 
         foreach ($this->entityMapping as $class => $name) {
             if ($entity instanceof $class) {
-                $method = sprintf('findAllFor%s', $name);
+                $method = sprintf('findAllIdsFor%s', $name);
 
                 if (method_exists($repository, $method)) {
                     return $repository->$method($entity);
@@ -150,11 +149,14 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     {
         $manager = $this->registry->getManagerForClass($this->productClass);
 
-        foreach ($this->pendingProducts as $document) {
-            $document->setNormalizedData($this->normalizer->normalize($document, 'mongodb_json'));
-            $manager->persist($document);
+        foreach ($this->pendingProducts as $productId) {
+            $product = $manager->getRepository($this->productClass)->find($productId);
+            if ($product) {
+                $product->setNormalizedData($this->normalizer->normalize($product, 'mongodb_json'));
+                $manager->persist($product);
 
-            $this->updatedProducts[] = spl_object_hash($document);
+                $this->updatedProducts[] = $productId;
+            }
         }
 
         $this->pendingProducts = array();

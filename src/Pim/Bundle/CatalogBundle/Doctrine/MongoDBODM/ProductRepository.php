@@ -207,25 +207,39 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForFamily(Family $family)
+    public function findAllIdsForAssociation(Association $association)
     {
-        $qb = $this->createQueryBuilder('p');
-
-        $qb->field('family')->equals($family->getId());
-
-        return $qb->getQuery()->execute();
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findAllForAttribute(AbstractAttribute $attribute)
+    public function findAllIdsForAttribute(AbstractAttribute $attribute)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('values.attribute')->equals((int) $attribute->getId())
+            ->select('_id');
 
-        $qb->field('values.attribute')->equals((int) $attribute->getId());
+        $results = $qb->getQuery()->execute()->toArray();
 
-        return $qb->getQuery()->execute();
+        return array_keys($results);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllIdsForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('family')->equals($family->getId())
+            ->select('_id');
+
+        $results = $qb->getQuery()->execute()->toArray();
+
+        return array_keys($results);
     }
 
     /**
@@ -255,9 +269,84 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findAllForAssociation(Association $association)
+    public function removeFamily($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('family')->equals($id)->unsetField()
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAttribute($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.attribute')->equals($id)
+            ->field('values')->pull(['attribute' => $id])
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeCategory($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('categories')->in([$id])->pull($id)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeGroup($id)
+    {
+        return $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('groups')->in([$id])->pull($id)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAssociation($id)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removeAttributeOption($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.option')->equals($id)
+            ->field('values.$.option')->unsetField()
+            ->getQuery()
+            ->execute();
+
+        return $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.options')->in([$id])
+            ->field('values.$')->pull(['options' => $id])
+            ->getQuery()
+            ->execute();
     }
 
     /**

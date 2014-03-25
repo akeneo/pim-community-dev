@@ -47,11 +47,9 @@ class SetNormalizedProductDataSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $document = $args->getDocument();
-        if (!$document instanceof ProductInterface) {
-            return;
+        if ($document instanceof ProductInterface) {
+            $this->updateNormalizedData($document);
         }
-
-        $this->updateNormalizedData($document);
     }
 
     /**
@@ -62,15 +60,13 @@ class SetNormalizedProductDataSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $document = $args->getDocument();
-        if (!$document instanceof ProductInterface) {
-            return;
+        if ($document instanceof ProductInterface) {
+            $this->updateNormalizedData($document);
+
+            $dm       = $args->getDocumentManager();
+            $metadata = $dm->getClassMetadata(get_class($document));
+            $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($metadata, $document);
         }
-
-        $this->updateNormalizedData($document);
-
-        $dm = $args->getDocumentManager();
-        $class = $dm->getClassMetadata(get_class($document));
-        $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($class, $document);
     }
 
     /**
