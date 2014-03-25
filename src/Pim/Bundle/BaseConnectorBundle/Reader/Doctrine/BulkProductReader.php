@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Reader\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 /**
  * Reads all products at once
