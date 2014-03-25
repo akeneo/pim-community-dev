@@ -253,22 +253,6 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
     public function applyFilterByIds($qb, array $productIds, $include);
 
     /**
-     * Apply a filter by group ids
-     *
-     * @param mixed $qb       query builder to update
-     * @param array $groupIds group ids
-     */
-    public function applyFilterByGroupIds($qb, array $groupIds);
-
-    /**
-     * Apply a filter by family ids
-     *
-     * @param mixed $qb        query builder to update
-     * @param array $familyIds family ids
-     */
-    public function applyFilterByFamilyIds($qb, array $familyIds);
-
-    /**
      * Apply a filter by attribute value
      *
      * @param mixed             $qb             query builder to update

@@ -702,22 +702,6 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByGroupIds($qb, array $groupIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
