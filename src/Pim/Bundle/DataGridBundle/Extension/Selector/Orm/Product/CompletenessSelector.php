@@ -6,6 +6,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 
 /**
  * Product completeness selector
@@ -17,27 +18,14 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 class CompletenessSelector implements SelectorInterface
 {
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * @param ProductRepositoryInterface $repository
-     */
-    public function __construct(ProductRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function apply(DatasourceInterface $datasource, DatagridConfiguration $configuration)
     {
         $qb        = $datasource->getQueryBuilder();
         $joinAlias = 'selectCompleteness';
-
-        $this->repository->addCompleteness($qb, $joinAlias);
+        $util      = new CompletenessJoin($qb);
+        $util->addJoins($joinAlias);
         $qb->addSelect($joinAlias.'.ratio AS ratio');
     }
 }
