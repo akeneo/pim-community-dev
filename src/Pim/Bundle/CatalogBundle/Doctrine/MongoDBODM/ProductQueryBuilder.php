@@ -171,8 +171,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldSorter($field, $direction)
     {
         $customSorters = [
-            'family'         => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
-            'completenesses' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
+            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
+            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
         ];
 
         if (isset($customSorters[$field])) {
