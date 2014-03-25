@@ -742,14 +742,6 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function applySorterByFamily($qb, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter('family', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applySorterByCompleteness($qb, $direction)
     {
         $this->getProductQueryBuilder($qb)->addFieldSorter('completeness', $direction);
