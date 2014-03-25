@@ -1013,4 +1013,20 @@ SQL;
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where($qb->expr()->in('p.id', $productIds))
+            ->groupBy('a.id');
+
+        return $qb->getQuery()->getArrayResult();
+    }
 }
