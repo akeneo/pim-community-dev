@@ -112,7 +112,7 @@ class ProductExportController extends ExportController
         $fieldsList = $this->prepareAttributesList($attributesList);
         $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
         $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
-//         $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
+        $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
 
         return $fieldsList;
     }
