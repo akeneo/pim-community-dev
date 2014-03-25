@@ -593,6 +593,42 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
+    public function applyFilterByIds($qb, array $productIds, $include)
+    {
+        if ($include) {
+            $qb->addAnd($qb->expr()->field('id')->in($productIds));
+        } else {
+            $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByGroupIds($qb, array $groupIds)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByFamilyIds($qb, array $familyIds)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCompleteness($qb, $operator, $value)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldFilter('completenesses', $operator, $value);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
         $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
@@ -620,34 +656,6 @@ class ProductRepository extends DocumentRepository implements
     public function applySorterByCompleteness($qb, $direction)
     {
         $this->getProductQueryBuilder($qb)->addFieldSorter('completenesses', $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByIds($qb, array $productIds, $include)
-    {
-        if ($include) {
-            $qb->addAnd($qb->expr()->field('id')->in($productIds));
-        } else {
-            $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByGroupIds($qb, array $groupIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('groups', 'IN', $groupIds);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByFamilyIds($qb, array $familyIds)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter('family', 'IN', $familyIds);
     }
 
     /**
