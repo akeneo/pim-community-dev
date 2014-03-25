@@ -75,13 +75,74 @@ class ProductExportController extends ExportController
         return function () {
             flush();
 
-            $qb = $this->massActionDispatcher->dispatch($this->request);
-
-            $results = $qb->getQuery()->getResults();
-
-            echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
+            $this->quickExport();
 
             flush();
         };
+    }
+
+    protected function quickExport()
+    {
+        $productIds = $this->massActionDispatcher->dispatch($this->request);
+
+        // get attributes
+        $productRepo    = $this->productManager->getProductRepository();
+        $attributeRepo  = $this->productManager->getAttributeRepository();
+        $attributeIds   = $productRepo->getAvailableAttributeIdsToExport($productIds);
+        $attributesList = $attributeRepo->findBy(array('id' => $attributeIds));
+
+        // prepare context from attributes list
+        $fieldsList = $this->prepareFieldsList($attributesList);
+        $context    = $this->getContext() + ['fields' => $fieldsList, 'scopeCode' => 'ecommerce'];
+        // TODO: Remove hard coded scope code
+
+        // batch output to avoid memory leak
+        $offset = 0;
+        $batchSize = 100;
+        while ($productsList = array_slice($productIds, $offset, $batchSize)) {
+            $results = $productRepo->getFullProducts($productsList, $attributeIds);
+            echo $this->serializer->serialize($results, $this->getFormat(), $context);
+            $offset += $batchSize;
+            flush();
+        }
+    }
+
+    protected function prepareFieldsList(array $attributesList = array())
+    {
+        $fieldsList = $this->prepareAttributesList($attributesList);
+        $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
+        $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
+//         $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
+
+        return $fieldsList;
+    }
+
+    protected function prepareAttributesList(array $attributesList)
+    {
+        // TODO: Remove hard coded scope code
+        $scopeCode = 'ecommerce';
+
+        $localeCodes = $this->localeManager->getActiveCodes();
+        $fieldsList = array();
+        foreach ($attributesList as $attribute) {
+            $attCode = $attribute->getCode();
+            if ($attribute->isLocalizable() && $attribute->isScopable()) {
+                foreach ($localeCodes as $localeCode) {
+                    $fieldsList[] = sprintf('%s-%s-%s', $attCode, $localeCode, $scopeCode);
+                }
+            } elseif ($attribute->isLocalizable()) {
+                foreach ($localeCodes as $localeCode) {
+                    $fieldsList[] = sprintf('%s-%s', $attCode, $localeCode);
+                }
+            } elseif ($attribute->isScopable()) {
+                $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
+            } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
+                array_unshift($fieldsList, $attCode);
+            } else {
+                $fieldsList[] = $attCode;
+            }
+        }
+
+        return $fieldsList;
     }
 }

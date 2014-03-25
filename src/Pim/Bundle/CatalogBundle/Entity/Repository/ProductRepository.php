@@ -1027,6 +1027,32 @@ SQL;
             ->where($qb->expr()->in('p.id', $productIds))
             ->groupBy('a.id');
 
-        return $qb->getQuery()->getArrayResult();
+        $attributes = $qb->getQuery()->getArrayResult();
+        $attributeIds = array();
+        foreach ($attributes as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('p, f, v, pr, m, o, os')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.prices', 'pr')
+            ->leftJoin('v.media', 'm')
+            ->leftJoin('v.option', 'o')
+            ->leftJoin('v.options', 'os')
+            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->where($qb->expr()->in('p.id', $productIds))
+            ->orderBy('a.id');
+
+        // TODO: Add joins on groups/variant/association
+
+        return $qb->getQuery()->execute();
     }
 }
