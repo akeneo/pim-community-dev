@@ -690,6 +690,9 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getFullProducts(array $productIds, array $attributeIds = array())
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('_id')->in($productIds);
+
+        return $qb->getQuery()->execute();
     }
 }
