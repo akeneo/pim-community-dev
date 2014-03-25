@@ -462,6 +462,7 @@ datagrid:
             columns:
                 in_group:
                     data_name: in_group
+                    sorter:    product_in_group
                 family:
                     data_name: familyLabel
                     sorter:    product_family
