@@ -181,8 +181,17 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $field = current($this->qb->getRootAliases()).'.'.$field;
-        $this->qb->addOrderBy($field, $direction);
+        $customSorters = [
+        ];
+
+        if (isset($customSorters[$field])) {
+            $sorterClass = $customSorters[$field];
+        } else {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
+        }
+
+        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter->addFieldSorter($field, $direction);
 
         return $this;
     }
