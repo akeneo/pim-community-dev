@@ -40,13 +40,26 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->reverseTransform(30)->shouldReturn($entity);
     }
 
-    function it_transforms_values_into_ids(
+    function it_transforms_values_into_ids_string(
         \StdClass $foo,
         \StdClass $bar,
         ObjectRepository $repository,
         PropertyAccessorInterface $propertyAccessor
     ) {
         $this->beConstructedWith($repository, true, $propertyAccessor);
+        $propertyAccessor->getValue($foo, 'id')->willReturn(4);
+        $propertyAccessor->getValue($bar, 'id')->willReturn(8);
+
+        $this->transform([$foo, $bar])->shouldReturn('4,8');
+    }
+
+    function it_transforms_values_into_ids_array(
+        \StdClass $foo,
+        \StdClass $bar,
+        ObjectRepository $repository,
+        PropertyAccessorInterface $propertyAccessor
+    ) {
+        $this->beConstructedWith($repository, true, $propertyAccessor, null);
         $propertyAccessor->getValue($foo, 'id')->willReturn(4);
         $propertyAccessor->getValue($bar, 'id')->willReturn(8);
 
