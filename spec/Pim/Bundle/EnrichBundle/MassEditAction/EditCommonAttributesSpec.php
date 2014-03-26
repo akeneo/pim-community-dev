@@ -28,8 +28,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Locale $en,
         Locale $de,
         AttributeRepository $attributeRepository,
-        ProductValue $productValue,
-        ProductRepositoryInterface $productRepository
+        ProductValue $productValue
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
@@ -44,9 +43,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productValue->setScope(Argument::any())->willReturn($productValue);
         $productValue->addPrice(Argument::any())->willReturn($productValue);
 
-        $productRepository->implement('Doctrine\Common\Persistence\ObjectRepository');
         $productManager->getAttributeRepository()->willReturn($attributeRepository);
-        $productManager->getProductRepository()->willReturn($productRepository);
 
         $this->beConstructedWith($productManager, $userContext, $currencyManager);
     }
@@ -110,8 +107,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Attribute $name,
         $productManager
     ) {
-        $productIds = array(1, 2);
-        $productRepository->findBy(array('id' => $productIds))->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
@@ -123,9 +119,9 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes($productIds)->willReturn([$name]);
+        $productManager->findCommonAttributes([1, 2])->willReturn([$name]);
 
-        $this->initialize($productIds);
+        $this->initialize();
 
         $this->getCommonAttributes()->shouldReturn([$name]);
         $this->getValues()->shouldHaveCount(1);
@@ -140,8 +136,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productManager,
         $productValue
     ) {
-        $productIds = array(1, 2);
-        $productRepository->findBy(array('id' => $productIds))->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
@@ -153,16 +148,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attribute');
         $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes($productIds)->willReturn([$attribute]);
+        $productManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
 
-        $this->initialize($productIds);
+        $this->initialize([1, 2]);
         $this->setDisplayedAttributes(new ArrayCollection([$attribute]));
 
         $this->getValues()->shouldHaveCount(1);
 
         $productManager->handleAllMedia([$product1, $product2])->shouldBeCalled();
 
-        $this->perform($productIds);
+        $this->perform();
     }
 }

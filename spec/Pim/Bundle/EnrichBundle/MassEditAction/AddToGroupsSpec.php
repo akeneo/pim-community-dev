@@ -15,13 +15,11 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 class AddToGroupsSpec extends ObjectBehavior
 {
     function let(
-        ProductRepositoryInterface $productRepository,
         GroupRepository $groupRepository,
         Group $shirts,
         Group $pants
     ) {
-        $productRepository->implement('Doctrine\Common\Persistence\ObjectRepository');
-        $this->beConstructedWith($productRepository, $groupRepository);
+        $this->beConstructedWith($groupRepository);
     }
 
     function it_is_a_mass_edit_action()
@@ -58,7 +56,6 @@ class AddToGroupsSpec extends ObjectBehavior
     }
 
     function it_adds_products_to_groups_when_performimg_the_operation(
-        $productRepository,
         AbstractQuery $query,
         ProductInterface $product1,
         ProductInterface $product2,
