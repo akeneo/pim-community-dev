@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType;
 
 /**
  * Batch operation to classify products
@@ -80,7 +79,7 @@ class Classify extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new ClassifyType();
+        return 'pim_enrich_mass_classify';
     }
 
     /**

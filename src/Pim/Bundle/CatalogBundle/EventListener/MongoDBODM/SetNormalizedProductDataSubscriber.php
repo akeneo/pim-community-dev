@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetProductNormalizedDataSubscriber implements EventSubscriber
+class SetNormalizedProductDataSubscriber implements EventSubscriber
 {
     /** @var NormalizerInterface */
     protected $normalizer;
@@ -47,11 +47,9 @@ class SetProductNormalizedDataSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $document = $args->getDocument();
-        if (!$document instanceof ProductInterface) {
-            return;
+        if ($document instanceof ProductInterface) {
+            $this->updateNormalizedData($document);
         }
-
-        $this->updateNormalizedData($document);
     }
 
     /**
@@ -62,15 +60,13 @@ class SetProductNormalizedDataSubscriber implements EventSubscriber
     public function preUpdate(LifecycleEventArgs $args)
     {
         $document = $args->getDocument();
-        if (!$document instanceof ProductInterface) {
-            return;
+        if ($document instanceof ProductInterface) {
+            $this->updateNormalizedData($document);
+
+            $dm       = $args->getDocumentManager();
+            $metadata = $dm->getClassMetadata(get_class($document));
+            $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($metadata, $document);
         }
-
-        $this->updateNormalizedData($document);
-
-        $dm = $args->getDocumentManager();
-        $class = $dm->getClassMetadata(get_class($document));
-        $dm->getUnitOfWork()->recomputeSingleDocumentChangeSet($class, $document);
     }
 
     /**

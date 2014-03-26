@@ -17,7 +17,7 @@ class MetricProperty extends TwigProperty
     protected function convertValue($value)
     {
         $result = $this->getBackendData($value);
-        $data   = $result['data'];
+        $data   = isset($result['data']) ? $result['data'] : null;
         $unit   = $result['unit'];
 
         if ($data && $unit) {

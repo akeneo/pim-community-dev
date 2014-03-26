@@ -27,7 +27,7 @@ class ChangeFamilySpec extends ObjectBehavior
 
     function it_provides_a_form_type()
     {
-        $this->getFormType()->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType');
+        $this->getFormType()->shouldReturn('pim_enrich_mass_change_family');
     }
 
     function it_adds_products_to_the_selected_family_when_performimg_the_operation(

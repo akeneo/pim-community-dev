@@ -15,6 +15,17 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  */
 class ClassifyType extends AbstractType
 {
+    /** @var string */
+    protected $categoryClass;
+
+    /**
+     * @param string $categoryClass
+     */
+    public function __construct($categoryClass)
+    {
+        $this->categoryClass = $categoryClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,7 +36,7 @@ class ClassifyType extends AbstractType
                 'trees',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'PimCatalogBundle:Category',
+                    'class'    => $this->categoryClass,
                     'required' => false,
                     'mapped'   => false,
                     'multiple' => true,
@@ -37,7 +48,7 @@ class ClassifyType extends AbstractType
                 'categories',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'PimCatalogBundle:Category',
+                    'class'    => $this->categoryClass,
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,
@@ -62,6 +73,6 @@ class ClassifyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_operation_classify';
+        return 'pim_enrich_mass_classify';
     }
 }

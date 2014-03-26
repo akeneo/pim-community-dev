@@ -68,7 +68,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         'Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution',
         'Oro\\Bundle\\UserBundle\\Entity\\User',
         'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Attribute',
         'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
     );
 

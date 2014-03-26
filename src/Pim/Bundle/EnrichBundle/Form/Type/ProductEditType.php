@@ -26,16 +26,21 @@ class ProductEditType extends AbstractType
     /** @var FamilyRepository */
     protected $repository;
 
+    /** @var string */
+    protected $categoryClass;
+
     /**
      * Constructor
      *
      * @param ProductFormView  $productFormView
      * @param FamilyRepository $repository
+     * @param string           $categoryClass
      */
-    public function __construct(ProductFormView $productFormView, FamilyRepository $repository)
+    public function __construct(ProductFormView $productFormView, FamilyRepository $repository, $categoryClass)
     {
         $this->productFormView = $productFormView;
         $this->repository      = $repository;
+        $this->categoryClass   = $categoryClass;
     }
 
     /**
@@ -89,7 +94,7 @@ class ProductEditType extends AbstractType
                 'categories',
                 'oro_entity_identifier',
                 array(
-                    'class'    => 'PimCatalogBundle:Category',
+                    'class'    => $this->categoryClass,
                     'required' => true,
                     'mapped'   => true,
                     'multiple' => true,

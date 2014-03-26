@@ -39,7 +39,8 @@ class ObjectMapper extends OroObjectMapper
     {
         $driver = $this->container->getParameter('pim_catalog.storage_driver');
         if ('doctrine/mongodb-odm' === $driver) {
-            unset($this->mappingConfig['Pim\Bundle\CatalogBundle\Model\Product']);
+            $productClass = $this->container->getParameter('pim_catalog.entity.product.class');
+            unset($this->mappingConfig[$productClass]);
         }
 
         return array_keys($this->mappingConfig);

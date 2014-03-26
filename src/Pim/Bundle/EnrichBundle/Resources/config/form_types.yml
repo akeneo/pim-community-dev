@@ -13,6 +13,7 @@ services:
         arguments:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.repository.family'
+            - %pim_catalog.entity.category.class%
         tags:
             - { name: form.type, alias: pim_product_edit }
 
@@ -110,6 +111,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.helper.locale'
             - '@pim_enrich.provider.colors'
+            - %pim_catalog.entity.category.class%
         tags:
             - { name: form.type, alias: pim_enrich_channel }
 
@@ -119,20 +121,6 @@ services:
             - '@pim_catalog.helper.locale'
         tags:
             - { name: form.type, alias: pim_enrich_currency }
-
-    pim_enrich.form.type.edit_common_attributes:
-        class: %pim_enrich.form.type.edit_common_attributes.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.helper.locale'
-            - %pim_catalog.entity.attribute.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
-
-    pim_enrich.form.type.add_to_groups:
-        class: %pim_enrich.form.type.add_to_groups.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_add_to_groups }
 
     pim_enrich.form.type.localized_collection:
         class: %pim_enrich.form.type.localized_collection.class%
@@ -217,6 +205,38 @@ services:
         class: %pim_enrich.form.type.attribute_property_options.class%
         tags:
             - { name: form.type, alias: pim_enrich_options }
+
+    # Mass edit form types
+    pim_enrich.form.type.edit_common_attributes:
+        class: %pim_enrich.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
+
+    pim_enrich.form.type.add_to_groups:
+        class: %pim_enrich.form.type.add_to_groups.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_add_to_groups }
+
+    pim_enrich.form.type.change_family:
+        class: %pim_enrich.form.type.change_family.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_change_family }
+
+    pim_enrich.form.type.change_status:
+        class: %pim_enrich.form.type.change_status.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_change_status }
+
+    pim_enrich.form.type.classify:
+        class: %pim_enrich.form.type.classify.class%
+        arguments:
+            - %pim_catalog.entity.category.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_classify }
 
     # Subscribers
     pim_enrich.form.subscriber.attribute:
