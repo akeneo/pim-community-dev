@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -9,12 +10,14 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class AddToGroupsSpec extends ObjectBehavior
 {
-    function let(EntityManager $em, Group $shirts, Group $pants)
+    function let(ProductRepositoryInterface $productRepository, EntityManager $em, Group $shirts, Group $pants)
     {
-        $this->beConstructedWith($em);
+        $productRepository->implement('Doctrine\Common\Persistence\ObjectRepository');
+        $this->beConstructedWith($productRepository, $em);
     }
 
     function it_is_a_mass_edit_action()
@@ -52,15 +55,15 @@ class AddToGroupsSpec extends ObjectBehavior
     }
 
     function it_adds_products_to_groups_when_performimg_the_operation(
-        QueryBuilder $qb,
+        $productRepository,
         AbstractQuery $query,
         ProductInterface $product1,
         ProductInterface $product2,
         $shirts,
         $pants
     ) {
-        $qb->getQuery()->willReturn($query);
-        $query->getResult()->willReturn([$product1, $product2]);
+        $productIds = array(1, 2);
+        $productRepository->findBy(array('id' => $productIds))->willReturn([$product1, $product2]);
 
         $this->setGroups([$shirts, $pants]);
 
@@ -69,6 +72,6 @@ class AddToGroupsSpec extends ObjectBehavior
         $pants->addProduct($product1)->shouldBeCalled();
         $pants->addProduct($product2)->shouldBeCalled();
 
-        $this->perform($qb);
+        $this->perform($productIds);
     }
 }

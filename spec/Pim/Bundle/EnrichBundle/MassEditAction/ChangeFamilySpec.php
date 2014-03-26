@@ -7,9 +7,16 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class ChangeFamilySpec extends ObjectBehavior
 {
+    function let(ProductRepositoryInterface $productRepository)
+    {
+        $productRepository->implement('Doctrine\Common\Persistence\ObjectRepository');
+        $this->beConstructedWith($productRepository);
+    }
+
     function it_is_a_mass_edit_action()
     {
         $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
@@ -31,20 +38,20 @@ class ChangeFamilySpec extends ObjectBehavior
     }
 
     function it_adds_products_to_the_selected_family_when_performimg_the_operation(
-        QueryBuilder $qb,
+        $productRepository,
         AbstractQuery $query,
         Family $mugs,
-        ProductInterface $product2,
-        ProductInterface $product1
+        ProductInterface $product1,
+        ProductInterface $product2
     ) {
-        $qb->getQuery()->willReturn($query);
-        $query->getResult()->willReturn([$product1, $product2]);
+        $productIds = array(1, 3);
+        $productRepository->findBy(array('id' => $productIds))->willReturn([$product1, $product2]);
 
         $this->setFamily($mugs);
 
         $product1->setFamily($mugs)->shouldBeCalled();
         $product2->setFamily($mugs)->shouldBeCalled();
 
-        $this->perform($qb);
+        $this->perform($productIds);
     }
 }
