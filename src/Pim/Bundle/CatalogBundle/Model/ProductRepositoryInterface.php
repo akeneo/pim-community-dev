@@ -335,4 +335,23 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      * @return mixed
      */
     public function getByIdsQB(array $productIds);
+
+    /**
+     * Find all common attributes ids linked to a family
+     * A list of product ids can be passed as parameter
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
+    public function findFamilyCommonAttributeIds(array $productIds);
+
+    /**
+     * Find all common attribute ids with values from a list of product ids
+     *
+     * @param array $productIds
+     *
+     * @return mixed
+     */
+    public function findValuesCommonAttributeIds(array $productIds);
 }

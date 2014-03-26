@@ -886,4 +886,20 @@ class ProductRepository extends DocumentRepository implements
 
         return $qb;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findFamilyCommonAttributeIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findValuesCommonAttributeIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }
