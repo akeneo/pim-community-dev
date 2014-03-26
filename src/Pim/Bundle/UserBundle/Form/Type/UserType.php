@@ -3,6 +3,8 @@
 namespace Pim\Bundle\UserBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\UserBundle\Form\Type\UserType as OroUserType;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 
@@ -15,6 +17,24 @@ use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
  */
 class UserType extends OroUserType
 {
+    /** @var UserPreferencesSubscriber */
+    protected $subscriber;
+
+    /**
+     * @param SecurityContextInterface  $security
+     * @param Request                   $request
+     * @param UserPreferencesSubscriber $subscriber
+     */
+    public function __construct(
+        SecurityContextInterface $security,
+        Request $request,
+        UserPreferencesSubscriber $subscriber
+    ) {
+        parent::__construct($security, $request);
+
+        $this->subscriber = $subscriber;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,6 +42,6 @@ class UserType extends OroUserType
     {
         parent::buildForm($builder, $options);
 
-        $builder->addEventSubscriber(new UserPreferencesSubscriber());
+        $builder->addEventSubscriber($this->subscriber);
     }
 }

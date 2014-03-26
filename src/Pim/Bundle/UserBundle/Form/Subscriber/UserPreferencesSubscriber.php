@@ -18,6 +18,19 @@ use Doctrine\ORM\EntityRepository;
 class UserPreferencesSubscriber implements EventSubscriberInterface
 {
     /**
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
+     * @param string $categoryClass
+     */
+    public function __construct($categoryClass)
+    {
+        $this->categoryClass = $categoryClass;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getSubscribedEvents()
@@ -98,7 +111,7 @@ class UserPreferencesSubscriber implements EventSubscriberInterface
             'defaultTree',
             'entity',
             array(
-                'class'         => 'PimCatalogBundle:Category',
+                'class'         => $this->categoryClass,
                 'property'      => 'label',
                 'select2'       => true,
                 'query_builder' => function (EntityRepository $repository) {
