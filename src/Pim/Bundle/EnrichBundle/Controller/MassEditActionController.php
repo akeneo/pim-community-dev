@@ -12,8 +12,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormError;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query\Expr\From;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
