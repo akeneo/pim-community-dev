@@ -20,6 +20,11 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 class EditMassActionHandler implements MassActionHandlerInterface
 {
     /**
+     * @var HydratorInterface $hydrator
+     */
+    protected $hydrator;
+
+    /**
      * @var EventDispatcher $eventDispatcher
      */
     protected $eventDispatcher;
@@ -27,10 +32,13 @@ class EditMassActionHandler implements MassActionHandlerInterface
     /**
      * Constructor
      *
+     * @param HydratorInterface        $hydrator
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        HydratorInterface $hydrator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -43,12 +51,16 @@ class EditMassActionHandler implements MassActionHandlerInterface
         $massActionEvent = new MassActionEvent($datagrid, $massAction, array());
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_EDIT_PRE_HANDLER, $massActionEvent);
 
-        $qb = $datagrid->getDatasource()->getQueryBuilder();
+        $datasource = $datagrid->getDatasource();
+        $datasource->setHydrator($this->hydrator);
+
+        // hydrator uses index by id
+        $objectIds = $datasource->getResults();
 
         // dispatch post handler event
         $massActionEvent = new MassActionEvent($datagrid, $massAction, array());
         $this->eventDispatcher->dispatch(MassActionEvents::MASS_EDIT_POST_HANDLER, $massActionEvent);
 
-        return $qb;
+        return $objectIds;
     }
 }
