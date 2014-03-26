@@ -217,9 +217,9 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $productIds)
+    public function initialize()
     {
-        $this->initializeCommonAttributes($productIds);
+        $this->initializeCommonAttributes(array()); //TODO: fix!
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
@@ -231,10 +231,9 @@ class EditCommonAttributes extends AbstractMassEditAction
      *
      * TODO: Check with MongoDB implementation
      */
-    public function perform(array $productIds)
+    public function perform()
     {
-        $products = $this->productManager->getProductRepository()->findBy(array('id' => $productIds));
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $this->setProductValues($product);
         }
         $this->productManager->handleAllMedia($products);

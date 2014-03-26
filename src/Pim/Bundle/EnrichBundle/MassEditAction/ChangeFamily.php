@@ -73,10 +73,9 @@ class ChangeFamily extends AbstractMassEditAction
      *
      * TODO: Check with MongoDB implementation
      */
-    public function perform(array $productIds)
+    public function perform()
     {
-        $products = $this->productRepository->findBy(array('id' => $productIds));
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $product->setFamily($this->family);
         }
     }

@@ -51,8 +51,8 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ProductRepositoryInterface $productRepository */
     protected $productRepository;
 
-    /** @var array */
-    protected $objectIds;
+    /** @var array $products */
+    protected $products = null;
 
     /**
      * Constructor
@@ -130,7 +130,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         return array(
             'form'         => $form->createView(),
-            'productCount' => $this->getProductCount(),
+            'productCount' => $this->getProductsCount(false),
             'queryParams'  => $this->getQueryParams()
         );
     }
@@ -144,22 +144,24 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        try {
-            $this->operator->setOperationAlias($operationAlias);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
         if ($this->exceedMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getObjectsToMassEdit());
+        try {
+            $this->operator
+                ->setOperationAlias($operationAlias)
+                ->setProductsToMassEdit($this->getProducts());
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createNotFoundException($e->getMessage(), $e);
+        }
+
+        $this->operator->initializeOperation();
         $form = $this->getOperatorForm();
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $this->operator->initializeOperation($this->getObjectsToMassEdit());
+            $this->operator->initializeOperation();
             $form = $this->getOperatorForm();
         }
 
@@ -168,7 +170,7 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $this->getProductCount(),
+                'productCount' => $this->getProductsCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
@@ -183,22 +185,24 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        try {
-            $this->operator->setOperationAlias($operationAlias);
-        } catch (\InvalidArgumentException $e) {
-            throw $this->createNotFoundException($e->getMessage(), $e);
-        }
-
         if ($this->exceedMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getObjectsToMassEdit());
+        try {
+            $this->operator
+                ->setOperationAlias($operationAlias)
+                ->setProductsToMassEdit($this->getProducts());
+        } catch (\InvalidArgumentException $e) {
+            throw $this->createNotFoundException($e->getMessage(), $e);
+        }
+
+        $this->operator->initializeOperation();
         $form = $this->getOperatorForm();
         $form->submit($this->request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($this->getObjectsToMassEdit());
+        $this->operator->performOperation();
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -211,7 +215,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->operator->finalizeOperation($this->getObjectsToMassEdit());
+            $this->operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
@@ -225,7 +229,7 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $productCount,
+                'productCount' => $this->getProductsCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
@@ -240,8 +244,8 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function exceedMassEditLimit()
     {
-        $productCount = $this->getProductCount($this->request);
-        if ($exceed = ($productCount > $this->massEditLimit)) {
+        $productsCount = $this->getProductsCount($this->request);
+        if ($exceed = ($productsCount > $this->massEditLimit)) {
             $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
         }
 
@@ -265,9 +269,9 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return integer
      */
-    protected function getProductCount()
+    protected function getProductsCount($setProducts = true)
     {
-        return count($this->getObjectsToMassEdit());
+        return count($this->getProducts());
     }
 
     /**
@@ -289,16 +293,19 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * Get objects to mass edit
-     *
-     * @return array
+     * Dispatch mass action
      */
-    protected function getObjectsToMassEdit()
+    protected function dispatchMassAction()
     {
-        if (null === $this->objectIds) {
-            $this->objectIds = $this->massActionDispatcher->dispatch($this->request);
+        $this->products = $this->massActionDispatcher->dispatch($this->request);
+    }
+
+    protected function getProducts()
+    {
+        if ($this->products === null) {
+            $this->dispatchMassAction();
         }
 
-        return $this->objectIds;
+        return $this->products;
     }
 }

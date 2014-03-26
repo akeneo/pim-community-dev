@@ -12,6 +12,11 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 abstract class AbstractMassEditAction implements MassEditActionInterface
 {
     /**
+     * @var array $products
+     */
+    protected $products;
+
+    /**
      * {@inheritdoc}
      */
     public function getFormOptions()
@@ -22,7 +27,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $productIds)
+    public function initialize()
     {
     }
 
@@ -50,5 +55,27 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
         }
 
         return $parameters[$key];
+    }
+
+    /**
+     * Set products to mass edit
+     *
+     * @param array $products
+     *
+     * @return MassEditActionInterface
+     */
+    public function setProductsToMassEdit(array $products)
+    {
+        $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductsToMassEdit()
+    {
+        return $this->products;
     }
 }

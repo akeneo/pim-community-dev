@@ -113,6 +113,20 @@ class MassEditActionOperator
     }
 
     /**
+     * Set products to mass edit
+     *
+     * @param array $products
+     *
+     * @return MassEditActionOperator
+     */
+    public function setProductsToMassEdit(array $products)
+    {
+        $this->operation->setProductsToMassEdit($products);
+
+        return $this;
+    }
+
+    /**
      * Set the batch operation alias
      * (Also set the batch operation if the alias is registered
      *
@@ -150,39 +164,38 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param array $products
      */
-    public function initializeOperation(array $productIds)
+    public function initializeOperation()
     {
         if ($this->operation) {
-            $this->operation->initialize($productIds);
+            $this->operation->initialize();
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param array $productIds
+     * @param array $products
      */
-    public function performOperation(array $productIds)
+    public function performOperation()
     {
         set_time_limit(0);
         if ($this->operation) {
-            $this->operation->perform($productIds);
+            $this->operation->perform();
         }
     }
 
     /**
      * Finalize the batch operation - flush the products
      *
-     * @param mixed $qb
+     * @param array $products
      */
-    public function finalizeOperation($productIds)
+    public function finalizeOperation()
     {
         set_time_limit(0);
 
-        $productRepo = $this->manager->getProductRepository();
-        $products    = $productRepo->findBy(array('id' => $productIds));
+        $products = $this->operation->getProductsToMassEdit();
 
         $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
         $this->manager->saveAll($products, false, true, $scheduleCompleteness);

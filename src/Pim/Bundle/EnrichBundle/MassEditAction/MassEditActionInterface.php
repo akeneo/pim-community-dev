@@ -28,16 +28,16 @@ interface MassEditActionInterface
     /**
      * Initialize the operation with the products
      *
-     * @param array $productIds
+     * @param array $products
      */
-    public function initialize(array $productIds);
+    public function initialize();
 
     /**
      * Perform an operation on a set of products
      *
-     * @param array $productIds
+     * @param array $products
      */
-    public function perform(array $productIds);
+    public function perform();
 
     /**
      * Indicates whether the operation requires recalculation of the product completeness

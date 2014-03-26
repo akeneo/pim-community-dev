@@ -87,10 +87,9 @@ class Classify extends AbstractMassEditAction
      *
      * TODO: Check with MongoDB implementation
      */
-    public function perform(array $productIds)
+    public function perform()
     {
-        $products = $this->manager->getProductRepository()->findBy(array('id' => $productIds));
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             foreach ($this->getCategories() as $category) {
                 $product->addCategory($category);
             }
