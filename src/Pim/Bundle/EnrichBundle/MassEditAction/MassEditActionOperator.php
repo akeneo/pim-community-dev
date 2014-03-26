@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -151,9 +150,9 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param QueryBuilder $qb
+     * @param mixed $qb
      */
-    public function initializeOperation(QueryBuilder $qb)
+    public function initializeOperation($qb)
     {
         if ($this->operation) {
             $this->operation->initialize($qb);
@@ -163,9 +162,9 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param QueryBuilder $qb
+     * @param mixed $qb
      */
-    public function performOperation(QueryBuilder $qb)
+    public function performOperation($qb)
     {
         set_time_limit(0);
         if ($this->operation) {
@@ -176,9 +175,9 @@ class MassEditActionOperator
     /**
      * Finalize the batch operation - flush the products
      *
-     * @param QueryBuilder $qb
+     * @param mixed $qb
      */
-    public function finalizeOperation(QueryBuilder $qb)
+    public function finalizeOperation($qb)
     {
         set_time_limit(0);
         $products = $qb->getQuery()->getResult();
