@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType;
 
 /**
  * Batch operation to change the family of products
@@ -51,7 +50,7 @@ class ChangeFamily extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new ChangeFamilyType();
+        return 'pim_enrich_mass_change_family';
     }
 
     /**

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType;
 
 /**
  * Batch operation to change products status
@@ -44,7 +43,7 @@ class ChangeStatus extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new ChangeStatusType();
+        return 'pim_enrich_mass_change_status';
     }
 
     /**

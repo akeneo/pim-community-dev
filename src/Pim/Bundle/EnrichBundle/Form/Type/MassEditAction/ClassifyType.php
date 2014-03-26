@@ -62,6 +62,6 @@ class ClassifyType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enrich_operation_classify';
+        return 'pim_enrich_mass_classify';
     }
 }
