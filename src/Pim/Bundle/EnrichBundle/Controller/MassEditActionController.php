@@ -315,6 +315,8 @@ class MassEditActionController extends AbstractDoctrineController
 
     /**
      * Get objects to mass edit
+     *
+     * @return array
      */
     protected function getObjectsToMassEdit()
     {
