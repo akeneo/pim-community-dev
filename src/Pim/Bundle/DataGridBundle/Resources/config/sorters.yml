@@ -4,6 +4,7 @@ parameters:
     pim_datagrid.extension.sorter.product.value_sorter.class:        Pim\Bundle\DataGridBundle\Extension\Sorter\Product\ValueSorter
     pim_datagrid.extension.sorter.product.completeness_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Product\CompletenessSorter
     pim_datagrid.extension.sorter.product.family_sorter.class:       Pim\Bundle\DataGridBundle\Extension\Sorter\Product\FamilySorter
+    pim_datagrid.extension.sorter.product.in_group_sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\Product\InGroupSorter
 
 services:
     pim_datagrid.extension.sorter.orm.field_sorter:
@@ -39,3 +40,10 @@ services:
             - '@pim_catalog.repository.product'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_family }
+
+    pim_datagrid.extension.sorter.product.in_group_sorter:
+        class: %pim_datagrid.extension.sorter.product.in_group_sorter.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: product_in_group }
