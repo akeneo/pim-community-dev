@@ -30,7 +30,6 @@ class InGroupFilter extends ChoiceFilter
 
         $repository = $this->util->getProductRepository();
         // TODO : to-implement for MongoDB / refactor for ORM
-
         return true;
     }
 }
