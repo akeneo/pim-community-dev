@@ -219,7 +219,11 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function initialize()
     {
-        $this->initializeCommonAttributes(array()); //TODO: fix!
+        $productIds = array();
+        foreach ($this->products as $product) {
+            $productIds[] = $product->getId();
+        }
+        $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
             $this->addValues($attribute);
