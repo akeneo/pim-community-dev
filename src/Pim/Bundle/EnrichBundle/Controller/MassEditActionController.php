@@ -51,9 +51,6 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var ProductRepositoryInterface $productRepository */
     protected $productRepository;
 
-    /** @var \Doctrine\ORM\QueryBuilder */
-    protected $gridQB;
-
     /** @var array */
     protected $objectIds;
 
@@ -157,12 +154,12 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getGridQB());
+        $this->operator->initializeOperation($this->getObjectsToMassEdit());
         $form = $this->getOperatorForm();
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $this->operator->initializeOperation($this->getGridQB());
+            $this->operator->initializeOperation($this->getObjectsToMassEdit());
             $form = $this->getOperatorForm();
         }
 
@@ -196,12 +193,12 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $this->operator->initializeOperation($this->getGridQB());
+        $this->operator->initializeOperation($this->getObjectsToMassEdit());
         $form = $this->getOperatorForm();
         $form->submit($this->request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($this->getGridQB());
+        $this->operator->performOperation($this->getObjectsToMassEdit());
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -214,7 +211,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->operator->finalizeOperation($this->getGridQB());
+            $this->operator->finalizeOperation($this->getObjectsToMassEdit());
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
@@ -289,24 +286,6 @@ class MassEditActionController extends AbstractDoctrineController
         $params['dataLocale'] = $this->request->get('dataLocale', null);
 
         return $params;
-    }
-
-    /**
-     * Get the query builder with grid parameters applied
-     *
-     * @return mixed
-     *
-     * @deprecated
-     */
-    protected function getGridQB()
-    {
-        if (null === $this->gridQB) {
-            $objectIds = $this->getObjectsToMassEdit();
-
-            $this->gridQB = $this->productRepository->getByIdsQB($objectIds);
-        }
-
-        return $this->gridQB;
     }
 
     /**
