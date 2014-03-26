@@ -31,6 +31,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         'Pim\Bundle\CatalogBundle\Model\Association'       => 'Association',
         'Pim\Bundle\CatalogBundle\Model\AbstractAttribute' => 'Attribute',
         'Pim\Bundle\CatalogBundle\Entity\Family'           => 'Family',
+        'Pim\Bundle\CatalogBundle\Entity\Channel'          => 'Channel',
     ];
 
     /**

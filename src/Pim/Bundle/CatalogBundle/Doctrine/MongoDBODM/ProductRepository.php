@@ -358,6 +358,21 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @param integer $id
+     */
+    public function cascadeChannelRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('completenesses.channel')->equals($id)
+            ->field('completenesses')->pull(['channel' => $id])
+            ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function findByExistingFamily()

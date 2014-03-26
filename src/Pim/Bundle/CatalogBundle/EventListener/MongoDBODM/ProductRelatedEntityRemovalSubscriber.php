@@ -30,6 +30,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
         'Pim\Bundle\CatalogBundle\Model\CategoryInterface' => 'Category',
         'Pim\Bundle\CatalogBundle\Entity\Family'           => 'Family',
         'Pim\Bundle\CatalogBundle\Entity\Group'            => 'Group',
+        'Pim\Bundle\CatalogBundle\Entity\Channel'          => 'Channel',
     ];
 
     /**
