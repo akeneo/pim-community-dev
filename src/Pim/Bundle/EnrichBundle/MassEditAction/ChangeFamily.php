@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Batch operation to change the family of products
@@ -16,21 +15,6 @@ class ChangeFamily extends AbstractMassEditAction
 {
     /** @var Family $family The family to change the product family to */
     protected $family;
-
-    /**
-     * @var ProductRepositoryInterface $productRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Constructor
-     *
-     * @param ProductRepositoryInterface $productRepository
-     */
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
 
     /**
      * {@inheritdoc}
@@ -70,8 +54,6 @@ class ChangeFamily extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Check with MongoDB implementation
      */
     public function perform()
     {

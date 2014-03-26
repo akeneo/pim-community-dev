@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
@@ -15,11 +14,6 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
  */
 class AddToGroups extends AbstractMassEditAction
 {
-    /**
-     * @var ProductRepositoryInterface $productRepository
-     */
-    protected $productRepository;
-
     /**
      * @var GroupRepository $groupRepository
      */
@@ -33,12 +27,10 @@ class AddToGroups extends AbstractMassEditAction
     /**
      * Constructor
      *
-     * @param ProductRepositoryInterface $productRepository
      * @param GroupRepository            $groupRepository
      */
-    public function __construct(ProductRepositoryInterface $productRepository, GroupRepository $groupRepository)
+    public function __construct(GroupRepository $groupRepository)
     {
-        $this->productRepository = $productRepository;
         $this->groupRepository   = $groupRepository;
         $this->groups            = new ArrayCollection();
     }

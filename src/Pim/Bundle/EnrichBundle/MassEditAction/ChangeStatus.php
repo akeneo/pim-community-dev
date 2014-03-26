@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
-
 /**
  * Batch operation to change products status
  *
@@ -13,21 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
  */
 class ChangeStatus extends AbstractMassEditAction
 {
-    /**
-     * @var ProductRepositoryInterface $productRepository
-     */
-    protected $productRepository;
-
-    /**
-     * Constructor
-     *
-     * @param ProductRepositoryInterface $productRepository
-     */
-    public function __construct(ProductRepositoryInterface $productRepository)
-    {
-        $this->productRepository = $productRepository;
-    }
-
     /**
      * Whether or not to enable products
      * @var boolean $toEnable

@@ -18,8 +18,6 @@ services:
     pim_enrich.mass_edit_action.change_status:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: change-status, acl: pim_enrich_product_change_state }
 
@@ -37,7 +35,6 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
         arguments:
-            - '@pim_catalog.manager.product'
             - '@pim_catalog.manager.category'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: classify, acl: pim_enrich_product_categories_view }
@@ -45,15 +42,12 @@ services:
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
-        arguments:
-            - '@pim_catalog.repository.product'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: change-family, acl: pim_enrich_product_change_family }
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
         arguments:
-            - '@pim_catalog.repository.product'
             - '@pim_catalog.repository.group'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: add-to-groups, acl: pim_enrich_product_add_to_groups }

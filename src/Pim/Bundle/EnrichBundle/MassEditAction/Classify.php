@@ -15,11 +15,6 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 class Classify extends AbstractMassEditAction
 {
     /**
-     * @var ProductManager $manager
-     */
-    protected $manager;
-
-    /**
      * @var CategoryManager $categoryManager
      */
     protected $categoryManager;
@@ -35,12 +30,10 @@ class Classify extends AbstractMassEditAction
     protected $categories;
 
     /**
-     * @param ProductManager  $manager
      * @param CategoryManager $categoryManager
      */
-    public function __construct(ProductManager $manager, CategoryManager $categoryManager)
+    public function __construct(CategoryManager $categoryManager)
     {
-        $this->manager         = $manager;
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
         $this->categories      = array();
@@ -84,8 +77,6 @@ class Classify extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Check with MongoDB implementation
      */
     public function perform()
     {
