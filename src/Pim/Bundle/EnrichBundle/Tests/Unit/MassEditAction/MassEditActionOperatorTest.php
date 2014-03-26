@@ -94,11 +94,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
         $this->operator->registerMassEditAction('foo', $operation);
         $this->operator->setOperationAlias('foo');
 
-        $operation->expects($this->once())
-            ->method('perform')
-            ->with($this->getQueryBuilderMock());
-
-        $this->operator->performOperation($this->getQueryBuilderMock());
+        $this->operator->performOperation();
     }
 
     /**
@@ -110,11 +106,7 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
         $this->operator->registerMassEditAction('foo', $operation);
         $this->operator->setOperationAlias('foo');
 
-        $operation->expects($this->once())
-            ->method('initialize')
-            ->with($this->getQueryBuilderMock());
-
-        $this->operator->initializeOperation($this->getQueryBuilderMock());
+        $this->operator->initializeOperation();
     }
 
     /**
@@ -127,10 +119,6 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $manager->expects($this->any())
-            ->method('findByIds')
-            ->will($this->returnArgument(0));
-
         return $manager;
     }
 
@@ -140,17 +128,6 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     protected function getMassEditActionMock()
     {
         return $this->getMock('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
-    }
-
-    /**
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getQueryBuilderMock()
-    {
-        return $this
-            ->getMockBuilder('Doctrine\ORM\QueryBuilder')
-            ->disableOriginalConstructor()
-            ->getMock();
     }
 
     /**
