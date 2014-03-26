@@ -272,17 +272,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function getProductCount()
     {
-        $qb = clone $this->getGridQB();
-        $rootEntity = current($qb->getRootEntities());
-        $rootAlias  = $qb->getRootAlias();
-        $rootField  = $rootAlias.'.id';
-        $qb->resetDQLPart('select');
-        $qb->select($rootField);
-        $qb->add('from', new From($rootEntity, $rootAlias), false);
-        $qb->groupBy($rootField);
-        $ids = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
-
-        return count($ids);
+        return count($this->getObjectsToMassEdit());
     }
 
     /**
@@ -306,18 +296,32 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Get the query builder with grid parameters applied
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return mixed
      *
      * @deprecated
      */
     protected function getGridQB()
     {
         if (null === $this->gridQB) {
-            $qb = $this->massActionDispatcher->dispatch($this->request);
+            $objectIds = $this->getObjectsToMassEdit();
 
-            $this->gridQB = $qb;
+            // TODO: Must be changed for MongoDB
+            $this->gridQB = $this->productRepository->createQueryBuilder('p');
+            $this->gridQB->where($this->gridQB->expr()->in('id', $objectIds));
         }
 
         return $this->gridQB;
+    }
+
+    /**
+     * Get objects to mass edit
+     */
+    protected function getObjectsToMassEdit()
+    {
+        if (null === $this->objectIds) {
+            $this->objectIds = $this->massActionDispatcher->dispatch($this->request);
+        }
+
+        return $this->objectIds;
     }
 }
