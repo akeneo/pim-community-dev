@@ -29,7 +29,7 @@ class InGroupFilter extends ChoiceFilter
         $value = current($data['value']);
 
         $repository = $this->util->getProductRepository();
-        //$repository->applyFilterByField($qb, 'enabled', $value);
+        // TODO : to-implement for MongoDB / refactor for ORM
 
         return true;
     }

@@ -34,6 +34,6 @@ class InGroupSorter implements SorterInterface
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
         $qb = $datasource->getQueryBuilder();
-        //$this->repository->applySorterByField($qb, 'family', $direction);
+        // TODO : to-implement for MongoDB / refactor for ORM
     }
 }
