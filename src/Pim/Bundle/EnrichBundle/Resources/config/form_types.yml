@@ -13,6 +13,7 @@ services:
         arguments:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.repository.family'
+            - %pim_catalog.entity.category.class%
         tags:
             - { name: form.type, alias: pim_product_edit }
 
