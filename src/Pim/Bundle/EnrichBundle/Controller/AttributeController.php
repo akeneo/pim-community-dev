@@ -224,7 +224,7 @@ class AttributeController extends AbstractDoctrineController
                     $this->persist($attribute, false);
                 }
             }
-            $this->getManagerForClass('PimCatalogBundle:Attribute')->flush();
+            $this->getManagerForClass($this->attributeManager->getAttributeClass())->flush();
 
             return new Response(1);
         }
