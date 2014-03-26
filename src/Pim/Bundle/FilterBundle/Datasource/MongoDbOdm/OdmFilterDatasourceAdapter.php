@@ -54,8 +54,10 @@ class OdmFilterDatasourceAdapter implements FilterDatasourceAdapterInterface
                 $format = '/%s$/i';
                 break;
             case TextFilterType::TYPE_CONTAINS:
-            case TextFilterType::TYPE_NOT_CONTAINS:
                 $format = '/%s/i';
+                break;
+            case TextFilterType::TYPE_NOT_CONTAINS:
+                $format = '/^((?!%s).)*$/i';
                 break;
             default:
                 $format = '%s';
