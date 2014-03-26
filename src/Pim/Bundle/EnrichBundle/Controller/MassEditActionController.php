@@ -24,6 +24,7 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Mass edit operation controller
@@ -49,8 +50,14 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var integer */
     protected $massEditLimit;
 
+    /** @var ProductRepositoryInterface $productRepository */
+    protected $productRepository;
+
     /** @var \Doctrine\ORM\QueryBuilder */
     protected $gridQB;
+
+    /** @var array */
+    protected $objectIds;
 
     /**
      * Constructor
@@ -67,6 +74,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param integer                    $massEditLimit
+     * @param ProductRepositoryInterface $productRepository
      */
     public function __construct(
         Request $request,
@@ -80,7 +88,8 @@ class MassEditActionController extends AbstractDoctrineController
         MassEditActionOperator $operator,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        $massEditLimit
+        $massEditLimit,
+        ProductRepositoryInterface $productRepository
     ) {
         parent::__construct(
             $request,
@@ -98,6 +107,7 @@ class MassEditActionController extends AbstractDoctrineController
         $this->parametersParser     = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->massEditLimit        = $massEditLimit;
+        $this->productRepository    = $productRepository;
     }
 
     /**

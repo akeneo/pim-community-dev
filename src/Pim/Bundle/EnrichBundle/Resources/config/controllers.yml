@@ -121,6 +121,7 @@ services:
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - %mass_edit_limit%
+            - '@pim_catalog.repository.product'
 
     pim_enrich.controller.group:
         scope: request
