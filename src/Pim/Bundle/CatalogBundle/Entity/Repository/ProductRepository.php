@@ -949,4 +949,49 @@ SQL;
             )
         );
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where($qb->expr()->in('p.id', $productIds))
+            ->groupBy('a.id');
+
+        $attributes = $qb->getQuery()->getArrayResult();
+        $attributeIds = array();
+        foreach ($attributes as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('p, f, v, pr, m, o, os, c, assoc, g')
+            ->leftJoin('p.family', 'f')
+            ->leftJoin('p.values', 'v')
+            ->leftJoin('v.prices', 'pr')
+            ->leftJoin('v.media', 'm')
+            ->leftJoin('v.option', 'o')
+            ->leftJoin('v.options', 'os')
+            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('p.categories', 'c')
+            ->leftJoin('p.associations', 'assoc')
+            ->leftJoin('p.groups', 'g')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb->getQuery()->execute();
+    }
 }

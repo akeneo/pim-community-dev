@@ -117,6 +117,8 @@ class VersionManager
         $user = $this->getUser();
 
         if ($this->realTimeVersioning) {
+            $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
+
             if ($user) {
                 $previousVersion = $this->getVersionRepository()
                     ->getNewestLogEntry(get_class($versionable), $versionable->getId());

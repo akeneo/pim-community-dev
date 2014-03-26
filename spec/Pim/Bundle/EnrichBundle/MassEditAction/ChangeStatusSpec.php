@@ -27,7 +27,7 @@ class ChangeStatusSpec extends ObjectBehavior
 
     function it_provides_a_form_type()
     {
-        $this->getFormType()->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType');
+        $this->getFormType()->shouldReturn('pim_enrich_mass_change_status');
     }
 
     function it_changes_the_status_of_the_products_when_performimg_the_operation(

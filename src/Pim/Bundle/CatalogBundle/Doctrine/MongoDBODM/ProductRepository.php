@@ -15,7 +15,9 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Product repository
@@ -200,6 +202,174 @@ class ProductRepository extends DocumentRepository implements
         }
 
         return $qb;
+    }
+
+    /**
+     * @param Association $association
+     */
+    public function findAllIdsForAssociation(Association $association)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * @param AbstractAttribute $attribute
+     *
+     * @return string[]
+     */
+    public function findAllIdsForAttribute(AbstractAttribute $attribute)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('values.attribute')->equals((int) $attribute->getId())
+            ->select('_id');
+
+        $results = $qb->getQuery()->execute()->toArray();
+
+        return array_keys($results);
+    }
+
+    /**
+     * @param Family $family
+     *
+     * @return string[]
+     */
+    public function findAllIdsForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->field('family')->equals($family->getId())
+            ->select('_id');
+
+        $results = $qb->getQuery()->execute()->toArray();
+
+        return array_keys($results);
+    }
+
+    /**
+     * @param CategoryInterface $category
+     *
+     * @return ProductInterface[]
+     */
+    public function findAllForCategory(CategoryInterface $category)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('categories')->in([$category->getId()]);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return ProductInterface[]
+     */
+    public function findAllForGroup(Group $group)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb->field('groups')->in([$group->getId()]);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeFamilyRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('family')->equals($id)->unsetField()
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeAttributeRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.attribute')->equals($id)
+            ->field('values')->pull(['attribute' => $id])
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeCategoryRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('categories')->in([$id])->pull($id)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeGroupRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('groups')->in([$id])->pull($id)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeAssociationRemoval($id)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeAttributeOptionRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.option')->equals($id)
+            ->field('values.$.option')->unsetField()
+            ->getQuery()
+            ->execute();
+
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('values.options')->in([$id])
+            ->field('values.$.options')->pull($id)
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function cascadeChannelRemoval($id)
+    {
+        $this->createQueryBuilder('p')
+            ->hydrate(false)
+            ->findAndUpdate()
+            ->field('completenesses.channel')->equals($id)
+            ->field('completenesses')->pull(['channel' => $id])
+            ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
     }
 
     /**
@@ -685,5 +855,24 @@ class ProductRepository extends DocumentRepository implements
 
         // remove limit of the query
         $qb->limit(null);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('_id')->in($productIds);
+
+        return $qb->getQuery()->execute();
     }
 }

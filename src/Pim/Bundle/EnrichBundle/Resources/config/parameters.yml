@@ -22,8 +22,6 @@ parameters:
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
 
     pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
-    pim_enrich.form.type.edit_common_attributes.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
-    pim_enrich.form.type.add_to_groups.class:                       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
@@ -57,3 +55,9 @@ parameters:
     pim_enrich.mass_edit_action.classify.class:               Pim\Bundle\EnrichBundle\MassEditAction\Classify
     pim_enrich.mass_edit_action.change_family.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeFamily
     pim_enrich.mass_edit_action.add_to_groups.class:          Pim\Bundle\EnrichBundle\MassEditAction\AddToGroups
+
+    pim_enrich.form.type.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_enrich.form.type.add_to_groups.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
+    pim_enrich.form.type.change_family.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
+    pim_enrich.form.type.change_status.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
+    pim_enrich.form.type.classify.class:               Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType

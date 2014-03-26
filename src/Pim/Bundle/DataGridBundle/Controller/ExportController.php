@@ -106,12 +106,20 @@ class ExportController
         return function () {
             flush();
 
-            $results = $this->massActionDispatcher->dispatch($this->request);
-
-            echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
+            $this->quickExport();
 
             flush();
         };
+    }
+
+    /**
+     * Launch quick export dispatching action and serialize results
+     */
+    protected function quickExport()
+    {
+        $results = $this->massActionDispatcher->dispatch($this->request);
+
+        echo $this->serializer->serialize($results, $this->getFormat(), $this->getContext());
     }
 
     /**

@@ -1020,7 +1020,9 @@ class FixturesContext extends RawMinkContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $categories = $this->getProduct($productCode)->getCategories()->map(
+        $product = $this->getProduct($productCode);
+        $this->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+        $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
             }

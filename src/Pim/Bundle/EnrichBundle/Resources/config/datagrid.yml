@@ -313,13 +313,13 @@ datagrid:
                 type: export
                 label: pim.grid.mass_action.quick_export.csv_all
                 icon: download
+                handler: product_quick_export
                 route: pim_datagrid_export_product_index
                 route_parameters:
                     _format: csv
                     _contentType: text/csv
                 context:
                     withHeader: true
-                    heterogeneous: true
                 messages:
                     empty_selection: No products selected
 

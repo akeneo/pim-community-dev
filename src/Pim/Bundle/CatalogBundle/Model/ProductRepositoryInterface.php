@@ -307,4 +307,23 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      * @param array   $values
      */
     public function applyMassActionParameters($qb, $inset, $values);
+
+    /**
+     * Get available attribute ids from a product ids list
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds);
+
+    /**
+     * Get full products from product ids
+     *
+     * @param array $productIds
+     * @param array $attributeIds
+     *
+     * @return array
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array());
 }
