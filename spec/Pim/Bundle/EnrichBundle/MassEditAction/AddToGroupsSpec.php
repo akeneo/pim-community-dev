@@ -14,10 +14,14 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class AddToGroupsSpec extends ObjectBehavior
 {
-    function let(ProductRepositoryInterface $productRepository, EntityManager $em, Group $shirts, Group $pants)
-    {
+    function let(
+        ProductRepositoryInterface $productRepository,
+        GroupRepository $groupRepository,
+        Group $shirts,
+        Group $pants
+    ) {
         $productRepository->implement('Doctrine\Common\Persistence\ObjectRepository');
-        $this->beConstructedWith($productRepository, $em);
+        $this->beConstructedWith($productRepository, $groupRepository);
     }
 
     function it_is_a_mass_edit_action()
@@ -46,10 +50,9 @@ class AddToGroupsSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_enrich_mass_add_to_groups');
     }
 
-    function it_provides_form_options($em, GroupRepository $repository, $shirts, $pants)
+    function it_provides_form_options($groupRepository, $shirts, $pants)
     {
-        $em->getRepository('PimCatalogBundle:Group')->willReturn($repository);
-        $repository->findAll()->willReturn([$shirts, $pants]);
+        $groupRepository->findAll()->willReturn([$shirts, $pants]);
 
         $this->getFormOptions()->shouldReturn(['groups' => [$shirts, $pants]]);
     }
@@ -62,8 +65,7 @@ class AddToGroupsSpec extends ObjectBehavior
         $shirts,
         $pants
     ) {
-        $productIds = array(1, 2);
-        $productRepository->findBy(array('id' => $productIds))->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $this->setGroups([$shirts, $pants]);
 
@@ -72,6 +74,6 @@ class AddToGroupsSpec extends ObjectBehavior
         $pants->addProduct($product1)->shouldBeCalled();
         $pants->addProduct($product2)->shouldBeCalled();
 
-        $this->perform($productIds);
+        $this->perform();
     }
 }
