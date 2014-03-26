@@ -326,13 +326,4 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      * @return array
      */
     public function getFullProducts(array $productIds, array $attributeIds = array());
-
-    /**
-     * Count products from a query builder
-     *
-     * @param mixed $qb
-     *
-     * @return integer
-     */
-    public function countProductsFromQB($qb);
 }
