@@ -41,6 +41,14 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function isInitialized()
+    {
+        return $this->initialized;
+    }
+
+    /**
      * Sets the initialized flag of the collection, forcing it into that state.
      *
      * @param boolean $bool
@@ -59,6 +67,17 @@ class ReferencedCollection extends AbstractLazyCollection
     {
         $this->collection->clear();
         $this->setInitialized(false);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function initialize()
+    {
+        if (!$this->initialized) {
+            $this->doInitialize();
+            $this->initialized = true;
+        }
     }
 
     /**
