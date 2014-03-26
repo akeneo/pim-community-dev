@@ -695,4 +695,15 @@ class ProductRepository extends DocumentRepository implements
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByIdsQB(array $products)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('_id')->in($productIds);
+
+        return $qb;
+    }
 }

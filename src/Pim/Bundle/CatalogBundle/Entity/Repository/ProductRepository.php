@@ -994,4 +994,15 @@ SQL;
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getByIdsQB(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb;
+    }
 }
