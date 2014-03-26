@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
  * Adds many products to many groups
@@ -20,23 +20,26 @@ class AddToGroups extends AbstractMassEditAction
      */
     protected $productRepository;
 
-    /** @var ArrayCollection */
-    protected $groups;
+    /**
+     * @var GroupRepository $groupRepository
+     */
+    protected $groupRepository;
 
-    /** @var EntityManager */
-    protected $entityManager;
+    /**
+     * @var ArrayCollection $groups
+     */
+    protected $groups;
 
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
-     *
-     * TODO: Remove EntityManager and inject GroupRepository
+     * @param ProductRepositoryInterface $productRepository
+     * @param GroupRepository            $groupRepository
      */
-    public function __construct(ProductRepositoryInterface $productRepository, EntityManager $entityManager)
+    public function __construct(ProductRepositoryInterface $productRepository, GroupRepository $groupRepository)
     {
         $this->productRepository = $productRepository;
-        $this->entityManager     = $entityManager;
+        $this->groupRepository   = $groupRepository;
         $this->groups            = new ArrayCollection();
     }
 
@@ -62,15 +65,10 @@ class AddToGroups extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Inject GroupRepository
      */
     public function getFormOptions()
     {
-        $groups = $this
-            ->entityManager
-            ->getRepository('PimCatalogBundle:Group')
-            ->findAll();
+        $groups = $this->groupRepository->findAll();
 
         return array(
             'groups' => $groups,
