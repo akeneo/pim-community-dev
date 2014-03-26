@@ -86,7 +86,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
     {
         foreach ($this->entityMapping as $class => $name) {
             if ($entity instanceof $class) {
-                $method = sprintf('remove%s', $name);
+                $method = sprintf('cascade%sRemoval', $name);
                 $this->pendingUpdates[$method][] = $entity->getId();
             }
         }

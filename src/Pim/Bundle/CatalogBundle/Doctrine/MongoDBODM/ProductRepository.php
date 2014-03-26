@@ -205,7 +205,7 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param Association $association
      */
     public function findAllIdsForAssociation(Association $association)
     {
@@ -213,7 +213,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param AbstractAttribute $attribute
+     *
+     * @return string[]
      */
     public function findAllIdsForAttribute(AbstractAttribute $attribute)
     {
@@ -228,7 +230,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param Family $family
+     *
+     * @return string[]
      */
     public function findAllIdsForFamily(Family $family)
     {
@@ -243,7 +247,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param CategoryInterface $category
+     *
+     * @return ProductInterface[]
      */
     public function findAllForCategory(CategoryInterface $category)
     {
@@ -255,7 +261,9 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param Group $group
+     *
+     * @return ProductInterface[]
      */
     public function findAllForGroup(Group $group)
     {
@@ -267,11 +275,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeFamily($id)
+    public function cascadeFamilyRemoval($id)
     {
-        return $this->createQueryBuilder('p')
+        $this->createQueryBuilder('p')
             ->hydrate(false)
             ->findAndUpdate()
             ->field('family')->equals($id)->unsetField()
@@ -280,11 +288,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeAttribute($id)
+    public function cascadeAttributeRemoval($id)
     {
-        return $this->createQueryBuilder('p')
+        $this->createQueryBuilder('p')
             ->hydrate(false)
             ->findAndUpdate()
             ->field('values.attribute')->equals($id)
@@ -294,11 +302,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeCategory($id)
+    public function cascadeCategoryRemoval($id)
     {
-        return $this->createQueryBuilder('p')
+        $this->createQueryBuilder('p')
             ->hydrate(false)
             ->findAndUpdate()
             ->field('categories')->in([$id])->pull($id)
@@ -307,11 +315,11 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeGroup($id)
+    public function cascadeGroupRemoval($id)
     {
-        return $this->createQueryBuilder('p')
+        $this->createQueryBuilder('p')
             ->hydrate(false)
             ->findAndUpdate()
             ->field('groups')->in([$id])->pull($id)
@@ -320,17 +328,17 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeAssociation($id)
+    public function cascadeAssociationRemoval($id)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 
     /**
-     * {@inheritdoc}
+     * @param integer $id
      */
-    public function removeAttributeOption($id)
+    public function cascadeAttributeOptionRemoval($id)
     {
         $this->createQueryBuilder('p')
             ->hydrate(false)
@@ -340,7 +348,7 @@ class ProductRepository extends DocumentRepository implements
             ->getQuery()
             ->execute();
 
-        return $this->createQueryBuilder('p')
+        $this->createQueryBuilder('p')
             ->hydrate(false)
             ->findAndUpdate()
             ->field('values.options')->in([$id])
