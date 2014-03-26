@@ -124,12 +124,14 @@ class ProductHydrator implements HydratorInterface
                     $result['productLabel']= isset($attributeAsLabel[$backendType]) ?
                         $attributeAsLabel[$backendType] : null;
                 } else {
-                    $result['productLabel'] = null;
+                    $result['productLabel']= null;
                 }
             }
         } else {
-            $result['familyLabel'] = '-';
+            $result['familyLabel']= '-';
         }
+
+        $result['in_group']= false;
 
         return $result;
     }
