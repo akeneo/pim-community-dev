@@ -695,4 +695,12 @@ class ProductRepository extends DocumentRepository implements
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countProductsFromQB($qb)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
 }

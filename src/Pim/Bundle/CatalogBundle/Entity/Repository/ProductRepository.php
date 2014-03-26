@@ -994,4 +994,12 @@ SQL;
 
         return $qb->getQuery()->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countProductsFromQB($qb)
+    {
+
+    }
 }
