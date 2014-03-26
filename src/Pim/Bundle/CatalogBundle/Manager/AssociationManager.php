@@ -35,6 +35,5 @@ class AssociationManager
     public function countForAssociationType(AssociationType $type)
     {
         return $this->repository->countForAssociationType($type);
-
     }
 }
