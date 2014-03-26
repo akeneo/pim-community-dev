@@ -133,12 +133,10 @@ class ProductBuilder
      */
     public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
-        $values = $this->objectManager
-            ->getRepository($this->getProductValueClass())
-            ->findBy(array('entity' => $product, 'attribute' => $attribute));
-
-        foreach ($values as $value) {
-            $this->objectManager->remove($value);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
         }
 
         $this->objectManager->flush();
