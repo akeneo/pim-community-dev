@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType;
 
@@ -56,8 +55,10 @@ class ChangeFamily extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Check with MongoDB implementation
      */
-    public function perform(QueryBuilder $qb)
+    public function perform($qb)
     {
         $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {

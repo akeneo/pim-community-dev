@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -218,7 +217,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(QueryBuilder $qb)
+    public function initialize($qb)
     {
         $productIds = $this->getProductIdsFromQB($qb);
         $this->initializeCommonAttributes($productIds);
@@ -231,11 +230,13 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Get only product ids from query builder
      *
-     * @param QueryBuilder $qb
+     * @param mixed $qb
      *
      * @return integer[]
+     *
+     * TODO: Get them from product repository
      */
-    protected function getProductIdsFromQB(QueryBuilder $qb)
+    protected function getProductIdsFromQB($qb)
     {
         $products = $qb->getQuery()->getResult();
         $productIds = array();
@@ -248,8 +249,10 @@ class EditCommonAttributes extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Check with MongoDB implementation
      */
-    public function perform(QueryBuilder $qb)
+    public function perform($qb)
     {
         $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {

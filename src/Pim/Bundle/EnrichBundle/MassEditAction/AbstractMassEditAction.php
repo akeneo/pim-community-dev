@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
-
 /**
  * Class that Batch operations might extend for convenience purposes
  *
@@ -24,7 +22,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize(QueryBuilder $qb)
+    public function initialize($qb)
     {
     }
 

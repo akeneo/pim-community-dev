@@ -49,8 +49,10 @@ class ChangeStatus extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Check with MongoDB implementation
      */
-    public function perform(QueryBuilder $qb)
+    public function perform($qb)
     {
         $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {

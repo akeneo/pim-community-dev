@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
@@ -25,6 +24,8 @@ class AddToGroups extends AbstractMassEditAction
      * Constructor
      *
      * @param EntityManager $entityManager
+     *
+     * TODO: Remove EntityManager and inject GroupRepository
      */
     public function __construct(EntityManager $entityManager)
     {
@@ -54,6 +55,8 @@ class AddToGroups extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Inject GroupRepository
      */
     public function getFormOptions()
     {
@@ -77,8 +80,10 @@ class AddToGroups extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Check with MongoDB implementation
      */
-    public function perform(QueryBuilder $qb)
+    public function perform($qb)
     {
         $products = $qb->getQuery()->getResult();
         foreach ($products as $product) {
