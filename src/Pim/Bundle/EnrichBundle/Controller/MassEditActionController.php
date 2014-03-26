@@ -296,16 +296,14 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Get the query builder with grid parameters applied
      *
-     * @param Request $request
-     *
      * @return \Doctrine\ORM\QueryBuilder
      *
      * @deprecated
      */
-    protected function getGridQB(Request $request)
+    protected function getGridQB()
     {
         if (null === $this->gridQB) {
-            $qb = $this->massActionDispatcher->dispatch($request);
+            $qb = $this->massActionDispatcher->dispatch($this->request);
 
             $this->gridQB = $qb;
         }
