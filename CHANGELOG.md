@@ -74,6 +74,7 @@
 - Redefine DeleteMassAction, EditMassAction and ExportMassAction
 - Remove data_identifier property defined on datagrid.yml for mass actions
 - Rename parameter $queryBuilder as $qb in HydratorInterface
+- Change implementation of MassEditAction to be compliant with MongoDB
 
 # 1.0.2
 ## Bug Fixes
