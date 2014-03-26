@@ -22,7 +22,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize($qb)
+    public function initialize(array $productIds)
     {
     }
 

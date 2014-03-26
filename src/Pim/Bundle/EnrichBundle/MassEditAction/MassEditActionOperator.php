@@ -150,25 +150,25 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param mixed $qb
+     * @param array $productIds
      */
-    public function initializeOperation($qb)
+    public function initializeOperation(array $productIds)
     {
         if ($this->operation) {
-            $this->operation->initialize($qb);
+            $this->operation->initialize($productIds);
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param mixed $qb
+     * @param array $productIds
      */
-    public function performOperation($qb)
+    public function performOperation(array $productIds)
     {
         set_time_limit(0);
         if ($this->operation) {
-            $this->operation->perform($qb);
+            $this->operation->perform($productIds);
         }
     }
 
@@ -177,10 +177,13 @@ class MassEditActionOperator
      *
      * @param mixed $qb
      */
-    public function finalizeOperation($qb)
+    public function finalizeOperation($productIds)
     {
         set_time_limit(0);
-        $products = $qb->getQuery()->getResult();
+
+        $productRepo = $this->manager->getProductRepository();
+        $products    = $productRepo->findBy(array('id' => $productIds));
+
         $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
         $this->manager->saveAll($products, false, true, $scheduleCompleteness);
     }

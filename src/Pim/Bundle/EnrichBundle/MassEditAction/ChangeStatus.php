@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+
 /**
  * Batch operation to change products status
  *
@@ -12,7 +14,23 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 class ChangeStatus extends AbstractMassEditAction
 {
     /**
-     * @var boolean Whether or not to enable products
+     * @var ProductRepositoryInterface $productRepository
+     */
+    protected $productRepository;
+
+    /**
+     * Constructor
+     *
+     * @param ProductRepositoryInterface $productRepository
+     */
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
+    /**
+     * Whether or not to enable products
+     * @var boolean $toEnable
      */
     protected $toEnable = true;
 
@@ -46,12 +64,10 @@ class ChangeStatus extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Check with MongoDB implementation
      */
-    public function perform($qb)
+    public function perform(array $productIds)
     {
-        $products = $qb->getQuery()->getResult();
+        $products = $this->productRepository->findBy(array('id' => $productIds));
         foreach ($products as $product) {
             $product->setEnabled($this->toEnable);
         }

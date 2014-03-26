@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Adds many products to many groups
@@ -14,6 +15,11 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AddToGroups extends AbstractMassEditAction
 {
+    /**
+     * @var ProductRepositoryInterface $productRepository
+     */
+    protected $productRepository;
+
     /** @var ArrayCollection */
     protected $groups;
 
@@ -27,10 +33,11 @@ class AddToGroups extends AbstractMassEditAction
      *
      * TODO: Remove EntityManager and inject GroupRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(ProductRepositoryInterface $productRepository, EntityManager $entityManager)
     {
-        $this->groups        = new ArrayCollection();
-        $this->entityManager = $entityManager;
+        $this->productRepository = $productRepository;
+        $this->entityManager     = $entityManager;
+        $this->groups            = new ArrayCollection();
     }
 
     /**
@@ -83,9 +90,9 @@ class AddToGroups extends AbstractMassEditAction
      *
      * TODO: Check with MongoDB implementation
      */
-    public function perform($qb)
+    public function perform(array $productIds)
     {
-        $products = $qb->getQuery()->getResult();
+        $products = $this->productRepository->findBy(array('id' => $productIds));
         foreach ($products as $product) {
             foreach ($this->getGroups() as $group) {
                 $group->addProduct($product);

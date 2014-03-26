@@ -217,9 +217,8 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize($qb)
+    public function initialize(array $productIds)
     {
-        $productIds = $this->getProductIdsFromQB($qb);
         $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
@@ -228,33 +227,13 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Get only product ids from query builder
-     *
-     * @param mixed $qb
-     *
-     * @return integer[]
-     *
-     * TODO: Get them from product repository
-     */
-    protected function getProductIdsFromQB($qb)
-    {
-        $products = $qb->getQuery()->getResult();
-        $productIds = array();
-        foreach ($products as $product) {
-            $productIds[] = $product->getId();
-        }
-
-        return $productIds;
-    }
-
-    /**
      * {@inheritdoc}
      *
      * TODO: Check with MongoDB implementation
      */
-    public function perform($qb)
+    public function perform(array $productIds)
     {
-        $products = $qb->getQuery()->getResult();
+        $products = $this->productManager->getProductRepository()->findBy(array('id' => $productIds));
         foreach ($products as $product) {
             $this->setProductValues($product);
         }
