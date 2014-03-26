@@ -305,9 +305,7 @@ class MassEditActionController extends AbstractDoctrineController
         if (null === $this->gridQB) {
             $objectIds = $this->getObjectsToMassEdit();
 
-            // TODO: Must be changed for MongoDB
-            $this->gridQB = $this->productRepository->createQueryBuilder('p');
-            $this->gridQB->where($this->gridQB->expr()->in('id', $objectIds));
+            $this->gridQB = $this->productRepository->getByIdsQB($objectIds);
         }
 
         return $this->gridQB;
