@@ -7,8 +7,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Doctrine\ORM\EntityRepository;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
@@ -42,17 +42,28 @@ class ChannelType extends AbstractType
     protected $colorsProvider;
 
     /**
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
      * Inject locale manager, locale helper and colors provider in the constructor
      *
      * @param LocaleManager  $localeManager
      * @param LocaleHelper   $localeHelper
      * @param ColorsProvider $provider
+     * @param string         $categoryClass
      */
-    public function __construct(LocaleManager $localeManager, LocaleHelper $localeHelper, ColorsProvider $provider)
-    {
+    public function __construct(
+        LocaleManager $localeManager,
+        LocaleHelper $localeHelper,
+        ColorsProvider $provider,
+        $categoryClass
+    ) {
         $this->localeManager = $localeManager;
         $this->localeHelper  = $localeHelper;
         $this->provider      = $provider;
+        $this->categoryClass = $categoryClass;
     }
 
     /**
@@ -200,8 +211,8 @@ class ChannelType extends AbstractType
                 'label'         => 'Category tree',
                 'required'      => true,
                 'select2'       => true,
-                'class'         => 'Pim\Bundle\CatalogBundle\Entity\Category',
-                'query_builder' => function (CategoryRepository $repository) {
+                'class'         => $this->categoryClass,
+                'query_builder' => function (EntityRepository $repository) {
                     return $repository->getTreesQB();
                 }
             )

@@ -111,6 +111,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.helper.locale'
             - '@pim_enrich.provider.colors'
+            - %pim_catalog.entity.category.class%
         tags:
             - { name: form.type, alias: pim_enrich_channel }
 
