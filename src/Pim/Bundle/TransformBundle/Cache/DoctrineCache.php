@@ -5,34 +5,27 @@ namespace Pim\Bundle\TransformBundle\Cache;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
 
 /**
- * Caches entities for import
+ * Caches doctrine persisted objects
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityCache
+class DoctrineCache
 {
-    /**
-     * @var RegistryInterface
-     */
+    /** @var ManagerRegistry */
     protected $doctrine;
 
-    /**
-     * @var ReferenceRepository
-     */
+    /** @var ReferenceRepository */
     protected $referenceRepository;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $cache = array();
 
     /**
-     * Constructor
-     *
      * @param ManagerRegistry $doctrine
      */
     public function __construct(ManagerRegistry $doctrine)
@@ -64,7 +57,7 @@ class EntityCache
             $this->cache[$class] = array();
         }
         if (!array_key_exists($code, $this->cache[$class])) {
-            $this->cache[$class][$code] = $this->getEntity($class, $code);
+            $this->cache[$class][$code] = $this->findObject($class, $code);
         }
 
         return $this->cache[$class][$code];
@@ -103,15 +96,18 @@ class EntityCache
      *
      * @return object
      */
-    protected function getEntity($class, $code)
+    protected function findObject($class, $code)
     {
         $reference = $class . '.' . $code;
         if ($this->referenceRepository && $this->referenceRepository->hasReference($reference)) {
             return $this->referenceRepository->getReference($reference);
         } else {
-            return $this->doctrine
-                    ->getRepository($class)
-                    ->findByReference($code);
+            $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
+            if (!$repository instanceof ReferableEntityRepositoryInterface) {
+                throw new \Exception(sprintf('Repository "%s" of class "%s" is not referable', get_class($repository), $class));
+            }
+
+            return $repository->findByReference($code);
         }
     }
 }

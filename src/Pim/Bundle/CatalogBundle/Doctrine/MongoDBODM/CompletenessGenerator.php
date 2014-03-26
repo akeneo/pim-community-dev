@@ -82,7 +82,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForProduct(ProductInterface $product)
+    public function generateMissingForProduct(ProductInterface $product, $flush = true)
     {
         if (null === $product->getFamily()) {
             return;
@@ -92,7 +92,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $product->setCompletenesses(new ArrayCollection($completenesses));
 
-        $this->documentManager->flush($product);
+        if ($flush) {
+            $this->documentManager->flush($product);
+        }
     }
 
     /**
@@ -231,8 +233,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $products = $productsQb->getQuery()->execute();
 
         foreach ($products as $product) {
-            $this->generateMissingForProduct($product);
+            // Flushing at each iteration has a big impact on perf
+            $this->generateMissingForProduct($product, false);
         }
+
+        $this->documentManager->flush($product);
     }
 
     /**
@@ -261,6 +266,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
                 $productsQb->addOr($orItems);
             }
         }
+
+        $productsQb->field('family')->notEqual(null);
     }
 
     /**

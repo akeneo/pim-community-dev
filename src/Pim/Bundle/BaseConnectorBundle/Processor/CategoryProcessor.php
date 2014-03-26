@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\BaseConnectorBundle\Validator\Import\ImportValidatorInterface;
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 
 /**
@@ -19,9 +19,9 @@ use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 class CategoryProcessor extends TransformerProcessor
 {
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * If true, category data will be checked to make sure that there are no circular references between the categories
@@ -36,18 +36,18 @@ class CategoryProcessor extends TransformerProcessor
      * @param ImportValidatorInterface $validator
      * @param TranslatorInterface      $translator
      * @param ORMTransformer           $transformer
-     * @param EntityCache              $entityCache
+     * @param DoctrineCache              $doctrineCache
      * @param string                   $class
      */
     public function __construct(
         ImportValidatorInterface $validator,
         TranslatorInterface $translator,
         EntityTransformerInterface $transformer,
-        EntityCache $entityCache,
+        DoctrineCache $doctrineCache,
         $class
     ) {
         parent::__construct($validator, $translator, $transformer, $class);
-        $this->entityCache = $entityCache;
+        $this->doctrineCache = $doctrineCache;
     }
 
     /**
@@ -134,7 +134,7 @@ class CategoryProcessor extends TransformerProcessor
             if (isset($categories[$parentCode])) {
                 $parent = $categories[$parentCode];
             } else {
-                $parent = $this->entityCache->find($this->class, $parentCode);
+                $parent = $this->doctrineCache->find($this->class, $parentCode);
             }
 
             if ($parent) {
