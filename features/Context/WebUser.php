@@ -455,7 +455,7 @@ class WebUser extends RawMinkContext
             if ($select = $field->find('css', 'select')) {
                 $actual = $select->find('css', 'option[selected]')->getHtml();
             } else {
-                $actual = $field->find('css', '.select2-chosen')->getHtml();
+                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             }
         } elseif (strpos($class, 'select2-input') !== false) {
             for ($i = 0; $i < 4; $i++) {
