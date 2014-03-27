@@ -8,6 +8,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsT
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -41,38 +42,19 @@ class ProductHydrator implements HydratorInterface
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
-        $complTransformer = new CompletenessTransformer();
+        $complTransformer  = new CompletenessTransformer();
+        $groupsTransformer = new GroupsTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
             $result = $valuesTransformer->transform($result, $attributes, $locale, $scope);
             $result = $familyTransformer->transform($result, $locale);
             $result = $complTransformer->transform($result, $locale, $scope);
-
-            $result = $this->prepareLinkedData($result, $locale, $scope, $groupId);
+            $result = $groupsTransformer->transform($result, $locale, $groupId);
 
             $rows[] = new ResultRecord($result);
         }
 
         return $rows;
-    }
-
-    /**
-     * @param array   $result
-     * @param string  $locale
-     * @param string  $scope
-     * @param integer $groupId
-     *
-     * @return array
-     */
-    protected function prepareLinkedData(array $result, $locale, $scope, $groupId)
-    {
-        $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
-
-        if ($groupId && isset($result['groups'])) {
-            $result['in_group']= in_array($groupId, $result['groups']);
-        }
-
-        return $result;
     }
 }
