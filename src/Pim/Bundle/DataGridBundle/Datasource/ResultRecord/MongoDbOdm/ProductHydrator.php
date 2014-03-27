@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -34,8 +35,9 @@ class ProductHydrator implements HydratorInterface
         }
 
         $rows = [];
+        $fieldsTransformer = new FieldsTransformer();
         foreach ($results as $result) {
-            $result = $this->prepareStaticData($result, $locale);
+            $result = $fieldsTransformer->transform($result, $locale);
             $result = $this->prepareValuesData($result, $attributes, $locale, $scope);
             $result = $this->prepareLinkedData($result, $locale, $scope, $groupId);
 
@@ -43,24 +45,6 @@ class ProductHydrator implements HydratorInterface
         }
 
         return $rows;
-    }
-
-    /**
-     * @param array  $result
-     * @param string $locale
-     *
-     * @return array
-     */
-    protected function prepareStaticData(array $result, $locale)
-    {
-        $result['id']= $result['_id']->__toString();
-        unset($result['_id']);
-        $result['dataLocale']= $locale;
-        $result['created']= isset($result['created']) ? $this->convertToDateTime($result['created']) : null;
-        $result['updated']= isset($result['updated']) ? $this->convertToDateTime($result['updated']) : null;
-        $result['enabled']= isset($result['enabled']) ? $result['enabled'] : false;
-
-        return $result;
     }
 
     /**
