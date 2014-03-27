@@ -99,8 +99,11 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
             if (!is_array($value)) {
                 throw new UnexpectedTypeException($value, 'array');
             }
-
-            return $this->repository->findBy(['id' => $value]);
+            if (method_exists($this->repository, 'findByIds')) {
+                return $this->repository->findByIds($value);
+            } else {
+                return $this->repository->findBy(['id' => $value]);
+            }
         }
 
         return $this->repository->find($value);

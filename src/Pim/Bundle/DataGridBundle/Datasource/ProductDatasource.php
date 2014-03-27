@@ -61,6 +61,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var string */
     protected $scopeCode = null;
 
+    /** @var integer */
+    protected $currentGroupId = null;
+
     /** @var array */
     protected $parameters = array();
 
@@ -95,6 +98,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         $scopeKey = ContextConfigurator::DISPLAYED_SCOPE_KEY;
         $this->scopeCode = isset($config[$scopeKey]) ? $config[$scopeKey] : null;
 
+        $groupKey = ContextConfigurator::CURRENT_GROUP_ID_KEY;
+        $this->currentGroupId = isset($config[$groupKey]) ? $config[$groupKey] : null;
+
         $grid->setDatasource(clone $this);
     }
 
@@ -106,6 +112,7 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         $options = [
             'locale_code'              => $this->localeCode,
             'scope_code'               => $this->scopeCode,
+            'current_group_id'         => $this->currentGroupId,
             'attributes_configuration' => $this->configuration['attributes_configuration']
         ];
 
