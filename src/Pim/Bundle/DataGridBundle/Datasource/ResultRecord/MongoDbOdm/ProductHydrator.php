@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -36,47 +37,16 @@ class ProductHydrator implements HydratorInterface
 
         $rows = [];
         $fieldsTransformer = new FieldsTransformer();
+        $valuesTransformer = new ValuesTransformer();
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
-            $result = $this->prepareValuesData($result, $attributes, $locale, $scope);
+            $result = $valuesTransformer->transform($result, $attributes, $locale, $scope);
             $result = $this->prepareLinkedData($result, $locale, $scope, $groupId);
 
             $rows[] = new ResultRecord($result);
         }
 
         return $rows;
-    }
-
-    /**
-     * @param array  $result
-     * @param array  $attributes
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function prepareValuesData(array $result, array $attributes, $locale, $scope)
-    {
-        if (isset($result['values'])) {
-            foreach ($result['values'] as $value) {
-                $filterValueLocale = isset($value['locale']) && ($value['locale'] !== $locale);
-                $filterValueScope = isset($value['scope']) && ($value['scope'] !== $scope);
-                $attributeId = $value['attribute'];
-
-                if (!$filterValueLocale && !$filterValueScope and isset($attributes[$attributeId])) {
-                    $attribute = $attributes[$attributeId];
-                    $attributeCode = $attribute['code'];
-                    $value['attribute']= $attribute;
-                    $result[$attributeCode]= $value;
-                    $result[$attributeCode]= $this->prepareOptionsData($result, $attribute, $locale, $scope);
-                    $result[$attributeCode]= $this->prepareDateData($result, $attribute);
-                }
-            }
-
-            unset($result['values']);
-        }
-
-        return $result;
     }
 
     /**
@@ -122,95 +92,5 @@ class ProductHydrator implements HydratorInterface
         }
 
         return $result;
-    }
-
-    /**
-     * @param array  $result
-     * @param array  $attribute
-     * @param string $locale
-     * @param string $scope
-     *
-     * @return array
-     */
-    protected function prepareOptionsData(array $result, array $attribute, $locale, $scope)
-    {
-        $attributeCode = $attribute['code'];
-        $normalizedData = $result['normalizedData'];
-        $fromNormData = array('pim_catalog_simpleselect', 'pim_catalog_multiselect');
-        if (in_array($attribute['attributeType'], $fromNormData)) {
-            $fieldCode = ProductQueryUtility::getNormalizedValueField(
-                $attributeCode,
-                $attribute['localizable'],
-                $attribute['scopable'],
-                $locale,
-                $scope
-            );
-            $backendType = $attribute['backendType'];
-            $options = isset($normalizedData[$fieldCode]) ? $normalizedData[$fieldCode] : [];
-
-            if ($backendType === 'option') {
-                $options = $this->filterOptionValues($options, $locale);
-            } else {
-                foreach ($options as $indexOption => $option) {
-                    $options[$indexOption] = $this->filterOptionValues($option, $locale);
-                }
-            }
-
-            $result[$attributeCode][$backendType]= $options;
-        }
-
-        return $result[$attributeCode];
-    }
-
-    /**
-     * @param array $result
-     * @param array $attribute
-     *
-     * @return array
-     */
-    protected function prepareDateData(array $result, array $attribute)
-    {
-        $attributeCode = $attribute['code'];
-        $backendType = $attribute['backendType'];
-        $value = $result[$attributeCode];
-
-        if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
-            $mongoDate = $value[$backendType];
-            $value[$backendType]= $this->convertToDateTime($mongoDate);
-        }
-
-        return $value;
-    }
-
-    /**
-     * @param array  $option
-     * @param string $locale
-     *
-     * @return array $option
-     */
-    protected function filterOptionValues($option, $locale)
-    {
-        if (isset($option['optionValues'])) {
-            foreach (array_keys($option['optionValues']) as $indexValue) {
-                if ($indexValue !== $locale) {
-                    unset($option['optionValues'][$indexValue]);
-                }
-            }
-        }
-
-        return $option;
-    }
-
-    /**
-     * @param \MongoDate $mongoDate
-     *
-     * @return \DateTime
-     */
-    protected function convertToDateTime(\MongoDate $mongoDate)
-    {
-        $date = new \DateTime();
-        $date->setTimestamp($mongoDate->sec);
-
-        return $date;
     }
 }
