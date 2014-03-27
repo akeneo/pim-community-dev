@@ -99,7 +99,9 @@ class DoctrineCache
         } else {
             $repository = $this->doctrine->getManagerForClass($class)->getRepository($class);
             if (!$repository instanceof ReferableEntityRepositoryInterface) {
-                throw new \Exception(sprintf('Repository "%s" of class "%s" is not referable', get_class($repository), $class));
+                throw new \Exception(
+                    sprintf('Repository "%s" of class "%s" is not referable', get_class($repository), $class)
+                );
             }
 
             return $repository->findByReference($code);
