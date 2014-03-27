@@ -862,7 +862,15 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('values.attribute')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
     }
 
     /**
