@@ -21,9 +21,9 @@ class GroupNormalizerSpec extends ObjectBehavior
 
     function it_supports_normalization_in_mongodb_json_of_group(Group $group)
     {
-        $this->supportsNormalization($family, 'mongodb_json')->shouldBe(true);
-        $this->supportsNormalization($family, 'json')->shouldBe(false);
-        $this->supportsNormalization($family, 'xml')->shouldBe(false);
+        $this->supportsNormalization($group, 'mongodb_json')->shouldBe(true);
+        $this->supportsNormalization($group, 'json')->shouldBe(false);
+        $this->supportsNormalization($group, 'xml')->shouldBe(false);
     }
 
     function it_normalizes_group(
