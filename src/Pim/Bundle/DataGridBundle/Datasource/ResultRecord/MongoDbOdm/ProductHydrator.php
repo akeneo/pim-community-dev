@@ -7,6 +7,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FieldsTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 
 /**
@@ -40,10 +41,13 @@ class ProductHydrator implements HydratorInterface
         $fieldsTransformer = new FieldsTransformer();
         $valuesTransformer = new ValuesTransformer();
         $familyTransformer = new FamilyTransformer();
+        $complTransformer = new CompletenessTransformer();
+
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
             $result = $valuesTransformer->transform($result, $attributes, $locale, $scope);
             $result = $familyTransformer->transform($result, $locale);
+            $result = $complTransformer->transform($result, $locale, $scope);
 
             $result = $this->prepareLinkedData($result, $locale, $scope, $groupId);
 
@@ -64,13 +68,6 @@ class ProductHydrator implements HydratorInterface
     protected function prepareLinkedData(array $result, $locale, $scope, $groupId)
     {
         $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
-
-        $completenessCode = $scope.'-'.$locale;
-        if (isset($normalizedData['completenesses'][$completenessCode])) {
-            $result['ratio']= number_format($normalizedData['completenesses'][$completenessCode], 0);
-        } else {
-            $result['ratio'] = null;
-        }
 
         if ($groupId && isset($result['groups'])) {
             $result['in_group']= in_array($groupId, $result['groups']);
