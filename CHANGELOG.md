@@ -74,7 +74,13 @@
 - Redefine DeleteMassAction, EditMassAction and ExportMassAction
 - Remove data_identifier property defined on datagrid.yml for mass actions
 - Rename parameter $queryBuilder as $qb in HydratorInterface
-- Change implementation of MassEditAction to be compliant with MongoDB
+- Add findFamilyCommonAttributeIds and findValuesCommonAttributeIds methods to ProductRepository interface
+- Remove queryBuilder property from MassEditActionController and remove $request from each action
+- Remove queryBuilder from methods initialize and perform in AbstractMassEditAction and children
+- Add setProductsToMassEdit and getProductsToMassEdit in AbstractMassEditAction
+- Remove EntityManager property from AddToGroups mass edit action and directly inject GroupRepository
+- Remove ProductManager property from Classify mass edit action
+- Remove method getProductIdsFromQB from EditCommonAttributes mass edit action
 
 # 1.0.2
 ## Bug Fixes
