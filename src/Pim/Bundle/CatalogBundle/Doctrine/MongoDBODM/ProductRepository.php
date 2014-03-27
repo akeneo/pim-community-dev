@@ -402,7 +402,26 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array())
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder()->eagerCursor(true);
+
+        $qb->field('groups')->in([$variantGroup->getId()]);
+
+        foreach ($criteria as $item) {
+            $andExpr = $qb
+                ->expr()
+                ->field('values')
+                ->elemMatch(['attribute' => (int) $item['attribute']->getId(), 'option' => $item['option']->getId()]);
+
+            $qb->addAnd($andExpr);
+        }
+
+        $cursor = $qb->getQuery()->execute();
+        $products = [];
+        foreach ($cursor as $product) {
+            $products[] = $product;
+        }
+
+        return $products;
     }
 
     /**
