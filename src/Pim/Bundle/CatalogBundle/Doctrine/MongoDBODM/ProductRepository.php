@@ -969,9 +969,28 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Needs some optimizations
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds);
+
+        $cursor = $qb->getQuery()->execute();
+
+        // Get only common attributes
+        $attributesList = null;
+        foreach ($cursor as $product) {
+            $pAttList = array();
+            foreach ($product->getAttributes() as $attribute) {
+                $pAttList[] = $attribute->getId();
+            }
+            array_unique($pAttList);
+            $attributesList = ($attributesList === null) ? $pAttList : array_intersect($attributesList, $pAttList);
+        }
+
+        return $attributesList;
     }
 }
