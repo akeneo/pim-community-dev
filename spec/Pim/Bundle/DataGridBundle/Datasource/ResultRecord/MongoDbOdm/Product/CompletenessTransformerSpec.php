@@ -22,8 +22,8 @@ class CompletenessTransformerSpec extends ObjectBehavior
             ],
         ];
 
-        $expected = $result + ['ratio' => 50];
+        $expected = $result + ['ratio' => '50'];
 
-        $this->transform($result, $locale)->shouldReturn($expected);
+        $this->transform($result, $locale, $scope)->shouldReturn($expected);
     }
 }
