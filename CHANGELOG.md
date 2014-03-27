@@ -82,6 +82,7 @@
 - Remove EntityManager property from AddToGroups mass edit action and directly inject GroupRepository
 - Remove ProductManager property from Classify mass edit action
 - Remove method getProductIdsFromQB from EditCommonAttributes mass edit action
+- Remove ProductRepository::findFamilyCommonAttributes() and ProductRepository::findValuesCommonAttributeIds() to replace them by ProductRepository::findCommonAttributeIds()
 
 # 1.0.2
 ## Bug Fixes
