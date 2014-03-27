@@ -87,7 +87,11 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     {
         $this->configuration = $config;
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            $this->qb = $this->getRepository()->$method();
+            if (isset($config['repository_parameters'])) {
+                $this->qb = $this->getRepository()->$method($config['repository_parameters']);
+            } else {
+                $this->qb = $this->getRepository()->$method();
+            }
         } else {
             $this->qb = $this->getRepository()->createQueryBuilder('o');
         }

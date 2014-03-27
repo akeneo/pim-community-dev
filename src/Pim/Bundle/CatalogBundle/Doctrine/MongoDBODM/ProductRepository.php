@@ -764,11 +764,17 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @param array $params
+     *
      * @return QueryBuilder
      */
-    public function createVariantGroupDatagridQueryBuilder()
+    public function createVariantGroupDatagridQueryBuilder(array $params = array())
     {
         $qb = $this->createQueryBuilder();
+
+        if (isset($params['currentGroup'])) {
+            $qb->field('_id')->in($this->getEligibleProductIdsForVariantGroup((int) $params['currentGroup']));
+        }
 
         return $qb;
     }
