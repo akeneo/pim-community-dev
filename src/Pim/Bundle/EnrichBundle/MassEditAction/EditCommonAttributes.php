@@ -232,8 +232,6 @@ class EditCommonAttributes extends AbstractMassEditAction
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Check with MongoDB implementation
      */
     public function perform()
     {
