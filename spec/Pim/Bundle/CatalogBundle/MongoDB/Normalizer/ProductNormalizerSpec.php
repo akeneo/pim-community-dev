@@ -35,6 +35,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->setSerializer($serializer);
 
         $product->getFamily()->willReturn($family);
+        $product->getGroups()->willReturn([]);
         $product->getValues()->willReturn([]);
         $product->getCompletenesses()->willReturn([$completeness]);
         $product->getCreated()->willReturn(null);
