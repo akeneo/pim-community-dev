@@ -15,13 +15,13 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 {
     protected $processor;
     protected $transformer;
-    protected $entityCache;
+    protected $doctrineCache;
     protected $stepExecution;
 
     protected function setUp()
     {
         parent::setUp();
-        $this->entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
+        $this->doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $this->transformer->expects($this->any())
@@ -42,7 +42,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
             $this->validator,
             $this->translator,
             $this->transformer,
-            $this->entityCache,
+            $this->doctrineCache,
             'class'
         );
 
@@ -127,7 +127,7 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
         );
 
         $persisted = $this->getCategoryMock(array('code' => 'persisted', 'parent' => null));
-        $this->entityCache->expects($this->once())
+        $this->doctrineCache->expects($this->once())
             ->method('find')
             ->with($this->equalTo('class'), $this->equalTo('persisted'))
             ->will($this->returnValue($persisted));

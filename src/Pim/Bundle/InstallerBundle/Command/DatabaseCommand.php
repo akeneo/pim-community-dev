@@ -64,7 +64,9 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('<info>Prepare database schema</info>');
+        $driver = $this->getStorageDriver();
+
+        $output->writeln(sprintf('<info>Prepare database schema (driver: %s)</info>', $driver));
 
         // Needs to try if database already exists or not
         $connection = $this->getContainer()->get('doctrine')->getConnection();
@@ -74,10 +76,16 @@ class DatabaseCommand extends ContainerAwareCommand
             }
             $this->commandExecutor->runCommand('doctrine:database:drop', array('--force' => true));
         } catch (\PDOException $e) {
-            $output->writeln('<info>Database does not exist yet</info>');
+            $output->writeln(' <error>Database does not exist yet</error>');
         }
 
         $this->commandExecutor->runCommand('doctrine:database:create');
+
+        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $driver) {
+            $this->commandExecutor
+                ->runCommand('doctrine:mongodb:schema:drop')
+                ->runCommand('doctrine:mongodb:schema:create');
+        }
 
         // Needs to close connection if always open
         if ($connection->isConnected()) {
@@ -94,14 +102,6 @@ class DatabaseCommand extends ContainerAwareCommand
                 'doctrine:schema:update',
                 array('--force' => true, '--no-interaction' => true)
             );
-
-        $storageDriver = $this->getContainer()->getParameter('pim_catalog.storage_driver');
-
-        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $storageDriver) {
-            $this->commandExecutor
-                ->runCommand('doctrine:mongodb:schema:drop')
-                ->runCommand('doctrine:mongodb:schema:create');
-        }
 
         $this
             ->loadFixturesStep($input, $output)
@@ -133,6 +133,10 @@ class DatabaseCommand extends ContainerAwareCommand
             + $this->getFixturesList($input->getOption('fixtures'));
 
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
+
+        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
+            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load');
+        }
 
         $output->writeln('');
 
@@ -197,5 +201,15 @@ class DatabaseCommand extends ContainerAwareCommand
             ->runCommand('pim:completeness:calculate');
 
         return $this;
+    }
+
+    /**
+     * Get the storage driver
+     *
+     * @return string
+     */
+    protected function getStorageDriver()
+    {
+        return $this->getContainer()->getParameter('pim_catalog.storage_driver');
     }
 }

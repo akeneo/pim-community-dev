@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -25,9 +25,9 @@ class AttributeTransformer extends NestedEntityTransformer
     protected $attributeManager;
 
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * Constructor
@@ -38,7 +38,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param ColumnInfoTransformerInterface $columnInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeManager               $attributeManager
-     * @param EntityCache                    $entityCache
+     * @param DoctrineCache                  $doctrineCache
      */
     public function __construct(
         ManagerRegistry $doctrine,
@@ -47,11 +47,11 @@ class AttributeTransformer extends NestedEntityTransformer
         ColumnInfoTransformerInterface $columnInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         AttributeManager $attributeManager,
-        EntityCache $entityCache
+        DoctrineCache $doctrineCache
     ) {
         parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry);
         $this->attributeManager = $attributeManager;
-        $this->entityCache = $entityCache;
+        $this->doctrineCache = $doctrineCache;
     }
 
     /**
@@ -80,7 +80,7 @@ class AttributeTransformer extends NestedEntityTransformer
      */
     protected function setOptions($class, AbstractAttribute $attribute, array $optionsData)
     {
-        $this->entityCache->setReference($attribute);
+        $this->doctrineCache->setReference($attribute);
         $optionClass = $this->attributeManager->getAttributeOptionClass();
         foreach ($optionsData as $code => $optionData) {
             $optionData['attribute'] = $attribute->getCode();
@@ -89,7 +89,7 @@ class AttributeTransformer extends NestedEntityTransformer
             }
             $option = $this->transformNestedEntity($class, 'options', $optionClass, $optionData);
             $attribute->addOption($option);
-            $this->entityCache->setReference($option);
+            $this->doctrineCache->setReference($option);
         }
     }
 

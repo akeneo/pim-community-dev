@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
+namespace Pim\Bundle\InstallerBundle\DataFixtures\MongoDB;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -69,9 +69,9 @@ class LoadFixturesData extends AbstractFixture implements OrderedFixtureInterfac
 
         $paths = glob($dataPath.'/*');
         if ('doctrine/mongodb-odm' === $this->container->getParameter('pim_catalog.storage_driver')) {
-            // Do not load products and associations with the ORM fixtures when mongodb support is activated
+            // only load products and associations with the ODM fixtures when mongodb support is activated
             foreach ($paths as $key => $path) {
-                if (false !== strpos($path, 'products.') || false !== strpos($path, 'associations.')) {
+                if (false === strpos($path, 'products.') && false === strpos($path, 'associations.')) {
                     unset($paths[$key]);
                 }
             }

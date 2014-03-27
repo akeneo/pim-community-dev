@@ -9,7 +9,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 /**
@@ -39,9 +39,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $identifierAttribute;
 
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * @var StepExecution
@@ -73,16 +73,16 @@ class ProductWriter extends AbstractConfigurableStepElement implements
 
     /**
      * @param ProductManager $productManager
-     * @param EntityCache    $entityCache
+     * @param DoctrineCache  $doctrineCache
      * @param VersionManager $versionManager
      */
     public function __construct(
         ProductManager $productManager,
-        EntityCache $entityCache,
+        DoctrineCache $doctrineCache,
         VersionManager $versionManager
     ) {
         $this->productManager = $productManager;
-        $this->entityCache    = $entityCache;
+        $this->doctrineCache    = $doctrineCache;
         $this->versionManager = $versionManager;
     }
 
@@ -151,7 +151,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 $objectManager->clear($className);
             }
         }
-        $this->entityCache->clear();
+        $this->doctrineCache->clear();
     }
 
     /**
