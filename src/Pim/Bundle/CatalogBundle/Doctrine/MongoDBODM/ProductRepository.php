@@ -764,6 +764,53 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @return QueryBuilder
+     */
+    public function createVariantGroupDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder();
+
+        return $qb;
+    }
+
+    /**
+     * @param integer $variantGroupId
+     *
+     * @return array product ids
+     */
+    public function getEligibleProductIdsForVariantGroup($variantGroupId)
+    {
+        $sql = 'SELECT ga.attribute_id '.
+            'FROM pim_catalog_group_attribute ga '.
+            'WHERE ga.group_id = :groupId;';
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->execute();
+        $attributes = $stmt->fetchAll();
+
+        $qb = $this->createQueryBuilder()->hydrate(false)->select('_id');
+
+        foreach ($attributes as $attribute) {
+            $andExpr = $qb
+                ->expr()
+                ->field('values')
+                ->elemMatch(['attribute' => (int) $attribute['attribute_id'], 'option' => ['$exists' => true]]);
+
+            $qb->addAnd($andExpr);
+        }
+
+        $result = $qb->getQuery()->execute()->toArray();
+
+        $ids = [];
+
+        foreach ($result as $item) {
+            $ids[] = (string) $item['_id'];
+        }
+
+        return $ids;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
