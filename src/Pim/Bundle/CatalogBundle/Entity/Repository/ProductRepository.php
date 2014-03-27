@@ -209,7 +209,7 @@ class ProductRepository extends EntityRepository implements
 
         $qb
             ->where(':variantGroup MEMBER OF Product.groups')
-            ->setParameter('variantGroup', $variantGroup);
+            ->setParameter('variantGroup', $variantGroup->getId());
 
         $index = 0;
         foreach ($criteria as $item) {
