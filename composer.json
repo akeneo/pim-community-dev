@@ -40,6 +40,9 @@
         "phpspec/phpspec": "dev-develop@dev",
         "akeneo/phpspec-skip-example-extension": "1.0.*@dev"
     },
+    "suggest": {
+        "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
+    },
     "repositories": [
         {
             "type": "vcs",

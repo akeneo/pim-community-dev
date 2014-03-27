@@ -7,7 +7,7 @@ use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 
 /**
  * Fixture Loader  factory
@@ -19,9 +19,9 @@ use Pim\Bundle\TransformBundle\Cache\EntityCache;
 class LoaderFactory
 {
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * @var ConfigurationRegistryInterface
@@ -36,16 +36,16 @@ class LoaderFactory
     /**
      * Constructor
      *
-     * @param EntityCache                    $entityCache
+     * @param DoctrineCache                  $doctrineCache
      * @param ConfigurationRegistryInterface $configRegistry
      * @param EventDispatcherInterface       $eventDispatcher
      */
     public function __construct(
-        EntityCache $entityCache,
+        DoctrineCache $doctrineCache,
         ConfigurationRegistryInterface $configRegistry,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->entityCache = $entityCache;
+        $this->doctrineCache = $doctrineCache;
         $this->configRegistry = $configRegistry;
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -62,7 +62,7 @@ class LoaderFactory
      */
     public function create(ObjectManager $objectManager, ReferenceRepository $referenceRepository, $name, $extension)
     {
-        $this->entityCache->setReferenceRepository($referenceRepository);
+        $this->doctrineCache->setReferenceRepository($referenceRepository);
         $reader = $this->configRegistry->getReader($name, $extension);
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
@@ -91,7 +91,7 @@ class LoaderFactory
     ) {
         return new $class(
             $objectManager,
-            $this->entityCache,
+            $this->doctrineCache,
             $reader,
             $processor,
             $this->eventDispatcher,

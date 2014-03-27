@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
 
 /**
@@ -44,9 +44,9 @@ class Loader implements LoaderInterface
     protected $processor;
 
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * @var EventDispatcherInterface
@@ -62,7 +62,7 @@ class Loader implements LoaderInterface
      * Constructor
      *
      * @param ObjectManager            $objectManager
-     * @param EntityCache              $entityCache
+     * @param DoctrineCache              $doctrineCache
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
@@ -70,14 +70,14 @@ class Loader implements LoaderInterface
      */
     public function __construct(
         ObjectManager $objectManager,
-        EntityCache $entityCache,
+        DoctrineCache $doctrineCache,
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         EventDispatcherInterface $eventDispatcher,
         $multiple
     ) {
         $this->objectManager = $objectManager;
-        $this->entityCache = $entityCache;
+        $this->doctrineCache = $doctrineCache;
         $this->reader = $reader;
         $this->processor = $processor;
         $this->eventDispatcher = $eventDispatcher;
@@ -105,7 +105,7 @@ class Loader implements LoaderInterface
 
         $this->objectManager->flush();
         $this->objectManager->clear();
-        $this->entityCache->clear();
+        $this->doctrineCache->clear();
 
         $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
     }
@@ -118,6 +118,6 @@ class Loader implements LoaderInterface
     protected function persistObject($object)
     {
         $this->objectManager->persist($object);
-        $this->entityCache->setReference($object);
+        $this->doctrineCache->setReference($object);
     }
 }

@@ -13,7 +13,7 @@ use Pim\Bundle\TransformBundle\Transformer\Property\RelationTransformer;
  */
 class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 {
-    protected $entityCache;
+    protected $doctrineCache;
     protected $transformer;
 
     protected $entities;
@@ -24,14 +24,14 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->entities = array();
-        $this->entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
+        $this->doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->entityCache
+        $this->doctrineCache
             ->expects($this->any())
             ->method('find')
-            ->will($this->returnCallback(array($this, 'findEntity')));
-        $this->transformer = new RelationTransformer($this->entityCache);
+            ->will($this->returnCallback(array($this, 'findObject')));
+        $this->transformer = new RelationTransformer($this->doctrineCache);
     }
 
     /**
@@ -40,7 +40,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
      *
      * @return object|null
      */
-    public function findEntity($class, $code)
+    public function findObject($class, $code)
     {
         return isset($this->entities[$class][$code]) ? $this->entities[$class][$code] : null;
     }
@@ -49,7 +49,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
      * @param string $class
      * @param string $code
      */
-    public function addEntity($class, $code)
+    public function addObject($class, $code)
     {
         if (!isset($this->entities[$class])) {
             $this->entities[$class] = array();
@@ -62,9 +62,9 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSingleTransform()
     {
-        $this->addEntity('class', 'code');
+        $this->addObject('class', 'code');
         $this->assertSame(
-            $this->findEntity('class', 'code'),
+            $this->findObject('class', 'code'),
             $this->transformer->transform(
                 ' code ',
                 array('class' => 'class')
@@ -80,7 +80,7 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Pim\Bundle\TransformBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage No entity of class "class" with code "code"
+     * @expectedExceptionMessage No object of class "class" with code "code"
      */
     public function testFailingSingleTransform()
     {
@@ -95,9 +95,9 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testMultipleTransform()
     {
-        $this->addEntity('class', 'code1');
-        $this->addEntity('class', 'code2');
-        $this->addEntity('class', 'code3');
+        $this->addObject('class', 'code1');
+        $this->addObject('class', 'code2');
+        $this->addObject('class', 'code3');
         $this->assertSame(
             array_values($this->entities['class']),
             $this->transformer->transform(
@@ -109,11 +109,11 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Pim\Bundle\TransformBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage No entity of class "class" with code "code2"
+     * @expectedExceptionMessage No object of class "class" with code "code2"
      */
     public function testFailingMultipleTransform()
     {
-        $this->addEntity('class', 'code1');
+        $this->addObject('class', 'code1');
         $this->transformer->transform(
             ' code1,code2, code3',
             array('class' => 'class', 'multiple' => true)

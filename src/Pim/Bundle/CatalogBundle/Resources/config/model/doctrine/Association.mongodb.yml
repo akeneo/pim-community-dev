@@ -9,6 +9,9 @@ Pim\Bundle\CatalogBundle\Model\Association:
         groups:
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+        owner:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Model\Product
     referenceMany:
         products:
             targetDocument: Pim\Bundle\CatalogBundle\Model\Product

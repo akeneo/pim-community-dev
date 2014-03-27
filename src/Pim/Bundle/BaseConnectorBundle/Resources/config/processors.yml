@@ -70,7 +70,7 @@ services:
         class: %pim_base_connector.processor.category.class%
         parent: pim_base_connector.processor.transformer
         arguments:
-            - '@pim_transform.cache.entity_cache'
+            - '@pim_transform.cache.doctrine_cache'
             - %pim_catalog.entity.category.class%
 
     pim_base_connector.processor.association_type:

@@ -15,7 +15,7 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testCreate()
     {
-        $entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
+        $doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $configurationRegistry = $this->getMock(
@@ -28,7 +28,7 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entityCache->expects($this->once())
+        $doctrineCache->expects($this->once())
             ->method('setReferenceRepository')
             ->with($this->identicalTo($referenceRepository));
 
@@ -52,7 +52,7 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
 
         $factory = new LoaderFactory(
-            $entityCache,
+            $doctrineCache,
             $configurationRegistry,
             $eventSubscriber
         );
