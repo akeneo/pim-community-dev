@@ -139,7 +139,7 @@ class ProductBuilder
             }
         }
 
-        $this->objectManager->flush();
+        $this->objectManager->flush($product);
     }
 
     /**
