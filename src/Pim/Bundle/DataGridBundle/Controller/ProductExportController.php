@@ -30,17 +30,19 @@ class ProductExportController extends ExportController
     /** @var CurrencyManager $currencyManager */
     protected $currencyManager;
 
-    /** @var AssociationTypeManager $associationTypeManager */
-    protected $associationTypeManager;
+    /** @var AssociationTypeManager $assocTypeManager */
+    protected $assocTypeManager;
 
     /**
      * Constructor
      *
-     * @param Request              $request
-     * @param MassActionDispatcher $massActionDispatcher
-     * @param SerializerInterface  $serializer
-     * @param ProductManager       $productManager
-     * @param LocaleManager        $localeManager
+     * @param Request                $request
+     * @param MassActionDispatcher   $massActionDispatcher
+     * @param SerializerInterface    $serializer
+     * @param ProductManager         $productManager
+     * @param LocaleManager          $localeManager
+     * @param CurrencyManager        $currencyManager
+     * @param AssociationTypeManager $assocTypeManager
      */
     public function __construct(
         Request $request,
@@ -49,7 +51,7 @@ class ProductExportController extends ExportController
         ProductManager $productManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $associationTypeManager
+        AssociationTypeManager $assocTypeManager
     ) {
         parent::__construct(
             $request,
@@ -57,10 +59,10 @@ class ProductExportController extends ExportController
             $serializer
         );
 
-        $this->productManager  = $productManager;
-        $this->localeManager   = $localeManager;
-        $this->currencyManager = $currencyManager;
-        $this->associationTypeManager = $associationTypeManager;
+        $this->productManager   = $productManager;
+        $this->localeManager    = $localeManager;
+        $this->currencyManager  = $currencyManager;
+        $this->assocTypeManager = $assocTypeManager;
     }
 
     /**
@@ -121,7 +123,7 @@ class ProductExportController extends ExportController
         $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
         $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
 
-        $associationTypes = $this->associationTypeManager->getAssociationTypes();
+        $associationTypes = $this->assocTypeManager->getAssociationTypes();
         foreach ($associationTypes as $associationType) {
             $fieldsList[] = sprintf('%s-groups', $associationType->getCode());
             $fieldsList[] = sprintf('%s-products', $associationType->getCode());

@@ -21,7 +21,7 @@ class ChoiceFilter extends AjaxChoiceFilter
     protected $attributeId;
 
     /** @var string */
-    protected $optionRepositoryClass;
+    protected $optionRepoClass;
 
     /** @var UserContext */
     protected $userContext;
@@ -32,18 +32,18 @@ class ChoiceFilter extends AjaxChoiceFilter
      * @param FormFactoryInterface $factory
      * @param ProductFilterUtility $util
      * @param UserContext          $userContext
-     * @param string               $optionRepositoryClass
+     * @param string               $optionRepoClass
      */
     public function __construct(
         FormFactoryInterface $factory,
         ProductFilterUtility $util,
         UserContext $userContext,
-        $optionRepositoryClass
+        $optionRepoClass
     ) {
         parent::__construct($factory, $util);
 
-        $this->userContext           = $userContext;
-        $this->optionRepositoryClass = $optionRepositoryClass;
+        $this->userContext     = $userContext;
+        $this->optionRepoClass = $optionRepoClass;
     }
 
     /**
@@ -107,7 +107,7 @@ class ChoiceFilter extends AjaxChoiceFilter
         }
 
         return [
-            'class'        => $this->optionRepositoryClass,
+            'class'        => $this->optionRepoClass,
             'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
             'collectionId' => $this->attributeId
         ];

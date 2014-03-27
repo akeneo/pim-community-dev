@@ -12,8 +12,6 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormError;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\AbstractQuery;
-use Doctrine\ORM\Query\Expr\From;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
@@ -49,8 +47,8 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var integer */
     protected $massEditLimit;
 
-    /** @var \Doctrine\ORM\QueryBuilder */
-    protected $gridQB;
+    /** @var array $products */
+    protected $products = null;
 
     /**
      * Constructor
@@ -101,73 +99,62 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_enrich_mass_edit")
      * @return template|RedirectResponse
      */
-    public function chooseAction(Request $request)
+    public function chooseAction()
     {
-        $productCount = $this->getProductCount($request);
-        if ($productCount > $this->massEditLimit) {
-            $productCount = false;
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
-        }
-        if (!$productCount) {
+        if ($this->exceedMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
         $form = $this->getOperatorForm();
 
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
+        if ($this->request->isMethod('POST')) {
+            $form->submit($this->request);
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams($request) + ['operationAlias' => $this->operator->getOperationAlias()]
+                    $this->getQueryParams() + ['operationAlias' => $this->operator->getOperationAlias()]
                 );
             }
         }
 
         return array(
             'form'         => $form->createView(),
-            'productCount' => $productCount,
-            'queryParams'  => $this->getQueryParams($request)
+            'productCount' => $this->getProductsCount(false),
+            'queryParams'  => $this->getQueryParams()
         );
     }
 
     /**
-     * @param Request $request
      * @param string  $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
-    public function configureAction(Request $request, $operationAlias)
+    public function configureAction($operationAlias)
     {
+        if ($this->exceedMassEditLimit()) {
+            return $this->redirectToRoute('pim_enrich_product_index');
+        }
+
         try {
-            $this->operator->setOperationAlias($operationAlias);
+            $this->operator
+                ->setOperationAlias($operationAlias)
+                ->setProductsToMassEdit($this->getProducts());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productCount = $this->getProductCount($request);
-        if ($productCount > $this->massEditLimit) {
-            $productCount = false;
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
-        }
-        if (!$productCount) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
-        $this->operator->initializeOperation($this->getGridQB($request));
+        $this->operator->initializeOperation();
         $form = $this->getOperatorForm();
 
-        if ($request->isMethod('POST')) {
-            $form->submit($request);
-            $this->operator->initializeOperation($this->getGridQB($request));
+        if ($this->request->isMethod('POST')) {
+            $form->submit($this->request);
+            $this->operator->initializeOperation();
             $form = $this->getOperatorForm();
         }
 
@@ -176,43 +163,39 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $productCount,
-                'queryParams'  => $this->getQueryParams($request)
+                'productCount' => $this->getProductsCount(),
+                'queryParams'  => $this->getQueryParams()
             )
         );
     }
 
     /**
-     * @param Request $request
      * @param string  $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
      * @return template|RedirectResponse
      */
-    public function performAction(Request $request, $operationAlias)
+    public function performAction($operationAlias)
     {
+        if ($this->exceedMassEditLimit()) {
+            return $this->redirectToRoute('pim_enrich_product_index');
+        }
+
         try {
-            $this->operator->setOperationAlias($operationAlias);
+            $this->operator
+                ->setOperationAlias($operationAlias)
+                ->setProductsToMassEdit($this->getProducts());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $productCount = $this->getProductCount($request);
-        if ($productCount > $this->massEditLimit) {
-            $productCount = false;
-            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
-        }
-        if (!$productCount) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
-        $this->operator->initializeOperation($this->getGridQB($request));
+        $this->operator->initializeOperation();
         $form = $this->getOperatorForm();
-        $form->submit($request);
+        $form->submit($this->request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation($this->getGridQB($request));
+        $this->operator->performOperation();
         foreach ($this->validator->validate($this->operator) as $violation) {
             $form->addError(
                 new FormError(
@@ -225,7 +208,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->operator->finalizeOperation($this->getGridQB($request));
+            $this->operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
@@ -239,10 +222,27 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $productCount,
-                'queryParams'  => $this->getQueryParams($request)
+                'productCount' => $this->getProductsCount(),
+                'queryParams'  => $this->getQueryParams()
             )
         );
+    }
+
+    /**
+     * Temporary method to avoid editing too many products
+     *
+     * @return boolean
+     *
+     * @deprecated
+     */
+    protected function exceedMassEditLimit()
+    {
+        $productsCount = $this->getProductsCount($this->request);
+        if ($exceed = ($productsCount > $this->massEditLimit)) {
+            $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+        }
+
+        return $exceed;
     }
 
     /**
@@ -260,60 +260,45 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Get the count of products to perform the mass action on
      *
-     * @param Request $request
-     *
      * @return integer
      */
-    protected function getProductCount(Request $request)
+    protected function getProductsCount($setProducts = true)
     {
-        $qb = clone $this->getGridQB($request);
-        $rootEntity = current($qb->getRootEntities());
-        $rootAlias  = $qb->getRootAlias();
-        $rootField  = $rootAlias.'.id';
-        $qb->resetDQLPart('select');
-        $qb->select($rootField);
-        $qb->add('from', new From($rootEntity, $rootAlias), false);
-        $qb->groupBy($rootField);
-        $ids = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
-
-        return count($ids);
+        return count($this->getProducts());
     }
 
     /**
      * Get the datagrid query parameters
      *
-     * @param Request $request
-     *
      * @return array
      */
-    protected function getQueryParams(Request $request)
+    protected function getQueryParams()
     {
-        $params = $this->parametersParser->parse($request);
+        $params = $this->parametersParser->parse($this->request);
 
-        $params['gridName']   = $request->get('gridName');
-        $params['actionName'] = $request->get('actionName');
+        $params['gridName']   = $this->request->get('gridName');
+        $params['actionName'] = $this->request->get('actionName');
         $params['values']     = implode(',', $params['values']);
         $params['filters']    = json_encode($params['filters']);
-        $params['dataLocale'] = $request->get('dataLocale', null);
+        $params['dataLocale'] = $this->request->get('dataLocale', null);
 
         return $params;
     }
 
     /**
-     * Get the query builder with grid parameters applied
-     *
-     * @param Request $request
-     *
-     * @return \Doctrine\ORM\QueryBuilder
+     * Dispatch mass action
      */
-    protected function getGridQB(Request $request)
+    protected function dispatchMassAction()
     {
-        if (null === $this->gridQB) {
-            $qb = $this->massActionDispatcher->dispatch($request);
+        $this->products = $this->massActionDispatcher->dispatch($this->request);
+    }
 
-            $this->gridQB = $qb;
+    protected function getProducts()
+    {
+        if ($this->products === null) {
+            $this->dispatchMassAction();
         }
 
-        return $this->gridQB;
+        return $this->products;
     }
 }

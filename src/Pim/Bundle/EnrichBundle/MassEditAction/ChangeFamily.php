@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
@@ -56,10 +55,9 @@ class ChangeFamily extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $product->setFamily($this->family);
         }
     }

@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class ChangeStatusSpec extends ObjectBehavior
 {
@@ -31,22 +32,20 @@ class ChangeStatusSpec extends ObjectBehavior
     }
 
     function it_changes_the_status_of_the_products_when_performimg_the_operation(
-        QueryBuilder $qb,
         AbstractQuery $query,
         ProductInterface $product2,
         ProductInterface $product1
     ) {
-        $qb->getQuery()->willReturn($query);
-        $query->getResult()->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $this->setToEnable(false);
         $product1->setEnabled(false)->shouldBeCalled();
         $product2->setEnabled(false)->shouldBeCalled();
-        $this->perform($qb);
+        $this->perform();
 
         $this->setToEnable(true);
         $product1->setEnabled(true)->shouldBeCalled();
         $product2->setEnabled(true)->shouldBeCalled();
-        $this->perform($qb);
+        $this->perform();
     }
 }

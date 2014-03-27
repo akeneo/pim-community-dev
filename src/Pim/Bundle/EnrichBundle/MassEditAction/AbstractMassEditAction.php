@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
-
 /**
  * Class that Batch operations might extend for convenience purposes
  *
@@ -13,6 +11,11 @@ use Doctrine\ORM\QueryBuilder;
  */
 abstract class AbstractMassEditAction implements MassEditActionInterface
 {
+    /**
+     * @var array $products
+     */
+    protected $products;
+
     /**
      * {@inheritdoc}
      */
@@ -24,7 +27,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
     /**
      * {@inheritdoc}
      */
-    public function initialize(QueryBuilder $qb)
+    public function initialize()
     {
     }
 
@@ -52,5 +55,27 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
         }
 
         return $parameters[$key];
+    }
+
+    /**
+     * Set products to mass edit
+     *
+     * @param array $products
+     *
+     * @return MassEditActionInterface
+     */
+    public function setProductsToMassEdit(array $products)
+    {
+        $this->products = $products;
+
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getProductsToMassEdit()
+    {
+        return $this->products;
     }
 }

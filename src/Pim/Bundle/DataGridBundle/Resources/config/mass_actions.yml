@@ -37,6 +37,7 @@ services:
     pim_datagrid.extension.mass_action.handler.edit:
         class: %pim_datagrid.extension.mass_action.handler.edit.class%
         arguments:
+            - '@pim_datagrid.datasource.result_record.hydrator.object'
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_edit }
