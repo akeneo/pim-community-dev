@@ -293,6 +293,11 @@ class MassEditActionController extends AbstractDoctrineController
         $this->products = $this->massActionDispatcher->dispatch($this->request);
     }
 
+    /**
+     * Get products to mass edit
+     *
+     * @return array
+     */
     protected function getProducts()
     {
         if ($this->products === null) {
