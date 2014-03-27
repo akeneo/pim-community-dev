@@ -660,6 +660,44 @@ SQL;
     }
 
     /**
+     * @param integer $variantGroupId
+     *
+     * @return array product ids
+     */
+    public function getEligibleProductIdsForVariantGroup($variantGroupId)
+    {
+        $sql = 'SELECT count(ga.attribute_id) as nb '.
+            'FROM pim_catalog_group_attribute as ga '.
+            'WHERE ga.group_id = :groupId;';
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->execute();
+        $nbAxes = $stmt->fetch()['nb'];
+
+        $sql = 'SELECT v.entity_id '.
+            'FROM pim_catalog_group_attribute as ga '.
+            "LEFT JOIN %product_value_table% as v ON v.attribute_id = ga.attribute_id ".
+            'WHERE ga.group_id = :groupId '.
+            'GROUP BY v.entity_id '.
+            'having count(v.option_id) = :nbAxes ;';
+        $sql = $this->prepareDBALQuery($sql);
+
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->bindValue('nbAxes', $nbAxes);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $productIds = array_map(
+            function ($row) {
+                return $row['entity_id'];
+            },
+            $results
+        );
+
+        return $productIds;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
