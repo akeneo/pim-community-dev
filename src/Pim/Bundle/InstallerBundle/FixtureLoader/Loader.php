@@ -62,7 +62,7 @@ class Loader implements LoaderInterface
      * Constructor
      *
      * @param ObjectManager            $objectManager
-     * @param DoctrineCache              $doctrineCache
+     * @param DoctrineCache            $doctrineCache
      * @param ItemReaderInterface      $reader
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher

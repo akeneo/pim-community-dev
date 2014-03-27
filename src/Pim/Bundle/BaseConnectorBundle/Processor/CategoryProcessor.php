@@ -36,7 +36,7 @@ class CategoryProcessor extends TransformerProcessor
      * @param ImportValidatorInterface $validator
      * @param TranslatorInterface      $translator
      * @param ORMTransformer           $transformer
-     * @param DoctrineCache              $doctrineCache
+     * @param DoctrineCache            $doctrineCache
      * @param string                   $class
      */
     public function __construct(
