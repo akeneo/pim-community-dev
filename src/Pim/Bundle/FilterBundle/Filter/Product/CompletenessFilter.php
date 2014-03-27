@@ -19,28 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 class CompletenessFilter extends BooleanFilter
 {
     /**
-     * @var ProductRepositoryInterface
-     */
-    protected $repository;
-
-    /**
-     * Constructor
-     *
-     * @param FormFactoryInterface       $factory
-     * @param FilterUtility              $util
-     * @param ProductRepositoryInterface $repository
-     */
-    public function __construct(
-        FormFactoryInterface $factory,
-        FilterUtility $util,
-        ProductRepositoryInterface $repository
-    ) {
-        parent::__construct($factory, $util);
-
-        $this->repository = $repository;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
@@ -62,7 +40,8 @@ class CompletenessFilter extends BooleanFilter
                 break;
         }
 
-        $this->repository->applyFilterByField($qb, 'completeness', '100', $operator);
+        $repository = $this->util->getProductRepository();
+        $repository->applyFilterByField($qb, 'completeness', '100', $operator);
 
         return true;
     }
