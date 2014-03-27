@@ -635,15 +635,7 @@ class ProductManager
      */
     public function findCommonAttributes(array $productIds)
     {
-        $attributes = array_merge(
-            $this->getProductRepository()->findFamilyCommonAttributeIds($productIds),
-            $this->getProductRepository()->findValuesCommonAttributeIds($productIds)
-        );
-
-        $attributeIds = array();
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['id'];
-        }
+        $attributeIds = $this->getProductRepository()->findCommonAttributeIds($productIds);
 
         return $this
             ->getAttributeRepository()
