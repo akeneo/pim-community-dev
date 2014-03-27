@@ -19,16 +19,18 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
         $queryParameters = parent::prepareParameters();
 
         $variantGroupId = $queryParameters['currentGroup'];
-        $productIds = $this->productManager
-            ->getEntityManager()
-            ->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
-            ->getEligibleProductIds(
-                $this->productManager->getProductName(),
-                $variantGroupId
-            );
-        if (count($productIds) === 0) {
-            $productIds = array(0);
+
+        if (null !== $variantGroupId) {
+            $productIds = $this->productManager
+                ->getProductRepository()
+                ->getEligibleProductIdsForVariantGroup($variantGroupId);
+            if (count($productIds) === 0) {
+                $productIds = array(0);
+            }
+        } else {
+            $productIds = [0];
         }
+
         $queryParameters['productIds'] = $productIds;
 
         return $queryParameters;

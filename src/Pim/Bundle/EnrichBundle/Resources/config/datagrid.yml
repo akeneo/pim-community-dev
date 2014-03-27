@@ -544,6 +544,8 @@ datagrid:
             type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
+            repository_parameters:
+                - currentGroup
         columns:
             is_checked:
                 frontend_type: boolean
@@ -588,6 +590,7 @@ datagrid:
             columns:
                 in_group:
                     data_name: in_group
+                    sorter:    product_in_group
                 family:
                     data_name: familyLabel
                     sorter:    product_family
@@ -608,9 +611,10 @@ datagrid:
         filters:
             columns:
                 in_group:
-                    type:      boolean
-                    label:     In group
-                    data_name: in_group
+                    type:        product_in_group
+                    parent_type: boolean
+                    label:       In group
+                    data_name:   in_group
                     filter_by_having: true
                 family:
                     type:      product_family
@@ -630,7 +634,6 @@ datagrid:
                             choices:
                                 1: Enabled
                                 0: Disabled
-
                 completeness:
                     type:      product_completeness
                     label:     Complete
