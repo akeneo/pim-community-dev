@@ -524,12 +524,8 @@ SQL;
             '(:currentGroup MEMBER OF p.groups '.
             'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)'.
             'THEN true ELSE false END';
-
-        $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
-
         $qb
-            ->addSelect($isCheckedExpr.' AS is_checked')
-            ->addSelect($inGroupExpr.' AS in_group');
+            ->addSelect($isCheckedExpr.' AS is_checked');
 
         return $qb;
     }
