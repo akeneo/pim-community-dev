@@ -237,7 +237,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $this->generateMissingForProduct($product, false);
         }
 
-        $this->documentManager->flush($product);
+        $this->documentManager->flush();
     }
 
     /**
