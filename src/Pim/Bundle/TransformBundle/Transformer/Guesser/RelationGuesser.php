@@ -102,5 +102,24 @@ class RelationGuesser implements GuesserInterface
                 )
             );
         }
+
+        if (in_array($metadata->getTypeOfField($fieldName), ['one', 'many'])) {
+            $mapping = $metadata->getFieldMapping($fieldName);
+
+            // TODO Remove this hack
+            switch ($mapping['targetDocument']) {
+                case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
+                case 'Pim\Bundle\CatalogBundle\Model\Metric':
+                return;
+            }
+
+            return array(
+                $this->transformer,
+                array(
+                    'class'    => $mapping['targetDocument'],
+                    'multiple' => 'many' === $metadata->getTypeOfField($fieldName)
+                )
+            );
+        }
     }
 }

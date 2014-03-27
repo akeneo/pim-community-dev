@@ -162,7 +162,7 @@ class ProductHydrator implements HydratorInterface
                 $scope
             );
             $backendType = $attribute['backendType'];
-            $options = $normalizedData[$fieldCode];
+            $options = isset($normalizedData[$fieldCode]) ? $normalizedData[$fieldCode] : [];
 
             if ($backendType === 'option') {
                 $options = $this->filterOptionValues($options, $locale);

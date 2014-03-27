@@ -15,7 +15,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
 {
     protected $attribute;
     protected $attributeManager;
-    protected $entityCache;
+    protected $doctrineCache;
     protected $transformer;
     protected $transformerRegistry;
 
@@ -33,7 +33,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
         $this->attributeManager->expects($this->any())
             ->method('getAttributeOptionClass')
             ->will($this->returnValue('Pim\Bundle\CatalogBundle\Entity\AttributeOption'));
-        $this->entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
+        $this->doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $this->attributeManager->expects($this->any())
@@ -49,7 +49,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
             $this->columnInfoTransformer,
             $this->transformerRegistry,
             $this->attributeManager,
-            $this->entityCache
+            $this->doctrineCache
         );
         $this->addColumn('code');
         $this->transformerRegistry

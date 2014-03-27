@@ -22,6 +22,7 @@
 - Fixed identifier is required attribute
 - Fixed get common attributes with common values
 - Fixed completeness not removed from changed family
+- Fixed Product ORM mapping: activated orphanRemoval of values
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
