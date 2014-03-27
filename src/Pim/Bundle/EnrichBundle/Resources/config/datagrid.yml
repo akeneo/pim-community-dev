@@ -426,8 +426,9 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                editable:      true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -487,7 +488,6 @@ datagrid:
                     parent_type: boolean
                     label:       In group
                     data_name:   in_group
-                    filter_by_having: true
                 family:
                     type:      product_family
                     label:     Family
@@ -544,8 +544,6 @@ datagrid:
             type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
-            repository_parameters:
-                - currentGroup
         columns:
             is_checked:
                 frontend_type: boolean
@@ -554,8 +552,9 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                editable:      true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -615,7 +614,6 @@ datagrid:
                     parent_type: boolean
                     label:       In group
                     data_name:   in_group
-                    filter_by_having: true
                 family:
                     type:      product_family
                     label:     Family

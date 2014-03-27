@@ -48,7 +48,17 @@ class EntityFilter extends BaseFilter
         $rootAlias  = $this->qb->getRootAlias();
         $entityAlias = 'filter'.$field;
         $this->qb->leftJoin($rootAlias.'.'.$field, $entityAlias);
-        $this->qb->andWhere($this->qb->expr()->in($entityAlias.'.id', $value));
+
+        if ($operator === 'NOT IN') {
+            $this->qb->andWhere(
+                $this->qb->expr()->orX(
+                    $this->qb->expr()->notIn($entityAlias.'.id', $value),
+                    $this->qb->expr()->isNull($entityAlias.'.id')
+                )
+            );
+        } else {
+            $this->qb->andWhere($this->qb->expr()->in($entityAlias.'.id', $value));
+        }
 
         return $this;
     }

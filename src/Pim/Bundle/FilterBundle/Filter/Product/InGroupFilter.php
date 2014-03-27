@@ -3,7 +3,11 @@
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
+use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Symfony\Component\Form\FormFactoryInterface;
+use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 /**
  * Product in group filter (used by group products grid)
@@ -12,8 +16,29 @@ use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class InGroupFilter extends ChoiceFilter
+class InGroupFilter extends BooleanFilter
 {
+    /**
+     * @var RequestParameters
+     */
+    protected $requestParams;
+
+    /**
+     * Constructor
+     *
+     * @param FormFactoryInterface $factory
+     * @param FilterUtility        $util
+     * @param RequestParameters    $requestParams
+     */
+    public function __construct(
+        FormFactoryInterface $factory,
+        FilterUtility $util,
+        RequestParameters $requestParams
+    ) {
+        parent::__construct($factory, $util);
+        $this->requestParams = $requestParams;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,11 +50,19 @@ class InGroupFilter extends ChoiceFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
-        $value = current($data['value']);
+        $groupId = $this->requestParams->get('currentGroup', null);
+        if (!$groupId) {
+            throw new \LogicalException('The current product group must be configured');
+        }
 
+        $value = $groupId;
+        $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
+
+        $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
-        // TODO : to-implement for MongoDB / refactor for ORM
+
+        $repository->applyFilterByField($qb, 'groups', $value, $operator);
+
         return true;
     }
 }

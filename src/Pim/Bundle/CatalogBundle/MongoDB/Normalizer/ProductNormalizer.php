@@ -20,6 +20,9 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     const FAMILY_FIELD = 'family';
 
     /** @const string */
+    const GROUPS_FIELD = 'groups';
+
+    /** @const string */
     const COMPLETENESSES_FIELD = 'completenesses';
 
     /** @const string */
@@ -45,6 +48,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data = [];
         $data[self::FAMILY_FIELD]= $this->serializer->normalize($object->getFamily(), $format, $context);
+        $data[self::GROUPS_FIELD]= [];
+        foreach ($object->getGroups() as $group) {
+            $data[self::GROUPS_FIELD][]= $this->serializer->normalize($group, $format, $context);
+        }
+
         if ($object->getCreated()) {
             $data[self::CREATED_FIELD]= $this->serializer->normalize($object->getCreated(), $format, $context);
         }
