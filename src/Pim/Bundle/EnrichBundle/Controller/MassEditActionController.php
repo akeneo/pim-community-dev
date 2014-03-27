@@ -129,7 +129,7 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * @param string  $operationAlias
+     * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
@@ -170,7 +170,7 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * @param string  $operationAlias
+     * @param string $operationAlias
      *
      * @AclAncestor("pim_enrich_mass_edit")
      * @throws NotFoundHttpException
