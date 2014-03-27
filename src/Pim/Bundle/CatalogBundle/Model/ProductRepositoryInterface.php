@@ -328,15 +328,6 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
     public function getFullProducts(array $productIds, array $attributeIds = array());
 
     /**
-     * Get query builder for a list of products
-     *
-     * @param array $productIds
-     *
-     * @return mixed
-     */
-    public function getByIdsQB(array $productIds);
-
-    /**
      * Find all common attributes ids linked to a family
      * A list of product ids can be passed as parameter
      *

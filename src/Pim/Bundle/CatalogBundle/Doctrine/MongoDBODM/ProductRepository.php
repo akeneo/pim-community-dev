@@ -879,17 +879,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function getByIdsQB(array $products)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb->field('_id')->in($productIds);
-
-        return $qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function findFamilyCommonAttributeIds(array $productIds)
     {
         throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
