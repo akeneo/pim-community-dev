@@ -27,7 +27,7 @@ class AddToGroups extends AbstractMassEditAction
     /**
      * Constructor
      *
-     * @param GroupRepository            $groupRepository
+     * @param GroupRepository $groupRepository
      */
     public function __construct(GroupRepository $groupRepository)
     {
