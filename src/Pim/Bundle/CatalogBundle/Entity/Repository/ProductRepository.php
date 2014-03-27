@@ -970,7 +970,6 @@ SQL;
             $this->findFamilyCommonAttributeIds($productIds),
             $this->findValuesCommonAttributeIds($productIds)
         );
-        $this->getProductRepository()->findCommonAttributes($productIds);
 
         $attributeIds = array();
         foreach ($attributes as $attributeId) {
