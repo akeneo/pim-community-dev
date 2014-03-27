@@ -44,7 +44,7 @@ class DoctrineCache
     }
 
     /**
-     * Returns an entity by code
+     * Returns an object by code
      *
      * @param string $class
      * @param string $code
@@ -53,10 +53,7 @@ class DoctrineCache
      */
     public function find($class, $code)
     {
-        if (!isset($this->cache[$class])) {
-            $this->cache[$class] = array();
-        }
-        if (!array_key_exists($code, $this->cache[$class])) {
+        if (!isset($this->cache[$class][$code])) {
             $this->cache[$class][$code] = $this->findObject($class, $code);
         }
 
@@ -83,13 +80,11 @@ class DoctrineCache
      */
     public function clear()
     {
-        foreach (array_keys($this->cache) as $class) {
-            $this->cache[$class] = array();
-        }
+        $this->cache = array();
     }
 
     /**
-     * Returns an entity from the manager
+     * Returns an object from the manager
      *
      * @param string $class
      * @param string $code
