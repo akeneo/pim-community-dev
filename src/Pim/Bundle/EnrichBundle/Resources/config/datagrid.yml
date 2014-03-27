@@ -426,8 +426,9 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                editable:      true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -484,14 +485,9 @@ datagrid:
             columns:
                 in_group:
                     type:        product_in_group
-                    parent_type: choice
+                    parent_type: boolean
                     label:       In group
                     data_name:   in_group
-                    options:
-                        field_options:
-                            choices:
-                                1: Yes
-                                0: No
                 family:
                     type:      product_family
                     label:     Family
@@ -556,8 +552,9 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                editable:      true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -613,14 +610,9 @@ datagrid:
             columns:
                 in_group:
                     type:        product_in_group
-                    parent_type: choice
+                    parent_type: boolean
                     label:       In group
                     data_name:   in_group
-                    options:
-                        field_options:
-                            choices:
-                                1: Yes
-                                0: No
                 family:
                     type:      product_family
                     label:     Family
