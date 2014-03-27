@@ -881,7 +881,9 @@ class ProductRepository extends DocumentRepository implements
         $qb = $this->createQueryBuilder('p');
         $qb->field('_id')->in($productIds);
 
-        return $qb->getQuery()->execute();
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
     }
 
     /**
