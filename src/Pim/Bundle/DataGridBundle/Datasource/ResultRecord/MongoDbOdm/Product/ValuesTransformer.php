@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product;
 
-use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\OptionsTransformer;
-
 /**
  * Transform sub-part or product
  *
