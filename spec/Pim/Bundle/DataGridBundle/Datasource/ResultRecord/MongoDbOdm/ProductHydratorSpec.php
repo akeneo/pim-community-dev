@@ -22,6 +22,7 @@ class ProductHydratorSpec extends ObjectBehavior
         $options = [
             'locale_code' => 'en_US',
             'scope_code'  => 'print',
+            'current_group_id'  => null,
             'attributes_configuration' => []
         ];
 
