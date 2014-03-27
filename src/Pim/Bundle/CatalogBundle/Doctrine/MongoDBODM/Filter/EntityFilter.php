@@ -68,7 +68,14 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $this->qb->field($field)->in($value);
+        $value = is_array($value) ? $value : [$value];
+        $value = array_map('intval', $value);
+
+        if ($operator === 'NOT IN') {
+            $this->qb->field($field)->notIn($value);
+        } else {
+            $this->qb->field($field)->in($value);
+        }
 
         return $this;
     }
