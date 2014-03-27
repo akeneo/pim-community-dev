@@ -110,7 +110,7 @@ class RelationGuesser implements GuesserInterface
             switch ($mapping['targetDocument']) {
                 case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
                 case 'Pim\Bundle\CatalogBundle\Model\Metric':
-                return;
+                    return;
             }
 
             return array(
