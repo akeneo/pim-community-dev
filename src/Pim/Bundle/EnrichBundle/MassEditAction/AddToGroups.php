@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
  * Adds many products to many groups
@@ -15,21 +14,25 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AddToGroups extends AbstractMassEditAction
 {
-    /** @var ArrayCollection */
-    protected $groups;
+    /**
+     * @var GroupRepository $groupRepository
+     */
+    protected $groupRepository;
 
-    /** @var EntityManager */
-    protected $entityManager;
+    /**
+     * @var ArrayCollection $groups
+     */
+    protected $groups;
 
     /**
      * Constructor
      *
-     * @param EntityManager $entityManager
+     * @param GroupRepository $groupRepository
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(GroupRepository $groupRepository)
     {
-        $this->groups        = new ArrayCollection();
-        $this->entityManager = $entityManager;
+        $this->groupRepository   = $groupRepository;
+        $this->groups            = new ArrayCollection();
     }
 
     /**
@@ -57,10 +60,7 @@ class AddToGroups extends AbstractMassEditAction
      */
     public function getFormOptions()
     {
-        $groups = $this
-            ->entityManager
-            ->getRepository('PimCatalogBundle:Group')
-            ->findAll();
+        $groups = $this->groupRepository->findAll();
 
         return array(
             'groups' => $groups,
@@ -78,10 +78,9 @@ class AddToGroups extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             foreach ($this->getGroups() as $group) {
                 $group->addProduct($product);
             }

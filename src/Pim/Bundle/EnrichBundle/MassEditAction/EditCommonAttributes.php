@@ -4,7 +4,6 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -218,9 +217,12 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(QueryBuilder $qb)
+    public function initialize()
     {
-        $productIds = $this->getProductIdsFromQB($qb);
+        $productIds = array();
+        foreach ($this->products as $product) {
+            $productIds[] = $product->getId();
+        }
         $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
@@ -229,33 +231,14 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Get only product ids from query builder
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return integer[]
-     */
-    protected function getProductIdsFromQB(QueryBuilder $qb)
-    {
-        $products = $qb->getQuery()->getResult();
-        $productIds = array();
-        foreach ($products as $product) {
-            $productIds[] = $product->getId();
-        }
-
-        return $productIds;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $this->setProductValues($product);
         }
-        $this->productManager->handleAllMedia($products);
+        $this->productManager->handleAllMedia($this->products);
     }
 
     /**

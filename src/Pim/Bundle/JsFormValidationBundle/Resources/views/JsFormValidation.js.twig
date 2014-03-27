@@ -23,7 +23,7 @@ var jsfv = new function () {
     }
 
     function showErrorsOnGroups() {
-        $groups = $('div.tab-groups ul');
+        var $groups = $('div.tab-groups ul');
         if (!$groups.length) {
             return;
         }
@@ -49,7 +49,7 @@ var jsfv = new function () {
     }
 
     function highlightTabsWithErrors() {
-        $tabs = $('#form-navbar ul.nav');
+        var $tabs = $('#form-navbar ul.nav');
         if (!$tabs.length) {
             return;
         }

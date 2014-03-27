@@ -60,13 +60,13 @@ Feature: Filter products
   Scenario: Successfully reset the filters
     Given I am on the products page
     Then I filter by "Status" with value "Enabled"
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
     When I reset the grid
-    Then the grid should contain 4 elements
+    Then the grid should contain 5 elements
 
   Scenario: Successfully refresh the grid
     Given I am on the products page
     Then I filter by "Status" with value "Enabled"
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
     When I refresh the grid
-    Then the grid should contain 3 elements
+    Then the grid should contain 4 elements

@@ -47,6 +47,15 @@ define(
                 mediator.trigger('column_form_listener:initialized', this.gridName);
             },
 
+            _explode: function(string) {
+                if (!string) {
+                    return [];
+                }
+                return _.map(string.split(','), function (val) {
+                    return val ? String(val).trim() : null;
+                });
+            },
+
             setStateFromCollection: function (collection) {
                 var checked = true;
                 _.each(collection.models, function(model) {

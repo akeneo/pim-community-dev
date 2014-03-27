@@ -20,9 +20,10 @@ class ProductHydrator implements HydratorInterface
      */
     public function hydrate($qb, $options)
     {
-        $locale = $options['locale_code'];
-        $scope  = $options['scope_code'];
-        $config = $options['attributes_configuration'];
+        $locale  = $options['locale_code'];
+        $scope   = $options['scope_code'];
+        $config  = $options['attributes_configuration'];
+        $groupId = $options['current_group_id'];
 
         $query   = $qb->hydrate(false)->getQuery();
         $results = $query->execute();
@@ -36,7 +37,7 @@ class ProductHydrator implements HydratorInterface
         foreach ($results as $result) {
             $result = $this->prepareStaticData($result, $locale);
             $result = $this->prepareValuesData($result, $attributes, $locale, $scope);
-            $result = $this->prepareLinkedData($result, $locale, $scope);
+            $result = $this->prepareLinkedData($result, $locale, $scope, $groupId);
 
             $rows[] = new ResultRecord($result);
         }
@@ -95,13 +96,14 @@ class ProductHydrator implements HydratorInterface
     }
 
     /**
-     * @param array  $result
-     * @param string $locale
-     * @param string $scope
+     * @param array   $result
+     * @param string  $locale
+     * @param string  $scope
+     * @param integer $groupId
      *
      * @return array
      */
-    protected function prepareLinkedData(array $result, $locale, $scope)
+    protected function prepareLinkedData(array $result, $locale, $scope, $groupId)
     {
         $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
 
@@ -124,11 +126,15 @@ class ProductHydrator implements HydratorInterface
                     $result['productLabel']= isset($attributeAsLabel[$backendType]) ?
                         $attributeAsLabel[$backendType] : null;
                 } else {
-                    $result['productLabel'] = null;
+                    $result['productLabel']= null;
                 }
             }
         } else {
-            $result['familyLabel'] = '-';
+            $result['familyLabel']= '-';
+        }
+
+        if ($groupId && isset($result['groups'])) {
+            $result['in_group']= in_array($groupId, $result['groups']);
         }
 
         return $result;

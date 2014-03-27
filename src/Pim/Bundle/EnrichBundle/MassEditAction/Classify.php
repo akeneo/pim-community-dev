@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 
 /**
@@ -15,11 +13,6 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
  */
 class Classify extends AbstractMassEditAction
 {
-    /**
-     * @var ProductManager $manager
-     */
-    protected $manager;
-
     /**
      * @var CategoryManager $categoryManager
      */
@@ -36,12 +29,10 @@ class Classify extends AbstractMassEditAction
     protected $categories;
 
     /**
-     * @param ProductManager  $manager
      * @param CategoryManager $categoryManager
      */
-    public function __construct(ProductManager $manager, CategoryManager $categoryManager)
+    public function __construct(CategoryManager $categoryManager)
     {
-        $this->manager         = $manager;
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getEntityRepository()->findBy(array('parent' => null));
         $this->categories      = array();
@@ -86,10 +77,9 @@ class Classify extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             foreach ($this->getCategories() as $category) {
                 $product->addCategory($category);
             }

@@ -385,7 +385,16 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByIds(array $ids)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
+        $qb->field('_id')->in($ids);
+
+        $cursor = $qb->getQuery()->execute();
+        $products = [];
+        foreach ($cursor as $product) {
+            $products[]= $product;
+        }
+
+        return $products;
     }
 
     /**
@@ -745,6 +754,16 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @return QueryBuilder
+     */
+    public function createGroupDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder();
+
+        return $qb;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
@@ -852,7 +871,15 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('values.attribute')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
     }
 
     /**
@@ -863,6 +890,24 @@ class ProductRepository extends DocumentRepository implements
         $qb = $this->createQueryBuilder('p');
         $qb->field('_id')->in($productIds);
 
-        return $qb->getQuery()->execute();
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findFamilyCommonAttributeIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findValuesCommonAttributeIds(array $productIds)
+    {
+        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
     }
 }

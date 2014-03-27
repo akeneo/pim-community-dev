@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -114,6 +113,20 @@ class MassEditActionOperator
     }
 
     /**
+     * Set products to mass edit
+     *
+     * @param array $products
+     *
+     * @return MassEditActionOperator
+     */
+    public function setProductsToMassEdit(array $products)
+    {
+        $this->operation->setProductsToMassEdit($products);
+
+        return $this;
+    }
+
+    /**
      * Set the batch operation alias
      * (Also set the batch operation if the alias is registered
      *
@@ -151,37 +164,39 @@ class MassEditActionOperator
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
      *
-     * @param QueryBuilder $qb
+     * @param array $products
      */
-    public function initializeOperation(QueryBuilder $qb)
+    public function initializeOperation()
     {
         if ($this->operation) {
-            $this->operation->initialize($qb);
+            $this->operation->initialize();
         }
     }
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
      *
-     * @param QueryBuilder $qb
+     * @param array $products
      */
-    public function performOperation(QueryBuilder $qb)
+    public function performOperation()
     {
         set_time_limit(0);
         if ($this->operation) {
-            $this->operation->perform($qb);
+            $this->operation->perform();
         }
     }
 
     /**
      * Finalize the batch operation - flush the products
      *
-     * @param QueryBuilder $qb
+     * @param array $products
      */
-    public function finalizeOperation(QueryBuilder $qb)
+    public function finalizeOperation()
     {
         set_time_limit(0);
-        $products = $qb->getQuery()->getResult();
+
+        $products = $this->operation->getProductsToMassEdit();
+
         $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
         $this->manager->saveAll($products, false, true, $scheduleCompleteness);
     }

@@ -164,7 +164,7 @@ class GroupType extends AbstractType
                     'multiple'   => true
                 )
             )
-            ->addEventSubscriber(new BindGroupProductsSubscriber());
+            ->addEventSubscriber(new BindGroupProductsSubscriber($this->productRepository));
     }
 
     /**
