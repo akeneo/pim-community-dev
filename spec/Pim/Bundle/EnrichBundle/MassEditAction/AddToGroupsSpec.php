@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
+use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
@@ -9,12 +10,16 @@ use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class AddToGroupsSpec extends ObjectBehavior
 {
-    function let(EntityManager $em, Group $shirts, Group $pants)
-    {
-        $this->beConstructedWith($em);
+    function let(
+        GroupRepository $groupRepository,
+        Group $shirts,
+        Group $pants
+    ) {
+        $this->beConstructedWith($groupRepository);
     }
 
     function it_is_a_mass_edit_action()
@@ -43,24 +48,21 @@ class AddToGroupsSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_enrich_mass_add_to_groups');
     }
 
-    function it_provides_form_options($em, GroupRepository $repository, $shirts, $pants)
+    function it_provides_form_options($groupRepository, $shirts, $pants)
     {
-        $em->getRepository('PimCatalogBundle:Group')->willReturn($repository);
-        $repository->findAll()->willReturn([$shirts, $pants]);
+        $groupRepository->findAll()->willReturn([$shirts, $pants]);
 
         $this->getFormOptions()->shouldReturn(['groups' => [$shirts, $pants]]);
     }
 
     function it_adds_products_to_groups_when_performimg_the_operation(
-        QueryBuilder $qb,
         AbstractQuery $query,
         ProductInterface $product1,
         ProductInterface $product2,
         $shirts,
         $pants
     ) {
-        $qb->getQuery()->willReturn($query);
-        $query->getResult()->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $this->setGroups([$shirts, $pants]);
 
@@ -69,6 +71,6 @@ class AddToGroupsSpec extends ObjectBehavior
         $pants->addProduct($product1)->shouldBeCalled();
         $pants->addProduct($product2)->shouldBeCalled();
 
-        $this->perform($qb);
+        $this->perform();
     }
 }

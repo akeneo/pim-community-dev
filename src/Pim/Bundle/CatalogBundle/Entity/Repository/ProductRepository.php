@@ -600,12 +600,7 @@ SQL;
     }
 
     /**
-     * Find all common attributes ids linked to a family
-     * A list of product ids can be passed as parameter
-     *
-     * @param array $productIds
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function findFamilyCommonAttributeIds(array $productIds)
     {
@@ -632,13 +627,10 @@ SQL;
     }
 
     /**
-     * Find all common attribute ids with values from a list of product ids
+     * {@inheritdoc}
+     *
      * Can't use ORM here because of QueryBuilder::from method which only take string
      * Only DBAL layer is used
-     *
-     * @param array $productIds
-     *
-     * @return mixed
      */
     public function findValuesCommonAttributeIds(array $productIds)
     {
