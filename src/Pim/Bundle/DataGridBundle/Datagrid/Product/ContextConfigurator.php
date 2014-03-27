@@ -61,6 +61,11 @@ class ContextConfigurator implements ConfiguratorInterface
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
     /**
+     * @var string
+     */
+    const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
+
+    /**
      * @var DatagridConfiguration
      */
     protected $configuration;
@@ -114,6 +119,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addProductStorage();
         $this->addLocaleCode();
         $this->addScopeCode();
+        $this->addRepositoryParameters();
         $this->addCurrentGroupId();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
@@ -184,6 +190,23 @@ class ContextConfigurator implements ConfiguratorInterface
         $groupId = $this->requestParams->get('currentGroup', null);
         $path = $this->getSourcePath(self::CURRENT_GROUP_ID_KEY);
         $this->configuration->offsetSetByPath($path, $groupId);
+    }
+
+    /**
+     * Inject requested repository parameters in the datagrid configuration
+     */
+    protected function addRepositoryParameters()
+    {
+        $path             = $this->getSourcePath(self::REPOSITORY_PARAMETERS_KEY);
+        $repositoryParams = $this->configuration->offsetGetByPath($path, null);
+
+        if ($repositoryParams) {
+            $params = [];
+            foreach ($repositoryParams as $index => $paramName) {
+                $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
+            }
+            $this->configuration->offsetSetByPath($path, $params);
+        }
     }
 
     /**
