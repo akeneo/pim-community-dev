@@ -48,6 +48,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const CURRENT_GROUP_ID_KEY = 'current_group_id';
+
+    /**
+     * @var string
+     */
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
     /**
@@ -109,6 +114,7 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addProductStorage();
         $this->addLocaleCode();
         $this->addScopeCode();
+        $this->addCurrentGroupId();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
@@ -168,6 +174,16 @@ class ContextConfigurator implements ConfiguratorInterface
         $scopeCode = $this->getCurrentScopeCode();
         $path = $this->getSourcePath(self::DISPLAYED_SCOPE_KEY);
         $this->configuration->offsetSetByPath($path, $scopeCode);
+    }
+
+    /**
+     * Inject current group id in the datagrid configuration
+     */
+    protected function addCurrentGroupId()
+    {
+        $groupId = $this->requestParams->get('currentGroup', null);
+        $path = $this->getSourcePath(self::CURRENT_GROUP_ID_KEY);
+        $this->configuration->offsetSetByPath($path, $groupId);
     }
 
     /**

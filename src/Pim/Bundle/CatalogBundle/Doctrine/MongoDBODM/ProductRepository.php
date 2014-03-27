@@ -385,7 +385,16 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByIds(array $ids)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $qb = $this->createQueryBuilder('p')->eagerCursor(true);
+        $qb->field('_id')->in($ids);
+
+        $cursor = $qb->getQuery()->execute();
+        $products = [];
+        foreach ($cursor as $product) {
+            $products[]= $product;
+        }
+
+        return $products;
     }
 
     /**
