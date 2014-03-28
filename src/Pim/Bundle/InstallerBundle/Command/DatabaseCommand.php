@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
  * - creates database
  * - updates schema
  * - loads fixtures
- * - launches other command for database calculations (search index, completeness calculation)
+ * - launches other command for database calculations (completeness calculation)
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -194,11 +194,6 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function launchCommands(InputInterface $input, OutputInterface $output)
     {
         $this->commandExecutor
-            ->runCommand('oro:search:create-index')
-            ->runCommand(
-                'pim:search:reindex',
-                array('locale' => $this->getContainer()->getParameter('locale'))
-            )
             ->runCommand('pim:versioning:refresh')
             ->runCommand('pim:completeness:calculate');
 
