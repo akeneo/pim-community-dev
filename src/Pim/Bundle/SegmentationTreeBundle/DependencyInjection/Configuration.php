@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\\Bundle\\SegmentationTreeBundle\DependencyInjection;
+namespace Pim\Bundle\SegmentationTreeBundle\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;

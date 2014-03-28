@@ -45,7 +45,6 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     {
         // assert instance and implementation
         $this->assertEntity($this->category);
-        $this->assertInstanceOf('\Pim\Bundle\SegmentationTreeBundle\Entity\AbstractSegment', $this->category);
         $this->assertInstanceOf('\Pim\Bundle\TranslationBundle\Entity\TranslatableInterface', $this->category);
 
         // assert object properties

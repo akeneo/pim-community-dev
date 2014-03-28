@@ -333,7 +333,7 @@ class SegmentManagerTest extends WebTestCase
 
     /**
      * Remove a segment and assert tree
-     * @param AbstractSegment $segment    Segment removed
+     * @param CategoryInterface $segment    Segment removed
      * @param boolean         $removeById Predicate to remove by id or not
      */
     private function removeAndAssertTreeRemoved($segment, $removeById = false)

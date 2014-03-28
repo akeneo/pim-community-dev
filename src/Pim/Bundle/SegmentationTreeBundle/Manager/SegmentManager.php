@@ -1,12 +1,9 @@
 <?php
 namespace Pim\Bundle\SegmentationTreeBundle\Manager;
 
-use Pim\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
-
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
-
-use Pim\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Service class to manage segments node and tree
@@ -54,7 +51,7 @@ class SegmentManager
     /**
      * Get a new segment instance
      *
-     * @return AbstractSegment
+     * @return CategoryInterface
      *
      */
     public function getSegmentInstance()
@@ -77,7 +74,7 @@ class SegmentManager
     /**
      * Return the entity repository reponsible for the segment
      *
-     * @return SegmentRepository
+     * @return CategoryRepository
      */
     public function getEntityRepository()
     {
@@ -140,9 +137,9 @@ class SegmentManager
     /**
      * Remove a segment object
      *
-     * @param AbstractSegment $segment
+     * @param CategoryInterface $segment
      */
-    public function remove(AbstractSegment $segment)
+    public function remove(CategoryInterface $segment)
     {
         $this->getStorageManager()->remove($segment);
     }
@@ -194,13 +191,13 @@ class SegmentManager
 
     /**
      * Recursive copy
-     * @param AbstractSegment $segment Segment to be copied
-     * @param AbstractSegment $parent  Parent segment
+     * @param CategoryInterface $segment Segment to be copied
+     * @param CategoryInterface $parent  Parent segment
      *
-     * @return AbstractSegment
+     * @return CategoryInterface
      * FIXME: copy relationship states as well and all attributes
      */
-    public function copyNode(AbstractSegment $segment, $parent)
+    public function copyNode(CategoryInterface $segment, $parent)
     {
         $newSegment = $this->getSegmentInstance();
         $newSegment->setCode($segment->getCode());
@@ -233,11 +230,11 @@ class SegmentManager
     /**
      * Get all segments of a tree by its root
      *
-     * @param AbstractSegment $treeRoot Tree root node
+     * @param CategoryInterface $treeRoot Tree root node
      *
      * @return ArrayCollection The tree's nodes
      */
-    public function getTreeSegments(AbstractSegment $treeRoot)
+    public function getTreeSegments(CategoryInterface $treeRoot)
     {
         $repo = $this->getEntityRepository();
         $treeRootId = $treeRoot->getId();
@@ -265,9 +262,9 @@ class SegmentManager
     /**
      * Remove a new tree by its root segment
      *
-     * @param AbstractSegment $rootSegment
+     * @param CategoryInterface $rootSegment
      */
-    public function removeTree(AbstractSegment $rootSegment)
+    public function removeTree(CategoryInterface $rootSegment)
     {
         $rootSegment->setParent(null);
         $this->getStorageManager()->remove($rootSegment);
@@ -293,7 +290,7 @@ class SegmentManager
      * @param Segment $parentNode
      * @param Segment $childNode
      */
-    public function isAncestor(AbstractSegment $parentNode, AbstractSegment $childNode)
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
     {
         $childPath = $this->getEntityRepository()->getPath($childNode);
         //Removing last part of the path as it's the node itself
