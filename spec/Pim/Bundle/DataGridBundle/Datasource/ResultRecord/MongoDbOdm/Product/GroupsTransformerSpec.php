@@ -11,22 +11,40 @@ class GroupsTransformerSpec extends ObjectBehavior
     {
         $locale = 'fr_FR';
         $groupId = 2;
-        $result = [
+        $normalizedData = [ 
             'normalizedData' => [
-                'family' => [
-                    'code' => 'mongo',
-                    'label' => [
-                        'en_US' => 'MongoDB Family',
-                        'fr_FR' => 'Famille MongoDB'
+                'groups' => [
+                    [
+                        'code'  => 'akeneo_related',
+                        'label' => [
+                            'en_US' => 'Akeneo related',
+                            'fr_FR' => 'Akeneo liés'
+                        ]
                     ],
-                    'attributeAsLabel' => 'name'
+                    [
+                        'code'  => 'akeneo_tshirt',
+                        'label' => [
+                            'en_US' => 'Akeneo tshirt',
+                            'fr_FR' => 'Tshirt Akeneo'
+                        ]
+                    ]
                 ]
             ],
-            'groups' => [1, 2, 3]
         ];
+        $result = $normalizedData + ['groups' => [1, 2, 3]];
 
-        $expected = $result + [
-            'in_group'  => true
+        $expected = $normalizedData + [
+            'groups'   => [
+                'akeneo_related' => [
+                    'code'  => 'akeneo_related',
+                    'label' => 'Akeneo liés'
+                ],
+                'akeneo_tshirt' => [
+                    'code'  => 'akeneo_tshirt',
+                    'label' => 'Tshirt Akeneo'
+                ]
+            ],
+            'in_group' => true
         ];
 
         $this->transform($result, $locale, $groupId)->shouldReturn($expected);
