@@ -44,6 +44,7 @@ class GroupsTransformerSpec extends ObjectBehavior
                     'label' => 'Tshirt Akeneo'
                 ]
             ],
+            'is_checked' => true,
             'in_group' => true
         ];
 
