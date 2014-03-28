@@ -101,8 +101,6 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels     = new ArrayCollection();
