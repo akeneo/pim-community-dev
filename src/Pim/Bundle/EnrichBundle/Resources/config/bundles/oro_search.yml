@@ -1,3 +1,0 @@
-oro_search:
-    engine:          orm
-    realtime_update: true
