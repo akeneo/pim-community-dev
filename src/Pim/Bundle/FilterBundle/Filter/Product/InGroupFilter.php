@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\Product;
 
+use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 
 /**
