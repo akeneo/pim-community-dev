@@ -37,7 +37,7 @@ class TextTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            9,
+            8,
             $attFormType
         );
     }

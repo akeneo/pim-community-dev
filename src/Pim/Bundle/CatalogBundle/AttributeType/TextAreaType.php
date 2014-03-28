@@ -43,10 +43,6 @@ class TextAreaType extends AbstractAttributeType
             'wysiwygEnabled' => [
                 'name'      => 'wysiwygEnabled',
                 'fieldType' => 'switch'
-            ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
             ]
         ];
     }

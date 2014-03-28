@@ -111,9 +111,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             length: 65532
             nullable: true
             column: default_value
-        searchable:
-            type: boolean
-            column: is_searchable
         localizable:
             type: boolean
             column: is_localizable

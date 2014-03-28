@@ -37,10 +37,6 @@ class IdentifierType extends AbstractAttributeType
             'validationRegexp' => [
                 'name' => 'validationRegexp'
             ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ],
             'scopable' => [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_enrich_scopable',

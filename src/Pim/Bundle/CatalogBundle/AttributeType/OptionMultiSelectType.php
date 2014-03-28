@@ -47,10 +47,6 @@ class OptionMultiSelectType extends AbstractAttributeType
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
         return parent::defineCustomAttributeProperties($attribute) + [
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ],
             'minimumInputLength' => [
                 'name'      => 'minimumInputLength',
                 'fieldType' => 'number'

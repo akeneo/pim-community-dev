@@ -52,10 +52,6 @@ class DateType extends AbstractAttributeType
                 'options'   => [
                     'widget' => 'single_text'
                 ]
-            ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
             ]
         ];
 

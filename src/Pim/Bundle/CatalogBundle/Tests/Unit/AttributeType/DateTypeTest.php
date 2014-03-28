@@ -91,7 +91,7 @@ class DateTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            8,
+            7,
             $attFormType
         );
     }

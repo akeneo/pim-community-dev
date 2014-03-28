@@ -71,7 +71,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
     public function testBuildAttributeFormTypes()
     {
         $this->assertCount(
-            8,
+            7,
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)

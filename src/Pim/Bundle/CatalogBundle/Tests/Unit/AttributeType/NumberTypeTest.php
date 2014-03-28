@@ -113,7 +113,7 @@ class NumberTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            10,
+            9,
             $attFormType
         );
     }

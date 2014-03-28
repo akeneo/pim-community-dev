@@ -74,10 +74,6 @@ class PriceCollectionType extends AbstractAttributeType
                 'options'   => [
                     'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
                 ]
-            ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
             ]
         ];
     }
