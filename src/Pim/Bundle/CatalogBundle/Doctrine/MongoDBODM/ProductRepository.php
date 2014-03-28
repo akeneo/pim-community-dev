@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Doctrine\ODM\MongoDB\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
@@ -982,9 +983,44 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: Take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $collection = $this->dm->getDocumentCollection($this->documentName);
+
+        $expr = new Expr($this->dm);
+        $expr->setClassMetadata($this->class);
+        $expr->field('_id')->in($productIds);
+
+        $pipeline = array(
+            array(
+                '$match'   => $expr->getQuery()
+            ),
+            array('$unwind' => '$values'),
+            array(
+                '$group'  => array(
+                    '_id'       => '$_id',
+                    'attribute' => array( '$addToSet' => '$values.attribute')
+                )
+            ),
+            array('$unwind' => '$attribute'),
+            array('$group'  => array(
+                '_id'   => '$attribute',
+                'count' => array('$sum' => 1)
+            )),
+            array('$match'   => array('count' => count($productIds))),
+            array('$project' => array('values.attribute' => 1))
+        );
+
+        $results = $collection->aggregate($pipeline)->toArray();
+
+        $attributeIds = array();
+        foreach ($results as $result) {
+            $attributeIds[] = $result['_id'];
+        }
+
+        return $attributeIds;
     }
 }
