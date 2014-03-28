@@ -799,6 +799,22 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
+     * @param array $params
+     *
+     * @return QueryBuilder
+     */
+    public function createAssociationDatagridQueryBuilder(array $params = array())
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (isset($params['product'])) {
+            $qb->field('_id')->notEqual($params['product']);
+        }
+
+        return $qb;
+    }
+
+    /**
      * @param integer $variantGroupId
      *
      * @return array product ids

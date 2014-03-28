@@ -964,6 +964,8 @@ datagrid:
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
+            repository_parameters:
+                - product
         columns:
             is_checked:
                 frontend_type: boolean
@@ -1006,8 +1008,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                is_associated:
-                    data_name: is_associated
+                # is_associated:
+                #     data_name: is_associated
                 family:
                     data_name: familyLabel
                     sorter:    product_family

@@ -9,6 +9,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\ValuesT
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\FamilyTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\CompletenessTransformer;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\GroupsTransformer;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Product\AssociationTransformer;
 
 /**
  * Hydrate results of Doctrine MongoDB query as ResultRecord array
@@ -28,6 +29,8 @@ class ProductHydrator implements HydratorInterface
         $scope   = $options['scope_code'];
         $config  = $options['attributes_configuration'];
         $groupId = $options['current_group_id'];
+        $associationTypeId = $options['association_type_id'];
+        $currentProduct    = $options['current_product'];
 
         $query   = $qb->hydrate(false)->getQuery();
         $results = $query->execute();
@@ -43,6 +46,7 @@ class ProductHydrator implements HydratorInterface
         $familyTransformer = new FamilyTransformer();
         $complTransformer  = new CompletenessTransformer();
         $groupsTransformer = new GroupsTransformer();
+        $assocTramsformer  = new AssociationTransformer();
 
         foreach ($results as $result) {
             $result = $fieldsTransformer->transform($result, $locale);
@@ -50,6 +54,7 @@ class ProductHydrator implements HydratorInterface
             $result = $familyTransformer->transform($result, $locale);
             $result = $complTransformer->transform($result, $locale, $scope);
             $result = $groupsTransformer->transform($result, $locale, $groupId);
+            $result = $assocTramsformer->transform($result, $associationTypeId, $currentProduct);
 
             $rows[] = new ResultRecord($result);
         }
