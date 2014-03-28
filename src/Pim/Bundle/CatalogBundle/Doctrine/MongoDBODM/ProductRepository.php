@@ -17,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Product repository
@@ -205,14 +204,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Association $association
-     */
-    public function findAllIdsForAssociation(Association $association)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
      * @param AbstractAttribute $attribute
      *
      * @return string[]
@@ -330,9 +321,15 @@ class ProductRepository extends DocumentRepository implements
     /**
      * @param integer $id
      */
-    public function cascadeAssociationRemoval($id)
+    public function cascadeAssociationTypeRemoval($id)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->createQueryBuilder('p')
+            ->update()
+            ->field('associations.associationType')->equals($id)
+            ->field('associations')->pull(['associationType' => $id])
+            ->multiple(true)
+            ->getQuery()
+            ->execute();
     }
 
     /**

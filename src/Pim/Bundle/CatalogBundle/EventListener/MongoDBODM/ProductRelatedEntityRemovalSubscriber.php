@@ -24,7 +24,7 @@ class ProductRelatedEntityRemovalSubscriber implements EventSubscriber
 
     /** @var string */
     protected $entityMapping = [
-        'Pim\Bundle\CatalogBundle\Model\Association'       => 'Association',
+        'Pim\Bundle\CatalogBundle\Entity\AssociationType'  => 'AssociationType',
         'Pim\Bundle\CatalogBundle\Model\AbstractAttribute' => 'Attribute',
         'Pim\Bundle\CatalogBundle\Entity\AttributeOption'  => 'AttributeOption',
         'Pim\Bundle\CatalogBundle\Model\CategoryInterface' => 'Category',
