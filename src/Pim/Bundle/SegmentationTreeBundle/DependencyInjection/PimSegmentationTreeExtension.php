@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\Loader;
  * Extension
  *
  */
-class OroSegmentationTreeExtension extends Extension
+class PimSegmentationTreeExtension extends Extension
 {
     /**
      * {@inheritDoc}
