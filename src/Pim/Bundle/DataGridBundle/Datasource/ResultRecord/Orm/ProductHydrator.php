@@ -33,18 +33,55 @@ class ProductHydrator implements HydratorInterface
             }
             $otherFields = $result;
             $result = $entityFields + $otherFields;
-            if (isset($result['values'])) {
-                $values = $result['values'];
-                foreach ($values as $value) {
-                    $result[$value['attribute']['code']]= $value;
-                }
-                unset($result['values']);
-            }
+            $result = $this->prepareValues($result);
+            $result = $this->prepareGroups($result);
             $result['dataLocale']= $localeCode;
 
             $rows[] = new ResultRecord($result);
         }
 
         return $rows;
+    }
+
+    /**
+     * Prepare product values
+     *
+     * @param array $result
+     *
+     * @return array
+     */
+    protected function prepareValues($result)
+    {
+        if (isset($result['values'])) {
+            $values = $result['values'];
+            foreach ($values as $value) {
+                $result[$value['attribute']['code']]= $value;
+            }
+            unset($result['values']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Prepare product groups
+     *
+     * @param array $result
+     *
+     * @return array
+     */
+    protected function prepareGroups($result)
+    {
+        if (isset($result['groups'])) {
+            $groups = [];
+            foreach ($result['groups'] as $group) {
+                $code = $group['code'];
+                $label = (count($group['translations']) > 0) ? $group['translations'][0]['label'] : null;
+                $groups[$code]= ['code' => $code, 'label' => $label];
+            }
+            $result['groups']= $groups;
+        }
+
+        return $result;
     }
 }

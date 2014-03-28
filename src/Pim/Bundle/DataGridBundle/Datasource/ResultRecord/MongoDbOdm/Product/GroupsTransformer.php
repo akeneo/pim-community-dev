@@ -28,6 +28,16 @@ class GroupsTransformer
             $result['in_group']= in_array($currentGroupId, $result['groups']);
         }
 
+        if (isset($normalizedData['groups'])) {
+            $groups = [];
+            foreach ($normalizedData['groups'] as $group) {
+                $code = $group['code'];
+                $label = isset($group['label'][$locale]) ? $group['label'][$locale] : null;
+                $groups[$code]= ['code' => $code, 'label' => $label];
+            }
+            $result['groups']= $groups;
+        }
+
         return $result;
     }
 }
