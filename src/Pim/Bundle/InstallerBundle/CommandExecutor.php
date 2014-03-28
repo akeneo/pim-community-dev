@@ -60,10 +60,11 @@ class CommandExecutor
         $exitCode = $this->application->run(new ArrayInput($params), $this->output);
 
         if (0 !== $exitCode) {
-            $this->output->writeln(
-                sprintf('<error>The command terminated with an error code: %u.</error>', $exitCode)
-            );
-            exit($exitCode);
+            $this->application->setAutoExit(true);
+            $errorMessage = sprintf('The command terminated with an error code: %u.', $exitCode);
+            $this->output->writeln("<error>$errorMessage</error>");
+            $e = new \Exception($errorMessage, $exitCode);
+            throw $e;
         }
 
         return $this;

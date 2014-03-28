@@ -56,7 +56,10 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $existingCombinations = array();
 
-        $products = $this->getMatchingProducts($variantGroup);
+        $products = $variantGroup->getProducts();
+        if (null === $products) {
+            $products = $this->getMatchingProducts($variantGroup);
+        }
         foreach ($products as $product) {
             $values = array();
             foreach ($variantGroup->getAttributes() as $attribute) {

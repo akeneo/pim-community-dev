@@ -82,28 +82,33 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln(sprintf('<info>Installing %s Application.</info>', static::APP_NAME));
         $output->writeln('');
 
-        switch ($input->getOption('task')) {
-            case self::TASK_CHECK:
-                $this->checkStep($input, $output);
-                break;
-            case self::TASK_DB:
-                $this->databaseStep($input, $output);
-                break;
-            case self::TASK_ASSETS:
-                $this->assetsStep($input, $output);
-                break;
-            default:
-                $this
-                    ->checkStep($input, $output)
-                    ->databaseStep($input, $output)
-                    ->assetsStep($input, $output);
-                break;
+        try {
+            switch ($input->getOption('task')) {
+                case self::TASK_CHECK:
+                    $this->checkStep($input, $output);
+                    break;
+                case self::TASK_DB:
+                    $this->databaseStep($input, $output);
+                    break;
+                case self::TASK_ASSETS:
+                    $this->assetsStep($input, $output);
+                    break;
+                default:
+                    $this->checkStep($input, $output)
+                        ->databaseStep($input, $output)
+                        ->assetsStep($input, $output);
+                    break;
+            }
+        } catch (\Exception $e) {
+            return $e->getCode();
         }
 
         $this->updateInstalledFlag($input, $output, date('c'));
 
         $output->writeln('');
         $output->writeln(sprintf('<info>%s Application has been successfully installed.</info>', static::APP_NAME));
+
+        return 0;
     }
 
     /**

@@ -67,6 +67,11 @@
                 <include name="parameters*.yml" />
             </fileset>
         </replaceregexp>
+        <replaceregexp match="installer_data:.*$" replace="installer_data: PimInstallerBundle:minimal" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*.yml" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>

@@ -428,7 +428,7 @@ datagrid:
                 data_name:     in_group
                 selector:      product_in_group
                 type:          twig
-                editable:      true
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -556,7 +556,7 @@ datagrid:
                 data_name:     in_group
                 selector:      product_in_group
                 type:          twig
-                editable:      true
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -975,7 +975,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
-                editable:      true
+                primary:       true
             label:
                 label:         Label
                 data_name:     productLabel
@@ -1095,6 +1095,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
+                primary:       true
             code:
                 label: Code
             label:

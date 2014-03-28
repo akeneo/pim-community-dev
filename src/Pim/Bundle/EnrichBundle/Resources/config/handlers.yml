@@ -38,7 +38,9 @@ services:
         arguments:
             - '@pim_enrich.form.group'
             - '@request'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
+
 
     pim_enrich.form.handler.group_type:
         class: %pim_enrich.form.handler.group_type.class%
