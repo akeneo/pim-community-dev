@@ -38,6 +38,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
     /**
      * @param array
      */
+    protected $primaryColumns;
+
+    /**
+     * @param array
+     */
     protected $identifierColumn;
 
     /**
@@ -89,10 +94,14 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         $this->editableColumns = array();
+        $this->primaryColumns  = array();
 
         foreach ($this->propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
                 $this->editableColumns[$columnCode] = $columnData;
+                unset($this->propertiesColumns[$columnCode]);
+            } elseif (isset($columnData['primary'])) {
+                $this->primaryColumns[$columnCode] = $columnData;
                 unset($this->propertiesColumns[$columnCode]);
             }
         }
@@ -157,11 +166,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
         );
 
-        $this->availableColumns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
-            + $this->attributesColumns;
+        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
+            + $this->propertiesColumns + $this->attributesColumns;
 
         if (!empty($userColumns)) {
-            $this->displayedColumns = $this->editableColumns;
+            $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
             foreach ($userColumns as $column) {
                 if (array_key_exists($column, $this->availableColumns)) {
                     $this->displayedColumns[$column] = $this->availableColumns[$column];
