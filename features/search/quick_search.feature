@@ -1,4 +1,5 @@
 @javascript
+@skip
 Feature: Search in Akeneo PIM
   In order to search something in the catalog
   As a user

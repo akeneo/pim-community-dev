@@ -36,7 +36,9 @@ class AppKernel extends OroKernel
             'Oro\Bundle\WorkflowBundle\OroWorkflowBundle',
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
-            'Oro\Bundle\CronBundle\OroCronBundle'
+            'Oro\Bundle\CronBundle\OroCronBundle',
+            'Oro\Bundle\ImportExportBundle\OroImportExportBundle',
+            'Oro\Bundle\SearchBundlei\OroSearchBundle'
         );
         foreach ($oroBundles as $bundleIndex => $bundle) {
             if (in_array(get_class($bundle), $exclude)) {
@@ -60,7 +62,6 @@ class AppKernel extends OroKernel
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
-            new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
