@@ -63,33 +63,11 @@ class BindGroupProductsSubscriber implements EventSubscriberInterface
     protected function bindProducts(Group $group, array $appendProducts, array $removeProducts)
     {
         foreach ($appendProducts as $product) {
-            $product->addGroup($group);
+            $group->addProduct($product);
         }
 
         foreach ($removeProducts as $product) {
-            $product->removeGroup($group);
-        }
-
-        $this->updateProducts($appendProducts, $removeProducts);
-    }
-
-    /**
-     * Update products, used in case of MongoDB
-     *
-     * @param array $appendProducts
-     * @param array $removeProducts
-     */
-    protected function updateProducts($appendProducts, $removeProducts)
-    {
-        $documentManager = method_exists($this->productRepository, 'getDocumentManager') ?
-            $this->productRepository->getDocumentManager() : null;
-        $products = $appendProducts + $removeProducts;
-
-        if ($documentManager && count($products)) {
-            foreach ($removeProducts as $product) {
-                $documentManager->persist($product);
-            }
-            $documentManager->flush();
+            $group->removeProduct($product);
         }
     }
 }
