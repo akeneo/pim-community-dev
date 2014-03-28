@@ -51,10 +51,6 @@
 {% set backendParameters %}
     {{ form_row(form.group, { 'label': 'Attribute group' }) }}
 
-    {% if form.searchable is defined %}
-        {{ form_row(form.searchable) }}
-    {% endif %}
-
     {{ form_row(form.useableAsGridColumn) }}
 
     {{ form_row(form.useableAsGridFilter) }}

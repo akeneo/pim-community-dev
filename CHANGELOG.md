@@ -83,6 +83,8 @@
 - Remove ProductManager property from Classify mass edit action
 - Remove method getProductIdsFromQB from EditCommonAttributes mass edit action
 - Remove ProductRepository::findFamilyCommonAttributes() and ProductRepository::findValuesCommonAttributeIds() to replace them by ProductRepository::findCommonAttributeIds()
+- Disable global search feature
+- Remove the 'searchable' property of AbstractAttribute
 
 # 1.0.2
 ## Bug Fixes

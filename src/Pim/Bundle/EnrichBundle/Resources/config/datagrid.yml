@@ -428,7 +428,7 @@ datagrid:
                 data_name:     in_group
                 selector:      product_in_group
                 type:          twig
-                editable:      true
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -544,6 +544,8 @@ datagrid:
             type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
+            repository_parameters:
+                - currentGroup
         columns:
             is_checked:
                 frontend_type: boolean
@@ -554,7 +556,7 @@ datagrid:
                 data_name:     in_group
                 selector:      product_in_group
                 type:          twig
-                editable:      true
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
@@ -962,6 +964,8 @@ datagrid:
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
+            repository_parameters:
+                - product
         columns:
             is_checked:
                 frontend_type: boolean
@@ -973,7 +977,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
-                editable:      true
+                primary:       true
             label:
                 label:         Label
                 data_name:     productLabel
@@ -1093,6 +1097,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
+                primary:       true
             code:
                 label: Code
             label:

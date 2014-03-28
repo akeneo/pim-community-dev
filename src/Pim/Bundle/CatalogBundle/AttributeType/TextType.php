@@ -41,10 +41,6 @@ class TextType extends AbstractAttributeType
             ],
             'validationRegexp' => [
                 'name' => 'validationRegexp'
-            ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
             ]
         ];
 

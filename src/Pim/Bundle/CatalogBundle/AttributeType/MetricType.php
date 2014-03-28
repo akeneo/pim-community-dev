@@ -104,10 +104,6 @@ class MetricType extends AbstractAttributeType
                 'options' => [
                     'required' => true
                 ]
-            ],
-            'searchable' => [
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
             ]
         ];
     }

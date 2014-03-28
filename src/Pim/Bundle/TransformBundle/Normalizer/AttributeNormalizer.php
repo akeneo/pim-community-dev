@@ -102,7 +102,6 @@ class AttributeNormalizer implements NormalizerInterface
 
         return array(
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
-            'searchable'          => $attribute->isSearchable(),
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),

@@ -238,8 +238,10 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      */
     public function addProduct(ProductInterface $product)
     {
-        $this->products[] = $product;
-        $product->addGroup($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addGroup($this);
+        }
 
         return $this;
     }

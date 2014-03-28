@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
@@ -21,11 +22,18 @@ class InGroupSorter implements SorterInterface
     protected $repository;
 
     /**
-     * @param ProductRepositoryInterface $repository
+     * @var RequestParameters
      */
-    public function __construct(ProductRepositoryInterface $repository)
+    protected $requestParams;
+
+    /**
+     * @param ProductRepositoryInterface $repository
+     * @param RequestParameters          $requestParams
+     */
+    public function __construct(ProductRepositoryInterface $repository, RequestParameters $requestParams)
     {
-        $this->repository = $repository;
+        $this->repository    = $repository;
+        $this->requestParams = $requestParams;
     }
 
     /**
@@ -34,6 +42,14 @@ class InGroupSorter implements SorterInterface
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
         $qb = $datasource->getQueryBuilder();
-        // TODO : to-implement for MongoDB / refactor for ORM
+
+        $groupId = $this->requestParams->get('currentGroup', null);
+        if (!$groupId) {
+            throw new \LogicalException('The current product group must be configured');
+        }
+
+        $field = 'in_group_'.$groupId;
+
+        $this->repository->applySorterByField($qb, $field, $direction);
     }
 }

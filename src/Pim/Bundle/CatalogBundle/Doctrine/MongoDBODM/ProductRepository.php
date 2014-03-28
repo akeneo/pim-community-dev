@@ -18,7 +18,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\Association;
 
 /**
  * Product repository
@@ -206,14 +205,6 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param Association $association
-     */
-    public function findAllIdsForAssociation(Association $association)
-    {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-    }
-
-    /**
      * @param AbstractAttribute $attribute
      *
      * @return string[]
@@ -281,8 +272,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeFamilyRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('family')->equals($id)->unsetField()
             ->getQuery()
             ->execute();
@@ -294,8 +285,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeAttributeRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.attribute')->equals($id)
             ->field('values')->pull(['attribute' => $id])
             ->getQuery()
@@ -308,8 +299,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeCategoryRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('categories')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
@@ -321,8 +312,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeGroupRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('groups')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
@@ -331,9 +322,15 @@ class ProductRepository extends DocumentRepository implements
     /**
      * @param integer $id
      */
-    public function cascadeAssociationRemoval($id)
+    public function cascadeAssociationTypeRemoval($id)
     {
-        throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
+        $this->createQueryBuilder('p')
+            ->update()
+            ->multiple(true)
+            ->field('associations.associationType')->equals($id)
+            ->field('associations')->pull(['associationType' => $id])
+            ->getQuery()
+            ->execute();
     }
 
     /**
@@ -342,16 +339,16 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeAttributeOptionRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.option')->equals($id)
             ->field('values.$.option')->unsetField()
             ->getQuery()
             ->execute();
 
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.options')->in([$id])
             ->field('values.$.options')->pull($id)
             ->getQuery()
@@ -364,8 +361,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeChannelRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('completenesses.channel')->equals($id)
             ->field('completenesses')->pull(['channel' => $id])
             ->field('normalizedData.completenesses')->unsetField()
@@ -794,6 +791,22 @@ class ProductRepository extends DocumentRepository implements
 
         if (isset($params['currentGroup'])) {
             $qb->field('_id')->in($this->getEligibleProductIdsForVariantGroup((int) $params['currentGroup']));
+        }
+
+        return $qb;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return QueryBuilder
+     */
+    public function createAssociationDatagridQueryBuilder(array $params = array())
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (isset($params['product'])) {
+            $qb->field('_id')->notEqual($params['product']);
         }
 
         return $qb;

@@ -45,5 +45,6 @@ services:
         class: %pim_datagrid.extension.sorter.product.in_group_sorter.class%
         arguments:
             - '@pim_catalog.repository.product'
+            - '@oro_datagrid.datagrid.request_params'
         tags:
             - { name: pim_datagrid.extension.sorter, type: product_in_group }

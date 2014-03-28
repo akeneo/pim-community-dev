@@ -61,7 +61,6 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
             'LiipImagineBundle'              => 'liip_imagine',
             'GenemuFormBundle'               => 'genemu_form',
-            'OroSearchBundle'                => 'oro_search',
             'OroUIBundle'                    => 'oro_ui',
             'OroTranslationBundle'           => 'oro_translation',
             'JMSDiExtraBundle'               => 'jms_di_extra',

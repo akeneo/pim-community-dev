@@ -53,6 +53,16 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const ASSOCIATION_TYPE_ID_KEY = 'association_type_id';
+
+    /**
+     * @var string
+     */
+    const CURRENT_PRODUCT_KEY = 'current_product';
+
+    /**
+     * @var string
+     */
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
     /**
@@ -121,6 +131,8 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addScopeCode();
         $this->addRepositoryParameters();
         $this->addCurrentGroupId();
+        $this->addAssociationTypeId();
+        $this->addCurrentProduct();
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
@@ -190,6 +202,32 @@ class ContextConfigurator implements ConfiguratorInterface
         $groupId = $this->requestParams->get('currentGroup', null);
         $path = $this->getSourcePath(self::CURRENT_GROUP_ID_KEY);
         $this->configuration->offsetSetByPath($path, $groupId);
+    }
+
+    /**
+     * Inject current association type id in the datagrid configuration
+     */
+    protected function addAssociationTypeId()
+    {
+        $path = $this->getSourcePath(self::ASSOCIATION_TYPE_ID_KEY);
+        $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
+        if (isset($params['associationType']) && null !== $params['associationType']) {
+            $typeId = $params['associationType'];
+        } else {
+            $typeId = $this->requestParams->get('associationType', null);
+        }
+        $this->configuration->offsetSetByPath($path, $typeId);
+    }
+
+    /**
+     * Inject current product in the datagrid configuration
+     */
+    protected function addCurrentProduct()
+    {
+        $path = $this->getSourcePath(self::CURRENT_PRODUCT_KEY);
+        $id = $this->requestParams->get('product', null);
+        $product = null !== $id ? $this->productManager->find($id) : null;
+        $this->configuration->offsetSetByPath($path, $product);
     }
 
     /**

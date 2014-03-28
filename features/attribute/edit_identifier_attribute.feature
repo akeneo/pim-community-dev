@@ -9,7 +9,7 @@ Feature: Edit an identifier attribute
 
   Scenario: Successfully display the identifier related fields
     Given I am on the "SKU" attribute page
-    Then I should see the Max characters, Validation rule and Searchable fields
+    Then I should see the Max characters and Validation rule fields
     And the fields Unique, Scope, Usable as grid column and Usable as grid filter should be disabled
 
   @javascript

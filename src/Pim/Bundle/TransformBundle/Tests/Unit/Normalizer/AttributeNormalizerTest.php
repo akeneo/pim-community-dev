@@ -82,7 +82,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'unique'                 => '0',
                     'default_options'        => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
                     'default_value'          => array('red' => array('en' => 'Red', 'fr' => 'Rouge')),
-                    'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -107,7 +106,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
                     'unique'                 => '0',
                     'default_value'          => 'No description',
                     'default_options'        => array(),
-                    'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => array('en', 'fr'),
                     'metric_family'          => '',
@@ -171,7 +169,6 @@ class AttributeNormalizerTest extends NormalizerTestCase
         $attribute->setSortOrder($data['sort_order']);
         $attribute->setRequired($data['required']);
         $attribute->setUnique($data['unique']);
-        $attribute->setSearchable($data['searchable']);
         $attribute->setLocalizable($data['localizable']);
         $attribute->setScopable(strtolower($data['scope']) !== 'global');
         $attribute->setUseableAsGridColumn((bool) $data['useable_as_grid_column']);

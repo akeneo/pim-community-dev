@@ -92,11 +92,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     protected $defaultValue;
 
     /**
-     * @var boolean $searchable
-     */
-    protected $searchable;
-
-    /**
     * @var boolean $localizable
     */
     protected $localizable;
@@ -202,7 +197,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->required            = false;
         $this->unique              = false;
         $this->defaultValue        = null;
-        $this->searchable          = false;
         $this->localizable         = false;
         $this->scopable            = false;
         $this->useableAsGridColumn = false;
@@ -438,30 +432,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     public function isUnique()
     {
         return $this->unique;
-    }
-
-    /**
-     * Set searchable
-     *
-     * @param boolean $searchable
-     *
-     * @return AbstractAttribute
-     */
-    public function setSearchable($searchable)
-    {
-        $this->searchable = $searchable;
-
-        return $this;
-    }
-
-    /**
-     * Is searchable
-     *
-     * @return boolean $searchable
-     */
-    public function isSearchable()
-    {
-        return $this->searchable;
     }
 
     /**

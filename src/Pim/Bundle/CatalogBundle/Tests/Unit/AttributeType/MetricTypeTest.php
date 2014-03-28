@@ -128,7 +128,7 @@ class MetricTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            12,
+            11,
             $attFormType
         );
     }

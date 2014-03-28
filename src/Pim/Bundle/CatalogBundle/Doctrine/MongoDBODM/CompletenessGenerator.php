@@ -317,8 +317,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
         $productQb
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('family')->equals($family->getId())
             ->field('completenesses')->unsetField()
             ->field('normalizedData.completenesses')->unsetField()

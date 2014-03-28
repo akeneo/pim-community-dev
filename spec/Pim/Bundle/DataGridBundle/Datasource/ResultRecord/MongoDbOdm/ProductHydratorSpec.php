@@ -23,7 +23,9 @@ class ProductHydratorSpec extends ObjectBehavior
             'locale_code' => 'en_US',
             'scope_code'  => 'print',
             'current_group_id'  => null,
-            'attributes_configuration' => []
+            'attributes_configuration' => [],
+            'association_type_id' => null,
+            'current_product' => null,
         ];
 
         $builder->getQuery()->willReturn($query);

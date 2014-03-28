@@ -87,8 +87,8 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     {
         $this->configuration = $config;
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            if (isset($config['repository_parameters'])) {
-                $this->qb = $this->getRepository()->$method($config['repository_parameters']);
+            if (isset($config[ContextConfigurator::REPOSITORY_PARAMETERS_KEY])) {
+                $this->qb = $this->getRepository()->$method($config[ContextConfigurator::REPOSITORY_PARAMETERS_KEY]);
             } else {
                 $this->qb = $this->getRepository()->$method();
             }
@@ -117,7 +117,9 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
             'locale_code'              => $this->localeCode,
             'scope_code'               => $this->scopeCode,
             'current_group_id'         => $this->currentGroupId,
-            'attributes_configuration' => $this->configuration['attributes_configuration']
+            'attributes_configuration' => $this->configuration['attributes_configuration'],
+            'association_type_id'      => $this->configuration['association_type_id'],
+            'current_product'          => $this->configuration['current_product']
         ];
 
         if (method_exists($this->qb, 'setParameters')) {
