@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
+use Pim\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;

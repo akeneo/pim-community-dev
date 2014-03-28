@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
+use Pim\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
