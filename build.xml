@@ -259,6 +259,12 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
+            <arg value="doctrine/mongodb" />
+            <arg value="1.1.2" />
+        </exec>
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
             <arg value="3.0.*@dev" />
         </exec>
