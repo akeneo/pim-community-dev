@@ -4,3 +4,8 @@ oro_ui:
             value: Akeneo
         application_title:
             value: Akeneo
+    placeholders_items:
+        navbar:
+            items:
+                search:
+                    remove: true
