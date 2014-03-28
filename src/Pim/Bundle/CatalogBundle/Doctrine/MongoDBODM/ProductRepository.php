@@ -970,7 +970,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      *
-     * TODO: Needs some optimizations
+     * TODO: Needs some optimizations and take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
     {
