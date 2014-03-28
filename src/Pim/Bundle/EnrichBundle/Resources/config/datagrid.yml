@@ -1008,8 +1008,8 @@ datagrid:
             id: ~
         sorters:
             columns:
-                # is_associated:
-                #     data_name: is_associated
+                is_associated:
+                    data_name: is_associated
                 family:
                     data_name: familyLabel
                     sorter:    product_family
