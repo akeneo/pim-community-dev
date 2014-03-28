@@ -271,8 +271,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeFamilyRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('family')->equals($id)->unsetField()
             ->getQuery()
             ->execute();
@@ -284,8 +284,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeAttributeRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.attribute')->equals($id)
             ->field('values')->pull(['attribute' => $id])
             ->getQuery()
@@ -298,8 +298,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeCategoryRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('categories')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
@@ -311,8 +311,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeGroupRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('groups')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
@@ -325,9 +325,9 @@ class ProductRepository extends DocumentRepository implements
     {
         $this->createQueryBuilder('p')
             ->update()
+            ->multiple(true)
             ->field('associations.associationType')->equals($id)
             ->field('associations')->pull(['associationType' => $id])
-            ->multiple(true)
             ->getQuery()
             ->execute();
     }
@@ -338,16 +338,16 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeAttributeOptionRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.option')->equals($id)
             ->field('values.$.option')->unsetField()
             ->getQuery()
             ->execute();
 
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('values.options')->in([$id])
             ->field('values.$.options')->pull($id)
             ->getQuery()
@@ -360,8 +360,8 @@ class ProductRepository extends DocumentRepository implements
     public function cascadeChannelRemoval($id)
     {
         $this->createQueryBuilder('p')
-            ->hydrate(false)
-            ->findAndUpdate()
+            ->update()
+            ->multiple(true)
             ->field('completenesses.channel')->equals($id)
             ->field('completenesses')->pull(['channel' => $id])
             ->field('normalizedData.completenesses')->unsetField()
