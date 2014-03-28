@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
@@ -34,6 +35,6 @@ class InGroupSorter implements SorterInterface
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
         $qb = $datasource->getQueryBuilder();
-        // TODO : to-implement for MongoDB / refactor for ORM
+        $this->repository->applySorterByField($qb, 'in_group', $direction);
     }
 }

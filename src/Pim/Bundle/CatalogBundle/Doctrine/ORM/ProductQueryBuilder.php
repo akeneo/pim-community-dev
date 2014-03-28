@@ -184,7 +184,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     {
         $customSorters = [
             'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
-            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter'
+            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
+            'in_group'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter'
         ];
 
         if (isset($customSorters[$field])) {
