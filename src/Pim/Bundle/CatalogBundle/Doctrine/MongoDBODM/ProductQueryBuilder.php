@@ -170,6 +170,15 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
+        // TODO : need to be refactor to properly handle extra context parameters
+        if (strpos($field, 'in_group_') !== false) {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
+            $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+            $sorter->addFieldSorter($field, $direction);
+
+            return $this;
+        }
+
         $customSorters = [
             'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
             'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
