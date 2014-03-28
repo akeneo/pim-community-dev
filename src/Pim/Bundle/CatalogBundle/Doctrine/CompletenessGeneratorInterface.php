@@ -49,4 +49,59 @@ interface CompletenessGeneratorInterface
      * @param Family $family
      */
     public function scheduleForFamily(Family $family);
+
+    /**
+     * Return products count per channel
+     * It returns the same set of products to export, but doesn't consider the completeness ratio,
+     * and group them by channel
+     * Example:
+     *    array(
+     *        array(
+     *            'label' => 'Mobile',
+     *            'total' => 100,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'total' => 85,
+     *        ),
+     *    )
+     *
+     * @param array $channels
+     *
+     * @return array
+     */
+    public function getProductsCountPerChannels(array $channels);
+
+    /**
+     * Return complete products count per channel and locales
+     * It returns the same set of products to export and group them by channel and locale
+     * Example:
+     *    array(
+     *        array(
+     *            'label' => 'Mobile',
+     *            'code' => 'en_US',
+     *            'total' => 10,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'code' => 'en_US',
+     *            'total' => 85,
+     *        ),
+     *        array(
+     *            'label' => 'Mobile',
+     *            'code' => 'fr_FR',
+     *            'total' => 5,
+     *        ),
+     *        array(
+     *            'label' => 'E-Commerce',
+     *            'code' => 'fr_FR',
+     *            'total' => 63,
+     *        ),
+     *    )
+     *
+     * @param array $channels
+     *
+     * @return array
+     */
+    public function getCompleteProductsCountPerChannels(array $channels);
 }

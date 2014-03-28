@@ -85,6 +85,7 @@ services:
             - '@doctrine'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
+            - '@pim_catalog.manager.channel'
             - %pim_catalog.entity.completeness.class%
 
     pim_catalog.manager.association_type:
