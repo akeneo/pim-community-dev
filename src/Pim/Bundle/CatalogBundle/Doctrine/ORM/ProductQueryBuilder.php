@@ -182,6 +182,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
+        $field = (strpos($field, 'in_group_') !== false) ? 'in_group' : $field;
         $customSorters = [
             'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
             'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
