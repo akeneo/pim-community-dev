@@ -57,6 +57,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $channelManager;
 
     /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
+
+    /**
      * Constructor
      *
      * @param DocumentManager     $documentManager
@@ -64,19 +69,22 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * @param ValidatorInterface  $validator
      * @param string              $productClass
      * @param ChannelManager      $channelManager
+     * @param CategoryRepository  $categoryRepository
      */
     public function __construct(
         DocumentManager $documentManager,
         CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
         $productClass,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        CategoryRepository $categoryRepository
     ) {
-        $this->documentManager = $documentManager;
+        $this->documentManager     = $documentManager;
         $this->completenessFactory = $completenessFactory;
-        $this->validator = $validator;
-        $this->productClass = $productClass;
-        $this->channelManager = $channelManager;
+        $this->validator           = $validator;
+        $this->productClass        = $productClass;
+        $this->channelManager      = $channelManager;
+        $this->categoryRepository  = $categoryRepository;
     }
 
     /**
@@ -324,5 +332,63 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             ->field('normalizedData.completenesses')->unsetField()
             ->getQuery()
             ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsCountPerChannels()
+    {
+        $channels = $this->channelManager->getFullChannels();
+        $productRepo = $this->documentManager->getDocumentRepository($this->productClass);
+
+        $productsCount = array();
+        foreach ($channels as $channel) {
+            $categ
+            $categoryIds = $this->productRepo->getCategoryIds($channel->getCategory());
+            $qb = $this->productRepo->createQueryBuilder()
+                ->hydrate(false)
+                ->field('categories')->in($categoryIds)
+                ->enabled(true)
+                ->select('_id');
+
+            $productsCount[$channel->getLabel()] = $qb->execute()->count();
+        }
+
+        return $productsCount;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCompleteProductsCountPerChannels()
+    {
+        return array();
+    }
+
+    /**
+     * Return categories ids provided by the categoryQb or by the provided category
+     *
+     * @param CategoryInterface $category
+     * @param OrmQueryBuilder   $categoryQb
+     *
+     * @return array $categoryIds
+     */
+    protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
+    {
+        $categoryIds = array();
+
+        if (null !== $categoryQb) {
+            $categoryAlias = $categoryQb->getRootAlias();
+            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+        } else {
+            $categories = array(array('id' => $category->getId()));
+        }
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 }

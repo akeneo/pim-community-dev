@@ -634,23 +634,17 @@ MAIN_SQL;
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountPerChannels(array $channels)
+    public function getProductsCountPerChannels()
     {
-        $channelIds = array();
-        foreach ($channels as $channel) {
-            $channelIds[] = $channel->getId();
-        }
-
         $sql = <<<SQL
 SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
     JOIN %category_table% ca ON ca.root = ch.category_id
     JOIN %category_join_table% cp ON cp.category_id = ca.id
     JOIN %product_table% p ON p.id = cp.product_id
-    WHERE p.is_enabled = 1 AND ch.id IN (%channel_ids%)
+    WHERE p.is_enabled = 1
     GROUP BY ch.id, ch.label
 SQL;
 
-        $sql = str_replace('%channel_ids%',  implode(',', $channelIds), $sql);
         $sql = $this->applyTableNames($sql);
 
         $stmt = $this->doctrine->getConnection()->prepare($sql);
@@ -662,13 +656,8 @@ SQL;
     /**
      * {@inheritdoc}
      */
-    public function getCompleteProductsCountPerChannels(array $channels)
+    public function getCompleteProductsCountPerChannels()
     {
-        $channelIds = array();
-        foreach ($channels as $channel) {
-            $channelIds[] = $channel->getId();
-        }
-
         $sql = <<<SQL
     SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
     JOIN %category_table% ca ON ca.root = ch.category_id
@@ -678,10 +667,9 @@ SQL;
     JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
     LEFT JOIN pim_catalog_completeness co
         ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
-    WHERE p.is_enabled = 1 AND ch.id IN (%channel_ids%)
+    WHERE p.is_enabled = 1
     GROUP BY ch.id, lo.id, ch.label, lo.code
 SQL;
-        $sql = str_replace('%channel_ids%',  implode(',', $channelIds), $sql);
         $sql = $this->applyTableNames($sql);
 
         $stmt = $this->doctrine->getConnection()->prepare($sql);

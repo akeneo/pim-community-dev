@@ -66,11 +66,9 @@ interface CompletenessGeneratorInterface
      *        ),
      *    )
      *
-     * @param array $channels
-     *
      * @return array
      */
-    public function getProductsCountPerChannels(array $channels);
+    public function getProductsCountPerChannels();
 
     /**
      * Return complete products count per channel and locales
@@ -99,9 +97,7 @@ interface CompletenessGeneratorInterface
      *        ),
      *    )
      *
-     * @param array $channels
-     *
      * @return array
      */
-    public function getCompleteProductsCountPerChannels(array $channels);
+    public function getCompleteProductsCountPerChannels();
 }

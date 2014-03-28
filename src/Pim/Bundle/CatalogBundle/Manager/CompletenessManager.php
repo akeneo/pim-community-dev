@@ -11,7 +11,6 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
 /**
@@ -44,11 +43,6 @@ class CompletenessManager
     protected $class;
 
     /**
-     * @var ChannelManager
-     */
-    protected $channelManager;
-
-    /**
      * Constructor
      *
      * @param RegistryInterface              $doctrine
@@ -60,15 +54,13 @@ class CompletenessManager
         RegistryInterface $doctrine,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
-        ChannelManager $channelManager,
         $class
 
     ) {
-        $this->doctrine       = $doctrine;
-        $this->generator      = $generator;
-        $this->validator      = $validator;
-        $this->channelManager = $channelManager;
-        $this->class          = $class;
+        $this->doctrine  = $doctrine;
+        $this->generator = $generator;
+        $this->validator = $validator;
+        $this->class     = $class;
     }
 
     /**
@@ -234,9 +226,7 @@ class CompletenessManager
      */
     public function getProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
-
-        return $this->generator->getProductsCountPerChannels($channels);
+        return $this->generator->getProductsCountPerChannels();
     }
 
     /**
@@ -246,8 +236,6 @@ class CompletenessManager
      */
     public function getCompleteProductsCountPerChannels()
     {
-        $channels = $this->channelManager->getFullChannels();
-
-        return $this->generator->getCompleteProductsCountPerChannels($channels);
+        return $this->generator->getCompleteProductsCountPerChannels();
     }
 }
