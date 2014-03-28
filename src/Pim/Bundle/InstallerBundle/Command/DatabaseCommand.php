@@ -124,7 +124,9 @@ class DatabaseCommand extends ContainerAwareCommand
             $input->setOption('fixtures', self::LOAD_ORO);
         }
 
-        $output->writeln('<info>Load fixtures.</info>');
+        $output->writeln(
+            sprintf('<info>Load fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
+        );
 
         $params = array(
                 '--no-interaction' => true,
