@@ -3,10 +3,10 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Aims to inject selected locale into loaded product
@@ -18,22 +18,16 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 class LocalizableListener implements EventSubscriber
 {
     /**
-     * @var ContainerInterface $container
+     * @var CatalogContext
      */
-    protected $container;
+    protected $context;
 
     /**
-     * Inject service container
-     *
-     * @param ContainerInterface $container
-     *
-     * @return LocalizableListener
+     * @param CatalogContext $context
      */
-    public function setContainer(ContainerInterface $container)
+    public function __construct(CatalogContext $context)
     {
-        $this->container = $container;
-
-        return $this;
+        $this->context = $context;
     }
 
     /**
@@ -58,6 +52,6 @@ class LocalizableListener implements EventSubscriber
             return;
         }
 
-        $object->setLocale($this->container->get('pim_catalog.manager.product')->getLocale());
+        $object->setLocale($this->context->getLocaleCode());
     }
 }
