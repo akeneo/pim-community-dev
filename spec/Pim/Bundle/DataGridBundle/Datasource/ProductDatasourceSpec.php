@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
 
 class ProductDatasourceSpec extends ObjectBehavior
 {
@@ -21,7 +21,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
     }
 
-    function it_processes_a_datasource_with_repository_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepositoryInterface $repository)
+    function it_processes_a_datasource_with_repository_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
     {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
@@ -33,7 +33,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_processes_a_datasource_with_repository_configuration_and_parameters(ObjectManager $manager, DatagridInterface $grid, ProductRepositoryInterface $repository)
+    function it_processes_a_datasource_with_repository_configuration_and_parameters(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
     {
         $config = [
             'repository_method'     => 'createDatagridQueryBuilder',
@@ -46,7 +46,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_processes_a_datasource_with_default_query_builder(ObjectManager $manager, DatagridInterface $grid, ProductRepositoryInterface $repository)
+    function it_processes_a_datasource_with_default_query_builder(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
     {
         $config = [
             'entity'            => 'Product'
@@ -57,7 +57,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_throws_exception_when_process_with_missing_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepositoryInterface $repository)
+    function it_throws_exception_when_process_with_missing_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
     {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',

@@ -335,16 +335,4 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
      * @return integer[]
      */
     public function findCommonAttributeIds(array $productIds);
-
-    /**
-     * @return mixed QueryBuilder
-     */
-    public function createDatagridQueryBuilder();
-
-    /**
-     * @param string $alias
-     *
-     * @return mixed QueryBuilder
-     */
-    public function createQueryBuilder($alias);
 }
