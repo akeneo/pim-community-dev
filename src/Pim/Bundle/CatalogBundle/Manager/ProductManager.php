@@ -63,16 +63,6 @@ class ProductManager
     protected $eventDispatcher;
 
     /**
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * @var string
-     */
-    protected $scope;
-
-    /**
      * Constructor
      *
      * @param array                      $configuration       Product config
@@ -130,44 +120,6 @@ class ProductManager
     public function getConfiguration()
     {
         return $this->configuration;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($code)
-    {
-        $this->locale = $code;
-        $this->getProductRepository()->setLocale($code);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        $this->scope = $code;
-        $this->getProductRepository()->setScope($code);
-
-        return $this;
     }
 
     /**
@@ -324,9 +276,6 @@ class ProductManager
         $class = $this->getProductName();
 
         $product = new $class();
-        $product->setLocale($this->getLocale());
-        $product->setScope($this->getScope());
-
         $event = new FilterProductEvent($this, $product);
         $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT, $event);
 
