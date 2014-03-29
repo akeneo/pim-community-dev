@@ -163,8 +163,6 @@ class MassEditActionOperator
 
     /**
      * Delegate the batch operation initialization to the chosen operation adapter
-     *
-     * @param array $products
      */
     public function initializeOperation()
     {
@@ -175,8 +173,6 @@ class MassEditActionOperator
 
     /**
      * Delegate the batch operation execution to the chosen operation adapter
-     *
-     * @param array $products
      */
     public function performOperation()
     {
@@ -188,8 +184,6 @@ class MassEditActionOperator
 
     /**
      * Finalize the batch operation - flush the products
-     *
-     * @param array $products
      */
     public function finalizeOperation()
     {

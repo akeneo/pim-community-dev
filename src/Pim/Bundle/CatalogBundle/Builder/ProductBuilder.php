@@ -147,6 +147,8 @@ class ProductBuilder
      *
      * @param ProductValueInterface $value
      * @param string                $currency
+     *
+     * @return null|ProductPrice
      */
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {

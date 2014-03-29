@@ -27,15 +27,11 @@ interface MassEditActionInterface
 
     /**
      * Initialize the operation with the products
-     *
-     * @param array $products
      */
     public function initialize();
 
     /**
      * Perform an operation on a set of products
-     *
-     * @param array $products
      */
     public function perform();
 

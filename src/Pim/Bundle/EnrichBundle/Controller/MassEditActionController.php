@@ -105,7 +105,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        if ($this->exceedMassEditLimit()) {
+        if ($this->exceedsMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -123,7 +123,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         return array(
             'form'         => $form->createView(),
-            'productCount' => $this->getProductsCount(false),
+            'productCount' => $this->getProductCount(),
             'queryParams'  => $this->getQueryParams()
         );
     }
@@ -137,7 +137,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        if ($this->exceedMassEditLimit()) {
+        if ($this->exceedsMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -163,7 +163,7 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $this->getProductsCount(),
+                'productCount' => $this->getProductCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
@@ -178,7 +178,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        if ($this->exceedMassEditLimit()) {
+        if ($this->exceedsMassEditLimit()) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -222,7 +222,7 @@ class MassEditActionController extends AbstractDoctrineController
             array(
                 'form'         => $form->createView(),
                 'operator'     => $this->operator,
-                'productCount' => $this->getProductsCount(),
+                'productCount' => $this->getProductCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
@@ -235,14 +235,15 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @deprecated
      */
-    protected function exceedMassEditLimit()
+    protected function exceedsMassEditLimit()
     {
-        $productsCount = $this->getProductsCount($this->request);
-        if ($exceed = ($productsCount > $this->massEditLimit)) {
+        if ($this->getProductCount() > $this->massEditLimit) {
             $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
+
+            return true;
         }
 
-        return $exceed;
+        return false;
     }
 
     /**
@@ -262,7 +263,7 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return integer
      */
-    protected function getProductsCount($setProducts = true)
+    protected function getProductCount()
     {
         return count($this->getProducts());
     }
