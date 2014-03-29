@@ -5,6 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
  * Base value selector
@@ -29,7 +30,8 @@ class BaseSelector implements SelectorInterface
     {
         if ($this->applied === false) {
             $rootAlias    = $datasource->getQueryBuilder()->getRootAlias();
-            $attributeIds = $configuration->offsetGetByPath('[source][displayed_attribute_ids]');
+            $path = sprintf('[source][%s]', ContextConfigurator::DISPLAYED_ATTRIBUTES_KEY);
+            $attributeIds = $configuration->offsetGetByPath($path);
 
             $datasource->getQueryBuilder()
                 ->leftJoin(

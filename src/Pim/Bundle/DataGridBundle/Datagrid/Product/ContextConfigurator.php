@@ -48,6 +48,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
+
+    /**
+     * @var string
+     */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
 
     /**
@@ -161,7 +166,8 @@ class ContextConfigurator implements ConfiguratorInterface
             $attributeIds = $repository->getAttributeIdsUseableInGrid();
         }
 
-        $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
+        $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
+        $this->configuration->offsetSetByPath($path, $attributeIds);
     }
 
     /**

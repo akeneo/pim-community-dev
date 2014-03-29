@@ -342,7 +342,9 @@ interface ProductRepositoryInterface extends LocalizableInterface, ScopableInter
     public function createDatagridQueryBuilder();
 
     /**
+     * @param string $alias
+     *
      * @return mixed QueryBuilder
      */
-    public function createQueryBuilder();
+    public function createQueryBuilder($alias);
 }

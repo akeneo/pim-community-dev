@@ -34,11 +34,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * @var string
      */
-    const DISPLAYED_ATTRIBUTES_PATH = '[source][displayed_attribute_ids]';
-
-    /**
-     * @var string
-     */
     const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
 
     /**
