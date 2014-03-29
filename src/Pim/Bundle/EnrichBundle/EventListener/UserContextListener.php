@@ -7,7 +7,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 
@@ -33,9 +33,9 @@ class UserContextListener implements EventSubscriberInterface
     protected $listener;
 
     /**
-     * @var ProductManager
+     * @var CatalogContext
      */
-    protected $productManager;
+    protected $catalogContext;
 
     /**
      * @var UserContext
@@ -47,18 +47,18 @@ class UserContextListener implements EventSubscriberInterface
      *
      * @param SecurityContextInterface $securityContext
      * @param AddLocaleListener        $listener
-     * @param ProductManager           $productManager
+     * @param CatalogContext           $catalogContext
      * @param UserContext              $userContext
      */
     public function __construct(
         SecurityContextInterface $securityContext,
         AddLocaleListener $listener,
-        ProductManager $productManager,
+        CatalogContext $catalogContext,
         UserContext $userContext
     ) {
         $this->securityContext = $securityContext;
         $this->listener        = $listener;
-        $this->productManager  = $productManager;
+        $this->catalogContext  = $catalogContext;
         $this->userContext     = $userContext;
     }
 
@@ -84,7 +84,7 @@ class UserContextListener implements EventSubscriberInterface
         // If user doesn't have access to any activated locales, skip configuring the listener and productmanager
         try {
             $this->configureTranslatableListener();
-            $this->configureProductManager();
+            $this->configureCatalogContext();
         } catch (\LogicException $e) {
         }
     }
@@ -98,11 +98,11 @@ class UserContextListener implements EventSubscriberInterface
     }
 
     /**
-     * Define locale and scope in ProductManager
+     * Define locale and scope in CatalogContext
      */
-    protected function configureProductManager()
+    protected function configureCatalogContext()
     {
-        $this->productManager->setLocale($this->userContext->getCurrentLocaleCode());
-        $this->productManager->setScope($this->userContext->getUserChannelCode());
+        $this->catalogContext->setLocaleCode($this->userContext->getCurrentLocaleCode());
+        $this->catalogContext->setScopeCode($this->userContext->getUserChannelCode());
     }
 }
