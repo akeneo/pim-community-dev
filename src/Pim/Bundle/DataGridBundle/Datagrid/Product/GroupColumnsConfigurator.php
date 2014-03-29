@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
