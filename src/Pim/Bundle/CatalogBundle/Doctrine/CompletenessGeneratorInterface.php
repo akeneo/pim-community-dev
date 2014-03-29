@@ -77,22 +77,22 @@ interface CompletenessGeneratorInterface
      *    array(
      *        array(
      *            'label' => 'Mobile',
-     *            'code' => 'en_US',
+     *            'locale' => 'en_US',
      *            'total' => 10,
      *        ),
      *        array(
      *            'label' => 'E-Commerce',
-     *            'code' => 'en_US',
+     *            'locale' => 'en_US',
      *            'total' => 85,
      *        ),
      *        array(
      *            'label' => 'Mobile',
-     *            'code' => 'fr_FR',
+     *            'locale' => 'fr_FR',
      *            'total' => 5,
      *        ),
      *        array(
      *            'label' => 'E-Commerce',
-     *            'code' => 'fr_FR',
+     *            'locale' => 'fr_FR',
      *            'total' => 63,
      *        ),
      *    )

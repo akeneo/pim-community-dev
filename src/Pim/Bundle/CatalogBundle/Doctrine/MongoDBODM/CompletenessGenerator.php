@@ -6,6 +6,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -340,19 +341,24 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     public function getProductsCountPerChannels()
     {
         $channels = $this->channelManager->getFullChannels();
-        $productRepo = $this->documentManager->getDocumentRepository($this->productClass);
+        $productRepo = $this->documentManager->getRepository($this->productClass);
 
         $productsCount = array();
         foreach ($channels as $channel) {
-            $categ
-            $categoryIds = $this->productRepo->getCategoryIds($channel->getCategory());
-            $qb = $this->productRepo->createQueryBuilder()
+            $category = $channel->getCategory();
+            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true); 
+            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+
+            $qb = $productRepo->createQueryBuilder()
                 ->hydrate(false)
                 ->field('categories')->in($categoryIds)
-                ->enabled(true)
+                ->field('enabled')->equals(true)
                 ->select('_id');
 
-            $productsCount[$channel->getLabel()] = $qb->execute()->count();
+            $productsCount[] = [
+                'label' => $channel->getLabel(),
+                'total' => $qb->getQuery()->execute()->count()
+            ];
         }
 
         return $productsCount;
@@ -363,7 +369,35 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function getCompleteProductsCountPerChannels()
     {
-        return array();
+        $channels = $this->channelManager->getFullChannels();
+        $productRepo = $this->documentManager->getRepository($this->productClass);
+
+        $productsCount = array();
+        foreach ($channels as $channel) {
+            $category = $channel->getCategory();
+            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true); 
+            $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
+
+            $qb = $productRepo->createQueryBuilder()
+                ->hydrate(false)
+                ->field('categories')->in($categoryIds)
+                ->field('enabled')->equals(true)
+                ->select('_id');
+
+            $channelCount = $qb->getQuery()->execute()->count();
+            $data = array();
+
+            foreach ($channel->getLocales() as $locale) {
+                $data['locale'] = $locale->getCode();
+                $data['label'] = $channel->getLabel();
+                $data['total'] = $channelCount;
+                $data['complete'] = $channelCount;
+            }
+
+            $productsCount[] = $data;
+        }
+
+        return $productsCount;
     }
 
     /**
