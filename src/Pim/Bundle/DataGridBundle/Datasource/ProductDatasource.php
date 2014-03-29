@@ -55,15 +55,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var array grid configuration */
     protected $configuration;
 
-    /** @var string */
-    protected $localeCode = null;
-
-    /** @var string */
-    protected $scopeCode = null;
-
-    /** @var integer */
-    protected $currentGroupId = null;
-
     /** @var array */
     protected $parameters = array();
 
@@ -96,15 +87,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
             $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
-        $localeKey = ContextConfigurator::DISPLAYED_LOCALE_KEY;
-        $this->localeCode = isset($config[$localeKey]) ? $config[$localeKey] : null;
-
-        $scopeKey = ContextConfigurator::DISPLAYED_SCOPE_KEY;
-        $this->scopeCode = isset($config[$scopeKey]) ? $config[$scopeKey] : null;
-
-        $groupKey = ContextConfigurator::CURRENT_GROUP_ID_KEY;
-        $this->currentGroupId = isset($config[$groupKey]) ? $config[$groupKey] : null;
-
         $grid->setDatasource(clone $this);
     }
 
@@ -114,12 +96,12 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     public function getResults()
     {
         $options = [
-            'locale_code'              => $this->localeCode,
-            'scope_code'               => $this->scopeCode,
-            'current_group_id'         => $this->currentGroupId,
-            'attributes_configuration' => $this->configuration['attributes_configuration'],
-            'association_type_id'      => $this->configuration['association_type_id'],
-            'current_product'          => $this->configuration['current_product']
+            'locale_code'              => $this->getConfiguration('locale_code'),
+            'scope_code'               => $this->getConfiguration('scope_code'),
+            'attributes_configuration' => $this->getConfiguration('attributes_configuration'),
+            'current_group_id'         => $this->getConfiguration('current_group_id', false),
+            'association_type_id'      => $this->getConfiguration('association_type_id', false),
+            'current_product'          => $this->getConfiguration('current_product', false)
         ];
 
         if (method_exists($this->qb, 'setParameters')) {
@@ -187,20 +169,21 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /**
      * Get configuration
      *
-     * @param string $key
+     * @param string  $key
+     * @param boolean $isRequired
      *
      * @return mixed
      *
      * @throws \LogicException
      * @throws \Exception
      */
-    protected function getConfiguration($key)
+    protected function getConfiguration($key, $isRequired = true)
     {
         if (!$this->configuration) {
             throw new \LogicException('Datasource is not yet built. You need to call process method before');
         }
 
-        if (!isset($this->configuration[$key])) {
+        if ($isRequired && !isset($this->configuration[$key])) {
             throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
         }
 
