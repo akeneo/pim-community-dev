@@ -123,8 +123,6 @@ class ProductController extends AbstractDoctrineController
         $this->userContext     = $userContext;
         $this->versionManager  = $versionManager;
         $this->securityFacade  = $securityFacade;
-
-        $this->productManager->setLocale($this->getDataLocale());
     }
 
     /**
