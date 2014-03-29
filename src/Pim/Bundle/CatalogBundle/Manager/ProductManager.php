@@ -94,7 +94,7 @@ class ProductManager
         ProductBuilder $builder,
         ProductRepositoryInterface $repo
     ) {
-        $this->configuration      = $configuration;
+        $this->configuration       = $configuration;
         $this->objectManager       = $objectManager;
         $this->eventDispatcher     = $eventDispatcher;
         $this->entityManager       = $entityManager;
@@ -102,7 +102,6 @@ class ProductManager
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
-        $this->repository->setConfiguration($this->configuration);
     }
 
     /**
