@@ -51,6 +51,7 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInterface, add getData, setData and getAttribute methods
 - Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
+- Use CatalogContext and not ProductManager as constructor argument in AddParametersToProductGridListener
 - Move mass export in specific controller
 - Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
 - Remove DeleteMassActionHandler, replaced by ProductDeleteMassActionHandler
