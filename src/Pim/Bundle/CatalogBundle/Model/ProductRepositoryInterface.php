@@ -16,22 +16,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 interface ProductRepositoryInterface
 {
     /**
-     * Get entity configuration
-     *
-     * @return array $config
-     */
-    public function getConfiguration();
-
-    /**
-     * Set entity configuration
-     *
-     * @param array $config
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setConfiguration($config);
-
-    /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
      * @param array      $attributes attribute codes

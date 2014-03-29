@@ -37,30 +37,6 @@ class ProductRepository extends EntityRepository implements
     private $identifierCode;
 
     /**
-     * Get entity configuration
-     *
-     * @return array $config
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * Set entity configuration
-     *
-     * @param array $config
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setConfiguration($config)
-    {
-        $this->configuration = $config;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildByScope($scope)

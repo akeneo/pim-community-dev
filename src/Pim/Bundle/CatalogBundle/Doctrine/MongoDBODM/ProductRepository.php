@@ -32,12 +32,6 @@ class ProductRepository extends DocumentRepository implements
     AssociationRepositoryInterface
 {
     /**
-     * Product config
-     * @var array
-     */
-    protected $configuration;
-
-    /**
      * @param ProductQueryBuilder
      */
     protected $productQB;
@@ -551,30 +545,6 @@ class ProductRepository extends DocumentRepository implements
     public function getProductsCountInCategories(array $categoriesIds)
     {
         return $this->getProductIdsInCategories($categoriesIds)->count();
-    }
-
-    /**
-     * Get configuration
-     *
-     * @return array $config
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * Set product config
-     *
-     * @param array $config
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setConfiguration($config)
-    {
-        $this->configuration = $config;
-
-        return $this;
     }
 
     /**
