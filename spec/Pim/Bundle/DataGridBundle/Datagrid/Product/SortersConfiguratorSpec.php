@@ -47,7 +47,8 @@ class SortersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => 'flexible_field'));
@@ -79,7 +80,8 @@ class SortersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array());

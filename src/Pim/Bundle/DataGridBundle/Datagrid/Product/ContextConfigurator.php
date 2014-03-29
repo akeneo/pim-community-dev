@@ -53,6 +53,11 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * @var string
      */
+    const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
+
+    /**
+     * @var string
+     */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
 
     /**
@@ -271,8 +276,8 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesConfig()
     {
         $attributes = $this->getAttributesConfig();
-
-        $this->configuration->offsetSetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+        $path = $this->getSourcePath(self::USEABLE_ATTRIBUTES_KEY);
+        $this->configuration->offsetSetByPath($path, $attributes);
     }
 
     /**

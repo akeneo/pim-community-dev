@@ -57,7 +57,8 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function prepareAxisColumns()
     {
-        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $this->configuration->offsetGetByPath($path);
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();

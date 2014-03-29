@@ -32,11 +32,6 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     const ENTITY_PATH = '[source][entity]';
 
     /**
-     * @var string
-     */
-    const USEABLE_ATTRIBUTES_PATH = '[source][attributes_configuration]';
-
-    /**
      * @var mixed can be Doctrine\ORM\QueryBuilder or Doctrine\ODM\MongoDB\Query\Builder
      * */
     protected $qb;
