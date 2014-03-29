@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class FiltersConfiguratorSpec extends ObjectBehavior
 {
@@ -37,7 +38,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array('filter' => array('text_config')));
@@ -78,7 +80,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
         $registry->getConfiguration('pim_catalog_text')->willReturn(array());

@@ -6,7 +6,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
@@ -44,6 +43,16 @@ class ContextConfigurator implements ConfiguratorInterface
      * @var string
      */
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
+
+    /**
+     * @var string
+     */
+    const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
+
+    /**
+     * @var string
+     */
+    const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
 
     /**
      * @var string
@@ -161,7 +170,8 @@ class ContextConfigurator implements ConfiguratorInterface
             $attributeIds = $repository->getAttributeIdsUseableInGrid();
         }
 
-        $this->configuration->offsetSetByPath(ProductDatasource::DISPLAYED_ATTRIBUTES_PATH, $attributeIds);
+        $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
+        $this->configuration->offsetSetByPath($path, $attributeIds);
     }
 
     /**
@@ -265,8 +275,8 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesConfig()
     {
         $attributes = $this->getAttributesConfig();
-
-        $this->configuration->offsetSetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH, $attributes);
+        $path = $this->getSourcePath(self::USEABLE_ATTRIBUTES_KEY);
+        $this->configuration->offsetSetByPath($path, $attributes);
     }
 
     /**

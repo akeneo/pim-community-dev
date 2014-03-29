@@ -50,7 +50,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -103,7 +104,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
@@ -144,7 +146,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $userColumnsPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($userColumnsPath)->willReturn(array('family', 'sku'));
@@ -204,7 +207,8 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'attributeType' => 'pim_catalog_text'
             ],
         ];
-        $configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH)->willReturn($attributes);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $configuration->offsetGetByPath($path)->willReturn($attributes);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

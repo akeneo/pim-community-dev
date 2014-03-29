@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Filters configurator for flexible grid
@@ -51,7 +50,8 @@ class FiltersConfigurator implements ConfiguratorInterface
      */
     public function configure()
     {
-        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $this->configuration->offsetGetByPath($path);
 
         foreach ($attributes as $attributeCode => $attribute) {
             $showFilter        = $attribute['useableAsGridFilter'];
