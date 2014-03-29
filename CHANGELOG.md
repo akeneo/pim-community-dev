@@ -41,7 +41,7 @@
 - ProductValueNonBlank renamed to ProductValueComplete
 - Remove the AclHelper $aclHelper argument from the DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 - Moved CustomEntityBundle to its own repository
-- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*` and specialize the implementation
+- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*`, specialize the implementation and pass the CatalogContext as constructor argument
 - Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
 - Move `FilterBundle/Filter/Flexible/*` -> `FilterBundle/Filter/ProductValue/*`
 - Remove unused FilterBundle/Filter/ProductValue/EntityFilter
