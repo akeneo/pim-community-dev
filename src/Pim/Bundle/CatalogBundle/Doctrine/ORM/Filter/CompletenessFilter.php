@@ -16,35 +16,21 @@ use Doctrine\ORM\QueryBuilder;
 class CompletenessFilter implements FieldFilterInterface
 {
     /**
-     * QueryBuilder
      * @var QueryBuilder
      */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * @param querybuilder   $qb
+     * @param catalogcontext $context
      */
-    protected $scope;
-
-    /**
-     * Instanciate a filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
-     */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(querybuilder $qb, catalogcontext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
