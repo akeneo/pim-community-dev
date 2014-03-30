@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness sorter
@@ -21,30 +22,19 @@ class CompletenessSorter implements FieldSorterInterface
      */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Scope code
-     * @var string
-     */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
