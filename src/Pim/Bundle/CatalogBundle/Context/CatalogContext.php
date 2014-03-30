@@ -52,6 +52,22 @@ class CatalogContext
     }
 
     /**
+     * @return boolean
+     */
+    public function hasLocaleCode()
+    {
+        return (isset($this->configuration['localeCode']) && $this->configuration['localeCode'] === null);
+    }
+
+    /**
+     * @return boolean
+     */
+    public function hasScopeCode()
+    {
+        return (isset($this->configuration['scopeCode']) && $this->configuration['scopeCode'] === null);
+    }
+
+    /**
      * @param string $key  the key
      * @param mixed  $data the data
      *
