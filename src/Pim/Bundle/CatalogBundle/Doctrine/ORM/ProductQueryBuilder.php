@@ -62,22 +62,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
-    {
-        return $this->context->getLocaleCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->context->getScopeCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
@@ -104,7 +88,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->getLocale(), $this->getScope());
+        // TODO : add a CatalogContextAware interface to avoid to inject context everywhere ?
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
@@ -126,7 +111,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->getLocale(), $this->getScope());
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -150,7 +135,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->getLocale(), $this->getScope());
+        $sorter = new $sorterClass($this->qb, $context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -174,7 +159,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->getLocale(), $this->getScope());
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;
