@@ -346,7 +346,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productsCount = array();
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true); 
+            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
             $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
 
             $qb = $productRepo->createQueryBuilder()
@@ -375,54 +375,31 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productsCount = array();
         foreach ($channels as $channel) {
             $category = $channel->getCategory();
-            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true); 
+            $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
             $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
 
-            $qb = $productRepo->createQueryBuilder()
-                ->hydrate(false)
-                ->field('categories')->in($categoryIds)
-                ->field('enabled')->equals(true)
-                ->select('_id');
-
-            $channelCount = $qb->getQuery()->execute()->count();
-            $data = array();
 
             foreach ($channel->getLocales() as $locale) {
+                $data = array();
+                $compSuffix = $channel->getCode().'-'.$locale->getCode();
+
+                $qb = $productRepo->createQueryBuilder()
+                    ->hydrate(false)
+                    ->field('categories')->in($categoryIds)
+                    ->field('enabled')->equals(true)
+                    ->field('normalizedData.completenesses.'.$compSuffix)
+                    ->equals(100)
+                    ->select('_id');
+
+                $localeCount = $qb->getQuery()->execute()->count();
                 $data['locale'] = $locale->getCode();
                 $data['label'] = $channel->getLabel();
-                $data['total'] = $channelCount;
-                $data['complete'] = $channelCount;
-            }
+                $data['total'] = $localeCount;
 
-            $productsCount[] = $data;
+                $productsCount[] = $data;
+            }
         }
 
         return $productsCount;
-    }
-
-    /**
-     * Return categories ids provided by the categoryQb or by the provided category
-     *
-     * @param CategoryInterface $category
-     * @param OrmQueryBuilder   $categoryQb
-     *
-     * @return array $categoryIds
-     */
-    protected function getCategoryIds(CategoryInterface $category, OrmQueryBuilder $categoryQb = null)
-    {
-        $categoryIds = array();
-
-        if (null !== $categoryQb) {
-            $categoryAlias = $categoryQb->getRootAlias();
-            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
-        } else {
-            $categories = array(array('id' => $category->getId()));
-        }
-
-        foreach ($categories as $category) {
-            $categoryIds[] = $category['id'];
-        }
-
-        return $categoryIds;
     }
 }
