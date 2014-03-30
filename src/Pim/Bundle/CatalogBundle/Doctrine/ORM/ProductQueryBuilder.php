@@ -135,7 +135,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $context);
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
