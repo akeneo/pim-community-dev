@@ -30,6 +30,7 @@ services:
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.currency'
             - '@pim_catalog.manager.association_type'
+            - '@pim_catalog.context.catalog'
 
     pim_datagrid.controller.datagrid_view:
         scope: request

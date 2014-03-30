@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Override ExportController for product exports
@@ -33,6 +34,9 @@ class ProductExportController extends ExportController
     /** @var AssociationTypeManager $assocTypeManager */
     protected $assocTypeManager;
 
+    /** @var CatalogContext $catalogContext */
+    protected $catalogContext;
+
     /**
      * Constructor
      *
@@ -43,6 +47,7 @@ class ProductExportController extends ExportController
      * @param LocaleManager          $localeManager
      * @param CurrencyManager        $currencyManager
      * @param AssociationTypeManager $assocTypeManager
+     * @param CatalogContext         $catalogContext
      */
     public function __construct(
         Request $request,
@@ -51,7 +56,8 @@ class ProductExportController extends ExportController
         ProductManager $productManager,
         LocaleManager $localeManager,
         CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager
+        AssociationTypeManager $assocTypeManager,
+        CatalogContext $catalogContext
     ) {
         parent::__construct(
             $request,
@@ -63,6 +69,7 @@ class ProductExportController extends ExportController
         $this->localeManager    = $localeManager;
         $this->currencyManager  = $currencyManager;
         $this->assocTypeManager = $assocTypeManager;
+        $this->catalogContext   = $catalogContext;
     }
 
     /**
@@ -74,8 +81,8 @@ class ProductExportController extends ExportController
 
         return sprintf(
             'products_export_%s_%s_%s.%s',
-            $this->productManager->getLocale(),
-            $this->productManager->getScope(),
+            $this->catalogContext->getLocaleCode(),
+            $this->catalogContext->getScopeCode(),
             $dateTime->format('Y-m-d_H-i-s'),
             $this->getFormat()
         );
@@ -141,7 +148,7 @@ class ProductExportController extends ExportController
      */
     protected function prepareAttributesList(array $attributesList)
     {
-        $scopeCode   = $this->productManager->getScope();
+        $scopeCode   = $this->catalogContext->getScopeCode();
         $localeCodes = $this->localeManager->getActiveCodes();
         $fieldsList  = array();
 
