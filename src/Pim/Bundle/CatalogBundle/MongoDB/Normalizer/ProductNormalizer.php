@@ -50,8 +50,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         $data = [];
-        $data[self::FAMILY_FIELD]= $this->serializer->normalize($object->getFamily(), $format, $context);
-        $data[self::GROUPS_FIELD]= [];
+        $data[self::FAMILY_FIELD] = $this->serializer->normalize($object->getFamily(), $format, $context);
+        $data[self::GROUPS_FIELD] = [];
         foreach ($object->getGroups() as $group) {
             $data[self::GROUPS_FIELD][] = $this->serializer->normalize($group, $format, $context);
             $inGroupField = sprintf('%s_%d', self::IN_GROUP_FIELD, $group->getId());
@@ -59,10 +59,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         if ($object->getCreated()) {
-            $data[self::CREATED_FIELD]= $this->serializer->normalize($object->getCreated(), $format, $context);
+            $data[self::CREATED_FIELD] = $this->serializer->normalize($object->getCreated(), $format, $context);
         }
         if ($object->getUpdated()) {
-            $data[self::UPDATED_FIELD]= $this->serializer->normalize($object->getUpdated(), $format, $context);
+            $data[self::UPDATED_FIELD] = $this->serializer->normalize($object->getUpdated(), $format, $context);
         }
         foreach ($object->getValues() as $value) {
             $data = array_merge(

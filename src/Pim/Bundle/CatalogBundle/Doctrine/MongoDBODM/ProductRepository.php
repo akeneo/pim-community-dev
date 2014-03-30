@@ -371,7 +371,7 @@ class ProductRepository extends DocumentRepository implements
         $cursor = $qb->getQuery()->execute();
         $products = [];
         foreach ($cursor as $product) {
-            $products[]= $product;
+            $products[] = $product;
         }
 
         return $products;

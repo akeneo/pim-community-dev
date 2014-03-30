@@ -32,10 +32,10 @@ class ValuesTransformer
                 if (!$filterValueLocale && !$filterValueScope and isset($attributes[$attributeId])) {
                     $attribute = $attributes[$attributeId];
                     $attributeCode = $attribute['code'];
-                    $value['attribute']= $attribute;
-                    $result[$attributeCode]= $value;
-                    $result[$attributeCode]= $optionsTransformer->transform($result, $attribute, $locale, $scope);
-                    $result[$attributeCode]= $this->prepareDateData($result, $attribute);
+                    $value['attribute'] = $attribute;
+                    $result[$attributeCode] = $value;
+                    $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
+                    $result[$attributeCode] = $this->prepareDateData($result, $attribute);
                 }
             }
 
@@ -60,7 +60,7 @@ class ValuesTransformer
 
         if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
-            $value[$backendType]= $dateTransformer->transform($mongoDate);
+            $value[$backendType] = $dateTransformer->transform($mongoDate);
         }
 
         return $value;

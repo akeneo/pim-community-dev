@@ -26,12 +26,12 @@ class AttributeOptionNormalizer implements NormalizerInterface
 
         $values = [];
         foreach ($object->getOptionValues() as $value) {
-            $values[$value->getLocale()]= [
+            $values[$value->getLocale()] = [
                 'value'  => $value->getValue(),
                 'locale' => $value->getLocale()
             ];
         }
-        $data['optionValues']= $values;
+        $data['optionValues'] = $values;
 
         return $data;
     }

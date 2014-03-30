@@ -84,7 +84,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     }
 
     /**
-     * @inheritdoc}
+     * {@inheritdoc}
      */
     public function addFieldFilter($field, $operator, $value)
     {

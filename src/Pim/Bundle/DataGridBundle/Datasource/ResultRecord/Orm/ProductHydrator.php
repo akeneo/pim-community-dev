@@ -35,7 +35,7 @@ class ProductHydrator implements HydratorInterface
             $result = $entityFields + $otherFields;
             $result = $this->prepareValues($result);
             $result = $this->prepareGroups($result);
-            $result['dataLocale']= $localeCode;
+            $result['dataLocale'] = $localeCode;
 
             $rows[] = new ResultRecord($result);
         }
@@ -55,7 +55,7 @@ class ProductHydrator implements HydratorInterface
         if (isset($result['values'])) {
             $values = $result['values'];
             foreach ($values as $value) {
-                $result[$value['attribute']['code']]= $value;
+                $result[$value['attribute']['code']] = $value;
             }
             unset($result['values']);
         }
@@ -77,9 +77,9 @@ class ProductHydrator implements HydratorInterface
             foreach ($result['groups'] as $group) {
                 $code = $group['code'];
                 $label = (count($group['translations']) > 0) ? $group['translations'][0]['label'] : null;
-                $groups[$code]= ['code' => $code, 'label' => $label];
+                $groups[$code] = ['code' => $code, 'label' => $label];
             }
-            $result['groups']= $groups;
+            $result['groups'] = $groups;
         }
 
         return $result;

@@ -27,13 +27,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     {
         $valueKey = $this->getFieldValue($object);
         if ($object->getData() instanceof Collection) {
-            $data[$valueKey]= [];
+            $data[$valueKey] = [];
             foreach ($object->getData() as $item) {
-                $data[$valueKey][]= $this->serializer->normalize($item, $format, $context);
+                $data[$valueKey][] = $this->serializer->normalize($item, $format, $context);
             }
 
         } else {
-            $data[$valueKey]= $this->serializer->normalize($object->getData(), $format, $context);
+            $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
         }
 
         return $data;

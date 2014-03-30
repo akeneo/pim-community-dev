@@ -288,7 +288,7 @@ class AttributeRepository extends EntityRepository implements
             }
             $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
             foreach ($labels as $code => $data) {
-                $results[$code]['label']= $data['label'];
+                $results[$code]['label'] = $data['label'];
             }
         }
 

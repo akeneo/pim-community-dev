@@ -22,7 +22,7 @@ class AttributeOptionsProperty extends FieldProperty
         foreach ($data as $option) {
             if (isset($option['optionValues']) && count($option['optionValues']) === 1) {
                 $optionValue = current($option['optionValues']);
-                $optionValues[]= $optionValue['value'];
+                $optionValues[] = $optionValue['value'];
             } else {
                 $optionValues[] = '['.$option['code'].']';
             }

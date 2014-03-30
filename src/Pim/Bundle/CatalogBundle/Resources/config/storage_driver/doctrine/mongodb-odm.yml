@@ -32,7 +32,7 @@ services:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_catalog.factory.completeness'
             - '@validator'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
             - '@pim_catalog.manager.channel'
 
     pim_catalog.event_listener.mongodb.entities_type:
@@ -116,8 +116,8 @@ services:
         calls:
             - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
-            - [setCategoryClass, ['%pim_catalog.entity.category.class%']]
-            - [setAttributeClass, ['%pim_catalog.entity.attribute.class%']]
+            - [setCategoryClass, [%pim_catalog.entity.category.class%]]
+            - [setAttributeClass, [%pim_catalog.entity.attribute.class%]]
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%

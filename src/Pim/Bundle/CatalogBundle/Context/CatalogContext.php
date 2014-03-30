@@ -75,7 +75,7 @@ class CatalogContext
      */
     public function setConfiguration($key, $data)
     {
-        $this->configuration[$key]= $data;
+        $this->configuration[$key] = $data;
 
         return $this;
     }

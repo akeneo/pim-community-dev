@@ -19,13 +19,13 @@ class FieldsTransformer
      */
     public function transform(array $result, $locale)
     {
-        $result['id']= $result['_id']->__toString();
+        $result['id'] = $result['_id']->__toString();
         unset($result['_id']);
-        $result['dataLocale']= $locale;
+        $result['dataLocale'] = $locale;
         $dateTransformer = new DateTimeTransformer();
-        $result['created']= isset($result['created']) ? $dateTransformer->transform($result['created']) : null;
-        $result['updated']= isset($result['updated']) ? $dateTransformer->transform($result['updated']) : null;
-        $result['enabled']= isset($result['enabled']) ? $result['enabled'] : false;
+        $result['created'] = isset($result['created']) ? $dateTransformer->transform($result['created']) : null;
+        $result['updated'] = isset($result['updated']) ? $dateTransformer->transform($result['updated']) : null;
+        $result['enabled'] = isset($result['enabled']) ? $result['enabled'] : false;
 
         return $result;
     }

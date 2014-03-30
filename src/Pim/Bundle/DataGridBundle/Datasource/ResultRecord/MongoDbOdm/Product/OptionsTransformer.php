@@ -45,7 +45,7 @@ class OptionsTransformer
                 }
             }
 
-            $result[$attributeCode][$backendType]= $options;
+            $result[$attributeCode][$backendType] = $options;
         }
 
         return $result[$attributeCode];

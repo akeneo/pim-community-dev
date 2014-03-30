@@ -37,7 +37,7 @@ class ProductHydrator implements HydratorInterface
 
         $attributes = [];
         foreach ($config as $attributeConf) {
-            $attributes[$attributeConf['id']]= $attributeConf;
+            $attributes[$attributeConf['id']] = $attributeConf;
         }
 
         $rows = [];

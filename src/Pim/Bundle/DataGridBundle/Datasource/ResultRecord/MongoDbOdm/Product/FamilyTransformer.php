@@ -25,21 +25,21 @@ class FamilyTransformer
 
         if (isset($normalizedData['family'])) {
             $family = $normalizedData['family'];
-            $result['familyLabel']= isset($family['label'][$locale]) ?
+            $result['familyLabel'] = isset($family['label'][$locale]) ?
                 $family['label'][$locale] : '['.$family['code'].']';
             if (isset($family['attributeAsLabel']) && $family['attributeAsLabel'] != null) {
                 $attributeCode = $family['attributeAsLabel'];
                 if (isset($result[$attributeCode])) {
                     $attributeAsLabel = $result[$attributeCode];
                     $backendType = $attributeAsLabel['attribute']['backendType'];
-                    $result['productLabel']= isset($attributeAsLabel[$backendType]) ?
+                    $result['productLabel'] = isset($attributeAsLabel[$backendType]) ?
                         $attributeAsLabel[$backendType] : null;
                 } else {
-                    $result['productLabel']= null;
+                    $result['productLabel'] = null;
                 }
             }
         } else {
-            $result['familyLabel']= '-';
+            $result['familyLabel'] = '-';
         }
 
         return $result;
