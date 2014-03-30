@@ -32,12 +32,12 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     protected $aliasCounter = 1;
 
     /**
-     * instanciate a sorter
+     * Instanciate a sorter
      *
-     * @param querybuilder   $qb
-     * @param catalogcontext $context
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(querybuilder $qb, catalogcontext $context)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
         $this->qb      = $qb;
         $this->context = $context;

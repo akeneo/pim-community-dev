@@ -34,10 +34,12 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $aliasCounter = 1;
 
     /**
-     * @param querybuilder   $qb
-     * @param catalogcontext $context
+     * Instanciate a sorter
+     *
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(querybuilder $qb, catalogcontext $context)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
         $this->qb      = $qb;
         $this->context = $context;
