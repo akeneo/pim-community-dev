@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Join utils class
@@ -22,30 +22,17 @@ class ValueJoin
      */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    protected $scope;
-
-    /**
-     * Instanciate a filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
-     */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -54,8 +41,6 @@ class ValueJoin
      * @param AbstractAttribute $attribute the attribute
      * @param string            $joinAlias the value join alias
      *
-     * @throws ProductQueryException
-     *
      * @return string
      */
     public function prepareCondition(AbstractAttribute $attribute, $joinAlias)
@@ -63,16 +48,10 @@ class ValueJoin
         $condition = $joinAlias.'.attribute = '.$attribute->getId();
 
         if ($attribute->isLocalizable()) {
-            if ($this->locale === null) {
-                throw new ProductQueryException('Locale must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->locale);
+            $condition .= ' AND '.$joinAlias.'.locale = '.$this->qb->expr()->literal($this->context->getLocaleCode());
         }
         if ($attribute->isScopable()) {
-            if ($this->scope === null) {
-                throw new ProductQueryException('Scope must be configured');
-            }
-            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->scope);
+            $condition .= ' AND '.$joinAlias.'.scope = '.$this->qb->expr()->literal($this->context->getScopeCode());
         }
 
         return $condition;
