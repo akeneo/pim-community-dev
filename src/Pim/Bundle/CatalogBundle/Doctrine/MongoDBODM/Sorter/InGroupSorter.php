@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * In group sorter
@@ -18,24 +19,17 @@ class InGroupSorter implements FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var string */
-    protected $locale;
-
-    /** @var string */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Instanciate a sorter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param string       $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
         $this->qb      = $qb;
-        $this->locale  = $locale;
-        $this->scope   = $scope;
+        $this->context = $context;
     }
 
     /**

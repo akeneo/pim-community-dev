@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Base sorter
@@ -20,24 +21,17 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var string */
-    protected $locale;
-
-    /** @var string */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Instanciate a sorter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -45,7 +39,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
-        $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
+        $sortField = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $this->qb->sort(ProductQueryUtility::NORMALIZED_FIELD.'.'.$sortField, $direction);
 
         return $this;
