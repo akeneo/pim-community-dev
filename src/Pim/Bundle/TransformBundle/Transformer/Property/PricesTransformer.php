@@ -17,6 +17,9 @@ class PricesTransformer extends DefaultTransformer implements EntityUpdaterInter
 {
     protected $builder;
 
+    /**
+     * @param ProductBuilder $builder
+     */
     public function __construct(ProductBuilder $builder)
     {
         $this->builder = $builder;
