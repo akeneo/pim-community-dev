@@ -27,16 +27,16 @@ services:
 
     pim_catalog.event_listener.localizable:
         class: %pim_catalog.event_listener.localizable.class%
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@pim_catalog.context.catalog'
         tags:
             - { name: doctrine.event_subscriber }
             - { name: doctrine_mongodb.odm.event_subscriber }
 
     pim_catalog.event_listener.scopable:
         class: %pim_catalog.event_listener.scopable.class%
-        calls:
-            - [ setContainer, [ '@service_container' ] ]
+        arguments:
+            - '@pim_catalog.context.catalog'
         tags:
             - { name: doctrine.event_subscriber }
             - { name: doctrine_mongodb.odm.event_subscriber }

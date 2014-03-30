@@ -3,9 +3,9 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Doctrine\Common\EventSubscriber;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Aims to inject selected scope into loaded product
@@ -17,22 +17,16 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 class ScopableListener implements EventSubscriber
 {
     /**
-     * @var ContainerInterface $container
+     * @var CatalogContext
      */
-    protected $container;
+    protected $context;
 
     /**
-     * Inject service container
-     *
-     * @param ContainerInterface $container
-     *
-     * @return ScopableListener
+     * @param CatalogContext $context
      */
-    public function setContainer(ContainerInterface $container)
+    public function __construct(CatalogContext $context)
     {
-        $this->container = $container;
-
-        return $this;
+        $this->context = $context;
     }
 
     /**
@@ -57,6 +51,8 @@ class ScopableListener implements EventSubscriber
             return;
         }
 
-        $object->setScope($this->container->get('pim_catalog.manager.product')->getScope());
+        if ($this->context->hasScopeCode()) {
+            $object->setScope($this->context->getScopeCode());
+        }
     }
 }

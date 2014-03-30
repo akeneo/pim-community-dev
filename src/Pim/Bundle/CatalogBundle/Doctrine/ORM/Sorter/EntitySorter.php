@@ -38,7 +38,7 @@ class EntitySorter extends BaseSorter
         $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
 
         $joinAliasOptVal = $aliasPrefix.'OV'.$attribute->getCode().$this->aliasCounter;
-        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->locale);
+        $condition       = $joinAliasOptVal.'.locale = '.$this->qb->expr()->literal($this->context->getLocaleCode());
         $this->qb->leftJoin($joinAliasOpt.'.optionValues', $joinAliasOptVal, 'WITH', $condition);
 
         $this->qb->addOrderBy($joinAliasOpt.'.code', $direction);

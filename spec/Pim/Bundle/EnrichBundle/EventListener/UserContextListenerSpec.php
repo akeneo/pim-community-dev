@@ -7,7 +7,7 @@ use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\TranslationBundle\EventListener\AddLocaleListener;
 
@@ -16,7 +16,7 @@ class UserContextListenerSpec extends ObjectBehavior
     function let(
         SecurityContextInterface $securityContext,
         AddLocaleListener $listener,
-        ProductManager $productManager,
+        CatalogContext $catalogContext,
         UserContext $userContext,
         GetResponseEvent $event
     ) {
@@ -26,7 +26,7 @@ class UserContextListenerSpec extends ObjectBehavior
         $userContext->getCurrentLocaleCode()->willReturn('de_DE');
         $userContext->getUserChannelCode()->willReturn('schmetterling');
 
-        $this->beConstructedWith($securityContext, $listener, $productManager, $userContext);
+        $this->beConstructedWith($securityContext, $listener, $catalogContext, $userContext);
     }
 
     function it_subscribes_to_kernel_request()
@@ -34,32 +34,32 @@ class UserContextListenerSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([KernelEvents::REQUEST => 'onKernelRequest']);
     }
 
-    function it_does_nothing_if_request_type_is_not_master_request($event, $listener, $productManager)
+    function it_does_nothing_if_request_type_is_not_master_request($event, $listener, $catalogContext)
     {
         $event->getRequestType()->willReturn('foo');
 
         $listener->setLocale()->shouldNotBeCalled();
-        $productManager->setLocale()->shouldNotBeCalled();
-        $productManager->setScope()->shouldNotBeCalled();
+        $catalogContext->setLocaleCode()->shouldNotBeCalled();
+        $catalogContext->setScopeCode()->shouldNotBeCalled();
 
         $this->onKernelRequest($event);
     }
 
-    function it_does_nothing_if_no_token_is_present_in_the_security_context($securityContext, $event, $listener, $productManager)
+    function it_does_nothing_if_no_token_is_present_in_the_security_context($securityContext, $event, $listener, $catalogContext)
     {
         $securityContext->getToken()->willReturn(null);
 
         $listener->setLocale()->shouldNotBeCalled();
-        $productManager->setLocale()->shouldNotBeCalled();
-        $productManager->setScope()->shouldNotBeCalled();
+        $catalogContext->setLocaleCode()->shouldNotBeCalled();
+        $catalogContext->setScopeCode()->shouldNotBeCalled();
 
         $this->onKernelRequest($event);
     }
 
-    function it_configures_product_manager_with_the_locale_and_scope_from_user_context($event, $productManager)
+    function it_configures_product_manager_with_the_locale_and_scope_from_user_context($event, $catalogContext)
     {
-        $productManager->setLocale('de_DE')->shouldBeCalled();
-        $productManager->setScope('schmetterling')->shouldBeCalled();
+        $catalogContext->setLocaleCode('de_DE')->shouldBeCalled();
+        $catalogContext->setScopeCode('schmetterling')->shouldBeCalled();
 
         $this->onKernelRequest($event);
     }

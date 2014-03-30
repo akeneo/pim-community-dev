@@ -35,7 +35,7 @@ services:
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.context.catalog'
             - '@pim_user.context.user'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_scope }

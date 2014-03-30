@@ -61,18 +61,6 @@ class ProductManagerSpec extends ObjectBehavior
         $this->getProductRepository()->shouldReturn($repository);
     }
 
-    function it_has_a_locale()
-    {
-        $this->setLocale('fr_FR')->shouldReturn($this);
-        $this->getLocale()->shouldReturn('fr_FR');
-    }
-
-    function it_has_a_scope()
-    {
-        $this->setScope('ecommerce')->shouldReturn($this);
-        $this->getScope()->shouldReturn('ecommerce');
-    }
-
     function it_creates_a_product()
     {
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
@@ -111,7 +99,6 @@ class ProductManagerSpec extends ObjectBehavior
 
     function it_checks_value_existence($repository, ProductValueInterface $value)
     {
-        $repository->setConfiguration($this->getConfiguration())->shouldBeCalled();
         $repository->valueExists($value)->willReturn(true);
         $this->valueExists($value)->shouldReturn(true);
 

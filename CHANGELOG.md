@@ -30,7 +30,9 @@
 - Remove deprecated fallback property of Locale entity
 - Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
 - Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
-- Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute in ProductRepositoryInterface
+- Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute, deleteProductIds in ProductRepositoryInterface
+- Remove methods setLocale/getLocale, setScope/getScope, setConfiguration/getConfiguration from ProductRepositoryInterface
+- Remove methods setLocale/getLocale, setScope/getScope from ProductManager
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
 - Move setFlexibleQueryBuilder, findAllByAttributes, findOneByWithValues, getFlexibleQueryBuilder, addJoinToValueTables, findAllByAttributesQB from FlexibleEntityRepository to ProductRepository (ORM)
 - Move FilterBundle/Filter/ScopeFilter.php, ProductCompletenessFilter.php, ProductGroupsFilter.php, CategoryFilter.php -> FilterBundle/Filter/Product/ScopeFilter.php, CompletenessFilter, GroupsFilter.php, CategoryFilter.php
@@ -39,7 +41,7 @@
 - ProductValueNonBlank renamed to ProductValueComplete
 - Remove the AclHelper $aclHelper argument from the DataGridBundle/Extension/Pager/Orm/Pager.php constructor
 - Moved CustomEntityBundle to its own repository
-- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*` and specialize the implementation
+- Move `FlexibleEntityBundle/Doctrine/*` -> `CatalogBundle/Doctrine/ORM/*`, rename `FlexibleQueryBuilder*` to `ProductQueryBuilder*`, specialize the implementation and pass the CatalogContext as constructor argument
 - Changes in the implementation of storing datagrid state - adding 'pim/datagrid/state-listener' to the datagrid configuration is no longer required, instead, the grid should be rendered with dataGrid.renderStatefulGrid()
 - Move `FilterBundle/Filter/Flexible/*` -> `FilterBundle/Filter/ProductValue/*`
 - Remove unused FilterBundle/Filter/ProductValue/EntityFilter
@@ -49,10 +51,10 @@
 - Replace the use of FlexibleValueInterface by ProductValueInterface in AttributeTypeInterface and AbstractAttributeType
 - Update ProductValueInterface, add getData, setData and getAttribute methods
 - Move `DataGridBundle/Extension/Formatter/Property/*` to `DataGridBundle\Extension\Formatter\Property\ProductValue\*`
+- Use CatalogContext and not ProductManager as constructor argument in AddParametersToProductGridListener
 - Move mass export in specific controller
 - Add an affectsCompleteness method to MassEditActionInterface to indicate whether performing the mass action requires recalculating the product completeness
 - Remove DeleteMassActionHandler, replaced by ProductDeleteMassActionHandler
-- Add deleteProductIds in ProductRepository
 - Change product REST API data and url format
 - Remove incomplete REST API for getting multiple products
 - Remove Router dependency from json ProductNormalizer

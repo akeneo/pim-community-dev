@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Base filter
@@ -19,22 +20,12 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
 class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /**
-     * QueryBuilder
      * @var QueryBuilder
      */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Scope code
-     * @var string
-     */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
      * Alias counter, to avoid duplicate alias name
@@ -43,17 +34,15 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $aliasCounter = 1;
 
     /**
-     * Instanciate a filter
+     * Instanciate a sorter
      *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -121,7 +110,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+        $joinHelper = new ValueJoin($this->qb, $this->context);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias);
     }

@@ -6,6 +6,7 @@ use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric filter
@@ -16,36 +17,20 @@ use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
  */
 class MetricFilter implements AttributeFilterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    protected $scope;
-
-    /**
-     * Instanciate a filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
-     */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -55,7 +40,7 @@ class MetricFilter implements AttributeFilterInterface
     {
         $data = (float) $value;
 
-        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->locale, $this->scope);
+        $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
         $fieldData = sprintf('%s.baseData', $field);
 

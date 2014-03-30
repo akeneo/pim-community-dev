@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Base sorter
@@ -18,23 +19,11 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
  */
 class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Scope code
-     * @var string
-     */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
      * Alias counter, to avoid duplicate alias name
@@ -45,15 +34,13 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -107,7 +94,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
      */
     protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
     {
-        $joinHelper = new ValueJoin($this->qb, $this->locale, $this->scope);
+        $joinHelper = new ValueJoin($this->qb, $this->context);
 
         return $joinHelper->prepareCondition($attribute, $joinAlias);
     }

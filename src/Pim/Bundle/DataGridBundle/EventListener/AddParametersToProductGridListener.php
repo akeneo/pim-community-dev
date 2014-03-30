@@ -3,8 +3,8 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Get parameters from request and bind then to query builder
@@ -21,27 +21,27 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     protected $userContext;
 
     /**
-     * @var ProductManager
+     * @var CatalogContext
      */
-    protected $productManager;
+    protected $catalogContext;
 
     /**
      * @param array             $paramNames     Parameter name that should be binded to query
      * @param RequestParameters $requestParams  Request params
-     * @param ProductManager    $productManager Product manager
+     * @param CatalogContext    $catalogContext The catalog context
      * @param UserContext       $userContext    User context
      * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
     */
     public function __construct(
         $paramNames,
         RequestParameters $requestParams,
-        ProductManager $productManager,
+        CatalogContext $catalogContext,
         UserContext $userContext,
         $isEditMode = false
     ) {
         parent::__construct($paramNames, $requestParams, $isEditMode);
 
-        $this->productManager = $productManager;
+        $this->catalogContext = $catalogContext;
         $this->userContext    = $userContext;
     }
 
@@ -53,7 +53,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         $queryParameters = parent::prepareParameters();
 
         $dataLocale = $this->getLocale($queryParameters);
-        $this->productManager->setLocale($dataLocale);
+        $this->catalogContext->setLocaleCode($dataLocale);
 
         $dataScope = $this->getScope();
         $queryParameters['scopeCode'] = $dataScope;

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
@@ -16,35 +17,23 @@ use Doctrine\ORM\QueryBuilder;
 class CompletenessFilter implements FieldFilterInterface
 {
     /**
-     * QueryBuilder
      * @var QueryBuilder
      */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
-     */
-    protected $scope;
-
-    /**
-     * Instanciate a filter
+     * Instanciate a sorter
      *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**

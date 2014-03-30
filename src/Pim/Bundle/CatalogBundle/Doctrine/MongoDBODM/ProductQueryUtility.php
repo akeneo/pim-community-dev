@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Provides util methods to ease the query building in MongoDB
@@ -21,22 +22,21 @@ class ProductQueryUtility
     const NORMALIZED_FIELD = 'normalizedData';
 
     /**
-     * Normalize the field name from attribute and locale
+     * Normalize the field name from attribute and catalog context
      *
      * @param AbstractAttribute $attribute
-     * @param string            $locale
-     * @param string            $scope
+     * @param CatalogContext    $context
      *
      * @return string
      */
-    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, $locale, $scope)
+    public static function getNormalizedValueFieldFromAttribute(AbstractAttribute $attribute, CatalogContext $context)
     {
         return self::getNormalizedValueField(
             $attribute->getCode(),
             $attribute->isLocalizable(),
             $attribute->isScopable(),
-            $locale,
-            $scope
+            ($attribute->isLocalizable() ? $context->getLocaleCode() : null),
+            ($attribute->isScopable() ? $context->getScopeCode() : null)
         );
     }
 

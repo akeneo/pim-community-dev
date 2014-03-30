@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Edit common attributes of given products
@@ -46,6 +47,11 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $userContext;
 
     /**
+     * @var CatalogContext
+     */
+    protected $catalogContext;
+
+    /**
      * @var CurrencyManager
      */
     protected $currencyManager;
@@ -72,17 +78,20 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductManager  $productManager
      * @param UserContext     $userContext
      * @param CurrencyManager $currencyManager
+     * @param CatalogContext  $catalogContext
      */
     public function __construct(
         ProductManager $productManager,
         UserContext $userContext,
-        CurrencyManager $currencyManager
+        CurrencyManager $currencyManager,
+        CatalogContext $catalogContext
     ) {
         $this->productManager      = $productManager;
         $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
         $this->displayedAttributes = new ArrayCollection();
+        $this->catalogContext      = $catalogContext;
     }
 
     /**
@@ -255,7 +264,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         // Set attribute options locale
         $currentLocaleCode = $this->getLocale()->getCode();
-        $this->productManager->setLocale($currentLocaleCode);
+        $this->catalogContext->setLocaleCode($currentLocaleCode);
 
         // Get common attributes
         $attributes = $this->productManager->findCommonAttributes($productIds);

@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Family sorter
@@ -18,24 +19,17 @@ class FamilySorter implements FieldSorterInterface
     /** @var QueryBuilder */
     protected $qb;
 
-    /** @var string */
-    protected $locale;
-
-    /** @var string */
-    protected $scope;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Instanciate a sorter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -47,7 +41,7 @@ class FamilySorter implements FieldSorterInterface
             "%s.%s.label.%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
-            $this->locale
+            $this->context->getLocaleCode()
         );
 
         $this->qb->sort($field, $direction);

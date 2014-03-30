@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
@@ -18,23 +19,21 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * Constructor
+     *
+     * @param CatalogContext $catalogContext
      */
-    protected $scope;
+    public function __construct(CatalogContext $catalogContext)
+    {
+        $this->context = $catalogContext;
+    }
 
     /**
      * Get query builder
@@ -58,42 +57,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function getQueryBuilder()
     {
         return $this->qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($code)
-    {
-        $this->locale = $code;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        $this->scope = $code;
-
-        return $this;
     }
 
     /**
@@ -125,7 +88,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        // TODO : add a CatalogContextAware interface to avoid to inject context everywhere ?
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
@@ -147,7 +111,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -171,7 +135,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -195,7 +159,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;

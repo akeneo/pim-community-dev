@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\ScopeFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
@@ -20,9 +20,9 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 class ScopeFilter extends ChoiceFilter
 {
     /**
-     * @var ProductManager $productManager
+     * @var CatalogContext $catalogContext
      */
-    protected $productManager;
+    protected $catalogContext;
 
     /**
      * @var UserContext $userContext
@@ -34,18 +34,18 @@ class ScopeFilter extends ChoiceFilter
      *
      * @param FormFactoryInterface $factory
      * @param FilterUtility        $util
-     * @param ProductManager       $productManager
+     * @param CatalogContext       $catalogContext
      * @param UserContext          $userContext
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        ProductManager $productManager,
+        CatalogContext $catalogContext,
         UserContext $userContext
     ) {
         parent::__construct($factory, $util);
 
-        $this->productManager = $productManager;
+        $this->catalogContext = $catalogContext;
         $this->userContext    = $userContext;
     }
 
@@ -55,7 +55,7 @@ class ScopeFilter extends ChoiceFilter
     public function init($name, array $params)
     {
         parent::init($name, $params);
-        $this->productManager->setScope($this->userContext->getUserChannelCode());
+        $this->catalogContext->setScopeCode($this->userContext->getUserChannelCode());
     }
 
     /**
@@ -68,7 +68,7 @@ class ScopeFilter extends ChoiceFilter
             $channelCode = $this->userContext->getUserChannelCode();
         }
 
-        $this->productManager->setScope($channelCode);
+        $this->catalogContext->setScopeCode($channelCode);
 
         return true;
     }

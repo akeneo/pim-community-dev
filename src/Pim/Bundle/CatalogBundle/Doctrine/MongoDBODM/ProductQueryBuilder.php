@@ -16,23 +16,21 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * Constructor
+     *
+     * @param CatalogContext $catalogContext
      */
-    protected $scope;
+    public function __construct(CatalogContext $catalogContext)
+    {
+        $this->context = $catalogContext;
+    }
 
     /**
      * Get query builder
@@ -61,42 +59,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($code)
-    {
-        $this->locale = $code;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        $this->scope = $code;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
@@ -114,14 +76,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc}
      */
     public function addFieldFilter($field, $operator, $value)
     {
@@ -139,7 +101,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->locale, $this->scope);
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -159,7 +121,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -170,15 +132,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        // TODO : need to be refactor to properly handle extra context parameters
-        if (strpos($field, 'in_group_') !== false) {
-            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
-            $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
-            $sorter->addFieldSorter($field, $direction);
-
-            return $this;
-        }
-
         $customSorters = [
             'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
             'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
@@ -186,11 +139,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         if (isset($customSorters[$field])) {
             $sorterClass = $customSorters[$field];
+        } elseif (strpos($field, 'in_group_') !== false) {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
         } else {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->locale, $this->scope);
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;

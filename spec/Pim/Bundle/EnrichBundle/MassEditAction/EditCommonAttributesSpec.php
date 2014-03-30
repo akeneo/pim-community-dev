@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
@@ -28,14 +29,15 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Locale $en,
         Locale $de,
         AttributeRepository $attributeRepository,
-        ProductValue $productValue
+        ProductValue $productValue,
+        CatalogContext $catalogContext
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
         $userContext->getCurrentLocale()->willReturn($en);
         $userContext->getUserLocales()->willReturn([$en, $de]);
 
-        $productManager->setLocale(Argument::any())->willReturn($productManager);
+        $catalogContext->setLocaleCode(Argument::any())->willReturn($catalogContext);
         $productManager->createProductValue()->willReturn($productValue);
 
         $productValue->setAttribute(Argument::any())->willReturn($productValue);
@@ -45,7 +47,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $productManager->getAttributeRepository()->willReturn($attributeRepository);
 
-        $this->beConstructedWith($productManager, $userContext, $currencyManager);
+        $this->beConstructedWith($productManager, $userContext, $currencyManager, $catalogContext);
     }
 
     function it_is_a_mass_edit_action()

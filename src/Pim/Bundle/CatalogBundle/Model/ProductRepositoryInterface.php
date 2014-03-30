@@ -13,56 +13,8 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductRepositoryInterface extends LocalizableInterface, ScopableInterface
+interface ProductRepositoryInterface
 {
-    /**
-     * Get entity configuration
-     *
-     * @return array $config
-     */
-    public function getConfiguration();
-
-    /**
-     * Set entity configuration
-     *
-     * @param array $config
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setConfiguration($config);
-
-    /**
-     * Return asked locale code or default one
-     *
-     * @return string
-     */
-    public function getLocale();
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setLocale($code);
-
-    /**
-     * Return asked scope code or default one
-     *
-     * @return string
-     */
-    public function getScope();
-
-    /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setScope($code);
-
     /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *

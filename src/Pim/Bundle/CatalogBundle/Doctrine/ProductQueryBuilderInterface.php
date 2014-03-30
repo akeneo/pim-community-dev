@@ -15,38 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 interface ProductQueryBuilderInterface
 {
     /**
-     * Get locale code
-     *
-     * @return string
-     */
-    public function getLocale();
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    public function setLocale($code);
-
-    /**
-     * Get scope code
-     *
-     * @return string
-     */
-    public function getScope();
-
-    /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return ProductQueryBuilderInterface
-     */
-    public function setScope($code);
-
-    /**
      * Add a filter condition on an attribute
      *
      * @param AbstractAttribute $attribute the attribute

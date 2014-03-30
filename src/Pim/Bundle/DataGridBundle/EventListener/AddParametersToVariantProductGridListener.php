@@ -2,6 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+
 /**
  * Get parameters from request and bind then to query builder
  *
@@ -11,6 +16,29 @@ namespace Pim\Bundle\DataGridBundle\EventListener;
  */
 class AddParametersToVariantProductGridListener extends AddParametersToProductGridListener
 {
+    /** @var ProductManager */
+    protected $productManager;
+
+    /**
+     * @param array             $paramNames     Parameter name that should be binded to query
+     * @param RequestParameters $requestParams  Request params
+     * @param CatalogContext    $catalogContext The catalog context
+     * @param UserContext       $userContext    User context
+     * @param ProductManager    $productManager The product manager
+     * @param boolean           $isEditMode     Whether or not to add data_in, data_not_in params to query
+     */
+    public function __construct(
+        $paramNames,
+        RequestParameters $requestParams,
+        CatalogContext $catalogContext,
+        UserContext $userContext,
+        ProductManager $productManager,
+        $isEditMode = false
+    ) {
+        parent::__construct($paramNames, $requestParams, $catalogContext, $userContext, $isEditMode);
+        $this->productManager = $productManager;
+    }
+
     /**
      * @return array
      */

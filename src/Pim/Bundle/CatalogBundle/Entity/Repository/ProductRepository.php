@@ -37,90 +37,6 @@ class ProductRepository extends EntityRepository implements
     private $identifierCode;
 
     /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
-
-    /**
-     * Scope code
-     * @var string
-     */
-    protected $scope;
-
-    /**
-     * Get entity configuration
-     *
-     * @return array $config
-     */
-    public function getConfiguration()
-    {
-        return $this->configuration;
-    }
-
-    /**
-     * Set entity configuration
-     *
-     * @param array $config
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setConfiguration($config)
-    {
-        $this->configuration = $config;
-
-        return $this;
-    }
-
-    /**
-     * Return asked locale code or default one
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setLocale($code)
-    {
-        $this->locale = $code;
-
-        return $this;
-    }
-
-    /**
-     * Return asked scope code or default one
-     *
-     * @return string
-     */
-    public function getScope()
-    {
-        return $this->scope;
-    }
-
-    /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setScope($code)
-    {
-        $this->scope = $code;
-
-        return $this;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function buildByScope($scope)
@@ -786,10 +702,7 @@ SQL;
             throw new \LogicException('Product query builder must be configured');
         }
 
-        $this->productQB
-            ->setQueryBuilder($qb)
-            ->setLocale($this->getLocale())
-            ->setScope($this->getScope());
+        $this->productQB->setQueryBuilder($qb);
 
         return $this->productQB;
     }
