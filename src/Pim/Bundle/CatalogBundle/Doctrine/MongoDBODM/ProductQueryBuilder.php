@@ -59,22 +59,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * {@inheritdoc}
      */
-    public function getLocale()
-    {
-        return $this->context->getLocaleCode();;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getScope()
-    {
-        return $this->context->getScopeCode();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
@@ -92,7 +76,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->getLocale(), $this->getScope());
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
@@ -117,7 +101,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->getLocale(), $this->getScope());
+        $filter = new $filterClass($this->qb, $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -137,7 +121,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->getLocale(), $this->getScope());
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -148,15 +132,6 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        // TODO : need to be refactor to properly handle extra context parameters
-        if (strpos($field, 'in_group_') !== false) {
-            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
-            $sorter = new $sorterClass($this->qb, $this->getLocale(), $this->getScope());
-            $sorter->addFieldSorter($field, $direction);
-
-            return $this;
-        }
-
         $customSorters = [
             'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
             'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
@@ -164,11 +139,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         if (isset($customSorters[$field])) {
             $sorterClass = $customSorters[$field];
+        } elseif (strpos($field, 'in_group_') !== false) {
+            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
         } else {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->getLocale(), $this->getScope());
+        $sorter = new $sorterClass($this->qb, $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;
