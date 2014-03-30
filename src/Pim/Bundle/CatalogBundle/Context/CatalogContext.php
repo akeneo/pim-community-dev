@@ -56,7 +56,7 @@ class CatalogContext
      */
     public function hasLocaleCode()
     {
-        return (isset($this->configuration['localeCode']) && $this->configuration['localeCode'] === null);
+        return (isset($this->configuration['localeCode']) && $this->configuration['localeCode'] !== null);
     }
 
     /**
@@ -64,7 +64,7 @@ class CatalogContext
      */
     public function hasScopeCode()
     {
-        return (isset($this->configuration['scopeCode']) && $this->configuration['scopeCode'] === null);
+        return (isset($this->configuration['scopeCode']) && $this->configuration['scopeCode'] !== null);
     }
 
     /**
