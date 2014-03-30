@@ -29,6 +29,7 @@ class LocalizableListenerSpec extends ObjectBehavior
     function it_configures_the_product_locale(CatalogContext $context, LifecycleEventArgs $args, AbstractProduct $product)
     {
         $args->getObject()->willReturn($product);
+        $context->hasLocaleCode()->willReturn(true);
         $context->getLocaleCode()->willReturn('fr_FR');
         $product->setLocale('fr_FR')->shouldBeCalled();
 
@@ -38,6 +39,7 @@ class LocalizableListenerSpec extends ObjectBehavior
     function it_configures_the_attribute_option_locale(CatalogContext $context, LifecycleEventArgs $args, AttributeOption $option)
     {
         $args->getObject()->willReturn($option);
+        $context->hasLocaleCode()->willReturn(true);
         $context->getLocaleCode()->willReturn('fr_FR');
         $option->setLocale('fr_FR')->shouldBeCalled();
         $this->postLoad($args);
@@ -47,6 +49,7 @@ class LocalizableListenerSpec extends ObjectBehavior
     {
         $object = new \stdClass();
         $args->getObject()->willReturn($object);
+        $context->hasLocaleCode()->willReturn(true);
         $context->getLocaleCode()->shouldNotBeCalled();
         $this->postLoad($args);
     }

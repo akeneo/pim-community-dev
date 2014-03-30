@@ -29,6 +29,7 @@ class ScopableListenerSpec extends ObjectBehavior
     function it_configures_the_product_scope(CatalogContext $context, LifecycleEventArgs $args, AbstractProduct $product)
     {
         $args->getObject()->willReturn($product);
+        $context->hasScopeCode()->willReturn(true);
         $context->getScopeCode()->willReturn('print');
         $product->setScope('print')->shouldBeCalled();
 
@@ -39,6 +40,7 @@ class ScopableListenerSpec extends ObjectBehavior
     {
         $object = new \stdClass();
         $args->getObject()->willReturn($object);
+        $context->hasScopeCode()->willReturn(true);
         $context->getScopeCode()->shouldNotBeCalled();
         $this->postLoad($args);
     }

@@ -52,7 +52,8 @@ class LocalizableListener implements EventSubscriber
             return;
         }
 
-        // todo : disabled for test real use cases
-        // $object->setLocale($this->context->getLocaleCode());
+        if ($this->context->hasLocaleCode()) {
+            $object->setLocale($this->context->getLocaleCode());
+        }
     }
 }
