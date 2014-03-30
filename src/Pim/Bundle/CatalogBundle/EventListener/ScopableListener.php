@@ -51,6 +51,7 @@ class ScopableListener implements EventSubscriber
             return;
         }
 
-        $object->setScope($this->context->getScopeCode());
+        // todo : disabled for test real use cases
+        // $object->setScope($this->context->getScopeCode());
     }
 }
