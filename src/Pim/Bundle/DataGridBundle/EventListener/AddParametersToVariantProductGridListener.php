@@ -39,7 +39,6 @@ class AddParametersToVariantProductGridListener extends AddParametersToProductGr
         $this->productManager = $productManager;
     }
 
-
     /**
      * @return array
      */
