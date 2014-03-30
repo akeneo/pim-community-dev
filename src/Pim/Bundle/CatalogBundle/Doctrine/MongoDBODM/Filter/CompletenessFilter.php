@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Completeness filter
@@ -15,36 +16,20 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
  */
 class CompletenessFilter implements FieldFilterInterface
 {
-    /**
-     * QueryBuilder
-     * @var QueryBuilder
-     */
+    /** @var QueryBuilder */
     protected $qb;
 
-    /**
-     * Locale code
-     * @var string
-     */
-    protected $locale;
+    /** @var CatalogContext */
+    protected $context;
 
     /**
-     * Scope code
-     * @var string
+     * @param QueryBuilder   $qb
+     * @param CatalogContext $context
      */
-    protected $scope;
-
-    /**
-     * Instanciate a filter
-     *
-     * @param QueryBuilder $qb
-     * @param string       $locale
-     * @param scope        $scope
-     */
-    public function __construct(QueryBuilder $qb, $locale, $scope)
+    public function __construct(QueryBuilder $qb, CatalogContext $context)
     {
-        $this->qb     = $qb;
-        $this->locale = $locale;
-        $this->scope  = $scope;
+        $this->qb      = $qb;
+        $this->context = $context;
     }
 
     /**
@@ -56,8 +41,8 @@ class CompletenessFilter implements FieldFilterInterface
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
             $field,
-            $this->scope,
-            $this->locale
+            $this->context->getScopeCode(),
+            $this->context->getLocaleCode()
         );
         $value = intval($value);
 
