@@ -52,28 +52,43 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if ($operator === 'BETWEEN') {
-            $fromTime = strtotime($value[0]);
-            $toTime   = strtotime($value[1]);
-            $this->qb->field($field)->gt($fromTime);
-            $this->qb->field($field)->lt($toTime);
+        switch ($operator) {
+            case 'BETWEEN':
+                $fromTime = strtotime($value[0]);
+                $toTime   = strtotime($value[1]);
+                $this->qb->field($field)->gt($fromTime);
+                $this->qb->field($field)->lt($toTime);
+                break;
 
-        } elseif ($operator === '<') {
-            $data = strtotime($value);
-            $this->qb->field($field)->lt($data);
+            case '>':
+                if ($value instanceof \DateTime) {
+                    $value = $value->getTimestamp();
+                }
+                $this->qb->field($field)->gt($value);
+                break;
 
-        } elseif ($operator === '>') {
-            $data = strtotime($value);
-            $this->qb->field($field)->gt($data);
+            case '<':
+                if ($value instanceof \DateTime) {
+                    $value = $value->getTimestamp();
+                }
+                $this->qb->field($field)->lt($value);
+                break;
 
-        } else {
-            $fromTime = strtotime($value['from']);
-            $toTime   = strtotime($value['to']);
-            $this->qb->addAnd(
-                $this->qb->expr()
-                    ->addOr($this->qb->expr()->field($field)->lt($fromTime))
-                    ->addOr($this->qb->expr()->field($field)->gt($toTime))
-            );
+            case '=':
+                if ($value instanceof \DateTime) {
+                    $value = $value->getTimestamp();
+                }
+                $this->qb->field($field)->equals($value);
+                break;
+
+            default:
+                $fromTime = strtotime($value['from']);
+                $toTime   = strtotime($value['to']);
+                $this->qb->addAnd(
+                    $this->qb->expr()
+                        ->addOr($this->qb->expr()->field($field)->lt($fromTime))
+                        ->addOr($this->qb->expr()->field($field)->gt($toTime))
+                );
         }
 
         return $this;
