@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Completeness Repository for ORM
@@ -13,6 +14,28 @@ use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
  */
 class CompletenessRepository implements CompletenessRepositoryInterface
 {
+    /**
+     * @var EntityManagaer
+     */
+    protected $entityManager;
+
+    /**
+     * @var string
+     */
+    protected $productClass;
+
+    /**
+     * @param EntityManager $entityManager
+     * @param string        $productClass
+     */
+    public function __construct(
+        EntityManager $entityManager,
+        $productClass
+    ) {
+        $this->entityManager = $entityManager;
+        $this->productClass  = $productClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +52,7 @@ SQL;
 
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -54,7 +77,7 @@ SQL;
 SQL;
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->entityManager->getConnection()->prepare($sql);
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -69,21 +92,24 @@ SQL;
      */
     protected function applyTableNames($sql)
     {
-        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
-        $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
+        $categoryMapping = $this->entityManager
+            ->getClassMetadata($this->productClass)
+            ->getAssociationMapping('categories');
 
-        $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
-        $valueMetadata = $this->getClassMetadata($valueMapping['targetEntity']);
+        $categoryMetadata = $this->entityManager->getClassMetadata($categoryMapping['targetEntity']);
+
+        $valueMapping  = $this->entityManager->getClassMetadata($this->productClass)->getAssociationMapping('values');
+        $valueMetadata = $this->entityManager->getClassMetadata($valueMapping['targetEntity']);
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
-        $attributeMetadata = $this->getClassMetadata($attributeMapping['targetEntity']);
+        $attributeMetadata = $this->entityManager->getClassMetadata($attributeMapping['targetEntity']);
 
         return strtr(
             $sql,
             [
                 '%category_table%'      => $categoryMetadata->getTableName(),
                 '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata($this->productClass)->getTableName(),
+                '%product_table%'       => $this->entityManager->getClassMetadata($this->productClass)->getTableName(),
                 '%product_value_table%' => $valueMetadata->getTableName(),
                 '%attribute_table%'     => $attributeMetadata->getTableName()
             ]

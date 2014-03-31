@@ -55,7 +55,6 @@ class CompletenessManager
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class
-
     ) {
         $this->doctrine  = $doctrine;
         $this->generator = $generator;
@@ -217,25 +216,5 @@ class CompletenessManager
         }
 
         return $valueCode;
-    }
-
-    /**
-     * Count the number of products by channels
-     *
-     * @return array
-     */
-    public function getProductsCountPerChannels()
-    {
-        return $this->generator->getProductsCountPerChannels();
-    }
-
-    /**
-     * Count the number of complete products by channels
-     *
-     * @return array
-     */
-    public function getCompleteProductsCountPerChannels()
-    {
-        return $this->generator->getCompleteProductsCountPerChannels();
     }
 }
