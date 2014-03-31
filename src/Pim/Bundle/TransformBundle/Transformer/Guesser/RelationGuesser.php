@@ -93,11 +93,16 @@ class RelationGuesser implements GuesserInterface
 
         if (in_array($metadata->getTypeOfField($fieldName), ['entity', 'entities'])) {
             $mapping = $metadata->getFieldMapping($fieldName);
+            $target = $mapping['targetEntity'];
+
+            if (!$this->doctrine->getRepository($target) instanceof ReferableEntityRepositoryInterface) {
+                return;
+            }
 
             return array(
                 $this->transformer,
                 array(
-                    'class'    => $mapping['targetEntity'],
+                    'class'    => $target,
                     'multiple' => 'entities' === $metadata->getTypeOfField($fieldName)
                 )
             );
@@ -105,12 +110,17 @@ class RelationGuesser implements GuesserInterface
 
         if (in_array($metadata->getTypeOfField($fieldName), ['one', 'many'])) {
             $mapping = $metadata->getFieldMapping($fieldName);
+            $target = $mapping['targetDocument'];
 
             // TODO Remove this hack
-            switch ($mapping['targetDocument']) {
+            switch ($target) {
                 case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
                 case 'Pim\Bundle\CatalogBundle\Model\Metric':
                     return;
+            }
+
+            if (!$this->doctrine->getRepository($target) instanceof ReferableEntityRepositoryInterface) {
+                return;
             }
 
             return array(
