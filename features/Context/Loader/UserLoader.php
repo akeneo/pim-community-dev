@@ -6,9 +6,8 @@ use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
-use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserApi;
-use Pim\Bundle\UserBundle\DataFixtures\ORM\LoadUserData;
+use Pim\Bundle\InstallerBundle\DataFixtures\ORM\LoadUserData;
 
 /**
  * Loader for users
@@ -29,6 +28,8 @@ class UserLoader extends LoadUserData
      */
     public function load(ObjectManager $manager)
     {
+        $this->om = $manager;
+
         $configuration = Yaml::parse(realpath($this->getFilePath()));
 
         if (isset($configuration['users'])) {
@@ -37,7 +38,7 @@ class UserLoader extends LoadUserData
             }
         }
 
-        $this->flush();
+        $this->getUserManager()->getStorageManager()->flush();
     }
 
     /**
@@ -73,16 +74,12 @@ class UserLoader extends LoadUserData
         $apiKey    = isset($data['api_key']) ? $data['api_key'] : $username . '_api_key';
         $roles     = isset($data['roles']) ? $data['roles'] : array('ROLE_ADMINISTRATOR');
 
-        $user = $this->userManager->createUser();
+        $user = $this->getUserManager()->createUser();
 
         $api = new UserApi();
         $api->setApiKey($apiKey)->setUser($user);
 
-        $unit = $this
-            ->userManager
-            ->getStorageManager()
-            ->getRepository('OroOrganizationBundle:BusinessUnit')
-            ->findOneBy(array('name' => 'Main'));
+        $unit = $this->getOwner('Main');
 
         $user
             ->setUsername($username)
@@ -100,22 +97,11 @@ class UserLoader extends LoadUserData
             $user->addRole($this->getOrCreateRole($role));
         }
 
-        $catalogLocale = $this->getLocaleManager()->getLocaleByCode($data['catalogLocale']);
-        $user->setCatalogLocale($catalogLocale);
+        $user->setCatalogLocale($this->getLocale($data['catalogLocale']));
+        $user->setCatalogScope($this->getChannel($data['catalogScope']));
+        $user->setDefaultTree($this->getTree($data['defaultTree']));
 
-        $catalogScope = $this->getChannelManager()->getChannelByCode($data['catalogScope']);
-        $user->setCatalogScope($catalogScope);
-
-        $trees = $this->getCategoryManager()->getTrees();
-        foreach ($trees as $tree) {
-            if ($tree->getCode() === $data['defaultTree']) {
-                $defaultTree = $tree;
-                break;
-            }
-        }
-        $user->setDefaultTree($defaultTree);
-
-        $this->userManager->updateUser($user);
+        $this->getUserManager()->updateUser($user);
     }
 
     /**
@@ -125,11 +111,7 @@ class UserLoader extends LoadUserData
      */
     protected function getOrCreateRole($code)
     {
-        $role = $this
-            ->userManager
-            ->getStorageManager()
-            ->getRepository('OroUserBundle:Role')
-            ->findOneBy(array('role' => $code));
+        $role = $this->getRole($code);
 
         if (!$role) {
             $role = new Role($code);
