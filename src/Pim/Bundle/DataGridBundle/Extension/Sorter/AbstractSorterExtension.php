@@ -144,6 +144,13 @@ abstract class AbstractSorterExtension extends AbstractExtension
         foreach ($sorters as $name => $definition) {
             $definition     = is_array($definition) ? $definition : [];
             $sorters[$name] = $definition;
+
+            if (isset($definition['supported']) && is_array($definition['supported']['eq'])) {
+                $eq = $definition['supported']['eq'];
+                if ($eq[0] !== $eq[1]) {
+                    unset($sorters[$name]);
+                }
+            }
         }
 
         return $sorters;

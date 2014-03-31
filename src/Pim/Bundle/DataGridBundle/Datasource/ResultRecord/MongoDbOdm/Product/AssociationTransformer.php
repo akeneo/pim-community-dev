@@ -32,14 +32,16 @@ class AssociationTransformer
                 }
             )->first();
 
-            $associatedIds = $currentAssociation->getProducts()->map(
-                function ($product) {
-                    return $product->getId();
-                }
-            )->toArray();
+            if ($currentAssociation) {
+                $associatedIds = $currentAssociation->getProducts()->map(
+                    function ($product) {
+                        return $product->getId();
+                    }
+                )->toArray();
 
-            if (in_array($result['id'], $associatedIds)) {
-                $result['is_associated'] = true;
+                if (in_array($result['id'], $associatedIds)) {
+                    $result['is_associated'] = true;
+                }
             }
         }
 

@@ -30,6 +30,7 @@ class Configuration extends OroConfiguration
                             ->scalarNode(PropertyInterface::DATA_NAME_KEY)->isRequired()->end()
                             ->variableNode('apply_callback')->end()
                             ->variableNode('sorter')->end()
+                            ->variableNode('supported')->end()
                         ->end()
                     ->end()
                 ->end()
