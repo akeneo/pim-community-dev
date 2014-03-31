@@ -1010,6 +1010,10 @@ datagrid:
             columns:
                 is_associated:
                     data_name: is_associated
+                    supported:
+                        eq:
+                            - %pim_catalog.storage_driver%
+                            - doctrine/orm
                 family:
                     data_name: familyLabel
                     sorter:    product_family
@@ -1034,6 +1038,10 @@ datagrid:
                     label:            Is associated
                     data_name:        is_associated
                     filter_by_having: true
+                    supported:
+                        eq:
+                            - %pim_catalog.storage_driver%
+                            - doctrine/orm
                 family:
                     type:      product_family
                     label:     Family
