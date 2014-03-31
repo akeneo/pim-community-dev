@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 

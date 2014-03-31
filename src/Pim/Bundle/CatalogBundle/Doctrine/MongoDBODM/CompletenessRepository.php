@@ -38,10 +38,10 @@ class CompletenessRepository implements CompletenessRepositoryInterface
     protected $productClass;
 
     /**
-     * @param DocumentManager     $documentManager
-     * @param ChannelManager      $channelManager
-     * @param CategoryRepository  $categoryRepository
-     * @param string              $productClass
+     * @param DocumentManager    $documentManager
+     * @param ChannelManager     $channelManager
+     * @param CategoryRepository $categoryRepository
+     * @param string             $productClass
      */
     public function __construct(
         DocumentManager $documentManager,
@@ -97,7 +97,6 @@ class CompletenessRepository implements CompletenessRepositoryInterface
             $category = $channel->getCategory();
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
             $categoryIds = $this->categoryRepository->getCategoryIds($category, $categoryQb);
-
 
             foreach ($channel->getLocales() as $locale) {
                 $data = array();
