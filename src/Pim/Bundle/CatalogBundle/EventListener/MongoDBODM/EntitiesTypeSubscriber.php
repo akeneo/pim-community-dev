@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
+use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -39,8 +40,8 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($entity));
+        $document = $args->getDocument();
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entities' === $mapping['type']) {
                 if (!isset($mapping['targetEntity'])) {
@@ -53,10 +54,13 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     );
                 }
 
-                $metadata->reflFields[$field]->setValue(
-                    $entity,
-                    $this->factory->create($mapping['targetEntity'], $metadata->reflFields[$field]->getValue($entity))
-                );
+                $value = $metadata->reflFields[$field]->getValue($document);
+                if (!$value instanceof ReferencedCollection) {
+                    $metadata->reflFields[$field]->setValue(
+                        $document,
+                        $this->factory->create($mapping['targetEntity'], $value)
+                    );
+                }
             }
         }
     }

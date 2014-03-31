@@ -47,7 +47,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         ReferencedCollectionFactory $factory,
         ReferencedCollection $collection
     ) {
-        $args->getEntity()->willReturn($entity);
+        $args->getDocument()->willReturn($entity);
         $args->getDocumentManager()->willReturn($dm);
 
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
@@ -65,13 +65,37 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
+    function it_does_not_convert_value_if_initial_value_is_already_a_referenced_collection(
+        LifecycleEventArgs $args,
+        ValuesStub $document,
+        DocumentManager $dm,
+        ClassMetadata $documentMetadata,
+        \ReflectionProperty $reflBar,
+        ReferencedCollection $collection
+    ) {
+        $args->getDocument()->willReturn($document->getWrappedObject());
+        $args->getDocumentManager()->willReturn($dm);
+        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
+        $documentMetadata->reflFields = ['bar' => $reflBar];
+        $documentMetadata->fieldMappings = [
+            'foo' => ['type' => 'text'],
+            'bar' => ['type' => 'entities', 'targetEntity' => 'Acme\Entity\Bar'],
+        ];
+        $reflBar->getValue($document)->willReturn($collection);
+
+        $reflBar->setValue($document, Argument::any())->shouldNotBeCalled();
+
+        $this->postLoad($args);
+
+    }
+
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
         ValuesStub $entity,
         DocumentManager $dm,
         ClassMetadata $documentMetadata
     ) {
-        $args->getEntity()->willReturn($entity->getWrappedObject());
+        $args->getDocument()->willReturn($entity->getWrappedObject());
         $args->getDocumentManager()->willReturn($dm);
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
         $documentMetadata->fieldMappings = [
