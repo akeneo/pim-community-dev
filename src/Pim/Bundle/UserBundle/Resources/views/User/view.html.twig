@@ -132,7 +132,14 @@
                     'data': [
                         UI.attibuteRow('Catalog locale'|trans, entity.catalogLocale),
                         UI.attibuteRow('Catalog scope'|trans, entity.catalogScope),
-                        UI.attibuteRow('Default tree'|trans, entity.defaultTree),
+                        UI.attibuteRow('Default tree'|trans, entity.defaultTree)
+                    ]
+                },
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [
+                        UI.attibuteRow('User salt'|trans, entity.salt)
                     ]
                 }
             ]
