@@ -146,8 +146,8 @@ abstract class AbstractSorterExtension extends AbstractExtension
             $sorters[$name] = $definition;
 
             if (isset($definition['supported']) && is_array($definition['supported']['eq'])) {
-                $eq = $definition['supported']['eq'];
-                if ($eq[0] !== $eq[1]) {
+                $comparison = $definition['supported']['eq'];
+                if ($comparison[0] !== $comparison[1]) {
                     unset($sorters[$name]);
                 }
             }

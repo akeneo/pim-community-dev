@@ -173,8 +173,8 @@ abstract class AbstractFilterExtension extends AbstractExtension
 
         foreach ($filtersConfig as $column => $filter) {
             if (isset($filter['supported']) && is_array($filter['supported']['eq'])) {
-                $eq = $filter['supported']['eq'];
-                if ($eq[0] !== $eq[1]) {
+                $comparison = $filter['supported']['eq'];
+                if ($comparison[0] !== $comparison[1]) {
                     continue;
                 }
             }
