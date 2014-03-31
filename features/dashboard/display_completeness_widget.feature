@@ -22,3 +22,6 @@ Feature: Display completeness widget
     And completeness of "Tablet" should be "100%"
     And "English (United Kingdom)" completeness of "Tablet" should be "100%"
     And "English (United States)" completeness of "Tablet" should be "100%"
+    And completeness of "Print" should be "0%"
+    And "German (Germany)" completeness of "Print" should be "0%"
+    And "English (United States)" completeness of "Print" should be "0%"

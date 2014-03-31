@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(ProductRepositoryInterface $repository)
+    function let(CompletenessGenerator $completenessGenerator)
     {
         $this->beConstructedWith($repository);
     }
