@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.repository.product.class:                            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+    pim_catalog.repository.completeness.class:                       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessRepository
     pim_catalog.doctrine.completeness_generator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class:          Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:            Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
@@ -34,6 +35,7 @@ services:
             - '@validator'
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.category'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%
@@ -159,3 +161,11 @@ services:
             - %pim_catalog.entity.product.class%
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
+
+    pim_catalog.repository.completeness:
+        class: %pim_catalog.repository.completeness.class%
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.repository.category'
+            - %pim_catalog.entity.product.class%

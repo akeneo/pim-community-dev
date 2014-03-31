@@ -4,13 +4,13 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {
-    function let(ProductRepositoryInterface $repository)
+    function let(CompletenessRepositoryInterface $completenessRepo)
     {
-        $this->beConstructedWith($repository);
+        $this->beConstructedWith($completenessRepo);
     }
 
     function it_is_a_widget()
@@ -23,9 +23,9 @@ class CompletenessWidgetSpec extends ObjectBehavior
         $this->getTemplate()->shouldReturn('PimDashboardBundle:Widget:completeness.html.twig');
     }
 
-    function it_exposes_the_completeness_template_parameters($repository)
+    function it_exposes_the_completeness_template_parameters($completenessRepo)
     {
-        $repository->countProductsPerChannels()->willReturn(array(
+        $completenessRepo->getProductsCountPerChannels()->willReturn(array(
             array(
                 'label' => 'Mobile',
                 'total' => 40,
@@ -35,7 +35,7 @@ class CompletenessWidgetSpec extends ObjectBehavior
                 'total' => 25,
             ),
         ));
-        $repository->countCompleteProductsPerChannels()->willReturn(array(
+        $completenessRepo->getCompleteProductsCountPerChannels()->willReturn(array(
             array(
                 'label'  => 'Mobile',
                 'locale' => 'en_US',
