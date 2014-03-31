@@ -250,7 +250,7 @@ class ContextConfigurator implements ConfiguratorInterface
 
         if ($repositoryParams) {
             $params = [];
-            foreach ($repositoryParams as $index => $paramName) {
+            foreach ($repositoryParams as $paramName) {
                 $params[$paramName] = $this->requestParams->get($paramName, $this->request->get($paramName, null));
             }
             $this->configuration->offsetSetByPath($path, $params);
