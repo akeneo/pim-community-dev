@@ -95,7 +95,7 @@ class AssociationController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', $id)
             );
         }
 
