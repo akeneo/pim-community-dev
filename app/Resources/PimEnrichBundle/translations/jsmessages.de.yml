@@ -1,1 +1,58 @@
 ---
+confirmation:
+  remove:
+    item: Möchten Sie dieses Element wirklich löschen?
+    association type: Möchten Sie diesen Verbindungstyp wirklich löschen?
+    attribute: Möchten Sie dieses Attribut wirklich löschen?
+    family: Möchten Sie diese Produktfamilie wirklich löschen?
+    product: Möchten Sie dieses Produkt wirklich löschen?
+    channel: Möchten Sie diesen Ausgabekanal wirklich löschen?
+    group: Möchten Sie diese Gruppe wirklich löschen?
+    variant group: Möchten Sie diese Variantengruppe wirklich löschen?
+    group type: Möchten Sie diesen Gruppentyp wirklich löschen?
+    import profile: Möchten Sie dieses Importprofil wirklich löschen?
+    export profile: Möchten Sie dieses Exportprofil wirklich löschen?
+    user: Möchten Sie diesen Benutzer wirklich löschen?
+    role: Möchten Sie diese Rolle wirklich löschen?
+flash:
+  item:
+    removed: Element erfolgreich entfernt
+  association type:
+    removed: Verbindungstyp erfolgreich entfernt
+  attribute:
+    removed: Attribut erfolgreich entfernt
+  family:
+    removed: Produktfamilie erfolgreich entfernt
+  product:
+    removed: Produkt erfolgreich entfernt
+  channel:
+    removed: Ausgabekanal erfolgreich entfernt
+  group:
+    removed: Gruppe erfolgreich entfernt
+  variant group:
+    removed: Variantengruppe erfolgreich entfernt
+  group type:
+    removed: Gruppentyp erfolgreich entfernt
+  import profile:
+    removed: Importprofil erfolgreich entfernt
+  export profile:
+    removed: Exportprofil erfolgreich entfernt
+  user:
+    removed: Benutzer erfolgreich entfernt
+  role:
+    removed: Rolle erfolgreich entfernt
+error:
+  removing:
+    item: Dieses Element kann nicht gelöscht werden
+    association type: Dieser Verbindungstyp kann nicht gelöscht werden
+    attribute: Dieses Attribut kann nicht gelöscht werden
+    family: Diese Produktfamilie kann nicht gelöscht werden
+    product: Dieses Produkt kann nicht gelöscht werden
+    channel: Dieser Ausgabekanal kann nicht gelöscht werden
+    group: Diese Gruppe kann nicht gelöscht werden
+    variant group: Diese Variantengruppe kann nicht gelöscht werden
+    group type: Dieser Gruppentyp kann nicht gelöscht werden
+    import profile: Dieses Importprofil kann nicht gelöscht werden
+    export profile: Dieses Exportprofil kann nicht gelöscht werden
+    user: Dieser Benutzer kann nicht gelöscht werden
+    role: Diese Rolle kann nicht gelöscht werden
