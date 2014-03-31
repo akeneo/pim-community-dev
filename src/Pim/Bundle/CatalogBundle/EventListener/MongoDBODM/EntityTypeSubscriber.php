@@ -39,8 +39,8 @@ class EntityTypeSubscriber implements EventSubscriber
      */
     public function postLoad(LifecycleEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($entity));
+        $document = $args->getDocument();
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entity' === $mapping['type']) {
                 if (!isset($mapping['targetEntity'])) {
@@ -53,9 +53,10 @@ class EntityTypeSubscriber implements EventSubscriber
                     );
                 }
 
-                if (null !== $value = $metadata->reflFields[$field]->getValue($entity)) {
+                $value = $metadata->reflFields[$field]->getValue($document);
+                if (null !== $value && !$value instanceof $mapping['targetEntity']) {
                     $metadata->reflFields[$field]->setValue(
-                        $entity,
+                        $document,
                         $this->entityManager->getReference($mapping['targetEntity'], $value)
                     );
                 }

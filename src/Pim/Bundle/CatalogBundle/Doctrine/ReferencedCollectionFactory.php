@@ -39,7 +39,12 @@ class ReferencedCollectionFactory
         }
 
         if (!is_array($identifiers)) {
-            throw new \InvalidArgumentException('Expecting identifiers to be null or type array, got "%s"');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expecting identifiers to be null or type array, got "%s"',
+                    is_object($identifiers) ? get_class($identifiers) : $identifiers
+                )
+            );
         }
 
         return new ReferencedCollection(

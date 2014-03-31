@@ -346,7 +346,7 @@ datagrid:
                     data_name: updated
                     sorter:    product_field
             default:
-                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                created: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 family:

@@ -42,7 +42,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         FooStub $foo16,
         EntityManager $entityManager
     ) {
-        $args->getEntity()->willReturn($entity);
+        $args->getDocument()->willReturn($entity);
         $args->getDocumentManager()->willReturn($dm);
 
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
@@ -67,7 +67,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         ClassMetadata $documentMetadata,
         \ReflectionProperty $reflFoo
     ) {
-        $args->getEntity()->willReturn($entity);
+        $args->getDocument()->willReturn($entity);
         $args->getDocumentManager()->willReturn($dm);
 
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
@@ -84,13 +84,38 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
+    function it_does_not_convert_already_converted_value(
+        LifecycleEventArgs $args,
+        ValueStub $entity,
+        DocumentManager $dm,
+        ClassMetadata $documentMetadata,
+        \ReflectionProperty $reflFoo,
+        FooStub $foo
+    ) {
+        $args->getDocument()->willReturn($entity);
+        $args->getDocumentManager()->willReturn($dm);
+
+        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
+        $documentMetadata->reflFields = ['bar' => $reflFoo];
+        $documentMetadata->fieldMappings = [
+            'foo' => ['type' => 'text'],
+            'bar' => ['type' => 'entity', 'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'],
+        ];
+
+        $reflFoo->getValue($entity)->willReturn($foo);
+
+        $reflFoo->setValue(Argument::cetera())->shouldNotBeCalled();
+
+        $this->postLoad($args);
+    }
+
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
         ValueStub $entity,
         DocumentManager $dm,
         ClassMetadata $documentMetadata
     ) {
-        $args->getEntity()->willReturn($entity->getWrappedObject());
+        $args->getDocument()->willReturn($entity->getWrappedObject());
         $args->getDocumentManager()->willReturn($dm);
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
         $documentMetadata->fieldMappings = [
