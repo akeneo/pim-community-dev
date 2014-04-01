@@ -702,7 +702,6 @@ class ProductRepository extends DocumentRepository implements
         $result = $qb->getQuery()->execute()->toArray();
 
         $ids = [];
-
         foreach ($result as $item) {
             $ids[] = (string) $item['_id'];
         }
