@@ -22,13 +22,6 @@ function(_, Backbone, __, PaginationInput, PageSize, ActionsPanel) {
                         '<button class="btn"><i class="icon-copy hide-text"><%- _.__("copy") %></i></button>' +
                         '<button class="btn"><i class="icon-trash hide-text"><%- _.__("remove") %></i></button>' +
                     '</div>' +
-                    '<div class="btn-group" style="display: none;">' +
-                        '<button data-toggle="dropdown" class="btn dropdown-toggle"><%- _.__("Status") %>: <strong><%- _.__("All") %></strong><span class="caret"></span></button>' +
-                        '<ul class="dropdown-menu">' +
-                            '<li><a href="#"><%- _.__("only short") %></a></li>' +
-                            '<li><a href="#"><%- _.__("this is long text for test") %></a></li>' +
-                        '</ul>' +
-                    '</div>' +
                 '</div>' +
                 '<div class="pull-right">' +
                     '<div class="actions-panel pull-right form-horizontal"></div>' +
