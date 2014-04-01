@@ -286,7 +286,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     grid.refreshAction = new RefreshCollectionAction({
                         datagrid: grid,
                         launcherOptions: {
-                            label: 'Refresh',
+                            label: __('oro.datagrid.action.refresh'),
                             className: 'btn',
                             iconClassName: 'icon-refresh'
                         }
@@ -316,7 +316,7 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     grid.resetAction = new ResetCollectionAction({
                         datagrid: grid,
                         launcherOptions: {
-                            label: 'Reset',
+                            label: __('oro.datagrid.action.reset'),
                             className: 'btn',
                             iconClassName: 'icon-repeat'
                         }

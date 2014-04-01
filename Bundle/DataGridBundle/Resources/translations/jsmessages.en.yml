@@ -35,3 +35,5 @@
 "oro.datagrid.pagination.label": "Page"
 "oro.datagrid.pagination.totalPages": "of {{ totalPages }}"
 "oro.datagrid.pagination.totalRecords": "{{ totalRecords }} records"
+"oro.datagrid.action.reset": "Reset"
+"oro.datagrid.action.refresh": "Refresh"
