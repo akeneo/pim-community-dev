@@ -564,7 +564,7 @@ class ProductRepository extends DocumentRepository implements
         return $this->findOneBy(
             [
                 [
-                    'attribute' => $this->getIdentifier(),
+                    'attribute' => $this->attributeRepository->getIdentifier(),
                     'value' => $code,
                 ]
             ]
