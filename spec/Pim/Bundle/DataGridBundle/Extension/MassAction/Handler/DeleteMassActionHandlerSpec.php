@@ -2,10 +2,6 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
-
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
-
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -45,7 +41,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_should_handle_delete_mass_action(
         $eventDispatcher,
-        $hydrator,
         $datasource,
         $repository,
         $datagrid,
@@ -64,7 +59,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_should_dispatch_events(
         $eventDispatcher,
-        $hydrator,
         $datasource,
         $repository,
         $datagrid,
@@ -90,7 +84,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_should_return_successful_response(
         $eventDispatcher,
-        $hydrator,
         $datasource,
         $repository,
         $datagrid,
@@ -111,7 +104,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
     function it_should_return_failed_message_if_exception_during_mass_delete(
         $eventDispatcher,
-        $hydrator,
         $datasource,
         $repository,
         $datagrid,
