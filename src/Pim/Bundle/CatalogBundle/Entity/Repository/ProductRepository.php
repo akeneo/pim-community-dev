@@ -287,28 +287,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->getAttributeClass()
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
-        }
-
-        return $this->identifierCode;
-    }
-
-    /**
      * Replaces name of tables in DBAL queries
      *
      * @param string $sql
