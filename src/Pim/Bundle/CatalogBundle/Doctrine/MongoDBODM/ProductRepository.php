@@ -872,10 +872,63 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
+    {
+        return array_merge(
+            $this->findFamilyCommonAttributeIds($productIds),
+            $this->findValuesCommonAttributeIds($productIds)
+        );
+    }
+
+    /**
+     * Find all common attribute ids linked to a family from a product list
+     *
+     * Need two queries in ODM
+     * - First one to get family ids
+     * - Another one for attribute ids from family
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findFamilyCommonAttributeIds(array $productIds)
+    {
+        $familyIds = $this->findFamilyIdsFromProductIds($productIds);
+
+        // TODO: get common attribute from family ids
+
+        return array();
+    }
+
+    /**
+     * Find family ids from product ids
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findFamilyIdsFromProductIds(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('family')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
+
+    /**
+     * Find all common attribute ids linked to values from a list of product ids
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findValuesCommonAttributeIds(array $productIds)
     {
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
