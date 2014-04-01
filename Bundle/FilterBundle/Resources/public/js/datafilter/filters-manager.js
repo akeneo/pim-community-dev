@@ -63,7 +63,7 @@ function($, _, Backbone, mediator, MultiselectDecorator) {
          *
          * @property
          */
-        addButtonHint: 'Manage filters',
+        addButtonHint: _.__('oro_filter.filters.manage'),
 
         /**
          * Select widget object
