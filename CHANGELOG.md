@@ -2,6 +2,7 @@
 
 ## Features
 - Implement creating, updating, applying and removing datagrid views
+- Default product datagrid sorting is done descending on updated property
 
 ## Improvements
 - Removed useless ```app/entities``` directory
