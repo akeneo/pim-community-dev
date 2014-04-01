@@ -388,7 +388,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getIdentifierCode()
     {
-        if ($this->identifierCode) {
+        if (null === $this->identifierCode) {
             $this->identifierCode = $this->getIdentifier()->getCode();
         }
 
