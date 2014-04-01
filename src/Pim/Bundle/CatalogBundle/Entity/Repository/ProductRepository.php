@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -26,15 +27,11 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @param ProductQueryBuilder
-     */
+    /** @param ProductQueryBuilder $productQB */
     protected $productQB;
 
-    /**
-     * @var string
-     */
-    private $identifierCode;
+    /** @param AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * {@inheritdoc}
@@ -279,29 +276,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifierCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->getAttributeClass()
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
-        }
-
-        return $this->identifierCode;
+        return array($this->getAttributeRepository()->getIdentifierCode());
     }
 
     /**
@@ -826,6 +801,20 @@ class ProductRepository extends EntityRepository implements
             ->where($qb->expr()->in('p.id', $productIds));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Set attribute repository
+     *
+     * @param AttributeRepository $attributeRepository
+     *
+     * @return ProductRepository
+     */
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+
+        return $this;
     }
 
     /**

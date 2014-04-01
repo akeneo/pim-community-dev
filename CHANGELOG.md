@@ -87,6 +87,7 @@
 - Remove ProductRepository::findFamilyCommonAttributes() and ProductRepository::findValuesCommonAttributeIds() to replace them by ProductRepository::findCommonAttributeIds()
 - Disable global search feature
 - Remove the 'searchable' property of AbstractAttribute
+- Move ProductRepository::getIdentifier() to attribute repository
 
 # 1.0.2
 ## Bug Fixes

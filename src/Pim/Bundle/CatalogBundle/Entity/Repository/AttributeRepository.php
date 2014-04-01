@@ -18,6 +18,11 @@ class AttributeRepository extends EntityRepository implements
     ChoicesProviderInterface
 {
     /**
+     * @var string $identifierCode
+     */
+    protected $identifierCode;
+
+    /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function findAllWithTranslations()
@@ -363,5 +368,30 @@ class AttributeRepository extends EntityRepository implements
             ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode');
 
         return $qb;
+    }
+
+    /**
+     * Get the identifier attribute
+     * Only one identifier attribute can exists
+     *
+     * @return AbstractAttribute
+     */
+    public function getIdentifier()
+    {
+        return $this->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+    }
+
+    /**
+     * Get the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode()
+    {
+        if (null === $this->identifierCode) {
+            $this->identifierCode = $this->getIdentifier()->getCode();
+        }
+
+        return $this->identifierCode;
     }
 }
