@@ -284,12 +284,13 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 default:                       Default
 Axis:                          Axis
-"Add attributes":              "Add attributes"
-"Translate from":              "Translate from"
-Yes:                           "Yes"
-No:                            "No"
+Add attributes:                Add attributes
+Translate from:                Translate from
+Yes:                           Yes
+No:                            No
 Close:                         Close
-"Choose a color":              "Choose a color"
+Choose a color:                Choose a color
+Search:                        Search
 
 Create:               Create
 Cancel:               Cancel
