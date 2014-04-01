@@ -58,7 +58,7 @@ function($, _, Backbone, app) {
          *
          * @property
          */
-        placeholder: 'All',
+        placeholder: _.__('oro_filter.placeholder.all'),
 
         /**
          * Label of filter
