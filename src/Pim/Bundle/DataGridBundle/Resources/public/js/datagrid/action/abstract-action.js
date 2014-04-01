@@ -26,6 +26,14 @@ define(
                         exportAction.run();
                     }
                 );
+            },
+
+            _onAjaxSuccess: function(data) {
+                if (data.count) {
+                    this.datagrid.collection.state.totalRecords -= data.count;
+                }
+
+                AbstractAction.prototype._onAjaxSuccess.apply(this, arguments);
             }
         });
     }
