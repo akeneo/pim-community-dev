@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -35,6 +36,9 @@ class ProductRepository extends EntityRepository implements
      * @var string
      */
     private $identifierCode;
+
+    /** @var AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * {@inheritdoc}
@@ -279,7 +283,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifierCode());
+        return array($this->attributeRepository->getIdentifierCode());
     }
 
     /**
@@ -352,6 +356,20 @@ class ProductRepository extends EntityRepository implements
         return $this->getEntityManager()
             ->getClassMetadata($this->getValuesClass())
             ->getAssociationTargetClass('attribute');
+    }
+
+    /**
+     * Set the attribute repository
+     *
+     * @param AttributeRepository $attributeRepository
+     *
+     * @return ProductRepository $this
+     */
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+
+        return $this;
     }
 
     /**

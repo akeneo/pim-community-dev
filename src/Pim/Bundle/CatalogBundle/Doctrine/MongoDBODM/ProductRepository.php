@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -53,8 +54,8 @@ class ProductRepository extends DocumentRepository implements
     /** @var string */
     protected $identifier;
 
-    /** @var string */
-    protected $attributeClass;
+    /** @var AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * Set the EntityManager
@@ -81,15 +82,15 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Set the attribute class
+     * Set the attribute repository
      *
-     * @param string $attributeClass
+     * @param AttributeRepository $attributeRepository
      *
      * @return ProductRepository $this
      */
-    public function setAttributeClass($attributeClass)
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
     {
-        $this->attributeClass = $attributeClass;
+        $this->attributeRepository = $attributeRepository;
 
         return $this;
     }
@@ -575,33 +576,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifier()->getCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        if (!isset($this->identifier)) {
-            if (!$this->entityManager) {
-                throw new \LogicException('Entity Manager must be set before getting reference properties');
-            }
-
-            $this->identifier = $this->entityManager
-                ->createQuery(
-                    sprintf(
-                        'SELECT a FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->attributeClass
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleResult();
-        }
-
-        return $this->identifier;
+        return array($this->attributeRepository->getIdentifierCode());
     }
 
     /**
