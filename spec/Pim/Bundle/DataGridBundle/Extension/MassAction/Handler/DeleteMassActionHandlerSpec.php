@@ -2,6 +2,10 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Extension\MassAction\Handler;
 
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface;
+
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponse;
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,30 +23,57 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
     function let(
         HydratorInterface $hydrator,
         TranslatorInterface $translator,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        DatagridInterface $datagrid,
+        DatasourceInterface $datasource,
+        DeleteMassAction $massAction,
+        ActionConfiguration $options,
+        ProductRepositoryInterface $repository
     ) {
         $this->beConstructedWith($hydrator, $translator, $eventDispatcher);
 
-        $translator->trans(Argument::any())->willReturn('qux');
+        $translator->trans('qux')->willReturn('qux');
+
+        $datagrid->getDatasource()->willReturn($datasource);
+        $datasource->setHydrator($hydrator)->shouldBeCalled();
+        $datasource->getRepository()->willReturn($repository);
+
+        // prepare mass action response
+        $massAction->getOptions()->willReturn($options);
+        $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
     }
 
     function it_should_handle_delete_mass_action(
         $eventDispatcher,
         $hydrator,
-        DatagridInterface $datagrid,
-        DeleteMassAction $massAction,
-        DatasourceInterface $datasource,
-        ProductRepositoryInterface $repository,
-        ActionConfiguration $options
+        $datasource,
+        $repository,
+        $datagrid,
+        $massAction
     ) {
         $objectIds    = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
-        $datagrid->getDatasource()->willReturn($datasource);
-        $datasource->setHydrator($hydrator)->shouldBeCalled();
         $datasource->getResults()->willReturn($objectIds);
-        $datasource->getRepository()->willReturn($repository);
+        $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
 
+        $eventDispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
+
+        $this->handle($datagrid, $massAction);
+    }
+
+    function it_should_dispatch_events(
+        $eventDispatcher,
+        $hydrator,
+        $datasource,
+        $repository,
+        $datagrid,
+        $massAction
+    ) {
+        $objectIds    = array('foo', 'bar', 'baz');
+        $countRemoved = count($objectIds);
+
+        $datasource->getResults()->willReturn($objectIds);
         $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
 
         $eventDispatcher->dispatch(
@@ -54,9 +85,59 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
             Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
         )->shouldBeCalled();
 
-        $massAction->getOptions()->willReturn($options);
-        $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
-
         $this->handle($datagrid, $massAction);
+    }
+
+    function it_should_return_successful_response(
+        $eventDispatcher,
+        $hydrator,
+        $datasource,
+        $repository,
+        $datagrid,
+        $massAction
+    ) {
+        $objectIds    = array('foo', 'bar', 'baz');
+        $countRemoved = count($objectIds);
+
+        $datasource->getResults()->willReturn($objectIds);
+        $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
+
+        $eventDispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
+
+        $this
+            ->handle($datagrid, $massAction)
+            ->beAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
+    }
+
+    function it_should_return_failed_message_if_exception_during_mass_delete(
+        $eventDispatcher,
+        $hydrator,
+        $datasource,
+        $repository,
+        $datagrid,
+        $massAction,
+        $translator
+    ) {
+        $objectIds    = array('foo', 'bar', 'baz');
+        $errorMessage = 'Error';
+
+        $e = new \Exception($errorMessage);
+        $translator->trans($e->getMessage())->shouldBeCalled();
+
+        $datasource->getResults()->willReturn($objectIds);
+        $repository->deleteFromIds($objectIds)->willThrow($e);
+
+        $eventDispatcher->dispatch(
+            MassActionEvents::MASS_DELETE_PRE_HANDLER,
+            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+        )->shouldBeCalled();
+        $eventDispatcher->dispatch(
+            MassActionEvents::MASS_DELETE_POST_HANDLER,
+            Argument::type('Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent')
+        )->shouldNotBeCalled();
+
+        $this
+            ->handle($datagrid, $massAction)
+            ->beAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
     }
 }
