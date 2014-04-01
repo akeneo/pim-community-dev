@@ -13,7 +13,7 @@ function($, _, Pagination) {
     return Pagination.extend({
         /** @property */
         template: _.template(
-            '<label class="dib">Page:</label>' +
+            '<label class="dib"><%= _.__("oro.datagrid.pagination.label") %>:</label>' +
             '<ul class="icons-holder">' +
                 '<% _.each(handles, function (handle) { %>' +
                     '<li <% if (handle.className || disabled) { %>class="<%= handle.className %> <% if (disabled) { %>disabled<% } %>"<% } %>>' +
@@ -35,7 +35,7 @@ function($, _, Pagination) {
                     '</li>' +
                 '<% }); %>' +
             '</ul>' +
-            '<label class="dib">of <%= state.totalPages ? state.totalPages : 1 %> | <%= state.totalRecords %> records</label>'
+            '<label class="dib"><%= _.__("oro.datagrid.pagination.totalPages", {totalPages: state.totalPages || 1}) %> | <%= _.__("oro.datagrid.pagination.totalRecords", {totalRecords: state.totalRecords}) %></label>'
         ),
 
         /** @property */
