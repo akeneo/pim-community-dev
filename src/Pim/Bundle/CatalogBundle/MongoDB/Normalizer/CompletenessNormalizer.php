@@ -19,11 +19,11 @@ class CompletenessNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $normalizedCompleteness = array();
+        $normalizedComp = array();
         $code = $object->getChannel()->getCode().'-'.$object->getLocale()->getCode();
-        $normalizedCompleteness[$code] = $object->getRatio();
+        $normalizedComp[$code] = $object->getRatio();
 
-        return $normalizedCompleteness;
+        return $normalizedComp;
     }
 
     /**

@@ -25,8 +25,8 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $context;
 
     /**
-     * @param QueryBuilder   $qb
-     * @param CatalogContext $context
+     * @param QueryBuilder   $qb      the query builder
+     * @param CatalogContext $context the catalog context
      */
     public function __construct(QueryBuilder $qb, CatalogContext $context)
     {

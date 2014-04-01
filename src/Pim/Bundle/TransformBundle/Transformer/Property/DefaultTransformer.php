@@ -19,7 +19,7 @@ class DefaultTransformer implements PropertyTransformerInterface
         if (is_scalar($value)) {
             $value = trim($value);
 
-            return empty($value) ? null : $value;
+            return $value === '' ? null : $value;
         } else {
             return $value;
         }

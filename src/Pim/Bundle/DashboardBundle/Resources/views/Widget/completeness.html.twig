@@ -8,29 +8,39 @@
         <td><a href="#" data-toggle-channel="{{ channel }}"><i class="icon-caret-down"/></a></td>
         <td><a href="#" data-toggle-channel="{{ channel }}"><b>{{ channel }}</b></a></td>
         <td>
-            <b>{{ (channelResult.complete/(channelResult.total*channelResult.locales|length)*100)|number_format(0) }}%</b>
+            {% set divider = channelResult.total*(channelResult.locales|length) %}
+            {% if divider == 0 %}
+                <b>0%</b>
+            {% else %}
+                <b>{{ (channelResult.complete/divider*100)|number_format(0) }}%</b>
+            {% endif %}
         </td>
         <td>&nbsp;</td>
     </tr>
 
     {% for locale, localeResult in channelResult.locales %}
-    {% set ratio = (localeResult/channelResult.total*100)|number_format(0) %}
-    {% if ratio == 100 %}
-        {% set progressClass = 'bar-success' %}
-    {% else %}
-        {% set progressClass = 'bar-warning' %}
-    {% endif %}
-    <tr data-channel="{{ channel }}">
-        <td>&nbsp;</td>
-        <td>{{ locale_label(locale) }}</td>
-        <td>{{ ratio ~ '%' }}</td>
-        <td class="progress-cell">
-            <div class="progress">
-                <div class="bar {{ progressClass }}" style="width: {{ ratio ~ '%' }};"></div>
-            </div>
-            <small>{{ localeResult ~ '/' ~ channelResult.total }}</small>
-        </td>
-    </tr>
+        {% set divider = channelResult.total %}
+        {% if divider == 0 %}
+            {% set ratio = 0 %}
+        {% else %}
+            {% set ratio = (localeResult/divider*100)|number_format(0) %}
+        {% endif %}
+        {% if ratio == 100 %}
+            {% set progressClass = 'bar-success' %}
+        {% else %}
+            {% set progressClass = 'bar-warning' %}
+        {% endif %}
+        <tr data-channel="{{ channel }}">
+            <td>&nbsp;</td>
+            <td>{{ locale_label(locale) }}</td>
+            <td>{{ ratio ~ '%' }}</td>
+            <td class="progress-cell">
+                <div class="progress">
+                    <div class="bar {{ progressClass }}" style="width: {{ ratio ~ '%' }};"></div>
+                </div>
+                <small>{{ localeResult ~ '/' ~ channelResult.total }}</small>
+            </td>
+        </tr>
     {% endfor %}
 {% endfor %}
 </table>

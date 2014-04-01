@@ -78,14 +78,6 @@ class AddProductVersionListener implements EventSubscriber
             $this->addPendingVersioning($object);
         }
 
-        foreach ($uow->getScheduledDocumentDeletions() as $object) {
-            $this->addPendingVersioning($object);
-        }
-
-        foreach ($uow->getScheduledCollectionDeletions() as $object) {
-            $this->addPendingVersioning($object);
-        }
-
         foreach ($uow->getScheduledCollectionUpdates() as $object) {
             $this->addPendingVersioning($object);
         }

@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * Category repository
@@ -149,5 +150,30 @@ class CategoryRepository extends SegmentRepository implements ReferableEntityRep
     public function getReferenceProperties()
     {
         return array('code');
+    }
+    /**
+     * Return categories ids provided by the categoryQb or by the provided category
+     *
+     * @param CategoryInterface $category
+     * @param OrmQueryBuilder   $categoryQb
+     *
+     * @return array $categoryIds
+     */
+    public function getCategoryIds(CategoryInterface $category, QueryBuilder $categoryQb = null)
+    {
+        $categoryIds = array();
+
+        if (null !== $categoryQb) {
+            $categoryAlias = $categoryQb->getRootAlias();
+            $categories = $categoryQb->select('PARTIAL '.$categoryAlias.'.{id}')->getQuery()->getArrayResult();
+        } else {
+            $categories = array(array('id' => $category->getId()));
+        }
+
+        foreach ($categories as $category) {
+            $categoryIds[] = $category['id'];
+        }
+
+        return $categoryIds;
     }
 }

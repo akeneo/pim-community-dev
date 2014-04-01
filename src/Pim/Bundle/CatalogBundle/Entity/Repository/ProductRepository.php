@@ -305,52 +305,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function countProductsPerChannels()
-    {
-        $sql = <<<SQL
-SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    WHERE p.is_enabled = 1
-    GROUP BY ch.id, ch.label
-SQL;
-
-        $sql = $this->prepareDBALQuery($sql);
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countCompleteProductsPerChannels()
-    {
-        $sql = <<<SQL
-    SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
-    JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
-    LEFT JOIN pim_catalog_completeness co
-        ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
-    WHERE p.is_enabled = 1
-    GROUP BY ch.id, lo.id, ch.label, lo.code
-SQL;
-        $sql = $this->prepareDBALQuery($sql);
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    /**
      * Replaces name of tables in DBAL queries
      *
      * @param string $sql

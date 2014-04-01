@@ -627,24 +627,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function countProductsPerChannels()
-    {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countCompleteProductsPerChannels()
-    {
-        // @TODO throw new \RuntimeException("Not implemented yet ! ".__CLASS__."::".__METHOD__);
-        return array();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function setProductQueryBuilder($productQB)
     {
         $this->productQB = $productQB;
