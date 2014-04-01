@@ -37,3 +37,7 @@
 "oro.datagrid.pagination.totalRecords": "{{ totalRecords }} records"
 "oro.datagrid.action.reset": "Reset"
 "oro.datagrid.action.refresh": "Refresh"
+oro_datagrid.select:
+    all:     All
+    visible: All visible
+    none:    None

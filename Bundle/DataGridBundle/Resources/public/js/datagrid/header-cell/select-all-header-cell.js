@@ -191,13 +191,13 @@ function ($, _, Backgrid, SelectRowCell) {
             // thus implementation is done just to check functionality.
             // For future render method will depend on options or will be empty
             this.$el.empty().append('<div class="btn-group">\
-                <button type="button" class="btn btn-default btn-small" data-select-all>All</button>\
+                <button type="button" class="btn btn-default btn-small" data-select-all>'+_.__('oro_datagrid.select.all')+'</button>\
                 <button type="button" class="btn btn-default btn-small dropdown-toggle" data-toggle="dropdown">\
                     <i class="caret"></i>\
                 </button>\
                 <ul class="dropdown-menu">\
-                    <li><a href="#" data-select-all-visible>All visible</a></li>\
-                    <li><a href="#" data-select-none>None</a></li>\
+                    <li><a href="#" data-select-all-visible>'+_.__('oro_datagrid.select.visible')+'</a></li>\
+                    <li><a href="#" data-select-none>'+_.__('oro_datagrid.select.none')+'</a></li>\
                 </ul>\
             </div>');
             this.$el.find('[data-select-all]').on('click', _.bind(function (e) {
