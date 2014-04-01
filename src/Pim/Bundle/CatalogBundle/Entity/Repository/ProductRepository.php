@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -31,14 +30,6 @@ class ProductRepository extends EntityRepository implements
      * @param ProductQueryBuilder
      */
     protected $productQB;
-
-    /**
-     * @var string
-     */
-    private $identifierCode;
-
-    /** @var AttributeRepository $attributeRepository */
-    protected $attributeRepository;
 
     /**
      * {@inheritdoc}
@@ -283,7 +274,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->attributeRepository->getIdentifierCode());
+        return array($this->getAttributeRepository()->getIdentifierCode());
     }
 
     /**
@@ -334,20 +325,6 @@ class ProductRepository extends EntityRepository implements
         return $this->getEntityManager()
             ->getClassMetadata($this->getValuesClass())
             ->getAssociationTargetClass('attribute');
-    }
-
-    /**
-     * Set the attribute repository
-     *
-     * @param AttributeRepository $attributeRepository
-     *
-     * @return ProductRepository $this
-     */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-
-        return $this;
     }
 
     /**
@@ -822,6 +799,16 @@ class ProductRepository extends EntityRepository implements
             ->where($qb->expr()->in('p.id', $productIds));
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get attribute repository from attribute class
+     *
+     * @return AttributeRepository
+     */
+    protected function getAttributeRepository()
+    {
+        return $this->_em->getRepository($this->getAttributeClass());
     }
 
     /**

@@ -51,9 +51,6 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var string */
-    protected $identifier;
-
     /** @var AttributeRepository $attributeRepository */
     protected $attributeRepository;
 

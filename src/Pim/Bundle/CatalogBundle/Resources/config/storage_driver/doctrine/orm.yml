@@ -35,7 +35,6 @@ services:
         arguments: [%pim_catalog.entity.product.class%]
         calls:
             - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
-            - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
 
     pim_catalog.repository.media:
         class: %doctrine.entity_repository.class%
