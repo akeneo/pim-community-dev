@@ -399,7 +399,6 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
-            $this->refresh($product);
             $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
             if ($value && $value->getAttribute()->getBackendType() !== 'media') {
@@ -977,7 +976,6 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         $product = $this->getProduct($identifier);
-        $this->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
@@ -1021,7 +1019,6 @@ class FixturesContext extends RawMinkContext
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
         $product = $this->getProduct($productCode);
-        $this->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
@@ -1086,6 +1083,7 @@ class FixturesContext extends RawMinkContext
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
         }
+        $this->refresh($product);
 
         return $product;
     }
@@ -1201,8 +1199,6 @@ class FixturesContext extends RawMinkContext
         if (null === $product = $this->getProduct($identifier)) {
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
         }
-
-        $this->refresh($product);
 
         if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
@@ -1483,15 +1479,16 @@ class FixturesContext extends RawMinkContext
             $group->addAttribute($attribute);
         }
 
+        $this->persist($group);
+        $this->flush($group);
+
         foreach ($products as $sku) {
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
-                $group->addProduct($product);
                 $product->addGroup($group);
+                $this->flush($product);
             }
         }
-
-        $this->persist($group);
     }
 
     /**
@@ -1673,16 +1670,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Flush
-     */
-    private function flush()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
-    }
-
-    /**
      * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
@@ -1798,6 +1785,29 @@ class FixturesContext extends RawMinkContext
         $manager->remove($object);
 
         if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * @param object  $object
+     */
+    private function flush($object = null)
+    {
+        if (!$object) {
+            return $this->flushAll();
+        }
+
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
+        $manager->flush($object);
+    }
+
+    /**
+     * Flush all managers
+     */
+    private function flushAll()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
             $manager->flush();
         }
     }

@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -32,7 +33,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad'];
+        return ['postLoad', 'preUpdate'];
     }
 
     /**
@@ -59,6 +60,30 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     $metadata->reflFields[$field]->setValue(
                         $document,
                         $this->factory->create($mapping['targetEntity'], $value)
+                    );
+                }
+            }
+        }
+    }
+
+    public function preUpdate(PreUpdateEventArgs $args)
+    {
+        $document = $args->getDocument();
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
+        foreach ($metadata->fieldMappings as $field => $mapping) {
+            if ('entities' === $mapping['type'] && $args->hasChangedField($field)) {
+                $newValue = $args->getNewValue($field);
+                if ($newValue instanceof ReferencedCollection) {
+                    $args->setNewValue(
+                        $field,
+                        $newValue
+                            ->map(
+                                function ($entity)
+                                {
+                                    return $entity->getId();
+                                }
+                            )
+                            ->toArray()
                     );
                 }
             }

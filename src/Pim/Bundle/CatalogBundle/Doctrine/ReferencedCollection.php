@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * An ArrayCollection decorator of entity identifiers that are lazy loaded
@@ -15,8 +15,8 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class ReferencedCollection extends AbstractLazyCollection
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var EntityManager */
+    protected $entityManager;
 
     /** @var string */
     protected $entityClass;
@@ -30,13 +30,13 @@ class ReferencedCollection extends AbstractLazyCollection
     /**
      * @param string        $entityClass
      * @param array         $identifiers
-     * @param ObjectManager $objectManager
+     * @param EntityManager $entityManager
      */
-    public function __construct($entityClass, $identifiers, ObjectManager $objectManager)
+    public function __construct($entityClass, $identifiers, EntityManager $entityManager)
     {
         $this->identifiers   = $identifiers;
         $this->entityClass   = $entityClass;
-        $this->objectManager = $objectManager;
+        $this->entityManager = $entityManager;
         $this->collection    = new ArrayCollection();
     }
 
@@ -101,7 +101,7 @@ class ReferencedCollection extends AbstractLazyCollection
 
         $this->collection = new ArrayCollection(
             $this
-                ->objectManager
+                ->entityManager
                 ->getRepository($this->entityClass)
                 ->findBy([$classIdentifier[0] => $this->identifiers])
         );
@@ -114,7 +114,7 @@ class ReferencedCollection extends AbstractLazyCollection
      */
     protected function getClassIdentifier()
     {
-        $classMetadata = $this->objectManager->getClassMetadata($this->entityClass);
+        $classMetadata = $this->entityManager->getClassMetadata($this->entityClass);
 
         return $classMetadata->getIdentifier();
     }

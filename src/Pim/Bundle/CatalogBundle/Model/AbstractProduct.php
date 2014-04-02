@@ -721,6 +721,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     {
         if (!$this->groups->contains($group)) {
             $this->groups->add($group);
+            $group->addProduct($this);
         }
 
         return $this;
