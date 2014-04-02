@@ -145,6 +145,39 @@ class ProductRepository extends EntityRepository implements
      */
     public function getFullProduct($id)
     {
+        $qb = $this->getFullProductQB();
+
+        return $qb
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->getFullProductQB();
+        $qb
+            ->addSelect('c, assoc, g')
+            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('p.categories', 'c')
+            ->leftJoin('p.associations', 'assoc')
+            ->leftJoin('p.groups', 'g')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get full product query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getFullProductQB()
+    {
         return $this
             ->createQueryBuilder('p')
             ->select('p, f, v, pr, m, o, os')
@@ -153,11 +186,7 @@ class ProductRepository extends EntityRepository implements
             ->leftJoin('v.prices', 'pr')
             ->leftJoin('v.media', 'm')
             ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->leftJoin('v.options', 'os');
     }
 
     /**
@@ -777,29 +806,6 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $attributeIds;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('p, f, v, pr, m, o, os, c, assoc, g')
-            ->leftJoin('p.family', 'f')
-            ->leftJoin('p.values', 'v')
-            ->leftJoin('v.prices', 'pr')
-            ->leftJoin('v.media', 'm')
-            ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
-            ->leftJoin('p.categories', 'c')
-            ->leftJoin('p.associations', 'assoc')
-            ->leftJoin('p.groups', 'g')
-            ->where($qb->expr()->in('p.id', $productIds));
-
-        return $qb->getQuery()->execute();
     }
 
     /**
