@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-pim-1.0#488cf832cc7c8a89f45676516120c14cf4aea9a2",
+        "oro/platform": "dev-pim-1.0#945630d6ba7a911028e2da510c01b4ef6ca2eafb",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-gaufrette-bundle": "0.1.7@stable",
         "knplabs/gaufrette": "~0.1.7@stable",
