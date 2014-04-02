@@ -43,34 +43,19 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             );
         }
 
-        $context = array_merge(
-            [
-                'translationDomain' => 'messages',
-                'translationLocale' => 'en_US',
-            ],
-            $context
-        );
-
         return [
-            'label' => $object->getLabel(),
-
-            'failures' => array_map(
-                function ($exception) use ($context) {
-                    return $this->translator->trans(
-                        $exception['message'],
-                        $exception['messageParameters'],
-                        $context['translationDomain'],
-                        $context['translationLocale']
-                    );
+            'label'          => $object->getLabel(),
+            'failures'       => array_map(
+                function ($exception) {
+                    return $this->translator->trans($exception['message'], $exception['messageParameters']);
                 },
                 $object->getFailureExceptions()
             ),
-
             'stepExecutions' => $this->normalizeStepExecutions($object->getStepExecutions(), $format, $context),
-
-            'isRunning' => $object->isRunning(),
-
-            'status' => (string) $object->getStatus(),
+            'isRunning'      => $object->isRunning(),
+            'status'         => $this->translator->trans(
+                sprintf('pim_import_export.batch_status.%d', $object->getStatus()->getValue())
+            )
         ];
     }
 

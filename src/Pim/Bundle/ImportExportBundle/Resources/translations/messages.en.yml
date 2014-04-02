@@ -137,6 +137,13 @@ Download log: Download log
 Show profile: Show profile
 execution details: execution details
 
+job_execution.summary:
+    read:   read
+    write:  write
+    skip:   skip
+    create: create
+    update: update
+
 Step:    Step
 Status:  Status
 Summary: Summary
