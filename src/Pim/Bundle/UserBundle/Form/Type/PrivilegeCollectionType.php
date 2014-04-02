@@ -22,6 +22,19 @@ class PrivilegeCollectionType extends OroPrivilegeCollectionType
     const LOCALE_ACL_PATTERN = 'action:pim_enrich_locale_';
 
     /**
+     * @var array
+     */
+    protected $excludedAclPatterns = [
+        'entity:Oro\Bundle\EmailBundle',
+        'entity:Oro\Bundle\OrganizationBundle',
+        'entity:Oro\Bundle\TagBundle',
+        'action:oro_dataaudit',
+        'action:oro_entityconfig',
+        'action:oro_search',
+        'action:oro_tag',
+    ];
+
+    /**
      * @var LocaleManager $localeManager
      */
     protected $localeManager;
@@ -43,16 +56,40 @@ class PrivilegeCollectionType extends OroPrivilegeCollectionType
     {
         parent::buildView($view, $form, $options);
 
-        $enabledCodes = $this->localeManager->getActiveCodes();
+        $activeLocaleCodes = $this->localeManager->getActiveCodes();
 
         foreach ($form->all() as $index => $subForm) {
             $id = $subForm->get('identity')->get('id')->getData();
-            if (strpos($id, self::LOCALE_ACL_PATTERN) === 0) {
-                $localeCode = str_replace(self::LOCALE_ACL_PATTERN, '', $id);
-                if ($localeCode !== 'index' && !in_array($localeCode, $enabledCodes)) {
-                    $form->remove($index);
-                }
+            if (!$this->isDisplayable($id, $activeLocaleCodes)) {
+                $form->remove($index);
             }
         }
+    }
+
+    /**
+     * Check if the provided ACL id should be displayed
+     * Filters out inactive locales and unused Oro ACLs
+     *
+     * @param string $aclId
+     * @param array  $activeLocaleCodes
+     *
+     * @return boolean
+     */
+    protected function isDisplayable($aclId, array $activeLocaleCodes)
+    {
+        if (strpos($aclId, self::LOCALE_ACL_PATTERN) === 0) {
+            $localeCode = str_replace(self::LOCALE_ACL_PATTERN, '', $aclId);
+            if ($localeCode !== 'index' && !in_array($localeCode, $activeLocaleCodes)) {
+                return false;
+            }
+        }
+
+        foreach ($this->excludedAclPatterns as $pattern) {
+            if (strpos($aclId, $pattern) === 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
