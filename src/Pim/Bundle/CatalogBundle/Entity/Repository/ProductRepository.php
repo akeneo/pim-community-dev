@@ -327,10 +327,12 @@ class ProductRepository extends EntityRepository implements
         return strtr(
             $sql,
             [
-                '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata()->getTableName(),
-                '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $attributeMetadata->getTableName()
+                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
+                '%product_table%'          => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%'    => $valueMetadata->getTableName(),
+                '%attribute_table%'        => $attributeMetadata->getTableName(),
+                '%family_table%'           => 'pim_catalog_family',
+                '%family_attribute_table%' => 'pim_catalog_family_attribute'
             ]
         );
     }
@@ -827,14 +829,42 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        $attributes = array_merge(
-            $this->findFamilyCommonAttributeIds($productIds),
-            $this->findValuesCommonAttributeIds($productIds)
-        );
+        $sql = <<<SQL
+    SELECT COUNT(a.a_id) AS count_att, a.a_id
+    FROM (
+        SELECT p.id AS p_id, pv.attribute_id AS a_id
+        FROM %product_table% p
+        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+        LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+        WHERE p.id IN %product_ids%
+        AND fa.family_id IS NULL
+    UNION
+        SELECT p.id AS p_id, fa.attribute_id AS a_id
+        FROM %product_table% p
+        INNER JOIN %family_table% f ON f.id = p.family_id
+        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+        WHERE p.id IN %product_ids%
+    ) AS a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
 
+        $sql = strtr(
+            $sql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%' => count($productIds)
+            ]
+        );
+        $sql = $this->prepareDBALQuery($sql);
+
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        $attributes = $stmt->fetchAll();
         $attributeIds = array();
         foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['id'];
+            $attributeIds[] = (int) $attributeId['a_id'];
         }
 
         return $attributeIds;
