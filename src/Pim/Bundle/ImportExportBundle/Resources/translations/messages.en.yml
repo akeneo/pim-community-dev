@@ -1,6 +1,4 @@
 # Entities
-export profile: export profile
-import profile: import profile
 Job: Job
 Connector: Connector
 
@@ -38,14 +36,16 @@ pim_title.import_profile.show:    Import profiles %job.label% | Show
 pim_title.import_execution.index: Import executions history
 pim_title.import_execution.show:  Import executions | Details
 
-# Page header titles
+# Entity and page header titles
 export profile:
+    title:    export profile
     overview: export profile overview
     create:   create export profile
     edit:     edit export profile
 export report:
     overview: export reports
 import profile:
+    title:    import profile
     overview: import profile overview
     create:   create import profile
     edit:     edit import profile

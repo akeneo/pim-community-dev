@@ -24,6 +24,7 @@ oro.user.grid.groups:
         name: "Name"
 
 # User
+user.title: User
 Users Management: Users Management
 Create user: Create user
 New user: New user

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {% set title = entityName ~ ' - ' ~ jobInstance.label %}
+    {% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label %}
 
     {% set left %}
         <ul class="inline">

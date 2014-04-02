@@ -1,67 +1,65 @@
-# Entities
-attribute:        attribute
-attribute group:  attribute group
-category:         category
-tree:             tree
-channel:          channel
-currency:         currency
-family:           family
-locale:           locale
-product:          product
-group:            group
-variant group:    variant group
-association type: association type
-group type:       group type
-
-# Page header titles
+# Entity and page header titles
 attribute:
+    title:    attribute
     overview: attribute overview
     create:   create attribute
     edit:     edit attribute
 attribute group:
+    title:    attribute group
     overview: attribute group overview
     create:   create attribute group
     edit:     edit attribute group
 category:
+    title:    category
     overview: category overview
     create:   create category
     edit:     edit category
 tree:
+    title:    tree
     create:   create tree
     edit:     edit tree
 channel:
+    title:    channel
     overview: channel overview
     create:   create channel
     edit:     edit channel
 currency:
+    title:    currency
     overview: currency overview
     create:   create currency
     edit:     edit currency
 family:
+    title:    family
     overview: family overview
     create:   create family
     edit:     edit family
 locale:
+    title:    locale
     overview: locale overview
     create:   create locale
     edit:     edit locale
 product:
+    title:    product
     overview: product overview
     create:   create product
     edit:     edit product
 group:
+    title:    group
     overview: group overview
     create:   create group
     edit:     edit group
 group type:
+    title:    group type
     overview: group type overview
     create:   create group type
     edit:     edit group type
 variant group:
+    title:    variant group
     overview: variant group overview
     create:   create variant group
     edit:     edit variant group
 association type:
+    title:    association type
     overview: association type overview
     create:   create association type
     edit:     edit association type
