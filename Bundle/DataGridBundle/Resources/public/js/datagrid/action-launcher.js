@@ -139,7 +139,7 @@ function($, _, Backbone) {
             this.$el.empty();
 
             var $el = $(this.template({
-                label: this.label || this.action.label,
+                label: _.__(this.label || this.action.label),
                 icon: this.icon,
                 className: this.className,
                 iconClassName: this.iconClassName,
