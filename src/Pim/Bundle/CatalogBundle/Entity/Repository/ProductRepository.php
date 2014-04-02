@@ -324,6 +324,11 @@ class ProductRepository extends EntityRepository implements
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
+        $familyMapping = $this->getClassMetadata()->getAssociationMapping('family');
+        $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
+
+        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
+
         return strtr(
             $sql,
             [
@@ -331,8 +336,8 @@ class ProductRepository extends EntityRepository implements
                 '%product_table%'          => $this->getClassMetadata()->getTableName(),
                 '%product_value_table%'    => $valueMetadata->getTableName(),
                 '%attribute_table%'        => $attributeMetadata->getTableName(),
-                '%family_table%'           => 'pim_catalog_family',
-                '%family_attribute_table%' => 'pim_catalog_family_attribute'
+                '%family_table%'           => $familyMetadata->getTableName(),
+                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
             ]
         );
     }
