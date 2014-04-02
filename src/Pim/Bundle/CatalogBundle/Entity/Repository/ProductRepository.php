@@ -324,13 +324,20 @@ class ProductRepository extends EntityRepository implements
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
+        $familyMapping = $this->getClassMetadata()->getAssociationMapping('family');
+        $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
+
+        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
+
         return strtr(
             $sql,
             [
-                '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata()->getTableName(),
-                '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $attributeMetadata->getTableName()
+                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
+                '%product_table%'          => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%'    => $valueMetadata->getTableName(),
+                '%attribute_table%'        => $attributeMetadata->getTableName(),
+                '%family_table%'           => $familyMetadata->getTableName(),
+                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
             ]
         );
     }
@@ -827,85 +834,44 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        $attributes = array_merge(
-            $this->findFamilyCommonAttributeIds($productIds),
-            $this->findValuesCommonAttributeIds($productIds)
-        );
-
-        $attributeIds = array();
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['id'];
-        }
-
-        return $attributeIds;
-    }
-
-    /**
-     * Find all common attributes ids linked to a family
-     * A list of product ids can be passed as parameter
-     *
-     * @param array $productIds
-     *
-     * @return array
-     */
-    protected function findFamilyCommonAttributeIds(array $productIds)
-    {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('a.id, COUNT(a.id) AS COUNT_ATT')
-            ->innerJoin('p.family', 'f')
-            ->innerJoin('f.attributes', 'a')
-            ->groupBy('a.id');
-
-        if (!empty($productIds)) {
-            $qb->where($qb->expr()->in('p.id', $productIds));
-
-            $subQb = $this->createQueryBuilder('p_sub');
-            $subQb
-                ->select($subQb->expr()->count('f_sub.id'))
-                ->innerJoin('p_sub.family', 'f_sub')
-                ->where($subQb->expr()->in('p_sub.id', $productIds));
-
-            $qb->having('COUNT_ATT = ('. $subQb .')');
-        }
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * Find all common attribute ids with values from a list of product ids
-     *
-     * Can't use ORM here because of QueryBuilder::from method which only take string
-     * Only DBAL layer is used
-     *
-     * @param array $productIds
-     *
-     * @return array
-     */
-    protected function findValuesCommonAttributeIds(array $productIds)
-    {
         $sql = <<<SQL
-    SELECT a.id, COUNT(a.id) AS COUNT_ATT
+    SELECT COUNT(a.a_id) AS count_att, a.a_id
     FROM (
-        SELECT a.id FROM %product_table% p
-        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
-        INNER JOIN %attribute_table% a ON a.id = pv.attribute_id
-        WHERE p.id IN(%product_ids%)
-        GROUP BY p.id, a.id) a
-    GROUP BY a.id
-    HAVING COUNT_ATT = (
-        SELECT COUNT(p.id)
+        SELECT p.id AS p_id, pv.attribute_id AS a_id
         FROM %product_table% p
-        WHERE p.id IN(%product_ids%)
-    )
+        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+        LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+        WHERE p.id IN %product_ids%
+        AND fa.family_id IS NULL
+    UNION
+        SELECT p.id AS p_id, fa.attribute_id AS a_id
+        FROM %product_table% p
+        INNER JOIN %family_table% f ON f.id = p.family_id
+        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+        WHERE p.id IN %product_ids%
+    ) AS a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
 SQL;
 
-        $sql = strtr($sql, ['%product_ids%' => implode($productIds, ',')]);
+        $sql = strtr(
+            $sql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%' => count($productIds)
+            ]
+        );
         $sql = $this->prepareDBALQuery($sql);
 
         $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $attributes = $stmt->fetchAll();
+        $attributeIds = array();
+        foreach ($attributes as $attributeId) {
+            $attributeIds[] = (int) $attributeId['a_id'];
+        }
+
+        return $attributeIds;
     }
 }
