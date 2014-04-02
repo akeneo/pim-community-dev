@@ -14,8 +14,6 @@ define(
 
             label: __('pim.grid.mass_action.quick_export'),
 
-            untranslatedLabel: 'pim.grid.mass_action.quick_export',
-
             icon: 'download',
 
             originalButtonSelector: 'div.grid-toolbar .mass-actions-panel .action.btn',
@@ -34,7 +32,6 @@ define(
 
             initialize: function (options) {
                 if (_.has(options, 'label')) {
-                    this.untranslatedLabel = options.label;
                     this.label = __(options.label);
                 }
                 if (_.has(options, 'icon')) {
@@ -70,7 +67,7 @@ define(
 
                 this.originalButton = this.$gridContainer
                     .find(this.originalButtonSelector)
-                    .find('.icon-' + this.originalButtonIcon +':contains("'+ this.untranslatedLabel +'")')
+                    .find('.icon-' + this.originalButtonIcon +':contains("'+ this.label +'")')
                     .parent();
 
                 this.originalButton.hide();
