@@ -224,6 +224,7 @@ info:
 
 # Labels for channel colors
 color:
+    title:   Color
     gray:    Gray
     white:   White
     yellow:  Yellow
@@ -289,6 +290,7 @@ No:                            No
 Close:                         Close
 Choose a color:                Choose a color
 Search:                        Search
+Choose the attribute type:     Choose the attribute type
 
 Create:               Create
 Cancel:               Cancel
