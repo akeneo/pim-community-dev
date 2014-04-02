@@ -133,3 +133,11 @@ popin.create:
 'Hide item': Hide item
 'Collecting data about job execution...': Collecting data about job execution...
 'You must select a file to upload': You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+
+Step:    Step
+Status:  Status
+Summary: Summary
+Start:   Start
+End:     End
