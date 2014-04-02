@@ -850,6 +850,8 @@ class ProductRepository extends DocumentRepository implements
     {
         $results = $this->findValuesCommonAttributeIds($productIds);
 
+        $this->createCommonValuesTemporaryTable($results);
+
         $attributeIds = array();
         foreach ($results as $result) {
             $attributeIds[] = $result['_id'];
@@ -860,6 +862,7 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * Find all common attribute ids with values from a list of product ids
+     * Only exists for ODM repository
      *
      * @param array $productIds
      *
@@ -875,7 +878,10 @@ class ProductRepository extends DocumentRepository implements
 
         $pipeline = array(
             array(
-                '$match'   => $expr->getQuery()
+                '$match' => $expr->getQuery()
+            ),
+            array(
+                '$match' => array('family' => array('$exists' => false))
             ),
             array('$unwind' => '$values'),
             array(
@@ -889,10 +895,19 @@ class ProductRepository extends DocumentRepository implements
                 '_id'   => '$attribute',
                 'count' => array('$sum' => 1)
             )),
-            array('$match'   => array('count' => count($productIds))),
+//             array('$match'   => array('count' => count($productIds))),
             array('$project' => array('values.attribute' => 1, 'count' => 1))
         );
 
         return $collection->aggregate($pipeline)->toArray();
+    }
+
+    /**
+     * Create a temporary table to have common attributes
+     * @param array $results
+     */
+    protected function createCommonValuesTemporaryTable(array $results)
+    {
+        var_dump($results);
     }
 }
