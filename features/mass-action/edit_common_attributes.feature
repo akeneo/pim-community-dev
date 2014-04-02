@@ -74,6 +74,8 @@ Feature: Edit common attributes of many products at once
     And the following product values:
       | product   | attribute  | value |
       | boots     | sole_color | Blue  |
+    When I mass-edit products boots and high_heels
+    And I choose the "Edit attributes" operation
     Then I should see available attribute Sole in group "Other"
 
   Scenario: Succesfully update many text values at once
