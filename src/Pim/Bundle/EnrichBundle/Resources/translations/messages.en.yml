@@ -1,67 +1,65 @@
-# Entities
-attribute:        attribute
-attribute group:  attribute group
-category:         category
-tree:             tree
-channel:          channel
-currency:         currency
-family:           family
-locale:           locale
-product:          product
-group:            group
-variant group:    variant group
-association type: association type
-group type:       group type
-
-# Page header titles
+# Entity and page header titles
 attribute:
+    title:    attribute
     overview: attribute overview
     create:   create attribute
     edit:     edit attribute
 attribute group:
+    title:    attribute group
     overview: attribute group overview
     create:   create attribute group
     edit:     edit attribute group
 category:
+    title:    category
     overview: category overview
     create:   create category
     edit:     edit category
 tree:
+    title:    tree
     create:   create tree
     edit:     edit tree
 channel:
+    title:    channel
     overview: channel overview
     create:   create channel
     edit:     edit channel
 currency:
+    title:    currency
     overview: currency overview
     create:   create currency
     edit:     edit currency
 family:
+    title:    family
     overview: family overview
     create:   create family
     edit:     edit family
 locale:
+    title:    locale
     overview: locale overview
     create:   create locale
     edit:     edit locale
 product:
+    title:    product
     overview: product overview
     create:   create product
     edit:     edit product
 group:
+    title:    group
     overview: group overview
     create:   create group
     edit:     edit group
 group type:
+    title:    group type
     overview: group type overview
     create:   create group type
     edit:     edit group type
 variant group:
+    title:    variant group
     overview: variant group overview
     create:   create variant group
     edit:     edit variant group
 association type:
+    title:    association type
     overview: association type overview
     create:   create association type
     edit:     edit association type
@@ -226,6 +224,7 @@ info:
 
 # Labels for channel colors
 color:
+    title:   Color
     gray:    Gray
     white:   White
     yellow:  Yellow
@@ -284,12 +283,16 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 default:                       Default
 Axis:                          Axis
-"Add attributes":              "Add attributes"
-"Translate from":              "Translate from"
-Yes:                           "Yes"
-No:                            "No"
+Add attributes:                Add attributes
+Translate from:                Translate from
+Yes:                           Yes
+No:                            No
 Close:                         Close
-"Choose a color":              "Choose a color"
+Choose a color:                Choose a color
+Search:                        Search
+Choose the attribute type:     Choose the attribute type
+Drop a file or click here:     Drop a file or click here
+Drop an image or click here:   Drop an image or click here
 
 Create:               Create
 Cancel:               Cancel
@@ -498,7 +501,218 @@ Products: Products
 # ACLs
 pim_enrich:
     acl:
-        locale.index: List locales
+        locale:
+            index:       List locales
+            af_ZA:       Access to data in locale af_ZA
+            am_ET:       Access to data in locale am_ET
+            ar_AE:       Access to data in locale ar_AE
+            ar_BH:       Access to data in locale ar_BH
+            ar_DZ:       Access to data in locale ar_DZ
+            ar_EG:       Access to data in locale ar_EG
+            ar_IQ:       Access to data in locale ar_IQ
+            ar_JO:       Access to data in locale ar_JO
+            ar_KW:       Access to data in locale ar_KW
+            ar_LB:       Access to data in locale ar_LB
+            ar_LY:       Access to data in locale ar_LY
+            ar_MA:       Access to data in locale ar_MA
+            arn_CL:      Access to data in locale arn_CL
+            ar_OM:       Access to data in locale ar_OM
+            ar_QA:       Access to data in locale ar_QA
+            ar_SA:       Access to data in locale ar_SA
+            ar_SY:       Access to data in locale ar_SY
+            ar_TN:       Access to data in locale ar_TN
+            ar_YE:       Access to data in locale ar_YE
+            as_IN:       Access to data in locale as_IN
+            az_Cyrl_AZ:  Access to data in locale az_Cyrl_AZ
+            az_Latn_AZ:  Access to data in locale az_Latn_AZ
+            ba_RU:       Access to data in locale ba_RU
+            be_BY:       Access to data in locale be_BY
+            bg_BG:       Access to data in locale bg_BG
+            bn_BD:       Access to data in locale bn_BD
+            bn_IN:       Access to data in locale bn_IN
+            bo_CN:       Access to data in locale bo_CN
+            br_FR:       Access to data in locale br_FR
+            bs_Cyrl_BA:  Access to data in locale bs_Cyrl_BA
+            bs_Latn_BA:  Access to data in locale bs_Latn_BA
+            ca_ES:       Access to data in locale ca_ES
+            co_FR:       Access to data in locale co_FR
+            cs_CZ:       Access to data in locale cs_CZ
+            cy_GB:       Access to data in locale cy_GB
+            da_DK:       Access to data in locale da_DK
+            de_AT:       Access to data in locale de_AT
+            de_CH:       Access to data in locale de_CH
+            de_DE:       Access to data in locale de_DE
+            de_LI:       Access to data in locale de_LI
+            de_LU:       Access to data in locale de_LU
+            dsb_DE:      Access to data in locale dsb_DE
+            dv_MV:       Access to data in locale dv_MV
+            el_GR:       Access to data in locale el_GR
+            en_029:      Access to data in locale en_029
+            en_AU:       Access to data in locale en_AU
+            en_BZ:       Access to data in locale en_BZ
+            en_CA:       Access to data in locale en_CA
+            en_GB:       Access to data in locale en_GB
+            en_IE:       Access to data in locale en_IE
+            en_IN:       Access to data in locale en_IN
+            en_JM:       Access to data in locale en_JM
+            en_MY:       Access to data in locale en_MY
+            en_NZ:       Access to data in locale en_NZ
+            en_PH:       Access to data in locale en_PH
+            en_SG:       Access to data in locale en_SG
+            en_TT:       Access to data in locale en_TT
+            en_US:       Access to data in locale en_US
+            en_ZA:       Access to data in locale en_ZA
+            en_ZW:       Access to data in locale en_ZW
+            es_AR:       Access to data in locale es_AR
+            es_BO:       Access to data in locale es_BO
+            es_CL:       Access to data in locale es_CL
+            es_CO:       Access to data in locale es_CO
+            es_CR:       Access to data in locale es_CR
+            es_DO:       Access to data in locale es_DO
+            es_EC:       Access to data in locale es_EC
+            es_ES:       Access to data in locale es_ES
+            es_GT:       Access to data in locale es_GT
+            es_HN:       Access to data in locale es_HN
+            es_MX:       Access to data in locale es_MX
+            es_NI:       Access to data in locale es_NI
+            es_PA:       Access to data in locale es_PA
+            es_PE:       Access to data in locale es_PE
+            es_PR:       Access to data in locale es_PR
+            es_PY:       Access to data in locale es_PY
+            es_SV:       Access to data in locale es_SV
+            es_US:       Access to data in locale es_US
+            es_UY:       Access to data in locale es_UY
+            es_VE:       Access to data in locale es_VE
+            et_EE:       Access to data in locale et_EE
+            eu_ES:       Access to data in locale eu_ES
+            fa_IR:       Access to data in locale fa_IR
+            fi_FI:       Access to data in locale fi_FI
+            fil_PH:      Access to data in locale fil_PH
+            fo_FO:       Access to data in locale fo_FO
+            fr_BE:       Access to data in locale fr_BE
+            fr_CA:       Access to data in locale fr_CA
+            fr_CH:       Access to data in locale fr_CH
+            fr_FR:       Access to data in locale fr_FR
+            fr_LU:       Access to data in locale fr_LU
+            fr_MC:       Access to data in locale fr_MC
+            fy_NL:       Access to data in locale fy_NL
+            ga_IE:       Access to data in locale ga_IE
+            gd_GB:       Access to data in locale gd_GB
+            gl_ES:       Access to data in locale gl_ES
+            gsw_FR:      Access to data in locale gsw_FR
+            gu_IN:       Access to data in locale gu_IN
+            ha_Latn_NG:  Access to data in locale ha_Latn_NG
+            he_IL:       Access to data in locale he_IL
+            hi_IN:       Access to data in locale hi_IN
+            hr_BA:       Access to data in locale hr_BA
+            hr_HR:       Access to data in locale hr_HR
+            hsb_DE:      Access to data in locale hsb_DE
+            hu_HU:       Access to data in locale hu_HU
+            hy_AM:       Access to data in locale hy_AM
+            id_ID:       Access to data in locale id_ID
+            ig_NG:       Access to data in locale ig_NG
+            ii_CN:       Access to data in locale ii_CN
+            is_IS:       Access to data in locale is_IS
+            it_CH:       Access to data in locale it_CH
+            it_IT:       Access to data in locale it_IT
+            iu_Cans_CA:  Access to data in locale iu_Cans_CA
+            iu_Latn_CA:  Access to data in locale iu_Latn_CA
+            ja_JP:       Access to data in locale ja_JP
+            ka_GE:       Access to data in locale ka_GE
+            kk_KZ:       Access to data in locale kk_KZ
+            kl_GL:       Access to data in locale kl_GL
+            km_KH:       Access to data in locale km_KH
+            kn_IN:       Access to data in locale kn_IN
+            kok_IN:      Access to data in locale kok_IN
+            ko_KR:       Access to data in locale ko_KR
+            ky_KG:       Access to data in locale ky_KG
+            lb_LU:       Access to data in locale lb_LU
+            lo_LA:       Access to data in locale lo_LA
+            lt_LT:       Access to data in locale lt_LT
+            lv_LV:       Access to data in locale lv_LV
+            mi_NZ:       Access to data in locale mi_NZ
+            mk_MK:       Access to data in locale mk_MK
+            ml_IN:       Access to data in locale ml_IN
+            mn_MN:       Access to data in locale mn_MN
+            mn_Mong_CN:  Access to data in locale mn_Mong_CN
+            moh_CA:      Access to data in locale moh_CA
+            mr_IN:       Access to data in locale mr_IN
+            ms_BN:       Access to data in locale ms_BN
+            ms_MY:       Access to data in locale ms_MY
+            mt_MT:       Access to data in locale mt_MT
+            nb_NO:       Access to data in locale nb_NO
+            ne_NP:       Access to data in locale ne_NP
+            nl_BE:       Access to data in locale nl_BE
+            nl_NL:       Access to data in locale nl_NL
+            nn_NO:       Access to data in locale nn_NO
+            nso_ZA:      Access to data in locale nso_ZA
+            oc_FR:       Access to data in locale oc_FR
+            or_IN:       Access to data in locale or_IN
+            pa_IN:       Access to data in locale pa_IN
+            pl_PL:       Access to data in locale pl_PL
+            prs_AF:      Access to data in locale prs_AF
+            ps_AF:       Access to data in locale ps_AF
+            pt_BR:       Access to data in locale pt_BR
+            pt_PT:       Access to data in locale pt_PT
+            qut_GT:      Access to data in locale qut_GT
+            quz_BO:      Access to data in locale quz_BO
+            quz_EC:      Access to data in locale quz_EC
+            quz_PE:      Access to data in locale quz_PE
+            rm_CH:       Access to data in locale rm_CH
+            ro_RO:       Access to data in locale ro_RO
+            ru_RU:       Access to data in locale ru_RU
+            rw_RW:       Access to data in locale rw_RW
+            sah_RU:      Access to data in locale sah_RU
+            sa_IN:       Access to data in locale sa_IN
+            se_FI:       Access to data in locale se_FI
+            se_NO:       Access to data in locale se_NO
+            se_SE:       Access to data in locale se_SE
+            si_LK:       Access to data in locale si_LK
+            sk_SK:       Access to data in locale sk_SK
+            sl_SI:       Access to data in locale sl_SI
+            sma_NO:      Access to data in locale sma_NO
+            sma_SE:      Access to data in locale sma_SE
+            smj_NO:      Access to data in locale smj_NO
+            smj_SE:      Access to data in locale smj_SE
+            smn_FI:      Access to data in locale smn_FI
+            sms_FI:      Access to data in locale sms_FI
+            sq_AL:       Access to data in locale sq_AL
+            sr_Cyrl_BA:  Access to data in locale sr_Cyrl_BA
+            sr_Cyrl_CS:  Access to data in locale sr_Cyrl_CS
+            sr_Cyrl_ME:  Access to data in locale sr_Cyrl_ME
+            sr_Cyrl_RS:  Access to data in locale sr_Cyrl_RS
+            sr_Latn_BA:  Access to data in locale sr_Latn_BA
+            sr_Latn_CS:  Access to data in locale sr_Latn_CS
+            sr_Latn_ME:  Access to data in locale sr_Latn_ME
+            sr_Latn_RS:  Access to data in locale sr_Latn_RS
+            sv_FI:       Access to data in locale sv_FI
+            sv_SE:       Access to data in locale sv_SE
+            sw_KE:       Access to data in locale sw_KE
+            syr_SY:      Access to data in locale syr_SY
+            ta_IN:       Access to data in locale ta_IN
+            te_IN:       Access to data in locale te_IN
+            tg_Cyrl_TJ:  Access to data in locale tg_Cyrl_TJ
+            th_TH:       Access to data in locale th_TH
+            tk_TM:       Access to data in locale tk_TM
+            tn_ZA:       Access to data in locale tn_ZA
+            tr_TR:       Access to data in locale tr_TR
+            tt_RU:       Access to data in locale tt_RU
+            tzm_Latn_DZ: Access to data in locale tzm_Latn_DZ
+            ug_CN:       Access to data in locale ug_CN
+            uk_UA:       Access to data in locale uk_UA
+            ur_PK:       Access to data in locale ur_PK
+            uz_Cyrl_UZ:  Access to data in locale uz_Cyrl_UZ
+            uz_Latn_UZ:  Access to data in locale uz_Latn_UZ
+            vi_VN:       Access to data in locale vi_VN
+            wo_SN:       Access to data in locale wo_SN
+            xh_ZA:       Access to data in locale xh_ZA
+            yo_NG:       Access to data in locale yo_NG
+            zh_CN:       Access to data in locale zh_CN
+            zh_HK:       Access to data in locale zh_HK
+            zh_MO:       Access to data in locale zh_MO
+            zh_SG:       Access to data in locale zh_SG
+            zh_TW:       Access to data in locale zh_TW
+            zu_ZA:       Access to data in locale zu_ZA
         currency:
             index: List currencies
             toggle: Toggle currencies
@@ -529,6 +743,7 @@ pim_enrich:
             edit: Edit a channel
             remove: Remove a channel
         family:
+            index: List families
             create: Create a family
             edit: Edit a family
             remove: Remove a family

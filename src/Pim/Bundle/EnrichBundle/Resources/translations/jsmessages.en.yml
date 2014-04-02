@@ -59,5 +59,17 @@ error:
         user:             Cannot delete this user
         role:             Cannot delete this role
 
+Edit:                           Edit
+Delete:                         Delete
+Edit attributes of the product: Edit attributes of the product
+Classify the product:           Classify the product
+Delete the product:             Delete the product
+Change status:                  Change status
+
 # Quick export labels
 pim.grid.mass_action.quick_export.csv_all: CSV (All attributes)
+pim.grid.mass_action.delete:               Delete
+pim.grid.mass_action.mass_edit:            Mass Edit
+
+# Jstree context menu actions
+jstree.create: Create

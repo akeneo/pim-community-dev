@@ -297,7 +297,7 @@ datagrid:
         mass_actions:
             delete:
                 type: delete
-                label: Delete
+                label: pim.grid.mass_action.delete
                 entity_name: product
                 messages:
                     confirm_title: Delete confirmation
@@ -325,7 +325,7 @@ datagrid:
 
             mass_edit:
                 type: edit
-                label: Mass Edit
+                label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
         sorters:

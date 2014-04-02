@@ -8,7 +8,7 @@
         'action': actionRoute,
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': entityName|trans })
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': (entityName ~ '.title')|trans })
         }
     }) }}
 

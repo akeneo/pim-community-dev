@@ -30,11 +30,13 @@
                         checked: !!this.data.nested_switch.state
                     });
 
+                    var __ = require('oro/translator');
+
                     var switch_wrapper = $('<div>', {
                         'class': 'switch switch-small pull-right',
                         'attr' : {
-                            'data-on-label':  'Yes',
-                            'data-off-label': 'No',
+                            'data-on-label':  __('Yes'),
+                            'data-off-label': __('No'),
                             'data-animated':  false
                         }
                     }).html(nested_switch);
