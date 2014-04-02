@@ -66,7 +66,7 @@ Feature: Edit common attributes of many products at once
     Then I should see available attribute Comment in group "Other"
     And I should not see available attributes Sole color, Fur and Serial number in group "Other"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-2183
+  @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
     Given the following attribute:
       | code       | label | families   |
