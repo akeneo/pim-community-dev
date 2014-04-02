@@ -49,9 +49,9 @@ Feature: Delete many product at once
     Then the grid should contain 1 element
     And I should see product sneakers_S43
 
-  Scenario: Successfully mass delete visible products
+  Scenario: Successfully mass delete all products
     Given I select all products
     Then I press mass-delete button
     And I should see "Are you sure you want to delete selected products?"
     When I confirm the removal
-    Then the grid should contain 0 element
+    Then the grid should contain 0 elements
