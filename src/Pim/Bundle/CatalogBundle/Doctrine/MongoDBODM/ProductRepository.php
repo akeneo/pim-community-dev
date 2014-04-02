@@ -848,6 +848,25 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
+        $results = $this->findValuesCommonAttributeIds($productIds);
+
+        $attributeIds = array();
+        foreach ($results as $result) {
+            $attributeIds[] = $result['_id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Find all common attribute ids with values from a list of product ids
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findValuesCommonAttributeIds(array $productIds)
+    {
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
         $expr = new Expr($this->dm);
@@ -871,16 +890,9 @@ class ProductRepository extends DocumentRepository implements
                 'count' => array('$sum' => 1)
             )),
             array('$match'   => array('count' => count($productIds))),
-            array('$project' => array('values.attribute' => 1))
+            array('$project' => array('values.attribute' => 1, 'count' => 1))
         );
 
-        $results = $collection->aggregate($pipeline)->toArray();
-
-        $attributeIds = array();
-        foreach ($results as $result) {
-            $attributeIds[] = $result['_id'];
-        }
-
-        return $attributeIds;
+        return $collection->aggregate($pipeline)->toArray();
     }
 }
