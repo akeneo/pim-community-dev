@@ -582,7 +582,8 @@ class ProductRepository extends DocumentRepository implements
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
+        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $this->addAttributeFilter($value->getAttribute(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->getSingleResult();
 
         $foundValueId = null;
@@ -610,7 +611,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -712,22 +713,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
@@ -735,22 +720,6 @@ class ProductRepository extends DocumentRepository implements
         } else {
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
