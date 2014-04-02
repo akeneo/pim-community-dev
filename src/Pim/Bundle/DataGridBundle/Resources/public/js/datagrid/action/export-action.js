@@ -12,7 +12,7 @@ define(
          */
         var ExportAction = Backbone.View.extend({
 
-            label: __('pim.grid.mass_action.quick_export'),
+            label: __('pim.grid.mass_action.quick_export.title'),
 
             icon: 'download',
 
@@ -102,7 +102,7 @@ define(
                     '<div class="export-actions-panel btn-group buffer-left">' +
                         '<button href="javascript:void(0);" class="action btn dropdown-toggle" title="Export" data-toggle="dropdown">' +
                             '<i class="icon-download-alt"></i>' +
-                            __('pim.grid.mass_action.quick_export') +
+                            __('pim.grid.mass_action.quick_export.title') +
                             '<i class="caret"></i>' +
                         '</button>' +
                         '<ul class="dropdown-menu"></ul>' +
