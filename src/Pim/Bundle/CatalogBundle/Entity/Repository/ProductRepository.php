@@ -516,22 +516,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -543,22 +527,6 @@ class ProductRepository extends EntityRepository implements
             $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
             $qb->andWhere($expression);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -660,7 +628,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductQueryBuilder
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -704,14 +672,15 @@ class ProductRepository extends EntityRepository implements
     ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
+        $productQb = $this->getProductQueryBuilder($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                    $productQb->addAttributeFilter($attribute, '=', $attValue);
                 } else {
-                    $this->applyFilterByField($qb, $attCode, $attValue);
+                    $productQb->addFieldFilter($attCode, '=', $attValue);
                 }
             }
         }
@@ -719,9 +688,9 @@ class ProductRepository extends EntityRepository implements
             foreach ($orderBy as $attCode => $direction) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                    $productQb->addAttributeSorter($attribute, $direction);
                 } else {
-                    $this->applySorterByField($qb, $attCode, $direction);
+                    $productQb->addFieldSorter($attCode, $direction);
                 }
             }
         }
