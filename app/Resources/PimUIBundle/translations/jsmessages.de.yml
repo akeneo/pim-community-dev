@@ -2,6 +2,34 @@
 Close: Schließen
 Update: Aktualisieren
 Selected Rows: Ausgewählte Zeilen
+Yes: Ja
+Yes, Delete: Ja, löschen
+Yes, I Agree: Ja, ich stimme zu
+Yes, do it: Ja, ausführen
+No: Nein
+Ok, got it.: Ja, verstanden.
+Cancel: Abbrechen
+Delete Confirmation: Löschbestätigung
+Edit: Bearbeiten
+Unexpected error occured. Please contact system administrator.: Es ist ein unerwarteter Fehler aufgetreten. Bitte wenden Sie sich an den Systemadministrator.
+Now: Jetzt
+Prev: Zurück
+Next: Vor
+Today: Heute
+Wk: KW
+Done: Fertig
+AM: AM
+A: A
+PM: PM
+P: P
+Choose Time: Zeit wählen
+Time: Zeit
+Hour: Stunde
+Minute: Minute
+Second: Sekunde
+Millisecond: Millisekunde
+Microsecond: Mikrosekunde
+Time Zone: Zeitzone
 Localized value: Vom Gebietsschema abhängiger Wert
 Export CSV: CSV exportieren
 Columns: Spalten
