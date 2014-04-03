@@ -39,7 +39,9 @@ class EntitiesTypeSubscriber implements EventSubscriber
     }
 
     /**
-     * {@inheritdoc}
+     * Replaces entities field value with a reference collection when loading document from DB
+     *
+     * @param LifecycleEventArgs $args
      */
     public function postLoad(LifecycleEventArgs $args)
     {
@@ -54,17 +56,22 @@ class EntitiesTypeSubscriber implements EventSubscriber
      * Otherwise, some documents with entities field (the one that have never been loaded from db in fact)
      * won't have a ReferencedCollection
      *
-     * {@inheritdoc}
+     * @param LifecycleEventArgs $args
      */
     public function prePersist(LifecycleEventArgs $args)
     {
-        $dm = $args->getDocumentManager();
         $document = $args->getDocument();
-        $metadata = $dm->getClassMetadata(get_class($document));
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
 
         $this->overrideEntitiesField($document, $metadata);
     }
 
+    /**
+     * Synchronizes update scheduled documents entities fields before flushing
+     * No need to recompute the change set as it hasn't be calculated yet
+     *
+     * @param PreFlushEventArgs $args
+     */
     public function preFlush(PreFlushEventArgs $args)
     {
         $dm = $args->getDocumentManager();
@@ -75,6 +82,13 @@ class EntitiesTypeSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * Overrides all field of type "entities" into a ReferencedCollection
+     * based on the values stored inside the "idsField" field
+     *
+     * @param object        $document
+     * @param ClassMetadata $metatada
+     */
     private function overrideEntitiesField($document, ClassMetadata $metadata)
     {
         foreach ($metadata->fieldMappings as $field => $mapping) {
@@ -83,6 +97,15 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     throw new \RuntimeException(
                         sprintf(
                             'Please provide the "targetEntity" of the %s::$%s field mapping',
+                            $metadata->name,
+                            $field
+                        )
+                    );
+                }
+                if (!isset($mapping['idsField'])) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Please provide the "idsField" of the %s::$%s field mapping',
                             $metadata->name,
                             $field
                         )
@@ -101,7 +124,10 @@ class EntitiesTypeSubscriber implements EventSubscriber
     }
 
     /**
-     * Wait til the very last time to synchronize ids field of the document
+     * Synchronizes ids field with the ids of object contained in the linked "entities" type field
+     *
+     * @param object        $document
+     * @param ClassMetadata $metatada
      */
     private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
     {
@@ -110,11 +136,13 @@ class EntitiesTypeSubscriber implements EventSubscriber
                 $oldValue = $metadata->reflFields[$field]->getValue($document);
                 if (!$oldValue instanceof ReferencedCollection) {
                     throw new \LogicException(
-                        'Property "%s" of "%s" should be an instance of ' .
-                        'Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection, got "%s"',
-                        $field,
-                        get_class($document),
-                        is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
+                        sprintf(
+                            'Property "%s" of "%s" should be an instance of ' .
+                            'Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection, got "%s"',
+                            $field,
+                            get_class($document),
+                            is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
+                        )
                     );
                 }
                 $newValue = $oldValue->map(

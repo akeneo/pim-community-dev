@@ -65,13 +65,19 @@ class EntityTypeSubscriber implements EventSubscriber
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function preUpdate(PreUpdateEventArgs $args)
     {
         $document = $args->getDocument();
         $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entity' === $mapping['type'] && $args->hasChangedField($field)) {
-                $args->setNewValue($field, $args->getNewValue($field)->getId());
+                $newValue = $args->getNewValue($field);
+                if (is_object($newValue)) {
+                    $args->setNewValue($field, $newValue->getId());
+                }
             }
         }
     }
