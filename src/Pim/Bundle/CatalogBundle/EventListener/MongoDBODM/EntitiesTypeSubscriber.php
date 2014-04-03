@@ -107,7 +107,6 @@ class EntitiesTypeSubscriber implements EventSubscriber
     {
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entities' === $mapping['type']) {
-                // TODO Throw an exception if this is not a ReferencedCollection
                 $oldValue = $metadata->reflFields[$field]->getValue($document);
                 if (!$oldValue instanceof ReferencedCollection) {
                     throw new \LogicException(
