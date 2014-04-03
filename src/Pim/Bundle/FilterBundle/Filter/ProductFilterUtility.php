@@ -86,7 +86,7 @@ class ProductFilterUtility extends BaseFilterUtility
         if ($attribute) {
             $productQueryBuilder->addAttributeFilter($attribute, $operator, $value);
         } else {
-            $productQueryBuilder->addFieldFilter($attribute, $operator, $value);
+            $productQueryBuilder->addFieldFilter($field, $operator, $value);
         }
     }
 }
