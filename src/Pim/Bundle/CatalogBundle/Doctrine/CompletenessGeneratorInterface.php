@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Completeness generator interface. Will be implemented differently
@@ -15,14 +17,23 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 interface CompletenessGeneratorInterface
 {
     /**
-     * Generate missing completeness according to the criteria
-     * The limit is used to do batch generation to avoid
-     * locking the Completeness during a too long time
+     * Generate completeness for a product
      *
-     * @param array   $criteria
-     * @param integer $limit
+     * @param ProductInterface $product
      */
-    public function generate(array $criteria = array(), $limit = null);
+    public function generateMissingForProduct(ProductInterface $product);
+
+    /**
+     * Generate completeness for a channel
+     *
+     * @param Channel $channel
+     */
+    public function generateMissingForChannel(Channel $channel);
+
+    /**
+     * Generate missing completenesses
+     */
+    public function generateMissing();
 
     /**
      * Schedule recalculation of completenesses for a product
@@ -30,4 +41,12 @@ interface CompletenessGeneratorInterface
      * @param ProductInterface $product
      */
     public function schedule(ProductInterface $product);
+
+    /**
+     * Schedule recalculation of completenesses for all product
+     * of a family
+     *
+     * @param Family $family
+     */
+    public function scheduleForFamily(Family $family);
 }

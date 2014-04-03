@@ -1,5 +1,0 @@
-pim_catalog_datagrid_edit:
-    path: /{alias}/edit
-    defaults: { _controller: pim_enrich.controller.datagrid:editAction }
-    requirements:
-        _method: GET|POST

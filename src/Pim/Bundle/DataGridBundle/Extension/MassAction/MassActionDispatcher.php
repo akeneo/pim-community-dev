@@ -2,125 +2,177 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\MassAction;
 
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\Request;
+
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionMediator;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher as OroMassActionDispatcher;
-use Oro\Bundle\FilterBundle\Grid\Extension\OrmFilterExtension;
+use Oro\Bundle\DataGridBundle\Datagrid\ManagerInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Extension\ExtensionVisitorInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
+use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
+
+use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
- * Overriden MassActionDispatcher to remove flexible pagination
+ * Mass action dispatcher
  *
- * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassActionDispatcher extends OroMassActionDispatcher
+class MassActionDispatcher
 {
-    /**
-     * @var array
-     */
-    protected $filters;
+    /** @var MassActionHandlerRegistry $handlerRegistry */
+    protected $handlerRegistry;
+
+    /** @var Manager $manager */
+    protected $manager;
+
+    /** @var RequestParameters $requestParams */
+    protected $requestParams;
+
+    /** @var MassActionParametersParser $parametersParser */
+    protected $parametersParser;
 
     /**
-     * {@inheritdoc}
+     * Constructor
+     *
+     * @param MassActionHandlerRegistry  $handlerRegistry
+     * @param Manager                    $manager
+     * @param RequestParameters          $requestParams
+     * @param MassActionParametersParser $parametersParser
      */
-    public function dispatch($datagridName, $actionName, array $parameters, array $data = [])
+    public function __construct(
+        MassActionHandlerRegistry $handlerRegistry,
+        ManagerInterface $manager,
+        RequestParameters $requestParams,
+        MassActionParametersParser $parametersParser
+    ) {
+        $this->handlerRegistry  = $handlerRegistry;
+        $this->manager          = $manager;
+        $this->requestParams    = $requestParams;
+        $this->parametersParser = $parametersParser;
+    }
+
+    /**
+     * Dispatch datagrid mass action
+     *
+     * @param Request $request
+     *
+     * @throws \LogicException
+     *
+     * @return MassActionResponseInterface
+     */
+    public function dispatch(Request $request)
     {
+        $parameters   = $this->parametersParser->parse($request);
+        $datagridName = $request->get('gridName');
+        $actionName   = $request->get('actionName');
+
         $inset   = isset($parameters['inset'])   ? $parameters['inset']   : true;
         $values  = isset($parameters['values'])  ? $parameters['values']  : [];
-        $this->filters = isset($parameters['filters']) ? $parameters['filters'] : [];
+        $filters = isset($parameters['filters']) ? $parameters['filters'] : [];
 
         if ($inset && empty($values)) {
             throw new \LogicException(sprintf('There is nothing to do in mass action "%s"', $actionName));
         }
 
-        // create datagrid
-        $datagrid = $this->manager->getDatagrid($datagridName);
+        $datagrid   = $this->manager->getDatagrid($datagridName);
+        $massAction = $this->getMassActionByName($actionName, $datagrid);
+        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
 
-        // set filter data
-        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $this->filters);
-
-        // create mediator
-        $massAction     = $this->getMassActionByName($actionName, $datagrid);
-        $identifier     = $this->getIdentifierField($massAction);
-        $qb             = $this->prepareQueryBuilder($this->getDatagridQuery($datagrid, $identifier, $inset, $values));
-        $resultIterator = $this->getResultIterator($qb);
-        $mediator       = new MassActionMediator($massAction, $datagrid, $resultIterator, $data);
-
-        // perform mass action
-        $handle = $this->getMassActionHandler($massAction);
-        $result = $handle->handle($mediator);
-
-        return $result;
+        return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
 
     /**
-     * Override to ensure a not indexed hydration
+     * Prepare query builder, apply mass action parameters and call handler
      *
-     * {@inheritdoc}
+     * @param DatagridInterface   $datagrid
+     * @param MassActionInterface $massAction
+     * @param boolean             $inset
+     * @param string              $values
+     *
+     * @return MassActionResponseInterface
      */
-    protected function getDatagridQuery(DatagridInterface $datagrid, $idField = 'id', $inset = true, $values = [])
-    {
-        /** @var QueryBuilder $qb */
+    protected function performMassAction(
+        DatagridInterface $datagrid,
+        MassActionInterface $massAction,
+        $inset,
+        $values
+    ) {
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
-        if ($values) {
-            $valueWhereCondition =
-                $inset
-                    ? $qb->expr()->in($idField, $values)
-                    : $qb->expr()->notIn($idField, $values);
-            $qb->andWhere($valueWhereCondition);
-        }
 
-        $rootAlias = $qb->getRootAlias();
-        $from      = current($qb->getDQLPart('from'));
-        $entity    = $from->getFrom();
+        $repository = $datagrid->getDatasource()->getRepository();
+        $repository->applyMassActionParameters($qb, $inset, $values);
 
-        $qb->resetDQLPart('select');
-        $qb->select($rootAlias);
-        $qb->resetDQLPart('from');
-        $qb->from($entity, $rootAlias);
+        $handler = $this->getMassActionHandler($massAction);
 
-        if ($qb->getParameter('dataLocale')) {
-            $localeCode = $this->container->get('request')->get('dataLocale', null);
-            $qb->setParameter('dataLocale', $localeCode);
-        }
-
-        if ($qb->getParameter('scopeCode')) {
-            $scopeCode = isset($this->filters['scope']['value']) ?
-                $this->filters['scope']['value'] : null;
-            $qb->setParameter('scopeCode', $scopeCode);
-        }
-
-        return $qb;
+        return $handler->handle($datagrid, $massAction);
     }
 
     /**
-     * Remove 'entityIds' part from querybuilder (added by flexible pager)
+     * @param string            $massActionName
+     * @param DatagridInterface $datagrid
      *
-     * @param QueryBuilder $qb
-     *
-     * @return QueryBuilder
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     * @throws \LogicException
      */
-    protected function prepareQueryBuilder(QueryBuilder $qb)
+    protected function getMassActionByName($massActionName, DatagridInterface $datagrid)
     {
-        $whereParts = $qb->getDQLPart('where')->getParts();
-        $qb->resetDQLPart('where');
-
-        foreach ($whereParts as $part) {
-            if (!is_string($part) || !strpos($part, 'entityIds')) {
-                $qb->andWhere($part);
+        $massAction = null;
+        $extensions = array_filter(
+            $datagrid->getAcceptor()->getExtensions(),
+            function (ExtensionVisitorInterface $extension) {
+                return $extension instanceof MassActionExtension;
             }
-        }
-
-        $qb->setParameters(
-            $qb->getParameters()->filter(
-                function ($parameter) {
-                    return $parameter->getName() !== 'entityIds';
-                }
-            )
         );
 
-        return $qb;
+        /** @var MassActionExtension|bool $extension */
+        $extension = reset($extensions);
+        if ($extension === false) {
+            throw new \LogicException("MassAction extension is not applied to datagrid.");
+        }
+
+        $massAction = $extension->getMassAction($massActionName, $datagrid);
+
+        if (!$massAction) {
+            throw new \LogicException(sprintf('Can\'t find mass action "%s"', $massActionName));
+        }
+
+        return $massAction;
+    }
+
+    /**
+     * Get mass action handler from handler registry
+     *
+     * @param MassActionInterface $massAction
+     *
+     * @return MassActionHandlerInterface
+     */
+    protected function getMassActionHandler(MassActionInterface $massAction)
+    {
+        $handlerAlias = $massAction->getOptions()->offsetGet('handler');
+        $handler      = $this->handlerRegistry->getHandler($handlerAlias);
+
+        return $handler;
+    }
+
+    /**
+     * Get mass action from mass action and datagrid names
+     *
+     * @param string $actionName
+     * @param string $datagridName
+     *
+     * @return \Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface
+     *
+     * TODO: Need some clean up and optimization
+     */
+    public function getMassActionByNames($actionName, $datagridName)
+    {
+        $datagrid = $this->manager->getDatagrid($datagridName);
+
+        return $this->getMassActionByName($actionName, $datagrid);
     }
 }

@@ -11,6 +11,7 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Orm selector extension
@@ -93,7 +94,16 @@ class OrmSelectorExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return ($datasourceType == PimOrmDatasource::TYPE || $datasourceType == ProductDatasource::TYPE);
+        if ($datasourceType == PimOrmDatasource::TYPE) {
+            return true;
+
+        } elseif ($datasourceType == ProductDatasource::TYPE) {
+            if ($config->offsetGetByPath('[source][product_storage]') == 'doctrine/orm') {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -134,7 +144,7 @@ class OrmSelectorExtension extends AbstractExtension
         $rootField  = $rootAlias.'.id';
         $getIdsQb->add('from', new From($rootEntity, $rootAlias, $rootField), false);
         $getIdsQb->groupBy($rootField);
-        PimOrmDatasource::removeExtraParameters($getIdsQb);
+        QueryBuilderUtility::removeExtraParameters($getIdsQb);
         $results = $getIdsQb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($results);

@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -20,7 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -53,7 +53,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
      */
@@ -65,7 +65,7 @@ class CategoryTreeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
         UserContext $userContext
     ) {
@@ -238,14 +238,15 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Edit tree action
      *
-     * @param Request  $request
-     * @param Category $category
+     * @param Request $request
+     * @param integer $id
      *
      * @AclAncestor("pim_enrich_category_edit")
      * @return array
      */
-    public function editAction(Request $request, Category $category)
+    public function editAction(Request $request, $id)
     {
+        $category = $this->findCategory($id);
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -271,13 +272,14 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Remove category tree
      *
-     * @param Category $category
+     * @param integer $id
      *
      * @AclAncestor("pim_enrich_category_remove")
      * @return RedirectResponse
      */
-    public function removeAction(Category $category)
+    public function removeAction($id)
     {
+        $category = $this->findCategory($id);
         $parent = $category->getParent();
         $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
@@ -299,7 +301,7 @@ class CategoryTreeController extends AbstractDoctrineController
      *
      * @param integer $categoryId
      *
-     * @return Category
+     * @return CategoryInterface
      */
     protected function findCategory($categoryId)
     {
@@ -315,11 +317,11 @@ class CategoryTreeController extends AbstractDoctrineController
     /**
      * Gets the options for the form
      *
-     * @param Category $category
+     * @param CategoryInterface $category
      *
      * @return array
      */
-    protected function getFormOptions(Category $category)
+    protected function getFormOptions(CategoryInterface $category)
     {
         return array();
     }

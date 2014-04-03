@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'backbone', 'underscore', 'routing'],
-    function ($, Backbone, _, Routing) {
+    ['jquery', 'backbone', 'underscore'],
+    function ($, Backbone, _) {
         'use strict';
         var interval;
 
@@ -212,6 +212,11 @@ define(
                 interval = setInterval(function () {
                     jobExecution.fetch();
                 }, 1000);
+
+                // Clear interval when changing page to prevent continuing to sync object on other pages
+                Backbone.Router.prototype.on('route', function () {
+                    clearInterval(interval);
+                });
 
                 setTimeout(function () {
                     if (null !== interval) {

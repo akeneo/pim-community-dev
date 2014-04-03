@@ -1,6 +1,8 @@
 define(
     ['jquery', 'oro/loading-mask'],
     function ($, LoadingMask) {
+        'use strict';
+
         return function (tab) {
             var $tab = $(tab);
             var target = $tab.attr('href');

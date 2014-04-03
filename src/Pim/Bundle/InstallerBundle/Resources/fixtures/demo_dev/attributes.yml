@@ -5,7 +5,6 @@ attributes:
             fr_FR: SKU
         type:  pim_catalog_identifier
         group: general
-        required:            true
         unique:              true
         useableAsGridColumn: true
         useableAsGridFilter: true
@@ -66,7 +65,7 @@ attributes:
         useableAsGridColumn: true
         useableAsGridFilter: true
         dateMin:             '2012-01-01'
-        dateMax:             '2014-01-01'
+        dateMax:             '2015-01-01'
         sortOrder:           5
     file_upload:
         labels:

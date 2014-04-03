@@ -162,6 +162,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     *
+     * @Given /^I expand the "([^"]*)" attribute$/
+     */
+    public function iExpandTheAttribute($attribute)
+    {
+        $this->getCurrentPage()->expandAttribute($attribute);
+    }
+
+    /**
      * @param string $category1
      * @param string $category2
      *
@@ -352,6 +362,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param string $optionName
+     *
+     * @Then /^I remove the "([^"]*)" option$/
+     */
+    public function iRemoveTheOption($optionName)
+    {
+        $this->getCurrentPage()->removeOption($optionName);
+    }
+
+    /**
      * @param string $group
      * @param string $attributes
      *
@@ -435,7 +455,7 @@ class WebUser extends RawMinkContext
             if ($select = $field->find('css', 'select')) {
                 $actual = $select->find('css', 'option[selected]')->getHtml();
             } else {
-                $actual = $field->find('css', '.select2-chosen')->getHtml();
+                $actual = trim($field->find('css', '.select2-chosen')->getHtml());
             }
         } elseif (strpos($class, 'select2-input') !== false) {
             for ($i = 0; $i < 4; $i++) {
@@ -989,6 +1009,14 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @Then /^I choose to download the file$/
+     */
+    public function iChooseToDownloadTheFile()
+    {
+        throw new \RuntimeException('Download file is not yet implemented');
+    }
+
+    /**
      * @param string $status
      * @param string $locator
      *
@@ -1007,7 +1035,7 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeDisabled(Product $product)
     {
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         if ($product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be disabled');
         }
@@ -1020,7 +1048,7 @@ class WebUser extends RawMinkContext
      */
     public function productShouldBeEnabled(Product $product)
     {
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         if (!$product->isEnabled()) {
             throw $this->createExpectationException('Product was expected to be be enabled');
         }
@@ -1036,7 +1064,7 @@ class WebUser extends RawMinkContext
     public function theFamilyOfProductShouldBe($sku, $expectedFamily = '')
     {
         $product = $this->getFixturesContext()->getProduct($sku);
-        $this->getMainContext()->getEntityManager()->refresh($product);
+        $this->getMainContext()->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
 
         $actualFamily = $product->getFamily() ? $product->getFamily()->getCode() : '';
         assertEquals(
@@ -1125,7 +1153,6 @@ class WebUser extends RawMinkContext
     public function iExecuteTheJob($type)
     {
         $this->getPage(sprintf('%s show', ucfirst($type)))->execute();
-        $this->wait();
     }
 
     /**
@@ -1393,40 +1420,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param string $products
-     *
-     * @When /^I mass-edit products (.*)$/
-     */
-    public function iMassEditProducts($products)
-    {
-        $page = $this->getPage('Product index');
-
-        foreach ($this->listToArray($products) as $product) {
-            $page->selectRow($product);
-        }
-
-        $page->massEdit();
-        $this->wait();
-    }
-
-    /**
-     * @param string $products
-     *
-     * @When /^I mass-delete products (.*)$/
-     */
-    public function iMassDeleteProducts($products)
-    {
-        $page = $this->getPage('Product index');
-
-        foreach ($this->listToArray($products) as $product) {
-            $page->selectRow($product);
-        }
-
-        $page->massDelete();
-        $this->wait();
-    }
-
-    /**
      * @param string $operation
      *
      * @Given /^I choose the "([^"]*)" operation$/
@@ -1533,20 +1526,50 @@ class WebUser extends RawMinkContext
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
 
-        foreach ($expectedLines as $index => $expectedLine) {
-            $actualLine = $actualLines[$index];
-            sort($expectedLine);
-            sort($actualLine);
-            assertSame(
-                $expectedLine,
-                $actualLine,
+
+        if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
+            throw new \Exception(
                 sprintf(
-                    'Expecting row %d to be "%s", found "%s"',
-                    $index,
-                    implode($delimiter, $expectedLine),
-                    implode($delimiter, $actualLine)
+                    'Header in the file %s does not match expected one: %s',
+                    $path,
+                    implode(' | ', $actualLines[0])
                 )
             );
+        }
+        unset($actualLines[0]);
+        unset($expectedLines[0]);
+
+        foreach ($expectedLines as $expectedLine) {
+            $found = false;
+            foreach ($actualLines as $index => $actualLine) {
+                // Order of columns is not ensured
+                // Sorting the line values allows to have two identical lines
+                // with values in different orders
+                sort($expectedLine);
+                sort($actualLine);
+
+                // Same thing for the rows
+                // Order of the rows is not reliable
+                // So we generate a hash for the current line and ensured that
+                // the generated file contains a line with the same hash
+                if (md5(json_encode($actualLine)) === md5(json_encode($expectedLine))) {
+                    $found = true;
+
+                    // Unset line to prevent comparing it twice
+                    unset($actualLines[$index]);
+
+                    break;
+                }
+            }
+            if (!$found) {
+                throw new \Exception(
+                    sprintf(
+                        'Could not find a line containing "%s" in %s',
+                        implode(' | ', $expectedLine),
+                        $path
+                    )
+                );
+            }
         }
     }
 
@@ -1671,6 +1694,8 @@ class WebUser extends RawMinkContext
     }
 
     /**
+     * @param PyStringNode $string
+     *
      * @Given /^I execute javascript:$/
      */
     public function iExecuteJavascript(PyStringNode $string)

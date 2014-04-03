@@ -1,6 +1,6 @@
 Pim\Bundle\CatalogBundle\Model\Product:
     type: document
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\MongoDBODM\ProductRepository
+    repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     collection: pim_catalog_product
     fields:
         id:
@@ -13,21 +13,27 @@ Pim\Bundle\CatalogBundle\Model\Product:
             type: date
         updated:
             type: date
-        # Family references ORM family code
-        familyId:
-            type: int
-        # Collection to references ORM groups code
-        #groups:
-        #    type: collection
-        # Collection to references ORM categories code
-        #categories:
-        #    type: collection
+        family:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+        groups:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+        categories:
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
         associations:
             embedded: true
             type: many
             targetDocument: Pim\Bundle\CatalogBundle\Model\Association
+        completenesses:
+            embedded: true
+            type: many
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Completeness
         values:
             embedded: true
             type: many
-#            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValueInterface
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValue
+            mappedBy: entity
+        normalizedData:
+            type: hash

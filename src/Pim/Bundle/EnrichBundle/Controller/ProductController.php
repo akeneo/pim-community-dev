@@ -2,39 +2,31 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
-
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
-use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Serializer\SerializerInterface;
-
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
-use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Manager\AuditManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 
 /**
@@ -62,29 +54,14 @@ class ProductController extends AbstractDoctrineController
     protected $userContext;
 
     /**
-     * @var AuditManager
+     * @var VersionManager
      */
-    protected $auditManager;
+    protected $versionManager;
 
     /**
      * @var SecurityFacade
      */
     protected $securityFacade;
-
-    /**
-     * @var MassActionParametersParser
-     */
-    protected $parametersParser;
-
-    /**
-     * @var MassActionDispatcher
-     */
-    protected $massActionDispatcher;
-
-    /**
-     * @var SerializerInterface
-     */
-    protected $serializer;
 
     /**
      * Constant used to redirect to the datagrid when save edit form
@@ -101,22 +78,19 @@ class ProductController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                    $request
-     * @param EngineInterface            $templating
-     * @param RouterInterface            $router
-     * @param SecurityContextInterface   $securityContext
-     * @param FormFactoryInterface       $formFactory
-     * @param ValidatorInterface         $validator
-     * @param TranslatorInterface        $translator
-     * @param RegistryInterface          $doctrine
-     * @param ProductManager             $productManager
-     * @param CategoryManager            $categoryManager
-     * @param UserContext                $userContext
-     * @param AuditManager               $auditManager
-     * @param SecurityFacade             $securityFacade
-     * @param MassActionParametersParser $parametersParser
-     * @param MassActionDispatcher       $massActionDispatcher
-     * @param SerializerInterface        $serializer
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param ManagerRegistry          $doctrine
+     * @param ProductManager           $productManager
+     * @param CategoryManager          $categoryManager
+     * @param UserContext              $userContext
+     * @param VersionManager           $versionManager
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         Request $request,
@@ -126,15 +100,12 @@ class ProductController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         UserContext $userContext,
-        AuditManager $auditManager,
-        SecurityFacade $securityFacade,
-        MassActionParametersParser $parametersParser,
-        MassActionDispatcher $massActionDispatcher,
-        SerializerInterface $serializer
+        VersionManager $versionManager,
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -147,16 +118,11 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager       = $productManager;
-        $this->categoryManager      = $categoryManager;
-        $this->userContext          = $userContext;
-        $this->auditManager         = $auditManager;
-        $this->securityFacade       = $securityFacade;
-        $this->parametersParser     = $parametersParser;
-        $this->massActionDispatcher = $massActionDispatcher;
-        $this->serializer           = $serializer;
-
-        $this->productManager->setLocale($this->getDataLocale());
+        $this->productManager  = $productManager;
+        $this->categoryManager = $categoryManager;
+        $this->userContext     = $userContext;
+        $this->versionManager  = $versionManager;
+        $this->securityFacade  = $securityFacade;
     }
 
     /**
@@ -170,74 +136,10 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        if ('csv' === $request->getRequestFormat()) {
-            // Export time execution depends on entities exported
-            ignore_user_abort(false);
-            set_time_limit(0);
-
-            $parameters  = $this->parametersParser->parse($request);
-            $requestData = array_merge($request->query->all(), $request->request->all());
-
-            $qb = $this->massActionDispatcher->dispatch(
-                $requestData['gridName'],
-                $requestData['actionName'],
-                $parameters,
-                $requestData
-            );
-
-            $dateTime = new \DateTime();
-            $fileName = sprintf(
-                'products_export_%s_%s_%s.csv',
-                $this->getDataLocale(),
-                $this->productManager->getScope(),
-                $dateTime->format('Y-m-d_H:i:s')
-            );
-
-            // prepare response
-            $response = new StreamedResponse();
-            $attachment = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_INLINE, $fileName);
-            $response->headers->set('Content-Type', 'text/csv');
-            $response->headers->set('Content-Disposition', $attachment);
-            $response->setCallback($this->quickExportCallback($qb));
-
-            return $response->send();
-        }
-
         return array(
             'locales'    => $this->userContext->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
-    }
-
-    /**
-     * Quick export callback
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return \Closure
-     */
-    protected function quickExportCallback(QueryBuilder $qb)
-    {
-        return function () use ($qb) {
-            flush();
-
-            $format  = 'csv';
-            $context = [
-                'withHeader'    => true,
-                'heterogeneous' => true
-            ];
-
-            $rootAlias = $qb->getRootAlias();
-            $qb->resetDQLPart('select');
-            $qb->resetDQLPart('from');
-            $qb->select($rootAlias);
-            $qb->from($this->productManager->getFlexibleName(), $rootAlias);
-
-            $results = $qb->getQuery()->execute();
-            echo $this->serializer->serialize($results, $format, $context);
-
-            flush();
-        };
     }
 
     /**
@@ -331,7 +233,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->productManager->getFlexibleRepository()->getProductCountByTree($product);
+        $trees    = $this->productManager->getProductRepository()->getProductCountByTree($product);
 
         return array(
             'form'             => $form->createView(),
@@ -342,8 +244,8 @@ class ProductController extends AbstractDoctrineController
                 $this->getAvailableAttributesForm($product->getAttributes())->createView(),
             'product'          => $product,
             'trees'            => $trees,
-            'created'          => $this->auditManager->getOldestLogEntry($product),
-            'updated'          => $this->auditManager->getNewestLogEntry($product),
+            'created'          => $this->versionManager->getOldestLogEntry($product),
+            'updated'          => $this->versionManager->getNewestLogEntry($product),
             'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
@@ -432,8 +334,7 @@ class ProductController extends AbstractDoctrineController
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->getManager()->remove($product);
-        $this->getManager()->flush();
+        $this->remove($product);
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
@@ -454,7 +355,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function removeAttributeAction($productId, $attributeId)
     {
-        $product   = $this->findOr404($this->productManager->getFlexibleName(), $productId);
+        $product   = $this->findProductOr404($productId);
         $attribute = $this->findOr404($this->productManager->getAttributeName(), $attributeId);
 
         if ($product->isAttributeRemovable($attribute)) {
@@ -473,9 +374,9 @@ class ProductController extends AbstractDoctrineController
      * List categories associated with the provided product and descending from the category
      * defined by the parent parameter.
      *
-     * @param Request  $request The request object
-     * @param integer  $id      Product id
-     * @param Category $parent  The parent category
+     * @param Request           $request The request object
+     * @param integer           $id      Product id
+     * @param CategoryInterface $parent  The parent category
      *
      * httpparam include_category if true, will include the parentCategory in the response
      *
@@ -484,7 +385,7 @@ class ProductController extends AbstractDoctrineController
      * @AclAncestor("pim_enrich_product_categories_view")
      * @return array
      */
-    public function listCategoriesAction(Request $request, $id, Category $parent)
+    public function listCategoriesAction(Request $request, $id, CategoryInterface $parent)
     {
         $product = $this->findProductOr404($id);
         $categories = null;

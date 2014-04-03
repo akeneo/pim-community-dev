@@ -2,8 +2,6 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Pim\Bundle\CatalogBundle\Entity\Family;
-
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,10 +12,13 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
@@ -27,22 +28,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         CurrencyManager $currencyManager,
         Locale $en,
         Locale $de,
-        QueryBuilder $qb,
-        AbstractQuery $query,
         AttributeRepository $attributeRepository,
-        ProductValue $productValue
+        ProductValue $productValue,
+        CatalogContext $catalogContext
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
         $userContext->getCurrentLocale()->willReturn($en);
         $userContext->getUserLocales()->willReturn([$en, $de]);
 
-        $qb->getQuery()->willReturn($query);
-        $qb->getRootAliases()->willReturn(['p']);
-        $qb->select(Argument::any())->willReturn($qb);
-        $qb->groupBy(Argument::any())->willReturn($qb);
-
-        $productManager->setLocale(Argument::any())->willReturn($productManager);
+        $catalogContext->setLocaleCode(Argument::any())->willReturn($catalogContext);
         $productManager->createProductValue()->willReturn($productValue);
 
         $productValue->setAttribute(Argument::any())->willReturn($productValue);
@@ -52,7 +47,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $productManager->getAttributeRepository()->willReturn($attributeRepository);
 
-        $this->beConstructedWith($productManager, $userContext, $currencyManager);
+        $this->beConstructedWith($productManager, $userContext, $currencyManager, $catalogContext);
     }
 
     function it_is_a_mass_edit_action()
@@ -108,14 +103,13 @@ class EditCommonAttributesSpec extends ObjectBehavior
     }
 
     function it_initializes_the_operation_with_common_attributes_of_the_products(
-        $query,
+        $productRepository,
         Product $product1,
         Product $product2,
         Attribute $name,
-        $productManager,
-        $qb
+        $productManager
     ) {
-        $query->getResult()->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
@@ -127,16 +121,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes([1,2])->willReturn([$name]);
+        $productManager->findCommonAttributes([1, 2])->willReturn([$name]);
 
-        $this->initialize($qb);
+        $this->initialize();
 
         $this->getCommonAttributes()->shouldReturn([$name]);
         $this->getValues()->shouldHaveCount(1);
     }
 
     function it_updates_the_products_when_performimg_the_operation(
-        $qb,
+        $productRepository,
         $query,
         Product $product1,
         Product $product2,
@@ -144,7 +138,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productManager,
         $productValue
     ) {
-        $query->getResult()->willReturn([$product1, $product2]);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
@@ -156,16 +150,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attribute');
         $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes([1,2])->willReturn([$attribute]);
+        $productManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
 
-        $this->initialize($qb);
+        $this->initialize([1, 2]);
         $this->setDisplayedAttributes(new ArrayCollection([$attribute]));
 
         $this->getValues()->shouldHaveCount(1);
 
         $productManager->handleAllMedia([$product1, $product2])->shouldBeCalled();
 
-        $this->perform($qb);
+        $this->perform();
     }
 }

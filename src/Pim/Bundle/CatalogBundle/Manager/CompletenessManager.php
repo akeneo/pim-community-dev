@@ -5,12 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueNotBlank;
+use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
 /**
  * Manages completeness
@@ -60,14 +61,15 @@ class CompletenessManager
         $this->validator = $validator;
         $this->class     = $class;
     }
+
     /**
      * Insert missing completenesses for a given product
      *
      * @param ProductInterface $product
      */
-    public function generateProductCompletenesses(ProductInterface $product)
+    public function generateMissingForProduct(ProductInterface $product)
     {
-        $this->generator->generate(array('productId' => $product->getId()));
+        $this->generator->generateMissingForProduct($product);
     }
 
     /**
@@ -75,17 +77,17 @@ class CompletenessManager
      *
      * @param Channel $channel
      */
-    public function generateChannelCompletenesses(Channel $channel)
+    public function generateMissingForChannel(Channel $channel)
     {
-        $this->generator->generate(array('channelId' => $channel->getId()));
+        $this->generator->generateMissingForChannel($channel);
     }
 
     /**
      * Insert missing completenesses
      */
-    public function generateMissingCompletenesses()
+    public function generateMissing()
     {
-        $this->generator->generate();
+        $this->generator->generateMissing();
     }
 
     /**
@@ -97,6 +99,19 @@ class CompletenessManager
     {
         if ($product->getId()) {
             $this->generator->schedule($product);
+        }
+    }
+
+    /**
+     * Schedule recalculation of completenesses for all product
+     * of a family
+     *
+     * @param Family $family
+     */
+    public function scheduleForFamily(Family $family)
+    {
+        if ($family->getId()) {
+            $this->generator->scheduleForFamily($family);
         }
     }
 
@@ -130,7 +145,7 @@ class CompletenessManager
             return $completenesses;
         }
 
-        $allCompletenesses = $this->getCompletenessQB($product)->getQuery()->execute();
+        $allCompletenesses = $product->getCompletenesses();
         foreach ($allCompletenesses as $completeness) {
             $locale = $completeness->getLocale();
             $channel = $completeness->getChannel();
@@ -169,7 +184,7 @@ class CompletenessManager
         $attribute = $requirement->getAttribute();
         $channel = $requirement->getChannel();
         foreach ($localeCodes as $localeCode) {
-            $constraint = new ProductValueNotBlank(array('channel' => $channel));
+            $constraint = new ProductValueComplete(array('channel' => $channel));
             $valueCode = $this->getValueCode($attribute, $localeCode, $channel->getCode());
             $missing = false;
             if (!isset($productValues[$valueCode])) {
@@ -201,23 +216,5 @@ class CompletenessManager
         }
 
         return $valueCode;
-    }
-
-    /**
-     * Returns a query to get the existing completenesses for the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return \Doctrine\ORM\QueryBuilder
-     */
-    protected function getCompletenessQB(ProductInterface $product)
-    {
-        return $this->doctrine->getRepository($this->class)
-            ->createQueryBuilder('co')
-            ->select('co, lo, ch')
-            ->innerJoin('co.locale', 'lo')
-            ->innerJoin('co.channel', 'ch')
-            ->where('co.product = :product')
-            ->setParameter('product', $product);
     }
 }

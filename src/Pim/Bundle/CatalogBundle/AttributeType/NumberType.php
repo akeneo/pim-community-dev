@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\NumberType as FlexNumberType;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Number attribute type
@@ -13,7 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NumberType extends FlexNumberType
+class NumberType extends AbstractAttributeType
 {
     /**
      * @staticvar integer
@@ -25,66 +24,37 @@ class NumberType extends FlexNumberType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name'      => 'defaultValue',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMax' => [
                 'name'      => 'numberMax',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            'negativeAllowed' => [
                 'name'      => 'negativeAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ]
+        ];
+
+        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
     }
@@ -92,7 +62,7 @@ class NumberType extends FlexNumberType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $options['precision'] = $value->getAttribute()->isDecimalsAllowed() ? self::DECIMAL_PLACES : 0;

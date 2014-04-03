@@ -21,7 +21,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->guesser = $this->getMock('Pim\Bundle\FlexibleEntityBundle\Form\Validator\AttributeConstraintGuesser');
+        $this->guesser = $this->getMock('Pim\Bundle\CatalogBundle\Validator\AttributeConstraintGuesser');
         $this->guesser->expects($this->any())
             ->method('supportAttribute')
             ->will($this->returnValue(true));
@@ -35,7 +35,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * Create attribute type to test
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface
      */
     abstract protected function createAttributeType();
 
@@ -80,7 +80,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
         if (!$this->target) {
             throw new \Exception(sprintf('You must override the setUp() method and provide a $target instance.'));
         }
-        $this->assertInstanceOf('Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType', $this->target);
+        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType', $this->target);
     }
 
     /**
@@ -97,9 +97,9 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
     /**
      * @param array $options
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
-    protected function getFlexibleValueMock(array $options)
+    protected function getProductValueMock(array $options)
     {
         $options = array_merge(
             array(
@@ -112,7 +112,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
         );
 
         $value = $this->getMock(
-            'Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface'
+            'Pim\Bundle\CatalogBundle\Model\ProductValueInterface'
         );
 
         $attributeMock = $this->getAttributeMock(
@@ -137,7 +137,7 @@ abstract class AttributeTypeTestCase extends \PHPUnit_Framework_TestCase
      * @param mixed  $defaultValue
      * @param array  $attributeOptions
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface
+     * @return \Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface
      */
     protected function getAttributeMock($backendType, $defaultValue, array $attributeOptions = array())
     {

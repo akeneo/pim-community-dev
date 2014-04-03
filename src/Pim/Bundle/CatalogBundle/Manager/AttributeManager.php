@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 
 /**
  * Attribute manager
@@ -76,7 +76,7 @@ class AttributeManager
      *
      * @param string $type
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     public function createAttribute($type = null)
     {
@@ -97,7 +97,7 @@ class AttributeManager
     /**
      * Create an attribute option
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOption
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOption
      */
     public function createAttributeOption()
     {
@@ -109,7 +109,7 @@ class AttributeManager
     /**
      * Create an attribute option value
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityAttributeOptionValue
+     * @return \Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue
      */
     public function createAttributeOptionValue()
     {

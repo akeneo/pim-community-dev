@@ -5,10 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Builder;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Product builder
@@ -132,15 +133,77 @@ class ProductBuilder
      */
     public function removeAttributeFromProduct(ProductInterface $product, AbstractAttribute $attribute)
     {
-        $values = $this->objectManager
-            ->getRepository($this->getProductValueClass())
-            ->findBy(array('entity' => $product, 'attribute' => $attribute));
-
-        foreach ($values as $value) {
-            $this->objectManager->remove($value);
+        foreach ($product->getValues() as $value) {
+            if ($attribute === $value->getAttribute()) {
+                $product->removeValue($value);
+            }
         }
 
-        $this->objectManager->flush();
+        $this->objectManager->flush($product);
+    }
+
+    /**
+     * Add a product price with currency to the value
+     *
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return null|ProductPrice
+     */
+    public function addPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        if (!$this->hasPriceForCurrency($value, $currency)) {
+            $value->addPrice(new ProductPrice(null, $currency));
+        }
+
+        return $this->getPriceForCurrency($value, $currency);
+    }
+
+    /**
+     * Remove extra prices that are not in the currencies passed in arguments
+     *
+     * @param ProductValueInterface $value
+     * @param array                 $currencies
+     */
+    public function removePricesNotInCurrency(ProductValueInterface $value, array $currencies)
+    {
+        foreach ($value->getPrices() as $price) {
+            if (!in_array($price->getCurrency(), $currencies)) {
+                $value->removePrice($price);
+            }
+        }
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return boolean
+     */
+    private function hasPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ProductValueInterface $value
+     * @param string                $currency
+     *
+     * @return null|ProductPrice
+     */
+    private function getPriceForCurrency(ProductValueInterface $value, $currency)
+    {
+        foreach ($value->getPrices() as $price) {
+            if ($currency === $price->getCurrency()) {
+                return $price;
+            }
+        }
     }
 
     /**
@@ -250,15 +313,12 @@ class ProductBuilder
         $values = array();
         foreach ($attributes as $attribute) {
             $requiredValues = array();
-            if ($attribute->isScopable() and $attribute->isLocalizable()) {
+            if ($attribute->isScopable() && $attribute->isLocalizable()) {
                 $requiredValues = $this->getScopeToLocaleRows($attribute);
-
             } elseif ($attribute->isScopable()) {
                 $requiredValues = $this->getScopeRows($attribute);
-
             } elseif ($attribute->isLocalizable()) {
                 $requiredValues = $this->getLocaleRows($attribute);
-
             } else {
                 $requiredValues[] = array('attribute' => $attribute->getCode(), 'locale' => null, 'scope' => null);
             }
@@ -303,11 +363,31 @@ class ProductBuilder
      */
     protected function addMissingPrices(ProductInterface $product)
     {
+        $activeCurrencies = $this->currencyManager->getActiveCodes();
+
         foreach ($product->getValues() as $value) {
             if ($value->getAttribute()->getAttributeType() === 'pim_catalog_price_collection') {
-                $activeCurrencies = $this->currencyManager->getActiveCodes();
-                $value->addMissingPrices($activeCurrencies);
-                $value->removeDisabledPrices($activeCurrencies);
+                $prices = $value->getPrices();
+
+                foreach ($activeCurrencies as $activeCurrency) {
+                    $hasPrice = $prices->filter(
+                        function ($price) use ($activeCurrency) {
+                            return $activeCurrency === $price->getCurrency();
+                        }
+                    )->count() > 0;
+
+                    if (!$hasPrice) {
+                        $this->addPriceForCurrency($value, $activeCurrency);
+                    }
+                }
+
+                $prices->forAll(
+                    function ($key, $price) use ($activeCurrencies, $value) {
+                        if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                            $value->removePrice($price);
+                        }
+                    }
+                );
             }
         }
     }

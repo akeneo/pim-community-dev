@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\NumberType;
 
 /**
@@ -54,7 +54,7 @@ class NumberTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $data = 5;
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => $data,
                 'backendType' => $this->backendType,
@@ -113,7 +113,7 @@ class NumberTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            10,
+            9,
             $attFormType
         );
     }

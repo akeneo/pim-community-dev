@@ -12,7 +12,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer;
 class FlatTranslationNormalizer extends TranslationNormalizer
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('csv');
 

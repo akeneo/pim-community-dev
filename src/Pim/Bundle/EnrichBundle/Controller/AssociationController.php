@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -21,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 class AssociationController
 {
     /**
-     * @var RegistryInterface
+     * @var ManagerRegistry
      */
     protected $doctrine;
 
@@ -38,12 +38,12 @@ class AssociationController
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
-     * @param EngineInterface   $templating
-     * @param ProductManager    $productManager
+     * @param ManagerRegistry $doctrine
+     * @param EngineInterface $templating
+     * @param ProductManager  $productManager
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         EngineInterface $templating,
         ProductManager $productManager
     ) {
@@ -95,7 +95,7 @@ class AssociationController
 
         if (!$product) {
             throw new NotFoundHttpException(
-                sprintf('Product with id %d could not be found.', $id)
+                sprintf('Product with id %s could not be found.', $id)
             );
         }
 

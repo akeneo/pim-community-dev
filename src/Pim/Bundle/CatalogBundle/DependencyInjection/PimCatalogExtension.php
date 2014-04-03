@@ -31,7 +31,9 @@ class PimCatalogExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
+        $loader->load('context.yml');
         $loader->load('services.yml');
+        $loader->load('event_listeners.yml');
         $loader->load('managers.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
@@ -92,7 +94,7 @@ class PimCatalogExtension extends Extension
         $storageDriver = $config['storage_driver'];
 
         if (!in_array($storageDriver, $this->getSupportedStorageDrivers())) {
-            throw new RuntimeException("The storage driver $storageDriver is not a supported drivers");
+            throw new \RuntimeException("The storage driver $storageDriver is not a supported drivers");
         }
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

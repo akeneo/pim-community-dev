@@ -1,0 +1,105 @@
+# user grids
+oro.user.controller:
+    group.message.saved: "Group saved"
+    role.message.saved: "Role saved"
+    user.message.saved: "User saved"
+    status.message.saved: "Status saved"
+
+oro.user.grid.users:
+    columns:
+        username: "Username"
+        email: "Email"
+        firstName: "First name"
+        lastName: "Last name"
+        createdAt: "Created at"
+        updatedAt: "Updated at"
+        enabled: "Status"
+
+oro.user.grid.roles:
+    columns:
+        label: "Label"
+
+oro.user.grid.groups:
+    columns:
+        name: "Name"
+
+# User
+user.title: User
+Users Management: Users Management
+Create user: Create user
+New user: New user
+Additional: Additional
+Groups and Roles: Groups and Roles
+Username: Username
+Password: Password
+Re-enter password: Re-enter password
+Name prefix: Name prefix
+First name: First name
+Middle name: Middle name
+Last name: Last name
+Name suffix: Name suffix
+Date of birth: Date of birth
+Avatar: Avatar
+Additional emails: Additional emails
+Add another email: Add another email
+Catalog locale: Catalog locale
+Catalog scope: Catalog scope
+Default tree: Default tree
+Business Units: Business Units
+Email synchronization settings: Email synchronization settings
+Host: Host
+Port: Port
+Ssl: Ssl
+Last logged in: Last logged in
+Login count: Login count
+Additional Information: Additional Information
+Basic Information: Basic Information
+Contact Information: Contact Information
+User name: User name
+Birthday: Birthday
+API key: API key
+Generate key: Generate key
+Primary: primary
+
+# Role
+Role: Role
+Owner: Owner
+General: General
+Entity: Entity
+Capabilities: Capabilities
+Save and close: Save and close
+Has role : Has role
+
+# Security
+(default): Default permission on entities
+VIEW: View
+CREATE: Create
+EDIT: Edit
+DELETE: Delete
+ASSIGN: Assign
+SHARE: Share
+oro:
+    security:
+        access-level:
+            BASIC: User
+            LOCAL: Business Unit
+            DEEP: Division
+            GLOBAL: Organization
+            SYSTEM: System
+            NONE: None
+
+# User Group
+Create group: Create group
+Has group: Has group
+Save and Close: Save and close
+
+# Login page
+Log in: Log in
+Remember me on this computer: Remember me on this computer
+Forgot your password?: Forgot your password?
+Username or Email: Username or Email
+Forgot Password: Forgot Password
+Request: Request
+Check Email: Check Email
+password_reset_email_sent: An email has been sent to %email%. It contains a link you must click to reset your password.
+Go to homepage: Go to homepage

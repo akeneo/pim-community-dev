@@ -5,7 +5,7 @@ Feature: Display completeness widget
 
   Scenario: Display completeness widget
     Given a "apparel" catalog configuration
-    And the following product:
+    And the following products:
       | sku  | family  | name-fr_FR      | name-en_US      | name-en_GB      | description-en_US-ecommerce | description-fr_FR-ecommerce | price                 | size    | color | manufacturer     | material | categories      |
       | sku1 | tshirts | T shirt Batman  |                 |                 | Batman                      | Batman                      | 10 USD, 6 GBP, 15 EUR | size_XS | black | american_apparel | cotton   | 2014_collection |
       | sku2 | tshirts |                 |                 |                 | Superman                    |                             | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2014_collection |
@@ -22,3 +22,6 @@ Feature: Display completeness widget
     And completeness of "Tablet" should be "100%"
     And "English (United Kingdom)" completeness of "Tablet" should be "100%"
     And "English (United States)" completeness of "Tablet" should be "100%"
+    And completeness of "Print" should be "0%"
+    And "German (Germany)" completeness of "Print" should be "0%"
+    And "English (United States)" completeness of "Print" should be "0%"

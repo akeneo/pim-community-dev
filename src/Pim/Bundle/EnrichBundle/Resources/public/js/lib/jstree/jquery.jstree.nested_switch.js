@@ -4,6 +4,8 @@
  *
 /* Group: jstree nested_switch plugin */
 (function ($) {
+    'use strict';
+
     var nested_switch_id = 'nested_switch_input';
 
     $.jstree.plugin('nested_switch', {
@@ -28,11 +30,13 @@
                         checked: !!this.data.nested_switch.state
                     });
 
+                    var __ = require('oro/translator');
+
                     var switch_wrapper = $('<div>', {
                         'class': 'switch switch-small pull-right',
                         'attr' : {
-                            'data-on-label':  'Yes',
-                            'data-off-label': 'No',
+                            'data-on-label':  __('Yes'),
+                            'data-off-label': __('No'),
                             'data-animated':  false
                         }
                     }).html(nested_switch);
@@ -55,7 +59,8 @@
 
                     nested_switch_bar.html(nested_switch_label);
                     nested_switch_bar.append(switch_wrapper.bootstrapSwitch());
-                    this.get_container_ul().after(nested_switch_bar);
+                    this.get_container().after(nested_switch_bar);
+                    this.get_container().parent().css('padding-bottom', '65px');
 
                 }, this))
                 ;

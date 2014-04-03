@@ -24,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\EnrichBundle\Entity\DatagridConfiguration;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * A context for creating entities
@@ -86,7 +86,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @AfterScenario
+     * @BeforeScenario
      */
     public function removeTmpDir()
     {
@@ -99,7 +99,9 @@ class FixturesContext extends RawMinkContext
      */
     public function clearUOW()
     {
-        $this->getEntityManager()->clear();
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->clear();
+        }
     }
 
     /**
@@ -213,9 +215,7 @@ class FixturesContext extends RawMinkContext
             $criteria = array('code' => $criteria);
         }
 
-        $namespace = $this->entities[$entityName];
-
-        return $this->getRepository($namespace)->findOneBy($criteria);
+        return $this->getRepository($this->entities[$entityName])->findOneBy($criteria);
     }
 
     /**
@@ -399,6 +399,7 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
+            $this->refresh($product);
             $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
             if ($value && $value->getAttribute()->getBackendType() !== 'media') {
@@ -504,7 +505,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $attribute = $this->getAttribute($data['code']);
-            $this->getEntityManager()->refresh($attribute);
+            $this->refresh($attribute);
 
             assertEquals($data['label-en_US'], $attribute->getTranslation('en_US')->getLabel());
             assertEquals($this->getAttributeType($data['type']), $attribute->getAttributeType());
@@ -535,7 +536,7 @@ class FixturesContext extends RawMinkContext
                 'AttributeOption',
                 array('code' => $data['code'], 'attribute' => $attribute)
             );
-            $this->getEntityManager()->refresh($option);
+            $this->refresh($option);
 
             $option->setLocale('en_US');
             assertEquals($data['label-en_US'], (string) $option);
@@ -552,7 +553,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $category = $this->getCategory($data['code']);
-            $this->getEntityManager()->refresh($category);
+            $this->refresh($category);
 
             assertEquals($data['label'], $category->getTranslation('en_US')->getLabel());
             if (empty($data['parent'])) {
@@ -572,7 +573,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $associationType = $this->getAssociationType($data['code']);
-            $this->getEntityManager()->refresh($associationType);
+            $this->refresh($associationType);
 
             assertEquals($data['label-en_US'], $associationType->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $associationType->getTranslation('fr_FR')->getLabel());
@@ -588,7 +589,7 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $group = $this->getProductGroup($data['code']);
-            $this->getEntityManager()->refresh($group);
+            $this->refresh($group);
 
             assertEquals($data['label-en_US'], $group->getTranslation('en_US')->getLabel());
             assertEquals($data['label-fr_FR'], $group->getTranslation('fr_FR')->getLabel());
@@ -817,7 +818,7 @@ class FixturesContext extends RawMinkContext
 
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
-                $this->getEntityManager()->refresh($productPrice);
+                $this->refresh($productPrice);
 
                 assertEquals($price['amount'], $productPrice->getData());
             }
@@ -863,7 +864,7 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media = $productValue->getMedia();
-            $this->getEntityManager()->refresh($media);
+            $this->refresh($media);
             assertEquals($filename, $media->getOriginalFilename());
         }
     }
@@ -976,7 +977,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         $product = $this->getProduct($identifier);
-        $this->getEntityManager()->refresh($product);
+        $this->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
@@ -1019,7 +1020,9 @@ class FixturesContext extends RawMinkContext
      */
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
-        $categories = $this->getProduct($productCode)->getCategories()->map(
+        $product = $this->getProduct($productCode);
+        $this->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
+        $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
             }
@@ -1049,7 +1052,7 @@ class FixturesContext extends RawMinkContext
     public function groupShouldContain($group, $products)
     {
         $group = $this->getProductGroup($group);
-        $this->getEntityManager()->refresh($group);
+        $this->refresh($group);
         $groupProducts = $group->getProducts();
 
         foreach ($this->listToArray($products) as $sku) {
@@ -1106,12 +1109,28 @@ class FixturesContext extends RawMinkContext
     */
     public function iVeDisplayedTheColumns($columns)
     {
-        $config = new DatagridConfiguration();
-        $config->setColumns($this->listToArray($columns));
-        $config->setDatagridAlias('product-grid');
-        $config->setUser($this->getUser('Julia'));
+        $alias = 'product-grid';
+        $user  = $this->getUser('Julia');
 
-        $this->persist($config);
+        $view = $this->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
+            [
+                'datagridAlias' => $alias,
+                'owner'         => $user,
+                'type'          => DatagridView::TYPE_DEFAULT
+            ]
+        );
+
+        if (!$view) {
+            $view = new DatagridView();
+            $view
+                ->setType(DatagridView::TYPE_DEFAULT)
+                ->setOwner($user)
+                ->setDatagridAlias($alias);
+        }
+
+        $view->setColumns($this->listToArray($columns));
+
+        $this->persist($view);
     }
 
     /**
@@ -1125,6 +1144,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $product
+     * @param string $family
+     *
      * @Given /^I set product "([^"]*)" family to "([^"]*)"$/
      */
     public function iSetProductFamilyTo($product, $family)
@@ -1176,15 +1198,13 @@ class FixturesContext extends RawMinkContext
      */
     private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
-        $product = $this->getProduct($identifier);
+        if (null === $product = $this->getProduct($identifier)) {
+            throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
+        }
 
-        $this->getEntityManager()->refresh($product);
+        $this->refresh($product);
 
-        $value = $product->getValue($attribute, $locale, $scope);
-
-        $this->getEntityManager()->refresh($value);
-
-        if (null === $value) {
+        if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find product value for attribute "%s" in locale "%s" for scope "%s"',
@@ -1194,6 +1214,8 @@ class FixturesContext extends RawMinkContext
                 )
             );
         }
+
+        $this->refresh($value);
 
         return $value;
     }
@@ -1651,41 +1673,13 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Persist an entity
-     *
-     * @param object  $entity
-     * @param boolean $flush
-     */
-    private function persist($entity, $flush = true)
-    {
-        $this->getEntityManager()->persist($entity);
-
-        if ($flush) {
-            $this->flush();
-        }
-    }
-
-    /**
-     * Remove an entity
-     *
-     * @param object  $entity
-     * @param boolean $flush
-     */
-    private function remove($entity, $flush = true)
-    {
-        $this->getEntityManager()->remove($entity);
-
-        if ($flush) {
-            $this->flush();
-        }
-    }
-
-    /**
      * Flush
      */
     private function flush()
     {
-        $this->getEntityManager()->flush();
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
+            $manager->flush();
+        }
     }
 
     /**
@@ -1697,13 +1691,21 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $repository
+     * @return \Doctrine\Common\Persistence\ManagerRegistry
+     */
+    private function getSmartRegistry()
+    {
+        return $this->getMainContext()->getSmartRegistry();
+    }
+
+    /**
+     * @param string $namespace
      *
      * @return Repository
      */
-    private function getRepository($repository)
+    private function getRepository($namespace)
     {
-        return $this->getEntityManager()->getRepository($repository);
+        return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
     }
 
     /**
@@ -1762,5 +1764,41 @@ class FixturesContext extends RawMinkContext
     private function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
+    }
+
+    /**
+     * @param object $object
+     */
+    private function refresh($object)
+    {
+        $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+    }
+
+    /**
+     * @param object  $object
+     * @param boolean $flush
+     */
+    private function persist($object, $flush = true)
+    {
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
+        $manager->persist($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * @param object  $object
+     * @param boolean $flush
+     */
+    private function remove($object, $flush = true)
+    {
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
+        $manager->remove($object);
+
+        if ($flush) {
+            $manager->flush();
+        }
     }
 }

@@ -35,7 +35,7 @@ class AddManagerCompilerPass implements CompilerPassInterface
                     'addManager',
                     array($managerId, new Reference($managerId), $entity)
                 );
-                $entitiesConfig['entities_config'][$entity]= $managerId;
+                $entitiesConfig['entities_config'][$entity] = $managerId;
             }
         }
         $container->setParameter('pim_flexibleentity.flexible_config', $entitiesConfig);

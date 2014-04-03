@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
 
 /**
@@ -37,7 +37,7 @@ class TextTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            9,
+            8,
             $attFormType
         );
     }

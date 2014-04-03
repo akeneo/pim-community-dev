@@ -9,7 +9,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Command executor
- * Just override Oro Platform CommandExecutor to exit with code 1 if error
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -61,10 +60,11 @@ class CommandExecutor
         $exitCode = $this->application->run(new ArrayInput($params), $this->output);
 
         if (0 !== $exitCode) {
-            $this->output->writeln(
-                sprintf('<error>The command terminated with an error code: %u.</error>', $exitCode)
-            );
-            exit($exitCode);
+            $this->application->setAutoExit(true);
+            $errorMessage = sprintf('The command terminated with an error code: %u.', $exitCode);
+            $this->output->writeln("<error>$errorMessage</error>");
+            $e = new \Exception($errorMessage, $exitCode);
+            throw $e;
         }
 
         return $this;
@@ -83,8 +83,8 @@ class CommandExecutor
             $defaultParams['--env'] = $this->input->getOption('env');
         }
 
-        if ($this->input->hasOption('verbose')) {
-            $defaultParams['--verbose'] = $this->input->getOption('verbose');
+        if ($this->input->hasOption('verbose') && $this->input->getOption('verbose') === true) {
+            $defaultParams['--verbose'] = true;
         }
 
         return $defaultParams;

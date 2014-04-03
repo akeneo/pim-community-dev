@@ -2,9 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType;
-
 /**
  * Batch operation to change products status
  *
@@ -15,7 +12,8 @@ use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType;
 class ChangeStatus extends AbstractMassEditAction
 {
     /**
-     * @var boolean Whether or not to enable products
+     * Whether or not to enable products
+     * @var boolean $toEnable
      */
     protected $toEnable = true;
 
@@ -44,16 +42,15 @@ class ChangeStatus extends AbstractMassEditAction
      */
     public function getFormType()
     {
-        return new ChangeStatusType();
+        return 'pim_enrich_mass_change_status';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $product->setEnabled($this->toEnable);
         }
     }

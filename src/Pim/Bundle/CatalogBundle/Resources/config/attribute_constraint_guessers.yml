@@ -1,7 +1,11 @@
 parameters:
-    pim_flexibleentity.validator.attribute_constraint_guesser.class: Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
+    pim_catalog.validator.attribute_constraint_guesser.class: Pim\Bundle\CatalogBundle\Validator\ChainedAttributeConstraintGuesser
 
 services:
+    pim_catalog.validator.attribute_constraint_guesser:
+        class: %pim_catalog.validator.attribute_constraint_guesser.class%
+        public: false
+
     pim.attribute_constraint_guesser.email:
         public: false
         class: Pim\Bundle\CatalogBundle\Validator\ConstraintGuesser\EmailGuesser

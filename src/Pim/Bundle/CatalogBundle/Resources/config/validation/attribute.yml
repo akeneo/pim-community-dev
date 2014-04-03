@@ -46,8 +46,6 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
             - Regex:
                 pattern: /^(?!(associationTypes|categories|categoryId|completeness|enabled|family|groups|associations|products|scope|treeId|values|(.)*_(products|groups))$)/
                 message: This code is not available
-        searchable:
-            - Type: bool
         localizable:
             - Type: bool
             - 'False':

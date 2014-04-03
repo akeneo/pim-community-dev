@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Model;
 
 use Doctrine\ORM\QueryBuilder;
-
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
@@ -17,52 +16,33 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 interface ProductRepositoryInterface
 {
     /**
-     * Get flexible entity config
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
-     * @return array $config
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
      */
-    public function getFlexibleConfig();
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    );
 
     /**
-     * Set flexible entity config
+     * Load a flexible entity with related attribute values
      *
-     * @param array $config
+     * @param integer $id
      *
-     * @return FlexibleEntityRepository
+     * @return Product|null
+     * @throws NonUniqueResultException
      */
-    public function setFlexibleConfig($config);
-
-    /**
-     * Return asked locale code or default one
-     *
-     * @return string
-     */
-    public function getLocale();
-
-    /**
-     * Set locale code
-     *
-     * @param string $code
-     *
-     * @return FlexibleEntityRepository
-     */
-    public function setLocale($code);
-
-    /**
-     * Return asked scope code or default one
-     *
-     * @return string
-     */
-    public function getScope();
-
-    /**
-     * Set scope code
-     *
-     * @param string $code
-     *
-     * @return FlexibleEntityRepository
-     */
-    public function setScope($code);
+    public function findOneByWithValues($id);
 
     /**
      * @param string $scope
@@ -146,57 +126,6 @@ interface ProductRepositoryInterface
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
     /**
-     * Count products per channel
-     * It returns the same set of products to export, but doesn't consider the completeness ratio,
-     * and group them by channel
-     * Example:
-     *    array(
-     *        array(
-     *            'label' => 'Mobile',
-     *            'total' => 100,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'total' => 85,
-     *        ),
-     *    )
-     *
-     * @return array
-     */
-    public function countProductsPerChannels();
-
-    /**
-     * Count complete products per channel and locales
-     * It returns the same set of products to export and group them by channel and locale
-     * Example:
-     *    array(
-     *        array(
-     *            'label' => 'Mobile',
-     *            'code' => 'en_US',
-     *            'total' => 10,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'code' => 'en_US',
-     *            'total' => 85,
-     *        ),
-     *        array(
-     *            'label' => 'Mobile',
-     *            'code' => 'fr_FR',
-     *            'total' => 5,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'code' => 'fr_FR',
-     *            'total' => 63,
-     *        ),
-     *    )
-     *
-     * @return array
-     */
-    public function countCompleteProductsPerChannels();
-
-    /**
      * Returns true if a ProductValue with the provided value alread exists,
      * false otherwise.
      *
@@ -207,11 +136,73 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
+     * @param mixed $qb
+     *
+     * @return ProductQueryBuilder
+     */
+    public function getProductQueryBuilder($qb);
+
+    /**
      * Set flexible query builder
      *
-     * @param FlexibleQueryBuilder $flexibleQB
+     * @param ProductQueryBuilder $productQB
      *
-     * @return FlexibleEntityRepository
+     * @return ProductRepositoryInterface
      */
-    public function setFlexibleQueryBuilder($flexibleQB);
+    public function setProductQueryBuilder($productQB);
+
+    /**
+     * Apply a filter by product ids
+     *
+     * @param mixed   $qb         query builder to update
+     * @param array   $productIds product ids
+     * @param boolean $include    true for in, false for not in
+     */
+    public function applyFilterByIds($qb, array $productIds, $include);
+
+    /**
+     * Delete a list of product ids
+     *
+     * @param integer[] $ids
+     *
+     * @throws \LogicException
+     */
+    public function deleteFromIds(array $ids);
+
+    /**
+     * Apply mass action parameters on query builder
+     *
+     * @param mixed   $qb
+     * @param boolean $inset
+     * @param array   $values
+     */
+    public function applyMassActionParameters($qb, $inset, $values);
+
+    /**
+     * Get available attribute ids from a product ids list
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds);
+
+    /**
+     * Get full products from product ids
+     *
+     * @param array $productIds
+     * @param array $attributeIds
+     *
+     * @return array
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array());
+
+    /**
+     * Find all common attribute ids linked to a family or with values from a list of product ids
+     *
+     * @param array $productIds
+     *
+     * @return integer[]
+     */
+    public function findCommonAttributeIds(array $productIds);
 }

@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType as FlexTextType;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Identifier attribute type
@@ -12,84 +11,78 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType as FlexTextType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class IdentifierType extends FlexTextType
+class IdentifierType extends AbstractAttributeType
 {
     /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return [
+            'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'integer'
-            ),
-            array(
+            ],
+            'validationRule' => [
                 'name'      => 'validationRule',
                 'fieldType' => 'choice',
-                'options'   => array(
-                    'choices' => array(
+                'options'   => [
+                    'choices' => [
                         null     => 'None',
                         'regexp' => 'Regular expression'
-                    ),
+                    ],
                     'select2' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'validationRegexp' => [
                 'name' => 'validationRegexp'
-            ),
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
+            ],
+            'scopable' => [
                 'name'      => 'scopable',
                 'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
+                'options'   => [
                     'data'      => false,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'unique' => [
                 'name'      => 'unique',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'required' => [
                 'name'      => 'required',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'useableAsGridColumn' => [
                 'name'      => 'useableAsGridColumn',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'useableAsGridFilter' => [
                 'name'      => 'useableAsGridFilter',
                 'fieldType' => 'switch',
-                'options'   => array(
+                'options'   => [
                     'data'      => true,
                     'disabled'  => true,
                     'read_only' => true
-                )
-            ),
-        );
-
-        return $properties;
+                ]
+            ]
+        ];
     }
 
     /**

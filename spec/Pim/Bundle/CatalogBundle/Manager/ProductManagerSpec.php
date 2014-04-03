@@ -9,11 +9,10 @@ use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Doctrine\ORM\Mapping\ClassMetadata;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
@@ -57,29 +56,12 @@ class ProductManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_is_a_flexible_manager()
-    {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager');
-    }
-
     function it_has_a_product_repository(ProductRepositoryInterface $repository)
     {
-        $this->getFlexibleRepository()->shouldReturn($repository);
+        $this->getProductRepository()->shouldReturn($repository);
     }
 
-    function it_has_a_locale()
-    {
-        $this->setLocale('fr_FR')->shouldReturn($this);
-        $this->getLocale()->shouldReturn('fr_FR');
-    }
-
-    function it_has_a_scope()
-    {
-        $this->setScope('ecommerce')->shouldReturn($this);
-        $this->getScope()->shouldReturn('ecommerce');
-    }
-
-    function it_creates_a_product($entityManager, AttributeRepository $attRepository, Attribute $sku)
+    function it_creates_a_product()
     {
         $this->createProduct()->shouldReturnAnInstanceOf(self::PRODUCT_CLASS);
     }
@@ -89,11 +71,11 @@ class ProductManagerSpec extends ObjectBehavior
         $this->createProductValue()->shouldReturnAnInstanceOf(self::VALUE_CLASS);
     }
 
-    function it_gets_identifier_attribute(EntityManager $entityManager, AttributeRepository $attRepository, Attribute $sku)
+    function it_gets_identifier_attribute($entityManager, AttributeRepository $attRepository, AbstractAttribute $sku)
     {
         $entityManager->getRepository(self::ATTRIBUTE_CLASS)->willReturn($attRepository);
         $attRepository->findOneBy(Argument::any())->willReturn($sku);
-        $this->getIdentifierAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
+        $this->getIdentifierAttribute()->shouldReturn($sku);
     }
 
     function it_adds_attributes_to_product(
@@ -102,9 +84,9 @@ class ProductManagerSpec extends ObjectBehavior
         AttributeRepository $attRepository,
         ProductInterface $product,
         AvailableAttributes $attributes,
-        Attribute $sku,
-        Attribute $name,
-        Attribute $size
+        AbstractAttribute $sku,
+        AbstractAttribute $name,
+        AbstractAttribute $size
     ) {
         $attributes->getAttributes()->willReturn([$sku, $name, $size]);
 
@@ -115,11 +97,8 @@ class ProductManagerSpec extends ObjectBehavior
         $this->addAttributesToProduct($product, $attributes);
     }
 
-    function it_checks_value_existence(
-        ProductRepositoryInterface $repository,
-        ProductValueInterface $value
-    ) {
-        $repository->setFlexibleConfig($this->getFlexibleConfig())->shouldBeCalled();
+    function it_checks_value_existence($repository, ProductValueInterface $value)
+    {
         $repository->valueExists($value)->willReturn(true);
         $this->valueExists($value)->shouldReturn(true);
 

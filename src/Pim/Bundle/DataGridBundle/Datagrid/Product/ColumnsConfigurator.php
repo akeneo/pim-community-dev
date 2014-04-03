@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
@@ -34,6 +33,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
      * @param array
      */
     protected $editableColumns;
+
+    /**
+     * @param array
+     */
+    protected $primaryColumns;
 
     /**
      * @param array
@@ -89,10 +93,14 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );
         $this->editableColumns = array();
+        $this->primaryColumns  = array();
 
         foreach ($this->propertiesColumns as $columnCode => $columnData) {
             if (isset($columnData['editable'])) {
                 $this->editableColumns[$columnCode] = $columnData;
+                unset($this->propertiesColumns[$columnCode]);
+            } elseif (isset($columnData['primary'])) {
+                $this->primaryColumns[$columnCode] = $columnData;
                 unset($this->propertiesColumns[$columnCode]);
             }
         }
@@ -105,7 +113,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     protected function prepareAttributesColumns()
     {
-        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $this->configuration->offsetGetByPath($path);
         $this->identifierColumn  = array();
         $this->attributesColumns = array();
 
@@ -157,11 +166,11 @@ class ColumnsConfigurator implements ConfiguratorInterface
             sprintf('[source][%s]', ContextConfigurator::DISPLAYED_COLUMNS_KEY)
         );
 
-        $this->availableColumns = $this->editableColumns + $this->identifierColumn + $this->propertiesColumns
-            + $this->attributesColumns;
+        $this->availableColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
+            + $this->propertiesColumns + $this->attributesColumns;
 
         if (!empty($userColumns)) {
-            $this->displayedColumns = $this->editableColumns;
+            $this->displayedColumns = $this->editableColumns  + $this->primaryColumns;
             foreach ($userColumns as $column) {
                 if (array_key_exists($column, $this->availableColumns)) {
                     $this->displayedColumns[$column] = $this->availableColumns[$column];

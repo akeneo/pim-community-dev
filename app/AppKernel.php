@@ -36,7 +36,10 @@ class AppKernel extends OroKernel
             'Oro\Bundle\WorkflowBundle\OroWorkflowBundle',
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
-            'Oro\Bundle\CronBundle\OroCronBundle'
+            'Oro\Bundle\CronBundle\OroCronBundle',
+            'Oro\Bundle\ImportExportBundle\OroImportExportBundle',
+            'Oro\Bundle\SearchBundle\OroSearchBundle',
+            'Oro\Bundle\TagBundle\OroTagBundle',
         );
         foreach ($oroBundles as $bundleIndex => $bundle) {
             if (in_array(get_class($bundle), $exclude)) {
@@ -60,20 +63,18 @@ class AppKernel extends OroKernel
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
-            new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
-            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
             new Pim\Bundle\FlexibleEntityBundle\PimFlexibleEntityBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
+            new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),
             new Pim\Bundle\ImportExportBundle\PimImportExportBundle(),
             new Pim\Bundle\VersioningBundle\PimVersioningBundle(),
-            new Pim\Bundle\CustomEntityBundle\PimCustomEntityBundle(),
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
@@ -97,8 +98,7 @@ class AppKernel extends OroKernel
         }
 
         if (isset($this->bundleMap['DoctrineMongoDBBundle'])) {
-            $loader->load(__DIR__.'/config/mongodb/parameters_'.$this->getEnvironment().'.yml');
-            $loader->load(__DIR__ .'/config/mongodb/config.yml');
+            $loader->load(__DIR__ .'/config/config_mongodb.yml');
         }
     }
 }

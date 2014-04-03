@@ -67,6 +67,16 @@ class LoadFixturesData extends AbstractFixture implements OrderedFixtureInterfac
         $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
         $dataPath   = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'];
 
-        return glob($dataPath.'/*');
+        $paths = glob($dataPath.'/*');
+        if ('doctrine/mongodb-odm' === $this->container->getParameter('pim_catalog.storage_driver')) {
+            // Do not load products and associations with the ORM fixtures when mongodb support is activated
+            foreach ($paths as $key => $path) {
+                if (false !== strpos($path, 'products.') || false !== strpos($path, 'associations.')) {
+                    unset($paths[$key]);
+                }
+            }
+        }
+
+        return $paths;
     }
 }

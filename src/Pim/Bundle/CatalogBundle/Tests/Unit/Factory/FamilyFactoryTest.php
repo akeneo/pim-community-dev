@@ -109,7 +109,7 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * @param string $code
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     protected function getAttributeMock($code)
     {

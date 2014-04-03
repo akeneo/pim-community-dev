@@ -50,6 +50,7 @@
                 {% endfor %}
             </ul>
         </div>
+        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'product-grid' })) }}
     {% endset %}
 
     {{ elements.page_header(title, buttons, subtitle) }}
@@ -57,7 +58,7 @@
     <div class="row-fluid has-sidebar">
         <div id="tree" data-datalocale="{{ dataLocale }}"></div>
         <div id="product-grid">
-            {{ dataGrid.renderGrid('product-grid', { dataLocale: dataLocale }) }}
+            {{ dataGrid.renderStatefulGrid('product-grid', { dataLocale: dataLocale }) }}
         </div>
     </div>
 

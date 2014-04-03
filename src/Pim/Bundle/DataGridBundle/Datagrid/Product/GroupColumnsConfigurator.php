@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -57,7 +56,8 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function prepareAxisColumns()
     {
-        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $this->configuration->offsetGetByPath($path);
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();
@@ -89,7 +89,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
      */
     protected function sortColumns()
     {
-        $this->displayedColumns = $this->editableColumns + $this->identifierColumn + $this->axisColumns
-            + $this->propertiesColumns;
+        $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
+            + $this->axisColumns + $this->propertiesColumns;
     }
 }

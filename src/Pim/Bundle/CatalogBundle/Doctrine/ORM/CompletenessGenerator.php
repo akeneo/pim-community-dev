@@ -3,6 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Symfony\Bridge\Doctrine\ManagerRegistry;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
@@ -57,7 +59,34 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate(array $criteria = array(), $limit = null)
+    public function generateMissingForProduct(ProductInterface $product)
+    {
+        $this->generate(array('productId' => $product->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateMissingForChannel(Channel $channel)
+    {
+        $this->generate(array('channelId' => $channel->getId()));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateMissing()
+    {
+        $this->generate();
+    }
+
+    /**
+     * Generate completeness for product where it's missing,
+     * applying the criteria if provided to reduce the product set
+     *
+     * @param array $criteria
+     */
+    protected function generate(array $criteria = array())
     {
         $this->prepareCompletePrices($criteria);
         $this->prepareMissingCompletenesses($criteria);
@@ -95,7 +124,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             " (locale_id int, channel_id int, value_id int, primary key(locale_id, channel_id, value_id)) ".
             $sql;
 
-        $sql = strtr($sql, $this->getTableReplacements()) .';';
+        $sql = $this->applyTableNames($sql);
 
         $stmt = $this->doctrine->getConnection()->prepare($sql);
 
@@ -125,7 +154,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             " (locale_id int, channel_id int, product_id int)"
             .$sql;
 
-        $sql = strtr($sql, $this->getTableReplacements()) .';';
+        $sql = $this->applyTableNames($sql);
 
         $stmt = $this->doctrine->getConnection()->prepare($sql);
 
@@ -153,14 +182,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         return <<<COMPLETE_PRICES_SQL
             SELECT l.id AS locale_id, c.id AS channel_id, v.id AS value_id
                 FROM pim_catalog_attribute_requirement r
-                JOIN %product_attribute% att ON att.id = r.attribute_id AND att.backend_type = "prices"
+                JOIN %attribute_table% att ON att.id = r.attribute_id AND att.backend_type = "prices"
                 JOIN pim_catalog_channel c ON c.id = r.channel_id %channel_conditions%
                 JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
                 JOIN pim_catalog_locale l ON l.id = cl.locale_id
                 JOIN pim_catalog_channel_currency ccur ON ccur.channel_id = c.id
                 JOIN pim_catalog_currency cur ON cur.id = ccur.currency_id
-                JOIN %product_interface% p ON p.family_id = r.family_id %product_conditions%
-                JOIN %product_value_interface% v
+                JOIN %product_table% p ON p.family_id = r.family_id %product_conditions%
+                JOIN %product_value_table% v
                     ON (v.scope_code = c.code OR v.scope_code IS NULL)
                     AND (v.locale_code = l.code OR v.locale_code IS NULL)
                     AND v.attribute_id = att.id
@@ -197,7 +226,7 @@ COMPLETE_PRICES_SQL;
                 GROUP BY c.id, r.family_id) AS c
             JOIN pim_catalog_channel_locale cl ON cl.channel_id = c.id
             JOIN pim_catalog_locale l ON l.id = cl.locale_id
-            JOIN %product_interface% p ON p.family_id = c.family_id %product_conditions%
+            JOIN %product_table% p ON p.family_id = c.family_id %product_conditions%
             LEFT JOIN pim_catalog_completeness co
                 ON co.product_id = p.id
                 AND co.channel_id = c.id
@@ -247,7 +276,7 @@ MISSING_SQL;
 
         $sql = strtr($sql, $this->getQueryPartReplacements());
 
-        return strtr($sql, $this->getTableReplacements()) .';';
+        return $this->applyTableNames($sql);
     }
 
     /**
@@ -293,9 +322,9 @@ MISSING_SQL;
             FROM missing_completeness m
                 JOIN pim_catalog_channel c ON c.id = m.channel_id
                 JOIN pim_catalog_locale l ON l.id = m.locale_id
-                JOIN %product_interface% p ON p.id = m.product_id
+                JOIN %product_table% p ON p.id = m.product_id
                 JOIN pim_catalog_attribute_requirement r ON r.family_id = p.family_id AND r.channel_id = c.id
-                JOIN %product_value_interface% v ON v.attribute_id = r.attribute_id
+                JOIN %product_value_table% v ON v.attribute_id = r.attribute_id
                     AND (v.scope_code = c.code OR v.scope_code IS NULL)
                     AND (v.locale_code = l.code OR v.locale_code IS NULL)
                     AND v.entity_id = p.id
@@ -324,21 +353,32 @@ MAIN_SQL;
     }
 
     /**
-     * Returns an array of replacements for query tables
+     * Replace tables placeholders by their real name in the DB
+     *
+     * @param string $sql
      *
      * @return array
      */
-    protected function getTableReplacements()
+    protected function applyTableNames($sql)
     {
-        return array_map(
-            function ($className) {
-                return $this->getClassMetadata($className)->getTableName();
-            },
-            array(
-                '%product_interface%'       => $this->productClass,
-                '%product_value_interface%' => $this->productValueClass,
-                '%product_attribute%'       => $this->attributeClass
-            )
+        $categoryMapping = $this->getClassMetadata($this->productClass)->getAssociationMapping('categories');
+        $categoryMetadata = $this->getClassMetadata($categoryMapping['targetEntity']);
+
+        $valueMapping  = $this->getClassMetadata($this->productClass)->getAssociationMapping('values');
+        $valueMetadata = $this->getClassMetadata($valueMapping['targetEntity']);
+
+        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $this->getClassMetadata($attributeMapping['targetEntity']);
+
+        return strtr(
+            $sql,
+            [
+                '%category_table%'      => $categoryMetadata->getTableName(),
+                '%category_join_table%' => $categoryMapping['joinTable']['name'],
+                '%product_table%'       => $this->getClassMetadata($this->productClass)->getTableName(),
+                '%product_value_table%' => $valueMetadata->getTableName(),
+                '%attribute_table%'     => $attributeMetadata->getTableName()
+            ]
         );
     }
 
@@ -433,9 +473,11 @@ MAIN_SQL;
                     function ($name) use ($prefix) {
                         return sprintf('%s.%s', $prefix, $name);
                     },
-                    array_diff(
+                    array_filter(
                         $this->getClassMetadata($className)->getColumnNames(),
-                        array('id', 'locale_code', 'scope_code')
+                        function ($value) {
+                            return (strpos($value, 'value_') === 0);
+                        }
                     )
                 );
         }
@@ -569,5 +611,23 @@ MAIN_SQL;
         );
         $query->setParameter('product', $product);
         $query->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForFamily(Family $family)
+    {
+        $sql = '
+            DELETE c FROM pim_catalog_completeness c
+              JOIN %product_table% p ON p.id = c.product_id
+             WHERE p.family_id = :family_id';
+
+        $sql = $this->applyTableNames($sql);
+
+        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt->bindValue('family_id', $family->getId());
+
+        $stmt->execute();
     }
 }

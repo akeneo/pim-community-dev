@@ -5,10 +5,10 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\FlexibleEntityBundle\Event\FilterFlexibleEvent;
-use Pim\Bundle\FlexibleEntityBundle\FlexibleEntityEvents;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
+use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
@@ -24,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductManager extends FlexibleManager
+class ProductManager
 {
     /**
      * @var MediaManager $mediaManager
@@ -52,9 +52,20 @@ class ProductManager extends FlexibleManager
     protected $entityManager;
 
     /**
+     * Product entity config
+     * @var array
+     */
+    protected $configuration;
+
+    /**
+     * @var EventDispatcherInterface $eventDispatcher
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      *
-     * @param array                      $flexibleConfig      Flexible Config
+     * @param array                      $configuration       Product config
      * @param ObjectManager              $objectManager       Storage manager for product
      * @param EntityManager              $entityManager       Entity manager for other entitites
      * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
@@ -64,7 +75,7 @@ class ProductManager extends FlexibleManager
      * @param ProductRepositoryInterface $repo                Product repository
      */
     public function __construct(
-        $flexibleConfig,
+        $configuration,
         ObjectManager $objectManager,
         EntityManager $entityManager,
         EventDispatcherInterface $eventDispatcher,
@@ -73,50 +84,42 @@ class ProductManager extends FlexibleManager
         ProductBuilder $builder,
         ProductRepositoryInterface $repo
     ) {
-        parent::__construct(
-            $flexibleConfig,
-            $objectManager,
-            $eventDispatcher
-        );
-
+        $this->configuration       = $configuration;
+        $this->objectManager       = $objectManager;
+        $this->eventDispatcher     = $eventDispatcher;
         $this->entityManager       = $entityManager;
         $this->mediaManager        = $mediaManager;
         $this->completenessManager = $completenessManager;
         $this->builder             = $builder;
         $this->repository          = $repo;
-        $this->repository->setFlexibleConfig($this->flexibleConfig);
+    }
+
+    /**
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductRepository
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function getFlexibleRepository()
+    {
+        return $this->getProductRepository();
     }
 
     /**
      * @return ProductRepositoryInterface
      */
-    public function getFlexibleRepository()
+    public function getProductRepository()
     {
         return $this->repository;
     }
 
     /**
-     * {@inheritdoc}
+     * Get product configuration
+     *
+     * @return array
      */
-    public function setLocale($code)
+    public function getConfiguration()
     {
-        parent::setLocale($code);
-
-        $this->getFlexibleRepository()->setLocale($code);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setScope($code)
-    {
-        parent::setScope($code);
-
-        $this->getFlexibleRepository()->setScope($code);
-
-        return $this;
+        return $this->configuration;
     }
 
     /**
@@ -129,7 +132,7 @@ class ProductManager extends FlexibleManager
      */
     public function find($id)
     {
-        $product = $this->getFlexibleRepository()->findOneByWithValues($id);
+        $product = $this->getProductRepository()->findOneByWithValues($id);
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
@@ -148,7 +151,7 @@ class ProductManager extends FlexibleManager
      */
     public function findByIds(array $ids)
     {
-        $products = $this->getFlexibleRepository()->findByIds($ids);
+        $products = $this->getProductRepository()->findByIds($ids);
 
         foreach ($products as $product) {
             $this->builder->addMissingProductValues($product);
@@ -167,10 +170,14 @@ class ProductManager extends FlexibleManager
      */
     public function findByIdentifier($identifier)
     {
-        $code = $this->getIdentifierAttribute()->getCode();
-
-        $products = $this->getFlexibleRepository()->findAllByAttributes(array(), array($code => $identifier));
-        $product = reset($products);
+        $product = $this->getProductRepository()->findOneBy(
+            [
+                [
+                    'attribute' => $this->getIdentifierAttribute(),
+                    'value' => $identifier
+                ]
+            ]
+        );
 
         if ($product) {
             $this->builder->addMissingProductValues($product);
@@ -213,18 +220,20 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface $product     The product to save
      * @param boolean          $recalculate Whether or not to directly recalculate the completeness
      * @param boolean          $flush       Whether or not to flush the entity manager
+     * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
      */
-    public function save(ProductInterface $product, $recalculate = true, $flush = true)
+    public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
     {
         $this->objectManager->persist($product);
 
         if ($flush) {
             $this->objectManager->flush();
         }
-        $this->completenessManager->schedule($product);
-
+        if ($schedule) {
+            $this->completenessManager->schedule($product);
+        }
         if ($recalculate) {
-            $this->completenessManager->generateProductCompletenesses($product);
+            $this->completenessManager->generateMissingForProduct($product);
         }
     }
 
@@ -234,11 +243,12 @@ class ProductManager extends FlexibleManager
      * @param ProductInterface[] $products    The products to save
      * @param boolean            $recalculate Whether or not to directly recalculate the completeness
      * @param boolean            $flush       Whether or not to flush the entity manager
+     * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
      */
-    public function saveAll(array $products, $recalculate = false, $flush = true)
+    public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
     {
         foreach ($products as $product) {
-            $this->save($product, $recalculate, false);
+            $this->save($product, $recalculate, false, $schedule);
         }
 
         if ($flush) {
@@ -257,25 +267,107 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * Create a product (alias of createFlexible)
+     * Create a product
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      */
     public function createProduct()
     {
-        $product = $this->createFlexible();
+        $class = $this->getProductName();
+
+        $product = new $class();
+        $event = new FilterProductEvent($this, $product);
+        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT, $event);
 
         return $product;
     }
 
     /**
-     * Create a product value (alias of createFlexibleValue)
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
+     */
+    public function createFlexible()
+    {
+        return $this->createProduct();
+    }
+
+    /**
+     * Create a product value
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
     public function createProductValue()
     {
-        return $this->createFlexibleValue();
+        $class = $this->getProductValueName();
+        $value = new $class();
+
+        $event = new FilterProductValueEvent($this, $value);
+        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT_VALUE, $event);
+
+        return $value;
+    }
+
+    /**
+     * Create a product value
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProductvalue
+     */
+    public function createFlexibleValue()
+    {
+        return $this->createProductValue();
+    }
+
+    /**
+     * Get product FQCN
+     *
+     * @return string
+     */
+    public function getProductName()
+    {
+        return $this->configuration['flexible_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductName
+     */
+    public function getFlexibleName()
+    {
+        return $this->getProductName();
+    }
+
+    /**
+     * Get product value FQCN
+     *
+     * @return string
+     */
+    public function getProductValueName()
+    {
+        return $this->configuration['flexible_value_class'];
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductValueName
+     */
+    public function getFlexibleValueName()
+    {
+        return $this->getProductValueName();
+    }
+
+    /**
+     * Get attribute FQCN
+     *
+     * @return string
+     */
+    public function getAttributeName()
+    {
+        return $this->configuration['attribute_class'];
     }
 
     /**
@@ -349,7 +441,7 @@ class ProductManager extends FlexibleManager
      */
     public function removeAll(array $ids)
     {
-        $products = $this->getFlexibleRepository()->findByIds($ids);
+        $products = $this->getProductRepository()->findByIds($ids);
         foreach ($products as $product) {
             $this->objectManager->remove($product);
         }
@@ -376,7 +468,7 @@ class ProductManager extends FlexibleManager
 
     /**
      * FIXME_MONGO: Use an AttributeManager instead of using the same
-     * objectManager than the one used by the FlexibleEntity
+     * objectManager than the one used by the Product
      *
      * All methods overload below are linked to that issue
      */
@@ -411,23 +503,13 @@ class ProductManager extends FlexibleManager
     }
 
     /**
-     * {@inheritdoc}
+     * Get object manager
+     *
+     * @return ObjectManager
      */
-    public function createFlexible()
+    public function getObjectManager()
     {
-        $class = $this->getFlexibleName();
-        $valueClass = $this->getFlexibleValueName();
-
-        $flexible = new $class();
-        $flexible->setLocale($this->getLocale());
-        $flexible->setScope($this->getScope());
-
-        $flexible->setValueClass($valueClass);
-
-        $event = new FilterFlexibleEvent($this, $flexible);
-        $this->eventDispatcher->dispatch(FlexibleEntityEvents::CREATE_FLEXIBLE, $event);
-
-        return $flexible;
+        return $this->objectManager;
     }
 
     /**
@@ -451,7 +533,7 @@ class ProductManager extends FlexibleManager
             $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
         }
 
-        return $this->getFlexibleRepository()->getProductsCountInCategory($category, $categoryQb);
+        return $this->getProductRepository()->getProductsCountInCategory($category, $categoryQb);
     }
 
     /**
@@ -473,7 +555,7 @@ class ProductManager extends FlexibleManager
             $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, true);
         }
 
-        return $this->getFlexibleRepository()->getProductIdsInCategory($category, $categoryQb);
+        return $this->getProductRepository()->getProductIdsInCategory($category, $categoryQb);
     }
 
     /**
@@ -485,7 +567,7 @@ class ProductManager extends FlexibleManager
      */
     public function valueExists(ProductValueInterface $value)
     {
-        return $this->getFlexibleRepository()->valueExists($value);
+        return $this->getProductRepository()->valueExists($value);
     }
 
     /**
@@ -497,20 +579,14 @@ class ProductManager extends FlexibleManager
      *
      * @param array $productIds
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\Attribute[]
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
      */
     public function findCommonAttributes(array $productIds)
     {
-        $attributes  = $this->getFlexibleRepository()->findFamilyCommonAttributeIds($productIds);
-        $attributes += $this->getFlexibleRepository()->findValuesCommonAttributeIds($productIds);
-
-        $attributeIds = array();
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = $attributeId['id'];
-        }
+        $attributeIds = $this->getProductRepository()->findCommonAttributeIds($productIds);
 
         return $this
             ->getAttributeRepository()
-            ->findWithGroups($attributeIds, array('unique' => 0));
+            ->findWithGroups(array_unique($attributeIds), array('unique' => 0));
     }
 }

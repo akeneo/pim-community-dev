@@ -23,6 +23,12 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     /** @var Boolean */
     protected $multiple;
 
+    /**
+     * Delimiter used by imploded array
+     * @var string
+     */
+    protected $delimiter;
+
     /** @var PropertyAccessorInterface */
     protected $propertyAccessor;
 
@@ -32,15 +38,18 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * @param ObjectRepository          $repository
      * @param Boolean                   $multiple
      * @param PropertyAccessorInterface $propertyAccessor
+     * @param string                    $delimiter
      */
     public function __construct(
         ObjectRepository $repository,
         $multiple,
-        PropertyAccessorInterface $propertyAccessor = null
+        PropertyAccessorInterface $propertyAccessor = null,
+        $delimiter = ','
     ) {
         $this->repository       = $repository;
         $this->multiple         = $multiple;
         $this->propertyAccessor = $propertyAccessor ?: PropertyAccess::createPropertyAccessor();
+        $this->delimiter        = $delimiter;
     }
 
     /**
@@ -57,12 +66,18 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
                 throw new UnexpectedTypeException($value, 'array');
             }
 
-            return array_map(
+            $ids = array_map(
                 function ($val) {
                     return $this->propertyAccessor->getValue($val, 'id');
                 },
                 $value
             );
+
+            if (null !== $this->delimiter) {
+                return implode($this->delimiter, $ids);
+            }
+
+            return $ids;
         }
 
         if (!is_object($value)) {
@@ -78,11 +93,17 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     public function reverseTransform($value)
     {
         if ($this->multiple) {
+            if (is_string($value) && (null !== $this->delimiter)) {
+                $value = explode($this->delimiter, $value);
+            }
             if (!is_array($value)) {
                 throw new UnexpectedTypeException($value, 'array');
             }
-
-            return $this->repository->findBy(['id' => $value]);
+            if (method_exists($this->repository, 'findByIds')) {
+                return $this->repository->findByIds($value);
+            } else {
+                return $this->repository->findBy(['id' => $value]);
+            }
         }
 
         return $this->repository->find($value);

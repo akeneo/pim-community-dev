@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType as FlexTextType;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Text attribute type
@@ -12,70 +11,41 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\TextType as FlexTextType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class TextType extends FlexTextType
+class TextType extends AbstractAttributeType
 {
     /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        $properties = parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name' => 'defaultValue'
-            ),
-            array(
+            ],
+            'maxCharacters' => [
                 'name'      => 'maxCharacters',
                 'fieldType' => 'integer'
-            ),
-            array(
+            ],
+            'validationRule' => [
                 'name'      => 'validationRule',
                 'fieldType' => 'choice',
-                'options'   => array(
-                    'choices' => array(
+                'options'   => [
+                    'choices' => [
                         null     => 'None',
                         'email'  => 'E-mail',
                         'url'    => 'URL',
                         'regexp' => 'Regular expression'
-                    ),
+                    ],
                     'select2' => true
-                )
-            ),
-            array(
+                ]
+            ],
+            'validationRegexp' => [
                 'name' => 'validationRegexp'
-            ),
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            )
-        );
+            ]
+        ];
+
+        $properties['unique']['options']['disabled']  = (bool) $attribute->getId();
+        $properties['unique']['options']['read_only'] = (bool) $attribute->getId();
 
         return $properties;
     }

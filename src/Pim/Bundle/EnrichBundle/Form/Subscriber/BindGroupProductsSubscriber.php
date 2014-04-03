@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 /**
  * Subscriber that updates products inside the variant group
@@ -16,6 +17,16 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class BindGroupProductsSubscriber implements EventSubscriberInterface
 {
+    /**
+     * Constructor
+     *
+     * @param ProductRepositoryInterface $productRepository
+     */
+    public function __construct(ProductRepositoryInterface $productRepository)
+    {
+        $this->productRepository = $productRepository;
+    }
+
     /**
      * {@inheritdoc}
      */

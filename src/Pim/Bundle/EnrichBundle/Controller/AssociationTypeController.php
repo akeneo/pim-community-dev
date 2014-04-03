@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +19,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Manager\AssociationManager;
 use Pim\Bundle\EnrichBundle\Form\Handler\AssociationTypeHandler;
 
 /**
@@ -41,6 +42,11 @@ class AssociationTypeController extends AbstractDoctrineController
     protected $assocTypeForm;
 
     /**
+     * @var AssociationManager
+     */
+    protected $assocManager;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -50,7 +56,8 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
+     * @param AssociationManager       $assocManager
      * @param AssociationTypeHandler   $assocTypeHandler
      * @param Form                     $assocTypeForm
      */
@@ -62,7 +69,8 @@ class AssociationTypeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
+        AssociationManager $assocManager,
         AssociationTypeHandler $assocTypeHandler,
         Form $assocTypeForm
     ) {
@@ -76,6 +84,8 @@ class AssociationTypeController extends AbstractDoctrineController
             $translator,
             $doctrine
         );
+
+        $this->assocManager     = $assocManager;
 
         $this->assocTypeHandler = $assocTypeHandler;
         $this->assocTypeForm    = $assocTypeForm;
@@ -148,10 +158,7 @@ class AssociationTypeController extends AbstractDoctrineController
 
             return $this->redirectToRoute('pim_enrich_association_type_edit', array('id' => $id));
         }
-
-        $usageCount = $this
-            ->getRepository('Pim\Bundle\CatalogBundle\Model\Association')
-            ->countForAssociationType($associationType);
+        $usageCount = $this->assocManager->countForAssociationType($associationType);
 
         return array(
             'form'       => $this->assocTypeForm->createView(),
@@ -169,8 +176,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function removeAction(AssociationType $associationType)
     {
-        $this->getManager()->remove($associationType);
-        $this->getManager()->flush();
+        $this->remove($associationType);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

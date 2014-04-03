@@ -49,7 +49,7 @@ services:
             - %pim_catalog.entity.attribute_option_value.class%
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
-            - '@pim_flexibleentity.attributetype.factory'
+            - '@pim_catalog.factory.attribute_type'
 
     pim_catalog.manager.locale:
         class: %pim_catalog.manager.locale.class%
@@ -85,4 +85,10 @@ services:
             - '@doctrine'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
+            - '@pim_catalog.manager.channel'
             - %pim_catalog.entity.completeness.class%
+
+    pim_catalog.manager.association_type:
+        class: %pim_catalog.manager.association_type.class%
+        arguments:
+            - '@pim_catalog.repository.association_type'

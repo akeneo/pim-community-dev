@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Multi options (select) attribute type
@@ -18,7 +17,7 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
@@ -33,7 +32,7 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormData(FlexibleValueInterface $value)
+    protected function prepareValueFormData(ProductValueInterface $value)
     {
         if ($value->getData() && $value->getData()->isEmpty()) {
             return $value->getAttribute()->getDefaultValue();
@@ -47,52 +46,16 @@ class OptionMultiSelectType extends AbstractAttributeType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
+        return parent::defineCustomAttributeProperties($attribute) + [
+            'minimumInputLength' => [
                 'name'      => 'minimumInputLength',
-                'fieldType' => 'number',
-                'options'   => array(
-                )
-            ),
-            array(
+                'fieldType' => 'number'
+            ],
+            'options' => [
                 'name'      => 'options',
                 'fieldType' => 'pim_enrich_options'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
-                )
-            )
-        );
-
-        return $properties;
+            ]
+        ];
     }
 
     /**

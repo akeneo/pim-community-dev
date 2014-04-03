@@ -1,105 +1,105 @@
 parameters:
     pim_datagrid.product.attribute_type.pim_catalog_identifier:
         column:
-            type:        flexible_field
-            selector:    flexible_values
+            type:        product_value_field
+            selector:    product_value_base
         filter:
-            type:        flexible_string
+            type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:
-            type:        flexible_field
-            selector:    flexible_values
+            type:        product_value_field
+            selector:    product_value_base
         filter:
-            type:        flexible_string
+            type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
-            type:        flexible_field
-            selector:    flexible_values
+            type:        product_value_field
+            selector:    product_value_base
         filter:
-            type:        flexible_string
+            type:        product_value_string
             parent_type: string
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
-            type:        flexible_option
-            selector:    flexible_option
+            type:        product_value_option
+            selector:    product_value_option
         filter:
-            type:        flexible_choice
+            type:        product_value_choice
             parent_type: ajax_choice
             options:
                 field_options:
                     multiple: true
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_multiselect:
         column:
-            type:        flexible_options
-            selector:    flexible_options
+            type:        product_value_options
+            selector:    product_value_options
         filter:
-            type:        flexible_choice
+            type:        product_value_choice
             parent_type: ajax_choice
             options:
                 field_options:
                     multiple: true
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_number:
         column:
-            type:        flexible_field
-            selector:    flexible_values
+            type:        product_value_field
+            selector:    product_value_base
         filter:
-            type:        flexible_number
+            type:        product_value_number
             parent_type: number
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
-            type:          flexible_boolean
-            selector:      flexible_values
+            type:          product_value_boolean
+            selector:      product_value_base
             frontend_type: html
             template:      PimDataGridBundle:Property:boolean.html.twig
         filter:
-            type:        flexible_boolean
+            type:        product_value_boolean
             parent_type: boolean
-        sorter:          flexible_field
+        sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_date:
         column:
-            type:          flexible_field
-            selector:      flexible_values
+            type:          product_value_date
+            selector:      product_value_base
             frontend_type: date
         filter:
-            type:          flexible_date
+            type:          product_value_date
             parent_type:   date
-        sorter:            flexible_field
+        sorter:            product_value
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
-            type:          flexible_field
-            selector:      flexible_media
+            type:          product_value_field
+            selector:      product_value_media
             frontend_type: string
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_image:
         column:
-            type:          flexible_image
-            selector:      flexible_media
+            type:          product_value_image
+            selector:      product_value_media
             frontend_type: html
-            template:      PimDataGridBundle:Property:pim_catalog_image.html.twig
+            template:      PimDataGridBundle:Property:image.html.twig
         sorter:            ~
     pim_datagrid.product.attribute_type.pim_catalog_price_collection:
         column:
-            type:        flexible_price
-            selector:    flexible_price
+            type:        product_value_price
+            selector:    product_value_price
         filter:
-            type:        flexible_price
+            type:        product_value_price
             parent_type: price
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
-            type:          flexible_metric
-            selector:      flexible_metric
+            type:          product_value_metric
+            selector:      product_value_metric
             frontend_type: html
-            template:      PimDataGridBundle:Property:pim_catalog_metric.html.twig
+            template:      PimDataGridBundle:Property:metric.html.twig
         filter:
-            type:          flexible_metric
+            type:          product_value_metric
             parent_type:   metric
         sorter:            ~

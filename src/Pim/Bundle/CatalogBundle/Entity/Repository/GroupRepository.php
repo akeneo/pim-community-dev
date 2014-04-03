@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Group repository
@@ -143,10 +143,10 @@ class GroupRepository extends ReferableEntityRepository
         $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
 
         $isCheckecExpr =
-            'CASE WHEN (pa IS NOT NULL OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
+            'CASE WHEN (g.id IN (:associatedIds) OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
-        $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
+        $isAssociatedExpr = 'CASE WHEN g.id IN (:associatedIds) THEN true ELSE false END';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
@@ -158,13 +158,7 @@ class GroupRepository extends ReferableEntityRepository
         $qb
             ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :dataLocale')
             ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale')
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Association',
-                'pa',
-                'WITH',
-                'pa.associationType = :associationType AND pa.owner = :product AND g MEMBER OF pa.groups'
-            );
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale');
 
         return $qb;
     }
@@ -175,46 +169,5 @@ class GroupRepository extends ReferableEntityRepository
     protected function getAlias()
     {
         return 'ProductGroup';
-    }
-
-    /**
-     * @param string  $productClass
-     * @param integer $variantGroupId
-     *
-     * @return array product ids
-     */
-    public function getEligibleProductIds($productClass, $variantGroupId)
-    {
-        $sql = 'SELECT count(ga.attribute_id) as nb '.
-            'FROM pim_catalog_group_attribute as ga '.
-            'WHERE ga.group_id = :groupId;';
-        $stmt = $this->_em->getConnection()->prepare($sql);
-        $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->execute();
-        $nbAxes = $stmt->fetch()['nb'];
-
-        $productMeta = $this->_em->getClassMetadata($productClass);
-        $valueClass = $productMeta->getAssociationMappings()['values']['targetEntity'];
-        $valueTable = $this->_em->getClassMetadata($valueClass)->getTableName();
-
-        $sql = 'SELECT v.entity_id '.
-            'FROM pim_catalog_group_attribute as ga '.
-            "LEFT JOIN {$valueTable} as v ON v.attribute_id = ga.attribute_id ".
-            'WHERE ga.group_id = :groupId '.
-            'GROUP BY v.entity_id '.
-            'having count(v.option_id) = :nbAxes ;';
-        $stmt = $this->_em->getConnection()->prepare($sql);
-        $stmt->bindValue('groupId', $variantGroupId);
-        $stmt->bindValue('nbAxes', $nbAxes);
-        $stmt->execute();
-        $results = $stmt->fetchAll();
-        $productIds = array_map(
-            function ($row) {
-                return $row['entity_id'];
-            },
-            $results
-        );
-
-        return $productIds;
     }
 }

@@ -1,4 +1,4 @@
 oro_translation:
     js_translation:
         # order of domains reflects messages fallback
-        domains: [jsmessages, validators]
+        domains: [jsmessages, validators, measures]

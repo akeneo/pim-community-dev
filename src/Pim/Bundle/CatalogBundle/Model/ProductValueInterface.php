@@ -12,6 +12,29 @@ namespace Pim\Bundle\CatalogBundle\Model;
 interface ProductValueInterface
 {
     /**
+     * Get attribute
+     *
+     * @return AbstractAttribute
+     */
+    public function getAttribute();
+
+    /**
+     * Get data
+     *
+     * @return mixed
+     */
+    public function getData();
+
+    /**
+     * Set value data
+     *
+     * @param mixed $data
+     *
+     * @return ProductValueInterface
+     */
+    public function setData($data);
+
+    /**
      * @return string
      */
     public function __toString();

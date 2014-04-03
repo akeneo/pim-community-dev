@@ -2,10 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\Form\Validator\ConstraintGuesserInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 
 /**
@@ -44,7 +43,7 @@ class PriceCollectionType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $options['type']         = 'pim_enrich_price';
@@ -60,57 +59,23 @@ class PriceCollectionType extends AbstractAttributeType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return parent::defineCustomAttributeProperties($attribute) + [
+            'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMax' => [
                 'name'      => 'numberMax',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
-                )
-            )
-        );
-
-        return $properties;
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ]
+        ];
     }
 
     /**

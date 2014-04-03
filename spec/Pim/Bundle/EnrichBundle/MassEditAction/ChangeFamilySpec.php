@@ -7,6 +7,7 @@ use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 
 class ChangeFamilySpec extends ObjectBehavior
 {
@@ -27,24 +28,21 @@ class ChangeFamilySpec extends ObjectBehavior
 
     function it_provides_a_form_type()
     {
-        $this->getFormType()->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType');
+        $this->getFormType()->shouldReturn('pim_enrich_mass_change_family');
     }
 
     function it_adds_products_to_the_selected_family_when_performimg_the_operation(
-        QueryBuilder $qb,
         AbstractQuery $query,
         Family $mugs,
-        ProductInterface $product2,
-        ProductInterface $product1
+        ProductInterface $product1,
+        ProductInterface $product2
     ) {
-        $qb->getQuery()->willReturn($query);
-        $query->getResult()->willReturn([$product1, $product2]);
-
         $this->setFamily($mugs);
+        $this->setProductsToMassEdit([$product1, $product2]);
 
         $product1->setFamily($mugs)->shouldBeCalled();
         $product2->setFamily($mugs)->shouldBeCalled();
 
-        $this->perform($qb);
+        $this->perform();
     }
 }

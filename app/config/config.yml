@@ -49,6 +49,7 @@ doctrine:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
                 port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
                 dbname:       "%database_name%"
                 user:         "%database_user%"
                 password:     "%database_password%"
@@ -57,6 +58,7 @@ doctrine:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
                 port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
                 dbname:       "%database_name%"
                 user:         "%database_user%"
                 password:     "%database_password%"
@@ -65,6 +67,7 @@ doctrine:
                 driver:       "%database_driver%"
                 host:         "%database_host%"
                 port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
                 dbname:       "%database_name%"
                 user:         "%database_user%"
                 password:     "%database_password%"
@@ -84,6 +87,9 @@ swiftmailer:
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
+
+pim_catalog:
+    storage_driver: 'doctrine/orm'
 
 services:
     oro.cache.abstract:

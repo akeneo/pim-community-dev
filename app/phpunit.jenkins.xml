@@ -9,7 +9,7 @@
     processIsolation="false"
     stopOnFailure="false"
     syntaxCheck="false"
-    bootstrap="bootstrap.php.cache" >
+    bootstrap="../vendor/autoload.php" >
 
     <php>
         <ini name="intl.default_locale" value="en"/>
@@ -22,7 +22,6 @@
         <!-- Jenkins test suite -->
         <testsuite name="Jenkins_PIM_Test">
             <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Unit</directory>
-            <directory suffix="Test.php">../src/Pim/Bundle/*Bundle/Tests/Functional</directory>
         </testsuite>
 
     </testsuites>

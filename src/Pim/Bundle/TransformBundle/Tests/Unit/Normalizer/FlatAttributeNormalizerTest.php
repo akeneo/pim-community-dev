@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer;
 
 use Pim\Bundle\TransformBundle\Normalizer\FlatAttributeNormalizer;
 use Pim\Bundle\TransformBundle\Normalizer\FlatTranslationNormalizer;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
@@ -60,7 +60,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'required'               => 0,
                     'unique'                 => 0,
                     'default_options'        => 'en:Red,fr:Rouge',
-                    'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => 'All',
                     'metric_family'          => '',
@@ -83,7 +82,6 @@ class FlatAttributeNormalizerTest extends AttributeNormalizerTest
                     'unique'                 => 0,
                     'default_value'          => 'No description',
                     'default_options'        => '',
-                    'searchable'             => '1',
                     'localizable'            => '1',
                     'available_locales'      => 'en,fr',
                     'metric_family'          => '',

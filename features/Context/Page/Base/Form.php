@@ -345,6 +345,20 @@ class Form extends Base
     }
 
     /**
+     * @param string $attribute
+     *
+     * @return null
+     */
+    public function expandAttribute($attribute)
+    {
+        if (null === $label = $this->find('css', sprintf('label:contains("%s")', $attribute))) {
+            throw new \InvalidArgumentException(sprintf('Cannot find attribute "%s" field', $attribute));
+        }
+
+        return $this->expand($label);
+    }
+
+    /**
      * @param string $label
      */
     public function expand($label)

@@ -1,0 +1,10 @@
+# Doctrine MongoDB support
+doctrine_mongodb:
+    connections:
+        default:
+            server: "%mongodb_server%"
+    default_database: "%mongodb_database%"
+    document_managers:
+        default:
+            auto_mapping: true
+    auto_generate_hydrator_classes: true

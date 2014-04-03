@@ -1,25 +1,29 @@
 pim_dashboard:
     title: Dashboard
-    link:
-        label:
-            product: Manage Products
-            category: Manage Categories
-            attribute: Manage Attributes
-            family: Manage Families
+    version: Version
+
+    link.label:
+        product:   Manage Products
+        category:  Manage Categories
+        attribute: Manage Attributes
+        family:    Manage Families
+
     widget:
         error:
             title:   Error while loading widget
-            message: Widget "%alias%" does not exist
+            message: Widget '%alias%' does not exist
+
         completeness:
             title: Completeness Over Channels and Locales
+
         last_operations:
-            title:        Last operations
-            empty:        No operations found
-            status:       Status
-            date:         Date
-            type:         Type
+            title: Last operations
+            empty: No operations found
+            status: Status
+            date: Date
+            type: Type
             profile name: Profile name
-            details:      Details
+            details: Details
             job_type:
                 import: Import
                 export: Export

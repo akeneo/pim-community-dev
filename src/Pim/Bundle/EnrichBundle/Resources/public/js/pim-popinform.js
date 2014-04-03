@@ -1,9 +1,9 @@
 define(
-    ['jquery', 'underscore', 'jquery.multiselect', 'jquery.multiselect.filter', 'jquery.select2'],
+    ['jquery', 'underscore', 'jquery.multiselect', 'jquery.multiselect.filter'],
     function ($, _) {
+        'use strict';
 
         return function (elementId) {
-            'use strict';
             var $el = $('#' + elementId);
             if (!$el || !$el.length || !_.isObject($el)) {
                 throw new Error('Unable to instantiate available attributes form on this element');

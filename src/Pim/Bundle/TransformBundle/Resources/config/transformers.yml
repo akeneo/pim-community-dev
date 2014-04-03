@@ -29,7 +29,7 @@ services:
     pim_transform.transformer.entity:
         class: %pim_transform.transformer.entity.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
             - '@property_accessor'
             - '@pim_transform.transformer.guesser'
             - '@pim_transform.transformer.column_info_transformer'
@@ -50,7 +50,7 @@ services:
         arguments:
             - '@pim_transform.transformer.registry'
             - '@pim_catalog.manager.attribute'
-            - '@pim_transform.cache.entity_cache'
+            - '@pim_transform.cache.doctrine_cache'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.attribute.class% }
 
@@ -95,7 +95,7 @@ services:
     pim_transform.transformer.property.relation:
         class: %pim_transform.transformer.property.relation.class%
         arguments:
-            - '@pim_transform.cache.entity_cache'
+            - '@pim_transform.cache.doctrine_cache'
         public: false
 
     pim_transform.transformer.property.media:
@@ -109,7 +109,7 @@ services:
         class: %pim_transform.transformer.property.prices.class%
         public: false
         arguments:
-            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.builder.product'
 
     pim_transform.transformer.property.metric:
         class: %pim_transform.transformer.property.metric.class%

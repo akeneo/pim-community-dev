@@ -3,9 +3,9 @@
 namespace Pim\Bundle\WebServiceBundle\Controller\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
-use FOS\RestBundle\Controller\Annotations\QueryParam;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 
@@ -21,47 +21,11 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
  */
 class ProductController extends FOSRestController
 {
-    const ITEMS_PER_PAGE = 10;
-
-    /**
-     * Get all products
-     *
-     * @QueryParam(
-     *     name="page",
-     *     requirements="\d+",
-     *     nullable=true,
-     *     description="Page number, starting from 1. Defaults to 1."
-     * )
-     * @QueryParam(
-     *     name="limit",
-     *     requirements="\d+",
-     *     nullable=true,
-     *     description="Number of products per page. defaults to 10."
-     * )
-     * @ApiDoc(
-     *     description="Get all products",
-     *     resource=true
-     * )
-     * filters={
-     *      {"name"="page", "dataType"="integer"},
-     *      {"name"="limit", "dataType"="integer"}
-     *  }
-     * @return Response
-     */
-    public function cgetAction()
-    {
-        $scope = $this->getRequest()->get('scope');
-
-        $page = (int) $this->getRequest()->get('page', 1);
-        $limit = (int) $this->getRequest()->get('limit', self::ITEMS_PER_PAGE);
-
-        return $this->handleGetListRequest($scope, $page, $limit);
-    }
-
     /**
      * Get a single product
      *
-     * @param string $identifier
+     * @param Request $request
+     * @param string  $identifier
      *
      * @ApiDoc(
      *      description="Get a single product",
@@ -69,79 +33,76 @@ class ProductController extends FOSRestController
      * )
      * @return Response
      */
-    public function getAction($identifier)
+    public function getAction(Request $request, $identifier)
     {
-        $scope = $this->getRequest()->get('scope');
+        $userContext       = $this->get('pim_user.context.user');
+        $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
+        $availableLocales  = $userContext->getUserLocaleCodes();
 
-        return $this->handleGetRequest($scope, $identifier);
-    }
+        $channels = $request->get('channels', $request->get('channel', null));
+        if ($channels !== null) {
+            $channels = explode(',', $channels);
 
-    /**
-     * Return a list of products
-     *
-     * @param string  $scope
-     * @param integer $page
-     * @param integer $limit
-     *
-     * @return Response
-     */
-    protected function handleGetListRequest($scope, $page, $limit)
-    {
-        $manager = $this->get('pim_catalog.manager.product');
-        $manager->setScope($scope);
-
-        $offset = --$page * $limit;
-
-        $products = $manager->getFlexibleRepository()->findBy(array(), array('id' => 'ASC'), $limit, $offset);
-
-        $channels = $this->get('pim_catalog.manager.channel')->getChannels(array('code' => $scope));
-        $channel = reset($channels);
-
-        if (!$channel) {
-            throw new \LogicException('Channel not found');
+            foreach ($channels as $channel) {
+                if (!in_array($channel, $availableChannels)) {
+                    return new Response(sprintf('Channel "%s" does not exist or is not available', $channel), 403);
+                }
+            }
+        } else {
+            $channels = $availableChannels;
         }
 
-        $normalizer = $this->get('pim_serializer.normalizer.product');
-        $normalizer->setChannel($channel);
+        $locales = $request->get('locales', $request->get('locale', null));
+        if ($locales !== null) {
+            $locales = explode(',', $locales);
 
-        $serializer = $this->get('pim_serializer');
-        $products = $serializer->serialize($products, 'json');
+            foreach ($locales as $locale) {
+                if (!in_array($locale, $availableLocales)) {
+                    return new Response(sprintf('Locale "%s" does not exist or is not available', $locale), 403);
+                }
+            }
+        } else {
+            $locales = $availableLocales;
+        }
 
-        return new Response($products);
+        return $this->handleGetRequest($identifier, $channels, $locales);
     }
 
     /**
      * Return a single product
      *
-     * @param string $scope
-     * @param string $identifier
+     * @param string   $identifier
+     * @param string[] $channels
+     * @param string[] $locales
      *
      * @return Response
      */
-    protected function handleGetRequest($scope, $identifier)
+    protected function handleGetRequest($identifier, $channels, $locales)
     {
         $manager = $this->get('pim_catalog.manager.product');
-        $manager->setScope($scope);
-
         $product = $manager->findByIdentifier($identifier);
 
         if (!$product) {
-            return new Response('', 404);
+            return new Response(sprintf('Product "%s" not found', $identifier), 404);
         }
-
-        $channels = $this->get('pim_catalog.manager.channel')->getChannels(array('code' => $scope));
-        $channel = reset($channels);
-
-        if (!$channel) {
-            throw new \LogicException('Channel not found');
-        }
-
-        $normalizer = $this->get('pim_serializer.normalizer.product');
-        $normalizer->setChannel($channel);
 
         $serializer = $this->get('pim_serializer');
-        $product = $serializer->serialize($product, 'json');
+        $data = $serializer->serialize(
+            $product,
+            'json',
+            [
+                'locales' => $locales,
+                'channels' => $channels,
+                'resource' => $this->generateUrl(
+                    'oro_api_get_product',
+                    array(
+                        'identifier' => $product->getIdentifier()->getData()
+                    ),
+                    true
+                )
+            ]
+        );
 
-        return new Response($product);
+        return new Response($data);
     }
 }

@@ -56,7 +56,11 @@ class UniqueVariantAxisValidator extends ConstraintValidator
     {
         $existingCombinations = array();
 
-        foreach ($variantGroup->getProducts() as $product) {
+        $products = $variantGroup->getProducts();
+        if (null === $products) {
+            $products = $this->getMatchingProducts($variantGroup);
+        }
+        foreach ($products as $product) {
             $values = array();
             foreach ($variantGroup->getAttributes() as $attribute) {
                 $code = $attribute->getCode();
@@ -137,17 +141,23 @@ class UniqueVariantAxisValidator extends ConstraintValidator
      *
      * @return ProductInterface[]
      */
-    protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity, array $criteria)
+    protected function getMatchingProducts(Group $variantGroup, ProductInterface $entity = null, array $criteria = [])
     {
-        $repository = $this->manager->getFlexibleRepository();
+        if (!$variantGroup->getId()) {
+            return [];
+        }
+
+        $repository = $this->manager->getProductRepository();
         $matchingProducts = $repository->findAllForVariantGroup($variantGroup, $criteria);
 
-        $matchingProducts = array_filter(
-            $matchingProducts,
-            function ($product) use ($entity) {
-                return $product->getId() !== $entity->getId();
-            }
-        );
+        if ($entity) {
+            $matchingProducts = array_filter(
+                $matchingProducts,
+                function ($product) use ($entity) {
+                    return $product->getId() !== $entity->getId();
+                }
+            );
+        }
 
         return $matchingProducts;
     }

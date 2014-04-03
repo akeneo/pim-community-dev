@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'oro/mediator', 'oro/datagrid/column-form-listener'],
-    function ($, mediator, OroColumnFormListener) {
+    ['jquery', 'underscore', 'oro/mediator', 'oro/datagrid/column-form-listener'],
+    function ($, _, mediator, OroColumnFormListener) {
         'use strict';
 
         /**
@@ -9,7 +9,7 @@ define(
          */
         var ColumnFormListener = OroColumnFormListener.extend({
             $checkbox: null,
-            initialize: function (options) {
+            initialize: function () {
                 OroColumnFormListener.prototype.initialize.apply(this, arguments);
 
                 this.$checkbox = $('<input type="checkbox">').css('margin', 0);
@@ -47,6 +47,15 @@ define(
                 mediator.trigger('column_form_listener:initialized', this.gridName);
             },
 
+            _explode: function(string) {
+                if (!string) {
+                    return [];
+                }
+                return _.map(string.split(','), function (val) {
+                    return val ? String(val).trim() : null;
+                });
+            },
+
             setStateFromCollection: function (collection) {
                 var checked = true;
                 _.each(collection.models, function(model) {
@@ -67,6 +76,6 @@ define(
                     new ColumnFormListener(_.extend({ $gridContainer: $gridContainer, gridName: gridName }, options.columnListener));
                 }
             }
-        }
+        };
     }
 );

@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 class AttributeOptionNormalizer implements NormalizerInterface
 {
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
@@ -24,6 +24,10 @@ class AttributeOptionNormalizer implements NormalizerInterface
      */
     public function normalize($entity, $format = null, array $context = array())
     {
+        if (isset($context['entity']) && $context['entity'] === 'product') {
+            return $entity->getCode();
+        }
+
         return array(
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),

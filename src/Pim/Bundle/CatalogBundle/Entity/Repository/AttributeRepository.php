@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeRepository as FlexibleAttributeRepository;
+use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 
 /**
@@ -12,10 +13,15 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeRepository extends FlexibleAttributeRepository implements
+class AttributeRepository extends EntityRepository implements
     ReferableEntityRepositoryInterface,
     ChoicesProviderInterface
 {
+    /**
+     * @var string $identifierCode
+     */
+    protected $identifierCode;
+
     /**
      * @return \Doctrine\Common\Collections\ArrayCollection
      */
@@ -257,6 +263,85 @@ class AttributeRepository extends FlexibleAttributeRepository implements
     }
 
     /**
+     * Get attribute as array indexed by code
+     *
+     * @param boolean $withLabel translated label should be joined
+     * @param string  $locale    the locale code of the label
+     * @param array   $ids       the attribute ids
+     *
+     * @return array
+     */
+    public function getAttributesAsArray($withLabel = false, $locale = null, array $ids = [])
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att')
+            ->from($this->_entityName, 'att', 'att.code');
+        if (!empty($ids)) {
+            $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+        }
+        $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+
+        if ($withLabel) {
+            $labelExpr = 'COALESCE(trans.label, CONCAT(\'[\', att.code, \']\'))';
+            $qb = $this->_em->createQueryBuilder()
+                ->select('att.code', sprintf('%s as label', $labelExpr))
+                ->from($this->_entityName, 'att', 'att.code')
+                ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+                ->setParameter('locale', $locale);
+            if (!empty($ids)) {
+                $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
+            }
+            $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+            foreach ($labels as $code => $data) {
+                $results[$code]['label'] = $data['label'];
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * Get ids of attributes useable in grid
+     *
+     * @return array
+     */
+    public function getAttributeIdsUseableInGrid()
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id');
+
+        $qb->andWhere(
+            "att.useableAsGridColumn = 1 ".
+            "OR att.useableAsGridFilter = 1 ".
+            "OR att.attributeType = 'pim_catalog_simpleselect'"
+        );
+        $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
+     * Get ids from codes
+     *
+     * @param mixed $codes the attribute codes
+     *
+     * @return array
+     */
+    public function getAttributeIds($codes)
+    {
+        $qb = $this->_em->createQueryBuilder()
+            ->select('att.id')
+            ->from($this->_entityName, 'att', 'att.id')
+            ->andWhere('att.code IN (:codes)');
+
+        $parameters = ['codes' => $codes];
+        $result = $qb->getQuery()->execute($parameters, AbstractQuery::HYDRATE_ARRAY);
+
+        return array_keys($result);
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -283,5 +368,30 @@ class AttributeRepository extends FlexibleAttributeRepository implements
             ->leftJoin('attributeGroup.translations', 'gt', 'WITH', 'gt.locale = :localeCode');
 
         return $qb;
+    }
+
+    /**
+     * Get the identifier attribute
+     * Only one identifier attribute can exists
+     *
+     * @return AbstractAttribute
+     */
+    public function getIdentifier()
+    {
+        return $this->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+    }
+
+    /**
+     * Get the identifier code
+     *
+     * @return string
+     */
+    public function getIdentifierCode()
+    {
+        if (null === $this->identifierCode) {
+            $this->identifierCode = $this->getIdentifier()->getCode();
+        }
+
+        return $this->identifierCode;
     }
 }

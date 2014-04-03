@@ -2,7 +2,7 @@
 
 namespace Context;
 
-use Behat\Behat\Context\Step\Then;
+use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
@@ -46,8 +46,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->wait();
         if ($count > 10) {
-            $this->datagrid->changePageSize(100);
-            $this->wait();
+            $this->iChangePageSize(100);
         }
 
         assertEquals(
@@ -281,15 +280,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iShouldBeAbleToSortTheRowsBy($columns)
     {
         $steps = array(
-            new Then(sprintf('the rows should be sortable by %s', $columns))
+            new Step\Then(sprintf('the rows should be sortable by %s', $columns))
         );
         $columns = $this->getMainContext()->listToArray($columns);
 
         foreach ($columns as $column) {
-            $steps[] = new Then(sprintf('I sort by "%s" value ascending', $column));
-            $steps[] = new Then(sprintf('the rows should be sorted ascending by %s', $column));
-            $steps[] = new Then(sprintf('I sort by "%s" value descending', $column));
-            $steps[] = new Then(sprintf('the rows should be sorted descending by %s', $column));
+            $steps[] = new Step\Then(sprintf('I sort by "%s" value ascending', $column));
+            $steps[] = new Step\Then(sprintf('the rows should be sorted ascending by %s', $column));
+            $steps[] = new Step\Then(sprintf('I sort by "%s" value descending', $column));
+            $steps[] = new Step\Then(sprintf('the rows should be sorted descending by %s', $column));
         }
 
         return $steps;
@@ -309,14 +308,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
-            $steps[] = new Then(sprintf('I show the filter "%s"', $filter));
-            $steps[] = new Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
-            $steps[] = new Then(sprintf('the grid should contain %d elements', $count));
-            $steps[] = new Then(sprintf('I should see entities %s', $item['result']));
-            $steps[] = new Then(sprintf('I hide the filter "%s"', $filter));
+            $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
+            $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
+            $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
+            $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
+            $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
         }
 
         return $steps;
+    }
+
+    /**
+     * @param string $size
+     *
+     * @When /^I change (?:the) page size to (.*)$/
+     */
+    public function iChangePageSize($size)
+    {
+        $this->datagrid->changePageSize((int) $size);
+        $this->wait();
     }
 
     /**
@@ -370,8 +380,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $elements = $this->getMainContext()->listToArray($elements);
 
         if (count($elements) > 10) {
-            $this->datagrid->changePageSize(100);
-            $this->wait();
+            $this->iChangePageSize(100);
         }
 
         foreach ($elements as $element) {
@@ -554,6 +563,92 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $this->datagrid->openColumnsPopin();
         $this->wait();
         $this->datagrid->moveColumn($source, $target);
+        $this->wait();
+    }
+
+    /**
+     * @param string $entities
+     *
+     * @return Then[]
+     *
+     * @When /^I mass-edit products? (.*)$/
+     */
+    public function iMassEdit($entities)
+    {
+        return [
+            new Step\Then('I change the page size to 100'),
+            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then('I press mass-edit button')
+        ];
+    }
+
+    /**
+     * @When /^I press mass-edit button$/
+     */
+    public function iPressMassEditButton()
+    {
+        $this->getCurrentPage()->massEdit();
+        $this->wait();
+    }
+
+    /**
+     * @param string $entities
+     *
+     * @Then /^I select rows? (.*)$/
+     */
+    public function iSelectRows($entities)
+    {
+        foreach ($this->getMainContext()->listToArray($entities) as $entity) {
+            $this->getCurrentPage()->selectRow($entity);
+        }
+    }
+
+    /**
+     * @Then /^I select all visible products$/
+     */
+    public function iSelectAllVisible()
+    {
+        $this->getCurrentPage()->selectAllVisible();
+    }
+
+    /**
+     * @Then /^I select none product$/
+     */
+    public function iSelectNone()
+    {
+        $this->getCurrentPage()->selectNone();
+    }
+
+    /**
+     * @Then /^I select all products$/
+     */
+    public function iSelectAll()
+    {
+        $this->getCurrentPage()->selectAll();
+    }
+
+    /**
+     * @param string $entities
+     *
+     * @return Then[]
+     *
+     * @When /^I mass-delete products? (.*)$/
+     */
+    public function iMassDelete($entities)
+    {
+        return [
+            new Step\Then('I change the page size to 100'),
+            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then('I press mass-delete button')
+        ];
+    }
+
+    /**
+     * @When /^I press mass-delete button$/
+     */
+    public function iPressMassDeleteButton()
+    {
+        $this->getCurrentPage()->massDelete();
         $this->wait();
     }
 

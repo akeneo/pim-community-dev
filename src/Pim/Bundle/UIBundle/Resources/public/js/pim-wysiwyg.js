@@ -1,6 +1,8 @@
 define(
-    ['underscore', 'backbone', 'tinymce'],
-    function(_, Backbone) {
+    ['jquery', 'underscore', 'backbone', 'tinymce'],
+    function($, _, Backbone) {
+        'use strict';
+
         var config = {
             plugins:   'link preview code paste',
             statusbar: true,

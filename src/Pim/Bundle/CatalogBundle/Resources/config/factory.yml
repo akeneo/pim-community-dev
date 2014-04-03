@@ -1,6 +1,9 @@
 parameters:
     pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
+    pim_catalog.factory.referenced_collection.class: Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory
+    pim_catalog.factory.completeness.class:          Pim\Bundle\CatalogBundle\Factory\CompletenessFactory
+    pim_catalog.factory.attribute_type.class:        Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory
 
 services:
     pim_catalog.factory.family:
@@ -12,3 +15,15 @@ services:
 
     pim_catalog.factory.attribute_requirement:
         class: %pim_catalog.factory.attribute_requirement.class%
+
+    pim_catalog.factory.referenced_collection:
+        class: %pim_catalog.factory.referenced_collection.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+
+    pim_catalog.factory.completeness:
+        class: %pim_catalog.factory.completeness.class%
+
+    pim_catalog.factory.attribute_type:
+        class: %pim_catalog.factory.attribute_type.class%
+        arguments: ['@service_container', ~]

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\PriceCollectionType;
 
 /**
@@ -36,7 +36,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
     public function testBuildValueFormType()
     {
         $factory = $this->getFormFactoryMock();
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => 'bar',
                 'backendType' => 'foo'
@@ -71,7 +71,7 @@ class PriceCollectionTypeTest extends AttributeTypeTestCase
     public function testBuildAttributeFormTypes()
     {
         $this->assertCount(
-            8,
+            7,
             $this->target->buildAttributeFormTypes(
                 $this->getFormFactoryMock(),
                 $this->getAttributeMock(null, null)

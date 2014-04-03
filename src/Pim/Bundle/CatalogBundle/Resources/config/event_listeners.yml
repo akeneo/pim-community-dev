@@ -1,0 +1,59 @@
+parameters:
+    pim_catalog.event_listener.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber
+    pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\MetricBaseValuesSubscriber
+    pim_catalog.event_listener.localizable.class:                  Pim\Bundle\CatalogBundle\EventListener\LocalizableListener
+    pim_catalog.event_listener.scopable.class:                     Pim\Bundle\CatalogBundle\EventListener\ScopableListener
+    pim_catalog.event_listener.timestampable.class:                Pim\Bundle\CatalogBundle\EventListener\TimestampableListener
+    pim_catalog.event_listener.initialize_values.class:            Pim\Bundle\CatalogBundle\EventListener\InitializeValuesListener
+    pim_catalog.event_listener.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventListener\OutdateIndexedValuesListener
+
+services:
+    # Subscribers
+    pim_catalog.event_listener.create_attribute_requirement:
+        class: %pim_catalog.event_listener.create_attribute_requirement.class%
+        arguments:
+            - '@pim_catalog.factory.attribute_requirement'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    pim_catalog.event_listener.metric_base_values:
+        class: %pim_catalog.event_listener.metric_base_values.class%
+        arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.localizable:
+        class: %pim_catalog.event_listener.localizable.class%
+        arguments:
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.scopable:
+        class: %pim_catalog.event_listener.scopable.class%
+        arguments:
+            - '@pim_catalog.context.catalog'
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.timestampable:
+        class: %pim_catalog.event_listener.timestampable.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_catalog.event_listener.initialize_values:
+        class: %pim_catalog.event_listener.initialize_values.class%
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pim_catalog.event_listener.outdate_indexed_values:
+        class: %pim_catalog.event_listener.outdate_indexed_values.class%
+        tags:
+            - { name: doctrine.event_subscriber }
+            - { name: doctrine_mongodb.odm.event_subscriber }

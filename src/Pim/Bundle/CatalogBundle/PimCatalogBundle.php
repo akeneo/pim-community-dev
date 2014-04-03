@@ -4,8 +4,8 @@ namespace Pim\Bundle\CatalogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
+use Pim\Bundle\CatalogBundle\DependencyInjection\Compiler;
 
 /**
  * Pim Catalog Bundle
@@ -20,22 +20,48 @@ class PimCatalogBundle extends Bundle
     const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
 
     /** @staticvar string */
-    const VERSION = '1.0.0';
+    const VERSION = '1.1.0-DEV';
 
     /** @staticvar string */
-    const VERSION_CODENAME = 'Hare We Go';
+    const VERSION_CODENAME = '';
 
     /** @staticvar string */
     const MAJOR_VERSION = '1';
 
     /** @staticvar string */
-    const MINOR_VERSION = '0';
+    const MINOR_VERSION = '1';
 
     /** @staticvar string */
     const PATCH_VERSION = '0';
 
     /** @staticvar string */
     const EXTRA_VERSION = '';
+
+    /** @staticvar string */
+    const ODM_ENTITIES_TYPE = 'entities';
+
+    /** @staticvar string */
+    const ODM_ENTITY_TYPE = 'entity';
+
+    /**
+     * Register cuctom doctrine types
+     */
+    public function __construct()
+    {
+        if (class_exists('\Doctrine\ODM\MongoDB\Types\Type')) {
+
+            \Doctrine\ODM\MongoDB\Types\Type::registerType(
+                self::ODM_ENTITIES_TYPE,
+                'Pim\Bundle\CatalogBundle\MongoDB\Type\Entities'
+            );
+
+            \Doctrine\ODM\MongoDB\Types\Type::registerType(
+                self::ODM_ENTITY_TYPE,
+                'Pim\Bundle\CatalogBundle\MongoDB\Type\Entity'
+            );
+
+        }
+    }
 
     /**
      * {@inheritdoc}
@@ -44,7 +70,8 @@ class PimCatalogBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
-            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass());
+            ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
+            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'

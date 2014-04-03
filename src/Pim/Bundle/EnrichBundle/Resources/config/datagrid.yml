@@ -2,8 +2,6 @@ datagrid:
     translatable-entity-grid:
         options:
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             type:              pim_orm
             repository_method: createDatagridQueryBuilder
@@ -156,8 +154,6 @@ datagrid:
         options:
             entityHint: channel
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_channel_index
             type: pim_orm
@@ -230,10 +226,6 @@ datagrid:
             requireJSModules:
                 - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
-                - pim/datagrid/state-listener
-            exportAction:
-                label: Export CSV
-                icon:  download
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
@@ -241,12 +233,13 @@ datagrid:
             repository_method: createDatagridQueryBuilder
         columns:
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -267,9 +260,7 @@ datagrid:
                 frontend_type: date
             groups:
                 label:         Groups
-                type:          flexible_twig
-                template:      PimDataGridBundle:Property:pim_catalog_groups.html.twig
-                frontend_type: html
+                type:          product_groups
                 selector:      product_groups
         properties:
             id: ~
@@ -306,9 +297,8 @@ datagrid:
         mass_actions:
             delete:
                 type: delete
-                label: Delete
+                label: pim.grid.mass_action.delete
                 entity_name: product
-                data_identifier: p
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?
@@ -318,38 +308,49 @@ datagrid:
                     empty_selection: No products selected
                 launcherOptions:
                     icon: trash
-            export:
+
+            quick_export_csv:
                 type: export
-                label: Export CSV
+                label: pim.grid.mass_action.quick_export.csv_all
                 icon: download
-                data_identifier: p
-                frontend_type: export
+                handler: product_quick_export
+                route: pim_datagrid_export_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
                 messages:
                     empty_selection: No products selected
+
             mass_edit:
-                type: redirect
-                label: Mass Edit
+                type: edit
+                label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
         sorters:
             columns:
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
+                    sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
+                    sorter:    product_field
             default:
-                id: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+                updated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -359,29 +360,30 @@ datagrid:
                 groups:
                     type:      product_groups
                     label:     Groups
-                    data_name: filterGroups
+                    data_name: groups
                     options:
                         field_options:
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
                                 1: Enabled
                                 0: Disabled
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
                         field_options:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
                 category:
-                    type:      category
+                    type:      product_category
                     label:     Category
                     data_name: category
                 completeness:
@@ -389,15 +391,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
 
     product-group-grid:
         options:
@@ -424,17 +426,19 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -459,28 +463,33 @@ datagrid:
             columns:
                 in_group:
                     data_name: in_group
+                    sorter:    product_in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
+                    sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
+                    sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 in_group:
-                    type:      boolean
-                    label:     In group
-                    data_name: in_group
-                    filter_by_having: true
+                    type:        product_in_group
+                    parent_type: boolean
+                    label:       In group
+                    data_name:   in_group
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -488,9 +497,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
@@ -501,17 +511,17 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
@@ -534,6 +544,8 @@ datagrid:
             type:              pim_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
+            repository_parameters:
+                - currentGroup
         columns:
             is_checked:
                 frontend_type: boolean
@@ -542,17 +554,19 @@ datagrid:
             in_group:
                 label:         In group
                 data_name:     in_group
-                editable:      true
+                selector:      product_in_group
                 type:          twig
+                primary:       true
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -577,28 +591,33 @@ datagrid:
             columns:
                 in_group:
                     data_name: in_group
+                    sorter:    product_in_group
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
+                    sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
+                    sorter:    product_field
             default:
                 in_group: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 in_group:
-                    type:      boolean
-                    label:     In group
-                    data_name: in_group
-                    filter_by_having: true
+                    type:        product_in_group
+                    parent_type: boolean
+                    label:       In group
+                    data_name:   in_group
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -606,9 +625,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
@@ -619,17 +639,17 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    label: Created At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    label: Updated At
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
@@ -640,8 +660,6 @@ datagrid:
         options:
             entityHint: family
             locale_parameter: localeCode
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_family_index
             type: pim_orm
@@ -710,8 +728,6 @@ datagrid:
     currency-grid:
         options:
             entityHint: currency
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_currency_index
             type: pim_orm
@@ -764,8 +780,6 @@ datagrid:
     locale-grid:
         options:
             entityHint: locale
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_locale_index
             type: pim_orm
@@ -803,8 +817,6 @@ datagrid:
     group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm
@@ -873,8 +885,6 @@ datagrid:
     variant-group-grid:
         options:
             entityHint: group
-            requireJSModules:
-                - pim/datagrid/state-listener
         source:
             acl_resource: pim_enrich_group_index
             type: pim_orm
@@ -954,6 +964,8 @@ datagrid:
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
+            repository_parameters:
+                - product
         columns:
             is_checked:
                 frontend_type: boolean
@@ -965,14 +977,15 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
-                editable:      true
+                primary:       true
             label:
-                label:     Label
-                data_name: productLabel
-                selector:  product_label
+                label:         Label
+                data_name:     productLabel
+                selector:      product_label
             family:
-                label:     Family
-                data_name: familyLabel
+                label:         Family
+                data_name:     familyLabel
+                selector:      product_family
             enabled:
                 label:         Status
                 type:          twig
@@ -997,17 +1010,25 @@ datagrid:
             columns:
                 is_associated:
                     data_name: is_associated
+                    supported:
+                        eq:
+                            - %pim_catalog.storage_driver%
+                            - doctrine/orm
                 family:
                     data_name: familyLabel
+                    sorter:    product_family
                 enabled:
-                    data_name: p.enabled
+                    data_name: enabled
+                    sorter:    product_field
                 completeness:
                     data_name: ratio
                     sorter:    product_completeness
                 created:
-                    data_name: p.created
+                    data_name: created
+                    sorter:    product_field
                 updated:
-                    data_name: p.updated
+                    data_name: updated
+                    sorter:    product_field
             default:
                 is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
@@ -1017,8 +1038,12 @@ datagrid:
                     label:            Is associated
                     data_name:        is_associated
                     filter_by_having: true
+                    supported:
+                        eq:
+                            - %pim_catalog.storage_driver%
+                            - doctrine/orm
                 family:
-                    type:      choice
+                    type:      product_family
                     label:     Family
                     data_name: family
                     options:
@@ -1026,9 +1051,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:      choice
-                    label:     Status
-                    data_name: p.enabled
+                    type:        product_enabled
+                    parent_type: choice
+                    label:       Status
+                    data_name:   enabled
                     options:
                         field_options:
                             choices:
@@ -1039,15 +1065,17 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:             date
-                    data_name:        p.created
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   created
+                    label:       Created At
                 updated:
-                    type:             date
-                    data_name:        p.updated
-                    filter_by_having: true
+                    type:        product_date
+                    parent_type: date
+                    data_name:   updated
+                    label:       Updated At
                 scope:
-                    type:      scope
+                    type:      product_scope
                     label:     Scope
                     data_name: values.scope
                     options:
@@ -1077,6 +1105,7 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:boolean.html.twig
                 frontend_type: html
+                primary:       true
             code:
                 label: Code
             label:
@@ -1126,28 +1155,38 @@ datagrid:
             type: orm
             query:
                 select:
-                    - a.id
-                    - a.data as data
-                    - a.loggedAt
-                    - a.version
+                    - v.id
+                    - v.changeset as changeset
+                    - v.loggedAt
+                    - v.version
                     - >
                       CONCAT(
                         CONCAT(
                             CONCAT(u.firstName, ' '),
                             CONCAT(u.lastName, ' ')
                         ),
-                        CONCAT(' - ', u.email)
+                        CONCAT(
+                            CONCAT(' - ', u.email),
+                            CASE WHEN v.context IS NOT NULL THEN
+                                CONCAT(
+                                    CONCAT(' (', v.context),
+                                    ')'
+                                )
+                            ELSE
+                                ''
+                            END
+                        )
                       ) as author
                 from:
-                    - { table: OroDataAuditBundle:Audit, alias: a }
+                    - { table: PimVersioningBundle:Version, alias: v }
                 join:
                     left:
                         user:
-                            join: a.user
+                            join: v.user
                             alias: u
                 where:
                     and:
-                        - a.objectClass = :objectClass AND a.objectId = :objectId
+                        - v.resourceName = :objectClass AND v.resourceId = :objectId
         columns:
             version:
                 label: Version
@@ -1166,20 +1205,20 @@ datagrid:
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/old.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
             new:
                 label: New values
                 type: twig
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
                 frontend_type: html
-                data_name: data
+                data_name: changeset
         sorters:
             columns:
                 version:
-                    data_name: a.version
+                    data_name: v.version
                 author:
                     data_name: author
                 loggedAt:
-                    data_name: a.loggedAt
+                    data_name: v.loggedAt
             default:
                 loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

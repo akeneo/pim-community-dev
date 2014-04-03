@@ -7,6 +7,8 @@ parameters:
     pim_enrich.form.type.product_value_wysiwyg.class:          Pim\Bundle\EnrichBundle\Form\Type\WysiwygType
     pim_enrich.form.type.product_value_price.class:            Pim\Bundle\EnrichBundle\Form\Type\PriceType
     pim_enrich.form.type.product_value_price_collection.class: Pim\Bundle\EnrichBundle\Form\Type\PriceCollectionType
+    pim_enrich.form.type.product_value_metric.class:           Pim\Bundle\EnrichBundle\Form\Type\MetricType
+    pim_enrich.form.type.product_value_media.class:            Pim\Bundle\EnrichBundle\Form\Type\MediaType
 
     pim_enrich.form.type.attribute.class:        Pim\Bundle\EnrichBundle\Form\Type\AttributeType
     pim_enrich.form.type.currency.class:         Pim\Bundle\EnrichBundle\Form\Type\CurrencyType
@@ -20,8 +22,6 @@ parameters:
     pim_enrich.form.type.association_type.class: Pim\Bundle\EnrichBundle\Form\Type\AssociationTypeType
 
     pim_enrich.form.type.image.class:                               Pim\Bundle\EnrichBundle\Form\Type\ImageType
-    pim_enrich.form.type.edit_common_attributes.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
-    pim_enrich.form.type.add_to_groups.class:                       Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
     pim_enrich.form.type.conversion_units.class:                    Pim\Bundle\EnrichBundle\Form\Type\ConversionUnitsType
     pim_enrich.form.type.attribute_option.class:                    Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionType
     pim_enrich.form.type.attribute_option_create.class:             Pim\Bundle\EnrichBundle\Form\Type\AttributeOptionCreateType
@@ -33,11 +33,9 @@ parameters:
     pim_enrich.form.type.attribute_requirement.class:               Pim\Bundle\EnrichBundle\Form\Type\AttributeRequirementType
     pim_enrich.form.type.localized_collection.class:                Pim\Bundle\EnrichBundle\Form\Type\LocalizedCollectionType
 
-    pim_catalog.form.type.datagrid_configuration.class: Pim\Bundle\EnrichBundle\Form\Type\DatagridConfigurationType
-    pim_catalog.form.type.light_entity.class:           Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
+    pim_enrich.form.type.light_entity.class: Pim\Bundle\EnrichBundle\Form\Type\LightEntityType
 
-    pim_enrich.extension.type.media.class:  Pim\Bundle\EnrichBundle\Form\Type\MediaTypeExtension
-    pim_enrich.extension.type.metric.class: Pim\Bundle\EnrichBundle\Form\Type\MetricTypeExtension
+    pim_enrich.form.type.object_identifier.class: Pim\Bundle\EnrichBundle\Form\Type\ObjectIdentifierType
 
     pim_enrich.form.handler.attribute.class:        Pim\Bundle\EnrichBundle\Form\Handler\AttributeHandler
     pim_enrich.form.handler.attribute_group.class:  Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler
@@ -50,10 +48,10 @@ parameters:
 
     pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
     pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
 
-    pim_enrich.mass_edit_action.operator.class:               Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator
-    pim_enrich.mass_edit_action.change_status.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeStatus
-    pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\EditCommonAttributes
-    pim_enrich.mass_edit_action.classify.class:               Pim\Bundle\EnrichBundle\MassEditAction\Classify
-    pim_enrich.mass_edit_action.change_family.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeFamily
-    pim_enrich.mass_edit_action.add_to_groups.class:          Pim\Bundle\EnrichBundle\MassEditAction\AddToGroups
+    pim_enrich.form.type.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_enrich.form.type.add_to_groups.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
+    pim_enrich.form.type.change_family.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
+    pim_enrich.form.type.change_status.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
+    pim_enrich.form.type.classify.class:               Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType

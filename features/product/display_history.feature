@@ -11,7 +11,7 @@ Feature: Display the product history
     And I create a new product
     And I fill in the following information in the popin:
       | SKU | sandals-001 |
-    And I press the "Save" button
+    And I press the "Save" button in the popin
     And I edit the "sandals-001" product
     When I visit the "History" tab
     Then there should be 1 update

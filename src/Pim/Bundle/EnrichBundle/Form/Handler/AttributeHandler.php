@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 
 /**
@@ -163,7 +163,7 @@ class AttributeHandler
             }
         }
 
-        // Manually remove if option is removed
+        // Manually remove if option is removed from entity
         foreach ($oldOptions as $oldOption) {
             if (false === $entity->getOptions()->contains($oldOption)) {
                 $this->manager->remove($oldOption);

@@ -1,9 +1,11 @@
 parameters:
-    oro_user.form.type.user.class:                  Pim\Bundle\UserBundle\Form\Type\UserType
-    oro_user.form.handler.acl_role.class:           Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
-    pim_user.form.type.acl_collection.class:        Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
-    pim_user.context.user.class:                    Pim\Bundle\UserBundle\Context\UserContext
-    pim_user.event_listener.user_preferences.class: Pim\Bundle\UserBundle\EventListener\UserPreferencesListener
+    oro_user.form.type.user.class:                   Pim\Bundle\UserBundle\Form\Type\UserType
+    oro_user.form.handler.user.class:                Pim\Bundle\UserBundle\Form\Handler\UserHandler
+    oro_user.form.handler.acl_role.class:            Pim\Bundle\UserBundle\Form\Handler\AclRoleHandler
+    pim_user.form.type.acl_collection.class:         Pim\Bundle\UserBundle\Form\Type\PrivilegeCollectionType
+    pim_user.context.user.class:                     Pim\Bundle\UserBundle\Context\UserContext
+    pim_user.event_listener.user_preferences.class:  Pim\Bundle\UserBundle\EventListener\UserPreferencesListener
+    pim_user.form.subscriber.user_preferences.class: Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber
 
 services:
     pim_user.form.type.acl_collection:
@@ -24,6 +26,21 @@ services:
             - %locale%
         calls:
             - [ setRequest, ['@?request='] ]
+
+    oro_user.form.type.user:
+        scope: request
+        class: %oro_user.form.type.user.class%
+        arguments:
+            - '@security.context'
+            - '@request'
+            - '@pim_user.form.subscriber.user_preferences'
+        tags:
+            - { name: form.type, alias: oro_user_user }
+
+    pim_user.form.subscriber.user_preferences:
+        class: %pim_user.form.subscriber.user_preferences.class%
+        arguments:
+            - %pim_catalog.entity.category.class%
 
     pim_user.event_listener.user_preferences:
         class: %pim_user.event_listener.user_preferences.class%

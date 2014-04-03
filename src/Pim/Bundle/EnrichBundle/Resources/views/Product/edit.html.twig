@@ -22,11 +22,11 @@
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product'|trans })
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'product.title'|trans })
         }
     }) }}
 
-        {% set title = 'product'|trans %}
+        {% set title = 'product.title'|trans %}
 
         {% set buttons %}
             {{ elements.backLink(path('pim_enrich_product_index')) }}
@@ -80,7 +80,7 @@
         {% set left %}
             <ul class="inline">
                 <li>
-                    {{ 'family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+                    {{ 'Family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
                     {% if resource_granted('pim_enrich_product_change_family') %}
                         <i id="edit-family" class="icon-pencil"></i>
                     {% endif %}
@@ -88,7 +88,7 @@
 
                 {% if form.vars.value.groups|length != 0 %}
                 <li>
-                    {{ 'groups'|trans|capitalize }}:
+                    {{ 'Groups'|trans|capitalize }}:
                     {% for group in form.vars.value.groups %}
                         <a id="group-products-{{ group.id }}" href="#"
                         {% if group.type.isVariant %}

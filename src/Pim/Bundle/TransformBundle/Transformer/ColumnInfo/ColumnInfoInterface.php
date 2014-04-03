@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\ColumnInfo;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Interface for column info

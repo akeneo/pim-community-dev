@@ -16,7 +16,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
     public function testLoad()
     {
         $objectManager = $this->getMock('Doctrine\Common\Persistence\ObjectManager');
-        $entityCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\EntityCache')
+        $doctrineCache = $this->getMockBuilder('Pim\Bundle\TransformBundle\Cache\DoctrineCache')
             ->disableOriginalConstructor()
             ->getMock();
         $reader = $this->getMockBuilder('Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface')
@@ -24,7 +24,7 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $processor = $this->getMock('Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface');
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
-        $loader = new Loader($objectManager, $entityCache, $reader, $processor, $eventSubscriber, false);
+        $loader = new Loader($objectManager, $doctrineCache, $reader, $processor, $eventSubscriber, false);
 
         $reader->expects($this->once())
             ->method('setFilePath')

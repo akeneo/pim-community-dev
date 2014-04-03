@@ -33,9 +33,9 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('forms.yml');
         $loader->load('form_types.yml');
         $loader->load('datagrid_listeners.yml');
-        $loader->load('repositories.yml');
         $loader->load('colors.yml');
         $loader->load('attribute_icons.yml');
+        $loader->load('mass_actions.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
@@ -61,7 +61,6 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
             'LiipImagineBundle'              => 'liip_imagine',
             'GenemuFormBundle'               => 'genemu_form',
-            'OroSearchBundle'                => 'oro_search',
             'OroUIBundle'                    => 'oro_ui',
             'OroTranslationBundle'           => 'oro_translation',
             'JMSDiExtraBundle'               => 'jms_di_extra',

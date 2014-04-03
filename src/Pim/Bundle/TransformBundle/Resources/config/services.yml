@@ -1,14 +1,14 @@
 parameters:
-    pim_transform.cache.entity_cache.class:    Pim\Bundle\TransformBundle\Cache\EntityCache
+    pim_transform.cache.doctrine_cache.class: Pim\Bundle\TransformBundle\Cache\DoctrineCache
     pim_transform.cache.attribute_cache.class: Pim\Bundle\TransformBundle\Cache\AttributeCache
-    pim_transform.converter.metric.class:      Pim\Bundle\TransformBundle\Converter\MetricConverter
+    pim_transform.converter.metric.class: Pim\Bundle\TransformBundle\Converter\MetricConverter
 
 services:
 
-    pim_transform.cache.entity_cache:
-        class: %pim_transform.cache.entity_cache.class%
+    pim_transform.cache.doctrine_cache:
+        class: %pim_transform.cache.doctrine_cache.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_transform.cache.attribute_cache:
         class: %pim_transform.cache.attribute_cache.class%

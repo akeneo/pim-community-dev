@@ -300,11 +300,18 @@ class Edit extends Form
             ->findCompletenessCell($channelCode, $localeCode)
             ->find('css', 'div.progress-cell');
 
-        // check progress bar type
-        if (!$completenessCell->find('css', sprintf('div.bar-%s', $state))) {
-            throw new \InvalidArgumentException(
-                sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
-            );
+        if ("" === $state) {
+            if ($completenessCell->find('css', 'div.bar')) {
+                throw new \InvalidArgumentException(
+                    sprintf('No progress bar should be visible for %s:%s', $state, $channelCode, $localeCode)
+                );
+            }
+        } else {
+            if (!$completenessCell->find('css', sprintf('div.bar-%s', $state))) {
+                throw new \InvalidArgumentException(
+                    sprintf('Progress bar is not %s for %s:%s', $state, $channelCode, $localeCode)
+                );
+            }
         }
     }
 
@@ -322,14 +329,21 @@ class Edit extends Form
             ->findCompletenessCell($channelCode, $localeCode)
             ->find('css', 'div.progress-cell');
 
-        // check message displayed bottom to the progress bar
-        $infoPassed = ($info === 'Complete')
-            ? ($completenessCell->getText() === $info)
-            : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
-        if (!$infoPassed) {
-            throw new \InvalidArgumentException(
-                sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
-            );
+        if ($info === "Not yet calculated") {
+            if ($info != $completenessCell->getText()) {
+                throw new \InvalidArgumentException(
+                    sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
+                );
+            }
+        } else {
+            $infoPassed = ($info === 'Complete')
+                ? ($completenessCell->getText() === $info)
+                : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
+            if (!$infoPassed) {
+                throw new \InvalidArgumentException(
+                    sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
+                );
+            }
         }
     }
 
@@ -347,16 +361,23 @@ class Edit extends Form
             ->findCompletenessCell($channelCode, $localeCode)
             ->find('css', 'div.progress-cell');
 
-        // check progress bar width
-        $title = $completenessCell
-            ->find('css', 'div.progress')
-            ->getAttribute('data-original-title');
+        if ("" === $ratio) {
+            if (is_object($completenessCell->find('css', 'div.progress'))) {
+                throw new \InvalidArgumentException(
+                    sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
+                );
+            }
+        } else {
+            $title = $completenessCell
+                ->find('css', 'div.progress')
+                ->getAttribute('data-original-title');
 
-        $pattern = sprintf('/^%s complete/', $ratio);
-        if (!$title || preg_match($pattern, $title) !== 1) {
-            throw new \InvalidArgumentException(
-                sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
-            );
+            $pattern = sprintf('/^%s complete/', $ratio);
+            if (!$title || preg_match($pattern, $title) !== 1) {
+                throw new \InvalidArgumentException(
+                    sprintf('Ratio %s not found for %s:%s', $ratio, $channelCode, $localeCode)
+                );
+            }
         }
     }
 
@@ -556,31 +577,5 @@ class Edit extends Form
         }
 
         return $this->find('css', sprintf('#%s', $scopeLabel->getAttribute('for')));
-    }
-
-    /**
-     * @param string $item
-     * @param string $button
-     *
-     * @throws \InvalidArgumentException
-     *
-     * @return NodeElement
-     */
-    public function getDropdownButtonItem($item, $button)
-    {
-        $dropdown = $this
-            ->find('css', sprintf('div.btn-group:contains("%s")', $button));
-
-        if (!$dropdown || !$dropdown->find('css', 'button.dropdown-toggle')) {
-            throw new \InvalidArgumentException(sprintf('Dropdown button "%s" not found', $button));
-        }
-        $dropdown->find('css', 'button.dropdown-toggle')->click();
-
-        $listItem = $dropdown->find('css', sprintf('li:contains("%s") a', $item));
-        if (!$listItem) {
-            throw new \InvalidArgumentException(sprintf('Item "%s" of dropdown button "%s" not found', $item, $button));
-        }
-
-        return $listItem;
     }
 }

@@ -56,16 +56,6 @@ class LoadUserData extends AbstractInstallerFixture
     }
 
     /**
-     * Create a user
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\User
-     */
-    protected function createUser()
-    {
-        return $this->getUserManager()->createUser();
-    }
-
-    /**
      * Build the user entity from data
      *
      * @param array $data
@@ -74,7 +64,7 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function buildUser(array $data)
     {
-        $user = $this->createUser();
+        $user = $this->getUserManager()->createUser();
 
         $owner = $this->getOwner($data['owner']);
         $role  = $this->getRole($data['role']);
@@ -131,35 +121,18 @@ class LoadUserData extends AbstractInstallerFixture
     }
 
     /**
-     * Get the locale manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\LocaleManager
-     */
-    protected function getLocaleManager()
-    {
-        return $this->container->get('pim_catalog.manager.locale');
-    }
-
-    /**
      * Get locale entity from locale code
      *
      * @param string $localeCode
      *
-     * @return \Pim\Bundle\CatalogBundle\Manager\Locale
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
      */
     protected function getLocale($localeCode)
     {
-        return $this->getLocaleManager()->getLocaleByCode($localeCode);
-    }
+        $localeManager = $this->container->get('pim_catalog.manager.locale');
+        $locale        = $localeManager->getLocaleByCode($localeCode);
 
-    /**
-     * Get the channel manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\ChannelManager
-     */
-    protected function getChannelManager()
-    {
-        return $this->container->get('pim_catalog.manager.channel');
+        return $locale ? $locale : current($localeManager->getActiveLocales());
     }
 
     /**
@@ -171,17 +144,10 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getChannel($channelCode)
     {
-        return $this->getChannelManager()->getChannelByCode($channelCode);
-    }
+        $channelManager = $this->container->get('pim_catalog.manager.channel');
+        $channel        = $channelManager->getChannelByCode($channelCode);
 
-    /**
-     * Get the category manager
-     *
-     * @return \Pim\Bundle\CatalogBundle\Manager\CategoryManager
-     */
-    protected function getCategoryManager()
-    {
-        return $this->container->get('pim_catalog.manager.category');
+        return $channel ? $channel : current($channelManager->getChannels());
     }
 
     /**
@@ -193,6 +159,9 @@ class LoadUserData extends AbstractInstallerFixture
      */
     protected function getTree($categoryCode)
     {
-        return $this->getCategoryManager()->getTreeByCode($categoryCode);
+        $categoryManager = $this->container->get('pim_catalog.manager.category');
+        $category        = $categoryManager->getTreeByCode($categoryCode);
+
+        return $category ? $category : current($categoryManager->getTrees());
     }
 }

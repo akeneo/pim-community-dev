@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
-use Pim\Bundle\TransformBundle\Cache\EntityCache;
+use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 
 /**
@@ -24,18 +24,18 @@ use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 class RelationTransformer implements PropertyTransformerInterface
 {
     /**
-     * @var EntityCache
+     * @var DoctrineCache
      */
-    protected $entityCache;
+    protected $doctrineCache;
 
     /**
      * Constructor
      *
-     * @param EntityCache $entityCache
+     * @param DoctrineCache $doctrineCache
      */
-    public function __construct(EntityCache $entityCache)
+    public function __construct(DoctrineCache $doctrineCache)
     {
-        $this->entityCache = $entityCache;
+        $this->doctrineCache = $doctrineCache;
     }
 
     /**
@@ -78,16 +78,16 @@ class RelationTransformer implements PropertyTransformerInterface
      */
     protected function doTransform($value, $class, $multiple, $referencePrefix)
     {
-        $getEntity = function ($value) use ($class, $referencePrefix) {
-            $entity = $this->getEntity($class, $referencePrefix . $value);
-            if (!$entity) {
+        $findObject = function ($value) use ($class, $referencePrefix) {
+            $object = $this->findObject($class, $referencePrefix . $value);
+            if (!$object) {
                 throw new PropertyTransformerException(
-                    'No entity of class "%class%" with code "%code%"',
+                    'No object of class "%class%" with code "%code%"',
                     array('%class%' => $class, '%code%' => $referencePrefix . $value)
                 );
             }
 
-            return $entity;
+            return $object;
         };
 
         if ($multiple && !is_array($value)) {
@@ -95,20 +95,20 @@ class RelationTransformer implements PropertyTransformerInterface
         }
 
         return $multiple
-            ? array_map($getEntity, $value)
-            : $getEntity($value);
+            ? array_map($findObject, $value)
+            : $findObject($value);
     }
 
     /**
-     * Finds the entity in the database
+     * Finds the object in the cache
      *
      * @param string $class
      * @param string $value
      *
      * @return object
      */
-    protected function getEntity($class, $value)
+    protected function findObject($class, $value)
     {
-        return $this->entityCache->find($class, $value);
+        return $this->doctrineCache->find($class, $value);
     }
 }

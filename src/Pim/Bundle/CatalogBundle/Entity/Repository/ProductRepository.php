@@ -2,15 +2,18 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\FlexibleEntityRepository;
+use Doctrine\ORM\Tools\Pagination\Paginator;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Product repository
@@ -19,14 +22,15 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductRepository extends FlexibleEntityRepository implements
+class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @var string
-     */
-    private $identifierCode;
+    /** @param ProductQueryBuilder $productQB */
+    protected $productQB;
+
+    /** @param AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * {@inheritdoc}
@@ -141,6 +145,39 @@ class ProductRepository extends FlexibleEntityRepository implements
      */
     public function getFullProduct($id)
     {
+        $qb = $this->getFullProductQB();
+
+        return $qb
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->getFullProductQB();
+        $qb
+            ->addSelect('c, assoc, g')
+            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('p.categories', 'c')
+            ->leftJoin('p.associations', 'assoc')
+            ->leftJoin('p.groups', 'g')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get full product query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getFullProductQB()
+    {
         return $this
             ->createQueryBuilder('p')
             ->select('p, f, v, pr, m, o, os')
@@ -149,11 +186,7 @@ class ProductRepository extends FlexibleEntityRepository implements
             ->leftJoin('v.prices', 'pr')
             ->leftJoin('v.media', 'm')
             ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->leftJoin('v.options', 'os');
     }
 
     /**
@@ -271,75 +304,7 @@ class ProductRepository extends FlexibleEntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifierCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->getAttributeClass()
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
-        }
-
-        return $this->identifierCode;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countProductsPerChannels()
-    {
-        $sql = <<<SQL
-SELECT ch.label, COUNT(DISTINCT p.id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    WHERE p.is_enabled = 1
-    GROUP BY ch.id, ch.label
-SQL;
-
-        $sql = $this->prepareDBALQuery($sql);
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function countCompleteProductsPerChannels()
-    {
-        $sql = <<<SQL
-    SELECT ch.label, lo.code as locale, COUNT(DISTINCT co.product_id) as total FROM pim_catalog_channel ch
-    JOIN pim_catalog_category ca ON ca.root = ch.category_id
-    JOIN %category_join_table% cp ON cp.category_id = ca.id
-    JOIN %product_table% p ON p.id = cp.product_id
-    JOIN pim_catalog_channel_locale cl ON cl.channel_id = ch.id
-    JOIN pim_catalog_locale lo ON lo.id = cl.locale_id
-    LEFT JOIN pim_catalog_completeness co
-        ON co.locale_id = lo.id AND co.channel_id = ch.id AND co.product_id = p.id AND co.ratio = 100
-    WHERE p.is_enabled = 1
-    GROUP BY ch.id, lo.id, ch.label, lo.code
-SQL;
-        $sql = $this->prepareDBALQuery($sql);
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        return $stmt->fetchAll();
+        return array($this->getAttributeRepository()->getIdentifierCode());
     }
 
     /**
@@ -359,13 +324,20 @@ SQL;
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
+        $familyMapping = $this->getClassMetadata()->getAssociationMapping('family');
+        $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
+
+        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
+
         return strtr(
             $sql,
             [
-                '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata()->getTableName(),
-                '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $valueMetadata->getTableName()
+                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
+                '%product_table%'          => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%'    => $valueMetadata->getTableName(),
+                '%attribute_table%'        => $attributeMetadata->getTableName(),
+                '%family_table%'           => $familyMetadata->getTableName(),
+                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
             ]
         );
     }
@@ -393,6 +365,20 @@ SQL;
     }
 
     /**
+     * Returns the Attribute
+     *
+     * @param string $code
+     *
+     * @return AbstractAttribute
+     */
+    protected function getAttributeByCode($code)
+    {
+        $repository = $this->getEntityManager()->getRepository($this->getAttributeClass());
+
+        return $repository->findOneByCode($code);
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()
@@ -400,14 +386,6 @@ SQL;
         $qb = $this->_em->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
-
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
-        $qb
-            ->addSelect('p')
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel');
 
         return $qb;
     }
@@ -421,22 +399,13 @@ SQL;
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
-        $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale');
-
         $isCheckedExpr =
             'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
             'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)'.
             'THEN true ELSE false END';
-
-        $inGroupExpr = 'CASE WHEN :currentGroup MEMBER OF p.groups THEN true ELSE false END';
-
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
-            ->addSelect($isCheckedExpr.' AS is_checked')
-            ->addSelect($inGroupExpr.' AS in_group');
+            ->addSelect($isCheckedExpr.' AS is_checked');
 
         return $qb;
     }
@@ -462,8 +431,6 @@ SQL;
             ->from($this->_entityName, 'p', 'p.id');
 
         $qb
-            ->leftJoin('p.family', 'family')
-            ->leftJoin('family.translations', 'ft', 'WITH', 'ft.locale = :dataLocale')
             ->leftJoin(
                 'Pim\Bundle\CatalogBundle\Model\Association',
                 'pa',
@@ -480,46 +447,10 @@ SQL;
         $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
 
         $qb
-            ->addSelect('COALESCE(ft.label, CONCAT(\'[\', family.code, \']\')) as familyLabel')
             ->addSelect($isCheckedExpr.' AS is_checked')
             ->addSelect($isAssociatedExpr.' AS is_associated');
 
         return $qb;
-    }
-
-    /**
-     * Add completeness joins to query builder
-     *
-     * @param QueryBuilder $qb                the query builder
-     * @param string       $completenessAlias the join alias
-     */
-    public function addCompleteness(QueryBuilder $qb, $completenessAlias)
-    {
-        $rootAlias         = $qb->getRootAlias();
-        $localeAlias       = $completenessAlias.'Locale';
-        $channelAlias      = $completenessAlias.'Channel';
-
-        $qb
-            ->leftJoin(
-                'PimCatalogBundle:Locale',
-                $localeAlias,
-                'WITH',
-                $localeAlias.'.code = :dataLocale'
-            )
-            ->leftJoin(
-                'PimCatalogBundle:Channel',
-                $channelAlias,
-                'WITH',
-                $channelAlias.'.code = :scopeCode'
-            )
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
-                $completenessAlias,
-                'WITH',
-                $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
-                $completenessAlias.'.channel = '.$channelAlias.'.id AND '.
-                $completenessAlias.'.product = '.$rootAlias.'.id'
-            );
     }
 
     /**
@@ -545,70 +476,402 @@ SQL;
     }
 
     /**
-     * Find all common attributes ids linked to a family
-     * A list of product ids can be passed as parameter
+     * @param integer $variantGroupId
      *
-     * @param array $productIds
-     *
-     * @return mixed
+     * @return array product ids
      */
-    public function findFamilyCommonAttributeIds(array $productIds)
+    public function getEligibleProductIdsForVariantGroup($variantGroupId)
+    {
+        $sql = 'SELECT count(ga.attribute_id) as nb '.
+            'FROM pim_catalog_group_attribute as ga '.
+            'WHERE ga.group_id = :groupId;';
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->execute();
+        $nbAxes = $stmt->fetch()['nb'];
+
+        $sql = 'SELECT v.entity_id '.
+            'FROM pim_catalog_group_attribute as ga '.
+            "LEFT JOIN %product_value_table% as v ON v.attribute_id = ga.attribute_id ".
+            'WHERE ga.group_id = :groupId '.
+            'GROUP BY v.entity_id '.
+            'having count(v.option_id) = :nbAxes ;';
+        $sql = $this->prepareDBALQuery($sql);
+
+        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt->bindValue('groupId', $variantGroupId);
+        $stmt->bindValue('nbAxes', $nbAxes);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $productIds = array_map(
+            function ($row) {
+                return $row['entity_id'];
+            },
+            $results
+        );
+
+        return $productIds;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByIds($qb, array $productIds, $include)
+    {
+        $rootAlias  = $qb->getRootAlias();
+        if ($include) {
+            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+
+        } else {
+            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $qb->andWhere($expression);
+        }
+    }
+
+    /**
+     * Set flexible query builder
+     *
+     * @param ProductQueryBuilder $productQB
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setProductQueryBuilder($productQB)
+    {
+        $this->productQB = $productQB;
+
+        return $this;
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    public function findAllByAttributes(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        return $this
+            ->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneBy(array $criteria)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('a.id, COUNT(a.id) AS COUNT_ATT')
-            ->innerJoin('p.family', 'f')
-            ->innerJoin('f.attributes', 'a')
-            ->groupBy('a.id');
-
-        if (!empty($productIds)) {
-            $qb->where($qb->expr()->in('p.id', $productIds));
-
-            $subQb = $this->createQueryBuilder('p_sub');
-            $subQb
-                ->select($subQb->expr()->count('f_sub.id'))
-                ->innerJoin('p_sub.family', 'f_sub')
-                ->where($subQb->expr()->in('p_sub.id', $productIds));
-
-            $qb->having('COUNT_ATT = ('. $subQb .')');
+        $pqb = $this->getProductQueryBuilder($qb);
+        foreach ($criteria as $field => $data) {
+            if (is_array($data)) {
+                $pqb->addAttributeFilter($data['attribute'], '=', $data['value']);
+            } else {
+                $pqb->addFieldFilter($field, '=', $data);
+            }
         }
+
+        $result = $qb->getQuery()->execute();
+
+        if (count($result) > 1) {
+            throw new \LogicException(
+                sprintf(
+                    'Many products have been found that match criteria:' . "\n" . '%s',
+                    print_r($criteria, true)
+                )
+            );
+        }
+
+        return reset($result);
+    }
+
+    /**
+     * Load a flexible entity with its attribute values
+     *
+     * @param integer $id
+     *
+     * @return Product|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneByWithValues($id)
+    {
+        $qb = $this->findAllByAttributesQB(array(), array('id' => $id));
+        $qb->leftJoin('Attribute.translations', 'AttributeTranslations');
+        $qb->leftJoin('Attribute.availableLocales', 'AttributeLocales');
+        $qb->addSelect('Value');
+        $qb->addSelect('Attribute');
+        $qb->addSelect('AttributeTranslations');
+        $qb->addSelect('AttributeLocales');
+        $qb->leftJoin('Attribute.group', 'AttributeGroup');
+        $qb->addSelect('AttributeGroup');
+        $qb->leftJoin('AttributeGroup.translations', 'AGroupTranslations');
+        $qb->addSelect('AGroupTranslations');
+
+        return $qb
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * @param QueryBuilder $qb
+     *
+     * @return ProductQueryBuilder
+     */
+    public function getProductQueryBuilder($qb)
+    {
+        if (!$this->productQB) {
+            throw new \LogicException('Product query builder must be configured');
+        }
+
+        $this->productQB->setQueryBuilder($qb);
+
+        return $this->productQB;
+    }
+
+    /**
+     * Add join to values tables
+     *
+     * @param QueryBuilder $qb
+     */
+    protected function addJoinToValueTables(QueryBuilder $qb)
+    {
+        $qb->leftJoin(current($qb->getRootAliases()).'.values', 'Value')
+            ->leftJoin('Value.attribute', 'Attribute')
+            ->leftJoin('Value.options', 'ValueOption')
+            ->leftJoin('ValueOption.optionValues', 'AttributeOptionValue');
+    }
+
+    /**
+     * Finds entities and attributes values by a set of criteria, same coverage than findBy
+     *
+     * @param array      $attributes attribute codes
+     * @param array      $criteria   criterias
+     * @param array|null $orderBy    order by
+     * @param int|null   $limit      limit
+     * @param int|null   $offset     offset
+     *
+     * @return array The objects.
+     */
+    protected function findAllByAttributesQB(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        $qb = $this->createQueryBuilder('Entity');
+        $this->addJoinToValueTables($qb);
+        $productQb = $this->getProductQueryBuilder($qb);
+
+        if (!is_null($criteria)) {
+            foreach ($criteria as $attCode => $attValue) {
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $productQb->addAttributeFilter($attribute, '=', $attValue);
+                } else {
+                    $productQb->addFieldFilter($attCode, '=', $attValue);
+                }
+            }
+        }
+        if (!is_null($orderBy)) {
+            foreach ($orderBy as $attCode => $direction) {
+                $attribute = $this->getAttributeByCode($attCode);
+                if ($attribute) {
+                    $productQb->addAttributeSorter($attribute, $direction);
+                } else {
+                    $productQb->addFieldSorter($attCode, $direction);
+                }
+            }
+        }
+
+        // use doctrine paginator to avoid count problem with left join of values
+        if (!is_null($offset) and !is_null($limit)) {
+            $qb->setFirstResult($offset)->setMaxResults($limit);
+            $paginator = new Paginator($qb->getQuery());
+
+            return $paginator;
+        }
+
+        return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function deleteFromIds(array $ids)
+    {
+        if (empty($ids)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->delete($this->_entityName, 'p')
+            ->where($qb->expr()->in('p.id', $ids));
 
         return $qb->getQuery()->execute();
     }
 
     /**
-     * Find all common attribute ids with values from a list of product ids
-     * Can't use ORM here because of QueryBuilder::from method which only take string
-     * Only DBAL layer is used
-     *
-     * @param array $productIds
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function findValuesCommonAttributeIds(array $productIds)
+    public function applyMassActionParameters($qb, $inset, $values)
     {
-        $sql = <<<SQL
-    SELECT a.id, COUNT(a.id) AS COUNT_ATT
-    FROM (
-        SELECT a.id FROM %product_table% p
-        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
-        INNER JOIN %attribute_table% a ON a.id = pv.attribute_id
-        WHERE p.id IN(%product_ids%)
-        GROUP BY p.id, a.id) a
-    GROUP BY a.id
-    HAVING COUNT_ATT = (
-        SELECT COUNT(p.id)
-        FROM %product_table% p
-        WHERE p.id IN(%product_ids%)
-    )
-SQL;
+        $rootAlias = $qb->getRootAlias();
+        if ($values) {
+            $valueWhereCondition =
+                $inset
+                ? $qb->expr()->in($rootAlias, $values)
+                : $qb->expr()->notIn($rootAlias, $values);
+            $qb->andWhere($valueWhereCondition);
+        }
 
-        $sql = strtr($sql, ['%product_ids%' => implode($productIds, ',')]);
-        $sql = $this->prepareDBALQuery($sql);
+        $qb
+            ->resetDQLPart('select')
+            ->resetDQLPart('from')
+            ->select($rootAlias)
+            ->from($this->_entityName, $rootAlias);
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        // Remove 'entityIds' part from querybuilder (added by flexible pager)
+        $whereParts = $qb->getDQLPart('where')->getParts();
+        $qb->resetDQLPart('where');
+
+        foreach ($whereParts as $part) {
+            if (!is_string($part) || !strpos($part, 'entityIds')) {
+                $qb->andWhere($part);
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAvailableAttributeIdsToExport(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('a.id')
+            ->innerJoin('p.values', 'v')
+            ->innerJoin('v.attribute', 'a')
+            ->where($qb->expr()->in('p.id', $productIds))
+            ->groupBy('a.id');
+
+        $attributes = $qb->getQuery()->getArrayResult();
+        $attributeIds = array();
+        foreach ($attributes as $attribute) {
+            $attributeIds[] = $attribute['id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Set attribute repository
+     *
+     * @param AttributeRepository $attributeRepository
+     *
+     * @return ProductRepository
+     */
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findCommonAttributeIds(array $productIds)
+    {
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%'  => count($productIds)
+            ]
+        );
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
+
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        $attributes = $stmt->fetchAll();
+        $attributeIds = array();
+        foreach ($attributes as $attributeId) {
+            $attributeIds[] = (int) $attributeId['a_id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Prepare SQL query to get common attributes
+     *
+     * - First subquery get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
+     *
+     * @return string
+     */
+    protected function prepareCommonAttributesSQLQuery()
+    {
+        $nonFamilyAttSql = <<<SQL
+    SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
+    FROM %product_table% p
+    INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+    LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+    WHERE p.id IN %product_ids%
+    AND fa.family_id IS NULL
+    GROUP BY p.id, a_id
+SQL;
+
+        $familyAttSql = <<<SQL
+    SELECT fa.attribute_id AS a_id, COUNT(fa.attribute_id) AS count_att
+    FROM %product_table% p
+    INNER JOIN %family_table% f ON f.id = p.family_id
+    INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+    WHERE p.id IN %product_ids%
+    GROUP BY a_id
+SQL;
+
+        $commonAttSql = <<<SQL
+    SELECT SUM(a.count_att) AS count_att, a.a_id
+    FROM (%non_family_att_sql% UNION ALL %family_att_sql%) a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
+
+        return strtr(
+            $commonAttSql,
+            [
+                '%non_family_att_sql%' => $nonFamilyAttSql,
+                '%family_att_sql%' => $familyAttSql
+            ]
+        );
     }
 }

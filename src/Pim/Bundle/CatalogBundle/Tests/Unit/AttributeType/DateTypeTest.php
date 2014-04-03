@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Tests\Unit\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\AbstractAttributeType;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\DateType;
 
 /**
@@ -50,7 +50,7 @@ class DateTypeTest extends AttributeTypeTestCase
     {
         $factory = $this->getFormFactoryMock();
         $data = '12/06/2013';
-        $value = $this->getFlexibleValueMock(
+        $value = $this->getProductValueMock(
             array(
                 'data'        => $data,
                 'backendType' => $this->backendType,
@@ -91,7 +91,7 @@ class DateTypeTest extends AttributeTypeTestCase
         );
 
         $this->assertCount(
-            8,
+            7,
             $attFormType
         );
     }

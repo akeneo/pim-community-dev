@@ -8,7 +8,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
@@ -239,7 +239,7 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     public function addProduct(ProductInterface $product)
     {
         if (!$this->products->contains($product)) {
-            $this->products[] = $product;
+            $this->products->add($product);
             $product->addGroup($this);
         }
 

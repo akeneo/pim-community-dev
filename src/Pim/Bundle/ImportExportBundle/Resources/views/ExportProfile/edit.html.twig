@@ -3,7 +3,7 @@
 {% set actionRoute = path('pim_importexport_export_profile_edit', { 'id': form.vars.value.id }) %}
 
 {% set entityName = 'export profile' %}
-{% set title = 'export profile.edit'|trans ~ ' - ' ~ form.vars.value.label %}
+{% set title = (entityName ~'.edit')|trans ~ ' - ' ~ form.vars.value.label %}
 
 {% set indexRoute = path('pim_importexport_export_profile_index') %}
 {% if form.vars.value.id %}

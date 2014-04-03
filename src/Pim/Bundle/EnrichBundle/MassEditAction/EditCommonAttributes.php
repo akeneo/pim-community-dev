@@ -4,9 +4,8 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -16,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Edit common attributes of given products
@@ -47,6 +47,11 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $userContext;
 
     /**
+     * @var CatalogContext
+     */
+    protected $catalogContext;
+
+    /**
      * @var CurrencyManager
      */
     protected $currencyManager;
@@ -73,17 +78,28 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductManager  $productManager
      * @param UserContext     $userContext
      * @param CurrencyManager $currencyManager
+     * @param CatalogContext  $catalogContext
      */
     public function __construct(
         ProductManager $productManager,
         UserContext $userContext,
-        CurrencyManager $currencyManager
+        CurrencyManager $currencyManager,
+        CatalogContext $catalogContext
     ) {
         $this->productManager      = $productManager;
         $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
         $this->displayedAttributes = new ArrayCollection();
+        $this->catalogContext      = $catalogContext;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function affectsCompleteness()
+    {
+        return true;
     }
 
     /**
@@ -210,9 +226,12 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function initialize(QueryBuilder $qb)
+    public function initialize()
     {
-        $productIds = $this->getProductIdsFromQB($qb);
+        $productIds = array();
+        foreach ($this->products as $product) {
+            $productIds[] = $product->getId();
+        }
         $this->initializeCommonAttributes($productIds);
 
         foreach ($this->commonAttributes as $attribute) {
@@ -221,33 +240,14 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * Get only product ids from query builder
-     *
-     * @param QueryBuilder $qb
-     *
-     * @return integer[]
-     */
-    protected function getProductIdsFromQB(QueryBuilder $qb)
-    {
-        $products = $qb->getQuery()->getResult();
-        $productIds = array();
-        foreach ($products as $product) {
-            $productIds[] = $product->getId();
-        }
-
-        return $productIds;
-    }
-
-    /**
      * {@inheritdoc}
      */
-    public function perform(QueryBuilder $qb)
+    public function perform()
     {
-        $products = $qb->getQuery()->getResult();
-        foreach ($products as $product) {
+        foreach ($this->products as $product) {
             $this->setProductValues($product);
         }
-        $this->productManager->handleAllMedia($products);
+        $this->productManager->handleAllMedia($this->products);
     }
 
     /**
@@ -264,7 +264,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         // Set attribute options locale
         $currentLocaleCode = $this->getLocale()->getCode();
-        $this->productManager->setLocale($currentLocaleCode);
+        $this->catalogContext->setLocaleCode($currentLocaleCode);
 
         // Get common attributes
         $attributes = $this->productManager->findCommonAttributes($productIds);

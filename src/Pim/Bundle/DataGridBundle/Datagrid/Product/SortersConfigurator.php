@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 
 /**
  * Sorters configurator for flexible grid
@@ -53,7 +52,8 @@ class SortersConfigurator implements ConfiguratorInterface
      */
     protected function addAttributeSorters()
     {
-        $attributes = $this->configuration->offsetGetByPath(ProductDatasource::USEABLE_ATTRIBUTES_PATH);
+        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
+        $attributes = $this->configuration->offsetGetByPath($path);
         $columns = $this->configuration->offsetGetByPath(
             sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY)
         );

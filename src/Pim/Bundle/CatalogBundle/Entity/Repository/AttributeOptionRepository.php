@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\UIBundle\Entity\Repository\OptionRepositoryInterface;
-use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository as FlexAttributeOptionRepository;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Repository for AttributeOption entity
@@ -12,7 +12,7 @@ use Pim\Bundle\FlexibleEntityBundle\Entity\Repository\AttributeOptionRepository 
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AttributeOptionRepository extends FlexAttributeOptionRepository implements
+class AttributeOptionRepository extends EntityRepository implements
     OptionRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
@@ -71,12 +71,12 @@ class AttributeOptionRepository extends FlexAttributeOptionRepository implements
     public function getOptionLabel($object, $dataLocale)
     {
         foreach ($object->getOptionValues() as $value) {
-            if ($dataLocale === $value->getLocale()) {
+            if ($dataLocale === $value->getLocale() && null !== $value->getValue()) {
                 return $value->getValue();
             }
         }
 
-        return $object->getCode();
+        return sprintf('[%s]', $object->getCode());
     }
 
     /**

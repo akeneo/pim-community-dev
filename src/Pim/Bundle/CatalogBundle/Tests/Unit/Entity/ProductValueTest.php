@@ -25,10 +25,10 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     /**
      * @test
      */
-    public function itShouldBeAnEntityFlexibleValue()
+    public function itShouldBeAProductValue()
     {
         $this->assertInstanceOf(
-            'Pim\Bundle\FlexibleEntityBundle\Entity\Mapping\AbstractEntityFlexibleValue',
+            'Pim\Bundle\CatalogBundle\Model\AbstractProductValue',
             $this->value
         );
     }
@@ -152,7 +152,7 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute
+     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
      */
     private function getAttributeMock()
     {

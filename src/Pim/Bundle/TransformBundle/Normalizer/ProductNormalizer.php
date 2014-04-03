@@ -3,7 +3,8 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Serializer\SerializerAwareInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 
@@ -14,189 +15,68 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /**
-     * @var array
-     */
-    protected $supportedFormats = array('json', 'xml');
+    /** @staticvar string */
+    const FIELD_FAMILY = 'family';
+
+    /** @staticvar string */
+    const FIELD_GROUPS = 'groups';
+
+    /** @staticvar string */
+    const FIELD_CATEGORY = 'categories';
+
+    /** @staticvar string */
+    const FIELD_ENABLED = 'enabled';
+
+    /** @staticvar string */
+    const FIELD_ASSOCIATIONS = 'associations';
+
+    /** @staticvar string */
+    const FIELD_VALUES = 'values';
+
+    /** @var SerializerInterface */
+    protected $serializer;
 
     /**
-     * @var Router
+     * @var string[] $supportedFormats
      */
-    protected $router;
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
-     * @var Channel
+     * {@inheritdoc}
      */
-    protected $channel;
-
-    /**
-     * @var string Locale code
-     */
-    protected $locale;
-
-    /**
-     * TODO : make that normalizer useable without channel and router (use context ?)
-     *
-     * Constructor
-     *
-     * @param Router $router
-     */
-    public function __construct(Router $router)
+    public function setSerializer(SerializerInterface $serializer)
     {
-        $this->router = $router;
-    }
-
-    /**
-     * Set channel to return product data for
-     *
-     * @param string $channel Channel code
-     *
-     * @return ProductNormalizer
-     */
-    public function setChannel(Channel $channel = null)
-    {
-        $this->channel = $channel;
-
-        return $this;
-    }
-
-    /**
-     * Set locale to return product data for
-     *
-     * @param string $locale Locale code
-     *
-     * @return ProductNormalizer
-     */
-    public function setLocale($locale = null)
-    {
-        if ($this->channel) {
-            $localeCodes = $this->getLocales();
-
-            if (in_array($locale, $localeCodes) || $locale === null) {
-                $this->locale = $locale;
-
-                return $this;
-            }
-        }
-
-        throw new \LogicException('This locale is not available for this channel');
-    }
-
-    /**
-     * Get an array of available locale codes
-     * @return array
-     */
-    public function getLocales()
-    {
-        return $this->locale ? array($this->locale) : $this->channel->getLocales()->map(
-            function ($locale) {
-                return $locale->getCode();
-            }
-        )->toArray();
+        $this->serializer = $serializer;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function normalize($product, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = [])
     {
-        $values = $this->filterValues($product->getValues());
-        $attributes = $this->getAttributes($values);
-        $locales = $this->getLocales();
-
-        $data = array();
-
-        foreach ($attributes as $attribute) {
-            $code = $attribute->getCode();
-
-            $attributeValues = $values->filter(
-                function ($value) use ($code) {
-                    return $value->getAttribute()->getCode() == $code;
-                }
-            );
-
-            foreach ($attributeValues as $value) {
-                $valueLocales = $value->getLocale() ? array($value->getLocale()): $locales;
-                $valueData = $this->normalizeValueData($value->getData());
-                foreach ($valueLocales as $valueLocale) {
-                    $data[$code][$valueLocale] = $valueData;
-                }
-            }
+        if (!$this->serializer instanceof NormalizerInterface) {
+            throw new \LogicException('Serializer must be a normalizer');
         }
 
-        $identifier = $product->getIdentifier();
+        $context['entity'] = 'product';
+        $data = [];
 
-        if ($this->router) {
-            $data['resource'] = $this->router->generate(
-                'oro_api_get_product',
-                array(
-                    'scope' => $this->channel->getCode(),
-                    'identifier' => $identifier->getData()
-                ),
-                true
-            );
+        $data[self::FIELD_FAMILY]   = $product->getFamily() ? $product->getFamily()->getCode() : null;
+        $data[self::FIELD_GROUPS]   = $product->getGroupCodes() ? explode(',', $product->getGroupCodes()) : [];
+        $data[self::FIELD_CATEGORY] = $product->getCategoryCodes() ? explode(',', $product->getCategoryCodes()) : [];
+        $data[self::FIELD_ENABLED]  = $product->isEnabled();
+
+        $data[self::FIELD_ASSOCIATIONS] = $this->normalizeAssociations($product->getAssociations());
+
+        $data[self::FIELD_VALUES] = $this->normalizeValues($product->getValues(), $format, $context);
+
+        if (isset($context['resource'])) {
+            $data['resource'] = $context['resource'];
         }
 
-        return array($identifier->getData() => $data);
-    }
-
-    /**
-     * Returns a subset of values that match the channel and locale requirements
-     *
-     * @param ArrayCollection $values
-     *
-     * @return ArrayCollection
-     */
-    public function filterValues($values)
-    {
-        if (!$this->channel) {
-            throw new \LogicException('You must specify a channel to return the product for');
-        }
-
-        $channelCode = $this->channel->getCode();
-
-        $values = $values->filter(
-            function ($value) use ($channelCode) {
-                return (!$value->getAttribute()->isScopable() || $value->getScope() == $channelCode);
-            }
-        );
-
-        $localeCodes = $this->getLocales();
-
-        $values = $values->filter(
-            function ($value) use ($localeCodes) {
-                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $localeCodes));
-            }
-        );
-
-        return $values;
-    }
-
-    /**
-     * Returns an array of all attrbutes for the provided values
-     *
-     * @param ArrayCollection $values
-     *
-     * @return array
-     */
-    public function getAttributes($values)
-    {
-        $attributes = $values->map(
-            function ($value) {
-                return $value->getAttribute();
-            }
-        );
-
-        $uniqueAttributes = array();
-        foreach ($attributes as $attribute) {
-            if (!array_key_exists($attribute->getCode(), $uniqueAttributes)) {
-                $uniqueAttributes[$attribute->getCode()] = $attribute;
-            }
-        }
-
-        return $uniqueAttributes;
+        return $data;
     }
 
     /**
@@ -208,28 +88,76 @@ class ProductNormalizer implements NormalizerInterface
     }
 
     /**
-     * Prepares value data form serialization
+     * Normalize the values of the product
      *
-     * @param mixed $data Data to normalize
+     * @param ArrayCollection $values
+     * @param string          $format
+     * @param array           $context
      *
-     * @return mixed $data Normalized data
+     * @return ArrayCollection
      */
-    protected function normalizeValueData($data)
+    protected function normalizeValues($values, $format, array $context = [])
     {
-        if ($data instanceof \Doctrine\Common\Collections\Collection) {
-            $items = array();
-            foreach ($data as $item) {
-                $items[] = (string) $item;
+        $locales  = isset($context['locales'])  ? $context['locales']  : [];
+        $channels = isset($context['channels']) ? $context['channels'] : [];
+        $values   = $this->filterValues($values, $channels, $locales);
+
+        $data = [];
+
+        foreach ($values as $value) {
+            $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
+        }
+
+        return $data;
+    }
+
+    /**
+     * Returns a subset of values that match the channel and locale requirements
+     *
+     * @param ArrayCollection $values
+     * @param string[]        $channels
+     * @param string[]        $locales
+     *
+     * @return ArrayCollection
+     */
+    protected function filterValues($values, array $channels = [], array $locales = [])
+    {
+        $values = $values->filter(
+            function ($value) use ($channels) {
+                return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
+            }
+        );
+
+        $values = $values->filter(
+            function ($value) use ($locales) {
+                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $locales));
+            }
+        );
+
+        return $values;
+    }
+
+    /**
+     * Normalize the associations of the product
+     *
+     * @param Association[] $associations
+     *
+     * @return array
+     */
+    protected function normalizeAssociations($associations = [])
+    {
+        $data = [];
+
+        foreach ($associations as $association) {
+            $code = $association->getAssociationType()->getCode();
+
+            foreach ($association->getGroups() as $group) {
+                $data[$code]['groups'][] = $group->getCode();
             }
 
-            return implode(', ', $items);
-        }
-
-        if (method_exists($data, '__toString')) {
-            return (string) $data;
-        }
-        if ($data instanceof \DateTime) {
-            return $data->format('c');
+            foreach ($association->getProducts() as $product) {
+                $data[$code]['products'][] = $product->getReference();
+            }
         }
 
         return $data;

@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
@@ -24,23 +24,23 @@ class AttributeNormalizer implements NormalizerInterface
     const ALL_LOCALES         = 'All';
 
     /**
-     * @var array
+     * @var array $supportedFormats
      */
     protected $supportedFormats = array('json', 'xml');
 
     /**
-     * @var TranslationNormalizer
+     * @var TranslationNormalizer $transNormalizer
      */
-    protected $translationNormalizer;
+    protected $transNormalizer;
 
     /**
      * Constructor
      *
-     * @param TranslationNormalizer $translationNormalizer
+     * @param TranslationNormalizer $transNormalizer
      */
-    public function __construct(TranslationNormalizer $translationNormalizer)
+    public function __construct(TranslationNormalizer $transNormalizer)
     {
-        $this->translationNormalizer = $translationNormalizer;
+        $this->transNormalizer = $transNormalizer;
     }
 
     /**
@@ -51,7 +51,7 @@ class AttributeNormalizer implements NormalizerInterface
         $results = array(
             'type' => $object->getAttributeType(),
             'code' => $object->getCode()
-        ) + $this->translationNormalizer->normalize($object, $format, $context);
+        ) + $this->transNormalizer->normalize($object, $format, $context);
 
         $results = array_merge(
             $results,
@@ -102,7 +102,6 @@ class AttributeNormalizer implements NormalizerInterface
 
         return array(
             'available_locales'   => $this->normalizeAvailableLocales($attribute),
-            'searchable'          => $attribute->isSearchable(),
             'localizable'         => $attribute->isLocalizable(),
             'scope'               => $attribute->isScopable() ? self::CHANNEL_SCOPE : self::GLOBAL_SCOPE,
             'options'             => $this->normalizeOptions($attribute),

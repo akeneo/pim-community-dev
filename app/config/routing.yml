@@ -1,14 +1,13 @@
 # PIM
 
+pim_datagrid:
+    resource: "@PimDataGridBundle/Resources/config/routing.yml"
+
 pim_enrich:
     resource: "@PimEnrichBundle/Resources/config/routing.yml"
 
 pim_ui:
     resource: "@PimUIBundle/Resources/config/routing.yml"
-
-pim_customentity:
-    prefix: /enrich
-    resource: "@PimCustomEntityBundle/Resources/config/routing.yml"
 
 pim_importexport:
     resource: "@PimImportExportBundle/Resources/config/routing.yml"

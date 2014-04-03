@@ -2,20 +2,21 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Imagine\Image\ImagineInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Media controller
@@ -35,6 +36,9 @@ class MediaController extends AbstractDoctrineController
     /** @var \Liip\ImagineBundle\Imagine\Cache\CacheManager */
     protected $cacheManager;
 
+    /** @var ObjectRepository */
+    protected $mediaRepository;
+
     /**
      * Constructor
      *
@@ -45,10 +49,11 @@ class MediaController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param RegistryInterface        $doctrine
+     * @param ManagerRegistry          $doctrine
      * @param ImagineInterface         $imagine
      * @param FilterManager            $filterManager
      * @param CacheManager             $cacheManager
+     * @param ObjectRepository         $mediaRepository
      */
     public function __construct(
         Request $request,
@@ -58,10 +63,11 @@ class MediaController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        RegistryInterface $doctrine,
+        ManagerRegistry $doctrine,
         ImagineInterface $imagine,
         FilterManager $filterManager,
-        CacheManager $cacheManager
+        CacheManager $cacheManager,
+        ObjectRepository $mediaRepository
     ) {
         parent::__construct(
             $request,
@@ -74,9 +80,10 @@ class MediaController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->imagine       = $imagine;
-        $this->filterManager = $filterManager;
-        $this->cacheManager  = $cacheManager;
+        $this->imagine         = $imagine;
+        $this->filterManager   = $filterManager;
+        $this->cacheManager    = $cacheManager;
+        $this->mediaRepository = $mediaRepository;
     }
 
     /**
@@ -87,17 +94,18 @@ class MediaController extends AbstractDoctrineController
      */
     public function showAction(Request $request, $filename)
     {
-        $media = $this->getRepository('Pim\Bundle\CatalogBundle\Model\Media')->findOneBy(
-            array(
-                'filename' => $filename
-            )
-        );
+        $media = $this->mediaRepository->findOneBy(['filename' => $filename]);
 
         if (!$media) {
             throw $this->createNotFoundException(sprintf('Media "%s" not found', $filename));
         }
 
-        $path     = $media->getFilePath();
+        $path = $media->getFilePath();
+
+        if (!file_exists($path)) {
+            return new Response('', 404);
+        }
+
         $response = new Response(file_get_contents($path));
 
         if (($filter = $request->query->get('filter')) && 0 === strpos($media->getMimeType(), 'image')) {

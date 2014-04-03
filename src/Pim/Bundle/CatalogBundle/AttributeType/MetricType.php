@@ -2,9 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
-use Pim\Bundle\FlexibleEntityBundle\Model\AbstractAttribute;
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
-use Pim\Bundle\FlexibleEntityBundle\AttributeType\MetricType as FlexMetricType;
+use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
 /**
  * Metric attribute type
@@ -13,14 +14,47 @@ use Pim\Bundle\FlexibleEntityBundle\AttributeType\MetricType as FlexMetricType;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricType extends FlexMetricType
+class MetricType extends AbstractAttributeType
 {
+    /**
+     * @var MeasureManager $manager
+     */
+    protected $manager;
+
+    /**
+     * Constructor
+     *
+     * @param string                     $backendType       the backend type
+     * @param string                     $formType          the form type
+     * @param ConstraintGuesserInterface $constraintGuesser the form type
+     * @param MeasureManager             $manager           The measure manager
+     */
+    public function __construct(
+        $backendType,
+        $formType,
+        ConstraintGuesserInterface $constraintGuesser,
+        MeasureManager $manager
+    ) {
+        parent::__construct($backendType, $formType, $constraintGuesser);
+
+        $this->manager = $manager;
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(FlexibleValueInterface $value)
+    protected function prepareValueFormOptions(ProductValueInterface $value)
     {
-        $options = parent::prepareValueFormOptions($value);
+        $options = array_merge(
+            parent::prepareValueFormOptions($value),
+            array(
+                'units'        => $this->manager->getUnitSymbolsForFamily(
+                    $value->getAttribute()->getMetricFamily()
+                ),
+                'default_unit' => $value->getAttribute()->getDefaultMetricUnit(),
+                'family'       => $value->getAttribute()->getMetricFamily()
+            )
+        );
         $options['default_unit'] = array($options['default_unit']);
 
         return $options;
@@ -31,81 +65,47 @@ class MetricType extends FlexMetricType
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
     {
-        $properties = array(
-            array(
+        return parent::defineCustomAttributeProperties($attribute) + [
+            'defaultValue' => [
                 'name' => 'defaultValue'
-            ),
-            array(
+            ],
+            'numberMin' => [
                 'name'      => 'numberMin',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'numberMax' => [
                 'name'      => 'numberMax',
                 'fieldType' => 'number'
-            ),
-            array(
+            ],
+            'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            'negativeAllowed' => [
                 'name'      => 'negativeAllowed',
                 'fieldType' => 'switch',
-                'options'   => array(
-                    'attr' => $attribute->getId() ? array() : array('checked' => 'checked')
-                )
-            ),
-            array(
+                'options'   => [
+                    'attr' => $attribute->getId() ? [] : ['checked' => 'checked']
+                ]
+            ],
+            'metricFamily' => [
                 'name'    => 'metricFamily',
-                'options' => array(
+                'options' => [
                     'required'  => true,
                     'disabled'  => (bool) $attribute->getId(),
                     'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
+                ]
+            ],
+            'defaultMetricUnit' => [
                 'name'    => 'defaultMetricUnit',
-                'options' => array(
+                'options' => [
                     'required' => true
-                )
-            ),
-            array(
-                'name'      => 'searchable',
-                'fieldType' => 'switch'
-            ),
-            array(
-                'name'      => 'localizable',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'availableLocales',
-                'fieldType' => 'pim_enrich_available_locales'
-            ),
-            array(
-                'name'      => 'scopable',
-                'fieldType' => 'pim_enrich_scopable',
-                'options'   => array(
-                    'disabled'  => (bool) $attribute->getId(),
-                    'read_only' => (bool) $attribute->getId()
-                )
-            ),
-            array(
-                'name'      => 'unique',
-                'fieldType' => 'switch',
-                'options'   => array(
-                    'disabled'  => true,
-                    'read_only' => true
-                )
-            )
-        );
-
-        return $properties;
+                ]
+            ]
+        ];
     }
 
     /**

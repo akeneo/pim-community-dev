@@ -1,0 +1,39 @@
+oro_datagrid.no_data_hint %entityHint%: No %entityHint% exists.
+oro_datagrid.not_found_hint %entityHint%:  No %entityHint% was found to match your search. Try modifying your search criteria ...
+oro_datagrid.label_add_filter: Manage filters
+oro_datagrid.label_loading_mask: Loading . . .
+oro.grid.mass_action.selected_rows: Selected Rows
+oro.grid.mass_action.confirm_title: Mass Action Confirmation
+oro.grid.mass_action.confirm_content: Are you sure you want to do this?
+oro.grid.mass_action.confirm_ok: Yes, do it
+oro.grid.mass_action.error_title: Mass Action Error
+oro.grid.mass_action.error_content: Cannot perform mass action
+oro.grid.mass_action.delete.label: Delete
+oro.grid.mass_action.delete.confirm_title: Mass Delete Confirmation
+oro.grid.mass_action.delete.confirm_content: Are you sure you want to do delete selected items?
+oro.grid.datagrid.page_size.all: All
+oro.grid.mass_action.delete.success_message: "{0} No entities were removed|{1} One entity was removed|]1,Inf[ %count% entities were removed"
+
+# Datagrid views
+datagrid_view:
+    views:         Views
+    default:       Default
+    create:        Add
+    placeholder:   Name of new view
+    remove:        Delete this view
+    save_changes:  Update
+    save_view:     Save
+    choose_label:  Choose a label for the view
+    columns:
+        min_message: You must select at least one datagrid column to display
+    label:
+        unique_message:    The label must be unique
+        not_blank_message: The label must not be blank
+
+confirmation.remove.datagrid view: Are you sure you want to delete this datagrid view?
+
+flash.datagrid view:
+    created:       Datagrid view successfully created
+    updated:       Datagrid view successfully updated
+    removed:       Datagrid view successfully removed
+    not removable: You don't have the rights to remove this view

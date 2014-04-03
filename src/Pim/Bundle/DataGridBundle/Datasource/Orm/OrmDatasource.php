@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
-use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
+use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -14,7 +16,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class OrmDatasource extends OroOrmDatasource
+class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
     /**
      * @var string
@@ -26,22 +28,26 @@ class OrmDatasource extends OroOrmDatasource
      */
     const ENTITY_PATH = '[source][entity]';
 
+    /** @var array */
+    protected $parameters = array();
+
+    /** @var array grid configuration */
+    protected $configuration;
+
+    /** @var EntityRepository $repository */
+    protected $repository;
+
     /**
      * {@inheritdoc}
      */
     public function process(DatagridInterface $grid, array $config)
     {
-        if (!isset($config['entity'])) {
-            throw new \Exception(get_class($this).' expects to be configured with entity');
-        }
-
-        $entity = $config['entity'];
-        $repository = $this->em->getRepository($entity);
+        $this->configuration = $config;
 
         if (isset($config['repository_method']) && $method = $config['repository_method']) {
-            $this->qb = $repository->$method();
+            $this->qb = $this->getRepository()->$method();
         } else {
-            $this->qb = $repository->createQueryBuilder('o');
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $grid->setDatasource(clone $this);
@@ -64,20 +70,66 @@ class OrmDatasource extends OroOrmDatasource
     }
 
     /**
-     * We update the query to count, get ids and fetch data, so, we can lost expected query builder parameters,
-     * and we have to remove them
-     *
-     * @param QueryBuilder $qb
+     * {@inheritdoc}
      */
-    public static function removeExtraParameters(QueryBuilder $qb)
+    public function getParameters()
     {
-        $parameters    = $qb->getParameters();
-        $dql           = $qb->getDQL();
-        foreach ($parameters as $parameter) {
-            if (strpos($dql, ':'.$parameter->getName()) === false) {
-                $parameters->removeElement($parameter);
-            }
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+        $this->qb->setParameters($parameters);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setHydrator(HydratorInterface $hydrator)
+    {
+        $this->hydrator = $hydrator;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRepository()
+    {
+        if (!$this->repository) {
+            $this->repository = $this->em->getRepository($this->getConfiguration('entity'));
         }
-        $qb->setParameters($parameters);
+
+        return $this->repository;
+    }
+
+    /**
+     * Get configuration
+     *
+     * @param string $key
+     *
+     * @return mixed
+     *
+     * @throws \LogicException
+     * @throws \Exception
+     */
+    protected function getConfiguration($key)
+    {
+        if (!$this->configuration) {
+            throw new \LogicException('Datasource is not yet built. You need to call process method before');
+        }
+
+        if (!isset($this->configuration[$key])) {
+            throw new \Exception(sprintf('"%s" expects to be configured with "%s"', get_class($this), $key));
+        }
+
+        return $this->configuration[$key];
     }
 }

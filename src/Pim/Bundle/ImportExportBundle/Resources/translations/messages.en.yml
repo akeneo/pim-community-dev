@@ -1,6 +1,4 @@
 # Entities
-export profile: export profile
-import profile: import profile
 Job: Job
 Connector: Connector
 
@@ -38,14 +36,16 @@ pim_title.import_profile.show:    Import profiles %job.label% | Show
 pim_title.import_execution.index: Import executions history
 pim_title.import_execution.show:  Import executions | Details
 
-# Page header titles
+# Entity and page header titles
 export profile:
+    title:    export profile
     overview: export profile overview
     create:   create export profile
     edit:     edit export profile
 export report:
     overview: export reports
 import profile:
+    title:    import profile
     overview: import profile overview
     create:   create import profile
     edit:     edit import profile
@@ -87,6 +87,9 @@ btn:
         import profile: create import profile
 
 Upload and import: Upload and import
+Upload and import now: Upload and import now
+import now: Import now
+export now: Export now
 
 # Confirmation messages
 confirmation:
@@ -130,3 +133,19 @@ popin.create:
 'Hide item': Hide item
 'Collecting data about job execution...': Collecting data about job execution...
 'You must select a file to upload': You must select a file to upload
+Download log: Download log
+Show profile: Show profile
+execution details: execution details
+
+job_execution.summary:
+    read:   read
+    write:  write
+    skip:   skip
+    create: create
+    update: update
+
+Step:    Step
+Status:  Status
+Summary: Summary
+Start:   Start
+End:     End

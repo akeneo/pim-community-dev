@@ -1,0 +1,236 @@
+{% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+
+<select id="view-selector" class="hide">
+{% for view in views %}
+    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}"{{ view.default ? ' data-default="1"' : '' }}{{ not view.default and view.owner.id == app.user.id ? ' data-removable="1"' : '' }}>
+        {{- view.default ? 'datagrid_view.default'|trans : view.label -}}
+    </option>
+{% endfor %}
+</select>
+
+<button id="update-view" class="view-button btn btn-small">{{ 'datagrid_view.save_changes'|trans }}</button>
+<button id="clone-view" class="view-button btn btn-small">{{ 'datagrid_view.save_view'|trans }}</button>
+
+<a id="remove-view" class="muted hide">
+    <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.remove'|trans }}"></i>
+</a>
+
+{{ form_start(form, { attr: { class: 'pull-left unspaced hide' } }) }}
+    {{ form_widget(form.label,  { attr: { class: 'input-medium input-invisible', placeholder: 'datagrid_view.placeholder'|trans } }) }}
+    {{ form_widget(form.filters) }}
+    {{ form_widget(form.order) }}
+{{ form_end(form) }}
+
+<script type="text/javascript">
+require(
+    ['jquery', 'underscore', 'backbone', 'routing', 'oro/mediator', 'pim/datagrid/state', 'oro/messenger', 'pim/dialog', 'jquery.multiselect', 'jquery.multiselect.filter'],
+    function ($, _, Backbone, Routing, mediator, DatagridState, messenger, Dialog) {
+        'use strict';
+
+        var reloadPage = function() {
+            var url = window.location.hash;
+            Backbone.history.navigate(url.substr(0, url.length -1));
+            Backbone.history.navigate(url, true);
+        };
+
+        var $selector = $('#view-selector');
+
+        var activateView = function(viewId) {
+            var $viewItem = $selector.find('option[value="' + viewId + '"]');
+            if ($viewItem.length) {
+                DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+            }
+        };
+
+        var activeViewId = DatagridState.get('{{ alias }}', 'view');
+        var $activeView  = $selector.find('option[value="'+activeViewId+'"]');
+
+        if (!$activeView.length) {
+            $activeView = $selector.find('option[data-default="1"]');
+            activeViewId = $activeView.val();
+            activateView(activeViewId);
+        }
+
+        var activeViewLabel = $activeView.text();
+
+        var $removeLink = $('#remove-view');
+        if ($activeView.data('removable')) {
+            $removeLink.removeClass('hide').on('click', function() {
+                Dialog.confirm('{{ 'confirmation.remove.datagrid view'|trans }}', '{{ 'confirmation.delete'|trans }}', function() {
+                    $.ajax({
+                        url: Routing.generate('pim_datagrid_view_remove', { id: activeViewId }),
+                        type: 'POST',
+                        headers: { accept:'application/json' },
+                        data: { _method: 'DELETE' },
+                        success: function() {
+                            DatagridState.remove('{{ alias }}', ['view', 'filters', 'columns']);
+                            reloadPage();
+                        }
+                    });
+                });
+            });
+        }
+
+        var opts = {
+            title: activeViewLabel,
+            placeholder: '{{ 'Search'|trans }}',
+            header: '',
+            height: 175,
+            minWidth: 225,
+            classes: 'pimmultiselect',
+            position: {
+                my: 'right top',
+                at: 'right bottom',
+                collision: 'none'
+            }
+        };
+        opts.selectedText = opts.noneSelectedText = opts.title;
+
+        $selector.multiselect(opts).multiselectfilter({
+            label: false,
+            placeholder: opts.placeholder
+        });
+
+        mediator.once('hash_navigation_request:start', function() {
+            $selector.multiselect('destroy').hide();
+        });
+
+        var $menu = $('.ui-multiselect-menu.pimmultiselect').addClass('highlight-hover').appendTo($('#container'));
+        $menu.find('input[type=checkbox]').addClass('hide');
+        $menu.find('input[type="search"]').width(207);
+
+        var sendForm = function(url, cb) {
+            $.post(url, $('#{{ form.vars.id }}').serialize(), function(response) {
+                if (response && response.errors && response.errors.length) {
+                    _.each(response.errors, function(error) {
+                        messenger.notificationFlashMessage('error', error);
+                    })
+                } else if (response && response.id) {
+                    DatagridState.set('{{ alias }}', 'view', response.id);
+                    if (cb) {
+                        cb(response.id);
+                    } else {
+                        reloadPage();
+                    }
+                }
+            });
+        };
+
+        var $footerContainer = $('<div>').addClass('ui-multiselect-footer pull-left fullwidth').css({
+            'background-color': '#f6f6f6'
+        }).appendTo($menu);
+        $('#{{ form.vars.id }}').appendTo($footerContainer).removeClass('hide').find('input[type=text]').css({
+            'margin-top': '3px',
+            'margin-left': '5px'
+        });
+        var $saveButton = $('<button>').addClass('btn btn-small btn-primary pull-right').css({
+            'margin': '5px'
+        }).html('{{ 'datagrid_view.create'|trans }}').on('click', function () {
+            if (!$('#{{ form.label.vars.id }}').val()) {
+                return;
+            }
+            $('#{{ form.filters.vars.id }}').val(DatagridState.get('{{ alias }}', 'filters'));
+            $('#{{ form.order.vars.id }}').val(DatagridState.get('{{ alias }}', 'columns'));
+            $selector.multiselect('close');
+            sendForm('{{ path('pim_datagrid_view_index', { alias: alias }) }}');
+        }).appendTo($footerContainer);
+
+        var $openButton = $('button.pimmultiselect').addClass('btn btn-group').css({
+            'margin-top': '-6px',
+            'margin-left': '10px'
+        }).prepend($('<span>', { 'text': '{{ 'datagrid_view.views'|trans }}', 'class': 'pull-left buffer-small-right' }).css({
+            'margin-right': '10px',
+            'border-right': '1px solid #ccc'
+        }));
+        $openButton.append($('<i>', { 'class': 'icon-caret-down', 'css': { 'position': 'absolute', 'top': '6px', 'right': '6px' } }));
+
+        var $updateButtton = $('#update-view');
+        $updateButtton.on('click', function() {
+            var state = DatagridState.get('{{ alias }}', ['view', 'columns', 'filters']);
+            $('#{{ form.filters.vars.id }}').val(state.filters);
+            $('#{{ form.order.vars.id }}').val(state.columns);
+
+            sendForm(Routing.generate('pim_datagrid_view_index', { alias: '{{ alias }}', id: state.view }), function() {
+                $activeView.data('filters', state.filters);
+                $activeView.data('columns', state.columns);
+                handleStateChange();
+                messenger.notificationFlashMessage('success', '{{ 'flash.datagrid view.updated'|trans }}');
+            });
+        });
+
+        var promptForLabel = function(cb) {
+            var content = '<input id="view-label" type="text" placeholder="{{ 'datagrid_view.placeholder'|trans }}">';
+            var label = null;
+            Dialog.confirm(content, '{{ 'datagrid_view.choose_label'|trans }}', function() {
+                cb(label)
+            });
+            var $input = $('#view-label');
+            var $submitBtn = $input.parent().parent().find('.btn.ok').hide();
+            $input.on('input', function() {
+                label = $input.val();
+                if (!label.length) {
+                    $submitBtn.hide();
+                } else {
+                    $submitBtn.show();
+                }
+            });
+        };
+
+        var $cloneButton = $('#clone-view');
+        $cloneButton.on('click', function() {
+            var state = DatagridState.get('{{ alias }}', ['view', 'columns', 'filters']);
+            $('#{{ form.filters.vars.id }}').val(state.filters);
+            $('#{{ form.order.vars.id }}').val(state.columns);
+            promptForLabel(function(label) {
+                $('#{{ form.label.vars.id }}').val(label);
+                $saveButton.trigger('click');
+            });
+        });
+
+        var setTitle = function(title) {
+            $selector.multiselect({
+                title: title,
+                selectedText: title,
+                noneSelectedText: title
+            });
+        };
+
+        var handleStateChange = function() {
+            var cleanState = { 'filters': $activeView.data('filters'), 'columns': $activeView.data('columns') };
+            var currentState = DatagridState.get('{{ alias }}', ['filters', 'columns']);
+
+            if (_.isEqual(currentState, cleanState)) {
+                setTitle(activeViewLabel);
+                $updateButtton.hide();
+                $cloneButton.hide();
+
+            } else {
+                setTitle(activeViewLabel + ' *');
+                if (!!$activeView.data('removable') || !!$activeView.data('default')) {
+                    $updateButtton.show();
+                } else {
+                    $cloneButton.show();
+                }
+            }
+        };
+
+        handleStateChange();
+
+        mediator.bind('grid:{{ alias }}:state_changed', handleStateChange);
+
+        $menu.on('click', 'li', function() {
+            var gridViewId = $(this).find('input').val();
+            activateView(gridViewId);
+
+            reloadPage();
+        });
+
+        $('#{{ form.label.vars.id }}').on('keypress', function(e) {
+            if ((e.keyCode || e.which) == 13) {
+                e.preventDefault();
+                $saveButton.trigger('click');
+            }
+        });
+    }
+);
+</script>

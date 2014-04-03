@@ -2,12 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
-
-use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
 
 /**
  * Product interface
@@ -16,8 +15,54 @@ use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface ProductInterface extends FlexibleInterface
+interface ProductInterface
 {
+    /**
+     * Get created datetime
+     *
+     * @return \DateTime
+     */
+    public function getCreated();
+
+    /**
+     * Get updated created datetime
+     *
+     * @return \DateTime
+     */
+    public function getUpdated();
+
+    /**
+     * Add value
+     *
+     * @param ProductValueInterface $value
+     *
+     * @return ProductInterface
+     */
+    public function addValue(ProductValueInterface $value);
+
+    /**
+     * Remove value
+     *
+     * @param ProductValueInterface $value
+     */
+    public function removeValue(ProductValueInterface $value);
+
+    /**
+     * Get values
+     *
+     * @return \ArrayAccess
+     */
+    public function getValues();
+
+    /**
+     * Get value related to attribute code
+     *
+     * @param string $attributeCode
+     *
+     * @return ProductValueInterface
+     */
+    public function getValue($attributeCode);
+
     /**
      * Get family
      *
@@ -55,7 +100,7 @@ interface ProductInterface extends FlexibleInterface
      *
      * @param string $locale
      *
-     * @return \Pim\Bundle\FlexibleEntityBundle\Model\mixed|string
+     * @return mixed|string
      */
     public function getLabel($locale = null);
 
@@ -163,6 +208,22 @@ interface ProductInterface extends FlexibleInterface
      * @return Product
      */
     public function setAssociations(array $associations = array());
+
+    /**
+     * Set product completenesses
+     *
+     * @param ArrayCollection $completenesses
+     *
+     * @return Product
+     */
+    public function setCompletenesses(ArrayCollection $completenesses);
+
+    /**
+     * Get product completenesses
+     *
+     * @return ArrayCollection
+     */
+    public function getCompletenesses();
 
     /**
      * {@inheritdoc}

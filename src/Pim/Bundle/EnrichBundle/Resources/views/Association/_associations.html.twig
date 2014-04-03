@@ -23,15 +23,24 @@
                         changeAssociation(associationId);
                     });
                     var dataGrids = {
-                        'product': {
-                            'name': 'association-product-grid',
-                            'appendField': 'appendProducts',
-                            'removeField': 'removeProducts'
+                        product: {
+                            name:          'association-product-grid',
+                            appendField:   'appendProducts',
+                            removeField:   'removeProducts',
+                            paramName:     'associationType',
+                            getParamValue: function(associationId) {
+                                return associationId;
+                            }
                         },
-                        'group': {
-                            'name': 'association-group-grid',
-                            'appendField': 'appendGroups',
-                            'removeField': 'removeGroups'
+                        group: {
+                            name:          'association-group-grid',
+                            appendField:   'appendGroups',
+                            removeField:   'removeGroups',
+                            paramName:     'associatedIds',
+                            getParamValue: function(associationId) {
+                                var ids = $('#association-link-' + associationId).data('associated-group-ids');
+                                return ids ? String(ids).split(',') : [];
+                            }
                         }
                     };
 
@@ -43,7 +52,7 @@
                                 removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
                                 mediator
                                     .trigger('column_form_listener:set_selectors:' + datagrid.name, { included: appendFieldId, excluded: removeFieldId })
-                                    .trigger('datagrid:setParam:' + datagrid.name, 'associationType', associationId)
+                                    .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationId))
                                     .trigger('datagrid:doRefresh:' + datagrid.name);
                         });
                     };
@@ -89,8 +98,13 @@
         <ul class="nav nav-list">
             {% for associationType in associationTypes %}
                 <li class="tab{% if loop.first %} active{% endif %}">
-                    <a id="association-link-{{ associationType.id }}" href="#association-tab-{{ associationType.id }}" data-toggle="tab">
-                        {% set currentAssociation = product.getAssociationForType(associationType) %}
+                    {% set currentAssociation = product.getAssociationForType(associationType) %}
+                    {% set associatedGroupIds = [] %}
+                    {% for group in currentAssociation.groups %}
+                        {% set associatedGroupIds = associatedGroupIds|merge([group.id]) %}
+                    {% endfor %}
+
+                    <a id="association-link-{{ associationType.id }}" href="#association-tab-{{ associationType.id }}" data-toggle="tab" data-associated-group-ids="{{ associatedGroupIds|join(',') }}">
                         {% set associationCount = currentAssociation.products|length + currentAssociation.groups|length %}
                         <i class="icon-ok {{ associationCount > 0 ? 'green' : 'gray' }}"></i>
                         {{ associationType.label }} ({{ associationCount }})
@@ -128,7 +142,13 @@
         </div>
 
         <div id="association-group-grid" class="hide">
-            {{ dataGrid.renderGrid('association-group-grid', { product: product.id, associationType: associationTypes|first.id }) }}
+            {% set currentAssociation = product.getAssociationForType(associationTypes|first) %}
+            {% set associatedGroupIds = [] %}
+            {% for group in currentAssociation.groups %}
+                {% set associatedGroupIds = associatedGroupIds|merge([group.id]) %}
+            {% endfor %}
+
+            {{ dataGrid.renderGrid('association-group-grid', { associatedIds: associatedGroupIds }) }}
         </div>
     </div>
 {% endif %}
