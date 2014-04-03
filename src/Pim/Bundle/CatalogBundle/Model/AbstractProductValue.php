@@ -100,6 +100,8 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     protected $options;
 
+    protected $optionIds;
+
     /**
      * Store simple option value
      *

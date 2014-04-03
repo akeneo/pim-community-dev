@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Factory of referenced collection
@@ -13,15 +14,15 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class ReferencedCollectionFactory
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ManagerRegistry */
+    protected $registry;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->objectManager = $objectManager;
+        $this->registry = $registry;
     }
 
     /**
@@ -32,7 +33,7 @@ class ReferencedCollectionFactory
      *
      * @return ReferencedCollection
      */
-    public function create($entityClass, $identifiers)
+    public function create($entityClass, $identifiers, $document)
     {
         if (null === $identifiers) {
             $identifiers = [];
@@ -47,10 +48,14 @@ class ReferencedCollectionFactory
             );
         }
 
-        return new ReferencedCollection(
+        $coll = new ReferencedCollection(
             $entityClass,
             $identifiers,
-            $this->objectManager
+            $this->registry->getManagerForClass($entityClass),
+            $this->registry->getManagerForClass(get_class($document))->getUnitOfWork()
         );
+        $coll->setOwner($document);
+
+        return $coll;
     }
 }

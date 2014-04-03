@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
  * An ArrayCollection decorator of entity identifiers that are lazy loaded
@@ -27,17 +28,29 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var boolean */
     protected $initialized = false;
 
+    /** @var UnitOfWork */
+    protected $uow;
+
+    /** @var object|null */
+    protected $owner;
+
     /**
      * @param string        $entityClass
      * @param array         $identifiers
      * @param EntityManager $entityManager
      */
-    public function __construct($entityClass, $identifiers, EntityManager $entityManager)
+    public function __construct($entityClass, $identifiers, EntityManager $entityManager, UnitOfWork $uow)
     {
         $this->identifiers   = $identifiers;
         $this->entityClass   = $entityClass;
         $this->entityManager = $entityManager;
         $this->collection    = new ArrayCollection();
+        $this->uow           = $uow;
+    }
+
+    public function setOwner($owner)
+    {
+        $this->owner = $owner;
     }
 
     /**
@@ -61,12 +74,64 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
+     */
+    public function remove($key)
+    {
+        $this->initialize();
+        $remove = $this->collection->remove($key);
+        if ($remove) {
+            $this->changed();
+        }
+
+        return $remove;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeElement($element)
+    {
+        $this->initialize();
+        $remove = $this->collection->removeElement($element);
+        if ($remove) {
+            $this->changed();
+        }
+
+        return $remove;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function set($key, $value)
+    {
+        $this->initialize();
+        $this->changed();
+
+        $this->collection->set($key, $value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function add($element)
+    {
+        $this->initialize();
+        $this->collection->add($element);
+        $this->changed();
+
+        return true;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function clear()
     {
+        $this->initialize();
+        $this->changed();
         $this->collection->clear();
-        $this->setInitialized(false);
     }
 
     /**
@@ -105,6 +170,7 @@ class ReferencedCollection extends AbstractLazyCollection
                 ->getRepository($this->entityClass)
                 ->findBy([$classIdentifier[0] => $this->identifiers])
         );
+        $this->changed();
     }
 
     /**
@@ -117,5 +183,10 @@ class ReferencedCollection extends AbstractLazyCollection
         $classMetadata = $this->entityManager->getClassMetadata($this->entityClass);
 
         return $classMetadata->getIdentifier();
+    }
+
+    private function changed()
+    {
+        $this->uow->scheduleForUpdate($this->owner);
     }
 }

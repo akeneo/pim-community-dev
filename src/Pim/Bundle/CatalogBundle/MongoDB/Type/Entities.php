@@ -22,7 +22,12 @@ class Entities extends Type
     public function convertToDatabaseValue($value)
     {
         if (!$value instanceof Collection) {
-            return $value;
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Expecting instance of Doctrine\Common\Collections\Collection, got "%s"',
+                    'object' === gettype($value) ? get_class($value) : gettype($value)
+                )
+            );
         }
 
         return $value

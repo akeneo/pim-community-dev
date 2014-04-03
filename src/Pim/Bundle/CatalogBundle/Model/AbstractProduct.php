@@ -64,6 +64,8 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     protected $categories;
 
+    public $categoryIds = [];
+
     /**
      * @var boolean $enabled
      */
@@ -73,6 +75,8 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      * @var ArrayCollection $groups
      */
     protected $groups;
+
+    protected $groupIds = [];
 
     /**
      * @var ArrayCollection $associations
@@ -600,6 +604,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     {
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
+            $category->addProduct($this);
         }
 
         return $this;

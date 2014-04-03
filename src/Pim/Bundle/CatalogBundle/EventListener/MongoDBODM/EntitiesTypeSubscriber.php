@@ -7,6 +7,8 @@ use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
+use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -33,7 +35,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad', 'preUpdate'];
+        return ['postLoad', 'prePersist', 'preFlush'];
     }
 
     /**
@@ -43,6 +45,38 @@ class EntitiesTypeSubscriber implements EventSubscriber
     {
         $document = $args->getDocument();
         $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
+
+        $this->overrideEntitiesField($document, $metadata);
+    }
+
+    /**
+     * Entities fields need to be overriden on insertion because the postLoad event will not be triggered
+     * Otherwise, some documents with entities field (the one that have never been loaded from db in fact)
+     * won't have a ReferencedCollection
+     *
+     * {@inheritdoc}
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $dm = $args->getDocumentManager();
+        $document = $args->getDocument();
+        $metadata = $dm->getClassMetadata(get_class($document));
+
+        $this->overrideEntitiesField($document, $metadata);
+    }
+
+    public function preFlush(PreFlushEventArgs $args)
+    {
+        $dm = $args->getDocumentManager();
+        $uow = $dm->getUnitOfWork();
+        foreach ($uow->getScheduledDocumentUpdates() as $document) {
+            $metadata = $dm->getClassMetadata(get_class($document));
+            $this->synchronizeReferencedCollectionIds($document, $metadata);
+        }
+    }
+
+    private function overrideEntitiesField($document, ClassMetadata $metadata)
+    {
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entities' === $mapping['type']) {
                 if (!isset($mapping['targetEntity'])) {
@@ -55,37 +89,43 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     );
                 }
 
-                $value = $metadata->reflFields[$field]->getValue($document);
+                $value = $metadata->reflFields[$mapping['idsField']]->getValue($document);
                 if (!$value instanceof ReferencedCollection) {
                     $metadata->reflFields[$field]->setValue(
                         $document,
-                        $this->factory->create($mapping['targetEntity'], $value)
+                        $this->factory->create($mapping['targetEntity'], $value, $document)
                     );
                 }
             }
         }
     }
 
-    public function preUpdate(PreUpdateEventArgs $args)
+    /**
+     * Wait til the very last time to synchronize ids field of the document
+     */
+    private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
     {
-        $document = $args->getDocument();
-        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
         foreach ($metadata->fieldMappings as $field => $mapping) {
-            if ('entities' === $mapping['type'] && $args->hasChangedField($field)) {
-                $newValue = $args->getNewValue($field);
-                if ($newValue instanceof ReferencedCollection) {
-                    $args->setNewValue(
+            if ('entities' === $mapping['type']) {
+                // TODO Throw an exception if this is not a ReferencedCollection
+                $oldValue = $metadata->reflFields[$field]->getValue($document);
+                if (!$oldValue instanceof ReferencedCollection) {
+                    throw new \LogicException(
+                        'Property "%s" of "%s" should be an instance of ' .
+                        'Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection, got "%s"',
                         $field,
-                        $newValue
-                            ->map(
-                                function ($entity)
-                                {
-                                    return $entity->getId();
-                                }
-                            )
-                            ->toArray()
+                        get_class($document),
+                        is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
                     );
                 }
+                $newValue = $oldValue->map(
+                    function ($item) {
+                        return $item->getId();
+                    }
+                )
+                ->toArray();
+
+                $metadata->reflFields[$mapping['idsField']]->setValue($document, $newValue);
             }
         }
     }
