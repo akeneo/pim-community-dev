@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity\Repository;
+namespace Pim\Bundle\CatalogBundle\Repository;
 
 /**
  * Interface for repositories of unique code entities

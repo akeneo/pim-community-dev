@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
+use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+
 /**
  * Repository
  *

@@ -73,7 +73,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
 
     public function it_is_a_completeness_repository()
     {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface');
     }
 
     public function it_counts_products_per_channels(Cursor $cursor)

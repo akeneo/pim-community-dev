@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
 
