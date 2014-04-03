@@ -850,14 +850,25 @@ class ProductRepository extends DocumentRepository implements
     {
         $results = $this->findValuesCommonAttributeIds($productIds);
 
-        $this->createCommonValuesTemporaryTable($results);
+        $tmpTable = $this->createCommonValuesTemporaryTable($results);
 
-        $attributeIds = array();
-        foreach ($results as $result) {
-            $attributeIds[] = $result['_id'];
-        }
+        $familyIds = $this->findFamiliesFromProductIds($productIds);
 
-        return $attributeIds;
+        $sql = <<<SQL
+    SELECT COUNT(a.a_id) AS count_att, a.a_id
+    FROM (
+        SELECT p_id, a_id
+        FROM tmp_table
+    UNION
+        SELECT p.id AS p_id, fa.attribute_id AS a_id
+        FROM %product_table% p
+        INNER JOIN %family_table% f ON f.id = p.family_id
+        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+        WHERE p.id IN %product_ids%
+    ) AS a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
     }
 
     /**
@@ -909,6 +920,47 @@ class ProductRepository extends DocumentRepository implements
      */
     protected function createCommonValuesTemporaryTable(array $results)
     {
-        var_dump($results);
+        //TODO: Need index? Is it possible
+        $sql = <<<SQL
+    CREATE TEMPORARY TABLE tmp_table(
+        p_id VARCHAR(255),
+        a_id INT(11)
+    );
+SQL;
+
+        $connection = $this->entityManager->getConnection();
+        $stmt = $connection->prepare($sql);
+        $stmt->execute();
+
+        // prepare data to insert
+        $dataToInsert = array();
+        foreach ($results as $result) {
+            foreach ($result['attribute'] as $attId) {
+                $dataToInsert[] = '"'. (string) $result['_id'] .'",'. $attId;
+            }
+        }
+
+        if (!empty($dataToInsert)) {
+            $sqlInsert = <<<SQL
+    INSERT INTO tmp_table(p_id, a_id) VALUES (%data_to_insert%);
+SQL;
+            $sqlInsert = str_replace('%data_to_insert%', implode('),(', $dataToInsert), $sqlInsert);
+            $this->entityManager->getConnection()->executeUpdate($sqlInsert);
+        }
+
+        return 'tmp_table';
+    }
+
+    protected function findFamiliesFromProductIds(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('family')
+            ->hydrate(false);
+
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
     }
 }
