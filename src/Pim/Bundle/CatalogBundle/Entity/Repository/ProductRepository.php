@@ -803,6 +803,40 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%'  => count($productIds)
+            ]
+        );
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
+
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
+        $stmt->execute();
+
+        $attributes = $stmt->fetchAll();
+        $attributeIds = array();
+        foreach ($attributes as $attributeId) {
+            $attributeIds[] = (int) $attributeId['a_id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Prepare SQL query to get common attributes
+     * - First query get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     *
+     * @return string
+     */
+    protected function prepareCommonAttributesSQLQuery()
+    {
         $nonFamilyAttSql = <<<SQL
     SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
     FROM %product_table% p
@@ -829,26 +863,12 @@ SQL;
     HAVING count_att = %product_ids_count%
 SQL;
 
-        $sql = strtr(
+        return strtr(
             $commonAttSql,
             [
-                '%product_ids%'        => '('. implode($productIds, ',') .')',
-                '%product_ids_count%'  => count($productIds),
                 '%non_family_att_sql%' => $nonFamilyAttSql,
-                '%family_att_sql%'     => $familyAttSql
+                '%family_att_sql%' => $familyAttSql
             ]
         );
-        $sql = $this->prepareDBALQuery($sql);
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        $attributes = $stmt->fetchAll();
-        $attributeIds = array();
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['a_id'];
-        }
-
-        return $attributeIds;
     }
 }
