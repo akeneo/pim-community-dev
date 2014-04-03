@@ -890,13 +890,14 @@ class ProductRepository extends DocumentRepository implements
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
             ),
-            array('$unwind' => '$attribute'),
-            array('$group'  => array(
-                '_id'   => '$attribute',
-                'count' => array('$sum' => 1)
-            )),
+//             array('$unwind' => '$attribute'),
+//             array('$group'  => array(
+//                 '_id'   => '$_id',
+//                 'attribute' => '$values.attribute'
+//                 'count' => array('$sum' => 1)
+//             )),
 //             array('$match'   => array('count' => count($productIds))),
-            array('$project' => array('values.attribute' => 1, 'count' => 1))
+//             array('$project' => array('values.attribute' => 1, '_id' => 1))
         );
 
         return $collection->aggregate($pipeline)->toArray();
