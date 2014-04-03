@@ -1,7 +1,6 @@
 Pim\Bundle\CatalogBundle\Model\Association:
     type: entity
     table: pim_catalog_association
-    repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
     fields:
         id:
             type: integer
