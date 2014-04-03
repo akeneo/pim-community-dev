@@ -44,6 +44,6 @@ class ValueSorter implements SorterInterface
         $attribute = $this->attributeRepository->findOneByCode($field);
         $qb = $datasource->getQueryBuilder();
         $pqb = $this->productRepository->getProductQueryBuilder($qb);
-        $pqb->addFieldSorter($attribute, $direction);
+        $pqb->addAttributeSorter($attribute, $direction);
     }
 }

@@ -39,7 +39,7 @@ class ValueSorterSpec extends ObjectBehavior
 
         $datasource->getQueryBuilder()->willReturn($qb);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldSorter($sku, 'ASC')->shouldBeCalled();
+        $pqb->addAttributeSorter($sku, 'ASC')->shouldBeCalled();
 
         $this->apply($datasource, $sku, 'ASC');
     }
