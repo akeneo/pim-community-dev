@@ -419,7 +419,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
@@ -431,7 +431,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createGroupDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
@@ -462,7 +462,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createAssociationDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
