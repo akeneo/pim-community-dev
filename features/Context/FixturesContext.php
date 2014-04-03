@@ -399,6 +399,7 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
+            $this->refresh($product);
             $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
             if ($value && $value->getAttribute()->getBackendType() !== 'media') {
@@ -976,6 +977,7 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         $product = $this->getProduct($identifier);
+        $this->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
@@ -1019,6 +1021,7 @@ class FixturesContext extends RawMinkContext
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
         $product = $this->getProduct($productCode);
+        $this->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
@@ -1083,7 +1086,6 @@ class FixturesContext extends RawMinkContext
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
         }
-        $this->refresh($product);
 
         return $product;
     }
@@ -1199,6 +1201,8 @@ class FixturesContext extends RawMinkContext
         if (null === $product = $this->getProduct($identifier)) {
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
         }
+
+        $this->refresh($product);
 
         if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
@@ -1406,7 +1410,12 @@ class FixturesContext extends RawMinkContext
         $categories = $this->loadFixture('categories', $data);
 
         foreach ($categories as $category) {
-            $this->persist($category);
+            $this->persist($category, true);
+            foreach ($category->getProducts() as $product) {
+                $product->addCategory($category);
+                $this->flush($product);
+            }
+
         }
 
         return reset($categories);
