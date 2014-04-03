@@ -180,7 +180,7 @@ class EntityTransformer implements EntityTransformerInterface
                 $this->doctrine->getManagerForClass($class)->getClassMetadata($class)
             );
             if (!$this->transformers[$class][$label]) {
-                throw new UnknownColumnException(array($label));
+                throw new UnknownColumnException(array($label), $class);
             }
         }
 
