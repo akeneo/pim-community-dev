@@ -188,6 +188,10 @@ Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
                 max: 100
 
 Pim\Bundle\CatalogBundle\Entity\AttributeOption:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            - code
+            - attribute
     properties:
         code:
             - NotBlank: ~
