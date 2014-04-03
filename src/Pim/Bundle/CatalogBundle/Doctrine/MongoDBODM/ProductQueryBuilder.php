@@ -97,7 +97,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
             'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
+            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
+            'is_associated' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\IsAssociatedFilter'
         ];
 
         if (isset($customFilters[$field])) {

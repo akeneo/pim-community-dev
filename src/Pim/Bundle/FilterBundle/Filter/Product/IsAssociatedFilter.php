@@ -65,7 +65,7 @@ class IsAssociatedFilter extends BooleanFilter
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('groups', $operator, $value);
+        $pqb->addFieldFilter('is_associated', $operator, $value);
 
         return true;
     }
