@@ -140,15 +140,6 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
-     * Set flexible query builder
-     *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilder($productQB);
-
-    /**
      * Apply a filter by product ids
      *
      * @param mixed   $qb         query builder to update

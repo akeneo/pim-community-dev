@@ -11,7 +11,7 @@ use Pim\Bundle\TransformBundle\Transformer\Property\EntityUpdaterInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

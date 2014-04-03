@@ -33,16 +33,24 @@ class ProductRepository extends DocumentRepository implements
     AssociationRepositoryInterface
 {
     /**
-     * @param ProductQueryBuilder
+     * @var EntityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var ProductQueryBuilder
      */
     protected $productQB;
 
     /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
+     * @var AttributeRepository
      */
-    protected $entityManager;
+    protected $attributeRepository;
+
+    /**
+     * @var string
+     */
+    protected $productClass;
 
     /**
      * Category class
@@ -51,45 +59,25 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var AttributeRepository $attributeRepository */
-    protected $attributeRepository;
-
     /**
-     * Set the EntityManager
-     *
-     * @param EntityManager $entityManager
-     *
-     * @return ProductRepository $this
+     * @param EntityManager        $entityManager
+     * @param ProductQueryBuilder  $productQB
+     * @param AttributerRepository $attributeRepository
+     * @param string               $productClass
+     * @param string               $categoryClass
      */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * Set the Category class
-     *
-     * @param string $categoryClass
-     *
-     * @return ProductRepository $this
-     */
-    public function setCategoryClass($categoryClass)
-    {
-        $this->categoryClass = $categoryClass;
-    }
-
-    /**
-     * Set the attribute repository
-     *
-     * @param AttributeRepository $attributeRepository
-     *
-     * @return ProductRepository $this
-     */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
-    {
+    public function __construct(
+        EntityManager $entityManager,
+        ProductQueryBuilder $productQB,
+        AttributeRepository $attributeRepository,
+        $productClass,
+        $categoryClass
+    ) {
+        $this->entityManager       = $entityManager;
+        $this->productQb           = $productQb;
         $this->attributeRepository = $attributeRepository;
-
-        return $this;
+        $this->productClass        = $productClass;
+        $this->categoryClass       = $categoryClass;
     }
 
     /**
@@ -882,5 +870,19 @@ class ProductRepository extends DocumentRepository implements
         }
 
         return $attributeIds;
+    }
+
+    /**
+     * Create a clean query builder
+     *
+     * @param string $alias
+     *
+     * @return QueryBuilder
+     */
+    public function createQueryBuilder($alias = null)
+    {
+        return $this->entityManager
+            ->getRepository($this->productClass)
+            ->createQueryBuilder($alias);
     }
 }
