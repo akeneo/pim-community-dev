@@ -829,9 +829,12 @@ class ProductRepository extends EntityRepository implements
 
     /**
      * Prepare SQL query to get common attributes
-     * - First query get all attributes (and count when they appear) added to products
+     *
+     * - First subquery get all attributes (and count when they appear) added to products
      * and which are not linked to product family
      * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
      *
      * @return string
      */
