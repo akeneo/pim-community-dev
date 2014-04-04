@@ -26,7 +26,6 @@ Feature: Change family of many products at once
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
 
-  @tested
   Scenario: Remove many products from a product family
     Given I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
