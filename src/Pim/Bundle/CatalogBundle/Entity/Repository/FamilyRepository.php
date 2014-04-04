@@ -103,4 +103,28 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
 
         return $qb;
     }
+
+    /**
+     * Find attribute ids from family ids
+     *
+     * @param array $familyIds
+     *
+     * @return array '<f_id>' => array(<attribute ids>)
+     */
+    public function findAttributeIdsFromFamilies(array $familyIds)
+    {
+        $qb = $this->createQueryBuilder('f');
+        $qb
+            ->select('f.id AS f_id, a.id AS a_id')
+            ->leftJoin('f.attributes', 'a')
+            ->where($qb->expr()->in('f.id', $familyIds));
+
+        $results = $qb->getQuery()->getArrayResult();
+        $attrByFamilies = array();
+        foreach ($results as $result) {
+            $attrByFamilies[$result['f_id']][] = $result['a_id'];
+        }
+
+        return $attrByFamilies;
+    }
 }

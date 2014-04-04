@@ -1410,7 +1410,12 @@ class FixturesContext extends RawMinkContext
         $categories = $this->loadFixture('categories', $data);
 
         foreach ($categories as $category) {
-            $this->persist($category);
+            $this->persist($category, true);
+            foreach ($category->getProducts() as $product) {
+                $product->addCategory($category);
+                $this->flush($product);
+            }
+
         }
 
         return reset($categories);
@@ -1483,15 +1488,16 @@ class FixturesContext extends RawMinkContext
             $group->addAttribute($attribute);
         }
 
+        $this->persist($group);
+        $this->flush($group);
+
         foreach ($products as $sku) {
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
-                $group->addProduct($product);
                 $product->addGroup($group);
+                $this->flush($product);
             }
         }
-
-        $this->persist($group);
     }
 
     /**
@@ -1673,16 +1679,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Flush
-     */
-    private function flush()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
-    }
-
-    /**
      * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
@@ -1798,6 +1794,29 @@ class FixturesContext extends RawMinkContext
         $manager->remove($object);
 
         if ($flush) {
+            $manager->flush();
+        }
+    }
+
+    /**
+     * @param object  $object
+     */
+    private function flush($object = null)
+    {
+        if (!$object) {
+            return $this->flushAll();
+        }
+
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
+        $manager->flush($object);
+    }
+
+    /**
+     * Flush all managers
+     */
+    private function flushAll()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
             $manager->flush();
         }
     }

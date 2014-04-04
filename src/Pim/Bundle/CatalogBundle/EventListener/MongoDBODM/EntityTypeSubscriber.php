@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 
 /**
  * Convert identifier into lazy entity
@@ -31,7 +32,7 @@ class EntityTypeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad'];
+        return ['postLoad', 'preUpdate'];
     }
 
     /**
@@ -59,6 +60,23 @@ class EntityTypeSubscriber implements EventSubscriber
                         $document,
                         $this->entityManager->getReference($mapping['targetEntity'], $value)
                     );
+                }
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function preUpdate(PreUpdateEventArgs $args)
+    {
+        $document = $args->getDocument();
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
+        foreach ($metadata->fieldMappings as $field => $mapping) {
+            if ('entity' === $mapping['type'] && $args->hasChangedField($field)) {
+                $newValue = $args->getNewValue($field);
+                if (is_object($newValue)) {
+                    $args->setNewValue($field, $newValue->getId());
                 }
             }
         }

@@ -30,7 +30,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
 
     function it_subscribes_to_postLoad_event()
     {
-        $this->getSubscribedEvents()->shouldReturn([Events::postLoad]);
+        $this->getSubscribedEvents()->shouldReturn(['postLoad', 'preUpdate']);
     }
 
     function it_transforms_value_of_a_entity_field_into_lazy_reference_to_an_entity (

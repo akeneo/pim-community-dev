@@ -19,7 +19,7 @@ services:
     pim_catalog.factory.referenced_collection:
         class: %pim_catalog.factory.referenced_collection.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
     pim_catalog.factory.completeness:
         class: %pim_catalog.factory.completeness.class%
