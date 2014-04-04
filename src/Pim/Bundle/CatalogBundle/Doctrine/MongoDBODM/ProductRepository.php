@@ -583,7 +583,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder();
         $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $this->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
         if (
