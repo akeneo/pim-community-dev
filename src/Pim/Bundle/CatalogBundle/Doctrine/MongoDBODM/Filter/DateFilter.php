@@ -54,43 +54,42 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
 
         switch ($operator) {
             case 'BETWEEN':
-                $fromTime = strtotime($value[0]);
-                $toTime   = strtotime($value[1]);
-                $this->qb->field($field)->gt($fromTime);
-                $this->qb->field($field)->lt($toTime);
+                $this->qb->field($field)->gt($this->getTimestamp($value[0]));
+                $this->qb->field($field)->lt($this->getTimestamp($value[1]));
                 break;
 
             case '>':
-                if ($value instanceof \DateTime) {
-                    $value = $value->getTimestamp();
-                }
-                $this->qb->field($field)->gt($value);
+                $this->qb->field($field)->gt($this->getTimestamp($value));
                 break;
 
             case '<':
-                if ($value instanceof \DateTime) {
-                    $value = $value->getTimestamp();
-                }
-                $this->qb->field($field)->lt($value);
+                $this->qb->field($field)->lt($this->getTimestamp($value));
                 break;
 
             case '=':
-                if ($value instanceof \DateTime) {
-                    $value = $value->getTimestamp();
-                }
-                $this->qb->field($field)->equals($value);
+                $this->qb->field($field)->equals($this->getTimestamp($value));
                 break;
 
             default:
-                $fromTime = strtotime($value['from']);
-                $toTime   = strtotime($value['to']);
                 $this->qb->addAnd(
                     $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lt($fromTime))
-                        ->addOr($this->qb->expr()->field($field)->gt($toTime))
+                        ->addOr($this->qb->expr()->field($field)->lt($this->getTimestamp($value['from'])))
+                        ->addOr($this->qb->expr()->field($field)->gt($this->getTimestamp($value['to'])))
                 );
         }
 
         return $this;
+    }
+
+    /**
+     * Get timestamp from data
+     *
+     * @param \DateTime|string
+     *
+     * @return int
+     */
+    private function getTimestamp($data)
+    {
+        return $data instanceof \DateTime ? $data->getTimestamp() : strtotime($data);
     }
 }
