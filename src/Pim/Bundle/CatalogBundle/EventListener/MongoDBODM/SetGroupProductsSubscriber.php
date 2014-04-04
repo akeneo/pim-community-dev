@@ -10,8 +10,11 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * ORM subscriber registered when Product is a mongo document
  * It sets the other side of the relation Products <-> Groups
  *
- * Could be enhanced by somehow creating a document(s) custom type
- * with targetDocument and targetField
+ * TODO
+ * - Could be enhanced by somehow creating a document(s) custom type
+ * with targetDocument and targetField.
+ *
+ * - A Referenced Collection could also be used to lazy load products.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -22,17 +25,29 @@ class SetGroupProductsSubscriber implements EventSubscriber
     /** @var ManagerRegistry */
     protected $registry;
 
+    /**
+     * @Param ManagerRegistry $registry
+     * @param string          $productClass
+     */
     public function __construct(ManagerRegistry $registry, $productClass)
     {
         $this->registry = $registry;
         $this->productClass = $productClass;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return ['postLoad'];
     }
 
+    /**
+     * Injects related products inside the group
+     *
+     * @param LifecycleEventArgs $args
+     */
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
