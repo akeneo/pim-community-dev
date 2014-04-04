@@ -528,7 +528,7 @@ class ProductRepository extends DocumentRepository implements
 
         $qb = $this->createQueryBuilder()
             ->hydrate(false)
-            ->field('categories')->in($categoryIds)
+            ->field('categoryIds')->in($categoryIds)
             ->select('_id');
 
         return $qb->getQuery()->execute();
