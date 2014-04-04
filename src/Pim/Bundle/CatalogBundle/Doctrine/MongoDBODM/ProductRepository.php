@@ -583,18 +583,17 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder();
         $productQueryBuilder = $this->getProductQueryBuilder($qb);
-        $this->addAttributeFilter($value->getAttribute(), '=', $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
+        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $result = $qb->hydrate(false)->getQuery()->execute();
 
-        $foundValueId = null;
-        if ((1 === count($result)) && isset($result['_id'])) {
-            $foundValueId = $result['_id']->id;
+        if (
+            0 === $result->count() ||
+            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
+        ) {
+            return false;
         }
 
-        return (
-            (0 !== count($result)) &&
-            ($value->getId() === $foundValueId)
-        );
+        return true;
     }
 
     /**
