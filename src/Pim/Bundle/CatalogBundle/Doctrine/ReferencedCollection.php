@@ -30,6 +30,9 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var boolean */
     protected $initialized = false;
 
+    /** @var boolean */
+    protected $isDirty = false;
+
     /** @var UnitOfWork */
     protected $uow;
 
@@ -189,6 +192,11 @@ class ReferencedCollection extends AbstractLazyCollection
 
     private function changed()
     {
+        if ($this->isDirty) {
+            return;
+        }
+
+        $this->isDirty = true;
         $this->uow->scheduleForUpdate($this->owner);
     }
 }
