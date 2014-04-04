@@ -117,7 +117,7 @@ services:
     pim_enrich.event_listener.association_group_grid_after_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
-            - [dataLocale, product, associationType]
+            - [dataLocale, associatedIds]
             - '@oro_datagrid.datagrid.request_params'
             - true
         tags:

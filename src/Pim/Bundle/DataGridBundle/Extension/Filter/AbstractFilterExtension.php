@@ -172,6 +172,13 @@ abstract class AbstractFilterExtension extends AbstractExtension
         $filtersConfig = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
         foreach ($filtersConfig as $column => $filter) {
+            if (isset($filter['supported']) && is_array($filter['supported']['eq'])) {
+                $comparison = $filter['supported']['eq'];
+                if ($comparison[0] !== $comparison[1]) {
+                    continue;
+                }
+            }
+
             // if label not set, try to suggest it from column with the same name
             if (!isset($filter['label'])) {
                 $filter['label'] = $config->offsetGetByPath(

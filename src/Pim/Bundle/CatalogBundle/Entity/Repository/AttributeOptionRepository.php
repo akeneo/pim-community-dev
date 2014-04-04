@@ -71,12 +71,12 @@ class AttributeOptionRepository extends EntityRepository implements
     public function getOptionLabel($object, $dataLocale)
     {
         foreach ($object->getOptionValues() as $value) {
-            if ($dataLocale === $value->getLocale()) {
+            if ($dataLocale === $value->getLocale() && null !== $value->getValue()) {
                 return $value->getValue();
             }
         }
 
-        return $object->getCode();
+        return sprintf('[%s]', $object->getCode());
     }
 
     /**

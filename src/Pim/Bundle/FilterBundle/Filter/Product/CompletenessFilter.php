@@ -38,7 +38,8 @@ class CompletenessFilter extends BooleanFilter
         }
 
         $repository = $this->util->getProductRepository();
-        $repository->applyFilterByField($qb, 'completeness', '100', $operator);
+        $pqb = $repository->getProductQueryBuilder($qb);
+        $pqb->addFieldFilter('completeness', $operator, '100');
 
         return true;
     }

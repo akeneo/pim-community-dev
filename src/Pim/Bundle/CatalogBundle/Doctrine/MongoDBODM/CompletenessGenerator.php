@@ -72,11 +72,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productClass,
         ChannelManager $channelManager
     ) {
-        $this->documentManager = $documentManager;
+        $this->documentManager     = $documentManager;
         $this->completenessFactory = $completenessFactory;
-        $this->validator = $validator;
-        $this->productClass = $productClass;
-        $this->channelManager = $channelManager;
+        $this->validator           = $validator;
+        $this->productClass        = $productClass;
+        $this->channelManager      = $channelManager;
     }
 
     /**
@@ -102,6 +102,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForChannel(Channel $channel)
     {
+        $this->generate(null, $channel);
     }
 
     /**
@@ -256,7 +257,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         if (null !== $product) {
             $productsQb->field('_id')->equals($product->getId());
         } else {
-            $combinations = $this->getCombinations($channel);
+            $combinations = $this->getChannelLocaleCombinations($channel);
 
             if (!empty($combinations)) {
                 $orItems = new Expr();
@@ -278,7 +279,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @return array
      */
-    protected function getCombinations(Channel $channel = null)
+    protected function getChannelLocaleCombinations(Channel $channel = null)
     {
         $channels = array();
         $combinations = array();

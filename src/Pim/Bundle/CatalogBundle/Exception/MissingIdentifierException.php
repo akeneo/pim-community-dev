@@ -20,6 +20,6 @@ class MissingIdentifierException extends \Exception
      */
     public function __construct(ProductInterface $product)
     {
-        parent::__construct(sprintf('Product %d has no identifier attribute', $product->getId()));
+        parent::__construct(sprintf('Product %s has no identifier attribute', $product->getId()));
     }
 }

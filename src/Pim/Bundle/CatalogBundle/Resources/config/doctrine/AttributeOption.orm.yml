@@ -2,6 +2,11 @@ Pim\Bundle\CatalogBundle\Entity\AttributeOption:
     type: entity
     table: pim_catalog_attribute_option
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - code
+                - attribute_id
     fields:
         id:
             type: integer

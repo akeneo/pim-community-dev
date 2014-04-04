@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales
@@ -13,15 +13,17 @@ use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
  */
 class CompletenessWidget implements WidgetInterface
 {
-    /** @var ProductRepositoryInterface */
-    protected $repository;
+    /**
+     * @var CompletenessRepositoryInterface
+     */
+    protected $completenessRepo;
 
     /**
      * @param ProductRepositoryInterface $repository
      */
-    public function __construct(ProductRepositoryInterface $repository)
+    public function __construct(CompletenessRepositoryInterface $completenessRepo)
     {
-        $this->repository = $repository;
+        $this->completenessRepo = $completenessRepo;
     }
 
     /**
@@ -37,8 +39,8 @@ class CompletenessWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $channels = $this->repository->countProductsPerChannels();
-        $completeProducts = $this->repository->countCompleteProductsPerChannels();
+        $channels = $this->completenessRepo->getProductsCountPerChannels();
+        $completeProducts = $this->completenessRepo->getCompleteProductsCountPerChannels();
 
         $params = array();
         foreach ($channels as $channel) {

@@ -24,6 +24,7 @@ oro.user.grid.groups:
         name: "Name"
 
 # User
+user.title: User
 Users Management: Users Management
 Create user: Create user
 New user: New user
@@ -91,3 +92,14 @@ oro:
 Create group: Create group
 Has group: Has group
 Save and Close: Save and close
+
+# Login page
+Log in: Log in
+Remember me on this computer: Remember me on this computer
+Forgot your password?: Forgot your password?
+Username or Email: Username or Email
+Forgot Password: Forgot Password
+Request: Request
+Check Email: Check Email
+password_reset_email_sent: An email has been sent to %email%. It contains a link you must click to reset your password.
+Go to homepage: Go to homepage

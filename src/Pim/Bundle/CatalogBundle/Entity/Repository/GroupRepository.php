@@ -143,10 +143,10 @@ class GroupRepository extends ReferableEntityRepository
         $typeLabelExpr = '(CASE WHEN typTrans.label IS NULL THEN typ.code ELSE typTrans.label END)';
 
         $isCheckecExpr =
-            'CASE WHEN (pa IS NOT NULL OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
+            'CASE WHEN (g.id IN (:associatedIds) OR g.id IN (:data_in)) AND g.id NOT IN (:data_not_in) ' .
             'THEN true ELSE false END';
 
-        $isAssociatedExpr = 'CASE WHEN pa IS NOT NULL THEN true ELSE false END';
+        $isAssociatedExpr = 'CASE WHEN g.id IN (:associatedIds) THEN true ELSE false END';
 
         $qb
             ->addSelect(sprintf('%s AS groupLabel', $groupLabelExpr))
@@ -158,13 +158,7 @@ class GroupRepository extends ReferableEntityRepository
         $qb
             ->leftJoin('g.translations', 'translation', 'WITH', 'translation.locale = :dataLocale')
             ->leftJoin('g.type', 'typ')
-            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale')
-            ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Association',
-                'pa',
-                'WITH',
-                'pa.associationType = :associationType AND pa.owner = :product AND g MEMBER OF pa.groups'
-            );
+            ->leftJoin('typ.translations', 'typTrans', 'WITH', 'typTrans.locale = :dataLocale');
 
         return $qb;
     }

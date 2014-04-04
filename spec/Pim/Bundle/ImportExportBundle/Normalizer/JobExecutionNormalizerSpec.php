@@ -44,50 +44,23 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
                 ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
             ]
         );
-        $translator->trans('error', ['foo' => 'bar'], 'messages', 'en_US')->willReturn('Such error');
+        $translator->trans('error', ['foo' => 'bar'])->willReturn('Such error');
 
         $jobExecution->getLabel()->willReturn('Wow job');
         $jobExecution->isRunning()->willReturn(true);
         $jobExecution->getStatus()->willReturn($status);
-        $status->__toString()->willReturn('COMPLETED');
+        $status->getValue()->willReturn(1);
+        $translator->trans('pim_import_export.batch_status.1')->willReturn('COMPLETED');
 
         $jobExecution->getStepExecutions()->willReturn([$exportExecution, $cleanExecution]);
-        $serializer->normalize($exportExecution, 'any', ['translationDomain' => 'messages', 'translationLocale' => 'en_US'])->willReturn('**exportExecution**');
-        $serializer->normalize($cleanExecution, 'any', ['translationDomain' => 'messages', 'translationLocale' => 'en_US'])->willReturn('**cleanExecution**');
+        $serializer->normalize($exportExecution, 'any', [])->willReturn('**exportExecution**');
+        $serializer->normalize($cleanExecution, 'any', [])->willReturn('**cleanExecution**');
 
         $this->normalize($jobExecution, 'any')->shouldReturn([
             'label'          => 'Wow job',
             'failures'       => ['Such error'],
             'stepExecutions' => ['**exportExecution**', '**cleanExecution**'],
             'isRunning'      => true,
-            'status'         => 'COMPLETED',
-        ]);
-    }
-
-    function it_normalizes_a_job_execution_instance_using_context_parameters_to_translate_failure_exceptions(
-        JobExecution $jobExecution,
-        BatchStatus $status,
-        $translator
-    ) {
-        $jobExecution->getFailureExceptions()->willReturn(
-            [
-                ['message' => 'error', 'messageParameters' => ['foo' => 'bar']]
-            ]
-        );
-        $translator->trans('error', ['foo' => 'bar'], 'job', 'ce_ZN')->willReturn('Such error');
-
-        $jobExecution->getLabel()->willReturn('Wow job');
-        $jobExecution->isRunning()->willReturn(false);
-        $jobExecution->getStatus()->willReturn($status);
-        $status->__toString()->willReturn('COMPLETED');
-
-        $jobExecution->getStepExecutions()->willReturn([]);
-
-        $this->normalize($jobExecution, 'any', ['translationDomain' => 'job', 'translationLocale' => 'ce_ZN'])->shouldReturn([
-            'label'          => 'Wow job',
-            'failures'       => ['Such error'],
-            'stepExecutions' => [],
-            'isRunning'      => false,
             'status'         => 'COMPLETED',
         ]);
     }

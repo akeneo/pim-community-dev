@@ -2,6 +2,7 @@
 
 ## Features
 - Implement creating, updating, applying and removing datagrid views
+- Default product datagrid sorting is done descending on updated property
 
 ## Improvements
 - Removed useless ```app/entities``` directory
@@ -30,7 +31,7 @@
 - Remove deprecated fallback property of Locale entity
 - Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
 - Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
-- Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute, deleteProductIds in ProductRepositoryInterface
+- Add methods getProductQueryBuilder, deleteProductIds methods in ProductRepositoryInterface
 - Remove methods setLocale/getLocale, setScope/getScope, setConfiguration/getConfiguration from ProductRepositoryInterface
 - Remove methods setLocale/getLocale, setScope/getScope from ProductManager
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface
@@ -87,6 +88,7 @@
 - Remove ProductRepository::findFamilyCommonAttributes() and ProductRepository::findValuesCommonAttributeIds() to replace them by ProductRepository::findCommonAttributeIds()
 - Disable global search feature
 - Remove the 'searchable' property of AbstractAttribute
+- Move ProductRepository::getIdentifier() to attribute repository
 
 # 1.0.2
 ## Bug Fixes

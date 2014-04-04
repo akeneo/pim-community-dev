@@ -126,57 +126,6 @@ interface ProductRepositoryInterface
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
 
     /**
-     * Count products per channel
-     * It returns the same set of products to export, but doesn't consider the completeness ratio,
-     * and group them by channel
-     * Example:
-     *    array(
-     *        array(
-     *            'label' => 'Mobile',
-     *            'total' => 100,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'total' => 85,
-     *        ),
-     *    )
-     *
-     * @return array
-     */
-    public function countProductsPerChannels();
-
-    /**
-     * Count complete products per channel and locales
-     * It returns the same set of products to export and group them by channel and locale
-     * Example:
-     *    array(
-     *        array(
-     *            'label' => 'Mobile',
-     *            'code' => 'en_US',
-     *            'total' => 10,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'code' => 'en_US',
-     *            'total' => 85,
-     *        ),
-     *        array(
-     *            'label' => 'Mobile',
-     *            'code' => 'fr_FR',
-     *            'total' => 5,
-     *        ),
-     *        array(
-     *            'label' => 'E-Commerce',
-     *            'code' => 'fr_FR',
-     *            'total' => 63,
-     *        ),
-     *    )
-     *
-     * @return array
-     */
-    public function countCompleteProductsPerChannels();
-
-    /**
      * Returns true if a ProductValue with the provided value alread exists,
      * false otherwise.
      *
@@ -185,6 +134,13 @@ interface ProductRepositoryInterface
      * @return boolean
      */
     public function valueExists(ProductValueInterface $value);
+
+    /**
+     * @param mixed $qb
+     *
+     * @return ProductQueryBuilder
+     */
+    public function getProductQueryBuilder($qb);
 
     /**
      * Set flexible query builder
@@ -203,44 +159,6 @@ interface ProductRepositoryInterface
      * @param boolean $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, array $productIds, $include);
-
-    /**
-     * Apply a filter by attribute value
-     *
-     * @param mixed             $qb             query builder to update
-     * @param AbstractAttribute $attribute      attribute
-     * @param string|array      $attributeValue value(s) used to filter
-     * @param string            $operator       operator to use
-     */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $attributeValue, $operator = '=');
-
-    /**
-     * Apply a filter by a field value
-     *
-     * @param mixed        $qb       query builder to update
-     * @param string       $field    the field
-     * @param string|array $value    value(s) used to filter
-     * @param string       $operator operator to use
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=');
-
-    /**
-     * Apply a sort by attribute value
-     *
-     * @param mixed             $qb        query builder to update
-     * @param AbstractAttribute $attribute attribute
-     * @param string            $direction direction to use
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction);
-
-    /**
-     * Apply a sort by field value
-     *
-     * @param mixed  $qb        query builder to update
-     * @param string $field     the field to sort by
-     * @param string $direction direction to use
-     */
-    public function applySorterByField($qb, $field, $direction);
 
     /**
      * Delete a list of product ids

@@ -123,6 +123,7 @@ class ChannelType extends AbstractType
                 'choices'     => $this->provider->getColorChoices(),
                 'select2'     => true,
                 'required'    => false,
+                'label'       => 'color.title',
                 'empty_value' => 'Choose a color'
             ]
         );

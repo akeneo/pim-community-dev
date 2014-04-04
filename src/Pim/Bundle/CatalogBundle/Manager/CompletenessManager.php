@@ -61,6 +61,7 @@ class CompletenessManager
         $this->validator = $validator;
         $this->class     = $class;
     }
+
     /**
      * Insert missing completenesses for a given product
      *
