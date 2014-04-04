@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -811,10 +812,37 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
+    {
+        $results = $this->findValuesCommonAttributeIds($productIds);
+
+        $familyIds = $this->findFamiliesFromProductIds($productIds);
+        $families = $this->familyRepository->findAttributeIdsFromFamilies($familyIds);
+
+        $attIds = null;
+        foreach ($results as $result) {
+            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : array();
+            $prodAttIds = array_unique(array_merge($result['attribute'], $familyAttr));
+            if (null === $attIds) {
+                $attIds = $prodAttIds;
+            } else {
+                $attIds = array_intersect($attIds, $prodAttIds);
+            }
+        }
+
+        return $attIds;
+    }
+
+    /**
+     * Find all common attribute ids with values from a list of product ids
+     * Only exists for ODM repository
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findValuesCommonAttributeIds(array $productIds)
     {
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
@@ -823,32 +851,50 @@ class ProductRepository extends DocumentRepository implements
         $expr->field('_id')->in($productIds);
 
         $pipeline = array(
-            array(
-                '$match'   => $expr->getQuery()
-            ),
+            array('$match' => $expr->getQuery()),
             array('$unwind' => '$values'),
             array(
                 '$group'  => array(
-                    '_id'       => '$_id',
+                    '_id'       => array('id' => '$_id', 'family' => '$family'),
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
-            ),
-            array('$unwind' => '$attribute'),
-            array('$group'  => array(
-                '_id'   => '$attribute',
-                'count' => array('$sum' => 1)
-            )),
-            array('$match'   => array('count' => count($productIds))),
-            array('$project' => array('values.attribute' => 1))
+            )
         );
 
-        $results = $collection->aggregate($pipeline)->toArray();
+        return $collection->aggregate($pipeline)->toArray();
+    }
 
-        $attributeIds = array();
-        foreach ($results as $result) {
-            $attributeIds[] = $result['_id'];
-        }
+    /**
+     * Find family from list of products
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findFamiliesFromProductIds(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('family')
+            ->hydrate(false);
 
-        return $attributeIds;
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
+
+    /**
+     * Set family repository
+     *
+     * @param FamilyRepository $familyRepository
+     *
+     * @return \Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+     */
+    public function setFamilyRepository(FamilyRepository $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+
+        return $this;
     }
 }
