@@ -582,18 +582,18 @@ class ProductRepository extends DocumentRepository implements
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
+        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $result = $qb->hydrate(false)->getQuery()->execute();
 
-        $foundValueId = null;
-        if ((1 === count($result)) && isset($result['_id'])) {
-            $foundValueId = $result['_id']->id;
+        if (
+            0 === $result->count() ||
+            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
+        ) {
+            return false;
         }
 
-        return (
-            (0 !== count($result)) &&
-            ($value->getId() === $foundValueId)
-        );
+        return true;
     }
 
     /**
@@ -610,7 +610,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -712,22 +712,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
@@ -735,22 +719,6 @@ class ProductRepository extends DocumentRepository implements
         } else {
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

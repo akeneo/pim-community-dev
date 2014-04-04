@@ -11,7 +11,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 
-class EnabledFilterSpec extends ObjectBehavior
+class GroupsFilterSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
@@ -23,7 +23,7 @@ class EnabledFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\ChoiceFilter');
     }
 
-    function it_applies_a_filter_on_enabled_field_value(
+    function it_applies_a_filter_on_product_groups(
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         ProductRepositoryInterface $repository,
@@ -33,8 +33,8 @@ class EnabledFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('enabled', '=', 1)->shouldBeCalled();
+        $pqb->addFieldFilter('groups', 'IN', [2, 3])->shouldBeCalled();
 
-        $this->apply($datasource, ['type' => null, 'value' => [0 => 1]]);
+        $this->apply($datasource, ['type' => null, 'value' => [2, 3]]);
     }
 }

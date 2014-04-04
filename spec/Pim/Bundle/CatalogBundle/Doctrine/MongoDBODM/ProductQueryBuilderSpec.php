@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

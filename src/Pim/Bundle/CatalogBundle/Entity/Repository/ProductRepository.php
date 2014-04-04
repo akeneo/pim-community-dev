@@ -516,22 +516,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -543,22 +527,6 @@ class ProductRepository extends EntityRepository implements
             $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
             $qb->andWhere($expression);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -660,7 +628,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductQueryBuilder
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -704,14 +672,15 @@ class ProductRepository extends EntityRepository implements
     ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
+        $productQb = $this->getProductQueryBuilder($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                    $productQb->addAttributeFilter($attribute, '=', $attValue);
                 } else {
-                    $this->applyFilterByField($qb, $attCode, $attValue);
+                    $productQb->addFieldFilter($attCode, '=', $attValue);
                 }
             }
         }
@@ -719,9 +688,9 @@ class ProductRepository extends EntityRepository implements
             foreach ($orderBy as $attCode => $direction) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                    $productQb->addAttributeSorter($attribute, $direction);
                 } else {
-                    $this->applySorterByField($qb, $attCode, $direction);
+                    $productQb->addFieldSorter($attCode, $direction);
                 }
             }
         }
@@ -834,6 +803,43 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%'  => count($productIds)
+            ]
+        );
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
+
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
+        $stmt->execute();
+
+        $attributes = $stmt->fetchAll();
+        $attributeIds = array();
+        foreach ($attributes as $attributeId) {
+            $attributeIds[] = (int) $attributeId['a_id'];
+        }
+
+        return $attributeIds;
+    }
+
+    /**
+     * Prepare SQL query to get common attributes
+     *
+     * - First subquery get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
+     *
+     * @return string
+     */
+    protected function prepareCommonAttributesSQLQuery()
+    {
         $nonFamilyAttSql = <<<SQL
     SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
     FROM %product_table% p
@@ -860,26 +866,12 @@ SQL;
     HAVING count_att = %product_ids_count%
 SQL;
 
-        $sql = strtr(
+        return strtr(
             $commonAttSql,
             [
-                '%product_ids%'        => '('. implode($productIds, ',') .')',
-                '%product_ids_count%'  => count($productIds),
                 '%non_family_att_sql%' => $nonFamilyAttSql,
-                '%family_att_sql%'     => $familyAttSql
+                '%family_att_sql%' => $familyAttSql
             ]
         );
-        $sql = $this->prepareDBALQuery($sql);
-
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
-
-        $attributes = $stmt->fetchAll();
-        $attributeIds = array();
-        foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['a_id'];
-        }
-
-        return $attributeIds;
     }
 }

@@ -37,4 +37,4 @@ Displayed Columns:                 Displayed Columns
 datagrid_view.columns.min_message: You must select at least one datagrid column to display
 
 # Quick export
-pim.grid.mass_action.quick_export: Quick Export
+pim.grid.mass_action.quick_export.title: Quick Export
