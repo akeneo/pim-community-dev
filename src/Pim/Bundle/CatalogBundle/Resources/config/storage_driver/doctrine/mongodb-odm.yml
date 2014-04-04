@@ -180,5 +180,8 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
+            -
+                - %pim_catalog.entity.group.class%
+                - %pim_catalog.entity.category.class%
         tags:
             - { name: doctrine.event_subscriber }

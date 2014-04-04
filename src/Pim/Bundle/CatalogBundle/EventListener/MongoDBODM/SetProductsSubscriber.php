@@ -20,19 +20,26 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetGroupProductsSubscriber implements EventSubscriber
+class SetProductsSubscriber implements EventSubscriber
 {
     /** @var ManagerRegistry */
     protected $registry;
+
+    /** @var string */
+    protected $productClass;
+
+    /** @var array */
+    protected $productsAwareClasses;
 
     /**
      * @param ManagerRegistry $registry
      * @param string          $productClass
      */
-    public function __construct(ManagerRegistry $registry, $productClass)
+    public function __construct(ManagerRegistry $registry, $productClass, array $productsAwareClasses)
     {
         $this->registry = $registry;
         $this->productClass = $productClass;
+        $this->productsAwareClasses = $productsAwareClasses;
     }
 
     /**
@@ -51,12 +58,13 @@ class SetGroupProductsSubscriber implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        if (!$entity instanceof \Pim\Bundle\CatalogBundle\Entity\Group) {
-            return;
-        }
 
-        $entity->setProducts(
-            $this->registry->getRepository($this->productClass)->findBy(['groups' => array($entity->getId())])
-        );
+        foreach ($this->productsAwareClasses as $class) {
+            if ($entity instanceof $class) {
+                $entity->setProducts(
+                    $this->registry->getRepository($this->productClass)->findBy(['groups' => array($entity->getId())])
+                );
+            }
+        }
     }
 }
