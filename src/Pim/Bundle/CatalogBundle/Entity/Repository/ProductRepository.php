@@ -803,36 +803,19 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        $sql = <<<SQL
-    SELECT COUNT(a.a_id) AS count_att, a.a_id
-    FROM (
-        SELECT p.id AS p_id, pv.attribute_id AS a_id
-        FROM %product_table% p
-        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
-        LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
-        WHERE p.id IN %product_ids%
-        AND fa.family_id IS NULL
-    UNION
-        SELECT p.id AS p_id, fa.attribute_id AS a_id
-        FROM %product_table% p
-        INNER JOIN %family_table% f ON f.id = p.family_id
-        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
-        WHERE p.id IN %product_ids%
-    ) AS a
-    GROUP BY a.a_id
-    HAVING count_att = %product_ids_count%
-SQL;
-
-        $sql = strtr(
-            $sql,
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
             [
                 '%product_ids%' => '('. implode($productIds, ',') .')',
-                '%product_ids_count%' => count($productIds)
+                '%product_ids_count%'  => count($productIds)
             ]
         );
-        $sql = $this->prepareDBALQuery($sql);
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
         $stmt->execute();
 
         $attributes = $stmt->fetchAll();
@@ -842,5 +825,53 @@ SQL;
         }
 
         return $attributeIds;
+    }
+
+    /**
+     * Prepare SQL query to get common attributes
+     *
+     * - First subquery get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
+     *
+     * @return string
+     */
+    protected function prepareCommonAttributesSQLQuery()
+    {
+        $nonFamilyAttSql = <<<SQL
+    SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
+    FROM %product_table% p
+    INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+    LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+    WHERE p.id IN %product_ids%
+    AND fa.family_id IS NULL
+    GROUP BY p.id, a_id
+SQL;
+
+        $familyAttSql = <<<SQL
+    SELECT fa.attribute_id AS a_id, COUNT(fa.attribute_id) AS count_att
+    FROM %product_table% p
+    INNER JOIN %family_table% f ON f.id = p.family_id
+    INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+    WHERE p.id IN %product_ids%
+    GROUP BY a_id
+SQL;
+
+        $commonAttSql = <<<SQL
+    SELECT SUM(a.count_att) AS count_att, a.a_id
+    FROM (%non_family_att_sql% UNION ALL %family_att_sql%) a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
+
+        return strtr(
+            $commonAttSql,
+            [
+                '%non_family_att_sql%' => $nonFamilyAttSql,
+                '%family_att_sql%' => $familyAttSql
+            ]
+        );
     }
 }
