@@ -93,12 +93,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $customFilters = [
+            'id'            => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
             'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
             'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter',
-            'is_associated' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\IsAssociatedFilter'
+            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
         ];
 
         if (isset($customFilters[$field])) {
