@@ -17,6 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -50,11 +51,8 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var string */
-    protected $identifier;
-
-    /** @var string */
-    protected $attributeClass;
+    /** @var AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * Set the EntityManager
@@ -81,15 +79,15 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * Set the attribute class
+     * Set the attribute repository
      *
-     * @param string $attributeClass
+     * @param AttributeRepository $attributeRepository
      *
      * @return ProductRepository $this
      */
-    public function setAttributeClass($attributeClass)
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
     {
-        $this->attributeClass = $attributeClass;
+        $this->attributeRepository = $attributeRepository;
 
         return $this;
     }
@@ -563,7 +561,7 @@ class ProductRepository extends DocumentRepository implements
         return $this->findOneBy(
             [
                 [
-                    'attribute' => $this->getIdentifier(),
+                    'attribute' => $this->attributeRepository->getIdentifier(),
                     'value' => $code,
                 ]
             ]
@@ -575,33 +573,7 @@ class ProductRepository extends DocumentRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifier()->getCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifier()
-    {
-        if (!isset($this->identifier)) {
-            if (!$this->entityManager) {
-                throw new \LogicException('Entity Manager must be set before getting reference properties');
-            }
-
-            $this->identifier = $this->entityManager
-                ->createQuery(
-                    sprintf(
-                        'SELECT a FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->attributeClass
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleResult();
-        }
-
-        return $this->identifier;
+        return array($this->attributeRepository->getIdentifierCode());
     }
 
     /**
@@ -610,18 +582,18 @@ class ProductRepository extends DocumentRepository implements
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
+        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $result = $qb->hydrate(false)->getQuery()->execute();
 
-        $foundValueId = null;
-        if ((1 === count($result)) && isset($result['_id'])) {
-            $foundValueId = $result['_id']->id;
+        if (
+            0 === $result->count() ||
+            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
+        ) {
+            return false;
         }
 
-        return (
-            (0 !== count($result)) &&
-            ($value->getId() === $foundValueId)
-        );
+        return true;
     }
 
     /**
@@ -638,7 +610,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -730,28 +702,11 @@ class ProductRepository extends DocumentRepository implements
         $result = $qb->getQuery()->execute()->toArray();
 
         $ids = [];
-
         foreach ($result as $item) {
             $ids[] = (string) $item['_id'];
         }
 
         return $ids;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
     }
 
     /**
@@ -764,22 +719,6 @@ class ProductRepository extends DocumentRepository implements
         } else {
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**

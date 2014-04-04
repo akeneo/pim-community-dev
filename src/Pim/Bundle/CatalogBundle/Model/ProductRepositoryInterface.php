@@ -136,6 +136,13 @@ interface ProductRepositoryInterface
     public function valueExists(ProductValueInterface $value);
 
     /**
+     * @param mixed $qb
+     *
+     * @return ProductQueryBuilder
+     */
+    public function getProductQueryBuilder($qb);
+
+    /**
      * Set flexible query builder
      *
      * @param ProductQueryBuilder $productQB
@@ -152,44 +159,6 @@ interface ProductRepositoryInterface
      * @param boolean $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, array $productIds, $include);
-
-    /**
-     * Apply a filter by attribute value
-     *
-     * @param mixed             $qb             query builder to update
-     * @param AbstractAttribute $attribute      attribute
-     * @param string|array      $attributeValue value(s) used to filter
-     * @param string            $operator       operator to use
-     */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $attributeValue, $operator = '=');
-
-    /**
-     * Apply a filter by a field value
-     *
-     * @param mixed        $qb       query builder to update
-     * @param string       $field    the field
-     * @param string|array $value    value(s) used to filter
-     * @param string       $operator operator to use
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=');
-
-    /**
-     * Apply a sort by attribute value
-     *
-     * @param mixed             $qb        query builder to update
-     * @param AbstractAttribute $attribute attribute
-     * @param string            $direction direction to use
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction);
-
-    /**
-     * Apply a sort by field value
-     *
-     * @param mixed  $qb        query builder to update
-     * @param string $field     the field to sort by
-     * @param string $direction direction to use
-     */
-    public function applySorterByField($qb, $field, $direction);
 
     /**
      * Delete a list of product ids

@@ -26,15 +26,11 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /**
-     * @param ProductQueryBuilder
-     */
+    /** @param ProductQueryBuilder $productQB */
     protected $productQB;
 
-    /**
-     * @var string
-     */
-    private $identifierCode;
+    /** @param AttributeRepository $attributeRepository */
+    protected $attributeRepository;
 
     /**
      * {@inheritdoc}
@@ -149,6 +145,39 @@ class ProductRepository extends EntityRepository implements
      */
     public function getFullProduct($id)
     {
+        $qb = $this->getFullProductQB();
+
+        return $qb
+            ->where('p.id=:id')
+            ->setParameter('id', $id)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFullProducts(array $productIds, array $attributeIds = array())
+    {
+        $qb = $this->getFullProductQB();
+        $qb
+            ->addSelect('c, assoc, g')
+            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
+            ->leftJoin('p.categories', 'c')
+            ->leftJoin('p.associations', 'assoc')
+            ->leftJoin('p.groups', 'g')
+            ->where($qb->expr()->in('p.id', $productIds));
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get full product query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getFullProductQB()
+    {
         return $this
             ->createQueryBuilder('p')
             ->select('p, f, v, pr, m, o, os')
@@ -157,11 +186,7 @@ class ProductRepository extends EntityRepository implements
             ->leftJoin('v.prices', 'pr')
             ->leftJoin('v.media', 'm')
             ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->where('p.id=:id')
-            ->setParameter('id', $id)
-            ->getQuery()
-            ->getOneOrNullResult();
+            ->leftJoin('v.options', 'os');
     }
 
     /**
@@ -279,29 +304,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getReferenceProperties()
     {
-        return array($this->getIdentifierCode());
-    }
-
-    /**
-     * Returns the identifier code
-     *
-     * @return string
-     */
-    public function getIdentifierCode()
-    {
-        if (!isset($this->identifierCode)) {
-            $this->identifierCode = $this->getEntityManager()
-                ->createQuery(
-                    sprintf(
-                        'SELECT a.code FROM %s a WHERE a.attributeType=:identifier_type ',
-                        $this->getAttributeClass()
-                    )
-                )
-                ->setParameter('identifier_type', 'pim_catalog_identifier')
-                ->getSingleScalarResult();
-        }
-
-        return $this->identifierCode;
+        return array($this->getAttributeRepository()->getIdentifierCode());
     }
 
     /**
@@ -321,13 +324,20 @@ class ProductRepository extends EntityRepository implements
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
+        $familyMapping = $this->getClassMetadata()->getAssociationMapping('family');
+        $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
+
+        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
+
         return strtr(
             $sql,
             [
-                '%category_join_table%' => $categoryMapping['joinTable']['name'],
-                '%product_table%'       => $this->getClassMetadata()->getTableName(),
-                '%product_value_table%' => $valueMetadata->getTableName(),
-                '%attribute_table%'     => $attributeMetadata->getTableName()
+                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
+                '%product_table%'          => $this->getClassMetadata()->getTableName(),
+                '%product_value_table%'    => $valueMetadata->getTableName(),
+                '%attribute_table%'        => $attributeMetadata->getTableName(),
+                '%family_table%'           => $familyMetadata->getTableName(),
+                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
             ]
         );
     }
@@ -506,22 +516,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -533,22 +527,6 @@ class ProductRepository extends EntityRepository implements
             $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
             $qb->andWhere($expression);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -650,7 +628,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductQueryBuilder
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -694,14 +672,15 @@ class ProductRepository extends EntityRepository implements
     ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
+        $productQb = $this->getProductQueryBuilder($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                    $productQb->addAttributeFilter($attribute, '=', $attValue);
                 } else {
-                    $this->applyFilterByField($qb, $attCode, $attValue);
+                    $productQb->addFieldFilter($attCode, '=', $attValue);
                 }
             }
         }
@@ -709,9 +688,9 @@ class ProductRepository extends EntityRepository implements
             foreach ($orderBy as $attCode => $direction) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                    $productQb->addAttributeSorter($attribute, $direction);
                 } else {
-                    $this->applySorterByField($qb, $attCode, $direction);
+                    $productQb->addFieldSorter($attCode, $direction);
                 }
             }
         }
@@ -806,26 +785,17 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * {@inheritdoc}
+     * Set attribute repository
+     *
+     * @param AttributeRepository $attributeRepository
+     *
+     * @return ProductRepository
      */
-    public function getFullProducts(array $productIds, array $attributeIds = array())
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('p, f, v, pr, m, o, os, c, assoc, g')
-            ->leftJoin('p.family', 'f')
-            ->leftJoin('p.values', 'v')
-            ->leftJoin('v.prices', 'pr')
-            ->leftJoin('v.media', 'm')
-            ->leftJoin('v.option', 'o')
-            ->leftJoin('v.options', 'os')
-            ->leftJoin('v.attribute', 'a', $qb->expr()->in('a.id', $attributeIds))
-            ->leftJoin('p.categories', 'c')
-            ->leftJoin('p.associations', 'assoc')
-            ->leftJoin('p.groups', 'g')
-            ->where($qb->expr()->in('p.id', $productIds));
+        $this->attributeRepository = $attributeRepository;
 
-        return $qb->getQuery()->execute();
+        return $this;
     }
 
     /**
@@ -833,85 +803,75 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        $attributes = array_merge(
-            $this->findFamilyCommonAttributeIds($productIds),
-            $this->findValuesCommonAttributeIds($productIds)
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
+            [
+                '%product_ids%' => '('. implode($productIds, ',') .')',
+                '%product_ids_count%'  => count($productIds)
+            ]
         );
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
 
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
+        $stmt->execute();
+
+        $attributes = $stmt->fetchAll();
         $attributeIds = array();
         foreach ($attributes as $attributeId) {
-            $attributeIds[] = (int) $attributeId['id'];
+            $attributeIds[] = (int) $attributeId['a_id'];
         }
 
         return $attributeIds;
     }
 
     /**
-     * Find all common attributes ids linked to a family
-     * A list of product ids can be passed as parameter
+     * Prepare SQL query to get common attributes
      *
-     * @param array $productIds
+     * - First subquery get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
      *
-     * @return array
+     * @return string
      */
-    protected function findFamilyCommonAttributeIds(array $productIds)
+    protected function prepareCommonAttributesSQLQuery()
     {
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->select('a.id, COUNT(a.id) AS COUNT_ATT')
-            ->innerJoin('p.family', 'f')
-            ->innerJoin('f.attributes', 'a')
-            ->groupBy('a.id');
-
-        if (!empty($productIds)) {
-            $qb->where($qb->expr()->in('p.id', $productIds));
-
-            $subQb = $this->createQueryBuilder('p_sub');
-            $subQb
-                ->select($subQb->expr()->count('f_sub.id'))
-                ->innerJoin('p_sub.family', 'f_sub')
-                ->where($subQb->expr()->in('p_sub.id', $productIds));
-
-            $qb->having('COUNT_ATT = ('. $subQb .')');
-        }
-
-        return $qb->getQuery()->execute();
-    }
-
-    /**
-     * Find all common attribute ids with values from a list of product ids
-     *
-     * Can't use ORM here because of QueryBuilder::from method which only take string
-     * Only DBAL layer is used
-     *
-     * @param array $productIds
-     *
-     * @return array
-     */
-    protected function findValuesCommonAttributeIds(array $productIds)
-    {
-        $sql = <<<SQL
-    SELECT a.id, COUNT(a.id) AS COUNT_ATT
-    FROM (
-        SELECT a.id FROM %product_table% p
-        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
-        INNER JOIN %attribute_table% a ON a.id = pv.attribute_id
-        WHERE p.id IN(%product_ids%)
-        GROUP BY p.id, a.id) a
-    GROUP BY a.id
-    HAVING COUNT_ATT = (
-        SELECT COUNT(p.id)
-        FROM %product_table% p
-        WHERE p.id IN(%product_ids%)
-    )
+        $nonFamilyAttSql = <<<SQL
+    SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
+    FROM %product_table% p
+    INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+    LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+    WHERE p.id IN %product_ids%
+    AND fa.family_id IS NULL
+    GROUP BY p.id, a_id
 SQL;
 
-        $sql = strtr($sql, ['%product_ids%' => implode($productIds, ',')]);
-        $sql = $this->prepareDBALQuery($sql);
+        $familyAttSql = <<<SQL
+    SELECT fa.attribute_id AS a_id, COUNT(fa.attribute_id) AS count_att
+    FROM %product_table% p
+    INNER JOIN %family_table% f ON f.id = p.family_id
+    INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+    WHERE p.id IN %product_ids%
+    GROUP BY a_id
+SQL;
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
-        $stmt->execute();
+        $commonAttSql = <<<SQL
+    SELECT SUM(a.count_att) AS count_att, a.a_id
+    FROM (%non_family_att_sql% UNION ALL %family_att_sql%) a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
 
-        return $stmt->fetchAll();
+        return strtr(
+            $commonAttSql,
+            [
+                '%non_family_att_sql%' => $nonFamilyAttSql,
+                '%family_att_sql%' => $familyAttSql
+            ]
+        );
     }
 }

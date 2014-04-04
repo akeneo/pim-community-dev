@@ -18,14 +18,14 @@ class FieldSorter implements SorterInterface
     /**
      * @var ProductRepositoryInterface
      */
-    protected $productRepository;
+    protected $repository;
 
     /**
      * @param ProductRepositoryInterface $prodRepository
      */
     public function __construct(ProductRepositoryInterface $prodRepository)
     {
-        $this->productRepository = $prodRepository;
+        $this->repository = $prodRepository;
     }
 
     /**
@@ -33,7 +33,8 @@ class FieldSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
-        $this->productRepository->applySorterByField($qb, $field, $direction);
+        $qb  = $datasource->getQueryBuilder();
+        $pqb = $this->repository->getProductQueryBuilder($qb);
+        $pqb->addFieldSorter($field, $direction);
     }
 }

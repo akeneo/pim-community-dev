@@ -45,7 +45,6 @@ class InGroupFilter extends BooleanFilter
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
-
         if (!$data) {
             return false;
         }
@@ -60,8 +59,8 @@ class InGroupFilter extends BooleanFilter
 
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
-
-        $repository->applyFilterByField($qb, 'groups', $value, $operator);
+        $pqb = $repository->getProductQueryBuilder($qb);
+        $pqb->addFieldFilter('groups', $operator, $value);
 
         return true;
     }

@@ -33,51 +33,16 @@ class StepExecutionNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $context = array_merge(
-            [
-                'translationDomain' => 'messages',
-                'translationLocale' => 'en_US',
-            ],
-            $context
-        );
-
         return [
-            'label'     => $this->translator->trans(
-                $object->getStepName(),
-                [],
-                $context['translationDomain'],
-                $context['translationLocale']
-            ),
-
-            'status'    => (string) $object->getStatus(),
-            'summary'   => $this->normalizeSummary(
-                $object->getSummary(),
-                $context['translationDomain'],
-                $context['translationLocale']
-            ),
-
+            'label'     => $this->translator->trans($object->getStepName()),
+            'status'    => $this->normalizeStatus($object->getStatus()->getValue()),
+            'summary'   => $this->normalizeSummary($object->getSummary()),
             'startedAt' => $this->normalizeDateTime($object->getStartTime()),
             'endedAt'   => $this->normalizeDateTime($object->getEndTime()),
-
-            'warnings'  => array_map(
-                function ($warning) use ($context) {
-                    return $this->normalizeWarning(
-                        $warning,
-                        $context['translationDomain'],
-                        $context['translationLocale']
-                    );
-                },
-                $object->getWarnings()
-            ),
-
+            'warnings'  => $this->normalizeWarnings($object->getWarnings()),
             'failures'  => array_map(
-                function ($failure) use ($context) {
-                    return $this->translator->trans(
-                        $failure['message'],
-                        $failure['messageParameters'],
-                        $context['translationDomain'],
-                        $context['translationLocale']
-                    );
+                function ($failure) {
+                    return $this->translator->trans($failure['message'], $failure['messageParameters']);
                 },
                 $object->getFailureExceptions()
             ),
@@ -109,39 +74,55 @@ class StepExecutionNormalizer implements NormalizerInterface
     }
 
     /**
-     * Normalizes a warning
+     * Normalizes the warnings
      *
-     * @param array  $warning
-     * @param string $domain
-     * @param string $locale
+     * @param array $warnings
      *
      * @return array
      */
-    protected function normalizeWarning(array $warning, $domain, $locale)
+    protected function normalizeWarnings(array $warnings)
     {
-        return [
-            'label'  => $this->translator->trans($warning['name'], [], $domain, $locale),
-            'reason' => $this->translator->trans($warning['reason'], $warning['reasonParameters'], $domain, $locale),
-            'item'   => $warning['item'],
-        ];
+        $result = [];
+        foreach ($warnings as $warning) {
+            $result[] =  [
+                'label'  => $this->translator->trans($warning['name']),
+                'reason' => $this->translator->trans($warning['reason'], $warning['reasonParameters']),
+                'item'   => $warning['item'],
+            ];
+        }
+
+        return $result;
     }
 
     /**
      * Normalizes the summary
      *
-     * @param array  $summary
-     * @param string $domain
-     * @param string $locale
+     * @param array $summary
      *
      * @return array
      */
-    protected function normalizeSummary(array $summary, $domain, $locale)
+    protected function normalizeSummary(array $summary)
     {
         $result = [];
         foreach ($summary as $key => $value) {
-            $result[$this->translator->trans($key, [], $domain, $locale)] = $value;
+            $key = sprintf('job_execution.summary.%s', $key);
+            $result[$this->translator->trans($key)] = $value;
         }
 
         return $result;
+    }
+
+    /**
+     * Normalizes the status
+     *
+     * @param integer $status
+     *
+     * @return array
+     */
+    protected function normalizeStatus($status)
+    {
+        $status = sprintf('pim_import_export.batch_status.%d', $status);
+
+        return $this->translator->trans($status);
     }
 }

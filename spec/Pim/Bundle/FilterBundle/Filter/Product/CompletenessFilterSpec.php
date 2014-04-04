@@ -11,7 +11,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 
-class EnabledFilterSpec extends ObjectBehavior
+class CompletenessFilterSpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $factory, ProductFilterUtility $utility)
     {
@@ -23,7 +23,7 @@ class EnabledFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Oro\Bundle\FilterBundle\Filter\ChoiceFilter');
     }
 
-    function it_applies_a_filter_on_enabled_field_value(
+    function it_applies_a_filter_on_complete_products(
         FilterDatasourceAdapterInterface $datasource,
         $utility,
         ProductRepositoryInterface $repository,
@@ -33,8 +33,23 @@ class EnabledFilterSpec extends ObjectBehavior
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('enabled', '=', 1)->shouldBeCalled();
+        $pqb->addFieldFilter('completeness', '=', 100)->shouldBeCalled();
 
-        $this->apply($datasource, ['type' => null, 'value' => [0 => 1]]);
+        $this->apply($datasource, ['type' => null, 'value' => 1]);
+    }
+
+    function it_applies_a_filter_on_not_complete_products(
+        FilterDatasourceAdapterInterface $datasource,
+        $utility,
+        ProductRepositoryInterface $repository,
+        ProductQueryBuilderInterface $pqb,
+        QueryBuilder $qb
+    ) {
+        $datasource->getQueryBuilder()->willReturn($qb);
+        $utility->getProductRepository()->willReturn($repository);
+        $repository->getProductQueryBuilder($qb)->willReturn($pqb);
+        $pqb->addFieldFilter('completeness', '<', 100)->shouldBeCalled();
+
+        $this->apply($datasource, ['type' => null, 'value' => 2]);
     }
 }
