@@ -128,7 +128,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      */
-    protected function assertColumnContainsValue($row, $column, $expectation)
+    public function assertColumnContainsValue($row, $column, $expectation)
     {
         $column = strtoupper($column);
         $actual = $this->datagrid->getColumnValue($column, $row);

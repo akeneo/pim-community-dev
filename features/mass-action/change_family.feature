@@ -26,11 +26,18 @@ Feature: Change family of many products at once
     Then the family of product "coffee" should be "Food"
     And the family of product "hamburger" should be "Food"
 
+  @tested
   Scenario: Remove many products from a product family
     Given I mass-edit products coffee, hamburger and jeans
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
     When I move on to the next step
-    Then the product "coffee" should have no family
-    And the product "hamburger" should have no family
-    And the product "jeans" should have no family
+    Then the row "coffee" should contain:
+      | column | value |
+      | family |       |
+    Then the row "hamburger" should contain:
+      | column | value |
+      | family |       |
+    Then the row "jeans" should contain:
+      | column | value |
+      | family |       |
