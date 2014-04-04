@@ -587,8 +587,7 @@ class ProductRepository extends DocumentRepository implements
         $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
         $result = $qb->hydrate(false)->getQuery()->execute();
 
-        if (
-            0 === $result->count() ||
+        if (0 === $result->count() ||
             (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
         ) {
             return false;
