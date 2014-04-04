@@ -35,8 +35,8 @@ class InGroupFilter extends BaseInGroupFilter
 
         $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
-
-        $repository->applyFilterByField($qb, 'groupIds', $value, $operator);
+        $pqb = $repository->getProductQueryBuilder($qb);
+        $pqb->addFieldFilter('groupIds', $operator, $value);
 
         return true;
     }
