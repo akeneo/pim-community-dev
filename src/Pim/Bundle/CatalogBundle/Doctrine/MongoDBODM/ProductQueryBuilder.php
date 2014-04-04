@@ -93,6 +93,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $customFilters = [
+            'id'            => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
             'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
