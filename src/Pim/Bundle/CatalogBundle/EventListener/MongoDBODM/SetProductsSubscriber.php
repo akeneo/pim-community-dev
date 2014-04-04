@@ -61,6 +61,14 @@ class SetProductsSubscriber implements EventSubscriber
 
         foreach ($this->productsAwareClasses as $class) {
             if ($entity instanceof $class) {
+                if (!method_exists($entity, 'setProducts')) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Method "%s::setProducts()" does not exist',
+                            get_class($entity)
+                        )
+                    );
+                }
                 $entity->setProducts(
                     $this->registry->getRepository($this->productClass)->findBy(['groups' => array($entity->getId())])
                 );

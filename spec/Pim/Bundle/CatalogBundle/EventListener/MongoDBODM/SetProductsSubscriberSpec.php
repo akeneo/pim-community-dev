@@ -17,7 +17,10 @@ class SetProductsSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith(
             $registry,
             'Acme\\Model\\Product',
-            ['spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\ProductsAware']
+            [
+                'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\ProductsAware',
+                'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\InvalidProductsAware',
+            ]
         );
     }
 
@@ -63,12 +66,29 @@ class SetProductsSubscriberSpec extends ObjectBehavior
 
         $this->postLoad($args);
     }
+
+    function it_throws_exception_when_setProducts_method_does_not_exist(
+        ManagerRegistry $registry,
+        ObjectRepository $repository,
+        LifecycleEventArgs $args,
+        InvalidProductsAware $entity,
+        ProductInterface $p1,
+        ProductInterface $p2
+    ) {
+        $args->getEntity()->willReturn($entity);
+
+        $this->shouldThrow('\LogicException')->duringPostLoad($args);
+    }
 }
 
 class ProductsAware
 {
     public function getId() {}
     public function setProducts($products) {}
+}
+
+class InvalidProductsAware
+{
 }
 
 class ProductsUnaware
