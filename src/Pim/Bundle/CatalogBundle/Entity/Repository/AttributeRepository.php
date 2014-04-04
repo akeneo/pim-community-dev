@@ -394,4 +394,31 @@ class AttributeRepository extends EntityRepository implements
 
         return $this->identifierCode;
     }
+
+    /**
+     * Find attribute ids from family ids
+     *
+     * @param array
+     *
+     * @return array
+     *
+     * TODO: Move into familyRepository
+     */
+    public function findAttributeIdsFromFamilies(array $familyIds)
+    {
+        $qb = $this->_em->createQueryBuilder('f');
+        $qb
+            ->select('f.id AS f_id, a.id AS a_id')
+            ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
+            ->innerJoin('f.attributes', 'a')
+            ->where($qb->expr()->in('f.id', $familyIds));
+
+        $results = $qb->getQuery()->getArrayResult();
+        $attrByFamilies = array();
+        foreach ($results as $result) {
+            $attrByFamilies[$result['f_id']][] = $result['a_id'];
+        }
+
+        return $attrByFamilies;
+    }
 }
