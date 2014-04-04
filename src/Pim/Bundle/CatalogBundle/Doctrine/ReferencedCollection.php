@@ -43,16 +43,22 @@ class ReferencedCollection extends AbstractLazyCollection
      * @param string        $entityClass
      * @param array         $identifiers
      * @param EntityManager $entityManager
+     * @param UnitOfWork    $uow
      */
     public function __construct($entityClass, $identifiers, EntityManager $entityManager, UnitOfWork $uow)
     {
         $this->identifiers   = $identifiers;
         $this->entityClass   = $entityClass;
         $this->entityManager = $entityManager;
-        $this->collection    = new ArrayCollection();
         $this->uow           = $uow;
+        $this->collection    = new ArrayCollection();
     }
 
+    /**
+     * Set collection owner
+     *
+     * @param object $owner
+     */
     public function setOwner($owner)
     {
         $this->owner = $owner;
@@ -179,9 +185,9 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * Get object class identifier from the repository
+     * Get object class identifiers from the repository
      *
-     * @return string
+     * @return array
      */
     protected function getClassIdentifier()
     {
@@ -190,6 +196,9 @@ class ReferencedCollection extends AbstractLazyCollection
         return $classMetadata->getIdentifier();
     }
 
+    /**
+     * Schedule update of the owner in the unit of work
+     */
     private function changed()
     {
         if ($this->isDirty) {
