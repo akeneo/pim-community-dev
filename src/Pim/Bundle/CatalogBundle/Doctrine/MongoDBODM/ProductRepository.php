@@ -819,8 +819,22 @@ class ProductRepository extends DocumentRepository implements
         $results = $this->findValuesCommonAttributeIds($productIds);
 
         $familyIds = $this->findFamiliesFromProductIds($productIds);
-
         $families = $this->attributeRepository->findAttributeIdsFromFamilies($familyIds);
+
+        $attIds = null;
+        foreach ($results as $result) {
+            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : array();
+            $prodAttIds = array_unique(array_merge($result['attribute'], $familyAttr));
+            if (null === $attIds) {
+                $attIds = $prodAttIds;
+            } else {
+                $attIds = array_intersect($attIds, $prodAttIds);
+            }
+        }
+
+        return $attIds;
+
+        var_dump($attIds);
 
         return [1, 3];
 

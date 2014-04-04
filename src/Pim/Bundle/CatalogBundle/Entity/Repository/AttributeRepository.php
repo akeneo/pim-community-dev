@@ -410,7 +410,7 @@ class AttributeRepository extends EntityRepository implements
         $qb
             ->select('f.id AS f_id, a.id AS a_id')
             ->from('Pim\Bundle\CatalogBundle\Entity\Family', 'f')
-            ->innerJoin('f.attributes', 'a')
+            ->leftJoin('f.attributes', 'a')
             ->where($qb->expr()->in('f.id', $familyIds));
 
         $results = $qb->getQuery()->getArrayResult();
