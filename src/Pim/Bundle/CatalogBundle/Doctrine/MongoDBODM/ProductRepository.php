@@ -818,7 +818,7 @@ class ProductRepository extends DocumentRepository implements
         $results = $this->findValuesCommonAttributeIds($productIds);
 
         $familyIds = $this->findFamiliesFromProductIds($productIds);
-        $families = $this->attributeRepository->findAttributeIdsFromFamilies($familyIds);
+        $families = $this->familyRepository->findAttributeIdsFromFamilies($familyIds);
 
         $attIds = null;
         foreach ($results as $result) {
