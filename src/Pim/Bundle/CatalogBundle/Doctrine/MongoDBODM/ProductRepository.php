@@ -833,32 +833,6 @@ class ProductRepository extends DocumentRepository implements
         }
 
         return $attIds;
-
-        var_dump($attIds);
-
-        return [1, 3];
-
-        // get all families used by products list
-
-        $tmpTable = $this->createCommonValuesTemporaryTable($results);
-
-        $familyIds = $this->findFamiliesFromProductIds($productIds);
-
-        $sql = <<<SQL
-    SELECT COUNT(a.a_id) AS count_att, a.a_id
-    FROM (
-        SELECT p_id, a_id
-        FROM tmp_table
-    UNION
-        SELECT p.id AS p_id, fa.attribute_id AS a_id
-        FROM %product_table% p
-        INNER JOIN %family_table% f ON f.id = p.family_id
-        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
-        WHERE p.id IN %product_ids%
-    ) AS a
-    GROUP BY a.a_id
-    HAVING count_att = %product_ids_count%
-SQL;
     }
 
     /**
@@ -879,66 +853,25 @@ SQL;
 
         $pipeline = array(
             array('$match' => $expr->getQuery()),
-//             array(
-//                 '$match' => array('family' => array('$exists' => false))
-//             ),
             array('$unwind' => '$values'),
             array(
                 '$group'  => array(
                     '_id'       => array('id' => '$_id', 'family' => '$family'),
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
-            ),
-//             array('$unwind' => '$attribute'),
-//             array('$group'  => array(
-//                 '_id'   => '$_id',
-//                 'attribute' => '$values.attribute'
-//                 'count' => array('$sum' => 1)
-//             )),
-//             array('$match'   => array('count' => count($productIds))),
-//             array('$project' => array('values.attribute' => 1, '_id' => 1))
+            )
         );
 
         return $collection->aggregate($pipeline)->toArray();
     }
 
     /**
-     * Create a temporary table to have common attributes
-     * @param array $results
+     * Find family from list of products
+     *
+     * @param array $productIds
+     *
+     * @return array
      */
-    protected function createCommonValuesTemporaryTable(array $results)
-    {
-        //TODO: Need index? Is it possible
-        $sql = <<<SQL
-    CREATE TEMPORARY TABLE tmp_table(
-        p_id VARCHAR(255),
-        a_id INT(11)
-    );
-SQL;
-
-        $connection = $this->entityManager->getConnection();
-        $stmt = $connection->prepare($sql);
-        $stmt->execute();
-
-        // prepare data to insert
-        $dataToInsert = array();
-        foreach ($results as $result) {
-            foreach ($result['attribute'] as $attId) {
-                $dataToInsert[] = '"'. (string) $result['_id'] .'",'. $attId;
-            }
-        }
-
-        if (!empty($dataToInsert)) {
-            $sqlInsert = <<<SQL
-    INSERT INTO tmp_table(p_id, a_id) VALUES (%data_to_insert%);
-SQL;
-            $sqlInsert = str_replace('%data_to_insert%', implode('),(', $dataToInsert), $sqlInsert);
-            $this->entityManager->getConnection()->executeUpdate($sqlInsert);
-        }
-
-        return 'tmp_table';
-    }
-
     protected function findFamiliesFromProductIds(array $productIds)
     {
         $qb = $this->createQueryBuilder('p');
