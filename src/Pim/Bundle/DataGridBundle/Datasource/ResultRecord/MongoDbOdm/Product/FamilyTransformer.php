@@ -38,8 +38,6 @@ class FamilyTransformer
                     $result['productLabel'] = null;
                 }
             }
-        } else {
-            $result['familyLabel'] = '-';
         }
 
         return $result;
