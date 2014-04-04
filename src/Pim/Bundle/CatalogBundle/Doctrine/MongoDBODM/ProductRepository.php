@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -811,8 +812,6 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
     {
@@ -883,5 +882,19 @@ class ProductRepository extends DocumentRepository implements
         $cursor = $qb->getQuery()->execute();
 
         return $cursor->toArray();
+    }
+
+    /**
+     * Set family repository
+     *
+     * @param FamilyRepository $familyRepository
+     *
+     * @return \Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+     */
+    public function setFamilyRepository(FamilyRepository $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+
+        return $this;
     }
 }

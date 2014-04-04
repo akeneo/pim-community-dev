@@ -120,6 +120,7 @@ services:
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setCategoryClass, [%pim_catalog.entity.category.class%]]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
+            - [setFamilyRepository, ['@pim_catalog.repository.family']]
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%
