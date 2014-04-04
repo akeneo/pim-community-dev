@@ -30,6 +30,9 @@ define(
                 ],
                 contextmenu: {
                     items: {
+                        create: {
+                            label: _.__('jstree.create')
+                        },
                         ccp: false,
                         rename: false,
                         remove: false

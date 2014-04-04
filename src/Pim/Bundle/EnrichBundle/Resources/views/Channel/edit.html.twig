@@ -9,7 +9,7 @@
         'action': form.vars.value.id ? path('pim_enrich_channel_edit', { id: form.vars.value.id }) : path('pim_enrich_channel_create'),
         'attr': {
             'data-updated-title': 'confirmation.leave'|trans,
-            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'channel'|trans })
+            'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'channel.title'|trans })
         }
     }) }}
 

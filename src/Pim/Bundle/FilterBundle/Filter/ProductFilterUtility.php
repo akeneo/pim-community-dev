@@ -81,12 +81,12 @@ class ProductFilterUtility extends BaseFilterUtility
      */
     public function applyFilterByAttribute(FilterDatasourceAdapterInterface $ds, $field, $value, $operator)
     {
-        $attribute  = $this->getAttribute($field);
-        $repository = $this->productManager->getProductRepository();
+        $attribute = $this->getAttribute($field);
+        $productQueryBuilder = $this->getProductRepository()->getProductQueryBuilder($ds->getQueryBuilder());
         if ($attribute) {
-            $repository->applyFilterByAttribute($ds->getQueryBuilder(), $attribute, $value, $operator);
+            $productQueryBuilder->addAttributeFilter($attribute, $operator, $value);
         } else {
-            $repository->applyFilterByField($ds->getQueryBuilder(), $field, $value, $operator);
+            $productQueryBuilder->addFieldFilter($field, $operator, $value);
         }
     }
 }

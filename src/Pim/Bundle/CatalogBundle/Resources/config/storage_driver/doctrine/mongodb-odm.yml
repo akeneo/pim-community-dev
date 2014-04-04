@@ -21,6 +21,9 @@ parameters:
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
 
+    pim_filter.product_groups_filter.class:   Pim\Bundle\CatalogBundle\MongoDB\Filter\Product\GroupsFilter
+    pim_filter.product_in_group_filter.class: Pim\Bundle\CatalogBundle\MongoDB\Filter\Product\InGroupFilter
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
@@ -120,7 +123,8 @@ services:
             - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setCategoryClass, [%pim_catalog.entity.category.class%]]
-            - [setAttributeClass, [%pim_catalog.entity.attribute.class%]]
+            - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
+            - [setFamilyRepository, ['@pim_catalog.repository.family']]
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%

@@ -66,7 +66,7 @@ Feature: Edit common attributes of many products at once
     Then I should see available attribute Comment in group "Other"
     And I should not see available attributes Sole color, Fur and Serial number in group "Other"
 
-  @skip @jira https://akeneo.atlassian.net/browse/PIM-2183
+  @jira https://akeneo.atlassian.net/browse/PIM-2183
   Scenario: Allow edition on common attributes with value not in family and no value on family
     Given the following attribute:
       | code       | label | families   |
@@ -74,6 +74,8 @@ Feature: Edit common attributes of many products at once
     And the following product values:
       | product   | attribute  | value |
       | boots     | sole_color | Blue  |
+    When I mass-edit products boots and high_heels
+    And I choose the "Edit attributes" operation
     Then I should see available attribute Sole in group "Other"
 
   Scenario: Succesfully update many text values at once

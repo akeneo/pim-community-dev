@@ -29,7 +29,8 @@ class EnabledFilter extends ChoiceFilter
         $value = current($data['value']);
 
         $repository = $this->util->getProductRepository();
-        $repository->applyFilterByField($qb, 'enabled', $value);
+        $pqb = $repository->getProductQueryBuilder($qb);
+        $pqb->addFieldFilter('enabled', '=', $value);
 
         return true;
     }
