@@ -26,7 +26,7 @@ class SetGroupProductsSubscriber implements EventSubscriber
     protected $registry;
 
     /**
-     * @Param ManagerRegistry $registry
+     * @param ManagerRegistry $registry
      * @param string          $productClass
      */
     public function __construct(ManagerRegistry $registry, $productClass)
