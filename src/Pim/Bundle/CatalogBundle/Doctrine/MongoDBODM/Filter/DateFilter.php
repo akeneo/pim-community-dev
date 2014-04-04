@@ -84,9 +84,9 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     /**
      * Get timestamp from data
      *
-     * @param \DateTime|string
+     * @param \DateTime|string $data
      *
-     * @return int
+     * @return integer
      */
     private function getTimestamp($data)
     {

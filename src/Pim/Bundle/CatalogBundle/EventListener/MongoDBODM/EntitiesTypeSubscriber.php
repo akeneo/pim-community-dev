@@ -86,7 +86,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      * based on the values stored inside the "idsField" field
      *
      * @param object        $document
-     * @param ClassMetadata $metatada
+     * @param ClassMetadata $metadata
      */
     private function overrideEntitiesField($document, ClassMetadata $metadata)
     {
@@ -126,7 +126,9 @@ class EntitiesTypeSubscriber implements EventSubscriber
      * Synchronizes ids field with the ids of object contained in the linked "entities" type field
      *
      * @param object        $document
-     * @param ClassMetadata $metatada
+     * @param ClassMetadata $metadata
+     *
+     * @return null
      */
     private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
     {

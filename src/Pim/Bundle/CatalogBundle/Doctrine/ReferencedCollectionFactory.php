@@ -29,6 +29,7 @@ class ReferencedCollectionFactory
      *
      * @param string $entityClass
      * @param array  $identifiers
+     * @param object $document
      *
      * @return ReferencedCollection
      */
