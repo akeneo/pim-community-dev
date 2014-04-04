@@ -818,6 +818,14 @@ class ProductRepository extends DocumentRepository implements
     {
         $results = $this->findValuesCommonAttributeIds($productIds);
 
+        $familyIds = $this->findFamiliesFromProductIds($productIds);
+
+        $families = $this->attributeRepository->findAttributeIdsFromFamilies($familyIds);
+
+        return [1, 3];
+
+        // get all families used by products list
+
         $tmpTable = $this->createCommonValuesTemporaryTable($results);
 
         $familyIds = $this->findFamiliesFromProductIds($productIds);
@@ -856,16 +864,14 @@ SQL;
         $expr->field('_id')->in($productIds);
 
         $pipeline = array(
-            array(
-                '$match' => $expr->getQuery()
-            ),
-            array(
-                '$match' => array('family' => array('$exists' => false))
-            ),
+            array('$match' => $expr->getQuery()),
+//             array(
+//                 '$match' => array('family' => array('$exists' => false))
+//             ),
             array('$unwind' => '$values'),
             array(
                 '$group'  => array(
-                    '_id'       => '$_id',
+                    '_id'       => array('id' => '$_id', 'family' => '$family'),
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
             ),
