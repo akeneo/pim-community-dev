@@ -38,8 +38,6 @@ class ProductIdFilter implements FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        // TODO ADD = operator
-
         $field = '_id';
         $value = is_array($value) ? $value : [$value];
 
