@@ -93,7 +93,7 @@ class SmartManagerRegistry implements ManagerRegistry
             }
         }
 
-        throw new \Exception('No manager were found for '. $class);
+        throw new \Exception('No manager was found for '. $class);
     }
 
     /**
