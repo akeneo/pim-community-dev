@@ -21,6 +21,7 @@
         "oro/platform": "dev-pim-1.0#37337badacb7b5a1e448b789368594db2ec00a4f",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-gaufrette-bundle": "v0.1.7",
+        "knplabs/gaufrette": "v0.1.7",
         "incenteev/composer-parameter-handler": "2.1.0",
         "symfony/icu": "1.1.0",
         "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
