@@ -10,6 +10,9 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
+/**
+ * @require Doctrine\ODM\MongoDB\UnitOfWork
+ */
 class ReferencedCollectionSpec extends ObjectBehavior
 {
     function let(
