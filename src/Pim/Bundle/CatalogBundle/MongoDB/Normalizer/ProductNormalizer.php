@@ -50,8 +50,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         $data = [];
-        $data[self::FAMILY_FIELD] = $this->serializer->normalize($object->getFamily(), $format, $context);
-        $data[self::GROUPS_FIELD] = [];
+        if (null !== $object->getFamily()) {
+            $data[self::FAMILY_FIELD] = $this->serializer->normalize($object->getFamily(), $format, $context);
+        }
+
         foreach ($object->getGroups() as $group) {
             $data[self::GROUPS_FIELD][] = $this->serializer->normalize($group, $format, $context);
             $inGroupField = sprintf('%s_%d', self::IN_GROUP_FIELD, $group->getId());
