@@ -40,7 +40,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     protected $children;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection $products
+     * @var ArrayCollection $products
      */
     protected $products;
 

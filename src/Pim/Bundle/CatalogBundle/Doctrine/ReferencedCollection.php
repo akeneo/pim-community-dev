@@ -6,6 +6,9 @@ use Doctrine\Common\Collections\AbstractLazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * An ArrayCollection decorator of entity identifiers that are lazy loaded
@@ -18,9 +21,6 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
  */
 class ReferencedCollection extends AbstractLazyCollection
 {
-    /** @var EntityManager */
-    protected $entityManager;
-
     /** @var string */
     protected $entityClass;
 
@@ -33,8 +33,8 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var boolean */
     protected $isDirty = false;
 
-    /** @var UnitOfWork */
-    protected $uow;
+    /** @var SmartManagerRegistry */
+    protected $registry;
 
     /** @var object|null */
     protected $owner;
@@ -42,15 +42,13 @@ class ReferencedCollection extends AbstractLazyCollection
     /**
      * @param string        $entityClass
      * @param array         $identifiers
-     * @param EntityManager $entityManager
      * @param UnitOfWork    $uow
      */
-    public function __construct($entityClass, $identifiers, EntityManager $entityManager, UnitOfWork $uow)
+    public function __construct($entityClass, $identifiers, ManagerRegistry $registry)
     {
         $this->identifiers   = $identifiers;
         $this->entityClass   = $entityClass;
-        $this->entityManager = $entityManager;
-        $this->uow           = $uow;
+        $this->registry = $registry;
         $this->collection    = new ArrayCollection();
     }
 
@@ -156,6 +154,13 @@ class ReferencedCollection extends AbstractLazyCollection
         }
     }
 
+    public function populate(Collection $collection)
+    {
+        $this->collection = $collection;
+        $this->initialized = true;
+        $this->changed();
+    }
+
     /**
      * Initializes the collection by loading its contents from the database
      * if the collection is not yet initialized.
@@ -177,11 +182,10 @@ class ReferencedCollection extends AbstractLazyCollection
 
         $this->collection = new ArrayCollection(
             $this
-                ->entityManager
+                ->registry
                 ->getRepository($this->entityClass)
                 ->findBy([$classIdentifier[0] => $this->identifiers])
         );
-        $this->changed();
     }
 
     /**
@@ -191,7 +195,7 @@ class ReferencedCollection extends AbstractLazyCollection
      */
     protected function getClassIdentifier()
     {
-        $classMetadata = $this->entityManager->getClassMetadata($this->entityClass);
+        $classMetadata = $this->registry->getManagerForClass($this->entityClass)->getClassMetadata($this->entityClass);
 
         return $classMetadata->getIdentifier();
     }
@@ -206,6 +210,13 @@ class ReferencedCollection extends AbstractLazyCollection
         }
 
         $this->isDirty = true;
-        $this->uow->scheduleForUpdate($this->owner);
+
+        $uow = $this->registry->getManagerForClass(get_class($this->owner))->getUnitOfWork();
+        if (
+            UnitOfWork::STATE_MANAGED === $uow->getDocumentState($this->owner) &&
+            !$uow->isScheduledForUpdate($this->owner)
+        ) {
+            $uow->scheduleForUpdate($this->owner);
+        }
     }
 }

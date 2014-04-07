@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Factory of referenced collection
@@ -51,10 +52,22 @@ class ReferencedCollectionFactory
         $coll = new ReferencedCollection(
             $entityClass,
             $identifiers,
-            $this->registry->getManagerForClass($entityClass),
-            $this->registry->getManagerForClass(get_class($document))->getUnitOfWork()
+            $this->registry
         );
         $coll->setOwner($document);
+
+        return $coll;
+    }
+
+    public function createFromCollection($entityClass, $document, Collection $collection)
+    {
+        $coll = new ReferencedCollection(
+            $entityClass,
+            [],
+            $this->registry
+        );
+        $coll->setOwner($document);
+        $coll->populate($collection);
 
         return $coll;
     }

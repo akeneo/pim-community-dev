@@ -5,6 +5,8 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Event\OnFlushEventArgs;
 
 /**
  * ORM subscriber registered when Product is a mongo document
@@ -29,17 +31,17 @@ class SetProductsSubscriber implements EventSubscriber
     protected $productClass;
 
     /** @var array */
-    protected $productsAwareClasses;
+    protected $productsAwareClassMapping;
 
     /**
      * @param ManagerRegistry $registry
      * @param string          $productClass
      */
-    public function __construct(ManagerRegistry $registry, $productClass, array $productsAwareClasses)
+    public function __construct(ManagerRegistry $registry, $productClass, array $productsAwareClassMapping)
     {
         $this->registry = $registry;
         $this->productClass = $productClass;
-        $this->productsAwareClasses = $productsAwareClasses;
+        $this->productsAwareClassMapping = $productsAwareClassMapping;
     }
 
     /**
@@ -47,7 +49,20 @@ class SetProductsSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad'];
+        return ['postLoad', 'prePersist'];
+    }
+
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        foreach ($this->productsAwareClassMapping as $mapping) {
+            if ($mapping['class'] === get_class($entity)) {
+                $reflClass = new \ReflectionClass($entity);
+                $reflProp = $reflClass->getProperty('products');
+                $reflProp->setAccessible(true);
+                $objects = $reflProp->getValue($entity);
+            }
+        }
     }
 
     /**
@@ -58,19 +73,26 @@ class SetProductsSubscriber implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
+        $metadata = $args->getEntityManager()->getClassMetadata(get_class($entity));
 
-        foreach ($this->productsAwareClasses as $class) {
-            if ($entity instanceof $class) {
-                if (!method_exists($entity, 'setProducts')) {
+        foreach ($this->productsAwareClassMapping as $mapping) {
+            if ($entity instanceof $mapping['class']) {
+                if (!$metadata->reflClass->hasProperty('products')) {
                     throw new \LogicException(
                         sprintf(
-                            'Method "%s::setProducts()" does not exist',
+                            'Property "%s::$products" does not exist',
                             get_class($entity)
                         )
                     );
                 }
-                $entity->setProducts(
-                    $this->registry->getRepository($this->productClass)->findBy(['groups' => array($entity->getId())])
+                $productsProp = $metadata->reflClass->getProperty('products');
+                $productsProp->setAccessible(true);
+
+                $productsProp->setValue(
+                    $entity,
+                    new \Doctrine\Common\Collections\ArrayCollection(
+                        $this->registry->getRepository($this->productClass)->findBy([$mapping['property'] => array($entity->getId())])
+                    )
                 );
             }
         }

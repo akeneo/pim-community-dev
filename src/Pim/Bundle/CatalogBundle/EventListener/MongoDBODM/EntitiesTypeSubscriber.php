@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -47,49 +48,6 @@ class EntitiesTypeSubscriber implements EventSubscriber
         $document = $args->getDocument();
         $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
 
-        $this->overrideEntitiesField($document, $metadata);
-    }
-
-    /**
-     * Entities fields need to be overriden on insertion because the postLoad event will not be triggered
-     * Otherwise, some documents with entities field (the one that have never been loaded from db in fact)
-     * won't have a ReferencedCollection
-     *
-     * @param LifecycleEventArgs $args
-     */
-    public function prePersist(LifecycleEventArgs $args)
-    {
-        $document = $args->getDocument();
-        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
-
-        $this->overrideEntitiesField($document, $metadata);
-    }
-
-    /**
-     * Synchronizes update scheduled documents entities fields before flushing
-     * No need to recompute the change set as it hasn't be calculated yet
-     *
-     * @param PreFlushEventArgs $args
-     */
-    public function preFlush(PreFlushEventArgs $args)
-    {
-        $dm = $args->getDocumentManager();
-        $uow = $dm->getUnitOfWork();
-        foreach ($uow->getScheduledDocumentUpdates() as $document) {
-            $metadata = $dm->getClassMetadata(get_class($document));
-            $this->synchronizeReferencedCollectionIds($document, $metadata);
-        }
-    }
-
-    /**
-     * Overrides all field of type "entities" into a ReferencedCollection
-     * based on the values stored inside the "idsField" field
-     *
-     * @param object        $document
-     * @param ClassMetadata $metadata
-     */
-    private function overrideEntitiesField($document, ClassMetadata $metadata)
-    {
         foreach ($metadata->fieldMappings as $field => $mapping) {
             if ('entities' === $mapping['type']) {
                 if (!isset($mapping['targetEntity'])) {
@@ -123,6 +81,68 @@ class EntitiesTypeSubscriber implements EventSubscriber
     }
 
     /**
+     * Entities fields need to be overriden on insertion because the postLoad event will not be triggered
+     * Otherwise, some documents with entities field (the one that have never been loaded from db in fact)
+     * won't have a ReferencedCollection
+     *
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $document = $args->getDocument();
+        $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
+
+        foreach ($metadata->fieldMappings as $field => $mapping) {
+            if ('entities' === $mapping['type']) {
+                if (!isset($mapping['targetEntity'])) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Please provide the "targetEntity" of the %s::$%s field mapping',
+                            $metadata->name,
+                            $field
+                        )
+                    );
+                }
+                if (!isset($mapping['idsField'])) {
+                    throw new \RuntimeException(
+                        sprintf(
+                            'Please provide the "idsField" of the %s::$%s field mapping',
+                            $metadata->name,
+                            $field
+                        )
+                    );
+                }
+
+                $entities = $metadata->reflFields[$field]->getValue($document);
+                $metadata->reflFields[$field]->setValue(
+                    $document,
+                    $this->factory->createFromCollection($mapping['targetEntity'], $document, $entities)
+                );
+            }
+        }
+    }
+
+    /**
+     * Synchronizes update scheduled documents entities fields before flushing
+     * No need to recompute the change set as it hasn't be calculated yet
+     *
+     * @param PreFlushEventArgs $args
+     */
+    public function preFlush(PreFlushEventArgs $args)
+    {
+        $dm = $args->getDocumentManager();
+        $uow = $dm->getUnitOfWork();
+        foreach ($uow->getScheduledDocumentUpdates() as $document) {
+            $metadata = $dm->getClassMetadata(get_class($document));
+            $this->synchronizeReferencedCollectionIds($document, $metadata);
+        }
+        foreach ($uow->getScheduledDocumentInsertions() as $document) {
+            $metadata = $dm->getClassMetadata(get_class($document));
+            $this->synchronizeReferencedCollectionIds($document, $metadata);
+        }
+    }
+
+    /**
      * Synchronizes ids field with the ids of object contained in the linked "entities" type field
      *
      * @param object        $document
@@ -148,7 +168,16 @@ class EntitiesTypeSubscriber implements EventSubscriber
                 }
                 $newValue = $oldValue->map(
                     function ($item) {
-                        return $item->getId();
+                        if (null === $id = $item->getId()) {
+                            throw new \LogicException(
+                                sprintf(
+                                    'Cannot synchronize entity "%s" because it hasn\'t been persisted.',
+                                    (string) $item
+                                )
+                            );
+                        }
+
+                        return $id;
                     }
                 )
                 ->toArray();
