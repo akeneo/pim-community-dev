@@ -2,20 +2,24 @@
 {% if product.getFamily is null %}
     {{ 'No family defined'|trans }}
 {% elseif completeness is null %}
-    {{ 'Not yet calculated'|trans }}
+    {% if channel.hasLocale(locale) %}
+        {{ 'Not yet calculated'|trans }}
+    {% else %}
+        <div class="progress">
+            <div class="bar bar-disabled" style="width: 100%;"></div>
+        </div>
+    {% endif %}
 {% else %}
     {% set titleProgressBar = 'pim_enrich.completeness.progress_bar.title'|transchoice(completeness.requiredCount, {'%ratio%': completeness.ratio|number_format(0)}) %}
     <div class="progress" data-toggle="tooltip" data-original-title="{{ titleProgressBar }}">
-        {% if channel.hasLocale(locale) == false %}
-            {% set progressClass = 'bar-disabled' %}
-        {% elseif completeness.ratio == 100 %}
-            {% set progressClass = 'bar-success' %}
+        {% if completeness.ratio == 100 %}
+            {% set progressClass = 'success' %}
         {% elseif completeness.ratio == 0 %}
-            {% set progressClass = 'bar-danger' %}
+            {% set progressClass = 'danger' %}
         {% else %}
-            {% set progressClass = 'bar-warning' %}
+            {% set progressClass = 'warning' %}
         {% endif %}
-        <div class="bar {{ progressClass }}" style="width: {{ completeness.ratio }}%;"></div>
+        <div class="bar bar-{{ progressClass }}" style="width: {{ completeness.ratio }}%;"></div>
     </div>
 
     {% if completeness.missingCount == 0 %}
