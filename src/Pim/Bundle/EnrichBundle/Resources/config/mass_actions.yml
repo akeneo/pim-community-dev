@@ -29,6 +29,7 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.manager.currency'
             - '@pim_catalog.context.catalog'
+            - '@pim_catalog.builder.product'
         tags:
             - { name: pim_enrich.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
 
