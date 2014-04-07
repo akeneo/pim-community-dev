@@ -544,7 +544,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param AttributeOption $option
      *
-     * @return AbstractProduct
+     * @return AbstractProductValue
      */
     public function addOption(AttributeOption $option)
     {
