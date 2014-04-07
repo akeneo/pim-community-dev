@@ -409,10 +409,10 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
-    private function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
+    protected function setProductPrice(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         foreach ($value->getPrices() as $price) {
-            if (false === $productPrice = $productValue->getPrice($price->getCurrency())) {
+            if (null === $productPrice = $productValue->getPrice($price->getCurrency())) {
                 // Add a new product price to the value if it wasn't defined before
                 $productPrice = $this->createProductPrice($price->getCurrency());
                 $productValue->addPrice($productPrice);
