@@ -24,6 +24,7 @@
 - Fixed get common attributes with common values
 - Fixed completeness not removed from changed family
 - Fixed Product ORM mapping: activated orphanRemoval of values
+- Fixed family import fixtures, we now throw an exception if attribute used as requirement not exists
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
