@@ -1,0 +1,104 @@
+---
+export profile:
+  overview: エクスポート プロファイルの概要
+  create: エクスポート プロファイルを作成
+  edit: エクスポート プロファイルを編集
+import profile:
+  overview: インポート プロファイルの概要
+  create: インポート プロファイルを作成
+  edit: インポート プロファイルを編集
+Job: ジョブ
+Connector: コネクター
+pim_import_export:
+  status:
+    - 準備完了
+  batch_status:
+    1: 完了
+    2: 開始中
+    3: 開始
+    4: 停止中
+    5: 停止済
+    6: 失敗
+    7: 中断
+    8: 不明
+  download_archive:
+    archive: 生成したファイルをダウンロード | 生成したファイルをダウンロード
+    output: 生成したファイルをダウンロード | 生成したファイルをダウンロード
+    input: 読み込んだファイルをダウンロード | 読み込んだファイルをダウンロード
+    invalid: 無効なデータをダウンロード
+pim_title.export_profile.index: エクスポート プロファイルの管理
+pim_title.export_profile.edit: '%job.label% のエクスポート プロファイル |編集'
+pim_title.export_profile.show: '%job.label% のエクスポート プロファイル |表示'
+pim_title.export_execution.index: 実行履歴をエクスポート
+pim_title.export_execution.show: エクスポートの実行 |詳細
+pim_title.import_profile.index: インポート プロファイル管理
+pim_title.import_profile.edit: '%job.label% のインポート プロファイル |編集'
+pim_title.import_profile.show: '%job.label% のインポート プロファイル |表示'
+pim_title.import_execution.index: インポート実行履歴
+pim_title.import_execution.show: インポートの実行 |詳細
+export report:
+  overview: レポートのエクスポート
+import report:
+  overview: レポートのインポート
+pim_importexport:
+  acl:
+    export_profile:
+      index: エクスポートプロファイルリストの表示
+      create: エクスポート プロファイルを作成
+      show: エクスポート プロファイルを表示
+      edit: エクスポート プロファイルを編集
+      remove: エクスポート プロファイルを削除
+      launch: エクスポート プロファイルを起動
+    import_profile:
+      index: インポートプロファイルリストを表示
+      create: インポート プロファイルを作成
+      show: インポート プロファイルを表示
+      edit: インポート プロファイルを編集
+      remove: インポート プロファイルを削除
+      launch: インポート プロファイルを起動
+    export_execution:
+      index: エクスポートレポート一覧を表示
+      show: エクスポート レポートの詳細の表示
+      dl_log: エクスポートレポートログをダウンロード
+      dl_files: エクスポートしたファイルをダウンロード
+    import_execution:
+      index: インポートレポートを表示
+      show: インポート レポートの詳細の表示
+      dl_log: インポート レポートログをダウンロード
+      dl_files: インポートしたファイルをダウンロード
+btn:
+  create:
+    export profile: エクスポート プロファイルを作成
+    import profile: インポート プロファイルを作成
+Upload and import: アップロードとインポート
+confirmation:
+  remove:
+    export profile: 'エクスポート プロファイル %name% を削除してもよろしいですか。'
+    import profile: 'インポート プロファイル %name% を削除してもよろしいですか。'
+flash:
+  export:
+    created: エクスポートが正常に作成されました。
+    removed: エクスポートを削除しました
+    updated: エクスポートを正常に更新しました
+  import:
+    created: インポートを正常に作成しました
+    removed: インポートを削除しました
+    updated: インポートが正常に更新されました
+pim_menu:
+  item:
+    export_history: エクスポート履歴
+    export_profile: エクスポートプロファイル
+    import_history: インポート履歴
+    import_profile: インポートプロファイル
+General properties: 全般プロパティ
+History: 履歴
+pane.accordion:
+  properties: プロパティ
+  global_settings: グローバル設定
+popin.create:
+  export_profile.title: 新しいエクスポート プロファイルを作成
+  import_profile.title: 新しいインポート プロファイルを作成
+Display item: アイテムを表示
+Hide item: アイテムを隠す
+Collecting data about job execution...: ジョブの実行に関するデータを収集しています...
+You must select a file to upload: アップロードするファイルを選択してください
