@@ -101,7 +101,10 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 $filename = str_replace('/', '__', $filename);
 
                 $dir = getenv('WORKSPACE');
-                if (false === $dir) {
+                $num = getenv('BUILD_NUMBER');
+                if (false !== $dir && false !== $num) {
+                    $dir = sprintf('%s/../builds/%d', $dir, $num);
+                } else {
                     $dir = '/tmp/behat/screenshots';
                 }
                 echo $dir . "\n";
