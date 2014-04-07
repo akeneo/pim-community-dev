@@ -33,7 +33,8 @@ class CompletenessSorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
-        $this->repository->applySorterByField($qb, 'completeness', $direction);
+        $qb  = $datasource->getQueryBuilder();
+        $pqb = $this->repository->getProductQueryBuilder($qb);
+        $pqb->addFieldSorter('completeness', $direction);
     }
 }

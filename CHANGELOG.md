@@ -31,7 +31,7 @@
 - Remove deprecated fallback property of Locale entity
 - Add a generateProductCompletenesses method on CompletenessGeneratorInterface, to generate completeness for one product
 - Add setCompletenesses and getCompletenesses method on ProductInterface and Product class
-- Add methods applyFilterByField, applySorterByField and update methods applyFilterByAttribute, applySorterByAttribute, deleteProductIds in ProductRepositoryInterface
+- Add methods getProductQueryBuilder, deleteProductIds methods in ProductRepositoryInterface
 - Remove methods setLocale/getLocale, setScope/getScope, setConfiguration/getConfiguration from ProductRepositoryInterface
 - Remove methods setLocale/getLocale, setScope/getScope from ProductManager
 - Move findAllByAttributes and findOneByWithValues from FlexibleEntityRepositoryInterface to ProductRepositoryInterface

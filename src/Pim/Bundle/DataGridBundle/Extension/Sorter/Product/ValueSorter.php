@@ -43,6 +43,7 @@ class ValueSorter implements SorterInterface
     {
         $attribute = $this->attributeRepository->findOneByCode($field);
         $qb = $datasource->getQueryBuilder();
-        $this->productRepository->applySorterByAttribute($qb, $attribute, $direction);
+        $pqb = $this->productRepository->getProductQueryBuilder($qb);
+        $pqb->addAttributeSorter($attribute, $direction);
     }
 }

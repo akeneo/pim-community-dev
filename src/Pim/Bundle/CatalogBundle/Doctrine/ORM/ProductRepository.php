@@ -552,22 +552,6 @@ class ProductRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         $rootAlias  = $qb->getRootAlias();
@@ -582,6 +566,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
+<<<<<<< HEAD:src/Pim/Bundle/CatalogBundle/Doctrine/ORM/ProductRepository.php
      * {@inheritdoc}
      */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
@@ -595,6 +580,20 @@ class ProductRepository extends EntityRepository implements
     public function applySorterByField($qb, $field, $direction)
     {
         $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
+    }
+
+    /*
+     * Set flexible query builder
+     *
+     * @param ProductQueryBuilder $productQB
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setProductQueryBuilder($productQB)
+    {
+        $this->productQB = $productQB;
+
+        return $this;
     }
 
     /**
@@ -682,7 +681,7 @@ class ProductRepository extends EntityRepository implements
      *
      * @return ProductQueryBuilder
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -726,14 +725,15 @@ class ProductRepository extends EntityRepository implements
     ) {
         $qb = $this->createQueryBuilder('Entity');
         $this->addJoinToValueTables($qb);
+        $productQb = $this->getProductQueryBuilder($qb);
 
         if (!is_null($criteria)) {
             foreach ($criteria as $attCode => $attValue) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applyFilterByAttribute($qb, $attribute, $attValue);
+                    $productQb->addAttributeFilter($attribute, '=', $attValue);
                 } else {
-                    $this->applyFilterByField($qb, $attCode, $attValue);
+                    $productQb->addFieldFilter($attCode, '=', $attValue);
                 }
             }
         }
@@ -741,9 +741,9 @@ class ProductRepository extends EntityRepository implements
             foreach ($orderBy as $attCode => $direction) {
                 $attribute = $this->getAttributeByCode($attCode);
                 if ($attribute) {
-                    $this->applySorterByAttribute($qb, $attribute, $direction);
+                    $productQb->addAttributeSorter($attribute, $direction);
                 } else {
-                    $this->applySorterByField($qb, $attCode, $direction);
+                    $productQb->addFieldSorter($attCode, $direction);
                 }
             }
         }
@@ -842,36 +842,19 @@ class ProductRepository extends EntityRepository implements
      */
     public function findCommonAttributeIds(array $productIds)
     {
-        $sql = <<<SQL
-    SELECT COUNT(a.a_id) AS count_att, a.a_id
-    FROM (
-        SELECT p.id AS p_id, pv.attribute_id AS a_id
-        FROM %product_table% p
-        INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
-        LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
-        WHERE p.id IN %product_ids%
-        AND fa.family_id IS NULL
-    UNION
-        SELECT p.id AS p_id, fa.attribute_id AS a_id
-        FROM %product_table% p
-        INNER JOIN %family_table% f ON f.id = p.family_id
-        INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
-        WHERE p.id IN %product_ids%
-    ) AS a
-    GROUP BY a.a_id
-    HAVING count_att = %product_ids_count%
-SQL;
-
-        $sql = strtr(
-            $sql,
+        // Prepare SQL query
+        $commonAttSql = $this->prepareCommonAttributesSQLQuery();
+        $commonAttSql = strtr(
+            $commonAttSql,
             [
                 '%product_ids%' => '('. implode($productIds, ',') .')',
-                '%product_ids_count%' => count($productIds)
+                '%product_ids_count%'  => count($productIds)
             ]
         );
-        $sql = $this->prepareDBALQuery($sql);
+        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
 
-        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
+        // Execute SQL query
+        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
         $stmt->execute();
 
         $attributes = $stmt->fetchAll();
@@ -881,5 +864,53 @@ SQL;
         }
 
         return $attributeIds;
+    }
+
+    /**
+     * Prepare SQL query to get common attributes
+     *
+     * - First subquery get all attributes (and count when they appear) added to products
+     * and which are not linked to product family
+     * - Second one get all attributes (and count their apparition) from product family
+     * - Global query calculate total of counts
+     * getting "union all" to avoid remove duplicate rows from first subquery
+     *
+     * @return string
+     */
+    protected function prepareCommonAttributesSQLQuery()
+    {
+        $nonFamilyAttSql = <<<SQL
+    SELECT pv.attribute_id AS a_id, COUNT(DISTINCT(pv.attribute_id)) AS count_att
+    FROM %product_table% p
+    INNER JOIN %product_value_table% pv ON pv.entity_id = p.id
+    LEFT JOIN %family_attribute_table% fa ON fa.family_id = p.family_id AND fa.attribute_id = pv.attribute_id
+    WHERE p.id IN %product_ids%
+    AND fa.family_id IS NULL
+    GROUP BY p.id, a_id
+SQL;
+
+        $familyAttSql = <<<SQL
+    SELECT fa.attribute_id AS a_id, COUNT(fa.attribute_id) AS count_att
+    FROM %product_table% p
+    INNER JOIN %family_table% f ON f.id = p.family_id
+    INNER JOIN %family_attribute_table% fa ON fa.family_id = f.id
+    WHERE p.id IN %product_ids%
+    GROUP BY a_id
+SQL;
+
+        $commonAttSql = <<<SQL
+    SELECT SUM(a.count_att) AS count_att, a.a_id
+    FROM (%non_family_att_sql% UNION ALL %family_att_sql%) a
+    GROUP BY a.a_id
+    HAVING count_att = %product_ids_count%
+SQL;
+
+        return strtr(
+            $commonAttSql,
+            [
+                '%non_family_att_sql%' => $nonFamilyAttSql,
+                '%family_att_sql%' => $familyAttSql
+            ]
+        );
     }
 }

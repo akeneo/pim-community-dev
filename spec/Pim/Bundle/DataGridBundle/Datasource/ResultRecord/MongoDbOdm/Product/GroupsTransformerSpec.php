@@ -11,7 +11,7 @@ class GroupsTransformerSpec extends ObjectBehavior
     {
         $locale = 'fr_FR';
         $groupId = 2;
-        $normalizedData = [ 
+        $normalizedData = [
             'normalizedData' => [
                 'groups' => [
                     [

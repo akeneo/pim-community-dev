@@ -19,7 +19,7 @@ class CompletenessWidget implements WidgetInterface
     protected $completenessRepo;
 
     /**
-     * @param ProductRepositoryInterface $repository
+     * @param CompletenessRepositoryInterface $completenessRepo
      */
     public function __construct(CompletenessRepositoryInterface $completenessRepo)
     {

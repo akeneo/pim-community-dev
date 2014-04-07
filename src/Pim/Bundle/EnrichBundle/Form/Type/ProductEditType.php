@@ -85,6 +85,7 @@ class ProductEditType extends AbstractType
                 [
                     'repository'         => $this->repository,
                     'repository_options' => ['localeCode' => $options['currentLocale']],
+                    'required'           => false,
                 ]
             );
         }

@@ -40,7 +40,7 @@ class CompletenessFilter implements FieldFilterInterface
         $field = sprintf(
             "%s.%s.%s-%s",
             ProductQueryUtility::NORMALIZED_FIELD,
-            $field,
+            'completenesses',
             $this->context->getScopeCode(),
             $this->context->getLocaleCode()
         );

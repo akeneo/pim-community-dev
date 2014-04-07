@@ -1224,29 +1224,6 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @param integer $original
-     * @param integer $target
-     * @param string  $fileName
-     *
-     * @Given /^I move the row (\d+) to row (\d+) in the file "([^"]*)"$/
-     */
-    public function iMoveTheRowToRowInTheFile($original, $target, $fileName)
-    {
-        if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
-        }
-
-        $file = file($fileName);
-
-        $row = $file[$original];
-        unset($file[$original]);
-
-        array_splice($file, $target, 0, $row);
-
-        file_put_contents($fileName, $file);
-    }
-
-    /**
      * @Then /^I should see the uploaded image$/
      */
     public function iShouldSeeTheUploadedImage()
@@ -1525,7 +1502,6 @@ class WebUser extends RawMinkContext
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
-
 
         if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
             throw new \Exception(
