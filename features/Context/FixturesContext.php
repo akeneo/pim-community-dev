@@ -13,7 +13,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -676,32 +675,6 @@ class FixturesContext extends RawMinkContext
         }
 
         $jobInstance->setRawConfiguration($configuration);
-        $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
-     * @Given /^the following attribute requirements:$/
-     */
-    public function theFollowingAttributeRequirements(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $requirement = new AttributeRequirement();
-
-            $attribute = $this->getAttribute($data['attribute']);
-            $channel   = $this->getChannel($data['scope']);
-            $family    = $this->getFamily($data['family']);
-
-            $requirement->setAttribute($attribute);
-            $requirement->setChannel($channel);
-            $requirement->setFamily($family);
-
-            $requirement->setRequired($data['required'] === 'yes');
-
-            $this->persist($requirement, false);
-        }
-
         $this->flush();
     }
 
@@ -1799,7 +1772,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param object  $object
+     * @param object $object
+     *
+     * @return null
      */
     private function flush($object = null)
     {
