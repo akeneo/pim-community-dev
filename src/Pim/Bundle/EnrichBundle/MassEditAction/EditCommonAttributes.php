@@ -310,8 +310,12 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected function setProductValue(ProductInterface $product, ProductValueInterface $value)
     {
         if (null === $productValue = $this->getProductValue($product, $value)) {
-            $productValue = $this->createValue($value->getAttribute(), $value->getLocale(), $value->getScope());
-            $product->addValue($productValue);
+            $productValue = $this->productBuilder->addProductValue(
+                $product,
+                $value->getAttribute(),
+                $value->getLocale(),
+                $value->getScope()
+            );
         }
 
         switch ($value->getAttribute()->getAttributeType()) {
@@ -423,9 +427,7 @@ class EditCommonAttributes extends AbstractMassEditAction
     {
         foreach ($value->getPrices() as $price) {
             if (null === $productPrice = $productValue->getPrice($price->getCurrency())) {
-                // Add a new product price to the value if it wasn't defined before
-                $productPrice = $this->createProductPrice($price->getCurrency());
-                $productValue->addPrice($productPrice);
+                $this->productBuilder->addPriceForCurrency($productValue, $price->getCurrency());
             }
             $productPrice->setData($price->getData());
         }
