@@ -1,1 +1,82 @@
 ---
+oro.user.controller:
+  group.message.saved: Gruppe gespeichert
+  role.message.saved: Rolle gespeichert
+  user.message.saved: Benutzer gespeichert
+  status.message.saved: Status gespeichert
+oro.user.grid.users:
+  columns:
+    username: Benutzername
+    email: E-Mail
+    firstName: Vorname
+    lastName: Nachname
+    createdAt: Angelegt am
+    updatedAt: Aktualisiert am
+    enabled: Status
+oro.user.grid.roles:
+  columns:
+    label: Bezeichnung
+oro.user.grid.groups:
+  columns:
+    name: Name
+Users Management: Benutzerverwaltung
+Create user: Benutzer anlegen
+New user: Neuer Benutzer
+Additional: Ergänzend
+Groups and Roles: Gruppen und Rollen
+Username: Benutzername
+Password: Kennwort
+Re-enter password: Kennwort erneut eingeben
+Name prefix: Namenspräfix
+First name: Vorname
+Middle name: Zweiter Vorname
+Last name: Nachname
+Name suffix: Namenssuffix
+Date of birth: Geburtsdatum
+Avatar: Benutzerbild
+Additional emails: Zusätzliche E-Mail Adressen
+Add another email: Weitere E-Mail Adresse hinzufügen
+Catalog locale: Katalog-Gebietsschema
+Catalog scope: Katalog-Gültigkeit
+Default tree: Katalogstruktur
+Business Units: Geschäftsbereich
+Email synchronization settings: Einstellungen für E-Mail Synchronisierung
+Host: Host
+Port: Port
+Ssl: SSL
+Last logged in: Zuletzt eingeloggt
+Login count: Anzahl der Anmeldungen
+Additional Information: Zusätzliche Informationen
+Basic Information: Basisinformationen
+Contact Information: Kontaktinformationen
+User name: Benutzername
+Birthday: Geburtstag
+API key: API-Schlüssel
+Generate key: Schlüssel erzeugen
+Primary: Primär
+Role: Rolle
+Owner: Eigentümer
+General: Allgemein
+Entity: Entität
+Capabilities: Fähigkeiten
+Save and close: Speichern und schließen
+Has role: hat Rolle
+(default): Standardberechtigung für Entitäten
+VIEW: Ansehen
+CREATE: Anlegen
+EDIT: Bearbeiten
+DELETE: Löschen
+ASSIGN: Zuweisen
+SHARE: Teilen
+oro:
+  security:
+    access-level:
+      BASIC: Benutzer
+      LOCAL: Geschäftsbereich
+      DEEP: Division
+      GLOBAL: Unternehmen
+      SYSTEM: System
+      NONE: Keine
+Create group: Gruppe anlegen
+Has group: hat Gruppe
+Save and Close: Speichern und schließen
