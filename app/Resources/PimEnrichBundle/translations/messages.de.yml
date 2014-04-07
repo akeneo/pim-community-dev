@@ -236,6 +236,7 @@ Edit: Bearbeiten
 Remove: Entfernen
 Delete: Löschen
 Parameters: Parameter
+System: System
 Values: Werte
 General parameters: Allgemeine Parameter
 Backend parameters: Backend Parameter
@@ -257,7 +258,8 @@ default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
-Yes: "1"
+"Yes": "1"
+"No": Nein
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Create: Anlegen
@@ -335,6 +337,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Gruppentypen
   edit: 'Gruppentypen %group type.label% | Bearbeiten'
+pim_title.mass_edit_action:
+  choose: Massenbearbeitung | Auswählen
+  configure: Massenbearbeitung | Konfigurieren
+pim_title.dashboard: Dashboard
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -517,3 +523,54 @@ Attribute as label: Attribut als Label
 Available Columns: Verfügbare Spalten
 Displayed Columns: Angezeigten Spalten
 Is associated: Ist verbunden
+Complete: Vollständig
+Created At: Angelegt am
+Updated At: Aktualisiert am
+Enabled: Aktiviert
+Disabled: Deaktiviert
+Status: Status
+Change History: Änderungshistorie
+Data Audit: Datenhistorie
+Data Audit - System: 'Datenhistorie - System'
+Action: Aktion
+Version: Version
+Entity type: Entitätstyp
+Entity name: Entitätsname
+Entity id: Entitäts-ID
+Data: Daten
+Author: Autor
+Logged at: Angemeldet am
+Deleted: Gelöscht
+Old values: Alte Werte
+New values: Neue Werte
+System configuration: Systemkonfiguration
+General setup: Allgemeine Konfiguration
+Localization: Lokalisierung
+Localization options: Lokalisierungsoptionen
+Locale: Gebietsschema
+Location: Standort
+Format address by address country: Formatiere nach Land der Adresse
+Language: Sprache
+Timezone: Zeitzone
+Currency: Währung
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: Gemeinde
+      state: Staat
+      island: Insel
+      county: Landkreis
+      area: Gebiet
+      prefecture: Präfektur
+      do_si: do_si
+      department: Abteilung
+      district: Bezirk
+      province: Provinz
+  form:
+    tooltip:
+      locale: Wählen Sie die Gebietsschema-Option mit der Nummern, Adressen, Namen und Daten formatieren werden
+      location: 'Der Standort wird verwendet um Adressen zu formatieren, wenn die Optione "Formatiere Adresse nach Land der Adresse" deaktiviert ist'
+      format_address_by_address_country: Mit dieser Optionen werden Adressen nach dem Land formatiert, in dem sie sich befinden. Ist diese Option deaktiviert, werden Adressen nach der Adresse Ihres Standortes formatiert
+      language: Wählen Sie die Systemsprache die Sie verwenden möchten
+      timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
+      currency: Wählen Sie die Standardwährung
