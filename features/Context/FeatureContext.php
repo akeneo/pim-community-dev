@@ -97,21 +97,25 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
         // if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
-                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
-                $filename = str_replace('/', '__', $filename);
-
                 $dir = getenv('WORKSPACE');
-                $num = getenv('BUILD_NUMBER');
-                if (false !== $dir && false !== $num) {
-                    $dir = sprintf('%s/../builds/%d', $dir, $num);
+                $id  = getenv('BUILD_ID');
+                if (false !== $dir && false !== $id) {
+                    $dir = sprintf('%s/../builds/%s', $dir, $id);
                 } else {
                     $dir = '/tmp/behat/screenshots';
                 }
-                echo $dir . "\n";
+
+                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = str_replace('/', '__', $filename);
+                $filename = sprintf('%s/%s.%d.png', $dir, $filename, $event->getStep()->getLine());
+
                 $screenshot = $driver->getScreenshot();
 
+                echo "Screenshot saved in '{$filename}'\n";
+
+
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
-                // $fs->dumpFile(sprintf('%s/%s.%d.png', $dir, $filename, $event->getStep()->getLine()), $screenshot);
+                $fs->dumpFile($filename, $screenshot);
             }
         // }
     }
