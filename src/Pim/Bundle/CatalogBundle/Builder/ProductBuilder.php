@@ -260,9 +260,9 @@ class ProductBuilder
      * @param string            $locale
      * @param string            $scope
      *
-     * @return null
+     * @return ProductValueInterface
      */
-    protected function addProductValue(
+    public function addProductValue(
         ProductInterface $product,
         AbstractAttribute $attribute,
         $locale = null,
@@ -276,6 +276,8 @@ class ProductBuilder
         $value->setAttribute($attribute);
 
         $product->addValue($value);
+
+        return $value;
     }
 
     /**
