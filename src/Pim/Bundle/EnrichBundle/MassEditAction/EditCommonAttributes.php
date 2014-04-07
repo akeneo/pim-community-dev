@@ -437,7 +437,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
-    private function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
+    protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         $productValue->getOptions()->clear();
         $this->productManager->getObjectManager()->flush();
@@ -450,7 +450,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
-    private function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
+    protected function setProductFile(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         if (null === $media = $productValue->getMedia()) {
             $media = new Media();
@@ -468,7 +468,7 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @param ProductValueInterface $productValue
      * @param ProductValueInterface $value
      */
-    private function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
+    protected function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         if (null === $metric = $productValue->getMetric()) {
             $metric = new Metric();
