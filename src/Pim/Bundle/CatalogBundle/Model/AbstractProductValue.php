@@ -718,12 +718,12 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function addPriceForCurrency($currency)
     {
-        $prices = $this->getPrices();
-        if (!isset($prices[$currency])) {
-            $this->addPrice(new ProductPrice(null, $currency));
+        if (null === $productPrice = $this->getPrice($currency)) {
+            $productPrice = new ProductPrice(null, $currency);
+            $this->addPrice($productPrice);
         }
 
-        return $this->prices[$currency];
+        return $productPrice;
     }
 
     /**
