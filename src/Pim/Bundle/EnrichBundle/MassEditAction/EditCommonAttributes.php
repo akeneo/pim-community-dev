@@ -240,17 +240,6 @@ class EditCommonAttributes extends AbstractMassEditAction
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function perform()
-    {
-        foreach ($this->products as $product) {
-            $this->setProductValues($product);
-        }
-        $this->productManager->handleAllMedia($this->products);
-    }
-
-    /**
      * Initializes self::commonAtributes with values from the repository
      * Attribute is not available for mass editing if:
      *   - it is an identifier
@@ -275,6 +264,17 @@ class EditCommonAttributes extends AbstractMassEditAction
 
             $this->commonAttributes[] = $attribute;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function perform()
+    {
+        foreach ($this->products as $product) {
+            $this->setProductValues($product);
+        }
+        $this->productManager->handleAllMedia($this->products);
     }
 
     /**
