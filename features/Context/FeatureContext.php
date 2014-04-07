@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Gherkin\Node\PyStringNode;
@@ -85,6 +86,40 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Take a screenshot when a step fails
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep
+     */
+    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    {
+        if ($event->getResult() === StepEvent::FAILED) {
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                $dir = getenv('WORKSPACE');
+                $id  = getenv('BUILD_ID');
+                if (false !== $dir && false !== $id) {
+                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
+                } else {
+                    $dir = '/tmp/behat/screenshots';
+                }
+
+                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = str_replace('/', '__', $filename);
+                $filename = sprintf('%s/%s.%d.png', $dir, $filename, $event->getStep()->getLine());
+
+                $screenshot = $driver->getScreenshot();
+
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($filename, $screenshot);
+
+                echo "Screenshot saved in '{$filename}'\n";
+            }
+        }
+    }
+
+    /**
      * Sets Kernel instance.
      *
      * @param KernelInterface $kernel HttpKernel instance
@@ -113,7 +148,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
-
 
     /**
      * @return ObjectManager
