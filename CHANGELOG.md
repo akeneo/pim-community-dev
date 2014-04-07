@@ -64,7 +64,7 @@
 - Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Sorter/Orm/FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Selector/Orm/*` to `DataGridBundle/Extension/Selector/Orm/Product` and `DataGridBundle/Extension/Selector/Orm/ProductValue`
-- ProductRepository doesn't extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
+- ProductRepository does not extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
 - Change mass action route for products and create own controller for these mass actions
 - Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
 - Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
@@ -89,6 +89,7 @@
 - Disable global search feature
 - Remove the 'searchable' property of AbstractAttribute
 - Move ProductRepository::getIdentifier() to attribute repository
+- EditCommonAttributes class needs the ProductBuilder now
 
 # 1.0.2
 ## Bug Fixes
