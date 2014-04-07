@@ -5,6 +5,8 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\UserBundle\Context\UserContext;
+
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
@@ -73,18 +75,25 @@ class EditCommonAttributes extends AbstractMassEditAction
     protected $familiesAttributes = array();
 
     /**
+     * @var ProductBuilder $productBuilder
+     */
+    protected $productBuilder;
+
+    /**
      * Constructor
      *
      * @param ProductManager  $productManager
      * @param UserContext     $userContext
      * @param CurrencyManager $currencyManager
      * @param CatalogContext  $catalogContext
+     * @param ProductBuilder  $productBuilder
      */
     public function __construct(
         ProductManager $productManager,
         UserContext $userContext,
         CurrencyManager $currencyManager,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        ProductBuilder $productBuilder
     ) {
         $this->productManager      = $productManager;
         $this->userContext         = $userContext;
@@ -92,6 +101,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->values              = new ArrayCollection();
         $this->displayedAttributes = new ArrayCollection();
         $this->catalogContext      = $catalogContext;
+        $this->productBuilder      = $productBuilder;
     }
 
     /**
