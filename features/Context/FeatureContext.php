@@ -94,13 +94,13 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public function takeScreenshotAfterFailedStep(StepEvent $event)
     {
-        // if ($event->getResult() === StepEvent::FAILED) {
+        if ($event->getResult() === StepEvent::FAILED) {
             $driver = $this->getSession()->getDriver();
             if ($driver instanceof Selenium2Driver) {
                 $dir = getenv('WORKSPACE');
                 $id  = getenv('BUILD_ID');
                 if (false !== $dir && false !== $id) {
-                    $dir = sprintf('%s/../builds/%s', $dir, $id);
+                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
                 } else {
                     $dir = '/tmp/behat/screenshots';
                 }
@@ -111,13 +111,12 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
                 $screenshot = $driver->getScreenshot();
 
-                echo "Screenshot saved in '{$filename}'\n";
-
-
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
                 $fs->dumpFile($filename, $screenshot);
+
+                echo "Screenshot saved in '{$filename}'\n";
             }
-        // }
+        }
     }
 
     /**
