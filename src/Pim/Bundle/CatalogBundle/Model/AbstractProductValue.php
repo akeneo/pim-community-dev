@@ -659,11 +659,17 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param string $currency
      *
-     * @return boolean|Price
+     * @return null|ProductPrice
      */
     public function getPrice($currency)
     {
-        return isset($this->prices[$currency]) ? $this->prices[$currency] : null;
+        foreach ($this->prices as $price) {
+            if ($price->getCurrency() === $currency) {
+                return $price;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -683,7 +689,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Add price
+     * Add price (removing the older one)
      *
      * @param ProductPrice $price
      *
@@ -691,7 +697,11 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function addPrice(ProductPrice $price)
     {
-        $this->prices[$price->getCurrency()] = $price;
+        if (null !== $actualPrice = $this->getPrice($price->getCurrency())) {
+            $this->removePrice($actualPrice);
+        }
+
+        $this->prices->add($price);
         $price->setValue($this);
 
         return $this;
@@ -725,7 +735,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function removePrice(ProductPrice $price)
     {
-        $this->prices->remove($price->getCurrency());
+        $this->prices->removeElement($price);
 
         return $this;
     }
