@@ -136,7 +136,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->prices = new ArrayCollection();
+        $this->prices  = new ArrayCollection();
     }
 
     /**
@@ -518,7 +518,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get options, used for multi select to retrieve many options
      *
-     * @return Arraycollection
+     * @return ArrayCollection
      */
     public function getOptions()
     {
