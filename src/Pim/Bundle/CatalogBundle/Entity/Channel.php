@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  *         "entity"={"label"="Channel", "plural_label"="Channels"}
  *     }
  * )
+ * dadadadad
  */
 class Channel implements ReferableInterface
 {
