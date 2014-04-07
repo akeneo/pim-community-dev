@@ -582,20 +582,6 @@ class ProductRepository extends EntityRepository implements
         $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
-    /*
-     * Set flexible query builder
-     *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function setProductQueryBuilder($productQB)
-    {
-        $this->productQB = $productQB;
-
-        return $this;
-    }
-
     /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
