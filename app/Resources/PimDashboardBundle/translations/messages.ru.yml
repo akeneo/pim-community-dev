@@ -1,1 +1,23 @@
 ---
+pim_dashboard.title: Панель управления
+pim_dashboard.link.label:
+  product: Управление продуктами
+  category: Управление категориями
+  attribute: Управление атрибутами
+  family: Управление семействами
+pim_dashboard.widget.error:
+  title: Ошибка при загрузке виджета
+  message: 'Виджет «%alias%» не существует'
+pim_dashboard.widget.completeness:
+  title: Прогресс по каналам и локалям
+pim_dashboard.widget.last_operations:
+  title: Последние операции
+  empty: Операции не найдены
+  status: Статус
+  date: Дата
+  type: Тип
+  profile name: Имя профиля
+  details: Подробная информация
+  job_type:
+    import: Импорт
+    export: Экспорт
