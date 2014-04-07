@@ -127,6 +127,34 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Listen to JS errors
+     *
+     * @BeforeStep
+     */
+    public function listenToErrors()
+    {
+        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
+
+        $this->executeScript($script);
+    }
+
+    /**
+     * Collect and log JS errors
+     *
+     * @AfterStep
+     */
+    public function collectErrors()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+            $result = $this->getSession()->evaluateScript($script);
+            if ($result) {
+                echo sprintf("WARNING: Encountered a JS error: '%s' \n", $result);
+            }
+        }
+    }
+
+    /**
      * Sets Kernel instance.
      *
      * @param KernelInterface $kernel HttpKernel instance
