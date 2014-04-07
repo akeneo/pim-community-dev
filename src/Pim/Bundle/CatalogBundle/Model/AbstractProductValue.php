@@ -548,7 +548,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function addOption(AttributeOption $option)
     {
-        $this->options[] = $option;
+        $this->options->add($option);
 
         return $this;
     }
