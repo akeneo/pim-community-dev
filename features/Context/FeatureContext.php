@@ -106,15 +106,22 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                 }
 
                 $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
-                $filename = str_replace('/', '__', $filename);
-                $filename = sprintf('%s/%s.%d.png', $dir, $filename, $event->getStep()->getLine());
-
-                $screenshot = $driver->getScreenshot();
+                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $event->getStep()->getLine());
+                $path     = sprintf('%s/%s', $dir, $filename);
 
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
-                $fs->dumpFile($filename, $screenshot);
+                $fs->dumpFile($path, $driver->getScreenshot());
 
-                echo "Screenshot saved in '{$filename}'\n";
+                if ($id) {
+                    $path = sprintf(
+                        'http://ci.akeneo.com/screenshots/%s/%s/screenshots/%s',
+                        getenv('JOB_NAME'),
+                        $id,
+                        $filename
+                    );
+                }
+
+                echo "Step failed, screenshot available at '{$path}'\n";
             }
         }
     }
