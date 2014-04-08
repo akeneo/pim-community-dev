@@ -29,17 +29,18 @@ class SetProductsSubscriber implements EventSubscriber
     protected $productClass;
 
     /** @var array */
-    protected $productsAwareClassMapping;
+    protected $mappings;
 
     /**
      * @param ManagerRegistry $registry
      * @param string          $productClass
+     * @param array           $mappings
      */
-    public function __construct(ManagerRegistry $registry, $productClass, array $productsAwareClassMapping)
+    public function __construct(ManagerRegistry $registry, $productClass, array $mappings)
     {
         $this->registry = $registry;
         $this->productClass = $productClass;
-        $this->productsAwareClassMapping = $productsAwareClassMapping;
+        $this->mappings = $mappings;
     }
 
     /**
@@ -59,7 +60,7 @@ class SetProductsSubscriber implements EventSubscriber
     {
         $entity = $args->getEntity();
 
-        foreach ($this->productsAwareClassMapping as $mapping) {
+        foreach ($this->mappings as $mapping) {
             if ($entity instanceof $mapping['class']) {
                 $metadata = $args->getEntityManager()->getClassMetadata(get_class($entity));
                 if (!$metadata->reflClass->hasProperty('products')) {
@@ -104,16 +105,15 @@ class SetProductsSubscriber implements EventSubscriber
     public function prePersist(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        foreach ($this->productsAwareClassMapping as $mapping) {
+        foreach ($this->mappings as $mapping) {
             if ($mapping['class'] === get_class($entity)) {
                 $reflClass = new \ReflectionClass($entity);
                 $reflProp = $reflClass->getProperty('products');
                 $reflProp->setAccessible(true);
                 $objects = $reflProp->getValue($entity);
 
-                if (
-                    (is_array($objects) && count($object) > 0) ||
-                    ($objects instanceof \Countable && $objects->count() > 0)
+                if ((is_array($objects) && count($objects) > 0)
+                    || ($objects instanceof \Countable && $objects->count() > 0)
                 ) {
                     throw new \LogicException(
                         sprintf(
