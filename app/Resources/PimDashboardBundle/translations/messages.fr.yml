@@ -1,24 +1,27 @@
 ---
-pim_dashboard.title: Tableau de bord
-pim_dashboard.link.label:
-  product: Gérer les produits
-  category: Gérer les catégories
-  attribute: Gérer les attributs
-  family: Gérer des familles
-pim_dashboard.widget.error:
-  title: Erreur lors du chargement du widget
-  message: |-
-    Le widget "%alias%" n'existe pas
-pim_dashboard.widget.completeness:
-  title: Complétude par canaux et locales
-pim_dashboard.widget.last_operations:
-  title: Dernières opérations
-  empty: Aucune opération trouvée
-  status: Statut
-  date: Date
-  type: Type
-  profile name: Nom du profil
-  details: Détails
-  job_type:
-    import: Import
-    export: Export
+pim_dashboard:
+  title: Tableau de bord
+  version: Version
+  link.label:
+    product: Gérer les produits
+    category: Gérer les catégories
+    attribute: Gérer les attributs
+    family: Gérer les familles
+  widget:
+    error:
+      title: Erreur lors du chargement du widget
+      message: |-
+        Le widget "%alias%" n'existe pas
+    completeness:
+      title: Complétude par canaux et locales
+    last_operations:
+      title: Dernières opérations
+      empty: Aucune opération trouvée
+      status: Statut
+      date: Date
+      type: Type
+      profile name: Nom du profil
+      details: Détails
+      job_type:
+        import: Import
+        export: Export
