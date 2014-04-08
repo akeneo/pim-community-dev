@@ -1,0 +1,576 @@
+---
+attribute:
+  overview: visão geral dos atributos
+  create: criar atributo
+  edit: editar atributo
+attribute group:
+  overview: visão geral do grupo de atributos
+  create: criar grupo de atributos
+  edit: editar grupo de atributos
+category:
+  overview: visão geral da categoria
+  create: criar categoria
+  edit: editar categoria
+tree:
+  create: criar árvore de classificação
+  edit: editar a árvore de classificação
+channel:
+  overview: visão geral do canal
+  create: criar canal
+  edit: editar canal
+currency:
+  overview: visão geral da moeda
+  create: criar moeda
+  edit: editar moeda
+family:
+  overview: visão geral da família
+  create: criar família
+  edit: editar família
+locale:
+  overview: visão geral de localidade
+  create: criar localidade
+  edit: editar localidade
+product:
+  overview: visão geral do produto
+  create: criar produto
+  edit: editar produto
+group:
+  overview: visão geral do grupo
+  create: criar grupo
+  edit: editar grupo
+variant group:
+  overview: visão geral do grupo variante
+  create: criar grupo variante
+  edit: editar grupo variante
+association type:
+  overview: visão geral do tipo de associação
+  create: criar tipo de associação
+  edit: editar tipo de associação
+group type:
+  overview: visão geral do tipo de grupo
+  create: criar tipo de grupo
+  edit: editar tipo de grupo
+products: produtos
+btn:
+  create:
+    attribute: criar atributo
+    attribute group: criar grupo de atributos
+    category: criar categoria
+    tree: criar árvore de classificação
+    channel: criar canal
+    currency: criar moeda
+    family: criar família
+    locale: criar localidade
+    product: criar produto
+    group: criar grupo
+    variant group: criar grupo variante
+    association type: criar tipo de associação
+    group type: criar tipo de grupo
+  edit: editar
+  save: salvar
+  save and back: salvar e voltar para o grid
+  save and create: salvar e criar um novo
+  remove: remover
+  delete: excluir
+  cancel: cancelar
+  next: próximo
+  back: anterior
+  confirm: confirmar
+  to grid: retornar para o grid
+  to parent: retornar para o registro pai
+confirmation:
+  delete: Confirmação de exclusão
+  leave: Tem certeza de que deseja sair desta página?
+  discard changes: 'Você perderá as alterações feitas em %entity% se sair dessa página.'
+  remove:
+    item: Tem certeza de que deseja excluir este item?
+    attribute: 'Tem certeza de que deseja excluir o atributo %name%?'
+    attribute group: 'Tem certeza de que deseja excluir o grupo de atributos %name%?'
+    category: 'Tem certeza de que deseja excluir a categoria %name%?'
+    family: 'Tem certeza de que deseja excluir a família %name%?'
+    product: 'Tem certeza de que deseja excluir o produto %name%?'
+    channel: 'Tem certeza de que deseja excluir o canal %name%?'
+    group: 'Tem certeza de que deseja excluir o grupo %name%?'
+    variant group: 'Tem certeza de que deseja excluir o grupo variante %name%?'
+    association type: 'Tem certeza de que deseja excluir o tipo de associação %name%?'
+    group type: 'Tem certeza de que deseja excluir o tipo de grupo %name%?'
+    user: 'Tem certeza de que deseja excluir o usuário %name%?'
+  attribute group:
+    remove attribute: 'Tem certeza de que deseja remover o atributo %name% deste grupo de atributos?'
+  family:
+    remove attribute: 'Tem certeza de que deseja remover o atributo %name% dessa família?'
+  product:
+    remove attribute: 'Tem certeza de que deseja remover o atributo %name% desse produto?'
+flash:
+  entity:
+    removed: O Item foi removido
+  attribute:
+    created: Atributo criado com sucesso
+    updated: Atributo atualizado com sucesso
+    removed: Atributo removido com sucesso
+    identifier not removable: O identificador do atributo não pode ser removido
+    used by groups: 'Esse atributo não pode ser removido porque está sendo usado por %count% grupos'
+    option created: Opção criada com sucesso
+    error creating option: Ocorreu um erro ao tentar criar a opção. Por favor, tente novamente
+  attribute group:
+    created: Grupo de atributos criado com sucesso
+    updated: Grupo de atributos atualizado com sucesso
+    removed: Grupo de atributos removido com sucesso
+    attributes added: Atributos adicionados com sucesso no grupo de atributos
+    attribute removed: Atributo removido com sucesso do grupo de atributos
+  category:
+    created: Categoria criada com sucesso
+    updated: Categoria atualizada com sucesso
+    removed: Categoria removida com sucesso
+  tree:
+    created: Árvore de classificação criada com sucesso
+    updated: Árvore de classificação atualizada com sucesso
+    removed: Árvore de classificação removida com sucesso
+    not removable: As árvores de classificação conectadas aos canais não podem ser removidas.
+  channel:
+    saved: Canal salvo com sucesso
+    removed: Canal removido com sucesso
+    not removable: O último canal não pode ser removido
+  currency:
+    updated: Moeda atualizada com sucesso
+  family:
+    created: Família criada com sucesso
+    updated: Família atualizada com sucesso
+    removed: Família removida com sucesso
+    identifier not removable: O atributo identificador não pode ser removido de uma família
+    label attribute not removable: Esse atributo não pode ser removido porque ele está sendo usado como rótulo da família
+    attribute not found: O atributo não pertence a esta família
+    attributes added: Atributos adicionados com sucesso à família
+    attribute removed: Atributo removido com sucesso da família
+  product:
+    created: Produto criado com sucesso
+    updated: Produto atualizado com sucesso
+    removed: Produto removido com sucesso
+    invalid: Por favor, verifique as informações fornecidas e tente novamente
+    attributes added: Atributos adicionados com sucesso ao produto
+    attribute removed: Atributo removido com sucesso do produto
+    attribute not removable: O atributo não pode ser removido desse produto
+  group:
+    created: Grupo criado com sucesso
+    updated: Grupo atualizado com sucesso
+    removed: Grupo removido com sucesso
+  variant group:
+    created: Grupo variante criado com sucesso
+    updated: Grupo variante atualizado com sucesso
+    removed: Grupo variante removido com sucesso
+  group type:
+    created: Tipo de grupo criado com sucesso
+    updated: Tipo de grupo atualizado com sucesso
+    removed: Tipo de grupo removido com sucesso
+    cant remove variant: O tipo de grupo variante não pode ser removido
+    cant remove used: O tipo de grupo é usado por alguns grupos e não pode ser removido
+  association type:
+    created: Tipo de associação criado com sucesso
+    updated: Tipo de associação atualizado com sucesso
+    removed: Tipo de associação removido com sucesso
+  user:
+    removed: Usuário removido com sucesso
+  error ocurred: A ação falhou. Por favor, tente novamente.
+info:
+  updated: Há alterações que ainda não foram salvas.
+  category:
+    remove children: Todas as subcategorias serão excluídas.
+    keep products: Os produtos nestas categorias não serão excluídos.
+  product:
+    no available attributes: Não há mais atributos para serem adicionados
+    change family: Mudar a família do produto
+    change family to: Mudar a família para
+    merge attributes: Os atributos atuais serão mesclados com os da nova família.
+    keep attributes: Nenhum atributo será removido.
+    number of associations: '%productCount% produtos e %groupCount% grupos'
+    enable: Habilitar
+    enabled: Habilitado
+    disable: Desabilitar
+    disabled: Desabilitado
+  group:
+    axis: 'Eixo de variação: %attributes%'
+    select products: Por favor, selecione os produtos que devem pertencer a este grupo.
+    selectable products: Esses produtos selecionáveis têm um valor definido para cada eixo.
+    no group types: Não existe nenhum grupo de tipos, clique aqui para criar um
+  association type:
+    show products: Mostrar produtos
+    show groups: Mostrar grupos
+    remove from products: 'A exclusão desse o tipo de associação irá removê-la de %count% produtos.'
+    none exist: Não existe nenhum tipo de associação.
+    create one: Clique aqui para criar um
+color:
+  gray: Cinza
+  white: Branco
+  yellow: Amarelo
+  orange: Laranja
+  magenta: Magenta
+  violet: Violeta
+  blue: Azul
+  cyan: Ciano
+Options: Opções
+Created at: Criado em
+Updated at: Atualizado em
+Created: Criado
+Updated: Atualizado
+Last update: Última atualização
+by: Por
+N/A: Não aplicável
+Add an option: Adicionar uma opção
+Manage products: Gerenciar produtos
+Manage groups: Gerenciar grupos
+Code: Código
+Name: Nome
+Type: Tipo
+Scope: Escopo
+Required: Obrigatório
+Unique: Exclusivo
+Not required: Não obrigatório
+Translatable: Traduzível
+Scopable: Com escopo definível
+Localizable: Localizável
+Unique value: Valor exclusivo
+Attribute group: Grupo de atributos
+Other: Outros
+Variants behavior when edited: Comportamento das variantes quando editadas
+Edit: Editar
+Remove: Remover
+Delete: Excluir
+Parameters: Parâmetros
+System: Sistema
+Values: Valores
+General parameters: Parâmetros gerais
+Backend parameters: Parâmetros de back-end
+Label: Rótulo
+Default label: Rótulo padrão
+Default value: Valor padrão
+Attributetype: Tipo de atributo
+Attribute type: Tipo de atributo
+Searchable: Pesquisável
+Defaultvalue: Valor padrão
+Variant: Variante
+Smart: Inteligente
+Useable as grid column: Pode ser usado como coluna no grid
+Useable as grid filter: Pode ser usado como filtro no grid
+Family: Família
+Available locales: Localidades disponíveis
+Locale specific: Localidade específica
+default: Padrão
+Axis: Eixo
+Add attributes: Adicionar atributos
+Translate from: Traduzir do
+Yes: "1"
+No: Não
+Close: Fechar
+Choose a color: Escolha uma cor
+Create: Criar
+Cancel: Cancelar
+Choose a family: Escolha uma família
+Choose a unit: Escolha uma unidade
+No matches found: Nenhum resultado encontrado
+Category tree: Árvore de categorias
+Completeness: Completude
+Attribute used as label: Atributo usado como rótulo
+Global: Global
+Channel: Canal
+Always override: Sempre substituir
+Ask: Perguntar
+General Properties: Propriedades Gerais
+Group values: Valores do grupo
+New group: Novo grupo
+Groups overview: Visão geral dos grupos
+"Y-m-d h:i:s": A-m-d h:m:s
+Max characters: Limite máximo de caracteres
+Validation rule: Regra de validação
+Validation regexp: Expressão Regular (regexp) de validação
+Wysiwyg enabled: WYSIWYG habilitado
+Number min: Número mínimo
+Number max: Número máximo
+Decimals allowed: Permitir decimais
+Negative allowed: Permitir valores negativos
+Date min: Data mínima
+Date max: Data máxima
+Metric family: Unidades métricas
+Default metric unit: Unidade métrica padrão
+Max file size: Tamanho máximo do arquivo (MB)
+Allowed extensions: Extensões permitidas
+None: Nenhum
+E-mail: E-mail
+URL: URL
+Regular expression: Expressão Regular
+Minimum input length: Comprimento mínimo da entrada
+Default: Padrão
+Attributes: Atributos
+Title: Título
+pim_title.attribute_group:
+  create: Grupo de atributos | Criar
+  edit: 'Grupo de atributos %group.label% | Editar'
+pim_title.category:
+  create: Árvores de categoria | Criar
+  edit: 'Árvores de categorias %category.label% | Editar'
+pim_title.attribute:
+  index: Atributos
+  create: Atributos | Criar
+  edit: 'Atributos %attribute.label% | Editar'
+pim_title.product:
+  index: Produtos
+  edit: 'Produtos %product.sku% | Editar'
+pim_title.family:
+  index: Famílias
+  edit: 'Famílias %family.label% | Editar'
+pim_title.channel:
+  index: Canais
+  create: Canais | Criar
+  edit: 'Canais %channel.label% | Editar'
+pim_title.currency:
+  index: Moedas
+pim_title.locale:
+  index: Localidades
+pim_title.group:
+  index: Grupos
+  edit: 'Grupos %group.label% | Editar'
+pim_title.variant_group:
+  index: Grupos de variantes
+  edit: 'Grupos de variantes %group.label% | Editar'
+pim_title.association_type:
+  index: Tipos de associação
+  edit: 'Tipos de associação %association type.labe% | Editar'
+pim_title.group_type:
+  index: Tipos de grupos
+  edit: 'Tipos de grupos %group type.label% | Editar'
+pim_title.mass_edit_action:
+  choose: Edição em massa | Escolher
+  configure: Edição em massa | Configurar
+pim_title.dashboard: Painel de controle
+pim_catalog_identifier: Identificador
+pim_catalog_text: Texto
+pim_catalog_textarea: Área de texto
+pim_catalog_number: Número
+pim_catalog_price_collection: Preço
+pim_catalog_multiselect: Seleção múltipla
+pim_catalog_simpleselect: Seleção simples
+pim_catalog_file: Arquivo
+pim_catalog_image: Imagem
+pim_catalog_boolean: Sim/Não
+pim_catalog_date: Data
+pim_catalog_metric: Métrico
+Activated: Ativado
+Disable: Desabilitar
+pim_enrich.mass_edit_action:
+  page_title: Produtos
+  page_subtitle: 'Editar em massa (1 produto)|Editar em massa (%count% produtos)'
+  title: Escolha a operação
+  subtitle: 'Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados'
+  confirm: 'Você está prestes a atualizar um produto com as seguintes informações, por favor confirme. |Você está prestes a atualizar os %count% produtos com as seguintes informações, por favor confirme.'
+  limit_exceeded: 'Por favor, escolha menos de %limit% produtos para edição'
+  change-status:
+    label: Mudar status (habilitar / desabilitar)
+    description: Os produtos selecionados serão habilitados ou desabilitados.
+    success_flash: O status do(s) produto(s) foi alterado
+  edit-common-attributes:
+    label: Editar atributos
+    description: Os atributos selecionados do produto serão editados com os seguintes dados para a localidade escolhida.
+    empty: Por favor, selecione o(s) atributo(s) que deseja editar
+    success_flash: O(s) atributo(s) do(s) produto(s) foi(ram) atualizado(s)
+  classify:
+    label: Classificar os produtos em categorias
+    description: Os produtos serão posicionados nas categorias, o posicionamento existente será mantido.
+    success_flash: O(s) produto(s) foi(ram) classificado(s) nas categorias selecionadas
+  change-family:
+    label: Mudar a família dos produtos
+    description: A família dos produtos selecionados será alterada para a família escolhida
+    success_flash: A família do(s) produto(s) selecionado(s) foi alterada com êxito
+  add-to-groups:
+    label: Adicionar aos grupos
+    description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
+    success_flash: Os produtos foram adicionados com êxito nos grupos selecionados
+Choose products: Escolha os produtos
+Choose operation: Escolha a operação
+Configure: Configurar
+Confirm: Confirmar
+To enable: Habilitar
+Select attributes: Selecione os atributos
+Select: Selecionar
+Remove this attribute: Remover esse atributo
+pim_enrich.completeness:
+  progress_bar.title: '%ratio%% completo (1 valor obrigatório)|%ratio%% completo (%count% valores obrigatórios)'
+  subtitle: '{0} Completo|{1} valor faltando 1|]1,Inf] %count% valores faltando'
+  missing_attributes: Valor faltando|Valores faltando
+  legend:
+    locale_not_associated: Localidade não associada a este canal
+pim_enrich.group:
+  axis.help: Eixos são atributos que definem as variantes do grupo variante. Eixos são atributos não localizáveis e sem escopo, porém com opções. Eles não podem ser alterados após a criação do grupo variante.
+  type:
+    VARIANT: Variante
+    X_SELL: Venda Cruzada
+    ADDITIONAL: Adicional
+    RELATED: Relacionado
+pim_enrich.product:
+  no_comparison_locale_available: Não há outra localidade disponível para comparação
+  no_compared_media: Não há mídia disponível para comparação
+Copy: Cópia
+Current tab: Aba atual
+pim_enrich.channel.pick_conversion_unit: Escolha uma unidade de conversão para cada atributo métrico que será usado durante a exportação de produto
+Group: Grupo
+View group: Visualizar grupo
+Products: Produtos
+pim_enrich:
+  acl:
+    locale.index: Lista de localidades
+    currency:
+      index: Lista de moedas
+      toggle: Alternar moedas
+    product:
+      index: Listar produtos
+      create: Criar um produto
+      edit: Editar um produto
+      remove: Remover um produto
+      add_attribute: Adicionar um atributo a um produto
+      remove_attribute: Remover um atributo de um produto
+      categories_view: Consultar as categorias de um produto
+      associations_view: Exibir os tipos de associações de um produto
+      change_family: Alterar a família de um produto
+      change_state: Alterar o estado do produto
+      add_to_groups: Adicionar produto aos grupos
+      mass_edit: Ações de edição em massa de produtos
+    category:
+      list: Listar categorias
+      create: Criar uma categoria
+      edit: Editar uma categoria
+      remove: Remover uma categoria
+      move: Mover categoria
+      children: Ver categorias filhas
+      products: Ver os produtos da categoria
+    channel:
+      index: Listar canais
+      create: Criar um canal
+      edit: Editar um canal
+      remove: Remover um canal
+    family:
+      create: Criar uma família
+      edit: Editar uma família
+      remove: Remover uma família
+      add_attribute: Adicionar atributo a uma família
+      remove_attribute: Remover atributo de uma família
+    attribute_group:
+      create: Criar um grupo de atributos
+      edit: Editar um grupo de atributos
+      remove: Remover um grupo de atributos
+      sort: Ordenar grupos de atributos
+      add_attribute: Adicionar atributo a um grupo
+      remove_attribute: Remover atributo de um grupo
+    attribute:
+      index: Listar atributos
+      create: Criar um atributo
+      edit: Editar um atributo
+      remove: Remover um atributo
+      sort: Ordenar atributos dentro de grupos de atributos
+    group:
+      index: Listar grupos
+      create: Criar um grupo
+      edit: Editar um grupo
+      remove: Remover um grupo
+    group_type:
+      index: Listar tipos de grupo
+      create: Criar um tipo de grupo
+      edit: Editar um tipo de grupo
+      remove: Remover um tipo de grupo
+    association_type:
+      index: Lista de tipos de associação
+      create: Criar um tipo de associação
+      edit: Editar um tipo de associação
+      remove: Remover um tipo de associação
+  datagrid_configuration.columns.min_message: Você deve selecionar pelo menos uma coluna do datagrid para ser exibida
+pim_menu:
+  tab:
+    collect: Importar
+    enrich: Atualizar
+    settings: Configurações
+    spread: Exportar
+  item:
+    association_type: Tipos de associação
+    attribute: Atributos
+    attribute_group: Grupo de atributos
+    category: Categorias
+    channel: Canais
+    currency: Moedas
+    family: Famílias
+    group: Grupos
+    group_type: Tipos de grupos
+    locale: Localidades
+    product: Produtos
+    variant_group: Grupos de variantes
+Properties: Propriedades
+History: Histórico
+pane.accordion:
+  node_values: Valores de nó
+  general_properties: Propriedades gerais
+  locale_values: Valores de localidade
+  backend_parameters: Parâmetros de back-end
+  general_parameters: Parâmetros gerais
+  label_translations: Traduções do rótulo
+  options: Opções
+  group_values: Valores do grupo
+popin.create:
+  association_type.title: Criar um novo tipo de associação
+  family.title: Criar uma nova família
+  group.title: Criar um novo grupo
+  group_type.title: Criar um novo tipo de grupo
+  product.title: Criar um novo produto
+  variant_group.title: Criar um novo grupo de variante
+  option.title: Criar uma nova opção
+In group: No grupo
+Attribute as label: Atributo como rótulo
+Available Columns: Colunas Disponíveis
+Displayed Columns: Colunas Exibidas
+Is associated: Está associado
+Complete: Completo
+Created At: Criado em
+Updated At: Atualizado em
+Enabled: Habilitado
+Disabled: Desabilitado
+Status: Status
+Change History: Histórico de alterações
+Data Audit: Auditoria de dados
+Data Audit - System: 'Auditoria de dados - sistema'
+Action: Ação
+Version: Versão
+Entity type: Tipo de entidade
+Entity name: Nome da entidade
+Entity id: Identificação da entidade
+Data: Dados
+Author: Autor
+Logged at: Registrado em
+Deleted: Excluído
+Old values: Valores antigos
+New values: Novos valores
+System configuration: Configuração do sistema
+General setup: Configuração geral
+Localization: Localização
+Localization options: Opções de localização
+Locale: Localidade
+Location: Localização
+Format address by address country: Formatar o endereço em função do país
+Language: Idioma
+Timezone: Fuso horário
+Currency: Moeda
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: paróquia
+      state: estado
+      island: ilha
+      county: condado de
+      area: área
+      prefecture: Município
+      do_si: do_si
+      department: departamento
+      district: distrito
+      province: província
+  form:
+    tooltip:
+      locale: Selecione a opção de localidade usada para formatar números, endereços, nomes e datas
+      location: " A localização será usada para formatar endereços quando a opção 'Formatar o endereço em função do país' estiver desativada"
+      format_address_by_address_country: Ao selecionar essa opção, os endereços serão formatados em função do respectivo país ao qual pertencerem. Desabilitar essa opção fará com que os endereços sejam formatados de acordo com as regras da sua localização
+      language: Selecione o idioma do sistema que deseja usar
+      timezone: Selecione o fuso horário para exibir a data e a hora
+      currency: Selecione a moeda padrão
