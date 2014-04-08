@@ -2,11 +2,11 @@
 Close: Fermer
 Update: Mettre à jour
 Selected Rows: Lignes sélectionnées
-Yes: Oui
+"Yes": Oui
 Yes, Delete: Oui, supprimer
 Yes, I Agree: "Oui, je suis d'accord"
 Yes, do it: Oui, le faire
-No: Non
+"No": Non
 Ok, got it.: OK, compris.
 Cancel: Annuler
 Delete Confirmation: Confirmation de la suppression
@@ -31,7 +31,6 @@ Millisecond: Milliseconde
 Microsecond: Microseconde
 Time Zone: Fuseau horaire
 Localized value: Valeur localisée
-Export CSV: Export de CSV
 Columns: Colonnes
 Datagrid Configuration: Configuration du tableau
 Apply: Appliquer

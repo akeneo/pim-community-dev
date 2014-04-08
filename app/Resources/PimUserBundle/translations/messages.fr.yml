@@ -19,7 +19,8 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: Nom
-Users Management: Gestion des Utilisateurs
+user.title: Utilisateur
+Users Management: Gestion des utilisateurs
 Create user: Créer un utilisateur
 New user: Nouvel utilisateur
 Additional: Supplémentaire
@@ -38,7 +39,7 @@ Additional emails: E-mails supplémentaires
 Add another email: Ajouter un autre email
 Catalog locale: Locale du catalogue
 Catalog scope: Portée du catalogue
-Default tree: Arbre par défaut
+Default tree: Arborescence par défaut
 Business Units: Entité commerciale
 Email synchronization settings: Paramètres de synchronisation de messagerie
 Host: Hôte
@@ -80,3 +81,12 @@ oro:
 Create group: Créer un groupe
 Has group: A un groupe
 Save and Close: Enregistrer et fermer
+Log in: Connexion
+Remember me on this computer: Mémoriser mes informations sur cet ordinateur
+Forgot your password?: Mot de passe oublié ?
+Username or Email: "Nom d'utilisateur ou Email"
+Forgot Password: Mot de passe oublié
+Request: Demande
+Check Email: Vérifier Email
+password_reset_email_sent: 'Un Email a été envoyé à %email%. Il contient un lien, vous devez cliquer sur ce lien pour réinitialiser votre mot de passe.'
+Go to homepage: "Aller à la page d'accueil"
