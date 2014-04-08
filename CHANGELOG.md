@@ -91,7 +91,6 @@
 - Disable global search feature
 - Remove the 'searchable' property of AbstractAttribute
 - Move ProductRepository::getIdentifier() to attribute repository
-<<<<<<< HEAD
 - Move CatalogBundle\Entity\Repository\ProductRepository to CatalogBundle\Doctrine\ORM
 - Move CatalogBundle\Entity\Repository\AssociationRepository to CatalogBundle\Doctrine\ORM
 - Move CatalogBundle\Model\ProductRepositoryInterface to CatalogBundle\Repository
