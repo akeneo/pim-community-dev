@@ -1170,28 +1170,30 @@ class WebUser extends RawMinkContext
         } catch (BehaviorException $e) {
             $log = $this->getFixturesContext()->getJobInstance($code)->getJobExecutions()->first()->getLogFile();
 
-            $dir = getenv('WORKSPACE');
-            $id  = getenv('BUILD_ID');
+            if (is_file($log)) {
+                $dir = getenv('WORKSPACE');
+                $id  = getenv('BUILD_ID');
 
-            if (false !== $dir && false !== $id) {
-                $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
+                if (false !== $dir && false !== $id) {
+                    $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
 
-                $fs = new \Symfony\Component\Filesystem\Filesystem();
-                $fs->copy($log, $target);
+                    $fs = new \Symfony\Component\Filesystem\Filesystem();
+                    $fs->copy($log, $target);
 
-                $log = sprintf(
-                    'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
-                    getenv('JOB_NAME'),
-                    $id,
-                    pathinfo($log, PATHINFO_BASENAME)
-                );
+                    $log = sprintf(
+                        'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
+                        getenv('JOB_NAME'),
+                        $id,
+                        pathinfo($log, PATHINFO_BASENAME)
+                    );
+                }
+
+                $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
+                $this->getMainContext()->addErrorMessage($message);
             }
 
-            $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
-            $this->getMainContext()->addErrorMessage($message);
-
             // Call the wait method again to trigger timeout failure
-            $this->wait(0, $condition);
+            $this->wait(100, $condition);
         }
     }
 
