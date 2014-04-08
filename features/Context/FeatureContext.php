@@ -24,6 +24,8 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
 
+    private static $errorMessages;
+
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
      * @var string
@@ -105,8 +107,9 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     $dir = '/tmp/behat/screenshots';
                 }
 
+                $lineNum  = $event->getStep()->getLine();
                 $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
-                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $event->getStep()->getLine());
+                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
                 $path     = sprintf('%s/%s', $dir, $filename);
 
                 $fs = new \Symfony\Component\Filesystem\Filesystem();
@@ -121,9 +124,23 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     );
                 }
 
-                echo "Step failed, screenshot available at '{$path}'\n";
+                self::$errorMessages[] = "Step {$lineNum} failed, screenshot available at {$path}";
             }
         }
+    }
+
+    /**
+     * Print error messages
+     *
+     * @AfterFeature
+     */
+    public static function printErrorMessages()
+    {
+        foreach (self::$errorMessages as $message) {
+            echo $message . "\n";
+        }
+
+        self::$errorMessages = [];
     }
 
     /**
@@ -149,7 +166,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
             $result = $this->getSession()->evaluateScript($script);
             if ($result) {
-                echo sprintf("WARNING: Encountered a JS error: '%s' \n", $result);
+                self::$errorMessages[] = "WARNING: Encountered a JS error: '{$result}'";
             }
         }
     }
