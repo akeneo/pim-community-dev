@@ -1,12 +1,4 @@
 ---
-export profile:
-  overview: exportprofiel overzicht
-  create: exportprofiel toevoegen
-  edit: exportprofiel bewerken
-import profile:
-  overview: importprofiel overzicht
-  create: importprofiel toevoegen
-  edit: importprofiel bewerken
 Job: Taak
 Connector: Connector
 pim_import_export:
@@ -36,8 +28,16 @@ pim_title.import_profile.edit: 'Importprofielen %job.label% | Bewerken'
 pim_title.import_profile.show: 'Importprofielen %job.label% | Tonen'
 pim_title.import_execution.index: Importverwerkingen geschiedenis
 pim_title.import_execution.show: Importverwerkingen | Details
+export profile:
+  overview: exportprofiel overzicht
+  create: exportprofiel toevoegen
+  edit: exportprofiel bewerken
 export report:
   overview: Exporteer rapporten
+import profile:
+  overview: importprofiel overzicht
+  create: importprofiel toevoegen
+  edit: importprofiel bewerken
 import report:
   overview: Importeer rapporten
 pim_importexport:
