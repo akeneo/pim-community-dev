@@ -566,7 +566,6 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-<<<<<<< HEAD:src/Pim/Bundle/CatalogBundle/Doctrine/ORM/ProductRepository.php
      * {@inheritdoc}
      */
     public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
