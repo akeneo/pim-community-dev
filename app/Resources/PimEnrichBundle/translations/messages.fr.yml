@@ -1,55 +1,68 @@
 ---
 attribute:
+  title: attribut
   overview: Liste des attributs
   create: Créer un attribut
   edit: Modifier un attribut
 attribute group:
+  title: "groupe d'attributs"
   overview: "Liste des groupes d'attributs"
   create: "Créer un groupe d'attributs"
   edit: "Modifier un groupe d'attributs"
 category:
+  title: catégorie
   overview: Liste des catégories
   create: Créer une catégorie
   edit: Editer une catégorie
 tree:
+  title: arbre
   create: Créer un arbre
   edit: Editer un arbre
 channel:
+  title: canal
   overview: Liste des canaux
   create: Créer un channel
   edit: Editer un channel
 currency:
+  title: devise
   overview: Liste des devises
   create: Créer une monnaie
   edit: Editer une monnaie
 family:
+  title: famille
   overview: Liste des familles
   create: Créer une famille
   edit: Editer une famille
 locale:
+  title: locale
   overview: Liste des locales
   create: Créer une locale
   edit: Modifier une locale
 product:
+  title: produit
   overview: Liste des produits
   create: Créer un produit
   edit: Modifier un produit
 group:
+  title: groupe
   overview: Liste des groupes
   create: Créer un groupe
   edit: Editer un groupe
+group type:
+  title: type de groupe
+  overview: Liste des types de groupe
+  create: Créer le type de groupe
+  edit: modifier le type de groupe
 variant group:
+  title: groupe de variantes
   overview: Liste des groupes de variantes
   create: Créer un groupe de variantes
   edit: Modifier un groupe de variantes
 association type:
+  title: "type d'association"
   overview: "Liste des types d'association"
   create: "Créer un type d'association"
   edit: "Modifier le type d'association"
-group type:
-  overview: Liste des types de groupe
-  create: Créer le type de groupe
-  edit: modifier le type de groupe
 products: Produits
 btn:
   create:
@@ -199,6 +212,7 @@ info:
     none exist: "Aucun type d'association n'existe."
     create one: Cliquez ici pour en créer un
 color:
+  title: Couleur
   gray: Gris
   white: Blanc
   yellow: Jaune
@@ -245,7 +259,6 @@ Default label: Libellé par défaut
 Default value: Valeur par défaut
 Attributetype: "Type d'attribut"
 Attribute type: "Type d'attribut"
-Searchable: Recherchable
 Defaultvalue: Valeur par défaut
 Variant: Variante
 Smart: Intelligent
@@ -258,10 +271,14 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-Yes: Oui
-No: Non
+"Yes": true
+"No": false
 Close: Fermer
 Choose a color: Choisir une couleur
+Search: Recherche
+Choose the attribute type: "Choisissez le type d'attribut"
+Drop a file or click here: Déposez un fichier ou cliquez ici
+Drop an image or click here: Déposez une image ou cliquez ici
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
@@ -415,7 +432,9 @@ View group: Afficher le groupe
 Products: Produits
 pim_enrich:
   acl:
-    locale.index: Lister les locales
+    locale:
+      index: Liste des locales
+      access: Accès aux locales
     currency:
       index: Liste des devises
       toggle: Activer/désactiver devises
@@ -446,6 +465,7 @@ pim_enrich:
       edit: Modifier un canal
       remove: Supprimer un canal
     family:
+      index: Liste des familles
       create: Créer une famille
       edit: Modifier une famille
       remove: Supprimer une famille
@@ -479,7 +499,6 @@ pim_enrich:
       create: "Créer un type d'association"
       edit: "Modifier un type d'association"
       remove: "Supprimer un type d'association"
-  datagrid_configuration.columns.min_message: Au moins une colonne à afficher doit être sélectionnée
 pim_menu:
   tab:
     collect: Extraire
@@ -520,8 +539,6 @@ popin.create:
   option.title: Créer une nouvelle option
 In group: Dans le groupe
 Attribute as label: Attribut en tant que libellé
-Available Columns: Colonnes disponibles
-Displayed Columns: Colonnes affichées
 Is associated: Est associé
 Complete: Complet
 Created At: Crée le
@@ -562,7 +579,6 @@ oro.locale:
       county: Comté
       area: zone
       prefecture: préfecture
-      do_si: do_si
       department: département
       district: quartier
       province: province
@@ -574,3 +590,4 @@ oro.locale:
       language: Sélectionnez la langue du système que vous souhaitez utiliser
       timezone: "Sélectionnez le fuseau horaire pour afficher la date et l'heure"
       currency: Sélectionnez la monnaie par défaut
+Selected products successfully deleted: La sélection de produits a été supprimée

@@ -38,6 +38,10 @@ group:
   overview: Gruppenübersicht
   create: Gruppe anlegen
   edit: Gruppe bearbeiten
+group type:
+  overview: Gruppentypen-Übersicht
+  create: Gruppentyp anlegen
+  edit: Gruppentyp bearbeiten
 variant group:
   overview: Variantengruppen-Übersicht
   create: Variantengruppe anlegen
@@ -46,10 +50,6 @@ association type:
   overview: Verbindungstypen-Übersicht
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
-group type:
-  overview: Gruppentypen-Übersicht
-  create: Gruppentyp anlegen
-  edit: Gruppentyp bearbeiten
 products: Produkte
 btn:
   create:
@@ -236,6 +236,7 @@ Edit: Bearbeiten
 Remove: Entfernen
 Delete: Löschen
 Parameters: Parameter
+System: System
 Values: Werte
 General parameters: Allgemeine Parameter
 Backend parameters: Backend Parameter
@@ -244,7 +245,6 @@ Default label: Standardbezeichnung
 Default value: Standardwert
 Attributetype: Attributtyp
 Attribute type: Attributtyp
-Searchable: Durchsuchbar
 Defaultvalue: Standardwert
 Variant: Variante
 Smart: Smart
@@ -257,7 +257,8 @@ default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
-Yes: "1"
+"Yes": true
+"No": false
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Create: Anlegen
@@ -335,6 +336,10 @@ pim_title.association_type:
 pim_title.group_type:
   index: Gruppentypen
   edit: 'Gruppentypen %group type.label% | Bearbeiten'
+pim_title.mass_edit_action:
+  choose: Massenbearbeitung | Auswählen
+  configure: Massenbearbeitung | Konfigurieren
+pim_title.dashboard: Dashboard
 pim_catalog_identifier: Kennung
 pim_catalog_text: Text
 pim_catalog_textarea: Textbereich
@@ -409,7 +414,6 @@ View group: Gruppe ansehen
 Products: Produkte
 pim_enrich:
   acl:
-    locale.index: Gebietsschemata auflisten
     currency:
       index: Währungen auflisten
       toggle: Währungen umschalten
@@ -473,7 +477,6 @@ pim_enrich:
       create: Einen Verbindungstyp anlegen
       edit: Einen Verbindungstyp bearbeiten
       remove: Einen Verbindungstyp löschen
-  datagrid_configuration.columns.min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
 pim_menu:
   tab:
     collect: Sammeln
@@ -514,6 +517,54 @@ popin.create:
   option.title: Neue Option anlegen
 In group: In Gruppe
 Attribute as label: Attribut als Label
-Available Columns: Verfügbare Spalten
-Displayed Columns: Angezeigten Spalten
 Is associated: Ist verbunden
+Complete: Vollständig
+Created At: Angelegt am
+Updated At: Aktualisiert am
+Enabled: Aktiviert
+Disabled: Deaktiviert
+Status: Status
+Change History: Änderungshistorie
+Data Audit: Datenhistorie
+Data Audit - System: 'Datenhistorie - System'
+Action: Aktion
+Version: Version
+Entity type: Entitätstyp
+Entity name: Entitätsname
+Entity id: Entitäts-ID
+Data: Daten
+Author: Autor
+Logged at: Angemeldet am
+Deleted: Gelöscht
+Old values: Alte Werte
+New values: Neue Werte
+System configuration: Systemkonfiguration
+General setup: Allgemeine Konfiguration
+Localization: Lokalisierung
+Localization options: Lokalisierungsoptionen
+Locale: Gebietsschema
+Location: Standort
+Format address by address country: Formatiere nach Land der Adresse
+Language: Sprache
+Timezone: Zeitzone
+Currency: Währung
+oro.locale:
+  address_format:
+    region_name_type:
+      parish: Gemeinde
+      state: Staat
+      island: Insel
+      county: Landkreis
+      area: Gebiet
+      prefecture: Präfektur
+      department: Abteilung
+      district: Bezirk
+      province: Provinz
+  form:
+    tooltip:
+      locale: Wählen Sie die Gebietsschema-Option mit der Nummern, Adressen, Namen und Daten formatieren werden
+      location: 'Der Standort wird verwendet um Adressen zu formatieren, wenn die Optione "Formatiere Adresse nach Land der Adresse" deaktiviert ist'
+      format_address_by_address_country: Mit dieser Optionen werden Adressen nach dem Land formatiert, in dem sie sich befinden. Ist diese Option deaktiviert, werden Adressen nach der Adresse Ihres Standortes formatiert
+      language: Wählen Sie die Systemsprache die Sie verwenden möchten
+      timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
+      currency: Wählen Sie die Standardwährung
