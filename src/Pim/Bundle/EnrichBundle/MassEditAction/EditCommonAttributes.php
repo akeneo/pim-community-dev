@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\UserBundle\Context\UserContext;
-
+use Pim\Bundle\CatalogBundle\PimCatalogBundle;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -439,7 +439,15 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
-        $productValue->setOptions($value->getOptions());
+        $productValue->getOptions()->clear();
+        // TODO: Clean this code removing flush for ORM
+        if (!class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
+            $this->productManager->getObjectManager()->flush();
+        }
+
+        foreach ($value->getOptions() as $option) {
+            $productValue->addOption($option);
+        }
     }
 
     /**
