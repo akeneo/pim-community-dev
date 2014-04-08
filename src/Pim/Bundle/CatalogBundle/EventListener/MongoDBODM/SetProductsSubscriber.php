@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Gedmo\References\LazyCollection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * ORM subscriber registered when Product is a mongo document
@@ -74,14 +75,17 @@ class SetProductsSubscriber implements EventSubscriber
                 $productsProp = $metadata->reflClass->getProperty('products');
                 $productsProp->setAccessible(true);
 
+                $property = $mapping['property'];
                 $productsProp->setValue(
                     $entity,
                     new LazyCollection(
-                        function () {
-                            return $this
-                                ->registry
-                                ->getRepository($this->productClass)
-                                ->findBy([$mapping['property'] => array($entity->getId())]);
+                        function () use ($property, $entity) {
+                            return new ArrayCollection(
+                                $this
+                                    ->registry
+                                    ->getRepository($this->productClass)
+                                    ->findBy([$property => array($entity->getId())])
+                            );
                         }
                     )
                 );
