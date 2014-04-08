@@ -1,13 +1,15 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity\Repository;
+namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -26,11 +28,43 @@ class ProductRepository extends EntityRepository implements
     ProductRepositoryInterface,
     ReferableEntityRepositoryInterface
 {
-    /** @param ProductQueryBuilder $productQB */
+    /**
+     * @var ProductQueryBuilder
+     */
     protected $productQB;
 
-    /** @param AttributeRepository $attributeRepository */
+    /**
+     * @var AttributeRepository
+     */
     protected $attributeRepository;
+
+    /**
+     * Set flexible query builder
+     *
+     * @param ProductQueryBuilder $productQB
+     *
+     * @return ProductRepositoryInterface
+     */
+    public function setProductQueryBuilder($productQB)
+    {
+        $this->productQB = $productQB;
+
+        return $this;
+    }
+
+    /**
+     * Set attribute repository
+     *
+     * @param AttributeRepository $attributeRepository
+     *
+     * @return ProductRepository
+     */
+    public function setAttributeRepository(AttributeRepository $attributeRepository)
+    {
+        $this->attributeRepository = $attributeRepository;
+
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
@@ -194,7 +228,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        $productMetadata = $this->getClassMetadata(get_class($product));
+        $productMetadata = $this->getClassMetadata();
 
         $categoryAssoc = $productMetadata->getAssociationMapping('categories');
 
@@ -316,15 +350,18 @@ class ProductRepository extends EntityRepository implements
      */
     protected function prepareDBALQuery($sql)
     {
-        $categoryMapping = $this->getClassMetadata()->getAssociationMapping('categories');
+        $productMetadata = $this->getClassMetadata();
 
-        $valueMapping  = $this->getClassMetadata()->getAssociationMapping('values');
+        $categoryMapping = $productMetadata->getAssociationMapping('categories');
+        $familyMapping   = $productMetadata->getAssociationMapping('family');
+        $valueMapping    = $productMetadata->getAssociationMapping('values');
+
         $valueMetadata = $this->getEntityManager()->getClassMetadata($valueMapping['targetEntity']);
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
 
-        $familyMapping = $this->getClassMetadata()->getAssociationMapping('family');
+
         $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
 
         $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
@@ -333,7 +370,7 @@ class ProductRepository extends EntityRepository implements
             $sql,
             [
                 '%category_join_table%'    => $categoryMapping['joinTable']['name'],
-                '%product_table%'          => $this->getClassMetadata()->getTableName(),
+                '%product_table%'          => $productMetadata->getTableName(),
                 '%product_value_table%'    => $valueMetadata->getTableName(),
                 '%attribute_table%'        => $attributeMetadata->getTableName(),
                 '%family_table%'           => $familyMetadata->getTableName(),
@@ -349,7 +386,8 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getValuesClass()
     {
-        return $this->getClassMetadata()->getAssociationTargetClass('values');
+        return $this->getClassMetadata()
+            ->getAssociationTargetClass('values');
     }
 
     /**
@@ -373,9 +411,7 @@ class ProductRepository extends EntityRepository implements
      */
     protected function getAttributeByCode($code)
     {
-        $repository = $this->getEntityManager()->getRepository($this->getAttributeClass());
-
-        return $repository->findOneByCode($code);
+        return $this->attributeRepository->findOneByCode($code);
     }
 
     /**
@@ -383,7 +419,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->_em->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
@@ -395,7 +431,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createGroupDatagridQueryBuilder()
     {
-        $qb = $this->_em->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
@@ -426,7 +462,7 @@ class ProductRepository extends EntityRepository implements
      */
     public function createAssociationDatagridQueryBuilder()
     {
-        $qb = $this->_em->createQueryBuilder()
+        $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('p')
             ->from($this->_entityName, 'p', 'p.id');
 
@@ -485,7 +521,7 @@ class ProductRepository extends EntityRepository implements
         $sql = 'SELECT count(ga.attribute_id) as nb '.
             'FROM pim_catalog_group_attribute as ga '.
             'WHERE ga.group_id = :groupId;';
-        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('groupId', $variantGroupId);
         $stmt->execute();
         $nbAxes = $stmt->fetch()['nb'];
@@ -498,7 +534,7 @@ class ProductRepository extends EntityRepository implements
             'having count(v.option_id) = :nbAxes ;';
         $sql = $this->prepareDBALQuery($sql);
 
-        $stmt = $this->_em->getConnection()->prepare($sql);
+        $stmt = $this->getEntityManager()->getConnection()->prepare($sql);
         $stmt->bindValue('groupId', $variantGroupId);
         $stmt->bindValue('nbAxes', $nbAxes);
         $stmt->execute();
@@ -530,17 +566,19 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Set flexible query builder
-     *
-     * @param ProductQueryBuilder $productQB
-     *
-     * @return ProductRepositoryInterface
+     * {@inheritdoc}
      */
-    public function setProductQueryBuilder($productQB)
+    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
     {
-        $this->productQB = $productQB;
+        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
+    }
 
-        return $this;
+    /**
+     * {@inheritdoc}
+     */
+    public function applySorterByField($qb, $field, $direction)
+    {
+        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -782,20 +820,6 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $attributeIds;
-    }
-
-    /**
-     * Set attribute repository
-     *
-     * @param AttributeRepository $attributeRepository
-     *
-     * @return ProductRepository
-     */
-    public function setAttributeRepository(AttributeRepository $attributeRepository)
-    {
-        $this->attributeRepository = $attributeRepository;
-
-        return $this;
     }
 
     /**

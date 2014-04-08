@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Transformer\Guesser;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\PropertyTransformerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo as ORMClassMetadataInfo;

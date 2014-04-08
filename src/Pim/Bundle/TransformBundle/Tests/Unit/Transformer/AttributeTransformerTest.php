@@ -74,7 +74,7 @@ class AttributeTransformerTest extends EntityTransformerTestCase
     protected function setupRepositories($referable = true)
     {
         $this->repository = $this
-            ->getMock('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
+            ->getMock('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
         $this->repository->expects($this->any())
             ->method('getReferenceProperties')
             ->will($this->returnValue(array('code')));

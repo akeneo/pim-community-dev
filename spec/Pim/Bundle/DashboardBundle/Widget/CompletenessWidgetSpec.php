@@ -4,7 +4,7 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 class CompletenessWidgetSpec extends ObjectBehavior
 {

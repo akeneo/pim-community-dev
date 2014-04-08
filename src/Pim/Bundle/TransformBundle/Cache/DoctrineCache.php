@@ -5,7 +5,7 @@ namespace Pim\Bundle\TransformBundle\Cache;
 use Doctrine\Common\DataFixtures\ReferenceRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Caches doctrine persisted objects

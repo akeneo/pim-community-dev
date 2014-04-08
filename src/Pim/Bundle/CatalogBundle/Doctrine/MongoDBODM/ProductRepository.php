@@ -7,9 +7,9 @@ use Doctrine\ODM\MongoDB\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -34,8 +34,8 @@ class ProductRepository extends DocumentRepository implements
     AssociationRepositoryInterface
 {
     /**
-     * @param ProductQueryBuilder
-     */
+    * @var ProductQueryBuilder
+    */
     protected $productQB;
 
     /**
@@ -52,7 +52,9 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var AttributeRepository $attributeRepository */
+    /**
+     * @var AttributeRepository
+     */
     protected $attributeRepository;
 
     /**

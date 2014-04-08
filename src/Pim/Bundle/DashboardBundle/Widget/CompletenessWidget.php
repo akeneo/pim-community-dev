@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\CatalogBundle\Model\CompletenessRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface;
 
 /**
  * Widget to display completeness of products over channels and locales

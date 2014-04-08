@@ -20,12 +20,13 @@ class UnknownColumnException extends ParametrizedException
      * Constructor
      *
      * @param array $labels
+     * @param object
      */
-    public function __construct(array $labels)
+    public function __construct(array $labels, $class)
     {
         parent::__construct(
-            'Columns %labels% do not exist.',
-            array('%labels%' => implode(', ', $labels))
+            'Columns [%labels%] do not exist on class [%class%].',
+            array('%labels%' => implode(', ', $labels), '%class%' => $class)
         );
     }
 }

@@ -1,6 +1,6 @@
 parameters:
     pim_catalog.repository.association.class:                      Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
-    pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository
+    pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
     pim_catalog.repository.completeness.class:                     Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
