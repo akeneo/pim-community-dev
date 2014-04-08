@@ -27,6 +27,7 @@
 - Fixed Product ORM mapping: activated orphanRemoval of values
 - Fixed family import fixtures, we now throw an exception if attribute used as requirement not exists
 - Fixed the CSV import of attribute options which can fail due to missing columns when options are not 100% translated
+- Fixed the CSV import of attribute option to throw exception when the attribute is not known
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
