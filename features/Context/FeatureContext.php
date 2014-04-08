@@ -137,7 +137,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     public static function printErrorMessages()
     {
         if (!empty(self::$errorMessages)) {
-            echo "\nAttention!\n\n";
+            echo "\n\033[1;31mAttention!\033[0m\n\n";
 
             foreach (self::$errorMessages as $message) {
                 echo $message . "\n";
