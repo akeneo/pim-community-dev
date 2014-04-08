@@ -215,9 +215,8 @@ class ReferencedCollection extends AbstractLazyCollection
         $this->isDirty = true;
 
         $uow = $this->registry->getManagerForClass(get_class($this->owner))->getUnitOfWork();
-        if (
-            UnitOfWork::STATE_MANAGED === $uow->getDocumentState($this->owner) &&
-            !$uow->isScheduledForUpdate($this->owner)
+        if (UnitOfWork::STATE_MANAGED === $uow->getDocumentState($this->owner)
+            && !$uow->isScheduledForUpdate($this->owner)
         ) {
             $uow->scheduleForUpdate($this->owner);
         }
