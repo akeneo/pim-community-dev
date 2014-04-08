@@ -34,7 +34,7 @@ Feature: Import groups
       | filePath | %file to import% |
     When I am on the "acme_group_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_group_import" job to finish
     Then there should be the following groups:
       | code           | label-en_US    | label-fr_FR    | type    | attributes |
       | default        |                |                | RELATED |            |
@@ -69,5 +69,5 @@ Feature: Import groups
       | filePath | %file to import% |
     When I am on the "acme_group_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_group_import" job to finish
     And I should see "This property cannot be changed"

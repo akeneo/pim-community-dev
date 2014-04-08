@@ -36,14 +36,14 @@ Feature: Import invalid products
 Scenario: Fail to import malformed prices
     Given I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 2 products
     And I should see "Malformed price: \"15EUR\""
 
   Scenario: Download a file containing invalid products
     Given I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     And the invalid data file of "acme_product_import" should contain:
     """
     sku;publicPrice

@@ -124,7 +124,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
                     );
                 }
 
-                self::$errorMessages[] = "Step {$lineNum} failed, screenshot available at {$path}";
+                $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
             }
         }
     }
@@ -136,11 +136,25 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
      */
     public static function printErrorMessages()
     {
-        foreach (self::$errorMessages as $message) {
-            echo $message . "\n";
-        }
+        if (!empty(self::$errorMessages)) {
+            echo "\nAttention!\n\n";
 
-        self::$errorMessages = [];
+            foreach (self::$errorMessages as $message) {
+                echo $message . "\n";
+            }
+
+            self::$errorMessages = [];
+        }
+    }
+
+    /**
+     * Add an error message
+     *
+     * @param string $message
+     */
+    public function addErrorMessage($message)
+    {
+        self::$errorMessages[] = $message;
     }
 
     /**
@@ -166,7 +180,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
             $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
             $result = $this->getSession()->evaluateScript($script);
             if ($result) {
-                self::$errorMessages[] = "WARNING: Encountered a JS error: '{$result}'";
+                $this->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
             }
         }
     }
