@@ -24,7 +24,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
 
-    private static $errorMessages;
+    private static $errorMessages = [];
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
