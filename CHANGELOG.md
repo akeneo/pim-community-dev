@@ -16,6 +16,7 @@
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
 - Dispatch event pre/post handler for each mass action
+- Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
 
 ## Bug fixes
 - Fixed verbose option always used
@@ -24,6 +25,7 @@
 - Fixed get common attributes with common values
 - Fixed completeness not removed from changed family
 - Fixed Product ORM mapping: activated orphanRemoval of values
+- Fixed family import fixtures, we now throw an exception if attribute used as requirement not exists
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
@@ -64,7 +66,7 @@
 - Move `DataGridBundle/Extension/Sorter\Orm\FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Sorter/Orm/FlexibleFieldSorter` to `DataGridBundle/Extension/Sorter/Product/ValueSorter`
 - Move `DataGridBundle/Extension/Selector/Orm/*` to `DataGridBundle/Extension/Selector/Orm/Product` and `DataGridBundle/Extension/Selector/Orm/ProductValue`
-- ProductRepository doesn't extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
+- ProductRepository does not extend anymore FlexibleEntityRepository, getFlexibleConfig/setFlexibleConfig have been replaced by getConfiguration/setConfiguration
 - Change mass action route for products and create own controller for these mass actions
 - Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
 - Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
@@ -89,11 +91,13 @@
 - Disable global search feature
 - Remove the 'searchable' property of AbstractAttribute
 - Move ProductRepository::getIdentifier() to attribute repository
+<<<<<<< HEAD
 - Move CatalogBundle\Entity\Repository\ProductRepository to CatalogBundle\Doctrine\ORM
 - Move CatalogBundle\Entity\Repository\AssociationRepository to CatalogBundle\Doctrine\ORM
 - Move CatalogBundle\Model\ProductRepositoryInterface to CatalogBundle\Repository
 - Move CatalogBundle\Model\AssociationRepositoryInterface to CatalogBundle\Repository
 - Move CatalogBundle\Model\CompletenessRepositoryInterface to CatalogBundle\Repository
+- EditCommonAttributes class needs the ProductBuilder now
 
 # 1.0.2
 ## Bug Fixes

@@ -111,6 +111,16 @@ class FamilyTransformer extends NestedEntityTransformer
             );
             $requirement = $this->transformNestedEntity($class, 'requirements', $this->requirementClass, $data);
 
+            if ($requirement->getAttribute() === null) {
+                throw new \Exception(
+                    sprintf(
+                        'The attribute "%s" used as requirement in family "%s" is not known',
+                        $attributeCode,
+                        $family->getCode()
+                    )
+                );
+            }
+
             $family->addAttributeRequirement($requirement);
         }
     }

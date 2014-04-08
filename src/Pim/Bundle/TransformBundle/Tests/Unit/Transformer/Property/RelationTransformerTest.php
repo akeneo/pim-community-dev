@@ -80,13 +80,13 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Pim\Bundle\TransformBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage No object of class "class" with code "code"
+     * @expectedExceptionMessage The "objectName" with code "code" is unknown
      */
     public function testFailingSingleTransform()
     {
         $this->transformer->transform(
             'code',
-            array('class' => 'class')
+            array('class' => 'path\objectName', 'objectName' => 'objectName')
         );
     }
 
@@ -109,14 +109,14 @@ class RelationTransformerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Pim\Bundle\TransformBundle\Exception\PropertyTransformerException
-     * @expectedExceptionMessage No object of class "class" with code "code2"
+     * @expectedExceptionMessage The "objectName" with code "code2" is unknown
      */
     public function testFailingMultipleTransform()
     {
-        $this->addObject('class', 'code1');
+        $this->addObject('path\objectName', 'code1');
         $this->transformer->transform(
             ' code1,code2, code3',
-            array('class' => 'class', 'multiple' => true)
+            array('class' => 'path\objectName', 'multiple' => true)
         );
     }
 

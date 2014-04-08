@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Gherkin\Node\PyStringNode;
@@ -85,6 +86,75 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Take a screenshot when a step fails
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep
+     */
+    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    {
+        if ($event->getResult() === StepEvent::FAILED) {
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                $dir = getenv('WORKSPACE');
+                $id  = getenv('BUILD_ID');
+                if (false !== $dir && false !== $id) {
+                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
+                } else {
+                    $dir = '/tmp/behat/screenshots';
+                }
+
+                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $event->getStep()->getLine());
+                $path     = sprintf('%s/%s', $dir, $filename);
+
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($path, $driver->getScreenshot());
+
+                if ($id) {
+                    $path = sprintf(
+                        'http://ci.akeneo.com/screenshots/%s/%s/screenshots/%s',
+                        getenv('JOB_NAME'),
+                        $id,
+                        $filename
+                    );
+                }
+
+                echo "Step failed, screenshot available at '{$path}'\n";
+            }
+        }
+    }
+
+    /**
+     * Listen to JS errors
+     *
+     * @BeforeStep
+     */
+    public function listenToErrors()
+    {
+        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
+
+        $this->executeScript($script);
+    }
+
+    /**
+     * Collect and log JS errors
+     *
+     * @AfterStep
+     */
+    public function collectErrors()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+            $result = $this->getSession()->evaluateScript($script);
+            if ($result) {
+                echo sprintf("WARNING: Encountered a JS error: '%s' \n", $result);
+            }
+        }
+    }
+
+    /**
      * Sets Kernel instance.
      *
      * @param KernelInterface $kernel HttpKernel instance
@@ -113,7 +183,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
-
 
     /**
      * @return ObjectManager
