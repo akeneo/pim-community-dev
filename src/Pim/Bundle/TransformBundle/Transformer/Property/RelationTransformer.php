@@ -81,9 +81,10 @@ class RelationTransformer implements PropertyTransformerInterface
         $findObject = function ($value) use ($class, $referencePrefix) {
             $object = $this->findObject($class, $referencePrefix . $value);
             if (!$object) {
+                $objectName = end(explode('\\', $class));
                 throw new PropertyTransformerException(
-                    'No object of class "%class%" with code "%code%"',
-                    array('%class%' => $class, '%code%' => $referencePrefix . $value)
+                    'The "%objectName%" with code "%code%" is unknown',
+                    array('%objectName%' => $objectName, '%code%' => $referencePrefix.$value)
                 );
             }
 
