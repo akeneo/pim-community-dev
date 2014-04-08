@@ -21,13 +21,17 @@ class FlatAttributeOptionNormalizer extends AttributeOptionNormalizer
     /**
      * {@inheritdoc}
      */
-    protected function normalizeLabel(AttributeOption $entity)
+    protected function normalizeLabel(AttributeOption $entity, $context)
     {
-        $values = array();
-        foreach ($entity->getOptionValues() as $translation) {
-            $values[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
+        $labels = array();
+        foreach ($context['locales'] as $locale) {
+            $labels[sprintf('label-%s', $locale)] = '';
         }
 
-        return $values;
+        foreach ($entity->getOptionValues() as $translation) {
+            $labels[sprintf('label-%s', $translation->getLocale())] = $translation->getValue();
+        }
+
+        return $labels;
     }
 }
