@@ -7,7 +7,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -27,29 +26,29 @@ class ReferencedCollection extends AbstractLazyCollection
     /** @var array */
     protected $identifiers;
 
+    /** @var ManagerRegistry */
+    protected $registry;
+
     /** @var boolean */
     protected $initialized = false;
 
     /** @var boolean */
     protected $isDirty = false;
 
-    /** @var SmartManagerRegistry */
-    protected $registry;
-
     /** @var object|null */
     protected $owner;
 
     /**
-     * @param string        $entityClass
-     * @param array         $identifiers
-     * @param UnitOfWork    $uow
+     * @param string          $entityClass
+     * @param array           $identifiers
+     * @param ManagerRegistry $registry
      */
     public function __construct($entityClass, $identifiers, ManagerRegistry $registry)
     {
-        $this->identifiers   = $identifiers;
-        $this->entityClass   = $entityClass;
+        $this->identifiers = $identifiers;
+        $this->entityClass = $entityClass;
         $this->registry = $registry;
-        $this->collection    = new ArrayCollection();
+        $this->collection = new ArrayCollection();
     }
 
     /**
@@ -154,6 +153,11 @@ class ReferencedCollection extends AbstractLazyCollection
         }
     }
 
+    /**
+     * Populate the collection
+     *
+     * @param Collection $collection
+     */
     public function populate(Collection $collection)
     {
         $this->collection = $collection;
