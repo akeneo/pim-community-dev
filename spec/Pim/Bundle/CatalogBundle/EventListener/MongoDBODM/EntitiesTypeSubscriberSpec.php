@@ -76,33 +76,6 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    function it_does_not_convert_value_if_initial_value_is_already_a_referenced_collection_after_the_loading(
-        LifecycleEventArgs $args,
-        ValuesStub $document,
-        DocumentManager $dm,
-        ClassMetadata $documentMetadata,
-        \ReflectionProperty $reflBar,
-        ReferencedCollection $collection
-    ) {
-        $args->getDocument()->willReturn($document->getWrappedObject());
-        $args->getDocumentManager()->willReturn($dm);
-        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
-        $documentMetadata->reflFields = [
-            'bar' => $reflBar,
-            'bar' => $reflBar,
-        ];
-        $documentMetadata->fieldMappings = [
-            'foo' => ['type' => 'text'],
-            'bar' => ['type' => 'entities', 'targetEntity' => 'Acme\Entity\Bar', 'idsField' => 'barIds'],
-        ];
-        $reflBar->getValue($document)->willReturn($collection);
-
-        $reflBar->setValue($document, Argument::any())->shouldNotBeCalled();
-
-        $this->postLoad($args);
-
-    }
-
     function it_throws_exception_when_entity_collection_field_has_no_target_entity_after_the_loading(
         LifecycleEventArgs $args,
         ValuesStub $document,

@@ -6,6 +6,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 
 /**
  * Extends SegmentManager for category tree
@@ -129,5 +131,19 @@ class CategoryManager extends SegmentManager
         return $this
             ->getEntityRepository()
             ->findOneBy(array('code' => $code));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(AbstractSegment $segment)
+    {
+        if ($segment instanceof Category) {
+            foreach ($segment->getProducts() as $product) {
+                $product->removeCategory($segment);
+            }
+        }
+
+        parent::remove($segment);
     }
 }

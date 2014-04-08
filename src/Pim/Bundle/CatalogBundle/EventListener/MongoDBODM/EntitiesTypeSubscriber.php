@@ -68,18 +68,11 @@ class EntitiesTypeSubscriber implements EventSubscriber
                     );
                 }
 
-                $value = $metadata->reflFields[$field]->getValue($document);
-
-                /**
-                 * Entities property should be overrided if it's not a ReferencedCollection or if it's empty
-                 */
-                if (!$value instanceof ReferencedCollection || $value->count() === 0) {
-                    $ids = $metadata->reflFields[$mapping['idsField']]->getValue($document);
-                    $metadata->reflFields[$field]->setValue(
-                        $document,
-                        $this->factory->create($mapping['targetEntity'], $ids, $document)
-                    );
-                }
+                $ids = $metadata->reflFields[$mapping['idsField']]->getValue($document);
+                $metadata->reflFields[$field]->setValue(
+                    $document,
+                    $this->factory->create($mapping['targetEntity'], $ids, $document)
+                );
             }
         }
     }
