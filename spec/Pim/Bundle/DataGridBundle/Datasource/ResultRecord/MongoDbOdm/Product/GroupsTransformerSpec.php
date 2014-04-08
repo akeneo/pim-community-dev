@@ -7,6 +7,9 @@ use Prophecy\Argument;
 
 class GroupsTransformerSpec extends ObjectBehavior
 {
+    /**
+     * @require \MongoId
+     */
     function it_transforms_product_groups_result(\MongoId $id)
     {
         $locale = 'fr_FR';

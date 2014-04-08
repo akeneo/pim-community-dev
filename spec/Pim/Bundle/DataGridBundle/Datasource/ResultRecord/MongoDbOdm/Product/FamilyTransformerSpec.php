@@ -7,6 +7,9 @@ use Prophecy\Argument;
 
 class FamilyTransformerSpec extends ObjectBehavior
 {
+    /**
+     * @require \MongoId
+     */
     function it_transforms_product_family_result(\MongoId $id)
     {
         $locale = 'fr_FR';

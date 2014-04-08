@@ -7,6 +7,9 @@ use Prophecy\Argument;
 
 class CompletenessTransformerSpec extends ObjectBehavior
 {
+    /**
+     * @require \MongoId
+     */
     function it_transforms_product_completeness_result(\MongoId $id)
     {
         $locale = 'fr_FR';
