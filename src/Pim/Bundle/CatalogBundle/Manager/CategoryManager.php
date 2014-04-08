@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 
 /**
@@ -138,7 +137,7 @@ class CategoryManager extends SegmentManager
      */
     public function remove(AbstractSegment $segment)
     {
-        if ($segment instanceof Category) {
+        if ($segment instanceof CategoryInterface) {
             foreach ($segment->getProducts() as $product) {
                 $product->removeCategory($segment);
             }
