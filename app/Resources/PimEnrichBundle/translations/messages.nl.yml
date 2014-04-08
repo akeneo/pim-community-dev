@@ -38,6 +38,10 @@ group:
   overview: groepsoverzicht
   create: groep aanmaken
   edit: groep bewerken
+group type:
+  overview: groepstype overzicht
+  create: groepstype aanmaken
+  edit: groepstype bewerken
 variant group:
   overview: variantgroepen overzicht
   create: variantgroep aanmaken
@@ -46,10 +50,6 @@ association type:
   overview: associatietype overzicht
   create: associatietype aanmaken
   edit: associatietype wijzigen
-group type:
-  overview: groepstype overzicht
-  create: groepstype aanmaken
-  edit: groepstype bewerken
 products: producten
 btn:
   create:
@@ -244,7 +244,6 @@ Default label: Standaard label
 Default value: Standaardwaarde
 Attributetype: Attribuut type
 Attribute type: Attribuuttype
-Searchable: Doorzoekbaar
 Defaultvalue: Standaardwaarde
 Variant: Variant
 Smart: Slim
@@ -257,7 +256,8 @@ default: Standaard
 Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
-Yes: Ja
+"Yes": true
+"No": false
 Close: Sluiten
 Choose a color: Kies een kleur
 Create: Aanmaken
@@ -409,7 +409,6 @@ View group: Bekijk groep
 Products: Producten
 pim_enrich:
   acl:
-    locale.index: Lokalisaties weergeven
     currency:
       index: Valuta weergeven
       toggle: Valuta omschakelen
@@ -473,7 +472,6 @@ pim_enrich:
       create: Associatietype aanmaken
       edit: Associatietype wijzigen
       remove: Associatietype verwijderen
-  datagrid_configuration.columns.min_message: U moet ten minste één datagrid kolom selecteren om weer te geven
 pim_menu:
   tab:
     collect: Verzamelen
@@ -514,6 +512,4 @@ popin.create:
   option.title: Nieuwe optie aanmaken
 In group: In groep
 Attribute as label: Attribuut als label
-Available Columns: Beschikbare kolommen
-Displayed Columns: Weergegeven kolommen
 Is associated: Is geassocieerd
