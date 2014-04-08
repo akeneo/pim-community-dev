@@ -16,6 +16,7 @@
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
 - Dispatch event pre/post handler for each mass action
+- Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
 
 ## Bug fixes
 - Fixed verbose option always used
