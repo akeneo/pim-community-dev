@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\UnitOfWork;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @require Doctrine\ODM\MongoDB\Events
@@ -66,6 +67,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
             'bar' => ['type' => 'entities', 'targetEntity' => 'Acme/Entity/Bar', 'idsField' => 'barIds'],
         ];
 
+        $reflBar->getValue($document)->willReturn([]);
         $reflBarIds->getValue($document)->willReturn([4, 8, 15]);
         $factory->create('Acme/Entity/Bar', [4, 8, 15], $document)->willReturn($collection);
 
@@ -80,7 +82,6 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         DocumentManager $dm,
         ClassMetadata $documentMetadata,
         \ReflectionProperty $reflBar,
-        \ReflectionProperty $reflBarIds,
         ReferencedCollection $collection
     ) {
         $args->getDocument()->willReturn($document->getWrappedObject());
@@ -88,13 +89,13 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
         $documentMetadata->reflFields = [
             'bar' => $reflBar,
-            'barIds' => $reflBarIds,
+            'bar' => $reflBar,
         ];
         $documentMetadata->fieldMappings = [
             'foo' => ['type' => 'text'],
             'bar' => ['type' => 'entities', 'targetEntity' => 'Acme\Entity\Bar', 'idsField' => 'barIds'],
         ];
-        $reflBarIds->getValue($document)->willReturn($collection);
+        $reflBar->getValue($document)->willReturn($collection);
 
         $reflBar->setValue($document, Argument::any())->shouldNotBeCalled();
 
@@ -149,10 +150,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         DocumentManager $dm,
         ClassMetadata $documentMetadata,
         \ReflectionProperty $reflBar,
-        \ReflectionProperty $reflBarIds,
-        BarStub $bar4,
-        BarStub $bar8,
-        BarStub $bar15,
+        Collection $currentValues,
         ReferencedCollectionFactory $factory,
         ReferencedCollection $collection
     ) {
@@ -162,47 +160,18 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
         $documentMetadata->reflFields = [
             'bar' => $reflBar,
-            'barIds' => $reflBarIds,
         ];
         $documentMetadata->fieldMappings = [
             'foo' => ['type' => 'text'],
             'bar' => ['type' => 'entities', 'targetEntity' => 'Acme/Entity/Bar', 'idsField' => 'barIds'],
         ];
 
-        $reflBarIds->getValue($document)->willReturn([4, 8, 15]);
-        $factory->create('Acme/Entity/Bar', [4, 8, 15], $document)->willReturn($collection);
+        $reflBar->getValue($document)->willReturn($currentValues);
+        $factory->createFromCollection('Acme/Entity/Bar', $document, $currentValues)->willReturn($collection);
 
         $reflBar->setValue($document, $collection)->shouldBeCalled();
 
         $this->prePersist($args);
-    }
-
-    function it_does_not_convert_value_if_initial_value_is_already_a_referenced_collection_before_persisting(
-        LifecycleEventArgs $args,
-        ValuesStub $document,
-        DocumentManager $dm,
-        ClassMetadata $documentMetadata,
-        \ReflectionProperty $reflBar,
-        \ReflectionProperty $reflBarIds,
-        ReferencedCollection $collection
-    ) {
-        $args->getDocument()->willReturn($document->getWrappedObject());
-        $args->getDocumentManager()->willReturn($dm);
-        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
-        $documentMetadata->reflFields = [
-            'bar' => $reflBar,
-            'barIds' => $reflBarIds,
-        ];
-        $documentMetadata->fieldMappings = [
-            'foo' => ['type' => 'text'],
-            'bar' => ['type' => 'entities', 'targetEntity' => 'Acme\Entity\Bar', 'idsField' => 'barIds'],
-        ];
-        $reflBarIds->getValue($document)->willReturn($collection);
-
-        $reflBar->setValue($document, Argument::any())->shouldNotBeCalled();
-
-        $this->prePersist($args);
-
     }
 
     function it_throws_exception_when_entity_collection_field_has_no_target_entity_before_persisting(
@@ -256,6 +225,8 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $args->getDocumentManager()->willReturn($dm);
         $dm->getUnitOfWork()->willReturn($uow);
         $uow->getScheduledDocumentUpdates()->willReturn([$document]);
+        $uow->getScheduledDocumentInsertions()->willReturn([]);
+
         $dm->getClassMetadata(Argument::any())->willReturn($metadata);
         $metadata->fieldMappings = [
             'foo' => ['type' => 'entities', 'idsField' => 'fooIds']

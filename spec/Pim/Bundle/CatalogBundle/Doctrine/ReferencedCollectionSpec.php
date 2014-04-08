@@ -2,13 +2,15 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\ORM\EntityManager;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Doctrine\Common\Persistence\Mapping\ClassMetadata;
-
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ODM\MongoDB\UnitOfWork;
+
+use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\UnitOfWork as MongoDBODMUnitOfWork;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @require Doctrine\ODM\MongoDB\UnitOfWork
@@ -17,14 +19,20 @@ class ReferencedCollectionSpec extends ObjectBehavior
 {
     function let(
         EntityManager $em,
+        DocumentManager $dm,
+        ManagerRegistry $registry,
         ObjectRepository $repository,
         ClassMetadata $classMetadata,
-        UnitOfWork $uow
+        MongoDBODMUnitOfWork $uow
     ) {
-        $em->getRepository('MyItemClass')->willReturn($repository);
+        $registry->getManagerForClass(Argument::type('string'))->will(function ($args) use ($em, $dm) {
+            return 'MyItemClass' === $args[0] ? $em : $dm;
+        });
+        $registry->getRepository('MyItemClass')->willReturn($repository);
         $em->getClassMetadata('MyItemClass')->willReturn($classMetadata);
+        $dm->getUnitOfWork()->willReturn($uow);
 
-        $this->beConstructedWith('MyItemClass', [4, 8, 15], $em, $uow);
+        $this->beConstructedWith('MyItemClass', [4, 8, 15], $registry);
     }
 
     function it_is_a_collection()
@@ -63,7 +71,7 @@ class ReferencedCollectionSpec extends ObjectBehavior
     }
 
     function it_schedules_owning_document_for_update_when_adding_element_to_the_collection(
-        UnitOfWork $uow,
+        MongoDBODMUnitOfWork $uow,
         DocumentStub $document,
         ObjectRepository $repository,
         ClassMetadata $classMetadata,
@@ -75,6 +83,8 @@ class ReferencedCollectionSpec extends ObjectBehavior
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
+        $uow->getDocumentState($document)->willReturn(MongoDBODMUnitOfWork::STATE_MANAGED);
+        $uow->isScheduledForUpdate($document)->willReturn(false);
         $uow->scheduleForUpdate($document)->shouldBeCalled();
 
         $this->setOwner($document);
@@ -82,7 +92,7 @@ class ReferencedCollectionSpec extends ObjectBehavior
     }
 
     function it_schedules_owning_document_for_update_when_removing_element_from_the_collection(
-        UnitOfWork $uow,
+        MongoDBODMUnitOfWork $uow,
         DocumentStub $document,
         ObjectRepository $repository,
         ClassMetadata $classMetadata,
@@ -93,6 +103,8 @@ class ReferencedCollectionSpec extends ObjectBehavior
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
+        $uow->getDocumentState($document)->willReturn(MongoDBODMUnitOfWork::STATE_MANAGED);
+        $uow->isScheduledForUpdate($document)->willReturn(false);
         $uow->scheduleForUpdate($document)->shouldBeCalled();
 
         $this->setOwner($document);
@@ -100,7 +112,7 @@ class ReferencedCollectionSpec extends ObjectBehavior
     }
 
     function it_schedules_owning_document_for_update_when_removing_element_by_key_from_the_collection(
-        UnitOfWork $uow,
+        MongoDBODMUnitOfWork $uow,
         DocumentStub $document,
         ObjectRepository $repository,
         ClassMetadata $classMetadata,
@@ -111,6 +123,8 @@ class ReferencedCollectionSpec extends ObjectBehavior
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
+        $uow->getDocumentState($document)->willReturn(MongoDBODMUnitOfWork::STATE_MANAGED);
+        $uow->isScheduledForUpdate($document)->willReturn(false);
         $uow->scheduleForUpdate($document)->shouldBeCalled();
 
         $this->setOwner($document);
@@ -118,7 +132,7 @@ class ReferencedCollectionSpec extends ObjectBehavior
     }
 
     function it_schedules_owning_document_for_update_when_setting_element_by_key_in_the_collection(
-        UnitOfWork $uow,
+        MongoDBODMUnitOfWork $uow,
         DocumentStub $document,
         ObjectRepository $repository,
         ClassMetadata $classMetadata,
@@ -130,6 +144,8 @@ class ReferencedCollectionSpec extends ObjectBehavior
         $classMetadata->getIdentifier()->willReturn(['id']);
         $repository->findBy(['id' => [4, 8, 15]])->willReturn([$entity4, $entity8, $entity15]);
 
+        $uow->getDocumentState($document)->willReturn(MongoDBODMUnitOfWork::STATE_MANAGED);
+        $uow->isScheduledForUpdate($document)->willReturn(false);
         $uow->scheduleForUpdate($document)->shouldBeCalled();
 
         $this->setOwner($document);

@@ -1382,13 +1382,17 @@ class FixturesContext extends RawMinkContext
 
         $categories = $this->loadFixture('categories', $data);
 
+        /**
+         * When using ODM, one must persist and flush category without product
+         * before adding and persisting products inside it
+         */
         foreach ($categories as $category) {
+            $products = $category->getProducts();
             $this->persist($category, true);
-            foreach ($category->getProducts() as $product) {
+            foreach ($products as $product) {
                 $product->addCategory($category);
                 $this->flush($product);
             }
-
         }
 
         return reset($categories);
@@ -1753,7 +1757,7 @@ class FixturesContext extends RawMinkContext
         $manager->persist($object);
 
         if ($flush) {
-            $manager->flush();
+            $manager->flush($object);
         }
     }
 
@@ -1767,7 +1771,7 @@ class FixturesContext extends RawMinkContext
         $manager->remove($object);
 
         if ($flush) {
-            $manager->flush();
+            $manager->flush($object);
         }
     }
 
