@@ -176,7 +176,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
                         if (null === $id = $item->getId()) {
                             throw new \LogicException(
                                 sprintf(
-                                    'Cannot synchronize entity "%s" because it hasn\'t been persisted.',
+                                    'Cannot get id of "%s" because it hasn\'t been persisted.',
                                     (string) $item
                                 )
                             );
