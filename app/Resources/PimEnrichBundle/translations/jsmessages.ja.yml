@@ -1,0 +1,58 @@
+---
+confirmation:
+  remove:
+    item: このアイテムを削除してもよろしいですか?
+    association type: この関連付けタイプを削除してもよろしいですか。
+    attribute: この属性を削除してもよろしいですか。
+    family: このファミリーを削除してもよろしいですか。
+    product: この製品を削除してもよろしいですか。
+    channel: このチャンネルを削除してもよろしいですか。
+    group: このグループを削除してもよろしいですか。
+    variant group: このバリアントのグループを削除してもよろしいですか。
+    group type: このグループタイプを削除してもよろしいですか。
+    import profile: このインポートのプロファイルを削除してもよろしいですか。
+    export profile: このエクスポートプロファイルを削除してもよろしいですか。
+    user: このユーザーを削除してもよろしいですか?
+    role: このロールを削除してもよろしいですか？
+flash:
+  item:
+    removed: アイテムを削除しました
+  association type:
+    removed: 関連タイプを削除しました
+  attribute:
+    removed: 属性を削除しました
+  family:
+    removed: ファミリーを削除しました
+  product:
+    removed: 製品を削除しました
+  channel:
+    removed: チャンネルを削除しました
+  group:
+    removed: グループを削除しました
+  variant group:
+    removed: バリアントグループを削除しました
+  group type:
+    removed: グループタイプを削除しました
+  import profile:
+    removed: インポートプロファイルを削除しました
+  export profile:
+    removed: エクスポートプロファイルを削除しました
+  user:
+    removed: ユーザーを削除しました
+  role:
+    removed: ロールを削除しました
+error:
+  removing:
+    item: このアイテムを削除できません
+    association type: この関連付けタイプを削除することはできません
+    attribute: この属性は削除できません
+    family: このファミリーを削除できません
+    product: この製品を削除できません
+    channel: このチャンネルを削除できません
+    group: このグループは削除できません
+    variant group: このバリアントグループは削除できません
+    group type: このグループタイプは削除できません
+    import profile: このインポートプロファイルは削除できません
+    export profile: このエクスポートプロファイルは削除できません
+    user: このユーザーは削除できません
+    role: このロールは削除できません

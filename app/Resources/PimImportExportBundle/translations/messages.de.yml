@@ -1,12 +1,4 @@
 ---
-export profile:
-  overview: Export-Profilübersicht
-  create: Exportprofil anlegen
-  edit: Exportprofil bearbeiten
-import profile:
-  overview: Import-Profilübersicht
-  create: Importprofil anlegen
-  edit: Importprofil bearbeiten
 Job: Auftrag
 Connector: Konnektor
 pim_import_export:
@@ -36,8 +28,16 @@ pim_title.import_profile.edit: 'Import-Profile %job.label% | Bearbeiten'
 pim_title.import_profile.show: 'Import-Profile %job.label% | Anzeigen'
 pim_title.import_execution.index: Historie der ausgeführten Importe
 pim_title.import_execution.show: Ausgeführte Importe | Details
+export profile:
+  overview: Export-Profilübersicht
+  create: Exportprofil anlegen
+  edit: Exportprofil bearbeiten
 export report:
   overview: Export-Berichte
+import profile:
+  overview: Import-Profilübersicht
+  create: Importprofil anlegen
+  edit: Importprofil bearbeiten
 import report:
   overview: Import-Berichte
 pim_importexport:
