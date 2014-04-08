@@ -217,9 +217,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->categoryManager->getObjectManager();
-                $manager->persist($category);
-                $manager->flush();
+                $this->persist($category, true);
 
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
 
@@ -253,9 +251,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $form->bind($request);
 
             if ($form->isValid()) {
-                $manager = $this->categoryManager->getObjectManager();
-                $manager->persist($category);
-                $manager->flush();
+                $this->persist($category, true);
 
                 $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
             }
@@ -287,7 +283,9 @@ class CategoryTreeController extends AbstractDoctrineController
             throw new DeleteException($this->getTranslator()->trans('flash.tree.not removable'));
         }
         $this->categoryManager->remove($category);
-        $this->categoryManager->getObjectManager()->flush();
+        foreach ($this->doctrine->getManagers() as $manager) {
+            $manager->flush();
+        }
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);

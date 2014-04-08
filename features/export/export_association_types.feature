@@ -11,5 +11,5 @@ Feature: Export association types
     And I am logged in as "Julia"
     And I am on the "footwear_association_type_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_association_type_export" job to finish
     Then file "%tmp%/association_type_export/association_type_export.csv" should contain 5 rows

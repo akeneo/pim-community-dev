@@ -41,6 +41,19 @@ class AttributeOptionNormalizerTest extends NormalizerTestCase
     }
 
     /**
+     * Test normalize method
+     * @param array $data
+     *
+     * @dataProvider getNormalizeData
+     */
+    public function testNormalize(array $data)
+    {
+        $entity = $this->createEntity($data);
+        $context = ['locales' => ['fr_FR', 'en_US']];
+        $this->assertEquals($data, $this->normalizer->normalize($entity, $this->format, $context));
+    }
+
+    /**
      * {@inheritdoc}
      */
     public static function getNormalizeData()

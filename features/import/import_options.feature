@@ -25,7 +25,7 @@ Feature: Import options
       | filePath | %file to import% |
     When I am on the "acme_option_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_option_import" job to finish
     Then there should be the following options:
       | attribute    | code        | default | label-en_US |
       | manufacturer | Converse    | 0       | Converse    |

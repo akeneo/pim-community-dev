@@ -23,7 +23,7 @@ Feature: Import categories
       | filePath | %file to import% |
     When I am on the "acme_category_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_category_import" job to finish
     Then there should be the following categories:
       | code        | label       | parent    |
       | computers   | Computers   |           |
@@ -52,7 +52,7 @@ Feature: Import categories
       | filePath | %file to import% |
     When I am on the "acme_category_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_category_import" job to finish
     Then I should see "parent: No category with code clothes"
     And I should see "parent: No category with code tshirts"
     And there should be the following categories:

@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Mink\Element\Element;
+use Behat\Behat\Exception\BehaviorException;
 
 /**
  * Context of the website
@@ -1156,11 +1157,42 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I wait for the job to finish$/
+     * @param string $code
+     *
+     * @When /^I wait for the "([^"]*)" job to finish$/
      */
-    public function iWaitForTheJobToFinish()
+    public function iWaitForTheJobToFinish($code)
     {
-        $this->wait(120000, '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())');
+        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())';
+
+        try {
+            $this->wait(120000, $condition);
+        } catch (BehaviorException $e) {
+            $log = $this->getFixturesContext()->getJobInstance($code)->getJobExecutions()->first()->getLogFile();
+
+            $dir = getenv('WORKSPACE');
+            $id  = getenv('BUILD_ID');
+
+            if (false !== $dir && false !== $id) {
+                $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
+
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->copy($log, $target);
+
+                $log = sprintf(
+                    'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
+                    getenv('JOB_NAME'),
+                    $id,
+                    pathinfo($log, PATHINFO_BASENAME)
+                );
+            }
+
+            $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
+            $this->getMainContext()->addErrorMessage($message);
+
+            // Call the wait method again to trigger timeout failure
+            $this->wait(0, $condition);
+        }
     }
 
     /**

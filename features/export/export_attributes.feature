@@ -11,7 +11,7 @@ Feature: Export attributes
     And I am logged in as "Julia"
     And I am on the "footwear_attribute_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
     type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
@@ -40,7 +40,7 @@ Feature: Export attributes
     And I am logged in as "Julia"
     And I am on the "footwear_attribute_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
     type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
