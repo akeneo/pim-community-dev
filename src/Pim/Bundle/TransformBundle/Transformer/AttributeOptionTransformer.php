@@ -2,19 +2,6 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
-use Pim\Bundle\TransformBundle\Exception\UnknownColumnException;
-use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
-use Pim\Bundle\TransformBundle\Transformer\Property\EntityUpdaterInterface;
-use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
-use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
-use Doctrine\Common\Persistence\ManagerRegistry;
-
 /**
  * Transforms an array in an entity
  *
