@@ -49,7 +49,7 @@ class SetProductsSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad'];
+        return ['postLoad', /* 'prePersist' deactivated for now to avoid side effect during import */];
     }
 
     /**
@@ -89,6 +89,41 @@ class SetProductsSubscriber implements EventSubscriber
                         }
                     )
                 );
+            }
+        }
+    }
+
+    /**
+     * Prevents adding product aware entities before persisting them.
+     *
+     * This is required because it is the document that holds the relation.
+     * Otherwise, if products were added into the entitiy they will be lost when inserting it into the RDBM.
+     * In fact, there's a listener (in the versionning bundle) that'll call refresh on every flushed object,
+     * thus calling the above postLoad method which overwrites the $products property of the entity.
+     *
+     * @param LifecycleEventArgs $args
+     */
+    public function prePersist(LifecycleEventArgs $args)
+    {
+        $entity = $args->getEntity();
+        foreach ($this->productsAwareClassMapping as $mapping) {
+            if ($mapping['class'] === get_class($entity)) {
+                $reflClass = new \ReflectionClass($entity);
+                $reflProp = $reflClass->getProperty('products');
+                $reflProp->setAccessible(true);
+                $objects = $reflProp->getValue($entity);
+
+                if (
+                    (is_array($objects) && count($object) > 0) ||
+                    ($objects instanceof \Countable && $objects->count() > 0)
+                ) {
+                    throw new \LogicException(
+                        sprintf(
+                            'Instance of %s must be inserted into database before adding any products inside it',
+                            $mapping['class']
+                        )
+                    );
+                }
             }
         }
     }
