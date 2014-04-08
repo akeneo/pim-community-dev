@@ -1,19 +1,19 @@
 ---
 confirmation:
   remove:
-    item: Êtes-vous certain de vouloir supprimer cet élément?
+    item: Êtes-vous certain de vouloir supprimer cet élément ?
     association type: "Êtes-vous sûr de que vouloir supprimer ce type d'association ?"
     attribute: Êtes-vous sûr de que vouloir supprimer cet attribut ?
     family: Êtes-vous sûr de que vouloir supprimer cette famille ?
     product: Êtes-vous sûr de que vouloir supprimer ce produit ?
     channel: Êtes-vous sûr de que vouloir supprimer ce canal ?
-    group: Êtes-vous sûr de vouloir supprimer ce groupe?
+    group: Êtes-vous sûr de vouloir supprimer ce groupe ?
     variant group: Êtes-vous sûr de que vouloir supprimer ce groupe de variantes ?
     group type: Êtes-vous sûr de que vouloir supprimer ce type de groupe ?
     import profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'import ?"
-    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export?"
+    export profile: "Êtes-vous sûr de que vouloir supprimer ce profil d'export ?"
     user: Êtes-vous sûr de vouloir supprimer cet utilisateur ?
-    role: Êtes-vous sûr de vouloir supprimer ce rôle?
+    role: Êtes-vous sûr de vouloir supprimer ce rôle ?
 flash:
   item:
     removed: Elément supprimé avec succès
@@ -56,3 +56,13 @@ error:
     export profile: "Impossible de supprimer ce profil d'export"
     user: Impossible de supprimer cet utilisateur
     role: Impossible de supprimer ce rôle
+Edit: Editer
+Delete: Supprimer
+Edit attributes of the product: Modifier les attributs du produit
+Classify the product: Classer le produit
+Delete the product: Supprimer le produit
+Change status: Changer le statut
+pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
+pim.grid.mass_action.delete: Supprimer
+pim.grid.mass_action.mass_edit: Edition de masse
+jstree.create: Créer

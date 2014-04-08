@@ -1,12 +1,4 @@
 ---
-export profile:
-  overview: "Liste des profils d'export"
-  create: "Créer un profil d'export"
-  edit: "Modifier un profil d'export"
-import profile:
-  overview: "Liste des profils d'import"
-  create: "Créer un profil d'import"
-  edit: "Modifier un profil d'import"
 Job: Job
 Connector: Connecteur
 pim_import_export:
@@ -36,8 +28,18 @@ pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
 pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
 pim_title.import_execution.index: "Importer l'historique des exécutions"
 pim_title.import_execution.show: "Executions d'imports | Détails"
+export profile:
+  title: "Profil d'export"
+  overview: "Liste des profils d'export"
+  create: "Créer un profil d'export"
+  edit: "Modifier un profil d'export"
 export report:
   overview: "Rapports d'exportations"
+import profile:
+  title: "Profil d'import"
+  overview: "Liste des profils d'import"
+  create: "Créer un profil d'import"
+  edit: "Modifier un profil d'import"
 import report:
   overview: "Rapports d'importations"
 pim_importexport:
@@ -71,6 +73,9 @@ btn:
     export profile: "Créer un profil d'export"
     import profile: "Créer un profil d'import"
 Upload and import: Upload et importation
+Upload and import now: Télécharger et importer maintenant
+import now: Importer maintenant
+export now: Exporter maintenant
 confirmation:
   remove:
     export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
@@ -102,3 +107,17 @@ Display item: "Afficher l'élément"
 Hide item: "Masquer l'élément"
 Collecting data about job execution...: "Collecte de données de l'exécution..."
 You must select a file to upload: Vous devez sélectionner un fichier à télécharger
+Download log: "Télécharger l'historique"
+Show profile: Afficher le profil
+execution details: "détails d'exécution"
+job_execution.summary:
+  read: lire
+  write: écrire
+  skip: ignorer
+  create: créer
+  update: mettre à jour
+Step: Étape
+Status: Statut
+Summary: Résumé
+Start: Début
+End: Fin
