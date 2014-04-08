@@ -5,8 +5,6 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Event\OnFlushEventArgs;
 use Gedmo\References\LazyCollection;
 use Doctrine\Common\Collections\ArrayCollection;
 

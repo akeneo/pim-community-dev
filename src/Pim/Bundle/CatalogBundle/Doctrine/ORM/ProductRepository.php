@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -360,7 +359,6 @@ class ProductRepository extends EntityRepository implements
 
         $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
         $attributeMetadata = $this->getEntityManager()->getClassMetadata($attributeMapping['targetEntity']);
-
 
         $familyMetadata = $this->getEntityManager()->getClassMetadata($familyMapping['targetEntity']);
 

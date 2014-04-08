@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 
 /**
  * Base repository for entities with a code unique index
