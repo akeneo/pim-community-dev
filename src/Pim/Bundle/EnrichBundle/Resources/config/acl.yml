@@ -185,631 +185,631 @@ pim_enrich_association_type_remove:
 # Access to locales
 pim_enrich_locale_af_ZA:
     type: action
-    label: pim_enrich.acl.locale.af_ZA
+    label: af_ZA
 pim_enrich_locale_am_ET:
     type: action
-    label: pim_enrich.acl.locale.am_ET
+    label: am_ET
 pim_enrich_locale_ar_AE:
     type: action
-    label: pim_enrich.acl.locale.ar_AE
+    label: ar_AE
 pim_enrich_locale_ar_BH:
     type: action
-    label: pim_enrich.acl.locale.ar_BH
+    label: ar_BH
 pim_enrich_locale_ar_DZ:
     type: action
-    label: pim_enrich.acl.locale.ar_DZ
+    label: ar_DZ
 pim_enrich_locale_ar_EG:
     type: action
-    label: pim_enrich.acl.locale.ar_EG
+    label: ar_EG
 pim_enrich_locale_ar_IQ:
     type: action
-    label: pim_enrich.acl.locale.ar_IQ
+    label: ar_IQ
 pim_enrich_locale_ar_JO:
     type: action
-    label: pim_enrich.acl.locale.ar_JO
+    label: ar_JO
 pim_enrich_locale_ar_KW:
     type: action
-    label: pim_enrich.acl.locale.ar_KW
+    label: ar_KW
 pim_enrich_locale_ar_LB:
     type: action
-    label: pim_enrich.acl.locale.ar_LB
+    label: ar_LB
 pim_enrich_locale_ar_LY:
     type: action
-    label: pim_enrich.acl.locale.ar_LY
+    label: ar_LY
 pim_enrich_locale_ar_MA:
     type: action
-    label: pim_enrich.acl.locale.ar_MA
+    label: ar_MA
 pim_enrich_locale_arn_CL:
     type: action
-    label: pim_enrich.acl.locale.arn_CL
+    label: arn_CL
 pim_enrich_locale_ar_OM:
     type: action
-    label: pim_enrich.acl.locale.ar_OM
+    label: ar_OM
 pim_enrich_locale_ar_QA:
     type: action
-    label: pim_enrich.acl.locale.ar_QA
+    label: ar_QA
 pim_enrich_locale_ar_SA:
     type: action
-    label: pim_enrich.acl.locale.ar_SA
+    label: ar_SA
 pim_enrich_locale_ar_SY:
     type: action
-    label: pim_enrich.acl.locale.ar_SY
+    label: ar_SY
 pim_enrich_locale_ar_TN:
     type: action
-    label: pim_enrich.acl.locale.ar_TN
+    label: ar_TN
 pim_enrich_locale_ar_YE:
     type: action
-    label: pim_enrich.acl.locale.ar_YE
+    label: ar_YE
 pim_enrich_locale_as_IN:
     type: action
-    label: pim_enrich.acl.locale.as_IN
+    label: as_IN
 pim_enrich_locale_az_Cyrl_AZ:
     type: action
-    label: pim_enrich.acl.locale.az_Cyrl_AZ
+    label: az_Cyrl_AZ
 pim_enrich_locale_az_Latn_AZ:
     type: action
-    label: pim_enrich.acl.locale.az_Latn_AZ
+    label: az_Latn_AZ
 pim_enrich_locale_ba_RU:
     type: action
-    label: pim_enrich.acl.locale.ba_RU
+    label: ba_RU
 pim_enrich_locale_be_BY:
     type: action
-    label: pim_enrich.acl.locale.be_BY
+    label: be_BY
 pim_enrich_locale_bg_BG:
     type: action
-    label: pim_enrich.acl.locale.bg_BG
+    label: bg_BG
 pim_enrich_locale_bn_BD:
     type: action
-    label: pim_enrich.acl.locale.bn_BD
+    label: bn_BD
 pim_enrich_locale_bn_IN:
     type: action
-    label: pim_enrich.acl.locale.bn_IN
+    label: bn_IN
 pim_enrich_locale_bo_CN:
     type: action
-    label: pim_enrich.acl.locale.bo_CN
+    label: bo_CN
 pim_enrich_locale_br_FR:
     type: action
-    label: pim_enrich.acl.locale.br_FR
+    label: br_FR
 pim_enrich_locale_bs_Cyrl_BA:
     type: action
-    label: pim_enrich.acl.locale.bs_Cyrl_BA
+    label: bs_Cyrl_BA
 pim_enrich_locale_bs_Latn_BA:
     type: action
-    label: pim_enrich.acl.locale.bs_Latn_BA
+    label: bs_Latn_BA
 pim_enrich_locale_ca_ES:
     type: action
-    label: pim_enrich.acl.locale.ca_ES
+    label: ca_ES
 pim_enrich_locale_co_FR:
     type: action
-    label: pim_enrich.acl.locale.co_FR
+    label: co_FR
 pim_enrich_locale_cs_CZ:
     type: action
-    label: pim_enrich.acl.locale.cs_CZ
+    label: cs_CZ
 pim_enrich_locale_cy_GB:
     type: action
-    label: pim_enrich.acl.locale.cy_GB
+    label: cy_GB
 pim_enrich_locale_da_DK:
     type: action
-    label: pim_enrich.acl.locale.da_DK
+    label: da_DK
 pim_enrich_locale_de_AT:
     type: action
-    label: pim_enrich.acl.locale.de_AT
+    label: de_AT
 pim_enrich_locale_de_CH:
     type: action
-    label: pim_enrich.acl.locale.de_CH
+    label: de_CH
 pim_enrich_locale_de_DE:
     type: action
-    label: pim_enrich.acl.locale.de_DE
+    label: de_DE
 pim_enrich_locale_de_LI:
     type: action
-    label: pim_enrich.acl.locale.de_LI
+    label: de_LI
 pim_enrich_locale_de_LU:
     type: action
-    label: pim_enrich.acl.locale.de_LU
+    label: de_LU
 pim_enrich_locale_dsb_DE:
     type: action
-    label: pim_enrich.acl.locale.dsb_DE
+    label: dsb_DE
 pim_enrich_locale_dv_MV:
     type: action
-    label: pim_enrich.acl.locale.dv_MV
+    label: dv_MV
 pim_enrich_locale_el_GR:
     type: action
-    label: pim_enrich.acl.locale.el_GR
+    label: el_GR
 pim_enrich_locale_en_029:
     type: action
-    label: pim_enrich.acl.locale.en_029
+    label: en_029
 pim_enrich_locale_en_AU:
     type: action
-    label: pim_enrich.acl.locale.en_AU
+    label: en_AU
 pim_enrich_locale_en_BZ:
     type: action
-    label: pim_enrich.acl.locale.en_BZ
+    label: en_BZ
 pim_enrich_locale_en_CA:
     type: action
-    label: pim_enrich.acl.locale.en_CA
+    label: en_CA
 pim_enrich_locale_en_GB:
     type: action
-    label: pim_enrich.acl.locale.en_GB
+    label: en_GB
 pim_enrich_locale_en_IE:
     type: action
-    label: pim_enrich.acl.locale.en_IE
+    label: en_IE
 pim_enrich_locale_en_IN:
     type: action
-    label: pim_enrich.acl.locale.en_IN
+    label: en_IN
 pim_enrich_locale_en_JM:
     type: action
-    label: pim_enrich.acl.locale.en_JM
+    label: en_JM
 pim_enrich_locale_en_MY:
     type: action
-    label: pim_enrich.acl.locale.en_MY
+    label: en_MY
 pim_enrich_locale_en_NZ:
     type: action
-    label: pim_enrich.acl.locale.en_NZ
+    label: en_NZ
 pim_enrich_locale_en_PH:
     type: action
-    label: pim_enrich.acl.locale.en_PH
+    label: en_PH
 pim_enrich_locale_en_SG:
     type: action
-    label: pim_enrich.acl.locale.en_SG
+    label: en_SG
 pim_enrich_locale_en_TT:
     type: action
-    label: pim_enrich.acl.locale.en_TT
+    label: en_TT
 pim_enrich_locale_en_US:
     type: action
-    label: pim_enrich.acl.locale.en_US
+    label: en_US
 pim_enrich_locale_en_ZA:
     type: action
-    label: pim_enrich.acl.locale.en_ZA
+    label: en_ZA
 pim_enrich_locale_en_ZW:
     type: action
-    label: pim_enrich.acl.locale.en_ZW
+    label: en_ZW
 pim_enrich_locale_es_AR:
     type: action
-    label: pim_enrich.acl.locale.es_AR
+    label: es_AR
 pim_enrich_locale_es_BO:
     type: action
-    label: pim_enrich.acl.locale.es_BO
+    label: es_BO
 pim_enrich_locale_es_CL:
     type: action
-    label: pim_enrich.acl.locale.es_CL
+    label: es_CL
 pim_enrich_locale_es_CO:
     type: action
-    label: pim_enrich.acl.locale.es_CO
+    label: es_CO
 pim_enrich_locale_es_CR:
     type: action
-    label: pim_enrich.acl.locale.es_CR
+    label: es_CR
 pim_enrich_locale_es_DO:
     type: action
-    label: pim_enrich.acl.locale.es_DO
+    label: es_DO
 pim_enrich_locale_es_EC:
     type: action
-    label: pim_enrich.acl.locale.es_EC
+    label: es_EC
 pim_enrich_locale_es_ES:
     type: action
-    label: pim_enrich.acl.locale.es_ES
+    label: es_ES
 pim_enrich_locale_es_GT:
     type: action
-    label: pim_enrich.acl.locale.es_GT
+    label: es_GT
 pim_enrich_locale_es_HN:
     type: action
-    label: pim_enrich.acl.locale.es_HN
+    label: es_HN
 pim_enrich_locale_es_MX:
     type: action
-    label: pim_enrich.acl.locale.es_MX
+    label: es_MX
 pim_enrich_locale_es_NI:
     type: action
-    label: pim_enrich.acl.locale.es_NI
+    label: es_NI
 pim_enrich_locale_es_PA:
     type: action
-    label: pim_enrich.acl.locale.es_PA
+    label: es_PA
 pim_enrich_locale_es_PE:
     type: action
-    label: pim_enrich.acl.locale.es_PE
+    label: es_PE
 pim_enrich_locale_es_PR:
     type: action
-    label: pim_enrich.acl.locale.es_PR
+    label: es_PR
 pim_enrich_locale_es_PY:
     type: action
-    label: pim_enrich.acl.locale.es_PY
+    label: es_PY
 pim_enrich_locale_es_SV:
     type: action
-    label: pim_enrich.acl.locale.es_SV
+    label: es_SV
 pim_enrich_locale_es_US:
     type: action
-    label: pim_enrich.acl.locale.es_US
+    label: es_US
 pim_enrich_locale_es_UY:
     type: action
-    label: pim_enrich.acl.locale.es_UY
+    label: es_UY
 pim_enrich_locale_es_VE:
     type: action
-    label: pim_enrich.acl.locale.es_VE
+    label: es_VE
 pim_enrich_locale_et_EE:
     type: action
-    label: pim_enrich.acl.locale.et_EE
+    label: et_EE
 pim_enrich_locale_eu_ES:
     type: action
-    label: pim_enrich.acl.locale.eu_ES
+    label: eu_ES
 pim_enrich_locale_fa_IR:
     type: action
-    label: pim_enrich.acl.locale.fa_IR
+    label: fa_IR
 pim_enrich_locale_fi_FI:
     type: action
-    label: pim_enrich.acl.locale.fi_FI
+    label: fi_FI
 pim_enrich_locale_fil_PH:
     type: action
-    label: pim_enrich.acl.locale.fil_PH
+    label: fil_PH
 pim_enrich_locale_fo_FO:
     type: action
-    label: pim_enrich.acl.locale.fo_FO
+    label: fo_FO
 pim_enrich_locale_fr_BE:
     type: action
-    label: pim_enrich.acl.locale.fr_BE
+    label: fr_BE
 pim_enrich_locale_fr_CA:
     type: action
-    label: pim_enrich.acl.locale.fr_CA
+    label: fr_CA
 pim_enrich_locale_fr_CH:
     type: action
-    label: pim_enrich.acl.locale.fr_CH
+    label: fr_CH
 pim_enrich_locale_fr_FR:
     type: action
-    label: pim_enrich.acl.locale.fr_FR
+    label: fr_FR
 pim_enrich_locale_fr_LU:
     type: action
-    label: pim_enrich.acl.locale.fr_LU
+    label: fr_LU
 pim_enrich_locale_fr_MC:
     type: action
-    label: pim_enrich.acl.locale.fr_MC
+    label: fr_MC
 pim_enrich_locale_fy_NL:
     type: action
-    label: pim_enrich.acl.locale.fy_NL
+    label: fy_NL
 pim_enrich_locale_ga_IE:
     type: action
-    label: pim_enrich.acl.locale.ga_IE
+    label: ga_IE
 pim_enrich_locale_gd_GB:
     type: action
-    label: pim_enrich.acl.locale.gd_GB
+    label: gd_GB
 pim_enrich_locale_gl_ES:
     type: action
-    label: pim_enrich.acl.locale.gl_ES
+    label: gl_ES
 pim_enrich_locale_gsw_FR:
     type: action
-    label: pim_enrich.acl.locale.gsw_FR
+    label: gsw_FR
 pim_enrich_locale_gu_IN:
     type: action
-    label: pim_enrich.acl.locale.gu_IN
+    label: gu_IN
 pim_enrich_locale_ha_Latn_NG:
     type: action
-    label: pim_enrich.acl.locale.ha_Latn_NG
+    label: ha_Latn_NG
 pim_enrich_locale_he_IL:
     type: action
-    label: pim_enrich.acl.locale.he_IL
+    label: he_IL
 pim_enrich_locale_hi_IN:
     type: action
-    label: pim_enrich.acl.locale.hi_IN
+    label: hi_IN
 pim_enrich_locale_hr_BA:
     type: action
-    label: pim_enrich.acl.locale.hr_BA
+    label: hr_BA
 pim_enrich_locale_hr_HR:
     type: action
-    label: pim_enrich.acl.locale.hr_HR
+    label: hr_HR
 pim_enrich_locale_hsb_DE:
     type: action
-    label: pim_enrich.acl.locale.hsb_DE
+    label: hsb_DE
 pim_enrich_locale_hu_HU:
     type: action
-    label: pim_enrich.acl.locale.hu_HU
+    label: hu_HU
 pim_enrich_locale_hy_AM:
     type: action
-    label: pim_enrich.acl.locale.hy_AM
+    label: hy_AM
 pim_enrich_locale_id_ID:
     type: action
-    label: pim_enrich.acl.locale.id_ID
+    label: id_ID
 pim_enrich_locale_ig_NG:
     type: action
-    label: pim_enrich.acl.locale.ig_NG
+    label: ig_NG
 pim_enrich_locale_ii_CN:
     type: action
-    label: pim_enrich.acl.locale.ii_CN
+    label: ii_CN
 pim_enrich_locale_is_IS:
     type: action
-    label: pim_enrich.acl.locale.is_IS
+    label: is_IS
 pim_enrich_locale_it_CH:
     type: action
-    label: pim_enrich.acl.locale.it_CH
+    label: it_CH
 pim_enrich_locale_it_IT:
     type: action
-    label: pim_enrich.acl.locale.it_IT
+    label: it_IT
 pim_enrich_locale_iu_Cans_CA:
     type: action
-    label: pim_enrich.acl.locale.iu_Cans_CA
+    label: iu_Cans_CA
 pim_enrich_locale_iu_Latn_CA:
     type: action
-    label: pim_enrich.acl.locale.iu_Latn_CA
+    label: iu_Latn_CA
 pim_enrich_locale_ja_JP:
     type: action
-    label: pim_enrich.acl.locale.ja_JP
+    label: ja_JP
 pim_enrich_locale_ka_GE:
     type: action
-    label: pim_enrich.acl.locale.ka_GE
+    label: ka_GE
 pim_enrich_locale_kk_KZ:
     type: action
-    label: pim_enrich.acl.locale.kk_KZ
+    label: kk_KZ
 pim_enrich_locale_kl_GL:
     type: action
-    label: pim_enrich.acl.locale.kl_GL
+    label: kl_GL
 pim_enrich_locale_km_KH:
     type: action
-    label: pim_enrich.acl.locale.km_KH
+    label: km_KH
 pim_enrich_locale_kn_IN:
     type: action
-    label: pim_enrich.acl.locale.kn_IN
+    label: kn_IN
 pim_enrich_locale_kok_IN:
     type: action
-    label: pim_enrich.acl.locale.kok_IN
+    label: kok_IN
 pim_enrich_locale_ko_KR:
     type: action
-    label: pim_enrich.acl.locale.ko_KR
+    label: ko_KR
 pim_enrich_locale_ky_KG:
     type: action
-    label: pim_enrich.acl.locale.ky_KG
+    label: ky_KG
 pim_enrich_locale_lb_LU:
     type: action
-    label: pim_enrich.acl.locale.lb_LU
+    label: lb_LU
 pim_enrich_locale_lo_LA:
     type: action
-    label: pim_enrich.acl.locale.lo_LA
+    label: lo_LA
 pim_enrich_locale_lt_LT:
     type: action
-    label: pim_enrich.acl.locale.lt_LT
+    label: lt_LT
 pim_enrich_locale_lv_LV:
     type: action
-    label: pim_enrich.acl.locale.lv_LV
+    label: lv_LV
 pim_enrich_locale_mi_NZ:
     type: action
-    label: pim_enrich.acl.locale.mi_NZ
+    label: mi_NZ
 pim_enrich_locale_mk_MK:
     type: action
-    label: pim_enrich.acl.locale.mk_MK
+    label: mk_MK
 pim_enrich_locale_ml_IN:
     type: action
-    label: pim_enrich.acl.locale.ml_IN
+    label: ml_IN
 pim_enrich_locale_mn_MN:
     type: action
-    label: pim_enrich.acl.locale.mn_MN
+    label: mn_MN
 pim_enrich_locale_mn_Mong_CN:
     type: action
-    label: pim_enrich.acl.locale.mn_Mong_CN
+    label: mn_Mong_CN
 pim_enrich_locale_moh_CA:
     type: action
-    label: pim_enrich.acl.locale.moh_CA
+    label: moh_CA
 pim_enrich_locale_mr_IN:
     type: action
-    label: pim_enrich.acl.locale.mr_IN
+    label: mr_IN
 pim_enrich_locale_ms_BN:
     type: action
-    label: pim_enrich.acl.locale.ms_BN
+    label: ms_BN
 pim_enrich_locale_ms_MY:
     type: action
-    label: pim_enrich.acl.locale.ms_MY
+    label: ms_MY
 pim_enrich_locale_mt_MT:
     type: action
-    label: pim_enrich.acl.locale.mt_MT
+    label: mt_MT
 pim_enrich_locale_nb_NO:
     type: action
-    label: pim_enrich.acl.locale.nb_NO
+    label: nb_NO
 pim_enrich_locale_ne_NP:
     type: action
-    label: pim_enrich.acl.locale.ne_NP
+    label: ne_NP
 pim_enrich_locale_nl_BE:
     type: action
-    label: pim_enrich.acl.locale.nl_BE
+    label: nl_BE
 pim_enrich_locale_nl_NL:
     type: action
-    label: pim_enrich.acl.locale.nl_NL
+    label: nl_NL
 pim_enrich_locale_nn_NO:
     type: action
-    label: pim_enrich.acl.locale.nn_NO
+    label: nn_NO
 pim_enrich_locale_nso_ZA:
     type: action
-    label: pim_enrich.acl.locale.nso_ZA
+    label: nso_ZA
 pim_enrich_locale_oc_FR:
     type: action
-    label: pim_enrich.acl.locale.oc_FR
+    label: oc_FR
 pim_enrich_locale_or_IN:
     type: action
-    label: pim_enrich.acl.locale.or_IN
+    label: or_IN
 pim_enrich_locale_pa_IN:
     type: action
-    label: pim_enrich.acl.locale.pa_IN
+    label: pa_IN
 pim_enrich_locale_pl_PL:
     type: action
-    label: pim_enrich.acl.locale.pl_PL
+    label: pl_PL
 pim_enrich_locale_prs_AF:
     type: action
-    label: pim_enrich.acl.locale.prs_AF
+    label: prs_AF
 pim_enrich_locale_ps_AF:
     type: action
-    label: pim_enrich.acl.locale.ps_AF
+    label: ps_AF
 pim_enrich_locale_pt_BR:
     type: action
-    label: pim_enrich.acl.locale.pt_BR
+    label: pt_BR
 pim_enrich_locale_pt_PT:
     type: action
-    label: pim_enrich.acl.locale.pt_PT
+    label: pt_PT
 pim_enrich_locale_qut_GT:
     type: action
-    label: pim_enrich.acl.locale.qut_GT
+    label: qut_GT
 pim_enrich_locale_quz_BO:
     type: action
-    label: pim_enrich.acl.locale.quz_BO
+    label: quz_BO
 pim_enrich_locale_quz_EC:
     type: action
-    label: pim_enrich.acl.locale.quz_EC
+    label: quz_EC
 pim_enrich_locale_quz_PE:
     type: action
-    label: pim_enrich.acl.locale.quz_PE
+    label: quz_PE
 pim_enrich_locale_rm_CH:
     type: action
-    label: pim_enrich.acl.locale.rm_CH
+    label: rm_CH
 pim_enrich_locale_ro_RO:
     type: action
-    label: pim_enrich.acl.locale.ro_RO
+    label: ro_RO
 pim_enrich_locale_ru_RU:
     type: action
-    label: pim_enrich.acl.locale.ru_RU
+    label: ru_RU
 pim_enrich_locale_rw_RW:
     type: action
-    label: pim_enrich.acl.locale.rw_RW
+    label: rw_RW
 pim_enrich_locale_sah_RU:
     type: action
-    label: pim_enrich.acl.locale.sah_RU
+    label: sah_RU
 pim_enrich_locale_sa_IN:
     type: action
-    label: pim_enrich.acl.locale.sa_IN
+    label: sa_IN
 pim_enrich_locale_se_FI:
     type: action
-    label: pim_enrich.acl.locale.se_FI
+    label: se_FI
 pim_enrich_locale_se_NO:
     type: action
-    label: pim_enrich.acl.locale.se_NO
+    label: se_NO
 pim_enrich_locale_se_SE:
     type: action
-    label: pim_enrich.acl.locale.se_SE
+    label: se_SE
 pim_enrich_locale_si_LK:
     type: action
-    label: pim_enrich.acl.locale.si_LK
+    label: si_LK
 pim_enrich_locale_sk_SK:
     type: action
-    label: pim_enrich.acl.locale.sk_SK
+    label: sk_SK
 pim_enrich_locale_sl_SI:
     type: action
-    label: pim_enrich.acl.locale.sl_SI
+    label: sl_SI
 pim_enrich_locale_sma_NO:
     type: action
-    label: pim_enrich.acl.locale.sma_NO
+    label: sma_NO
 pim_enrich_locale_sma_SE:
     type: action
-    label: pim_enrich.acl.locale.sma_SE
+    label: sma_SE
 pim_enrich_locale_smj_NO:
     type: action
-    label: pim_enrich.acl.locale.smj_NO
+    label: smj_NO
 pim_enrich_locale_smj_SE:
     type: action
-    label: pim_enrich.acl.locale.smj_SE
+    label: smj_SE
 pim_enrich_locale_smn_FI:
     type: action
-    label: pim_enrich.acl.locale.smn_FI
+    label: smn_FI
 pim_enrich_locale_sms_FI:
     type: action
-    label: pim_enrich.acl.locale.sms_FI
+    label: sms_FI
 pim_enrich_locale_sq_AL:
     type: action
-    label: pim_enrich.acl.locale.sq_AL
+    label: sq_AL
 pim_enrich_locale_sr_Cyrl_BA:
     type: action
-    label: pim_enrich.acl.locale.sr_Cyrl_BA
+    label: sr_Cyrl_BA
 pim_enrich_locale_sr_Cyrl_CS:
     type: action
-    label: pim_enrich.acl.locale.sr_Cyrl_CS
+    label: sr_Cyrl_CS
 pim_enrich_locale_sr_Cyrl_ME:
     type: action
-    label: pim_enrich.acl.locale.sr_Cyrl_ME
+    label: sr_Cyrl_ME
 pim_enrich_locale_sr_Cyrl_RS:
     type: action
-    label: pim_enrich.acl.locale.sr_Cyrl_RS
+    label: sr_Cyrl_RS
 pim_enrich_locale_sr_Latn_BA:
     type: action
-    label: pim_enrich.acl.locale.sr_Latn_BA
+    label: sr_Latn_BA
 pim_enrich_locale_sr_Latn_CS:
     type: action
-    label: pim_enrich.acl.locale.sr_Latn_CS
+    label: sr_Latn_CS
 pim_enrich_locale_sr_Latn_ME:
     type: action
-    label: pim_enrich.acl.locale.sr_Latn_ME
+    label: sr_Latn_ME
 pim_enrich_locale_sr_Latn_RS:
     type: action
-    label: pim_enrich.acl.locale.sr_Latn_RS
+    label: sr_Latn_RS
 pim_enrich_locale_sv_FI:
     type: action
-    label: pim_enrich.acl.locale.sv_FI
+    label: sv_FI
 pim_enrich_locale_sv_SE:
     type: action
-    label: pim_enrich.acl.locale.sv_SE
+    label: sv_SE
 pim_enrich_locale_sw_KE:
     type: action
-    label: pim_enrich.acl.locale.sw_KE
+    label: sw_KE
 pim_enrich_locale_syr_SY:
     type: action
-    label: pim_enrich.acl.locale.syr_SY
+    label: syr_SY
 pim_enrich_locale_ta_IN:
     type: action
-    label: pim_enrich.acl.locale.ta_IN
+    label: ta_IN
 pim_enrich_locale_te_IN:
     type: action
-    label: pim_enrich.acl.locale.te_IN
+    label: te_IN
 pim_enrich_locale_tg_Cyrl_TJ:
     type: action
-    label: pim_enrich.acl.locale.tg_Cyrl_TJ
+    label: tg_Cyrl_TJ
 pim_enrich_locale_th_TH:
     type: action
-    label: pim_enrich.acl.locale.th_TH
+    label: th_TH
 pim_enrich_locale_tk_TM:
     type: action
-    label: pim_enrich.acl.locale.tk_TM
+    label: tk_TM
 pim_enrich_locale_tn_ZA:
     type: action
-    label: pim_enrich.acl.locale.tn_ZA
+    label: tn_ZA
 pim_enrich_locale_tr_TR:
     type: action
-    label: pim_enrich.acl.locale.tr_TR
+    label: tr_TR
 pim_enrich_locale_tt_RU:
     type: action
-    label: pim_enrich.acl.locale.tt_RU
+    label: tt_RU
 pim_enrich_locale_tzm_Latn_DZ:
     type: action
-    label: pim_enrich.acl.locale.tzm_Latn_DZ
+    label: tzm_Latn_DZ
 pim_enrich_locale_ug_CN:
     type: action
-    label: pim_enrich.acl.locale.ug_CN
+    label: ug_CN
 pim_enrich_locale_uk_UA:
     type: action
-    label: pim_enrich.acl.locale.uk_UA
+    label: uk_UA
 pim_enrich_locale_ur_PK:
     type: action
-    label: pim_enrich.acl.locale.ur_PK
+    label: ur_PK
 pim_enrich_locale_uz_Cyrl_UZ:
     type: action
-    label: pim_enrich.acl.locale.uz_Cyrl_UZ
+    label: uz_Cyrl_UZ
 pim_enrich_locale_uz_Latn_UZ:
     type: action
-    label: pim_enrich.acl.locale.uz_Latn_UZ
+    label: uz_Latn_UZ
 pim_enrich_locale_vi_VN:
     type: action
-    label: pim_enrich.acl.locale.vi_VN
+    label: vi_VN
 pim_enrich_locale_wo_SN:
     type: action
-    label: pim_enrich.acl.locale.wo_SN
+    label: wo_SN
 pim_enrich_locale_xh_ZA:
     type: action
-    label: pim_enrich.acl.locale.xh_ZA
+    label: xh_ZA
 pim_enrich_locale_yo_NG:
     type: action
-    label: pim_enrich.acl.locale.yo_NG
+    label: yo_NG
 pim_enrich_locale_zh_CN:
     type: action
-    label: pim_enrich.acl.locale.zh_CN
+    label: zh_CN
 pim_enrich_locale_zh_HK:
     type: action
-    label: pim_enrich.acl.locale.zh_HK
+    label: zh_HK
 pim_enrich_locale_zh_MO:
     type: action
-    label: pim_enrich.acl.locale.zh_MO
+    label: zh_MO
 pim_enrich_locale_zh_SG:
     type: action
-    label: pim_enrich.acl.locale.zh_SG
+    label: zh_SG
 pim_enrich_locale_zh_TW:
     type: action
-    label: pim_enrich.acl.locale.zh_TW
+    label: zh_TW
 pim_enrich_locale_zu_ZA:
     type: action
-    label: pim_enrich.acl.locale.zu_ZA
+    label: zu_ZA

@@ -90,6 +90,20 @@
 
     {% set dataBlocks = dataBlocks|merge(
         [{
+            'title': 'pim_enrich.acl.locale.access',
+            'subblocks': [
+                {
+                    'title': '',
+                    'useSpan': false,
+                    'data': [ '<div id="locale_acls"></div>' ]
+                }
+            ]
+        }]
+        )
+    %}
+
+    {% set dataBlocks = dataBlocks|merge(
+        [{
             'title' : 'Users'|trans,
             'subblocks':
             [
@@ -113,7 +127,16 @@
     <script type="text/javascript">
         require(['jquery', 'jquery.validate'],
         function ($) {
-            $('#{{ form.vars.name }}').validate({
+            var $localeAcls = $('#locale_acls');
+            var $form = $('#{{ form.vars.name }}');
+
+            $form.find('div.access_level_value[data-identity^="action:pim_enrich_locale_"]').each(function() {
+                if ($(this).data('identity') !== 'action:pim_enrich_locale_index') {
+                    $(this).parent().appendTo($localeAcls);
+                }
+            });
+
+            $form.validate({
                 ignore: '*'
             });
         });
