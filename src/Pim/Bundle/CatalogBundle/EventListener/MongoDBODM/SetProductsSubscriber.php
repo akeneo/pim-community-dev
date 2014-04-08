@@ -7,6 +7,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Event\OnFlushEventArgs;
+use Gedmo\References\LazyCollection;
 
 /**
  * ORM subscriber registered when Product is a mongo document
@@ -15,8 +16,6 @@ use Doctrine\ORM\Event\OnFlushEventArgs;
  * TODO
  * - Could be enhanced by somehow creating a document(s) custom type
  * with targetDocument and targetField.
- *
- * - A Referenced Collection could also be used to lazy load products.
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -49,20 +48,7 @@ class SetProductsSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad', 'prePersist'];
-    }
-
-    public function prePersist(LifecycleEventArgs $args)
-    {
-        $entity = $args->getEntity();
-        foreach ($this->productsAwareClassMapping as $mapping) {
-            if ($mapping['class'] === get_class($entity)) {
-                $reflClass = new \ReflectionClass($entity);
-                $reflProp = $reflClass->getProperty('products');
-                $reflProp->setAccessible(true);
-                $objects = $reflProp->getValue($entity);
-            }
-        }
+        return ['postLoad'];
     }
 
     /**
@@ -73,10 +59,10 @@ class SetProductsSubscriber implements EventSubscriber
     public function postLoad(LifecycleEventArgs $args)
     {
         $entity = $args->getEntity();
-        $metadata = $args->getEntityManager()->getClassMetadata(get_class($entity));
 
         foreach ($this->productsAwareClassMapping as $mapping) {
             if ($entity instanceof $mapping['class']) {
+                $metadata = $args->getEntityManager()->getClassMetadata(get_class($entity));
                 if (!$metadata->reflClass->hasProperty('products')) {
                     throw new \LogicException(
                         sprintf(
@@ -90,8 +76,13 @@ class SetProductsSubscriber implements EventSubscriber
 
                 $productsProp->setValue(
                     $entity,
-                    new \Doctrine\Common\Collections\ArrayCollection(
-                        $this->registry->getRepository($this->productClass)->findBy([$mapping['property'] => array($entity->getId())])
+                    new LazyCollection(
+                        function () {
+                            return $this
+                                ->registry
+                                ->getRepository($this->productClass)
+                                ->findBy([$mapping['property'] => array($entity->getId())]);
+                        }
                     )
                 );
             }

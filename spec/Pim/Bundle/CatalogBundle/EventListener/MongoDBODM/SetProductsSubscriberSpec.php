@@ -6,9 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 
 class SetProductsSubscriberSpec extends ObjectBehavior
 {
@@ -18,8 +17,14 @@ class SetProductsSubscriberSpec extends ObjectBehavior
             $registry,
             'Acme\\Model\\Product',
             [
-                'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\ProductsAware',
-                'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\InvalidProductsAware',
+                [
+                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\ProductsAware',
+                    'property' => 'foo',
+                ],
+                [
+                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\InvalidProductsAware',
+                    'property' => 'bar',
+                ],
             ]
         );
     }
@@ -29,36 +34,37 @@ class SetProductsSubscriberSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Doctrine\Common\EventSubscriber');
     }
 
-    function it_subscribes_to_post_load_event()
+    function it_subscribes_to_doctrine_events()
     {
         $this->getSubscribedEvents()->shouldReturn(['postLoad']);
     }
 
-    function it_set_products_on_product_aware_class_when_group_is_loaded(
+    function it_sets_products_on_product_aware_class_when_group_is_loaded(
         ManagerRegistry $registry,
-        ObjectRepository $repository,
+        EntityManager $em,
         LifecycleEventArgs $args,
-        ProductsAware $entity,
-        ProductInterface $p1,
-        ProductInterface $p2
+        ClassMetadata $metadata,
+        \ReflectionClass $reflClass,
+        \ReflectionProperty $reflProp,
+        ProductsAware $entity
     ) {
         $args->getEntity()->willReturn($entity);
-        $entity->getId()->willReturn(42);
-        $registry->getRepository('Acme\\Model\\Product')->willReturn($repository);
-        $repository->findBy(['groups' => [42]])->willReturn([$p1, $p2]);
+        $args->getEntityManager()->willReturn($em);
+        $em->getClassMetadata(Argument::type('string'))->willReturn($metadata);
+        $metadata->reflClass = $reflClass;
+        $reflClass->hasProperty('products')->willReturn(true);
+        $reflClass->getProperty('products')->willReturn($reflProp);
 
-        $entity->setProducts([$p1, $p2])->shouldBeCalled();
+        $reflProp->setAccessible(true)->shouldBeCalled();
+        $reflProp->setValue($entity, Argument::type('Gedmo\\References\\LazyCollection'))->shouldBeCalled();
 
         $this->postLoad($args);
     }
 
     function it_does_not_set_products_on_product_unaware_class_when_group_is_loaded(
         ManagerRegistry $registry,
-        ObjectRepository $repository,
         LifecycleEventArgs $args,
-        ProductsUnaware $entity,
-        ProductInterface $p1,
-        ProductInterface $p2
+        ProductsUnaware $entity
     ) {
         $args->getEntity()->willReturn($entity);
 
@@ -69,13 +75,18 @@ class SetProductsSubscriberSpec extends ObjectBehavior
 
     function it_throws_exception_when_setProducts_method_does_not_exist(
         ManagerRegistry $registry,
-        ObjectRepository $repository,
+        EntityManager $em,
         LifecycleEventArgs $args,
-        InvalidProductsAware $entity,
-        ProductInterface $p1,
-        ProductInterface $p2
+        ClassMetadata $metadata,
+        \ReflectionClass $reflClass,
+        LifecycleEventArgs $args,
+        InvalidProductsAware $entity
     ) {
         $args->getEntity()->willReturn($entity);
+        $args->getEntityManager()->willReturn($em);
+        $em->getClassMetadata(Argument::type('string'))->willReturn($metadata);
+        $metadata->reflClass = $reflClass;
+        $reflClass->hasProperty('products')->willReturn(false);
 
         $this->shouldThrow('\LogicException')->duringPostLoad($args);
     }
