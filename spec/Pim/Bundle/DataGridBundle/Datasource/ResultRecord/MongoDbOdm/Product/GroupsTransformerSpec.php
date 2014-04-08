@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Prod
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require \MongoId
+ */
 class GroupsTransformerSpec extends ObjectBehavior
 {
-    /**
-     * @require \MongoId
-     */
     function it_transforms_product_groups_result(\MongoId $id)
     {
         $locale = 'fr_FR';
