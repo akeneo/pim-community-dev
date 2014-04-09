@@ -1,0 +1,114 @@
+---
+pim_base_connector:
+  jobs:
+    csv_product_export:
+      title: Exportação de produto em CSV
+      export.title: Exportação de produto
+    csv_category_export:
+      title: Exportação de categoria em CSV
+      export.title: Exportação de categoria
+    csv_attribute_export:
+      title: Exportação de atributo em CSV
+      export.title: Exportação de atributo
+    csv_attribute_option_export:
+      title: Exportação de opções de atributo em CSV
+      export.title: Exportação de opções de atributo
+    csv_association_type_export:
+      title: Exportação de tipo de associação em CSV
+      export.title: Exportação de tipo de associação
+    csv_group_export:
+      title: Exportação de grupo em CSV
+      export.title: Exportação de grupo
+    csv_product_import:
+      title: Importação de produto em CSV
+      import.title: Importação de produto
+      import_associations.title: Importação de associação
+    csv_category_import:
+      title: Importação de categoria em CSV
+      import.title: Importação de categoria
+    csv_attribute_import:
+      title: Importação de atributo em CSV
+      import.title: Importação de atributo
+    csv_attribute_option_import:
+      title: Importação de opções de atributo em CSV
+      import.title: Importação de opções de atributo
+    csv_association_type_import:
+      title: Importação de tipo de associação em CSV
+      import.title: Importação de tipo de associação
+    csv_group_import:
+      title: Importação de grupo em CSV
+      import.title: Importação de grupo
+  steps:
+    dummy_reader.title: Leitor fictício
+    product_reader.title: Extração de produto
+    entity_reader.title: Extração de entidade
+    csv_reader:
+      title: Leitor de CSV
+      invalid_item_columns_count: 'Eram esperadas %totalColumnsCount% colunas, mas há %itemColumnsCount% colunas em %csvPath%:%lineno%'
+    csv_product_reader.title: Leitor de produto em CSV
+    csv_category_reader.title: Leitor de categoria em CSV
+    dummy_processor.title: Processador fictício
+    product_processor.title: Criação de produto
+    category_processor.title: Criação de categoria
+    association_processor.title: Criação de associação
+    group_processor.title: Criação de grupo
+    attribute_processor.title: Criação de atributo
+    attribute_option_processor.title: Criação de opção de atributo
+    heterogeneous_processor.title: Serializador de produtos em CSV
+    homogeneous_processor.title: Serializador de entidades em CSV
+    transformer_processor.title: Transformação
+    dummy_writer.title: Escritor fictício
+    file_writer.title: Saída
+    product_writer.title: Armazenamento de produto
+    category_writer.title: Armazenamento de categoria
+    writer.title: Armazenamento de entidade
+  export:
+    delimiter:
+      label: Delimitador
+      help: Um caractere usado para definir o delimitador do campo
+    enclosure:
+      label: Invólucro
+      help: Caractere usado para definir o invólucro do campo
+    withHeader:
+      label: Com cabeçalho
+      help: Imprimir ou não o nome da coluna
+    filePath:
+      label: Caminho do arquivo
+      help: Local no sistema onde o arquivo gerado deve ser gravado
+    channel:
+      label: Canal
+      help: O canal que deseja exportar
+  import:
+    enabled:
+      label: Habilitar o produto
+      help: Habilitar ou não os produtos importados
+    categoriesColumn:
+      label: Coluna de categorias
+      help: Nome da coluna de categorias
+    familyColumn:
+      label: Coluna de famílias
+      help: Nome da coluna de famílias
+    groupsColumn:
+      label: Coluna de grupos
+      help: Nome da coluna de grupos
+    filePath:
+      label: Arquivo
+      help: O arquivo CSV a ser importado
+    uploadAllowed:
+      label: Permitir o upload de arquivo
+      help: Permitir ou não o upload direto do arquivo
+    delimiter:
+      label: Delimitador
+      help: Um caractere usado para definir o delimitador do campo
+    enclosure:
+      label: Invólucro
+      help: Um caractere usado para definir o invólucro do campo
+    escape:
+      label: Caractere de escape
+      help: Um caractere usado para definir o campo de escape
+    circularRefsChecked:
+      label: Verificar referências circulares
+      help: Se sim, os dados serão processados para verificar se não há nenhuma referência circular entre as categorias
+    realTimeVersioning:
+      label: Atualização de histórico em tempo real
+      help: Significa que o histórico do produto é atualizado automaticamente, pode ser desligado para melhorar a velocidade
