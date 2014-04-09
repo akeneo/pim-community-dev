@@ -1190,6 +1190,8 @@ class WebUser extends RawMinkContext
 
                 $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
                 $this->getMainContext()->addErrorMessage($message);
+            } else {
+                $this->getMainContext()->addErrorMessage(sprintf('Job "%s" failed, no log available', $code));
             }
 
             // Call the wait method again to trigger timeout failure
