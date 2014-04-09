@@ -791,8 +791,6 @@ class FixturesContext extends RawMinkContext
 
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
-                $this->refresh($productPrice);
-
                 assertEquals($price['amount'], $productPrice->getData());
             }
         }
@@ -1187,8 +1185,6 @@ class FixturesContext extends RawMinkContext
                 )
             );
         }
-
-        $this->refresh($value);
 
         return $value;
     }
