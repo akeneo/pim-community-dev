@@ -89,6 +89,7 @@ require(
                     var rows = $optionList.find('tbody tr').length;
                     if (rows > 1) {
                         $(this).parent().parent().remove();
+                        $(formName).trigger('change');
                         if (rows === 2) {
                             $('button.action-delete-inline').attr('disabled', 'disabled');
                         }
