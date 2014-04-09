@@ -17,19 +17,11 @@ Pim\Bundle\CatalogBundle\Model\Product:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
         groups:
-            notSaved: true
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
-            idsField: groupIds
-        groupIds:
-            type: collection
         categories:
-            notSaved: true
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
-            idsField: categoryIds
-        categoryIds:
-            type: collection
         associations:
             embedded: true
             type: many

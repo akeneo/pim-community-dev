@@ -7,12 +7,8 @@ Pim\Bundle\CatalogBundle\Model\Association:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
         groups:
-            notSaved: true
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
-            idsField: groupIds
-        groupIds:
-            type: collection
     referenceOne:
         owner:
             targetDocument: Pim\Bundle\CatalogBundle\Model\Product
