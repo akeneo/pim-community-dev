@@ -385,7 +385,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
 
-        $qb->field('groups')->in([$variantGroup->getId()]);
+        $qb->field('groupIds')->in([$variantGroup->getId()]);
 
         foreach ($criteria as $item) {
             $andExpr = $qb
