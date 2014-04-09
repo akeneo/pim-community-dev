@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 
 /**
  * @require Doctrine\ODM\MongoDB\Events
@@ -111,21 +112,68 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
 
     function it_throws_exception_when_entity_collection_field_has_no_target_entity(
         LifecycleEventArgs $args,
-        ValueStub $entity,
+        ValueStub $document,
         DocumentManager $dm,
         ClassMetadata $documentMetadata
     ) {
-        $args->getDocument()->willReturn($entity->getWrappedObject());
+        $args->getDocument()->willReturn($document);
         $args->getDocumentManager()->willReturn($dm);
         $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
         $documentMetadata->fieldMappings = [
             'foo' => ['type' => 'text'],
             'bar' => ['type' => 'entity'],
         ];
-        $documentMetadata->name = 'Acme/Entity';
+        $documentMetadata->name = 'Acme/Document';
 
-        $exception = new \RuntimeException('Please provide the "targetEntity" of the Acme/Entity::$bar field mapping');
+        $exception = new \RuntimeException('Please provide the "targetEntity" of the Acme/Document::$bar field mapping');
         $this->shouldThrow($exception)->duringPostLoad($args);
+    }
+
+    function it_transformes_entities_into_ids_before_update(
+        PreUpdateEventArgs $args,
+        ValueStub $document,
+        DocumentManager $dm,
+        ClassMetadata $documentMetadata,
+        FooStub $entity
+    ) {
+        $args->getDocument()->willReturn($document->getWrappedObject());
+        $args->getDocumentManager()->willReturn($dm);
+        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
+        $documentMetadata->fieldMappings = [
+            'foo' => ['type' => 'text'],
+            'bar' => ['type' => 'entity'],
+        ];
+        $args->hasChangedField('bar')->willReturn(true);
+        $args->getNewValue('bar')->willReturn($entity);
+        $entity->getId()->willReturn('45');
+
+        $args->setNewValue('bar', 45)->shouldBeCalled();
+
+        $this->preUpdate($args);
+    }
+
+    function it_keeps_old_value_if_new_entity_has_no_id_before_update(
+        PreUpdateEventArgs $args,
+        ValueStub $document,
+        DocumentManager $dm,
+        ClassMetadata $documentMetadata,
+        FooStub $entity
+    ) {
+        $args->getDocument()->willReturn($document->getWrappedObject());
+        $args->getDocumentManager()->willReturn($dm);
+        $dm->getClassMetadata(Argument::any())->willReturn($documentMetadata);
+        $documentMetadata->fieldMappings = [
+            'foo' => ['type' => 'text'],
+            'bar' => ['type' => 'entity'],
+        ];
+        $args->hasChangedField('bar')->willReturn(true);
+        $args->getNewValue('bar')->willReturn($entity);
+        $args->getOldValue('bar')->willReturn(26);
+        $entity->getId()->willReturn(null);
+
+        $args->setNewValue('bar', 26)->shouldBeCalled();
+
+        $this->preUpdate($args);
     }
 }
 
@@ -135,4 +183,5 @@ class ValueStub
 
 class FooStub
 {
+    public function getId() { }
 }
