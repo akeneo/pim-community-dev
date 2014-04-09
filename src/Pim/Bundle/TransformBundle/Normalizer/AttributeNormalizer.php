@@ -56,7 +56,7 @@ class AttributeNormalizer implements NormalizerInterface
         $results = array_merge(
             $results,
             array(
-                'group'                   => $object->getVirtualGroup()->getCode(),
+                'group'                   => ($object->getGroup()) ? $object->getGroup()->getCode() : null,
                 'unique'                  => (int) $object->isUnique(),
                 'useable_as_grid_column'  => (int) $object->isUseableAsGridColumn(),
                 'useable_as_grid_filter'  => (int) $object->isUseableAsGridFilter(),
