@@ -1744,7 +1744,9 @@ class FixturesContext extends RawMinkContext
      */
     private function refresh($object)
     {
-        $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+        if (is_object($object)) {
+            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+        }
     }
 
     /**
