@@ -24,8 +24,10 @@ class GroupsTransformer
     {
         $normalizedData = $result[ProductQueryUtility::NORMALIZED_FIELD];
 
-        if ($currentGroupId && isset($result['groups'])) {
-            $result['in_group'] = $result['is_checked'] = in_array($currentGroupId, $result['groups']);
+        if ($currentGroupId && isset($result['groupIds']) && in_array($currentGroupId, $result['groupIds'])) {
+            $result['in_group'] = $result['is_checked'] = true;
+        } else {
+            $result['in_group'] = $result['is_checked'] = false;
         }
 
         if (isset($normalizedData['groups'])) {
