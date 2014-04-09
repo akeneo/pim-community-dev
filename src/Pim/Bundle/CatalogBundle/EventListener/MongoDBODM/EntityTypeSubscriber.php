@@ -76,7 +76,14 @@ class EntityTypeSubscriber implements EventSubscriber
             if ('entity' === $mapping['type'] && $args->hasChangedField($field)) {
                 $newValue = $args->getNewValue($field);
                 if (is_object($newValue)) {
-                    $args->setNewValue($field, $newValue->getId());
+                    if (null === $id = $newValue->getId()) {
+                        // For some reason, sometimes a newValue with no id is set as the new value
+                        // In that case, we ignore it and rely on the old value
+                        $id = $args->getOldValue($field);
+                    }
+
+                    // Cast into int is mandatory to prevent storing string id (for data consistency purpose)
+                    $args->setNewValue($field, (int) $id);
                 }
             }
         }
