@@ -230,7 +230,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->field('categories')->in([$category->getId()]);
+        $qb->field('categoryIds')->in([$category->getId()]);
 
         return $qb->getQuery()->execute();
     }
@@ -284,7 +284,7 @@ class ProductRepository extends DocumentRepository implements
         $this->createQueryBuilder('p')
             ->update()
             ->multiple(true)
-            ->field('categories')->in([$id])->pull($id)
+            ->field('categoryIds')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
     }

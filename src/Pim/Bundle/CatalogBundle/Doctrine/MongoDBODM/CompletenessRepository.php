@@ -71,7 +71,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
 
             $qb = $productRepo->createQueryBuilder()
                 ->hydrate(false)
-                ->field('categories')->in($categoryIds)
+                ->field('categoryIds')->in($categoryIds)
                 ->field('enabled')->equals(true)
                 ->select('_id');
 
@@ -104,7 +104,7 @@ class CompletenessRepository implements CompletenessRepositoryInterface
 
                 $qb = $productRepo->createQueryBuilder()
                     ->hydrate(false)
-                    ->field('categories')->in($categoryIds)
+                    ->field('categoryIds')->in($categoryIds)
                     ->field('enabled')->equals(true)
                     ->field('normalizedData.completenesses.'.$compSuffix)
                     ->equals(100)
