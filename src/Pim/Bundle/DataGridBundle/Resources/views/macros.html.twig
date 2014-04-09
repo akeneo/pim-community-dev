@@ -35,6 +35,9 @@
                     }
 
                     $.get(Routing.generate('pim_datagrid_load', urlParams), function(resp) {
+                        if (state.columns) {
+                            resp.metadata.state.parameters = _.extend({}, resp.metadata.state.parameters, { view: { columns: state.columns }});
+                        }
                         $('#grid-{{ name }}').data({ 'metadata': resp.metadata, 'data': JSON.parse(resp.data) });
 
                         var modules = resp.metadata.requireJSModules;
