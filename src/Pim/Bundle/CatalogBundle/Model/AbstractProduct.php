@@ -351,8 +351,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         $value = null;
         $possibleValues = $indexedValues[$attributeCode];
 
-        if (is_array($possibleValues) && count($possibleValues>0)) {
-
+        if (is_array($possibleValues)) {
             foreach ($possibleValues as $possibleValue) {
                 $valueLocale = null;
                 $valueScope = null;
