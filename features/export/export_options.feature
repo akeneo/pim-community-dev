@@ -11,7 +11,7 @@ Feature: Export options
     And I am logged in as "Julia"
     And I am on the "footwear_option_export" export job page
     When I launch the export job
-    And I wait for the "print_product_export" job to finish
+    And I wait for the "footwear_option_export" job to finish
     Then exported file of "footwear_option_export" should contain:
     """
     attribute;code;default;label-en_US
