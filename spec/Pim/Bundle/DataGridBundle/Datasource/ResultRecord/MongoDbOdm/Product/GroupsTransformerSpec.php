@@ -34,9 +34,12 @@ class GroupsTransformerSpec extends ObjectBehavior
                 ]
             ],
         ];
-        $result = $normalizedData + ['groups' => [1, 2, 3]];
+        $result = $normalizedData + ['groupIds' => [1, 2, 3]];
 
         $expected = $normalizedData + [
+            'groupIds' => [1, 2, 3],
+            'is_checked' => true,
+            'in_group' => true,
             'groups'   => [
                 'akeneo_related' => [
                     'code'  => 'akeneo_related',
@@ -46,9 +49,7 @@ class GroupsTransformerSpec extends ObjectBehavior
                     'code'  => 'akeneo_tshirt',
                     'label' => 'Tshirt Akeneo'
                 ]
-            ],
-            'is_checked' => true,
-            'in_group' => true
+            ]
         ];
 
         $this->transform($result, $locale, $groupId)->shouldReturn($expected);
