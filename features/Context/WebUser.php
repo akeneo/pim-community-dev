@@ -1168,7 +1168,9 @@ class WebUser extends RawMinkContext
         try {
             $this->wait(120000, $condition);
         } catch (BehaviorException $e) {
-            $log = $this->getFixturesContext()->getJobInstance($code)->getJobExecutions()->first()->getLogFile();
+            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
+            $jobExecution = $jobInstance->getJobExecutions()->first();
+            $log = $jobExecution->getLogFile();
 
             if (is_file($log)) {
                 $dir = getenv('WORKSPACE');
@@ -1193,6 +1195,18 @@ class WebUser extends RawMinkContext
             } else {
                 $this->getMainContext()->addErrorMessage(sprintf('Job "%s" failed, no log available', $code));
             }
+
+            // Get and print the normalized jobexecution to ease debugging
+            $this->getSession()->executeScript(
+                sprintf(
+                    '$.get("/spread/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    $jobInstance->getType(),
+                    $jobExecution->getId()
+                )
+            );
+            $this->wait(2000);
+            $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
+            $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
 
             // Call the wait method again to trigger timeout failure
             $this->wait(100, $condition);
