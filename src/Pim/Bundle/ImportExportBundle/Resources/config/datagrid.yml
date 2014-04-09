@@ -54,7 +54,7 @@ datagrid:
                 link:  delete_link
             launch:
                 type:      navigate
-                label:     Launch
+                label:     pim.grid.action.launch.title
                 icon:      play
                 link:      launch_link
                 rowAction: true

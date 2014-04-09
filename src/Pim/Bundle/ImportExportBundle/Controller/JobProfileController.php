@@ -224,7 +224,7 @@ class JobProfileController extends AbstractDoctrineController
 
                 $this->addFlash(
                     'success',
-                    sprintf('flash.%s.updated.', $this->getJobType())
+                    sprintf('flash.%s.updated', $this->getJobType())
                 );
 
                 return $this->redirectToShowView($jobInstance->getId());
