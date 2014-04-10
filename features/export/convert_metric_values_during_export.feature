@@ -35,7 +35,7 @@ Feature: Convert metric values during export
     And I launched the completeness calculator
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
-    And I wait for the job to finish
+    And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;washing_temperature-unit;weight;weight-unit;enabled

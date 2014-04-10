@@ -43,6 +43,8 @@ class Association implements ReferableInterface
      */
     protected $groups;
 
+    protected $groupIds = [];
+
     /**
      * Constructor
      */

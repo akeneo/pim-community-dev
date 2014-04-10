@@ -40,7 +40,7 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
     protected $children;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection $products
+     * @var ArrayCollection $products
      */
     protected $products;
 
@@ -93,8 +93,10 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function addProduct(ProductInterface $product)
     {
-        $this->products[] = $product;
-        $product->addCategory($this);
+        if (!$this->products->contains($product)) {
+            $this->products->add($product);
+            $product->addCategory($this);
+        }
 
         return $this;
     }

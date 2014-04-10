@@ -5,6 +5,9 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Prod
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require \MongoId
+ */
 class CompletenessTransformerSpec extends ObjectBehavior
 {
     function it_transforms_product_completeness_result(\MongoId $id)

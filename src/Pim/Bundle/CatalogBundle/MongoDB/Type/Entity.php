@@ -20,6 +20,6 @@ class Entity extends Type
      */
     public function convertToDatabaseValue($value)
     {
-        return $value->getId();
+        return is_object($value) ? $value->getId() : $value;
     }
 }

@@ -7,9 +7,9 @@ use Doctrine\ODM\MongoDB\Query\Expr;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AssociationRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -18,6 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
@@ -33,8 +34,8 @@ class ProductRepository extends DocumentRepository implements
     AssociationRepositoryInterface
 {
     /**
-     * @param ProductQueryBuilder
-     */
+    * @var ProductQueryBuilder
+    */
     protected $productQB;
 
     /**
@@ -51,7 +52,9 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $categoryClass;
 
-    /** @var AttributeRepository $attributeRepository */
+    /**
+     * @var AttributeRepository
+     */
     protected $attributeRepository;
 
     /**
@@ -227,7 +230,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder('p');
 
-        $qb->field('categories')->in([$category->getId()]);
+        $qb->field('categoryIds')->in([$category->getId()]);
 
         return $qb->getQuery()->execute();
     }
@@ -281,7 +284,7 @@ class ProductRepository extends DocumentRepository implements
         $this->createQueryBuilder('p')
             ->update()
             ->multiple(true)
-            ->field('categories')->in([$id])->pull($id)
+            ->field('categoryIds')->in([$id])->pull($id)
             ->getQuery()
             ->execute();
     }
@@ -382,7 +385,7 @@ class ProductRepository extends DocumentRepository implements
     {
         $qb = $this->createQueryBuilder()->eagerCursor(true);
 
-        $qb->field('groups')->in([$variantGroup->getId()]);
+        $qb->field('groupIds')->in([$variantGroup->getId()]);
 
         foreach ($criteria as $item) {
             $andExpr = $qb
@@ -527,7 +530,7 @@ class ProductRepository extends DocumentRepository implements
 
         $qb = $this->createQueryBuilder()
             ->hydrate(false)
-            ->field('categories')->in($categoryIds)
+            ->field('categoryIds')->in($categoryIds)
             ->select('_id');
 
         return $qb->getQuery()->execute();
@@ -582,18 +585,17 @@ class ProductRepository extends DocumentRepository implements
     public function valueExists(ProductValueInterface $value)
     {
         $qb = $this->createQueryBuilder();
-        $this->applyFilterByAttribute($qb, $value->getAttribute(), $value->getData());
-        $result = $qb->hydrate(false)->getQuery()->getSingleResult();
+        $productQueryBuilder = $this->getProductQueryBuilder($qb);
+        $productQueryBuilder->addAttributeFilter($value->getAttribute(), '=', $value->getData());
+        $result = $qb->hydrate(false)->getQuery()->execute();
 
-        $foundValueId = null;
-        if ((1 === count($result)) && isset($result['_id'])) {
-            $foundValueId = $result['_id']->id;
+        if (0 === $result->count() ||
+            (1 === $result->count() && $value->getEntity()->getId() === (string) $result->getNext()['_id'])
+        ) {
+            return false;
         }
 
-        return (
-            (0 !== count($result)) &&
-            ($value->getId() === $foundValueId)
-        );
+        return true;
     }
 
     /**
@@ -610,7 +612,7 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    protected function getProductQueryBuilder($qb)
+    public function getProductQueryBuilder($qb)
     {
         if (!$this->productQB) {
             throw new \LogicException('Product query builder must be configured');
@@ -712,22 +714,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByAttribute($qb, AbstractAttribute $attribute, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeFilter($attribute, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applyFilterByField($qb, $field, $value, $operator = '=')
-    {
-        $this->getProductQueryBuilder($qb)->addFieldFilter($field, $operator, $value);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function applyFilterByIds($qb, array $productIds, $include)
     {
         if ($include) {
@@ -735,22 +721,6 @@ class ProductRepository extends DocumentRepository implements
         } else {
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByAttribute($qb, AbstractAttribute $attribute, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addAttributeSorter($attribute, $direction);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function applySorterByField($qb, $field, $direction)
-    {
-        $this->getProductQueryBuilder($qb)->addFieldSorter($field, $direction);
     }
 
     /**
@@ -843,10 +813,39 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
-     *
-     * TODO: Take in account family attributes
      */
     public function findCommonAttributeIds(array $productIds)
+    {
+        $results = $this->findValuesCommonAttributeIds($productIds);
+
+        $familyIds = $this->findFamiliesFromProductIds($productIds);
+        if (!empty($familyIds)) {
+            $families = $this->familyRepository->findAttributeIdsFromFamilies($familyIds);
+        }
+
+        $attIds = null;
+        foreach ($results as $result) {
+            $familyAttr = isset($result['_id']['family']) ? $families[$result['_id']['family']] : array();
+            $prodAttIds = array_unique(array_merge($result['attribute'], $familyAttr));
+            if (null === $attIds) {
+                $attIds = $prodAttIds;
+            } else {
+                $attIds = array_intersect($attIds, $prodAttIds);
+            }
+        }
+
+        return $attIds;
+    }
+
+    /**
+     * Find all common attribute ids with values from a list of product ids
+     * Only exists for ODM repository
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findValuesCommonAttributeIds(array $productIds)
     {
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
@@ -855,32 +854,50 @@ class ProductRepository extends DocumentRepository implements
         $expr->field('_id')->in($productIds);
 
         $pipeline = array(
-            array(
-                '$match'   => $expr->getQuery()
-            ),
+            array('$match' => $expr->getQuery()),
             array('$unwind' => '$values'),
             array(
                 '$group'  => array(
-                    '_id'       => '$_id',
+                    '_id'       => array('id' => '$_id', 'family' => '$family'),
                     'attribute' => array( '$addToSet' => '$values.attribute')
                 )
-            ),
-            array('$unwind' => '$attribute'),
-            array('$group'  => array(
-                '_id'   => '$attribute',
-                'count' => array('$sum' => 1)
-            )),
-            array('$match'   => array('count' => count($productIds))),
-            array('$project' => array('values.attribute' => 1))
+            )
         );
 
-        $results = $collection->aggregate($pipeline)->toArray();
+        return $collection->aggregate($pipeline)->toArray();
+    }
 
-        $attributeIds = array();
-        foreach ($results as $result) {
-            $attributeIds[] = $result['_id'];
-        }
+    /**
+     * Find family from list of products
+     *
+     * @param array $productIds
+     *
+     * @return array
+     */
+    protected function findFamiliesFromProductIds(array $productIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->field('_id')->in($productIds)
+            ->distinct('family')
+            ->hydrate(false);
 
-        return $attributeIds;
+        $cursor = $qb->getQuery()->execute();
+
+        return $cursor->toArray();
+    }
+
+    /**
+     * Set family repository
+     *
+     * @param FamilyRepository $familyRepository
+     *
+     * @return \Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
+     */
+    public function setFamilyRepository(FamilyRepository $familyRepository)
+    {
+        $this->familyRepository = $familyRepository;
+
+        return $this;
     }
 }

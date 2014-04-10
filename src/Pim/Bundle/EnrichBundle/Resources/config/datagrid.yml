@@ -297,7 +297,7 @@ datagrid:
         mass_actions:
             delete:
                 type: delete
-                label: Delete
+                label: pim.grid.mass_action.delete
                 entity_name: product
                 messages:
                     confirm_title: Delete confirmation
@@ -325,7 +325,7 @@ datagrid:
 
             mass_edit:
                 type: edit
-                label: Mass Edit
+                label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
         sorters:
@@ -346,7 +346,7 @@ datagrid:
                     data_name: updated
                     sorter:    product_field
             default:
-                created: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                updated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
         filters:
             columns:
                 family:
@@ -1034,14 +1034,10 @@ datagrid:
         filters:
             columns:
                 is_associated:
-                    type:             boolean
-                    label:            Is associated
-                    data_name:        is_associated
-                    filter_by_having: true
-                    supported:
-                        eq:
-                            - %pim_catalog.storage_driver%
-                            - doctrine/orm
+                    type:        product_is_associated
+                    parent_type: boolean
+                    label:       Is associated
+                    data_name:   is_associated
                 family:
                     type:      product_family
                     label:     Family

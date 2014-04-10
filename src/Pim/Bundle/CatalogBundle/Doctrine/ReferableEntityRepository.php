@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Entity\Repository;
+namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
  * Base repository for entities with a code unique index

@@ -38,7 +38,7 @@ Feature: Import attributes
       | filePath | %file to import% |
     When I am on the "acme_attribute_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_attribute_import" job to finish
     Then there should be the following attributes:
       | type         | code         | label-en_US        | group     | unique | useable_as_grid_column | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
       | text         | name         | Name               | info      | 0      | 1                      | 1                      | 1           | 0        |                    |               |                     |
@@ -72,5 +72,5 @@ Feature: Import attributes
       | filePath | %file to import% |
     When I am on the "attribute_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "attribute_import" job to finish
     And I should see "metricFamily: This property cannot be changed."

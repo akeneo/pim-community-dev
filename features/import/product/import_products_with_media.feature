@@ -46,7 +46,7 @@ Feature: Import media with products
       | fanatic-freewave-76.txt |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |
@@ -69,7 +69,7 @@ Feature: Import media with products
       | bic-core-148.txt |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 2 products
     And the product "bic-core-148" should have the following values:
       | frontView  | bic-core-148.gif |
@@ -89,7 +89,7 @@ Feature: Import media with products
     And I am logged in as "Julia"
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 0 products
     And I should see "frontView: File not found"
     And I should see "userManual: File not found"

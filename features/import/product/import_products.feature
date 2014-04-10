@@ -62,7 +62,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 10 products
     And the family of the product "SKU-006" should be "Bag"
     And product "SKU-007" should be enabled
@@ -82,7 +82,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then I should see "The unique code \"SKU-001\" was already read in this file"
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
@@ -102,7 +102,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 1 product
     And the product "SKU-001" should have the following values:
       | name        | Donec                                                             |
@@ -127,7 +127,7 @@ Feature: Execute a job
       | uploadAllowed | yes |
     When I am on the "acme_product_import" import job page
     And I upload and import the file "%file to import%"
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 10 products
 
   Scenario: Successfully import products prices
@@ -141,7 +141,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 2 products
     And the product "SKU-001" should have the following value:
       | prices | 100.00 EUR, 90.00 USD |
@@ -161,7 +161,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | prices | 100.00 EUR, 90.00 USD |
@@ -176,7 +176,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | weight | 4000.0000 GRAM |
@@ -191,7 +191,7 @@ Feature: Execute a job
       | filePath | %file to import% |
     When I am on the "acme_product_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
       | weight | 4000.0000 GRAM |

@@ -23,7 +23,7 @@ Feature: Export products with media
     And I am logged in as "Julia"
     And I am on the "footwear_product_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_product_export" job to finish
     Then exported file of "footwear_product_export" should contain:
     """
     sku;family;groups;categories;color;description-en_US-mobile;lace_color;manufacturer;name-en_US;price-EUR;price-USD;rating;side_view;size;top_view;weather_conditions;enabled

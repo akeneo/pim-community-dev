@@ -38,6 +38,10 @@ group:
   overview: обзор групп
   create: создать группу
   edit: редактировать группу
+group type:
+  overview: обзор типов группы
+  create: создать тип группы
+  edit: редактировать тип группы
 variant group:
   overview: обзор вариативных групп
   create: создать вариатвную группу
@@ -46,10 +50,6 @@ association type:
   overview: обзор типов ассоциации
   create: создать тип ассоциации
   edit: редактировать тип ассоциации
-group type:
-  overview: обзор типов группы
-  create: создать тип группы
-  edit: редактировать тип группы
 products: продукты
 btn:
   create:
@@ -244,7 +244,6 @@ Default label: Метка по умолчанию
 Default value: Значение по умолчанию
 Attributetype: Тип атрибута
 Attribute type: Тип атрибута
-Searchable: Для поиска
 Defaultvalue: Значение по умолчанию
 Variant: Вариант
 Smart: Smart
@@ -257,7 +256,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-Yes: "1"
+"Yes": true
+"No": false
 Close: Закрыть
 Choose a color: Выбрать цвет
 Create: Создать
@@ -373,7 +373,6 @@ View group: Посмотреть группу
 Products: Продукты
 pim_enrich:
   acl:
-    locale.index: Список локалей
     currency:
       index: Список валют
       toggle: Переключение валют
@@ -437,7 +436,6 @@ pim_enrich:
       create: Создать тип ассоциации
       edit: Редактировать тип ассоциации
       remove: Удалить тип ассоциации
-  datagrid_configuration.columns.min_message: Необходимо выбрать по крайней мере один столбец для отображения
 pim_menu:
   tab:
     collect: Собрать данные
@@ -478,6 +476,4 @@ popin.create:
   option.title: Создать новое свойство
 In group: В группе
 Attribute as label: Атрибут как метка
-Available Columns: Доступные столбцы
-Displayed Columns: Отображаемые столбцы
 Is associated: Связанный

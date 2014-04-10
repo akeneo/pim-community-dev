@@ -11,7 +11,7 @@ Feature: Export attributes
     And I am logged in as "Julia"
     And I am on the "footwear_attribute_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
     type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
@@ -20,7 +20,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;0;1;;;;0;0
     pim_catalog_multiselect;weather_conditions;"Weather conditions";info;0;0;1;;;;0;0
     pim_catalog_textarea;description;Description;info;0;0;1;;;;1;1
-    pim_catalog_text;comment;Comment;Other;0;0;1;;;;0;0
+    pim_catalog_text;comment;Comment;;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;0;0
     pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg;;;0;0
@@ -40,7 +40,7 @@ Feature: Export attributes
     And I am logged in as "Julia"
     And I am on the "footwear_attribute_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_attribute_export" job to finish
     Then exported file of "footwear_attribute_export" should contain:
     """
     type;code;label-en_US;label-fr_BE;group;unique;useable_as_grid_column;useable_as_grid_filter;allowed_extensions;metric_family;default_metric_unit;localizable;scopable
@@ -49,7 +49,7 @@ Feature: Export attributes
     pim_catalog_simpleselect;manufacturer;Manufacturer;;info;0;0;1;;;;0;0
     pim_catalog_multiselect;weather_conditions;"Weather conditions";;info;0;0;1;;;;0;0
     pim_catalog_textarea;description;Description;;info;0;0;1;;;;1;1
-    pim_catalog_text;comment;Comment;;Other;0;0;1;;;;0;0
+    pim_catalog_text;comment;Comment;;;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;;marketing;0;1;1;;;;0;0
     pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg;;;0;0

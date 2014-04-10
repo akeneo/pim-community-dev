@@ -30,7 +30,7 @@ Feature: Execute a job
     And I launched the completeness calculator
     And I am on the "footwear_product_export" export job page
     When I launch the "footwear_product_export" export job
-    And I wait for the job to finish
+    And I wait for the "footwear_product_export" job to finish
     Then I should see "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
     And an email to "admin@example.com" should have been sent

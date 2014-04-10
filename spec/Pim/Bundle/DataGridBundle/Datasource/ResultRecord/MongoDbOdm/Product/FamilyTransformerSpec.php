@@ -5,6 +5,9 @@ namespace spec\Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\Prod
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require \MongoId
+ */
 class FamilyTransformerSpec extends ObjectBehavior
 {
     function it_transforms_product_family_result(\MongoId $id)

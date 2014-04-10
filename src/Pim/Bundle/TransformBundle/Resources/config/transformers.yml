@@ -4,6 +4,7 @@ parameters:
     pim_transform.transformer.product.class:                     Pim\Bundle\TransformBundle\Transformer\ProductTransformer
     pim_transform.transformer.family.class:                      Pim\Bundle\TransformBundle\Transformer\FamilyTransformer
     pim_transform.transformer.attribute.class:                   Pim\Bundle\TransformBundle\Transformer\AttributeTransformer
+    pim_transform.transformer.attribute_option.class:            Pim\Bundle\TransformBundle\Transformer\AttributeOptionTransformer
     pim_transform.transformer.job_instance.class:                Pim\Bundle\TransformBundle\Transformer\JobInstanceTransformer
     pim_transform.transformer.property.translation.class:        Pim\Bundle\TransformBundle\Transformer\Property\TranslationTransformer
     pim_transform.transformer.property.nested_translation.class: Pim\Bundle\TransformBundle\Transformer\Property\NestedTranslationTransformer
@@ -53,6 +54,12 @@ services:
             - '@pim_transform.cache.doctrine_cache'
         tags:
             - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.attribute.class% }
+
+    pim_transform.transformer.attribute_option:
+        class: %pim_transform.transformer.attribute_option.class%
+        parent: pim_transform.transformer.entity
+        tags:
+            - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.attribute_option.class% }
 
     pim_transform.transformer.family:
         class: %pim_transform.transformer.family.class%

@@ -11,5 +11,5 @@ Feature: Export groups
     And I am logged in as "Julia"
     And I am on the "footwear_group_export" export job page
     When I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_group_export" job to finish
     Then file "%tmp%/group_export/group_export.csv" should contain 3 rows

@@ -5,11 +5,11 @@ Feature: Display completeness widget
 
   Scenario: Display completeness widget
     Given a "apparel" catalog configuration
-    And the following product:
-      | sku  | family  | name-fr_FR      | name-en_US      | name-en_GB      | description-en_US-ecommerce | description-fr_FR-ecommerce | price                 | size    | color | manufacturer     | material | categories      |
-      | sku1 | tshirts | T shirt Batman  |                 |                 | Batman                      | Batman                      | 10 USD, 6 GBP, 15 EUR | size_XS | black | american_apparel | cotton   | 2014_collection |
-      | sku2 | tshirts |                 |                 |                 | Superman                    |                             | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2014_collection |
-      | sku3 | tshirts | Tshirt Iron Man | Tshirt Iron Man | Tshirt Iron Man | Iron Man                    | Iron Man                    | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2013_collection |
+    And the following products:
+      | sku  | family  | name-fr_FR      | name-en_US      | name-en_GB      | description-en_US-ecommerce | description-fr_FR-ecommerce | price                 | size    | color | manufacturer     | material | categories                       |
+      | sku1 | tshirts | T shirt Batman  |                 |                 | Batman                      | Batman                      | 10 USD, 6 GBP, 15 EUR | size_XS | black | american_apparel | cotton   | 2014_collection                  |
+      | sku2 | tshirts |                 |                 |                 | Superman                    |                             | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2014_collection                  |
+      | sku3 | tshirts | Tshirt Iron Man | Tshirt Iron Man | Tshirt Iron Man | Iron Man                    | Iron Man                    | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2013_collection, 2015_collection |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     When I am on the dashboard page

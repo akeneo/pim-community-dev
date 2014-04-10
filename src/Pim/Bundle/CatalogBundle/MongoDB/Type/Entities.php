@@ -23,7 +23,7 @@ class Entities extends Type
     {
         if (!$value instanceof Collection) {
             throw new \InvalidArgumentException(
-                sprinft(
+                sprintf(
                     'Expecting instance of Doctrine\Common\Collections\Collection, got "%s"',
                     'object' === gettype($value) ? get_class($value) : gettype($value)
                 )

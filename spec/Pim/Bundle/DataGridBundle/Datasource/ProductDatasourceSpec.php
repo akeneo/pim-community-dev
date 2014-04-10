@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 
 class ProductDatasourceSpec extends ObjectBehavior
 {

@@ -56,6 +56,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function getQueryBuilder()
     {
+        if (!$this->qb) {
+            throw new \LogicException('Query builder must be configured');
+        }
+
         return $this->qb;
     }
 
@@ -89,7 +93,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         }
 
         // TODO : add a CatalogContextAware interface to avoid to inject context everywhere ?
-        $filter = new $filterClass($this->qb, $this->context);
+        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
@@ -111,7 +115,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->context);
+        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -135,7 +139,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->context);
+        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -159,7 +163,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->context);
+        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;

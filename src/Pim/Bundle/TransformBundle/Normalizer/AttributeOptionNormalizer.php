@@ -32,7 +32,7 @@ class AttributeOptionNormalizer implements NormalizerInterface
             'attribute'  => $entity->getAttribute()->getCode(),
             'code'       => $entity->getCode(),
             'default'    => ($entity->isDefault()) ? 1 : 0,
-        ) + $this->normalizeLabel($entity);
+        ) + $this->normalizeLabel($entity, $context);
     }
 
     /**
@@ -47,12 +47,13 @@ class AttributeOptionNormalizer implements NormalizerInterface
      * Returns an array containing the label values
      *
      * @param AttributeOption $entity
+     * @param array           $context
      *
      * @return array
      */
-    protected function normalizeLabel(AttributeOption $entity)
+    protected function normalizeLabel(AttributeOption $entity, $context)
     {
-        $labels = array();
+        $labels = array_fill_keys($context['locales'], '');
         foreach ($entity->getOptionValues() as $translation) {
             $labels[$translation->getLocale()] = $translation->getValue();
         }

@@ -100,6 +100,8 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     protected $options;
 
+    protected $optionIds;
+
     /**
      * Store simple option value
      *
@@ -134,7 +136,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     public function __construct()
     {
         $this->options = new ArrayCollection();
-        $this->prices = new ArrayCollection();
+        $this->prices  = new ArrayCollection();
     }
 
     /**
@@ -516,7 +518,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get options, used for multi select to retrieve many options
      *
-     * @return Arraycollection
+     * @return ArrayCollection
      */
     public function getOptions()
     {
@@ -542,11 +544,11 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param AttributeOption $option
      *
-     * @return AbstractProduct
+     * @return AbstractProductValue
      */
     public function addOption(AttributeOption $option)
     {
-        $this->options[] = $option;
+        $this->options->add($option);
 
         return $this;
     }
@@ -657,11 +659,17 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param string $currency
      *
-     * @return boolean|Price
+     * @return null|ProductPrice
      */
     public function getPrice($currency)
     {
-        return isset($this->prices[$currency]) ? $this->prices[$currency] : null;
+        foreach ($this->prices as $price) {
+            if ($price->getCurrency() === $currency) {
+                return $price;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -681,7 +689,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Add price
+     * Add price (removing the older one)
      *
      * @param ProductPrice $price
      *
@@ -689,7 +697,11 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function addPrice(ProductPrice $price)
     {
-        $this->prices[$price->getCurrency()] = $price;
+        if (null !== $actualPrice = $this->getPrice($price->getCurrency())) {
+            $this->removePrice($actualPrice);
+        }
+
+        $this->prices->add($price);
         $price->setValue($this);
 
         return $this;
@@ -706,12 +718,12 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function addPriceForCurrency($currency)
     {
-        $prices = $this->getPrices();
-        if (!isset($prices[$currency])) {
-            $this->addPrice(new ProductPrice(null, $currency));
+        if (null === $productPrice = $this->getPrice($currency)) {
+            $productPrice = new ProductPrice(null, $currency);
+            $this->addPrice($productPrice);
         }
 
-        return $this->prices[$currency];
+        return $productPrice;
     }
 
     /**
@@ -723,7 +735,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function removePrice(ProductPrice $price)
     {
-        $this->prices->remove($price->getCurrency());
+        $this->prices->removeElement($price);
 
         return $this;
     }

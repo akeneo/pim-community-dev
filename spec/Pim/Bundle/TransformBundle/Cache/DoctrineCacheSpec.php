@@ -25,7 +25,7 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
+        $repository->implement('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
         $repository->findByReference('foo')->willReturn($object);
 
@@ -37,7 +37,7 @@ class DoctrineCacheSpec extends ObjectBehavior
         ObjectRepository $repository,
         \stdClass $object
     ) {
-        $repository->implement('Pim\Bundle\CatalogBundle\Entity\Repository\ReferableEntityRepositoryInterface');
+        $repository->implement('Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface');
         $manager->getRepository('Object\\Class')->willReturn($repository);
         $repository->findByReference('foo')->shouldBeCalledTimes(1)->willReturn($object);
 

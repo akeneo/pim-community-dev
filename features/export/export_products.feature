@@ -42,7 +42,7 @@ Feature: Export products
     And I am logged in as "Julia"
     When I am on the "ecommerce_product_export" export job page
     And I launch the export job
-    And I wait for the job to finish
+    And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
     sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;name-de_DE;name-en_GB;name-en_US;name-fr_FR;number_in_stock-ecommerce;price-EUR;price-GBP;price-USD;release_date-ecommerce;size;thumbnail;washing_temperature;weight;enabled
@@ -51,7 +51,7 @@ Feature: Export products
     """
     When I am on the "tablet_product_export" export job page
     And I launch the export job
-    And I wait for the job to finish
+    And I wait for the "tablet_product_export" job to finish
     Then exported file of "tablet_product_export" should contain:
     """
     sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-tablet;description-en_GB-tablet;description-en_US-tablet;handmade;image;legend-en_GB;legend-en_US;manufacturer;material;name-en_GB;name-en_US;number_in_stock-tablet;price-EUR;price-GBP;price-USD;release_date-tablet;size;thumbnail;washing_temperature;weight;enabled
@@ -60,7 +60,7 @@ Feature: Export products
     """
     When I am on the "print_product_export" export job page
     And I launch the export job
-    And I wait for the job to finish
+    And I wait for the "print_product_export" job to finish
     Then exported file of "print_product_export" should contain:
     """
     sku;family;groups;categories;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-print;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;description-de_DE-print;description-en_US-print;handmade;image;legend-de_DE;legend-en_US;manufacturer;material;name-de_DE;name-en_US;number_in_stock-print;price-EUR;price-GBP;price-USD;release_date-print;size;thumbnail;washing_temperature;weight;enabled

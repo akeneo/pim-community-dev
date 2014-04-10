@@ -9,7 +9,7 @@ Feature: Upload and import products with media
     And I am logged in as "Julia"
     And I am on the "footwear_product_import" import job page
     When I upload and import the file "caterpillar_import.zip"
-    And I wait for the job to finish
+    And I wait for the "footwear_product_import" job to finish
     Then there should be 3 products
     And product "CAT-001" should be enabled
     And product "CAT-002" should be enabled

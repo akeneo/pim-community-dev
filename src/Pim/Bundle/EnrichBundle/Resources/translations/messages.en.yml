@@ -1,67 +1,65 @@
-# Entities
-attribute:        attribute
-attribute group:  attribute group
-category:         category
-tree:             tree
-channel:          channel
-currency:         currency
-family:           family
-locale:           locale
-product:          product
-group:            group
-variant group:    variant group
-association type: association type
-group type:       group type
-
-# Page header titles
+# Entity and page header titles
 attribute:
+    title:    attribute
     overview: attribute overview
     create:   create attribute
     edit:     edit attribute
 attribute group:
+    title:    attribute group
     overview: attribute group overview
     create:   create attribute group
     edit:     edit attribute group
 category:
+    title:    category
     overview: category overview
     create:   create category
     edit:     edit category
 tree:
+    title:    tree
     create:   create tree
     edit:     edit tree
 channel:
+    title:    channel
     overview: channel overview
     create:   create channel
     edit:     edit channel
 currency:
+    title:    currency
     overview: currency overview
     create:   create currency
     edit:     edit currency
 family:
+    title:    family
     overview: family overview
     create:   create family
     edit:     edit family
 locale:
+    title:    locale
     overview: locale overview
     create:   create locale
     edit:     edit locale
 product:
+    title:    product
     overview: product overview
     create:   create product
     edit:     edit product
 group:
+    title:    group
     overview: group overview
     create:   create group
     edit:     edit group
 group type:
+    title:    group type
     overview: group type overview
     create:   create group type
     edit:     edit group type
 variant group:
+    title:    variant group
     overview: variant group overview
     create:   create variant group
     edit:     edit variant group
 association type:
+    title:    association type
     overview: association type overview
     create:   create association type
     edit:     edit association type
@@ -226,6 +224,7 @@ info:
 
 # Labels for channel colors
 color:
+    title:   Color
     gray:    Gray
     white:   White
     yellow:  Yellow
@@ -284,12 +283,16 @@ Available locales:             Available locales
 Locale specific:               Locale specific
 default:                       Default
 Axis:                          Axis
-"Add attributes":              "Add attributes"
-"Translate from":              "Translate from"
-Yes:                           "Yes"
-No:                            "No"
+Add attributes:                Add attributes
+Translate from:                Translate from
+Yes:                           Yes
+No:                            No
 Close:                         Close
-"Choose a color":              "Choose a color"
+Choose a color:                Choose a color
+Search:                        Search
+Choose the attribute type:     Choose the attribute type
+Drop a file or click here:     Drop a file or click here
+Drop an image or click here:   Drop an image or click here
 
 Create:               Create
 Cancel:               Cancel
@@ -498,7 +501,9 @@ Products: Products
 # ACLs
 pim_enrich:
     acl:
-        locale.index: List locales
+        locale:
+            index:  List locales
+            access: Access to locales
         currency:
             index: List currencies
             toggle: Toggle currencies
@@ -529,6 +534,7 @@ pim_enrich:
             edit: Edit a channel
             remove: Remove a channel
         family:
+            index: List families
             create: Create a family
             edit: Edit a family
             remove: Remove a family
@@ -654,7 +660,6 @@ oro.locale:
             county: "county"
             area: "area"
             prefecture: "prefecture"
-            do_si: "do_si"
             department: "department"
             district: "district"
             province: "province"

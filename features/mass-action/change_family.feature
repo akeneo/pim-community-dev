@@ -31,6 +31,12 @@ Feature: Change family of many products at once
     And I choose the "Change the family of products" operation
     And I change the Family to "None"
     When I move on to the next step
-    Then the product "coffee" should have no family
-    And the product "hamburger" should have no family
-    And the product "jeans" should have no family
+    Then the row "coffee" should contain:
+      | column | value |
+      | family |       |
+    Then the row "hamburger" should contain:
+      | column | value |
+      | family |       |
+    Then the row "jeans" should contain:
+      | column | value |
+      | family |       |

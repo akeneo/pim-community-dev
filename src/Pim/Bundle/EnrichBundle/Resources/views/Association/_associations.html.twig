@@ -27,7 +27,7 @@
                             name:          'association-product-grid',
                             appendField:   'appendProducts',
                             removeField:   'removeProducts',
-                            paramName  :   'associationType',
+                            paramName:     'associationType',
                             getParamValue: function(associationId) {
                                 return associationId;
                             }
@@ -36,9 +36,10 @@
                             name:          'association-group-grid',
                             appendField:   'appendGroups',
                             removeField:   'removeGroups',
-                            paramName  :   'associatedIds',
+                            paramName:     'associatedIds',
                             getParamValue: function(associationId) {
-                                return $('#association-link-' + associationId).data('associated-group-ids').split(',');
+                                var ids = $('#association-link-' + associationId).data('associated-group-ids');
+                                return ids ? String(ids).split(',') : [];
                             }
                         }
                     };

@@ -13,7 +13,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\GroupType;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -682,32 +681,6 @@ class FixturesContext extends RawMinkContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following attribute requirements:$/
-     */
-    public function theFollowingAttributeRequirements(TableNode $table)
-    {
-        foreach ($table->getHash() as $data) {
-            $requirement = new AttributeRequirement();
-
-            $attribute = $this->getAttribute($data['attribute']);
-            $channel   = $this->getChannel($data['scope']);
-            $family    = $this->getFamily($data['family']);
-
-            $requirement->setAttribute($attribute);
-            $requirement->setChannel($channel);
-            $requirement->setFamily($family);
-
-            $requirement->setRequired($data['required'] === 'yes');
-
-            $this->persist($requirement, false);
-        }
-
-        $this->flush();
-    }
-
-    /**
-     * @param TableNode $table
-     *
      * @Given /^the following product groups?:$/
      */
     public function theFollowingProductGroups(TableNode $table)
@@ -818,8 +791,6 @@ class FixturesContext extends RawMinkContext
 
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
-                $this->refresh($productPrice);
-
                 assertEquals($price['amount'], $productPrice->getData());
             }
         }
@@ -1215,8 +1186,6 @@ class FixturesContext extends RawMinkContext
             );
         }
 
-        $this->refresh($value);
-
         return $value;
     }
 
@@ -1409,8 +1378,17 @@ class FixturesContext extends RawMinkContext
 
         $categories = $this->loadFixture('categories', $data);
 
+        /**
+         * When using ODM, one must persist and flush category without product
+         * before adding and persisting products inside it
+         */
         foreach ($categories as $category) {
-            $this->persist($category);
+            $products = $category->getProducts();
+            $this->persist($category, true);
+            foreach ($products as $product) {
+                $product->addCategory($category);
+                $this->flush($product);
+            }
         }
 
         return reset($categories);
@@ -1483,15 +1461,16 @@ class FixturesContext extends RawMinkContext
             $group->addAttribute($attribute);
         }
 
+        $this->persist($group);
+        $this->flush($group);
+
         foreach ($products as $sku) {
             if (!empty($sku)) {
                 $product = $this->getProduct($sku);
-                $group->addProduct($product);
                 $product->addGroup($group);
+                $this->flush($product);
             }
         }
-
-        $this->persist($group);
     }
 
     /**
@@ -1673,16 +1652,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * Flush
-     */
-    private function flush()
-    {
-        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
-            $manager->flush();
-        }
-    }
-
-    /**
      * @return \Doctrine\ORM\EntityManager
      */
     private function getEntityManager()
@@ -1771,7 +1740,9 @@ class FixturesContext extends RawMinkContext
      */
     private function refresh($object)
     {
-        $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+        if (is_object($object)) {
+            $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
+        }
     }
 
     /**
@@ -1784,7 +1755,7 @@ class FixturesContext extends RawMinkContext
         $manager->persist($object);
 
         if ($flush) {
-            $manager->flush();
+            $manager->flush($object);
         }
     }
 
@@ -1798,6 +1769,31 @@ class FixturesContext extends RawMinkContext
         $manager->remove($object);
 
         if ($flush) {
+            $manager->flush($object);
+        }
+    }
+
+    /**
+     * @param object $object
+     *
+     * @return null
+     */
+    private function flush($object = null)
+    {
+        if (!$object) {
+            return $this->flushAll();
+        }
+
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
+        $manager->flush($object);
+    }
+
+    /**
+     * Flush all managers
+     */
+    private function flushAll()
+    {
+        foreach ($this->getSmartRegistry()->getManagers() as $manager) {
             $manager->flush();
         }
     }

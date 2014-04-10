@@ -13,7 +13,7 @@ Feature: Display last operations widget
     And I should see "No operations found"
     When I am on the "footwear_category_export" export job page
     And I launch the export job
-    And I wait for the job to finish
+    And I wait for the "footwear_category_export" job to finish
     When I am on the dashboard page
     Then I should see "Last operations"
     And I should see "Export Footwear category export Completed"

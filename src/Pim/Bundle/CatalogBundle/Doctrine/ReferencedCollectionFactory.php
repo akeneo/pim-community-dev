@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Factory of referenced collection
@@ -13,15 +14,15 @@ use Doctrine\Common\Persistence\ObjectManager;
  */
 class ReferencedCollectionFactory
 {
-    /** @var ObjectManager */
-    protected $objectManager;
+    /** @var ManagerRegistry */
+    protected $registry;
 
     /**
-     * @param ObjectManager $objectManager
+     * @param ManagerRegistry $registry
      */
-    public function __construct(ObjectManager $objectManager)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->objectManager = $objectManager;
+        $this->registry = $registry;
     }
 
     /**
@@ -29,10 +30,11 @@ class ReferencedCollectionFactory
      *
      * @param string $entityClass
      * @param array  $identifiers
+     * @param object $document
      *
      * @return ReferencedCollection
      */
-    public function create($entityClass, $identifiers)
+    public function create($entityClass, $identifiers, $document)
     {
         if (null === $identifiers) {
             $identifiers = [];
@@ -47,10 +49,27 @@ class ReferencedCollectionFactory
             );
         }
 
-        return new ReferencedCollection(
-            $entityClass,
-            $identifiers,
-            $this->objectManager
-        );
+        $coll = new ReferencedCollection($entityClass, $identifiers, $this->registry);
+        $coll->setOwner($document);
+
+        return $coll;
+    }
+
+    /**
+     * Create a reference collection from an already existed collection
+     *
+     * @param string     $entityClass
+     * @param object     $document
+     * @param Collection $collection
+     *
+     * @return ReferencedCollection
+     */
+    public function createFromCollection($entityClass, $document, Collection $collection)
+    {
+        $coll = new ReferencedCollection($entityClass, [], $this->registry);
+        $coll->setOwner($document);
+        $coll->populate($collection);
+
+        return $coll;
     }
 }

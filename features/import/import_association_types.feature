@@ -21,7 +21,7 @@ Feature: Import association types
       | filePath | %file to import% |
     When I am on the "acme_association_type_import" import job page
     And I launch the import job
-    And I wait for the job to finish
+    And I wait for the "acme_association_type_import" job to finish
     Then there should be the following association types:
       | code    | label-en_US | label-fr_FR      |
       | default |             |                  |

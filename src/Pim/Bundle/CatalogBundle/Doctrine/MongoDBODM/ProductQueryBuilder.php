@@ -54,6 +54,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function getQueryBuilder()
     {
+        if (!$this->qb) {
+            throw new \LogicException('Query builder must be configured');
+        }
+
         return $this->qb;
     }
 
@@ -77,7 +81,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->context);
+        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
         $filter->addAttributeFilter($attribute, $operator, $value);
 
         return $this;
@@ -89,10 +93,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $customFilters = [
+            'id'            => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
             'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
             'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+            'groupIds'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
             'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
         ];
 
@@ -102,7 +107,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
 
-        $filter = new $filterClass($this->qb, $this->context);
+        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
         $filter->addFieldFilter($field, $operator, $value);
 
         return $this;
@@ -122,7 +127,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->context);
+        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
         $sorter->addAttributeSorter($attribute, $direction);
 
         return $this;
@@ -146,7 +151,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
 
-        $sorter = new $sorterClass($this->qb, $this->context);
+        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
         $sorter->addFieldSorter($field, $direction);
 
         return $this;

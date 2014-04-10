@@ -4,7 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 /**
  * Product family sorter
@@ -33,7 +33,8 @@ class FamilySorter implements SorterInterface
      */
     public function apply(DatasourceInterface $datasource, $field, $direction)
     {
-        $qb = $datasource->getQueryBuilder();
-        $this->repository->applySorterByField($qb, 'family', $direction);
+        $qb  = $datasource->getQueryBuilder();
+        $pqb = $this->repository->getProductQueryBuilder($qb);
+        $pqb->addFieldSorter('family', $direction);
     }
 }

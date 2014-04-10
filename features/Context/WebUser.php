@@ -13,6 +13,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Behat\Mink\Element\Element;
+use Behat\Behat\Exception\BehaviorException;
 
 /**
  * Context of the website
@@ -1156,11 +1157,60 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @When /^I wait for the job to finish$/
+     * @param string $code
+     *
+     * @When /^I wait for the "([^"]*)" job to finish$/
      */
-    public function iWaitForTheJobToFinish()
+    public function iWaitForTheJobToFinish($code)
     {
-        $this->wait(120000, '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())');
+        $condition = '$("#status").length && /(COMPLETED|STOPPED|FAILED)$/.test($("#status").text().trim())';
+
+        try {
+            $this->wait(120000, $condition);
+        } catch (BehaviorException $e) {
+            $jobInstance  = $this->getFixturesContext()->getJobInstance($code);
+            $jobExecution = $jobInstance->getJobExecutions()->first();
+            $log = $jobExecution->getLogFile();
+
+            if (is_file($log)) {
+                $dir = getenv('WORKSPACE');
+                $id  = getenv('BUILD_ID');
+
+                if (false !== $dir && false !== $id) {
+                    $target = sprintf('%s/../builds/%s/batch_log/%s', $dir, $id, pathinfo($log, PATHINFO_BASENAME));
+
+                    $fs = new \Symfony\Component\Filesystem\Filesystem();
+                    $fs->copy($log, $target);
+
+                    $log = sprintf(
+                        'http://ci.akeneo.com/screenshots/%s/%s/batch_log/%s',
+                        getenv('JOB_NAME'),
+                        $id,
+                        pathinfo($log, PATHINFO_BASENAME)
+                    );
+                }
+
+                $message = sprintf('Job "%s" failed, log available at %s', $code, $log);
+                $this->getMainContext()->addErrorMessage($message);
+            } else {
+                $this->getMainContext()->addErrorMessage(sprintf('Job "%s" failed, no log available', $code));
+            }
+
+            // Get and print the normalized jobexecution to ease debugging
+            $this->getSession()->executeScript(
+                sprintf(
+                    '$.get("/spread/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    $jobInstance->getType(),
+                    $jobExecution->getId()
+                )
+            );
+            $this->wait(2000);
+            $executionLog = $this->getSession()->evaluateScript("return window.executionLog;");
+            $this->getMainContext()->addErrorMessage(sprintf('Job execution: %s', print_r($executionLog, true)));
+
+            // Call the wait method again to trigger timeout failure
+            $this->wait(100, $condition);
+        }
     }
 
     /**
@@ -1221,29 +1271,6 @@ class WebUser extends RawMinkContext
         }
 
         copy($original, $target);
-    }
-
-    /**
-     * @param integer $original
-     * @param integer $target
-     * @param string  $fileName
-     *
-     * @Given /^I move the row (\d+) to row (\d+) in the file "([^"]*)"$/
-     */
-    public function iMoveTheRowToRowInTheFile($original, $target, $fileName)
-    {
-        if (!file_exists($fileName)) {
-            throw $this->createExpectationException(sprintf('File %s does not exist.', $fileName));
-        }
-
-        $file = file($fileName);
-
-        $row = $file[$original];
-        unset($file[$original]);
-
-        array_splice($file, $target, 0, $row);
-
-        file_put_contents($fileName, $file);
     }
 
     /**
@@ -1525,7 +1552,6 @@ class WebUser extends RawMinkContext
             $actualCount,
             sprintf('Expecting to see %d rows, found %d', $expectedCount, $actualCount)
         );
-
 
         if (md5(json_encode($actualLines[0])) !== md5(json_encode($expectedLines[0]))) {
             throw new \Exception(

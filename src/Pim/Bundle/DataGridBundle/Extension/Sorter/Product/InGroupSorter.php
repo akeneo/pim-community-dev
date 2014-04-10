@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
 /**
  * Product in group sorter
@@ -49,7 +49,7 @@ class InGroupSorter implements SorterInterface
         }
 
         $field = 'in_group_'.$groupId;
-
-        $this->repository->applySorterByField($qb, $field, $direction);
+        $pqb = $this->repository->getProductQueryBuilder($qb);
+        $pqb->addFieldSorter($field, $direction);
     }
 }

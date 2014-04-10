@@ -7,6 +7,7 @@ use Symfony\Component\Yaml\Parser;
 use Behat\Symfony2Extension\Context\KernelAwareInterface;
 use Behat\MinkExtension\Context\MinkContext;
 use Behat\Behat\Exception\BehaviorException;
+use Behat\Behat\Event\StepEvent;
 use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Driver\Selenium2Driver;
 use Behat\Gherkin\Node\PyStringNode;
@@ -22,6 +23,8 @@ use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
     private $kernel;
+
+    private static $errorMessages = [];
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
@@ -85,6 +88,104 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     }
 
     /**
+     * Take a screenshot when a step fails
+     *
+     * @param StepEvent $event
+     *
+     * @AfterStep
+     */
+    public function takeScreenshotAfterFailedStep(StepEvent $event)
+    {
+        if ($event->getResult() === StepEvent::FAILED) {
+            $driver = $this->getSession()->getDriver();
+            if ($driver instanceof Selenium2Driver) {
+                $dir = getenv('WORKSPACE');
+                $id  = getenv('BUILD_ID');
+                if (false !== $dir && false !== $id) {
+                    $dir = sprintf('%s/../builds/%s/screenshots', $dir, $id);
+                } else {
+                    $dir = '/tmp/behat/screenshots';
+                }
+
+                $lineNum  = $event->getStep()->getLine();
+                $filename = strstr($event->getLogicalParent()->getFile(), 'features/');
+                $filename = sprintf('%s.%d.png', str_replace('/', '__', $filename), $lineNum);
+                $path     = sprintf('%s/%s', $dir, $filename);
+
+                $fs = new \Symfony\Component\Filesystem\Filesystem();
+                $fs->dumpFile($path, $driver->getScreenshot());
+
+                if ($id) {
+                    $path = sprintf(
+                        'http://ci.akeneo.com/screenshots/%s/%s/screenshots/%s',
+                        getenv('JOB_NAME'),
+                        $id,
+                        $filename
+                    );
+                }
+
+                $this->addErrorMessage("Step {$lineNum} failed, screenshot available at {$path}");
+            }
+        }
+    }
+
+    /**
+     * Print error messages
+     *
+     * @AfterFeature
+     */
+    public static function printErrorMessages()
+    {
+        if (!empty(self::$errorMessages)) {
+            echo "\n\033[1;31mAttention!\033[0m\n\n";
+
+            foreach (self::$errorMessages as $message) {
+                echo $message . "\n";
+            }
+
+            self::$errorMessages = [];
+        }
+    }
+
+    /**
+     * Add an error message
+     *
+     * @param string $message
+     */
+    public function addErrorMessage($message)
+    {
+        self::$errorMessages[] = $message;
+    }
+
+    /**
+     * Listen to JS errors
+     *
+     * @BeforeStep
+     */
+    public function listenToErrors()
+    {
+        $script = "if (typeof $ != 'undefined') { window.onerror=function (err) { $('body').attr('JSerr', err); } }";
+
+        $this->executeScript($script);
+    }
+
+    /**
+     * Collect and log JS errors
+     *
+     * @AfterStep
+     */
+    public function collectErrors()
+    {
+        if ($this->getSession()->getDriver() instanceof Selenium2Driver) {
+            $script = "return typeof $ != 'undefined' ? $('body').attr('JSerr') || false : false;";
+            $result = $this->getSession()->evaluateScript($script);
+            if ($result) {
+                $this->addErrorMessage("WARNING: Encountered a JS error: '{$result}'");
+            }
+        }
+    }
+
+    /**
      * Sets Kernel instance.
      *
      * @param KernelInterface $kernel HttpKernel instance
@@ -113,7 +214,6 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
     {
         return $this->getContainer()->get('doctrine')->getManager();
     }
-
 
     /**
      * @return ObjectManager

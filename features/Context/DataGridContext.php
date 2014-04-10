@@ -46,8 +46,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->wait();
         if ($count > 10) {
-            $this->datagrid->changePageSize(100);
-            $this->wait();
+            $this->iChangePageSize(100);
         }
 
         assertEquals(
@@ -129,7 +128,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @throws ExpectationException
      */
-    protected function assertColumnContainsValue($row, $column, $expectation)
+    public function assertColumnContainsValue($row, $column, $expectation)
     {
         $column = strtoupper($column);
         $actual = $this->datagrid->getColumnValue($column, $row);
@@ -320,6 +319,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $size
+     *
+     * @When /^I change (?:the) page size to (.*)$/
+     */
+    public function iChangePageSize($size)
+    {
+        $this->datagrid->changePageSize((int) $size);
+        $this->wait();
+    }
+
+    /**
      * @param string $columnName
      * @param string $order
      *
@@ -370,8 +380,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $elements = $this->getMainContext()->listToArray($elements);
 
         if (count($elements) > 10) {
-            $this->datagrid->changePageSize(100);
-            $this->wait();
+            $this->iChangePageSize(100);
         }
 
         foreach ($elements as $element) {
@@ -567,6 +576,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassEdit($entities)
     {
         return [
+            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-edit button')
         ];
@@ -627,6 +637,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iMassDelete($entities)
     {
         return [
+            new Step\Then('I change the page size to 100'),
             new Step\Then(sprintf('I select rows %s', $entities)),
             new Step\Then('I press mass-delete button')
         ];

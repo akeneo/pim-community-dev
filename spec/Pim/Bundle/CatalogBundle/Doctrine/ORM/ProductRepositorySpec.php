@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\Entity\Repository;
+namespace spec\Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
@@ -16,7 +16,7 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_must_implements_product_repository_interface()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductRepositoryInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
 
     function it_should_throw_an_exception_if_try_to_delete_without_product_ids()
