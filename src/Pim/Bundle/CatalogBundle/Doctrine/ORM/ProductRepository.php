@@ -705,22 +705,6 @@ class ProductRepository extends EntityRepository implements
         return $qb;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function deleteFromIds(array $ids)
-    {
-        if (empty($ids)) {
-            throw new \LogicException('No products to remove');
-        }
-
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->delete($this->_entityName, 'p')
-            ->where($qb->expr()->in('p.id', $ids));
-
-        return $qb->getQuery()->execute();
-    }
 
     /**
      * {@inheritdoc}

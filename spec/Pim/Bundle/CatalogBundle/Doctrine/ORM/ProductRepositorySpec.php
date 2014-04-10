@@ -18,9 +18,4 @@ class ProductRepositorySpec extends ObjectBehavior
     {
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
-
-    function it_should_throw_an_exception_if_try_to_delete_without_product_ids()
-    {
-        $this->shouldThrow(new \LogicException('No products to remove'))->duringDeleteFromIds(array());
-    }
 }

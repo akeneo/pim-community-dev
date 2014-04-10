@@ -72,6 +72,23 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /**
      * {@inheritdoc}
      */
+    public function deleteFromIds(array $ids)
+    {
+        if (empty($ids)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        $qb = $this->em->createQueryBuilder();
+        $qb
+            ->delete($this->_entityName, 'p')
+            ->where($qb->expr()->in('p.id', $ids));
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findCommonAttributeIds(array $productIds)
     {
         // Prepare SQL query
