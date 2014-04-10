@@ -158,7 +158,7 @@ Feature: Edit common attributes of many products at once
     And the english name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
-  Scenario: Succesfullu mass edit scoped product values
+  Scenario: Succesfully mass edit scoped product values
     Given I set product "pump" family to "boots"
     When I mass-edit products boots and pump
     And I choose the "Edit attributes" operation
