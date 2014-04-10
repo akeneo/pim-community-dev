@@ -832,10 +832,10 @@ class FixturesContext extends RawMinkContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media = $productValue->getMedia();
-            $this->refresh($media);
             assertEquals($filename, $media->getOriginalFilename());
         }
     }
