@@ -21,7 +21,6 @@ interface ProductMassActionRepositoryInterface
      */
     public function applyMassActionParameters($qb, $inset, $values);
 
- 
     /**
      * Find all common attribute ids linked to a family or with values from a list of product ids
      *

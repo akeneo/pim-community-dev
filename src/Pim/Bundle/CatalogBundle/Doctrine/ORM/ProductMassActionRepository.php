@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Mass action repository for product entities
@@ -22,8 +21,8 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     protected $em;
 
     /**
-     * @param EntityManager    $em
-     * @param string           $entityName
+     * @param EntityManager $em
+     * @param string        $entityName
      */
     public function __construct(EntityManager $em, $entityName)
     {
@@ -85,7 +84,6 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             ]
         );
         $commonAttSql = QueryBuilderUtility::prepareDBALQuery($this->em, $this->entityName, $commonAttSql);
-
 
         // Execute SQL query
         $stmt = $this->em->getConnection()->prepare($commonAttSql);

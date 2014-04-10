@@ -15,7 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Product repository
