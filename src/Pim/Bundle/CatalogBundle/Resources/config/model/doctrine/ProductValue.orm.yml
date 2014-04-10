@@ -105,6 +105,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         media:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Media
             cascade:
+                - remove
                 - persist
                 - refresh
             inversedBy: value
@@ -115,6 +116,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         metric:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
             cascade:
+                - remove
                 - persist
                 - refresh
             joinColumns:
