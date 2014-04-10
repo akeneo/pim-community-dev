@@ -78,6 +78,25 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function deleteFromIds(array $ids)
+    {
+        if (empty($ids)) {
+            throw new \LogicException('No products to remove');
+        }
+
+        $qb = $this->dm->createQueryBuilder($this->documentName);
+        $qb
+            ->remove()
+            ->field('_id')->in($ids);
+
+        $result = $qb->getQuery()->execute();
+
+        return $result['n'];
+    }
+
+    /**
      * Find all common attribute ids with values from a list of product ids
      * Only exists for ODM repository
      *
@@ -117,7 +136,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
      */
     protected function findFamiliesFromProductIds(array $productIds)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->dm->createQueryBuilder($this->documentName);
         $qb
             ->field('_id')->in($productIds)
             ->distinct('family')

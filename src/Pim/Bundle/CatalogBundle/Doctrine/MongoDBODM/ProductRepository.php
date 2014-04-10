@@ -751,25 +751,6 @@ class ProductRepository extends DocumentRepository implements
     /**
      * {@inheritdoc}
      */
-    public function deleteFromIds(array $ids)
-    {
-        if (empty($ids)) {
-            throw new \LogicException('No products to remove');
-        }
-
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->remove()
-            ->field('_id')->in($ids);
-
-        $result = $qb->getQuery()->execute();
-
-        return $result['n'];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getAvailableAttributeIdsToExport(array $productIds)
     {
         $qb = $this->createQueryBuilder('p');
