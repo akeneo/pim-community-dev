@@ -114,13 +114,15 @@ class IsAssociatedFilter extends BooleanFilter
      */
     protected function getAssociatedProductIds(AbstractProduct $product, AssociationType $type)
     {
-        $association = $product->getAssociationForType($type);
-        $products    = $association->getProducts();
         $productIds  = [];
-        foreach ($products as $product) {
-            $productIds[]= $product->getId();
+        $association = $product->getAssociationForType($type);
+
+        if ($association) {
+            foreach ($association->getProducts() as $product) {
+                $productIds[] = $product->getId();
+            }
         }
 
-        return $productIds;
+        return $productIds ?: [0];
     }
 }
