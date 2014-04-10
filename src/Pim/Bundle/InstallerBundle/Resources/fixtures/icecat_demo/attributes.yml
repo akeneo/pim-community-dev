@@ -80,35 +80,35 @@ attributes:
         useableAsGridFilter: true
         sortOrder: 8
         options:
-            210-x-1219-mm:
-                code: 210-x-1219-mm
+            210_x_1219_mm:
+                code: 210_x_1219_mm
                 labels: { fr_FR: '210 x 1219 mm', en_US: '210 x 1219 mm', de_DE: '210 x 1219 mm' }
-            215-x-355-mm:
-                code: 215-x-355-mm
+            215_x_355_mm:
+                code: 215_x_355_mm
                 labels: { fr_FR: '215 x 355 mm', en_US: '215 x 355 mm', de_DE: '215 x 355 mm' }
-            216-x-406-4-mm:
-                code: 216-x-406-4-mm
+            216_x_406_4_mm:
+                code: 216_x_406_4_mm
                 labels: { fr_FR: '216 x 406.4 mm', en_US: '216 x 406.4 mm', de_DE: '216 x 406.4 mm' }
-            216-x-432-mm:
-                code: 216-x-432-mm
+            216_x_432_mm:
+                code: 216_x_432_mm
                 labels: { fr_FR: '216 x 432 mm', en_US: '216 x 432 mm', de_DE: '216 x 432 mm' }
-            297-x-432-mm:
-                code: 297-x-432-mm
+            297_x_432_mm:
+                code: 297_x_432_mm
                 labels: { fr_FR: '297 x 432 mm', en_US: '297 x 432 mm', de_DE: '297 x 432 mm' }
-            a3-297-x-420-mm-:
-                code: a3-297-x-420-mm-
+            a3_297_x_420_mm_:
+                code: a3_297_x_420_mm_
                 labels: { fr_FR: 'A3 (297 x 420 mm)', en_US: 'A3 (297 x 420 mm)', de_DE: 'A3 (297 x 420 mm)' }
-            a4-210-x-297-mm-:
-                code: a4-210-x-297-mm-
+            a4_210_x_297_mm_:
+                code: a4_210_x_297_mm_
                 labels: { fr_FR: 'A4 (210 x 297 mm)', en_US: 'A4 (210 x 297 mm)', de_DE: 'A4 (210 x 297 mm)' }
-            a4-letter-216-x-297-mm-:
-                code: a4-letter-216-x-297-mm-
+            a4_letter_216_x_297_mm_:
+                code: a4_letter_216_x_297_mm_
                 labels: { fr_FR: 'A4 / Letter (216 x 297 mm)', en_US: 'A4 / Letter (216 x 297 mm)', de_DE: 'A4 / Letter (216 x 297 mm)' }
-            din-a3-310-x-437-mm-:
-                code: din-a3-310-x-437-mm-
+            din_a3_310_x_437_mm_:
+                code: din_a3_310_x_437_mm_
                 labels: { fr_FR: 'DIN A3 (310 x 437 mm)', en_US: 'DIN A3 (310 x 437 mm)', de_DE: 'DIN A3 (310 x 437 mm)' }
-            legal-216-x-356-mm-:
-                code: legal-216-x-356-mm-
+            legal_216_x_356_mm_:
+                code: legal_216_x_356_mm_
                 labels: { fr_FR: 'Legal (216 x 356 mm)', en_US: 'Legal (216 x 356 mm)', de_DE: 'Legal (216 x 356 mm)' }
     sensor_type:
         labels:
@@ -176,14 +176,14 @@ attributes:
             milc:
                 code: milc
                 labels: { fr_FR: MILC, en_US: MILC, de_DE: MILC }
-            milc-body:
-                code: milc-body
+            milc_body:
+                code: milc_body
                 labels: { fr_FR: 'MILC Body', en_US: 'MILC Body', de_DE: 'MILC Body' }
-            slr-body:
-                code: slr-body
+            slr_body:
+                code: slr_body
                 labels: { fr_FR: 'SLR Body', en_US: 'SLR Body', de_DE: 'SLR Body' }
-            slr-kit:
-                code: slr-kit
+            slr_kit:
+                code: slr_kit
                 labels: { fr_FR: 'SLR Kit', en_US: 'SLR Kit', de_DE: 'SLR Kit' }
     thd:
         labels:
@@ -217,8 +217,8 @@ attributes:
         useableAsGridFilter: true
         sortOrder: 16
         options:
-            6-3mm:
-                code: 6-3mm
+            6_3mm:
+                code: 6_3mm
                 labels: { fr_FR: 6.3mm, en_US: 6.3mm, de_DE: 6.3mm }
     maximum_video_resolution:
         labels:
@@ -230,35 +230,35 @@ attributes:
         useableAsGridFilter: true
         sortOrder: 17
         options:
-            1280-x-1024:
-                code: 1280-x-1024
+            1280_x_1024:
+                code: 1280_x_1024
                 labels: { fr_FR: '1280 x 1024', en_US: '1280 x 1024', de_DE: '1280 x 1024' }
-            1280-x-720:
-                code: 1280-x-720
+            1280_x_720:
+                code: 1280_x_720
                 labels: { fr_FR: '1280 x 720', en_US: '1280 x 720', de_DE: '1280 x 720' }
-            1280-x-960:
-                code: 1280-x-960
+            1280_x_960:
+                code: 1280_x_960
                 labels: { fr_FR: '1280 x 960', en_US: '1280 x 960', de_DE: '1280 x 960' }
-            1600-x-1200:
-                code: 1600-x-1200
+            1600_x_1200:
+                code: 1600_x_1200
                 labels: { fr_FR: '1600 x 1200', en_US: '1600 x 1200', de_DE: '1600 x 1200' }
-            1920-x-1080:
-                code: 1920-x-1080
+            1920_x_1080:
+                code: 1920_x_1080
                 labels: { fr_FR: '1920 x 1080', en_US: '1920 x 1080', de_DE: '1920 x 1080' }
-            2560-x-1920:
-                code: 2560-x-1920
+            2560_x_1920:
+                code: 2560_x_1920
                 labels: { fr_FR: '2560 x 1920', en_US: '2560 x 1920', de_DE: '2560 x 1920' }
-            2560-x-2048:
-                code: 2560-x-2048
+            2560_x_2048:
+                code: 2560_x_2048
                 labels: { fr_FR: '2560 x 2048', en_US: '2560 x 2048', de_DE: '2560 x 2048' }
-            320-x-240:
-                code: 320-x-240
+            320_x_240:
+                code: 320_x_240
                 labels: { fr_FR: '320 x 240', en_US: '320 x 240', de_DE: '320 x 240' }
-            640-x-480:
-                code: 640-x-480
+            640_x_480:
+                code: 640_x_480
                 labels: { fr_FR: '640 x 480', en_US: '640 x 480', de_DE: '640 x 480' }
-            800-x-600:
-                code: 800-x-600
+            800_x_600:
+                code: 800_x_600
                 labels: { fr_FR: '800 x 600', en_US: '800 x 600', de_DE: '800 x 600' }
     maximum_frame_rate:
         labels:

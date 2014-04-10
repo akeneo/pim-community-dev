@@ -28,6 +28,7 @@
                     </td>
                     <td>
                         {{ form_row(option.code) }}
+                        {{ form_errors(option.code) }}
                     </td>
                     {% for locale in locales %}
                     <td>
@@ -36,6 +37,7 @@
                                 {{ form_row(value.id) }}
                                 {{ form_row(value.value) }}
                                 {{ form_row(value.locale) }}
+                                {{ form_errors(value.value) }}
                             {% endif %}
                         {% endfor %}
                     </td>

@@ -70,7 +70,7 @@ class AttributeHandler
 
         if ($this->request->isMethod('POST')) {
             $oldOptions = clone $entity->getOptions();
-            $this->form->bind($this->request);
+            $this->form->submit($this->request);
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity, $oldOptions);
