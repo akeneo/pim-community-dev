@@ -785,6 +785,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
