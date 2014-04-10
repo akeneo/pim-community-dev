@@ -105,7 +105,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         media:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Media
             cascade:
-                - all
+                - remove
+                - persist
+                - refresh
             inversedBy: value
             joinColumns:
                 media_id:
@@ -114,7 +116,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         metric:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
             cascade:
-                - all
+                - remove
+                - persist
+                - refresh
             joinColumns:
                 metric_id:
                     referencedColumnName: id
@@ -123,7 +127,9 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         prices:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPrice
             cascade:
-                - all
+                - remove
+                - persist
+                - refresh
             mappedBy: value
             indexBy: currency
             orderBy:
