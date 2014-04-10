@@ -111,6 +111,18 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getMassActionRepository()
+    {
+        if (!$this->repository) {
+            $this->repository = $this->em->getRepository($this->getConfiguration('entity'));
+        }
+
+        return $this->repository;
+    }
+
+    /**
      * Get configuration
      *
      * @param string $key

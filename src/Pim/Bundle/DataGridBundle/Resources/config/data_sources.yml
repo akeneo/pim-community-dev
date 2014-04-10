@@ -16,5 +16,6 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pim_catalog.repository.product_mass_action'
         tags:
             - { name: oro_datagrid.datasource, type: pim_product }

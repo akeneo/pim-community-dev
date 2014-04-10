@@ -22,6 +22,13 @@ interface DatasourceInterface extends OroDatasourceInterface
     public function getRepository();
 
     /**
+     * Get repository
+     *
+     * @return mixed
+     */
+    public function getMassActionRepository();
+
+    /**
      * Set hydrator
      *
      * @param HydratorInterface $hydrator
