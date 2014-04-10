@@ -212,7 +212,12 @@ class AttributeType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(array('data_class' => $this->attributeClass));
+        $resolver->setDefaults(
+            [
+                'data_class' => $this->attributeClass,
+                'cascade_validation' => true
+            ]
+        );
     }
 
     /**

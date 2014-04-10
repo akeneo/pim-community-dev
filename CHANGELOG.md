@@ -33,6 +33,9 @@
 ## Bug Fixes
 - Prevent considering 0 as a null value when importing metric data
 
+## Bug Fixes
+- Ensured attribute option validation
+
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)
