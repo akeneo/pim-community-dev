@@ -77,7 +77,6 @@
 - Add a MassActionHandlerRegistry for mass action handlers services (works with handler alias)
 - Rename ProductDeleteMassActionHandler to DeleteMassActionHandler
 - Create MassActionHandlerInterface instead of using OroPlatform one
-- Add methods deleteFromIds and applyMassActionParameters in ProductRepository classes
 - Change MassActionDispatcher::dispatch parameters
 - Replace `@pim_datagrid.datasource.product.result_record.hydrator` by `@pim_datagrid.datasource.result_record.hydrator.product` and same for class parameter
 - Move mass action handlers to its own `Handler` directory
@@ -102,7 +101,8 @@
 - Move CatalogBundle\Model\ProductRepositoryInterface to CatalogBundle\Repository
 - Move CatalogBundle\Model\AssociationRepositoryInterface to CatalogBundle\Repository
 - Move CatalogBundle\Model\CompletenessRepositoryInterface to CatalogBundle\Repository
-- EditCommonAttributes class needs the ProductBuilder now
+- EditCommonAttributes class needs the ProductBuilder and ProductMassActionManager now
+- Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
 
 # 1.0.2
 ## Bug Fixes
