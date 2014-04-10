@@ -832,10 +832,10 @@ class FixturesContext extends RawMinkContext
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media = $productValue->getMedia();
-            $this->refresh($media);
             assertEquals($filename, $media->getOriginalFilename());
         }
     }
@@ -992,7 +992,6 @@ class FixturesContext extends RawMinkContext
     public function theCategoriesOfShouldBe($productCode, $categoryCodes)
     {
         $product = $this->getProduct($productCode);
-        $this->getSmartRegistry()->getManagerForClass(get_class($product))->refresh($product);
         $categories = $product->getCategories()->map(
             function ($category) {
                 return $category->getCode();
