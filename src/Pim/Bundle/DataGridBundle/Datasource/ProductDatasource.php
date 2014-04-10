@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
@@ -51,14 +52,22 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
     /** @var ProductRepositoryInterface $repository */
     protected $repository;
 
+    /** @var ProductMassActionRepositoryInterface $repository */
+    protected $massActionRepository;
+
     /**
-     * @param ObjectManager     $om
-     * @param HydratorInterface $hydrator
+     * @param ObjectManager                        $om
+     * @param HydratorInterface                    $hydrator
+     * @param ProductMassActionRepositoryInterface $massActionRepo
      */
-    public function __construct(ObjectManager $om, HydratorInterface $hydrator)
-    {
-        $this->om       = $om;
-        $this->hydrator = $hydrator;
+    public function __construct(
+        ObjectManager $om,
+        HydratorInterface $hydrator,
+        ProductMassActionRepositoryInterface $massActionRepo
+    ) {
+        $this->om                   = $om;
+        $this->hydrator             = $hydrator;
+        $this->massActionRepository = $massActionRepo;
     }
 
     /**
@@ -154,6 +163,14 @@ class ProductDatasource implements DatasourceInterface, ParameterizableInterface
         }
 
         return $this->repository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getMassActionRepository()
+    {
+        return $this->massActionRepository;
     }
 
     /**

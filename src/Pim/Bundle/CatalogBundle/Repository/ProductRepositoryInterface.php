@@ -155,33 +155,6 @@ interface ProductRepositoryInterface
     public function setProductQueryBuilder($productQB);
 
     /**
-     * Apply a filter by product ids
-     *
-     * @param mixed   $qb         query builder to update
-     * @param array   $productIds product ids
-     * @param boolean $include    true for in, false for not in
-     */
-    public function applyFilterByIds($qb, array $productIds, $include);
-
-    /**
-     * Delete a list of product ids
-     *
-     * @param integer[] $ids
-     *
-     * @throws \LogicException
-     */
-    public function deleteFromIds(array $ids);
-
-    /**
-     * Apply mass action parameters on query builder
-     *
-     * @param mixed   $qb
-     * @param boolean $inset
-     * @param array   $values
-     */
-    public function applyMassActionParameters($qb, $inset, $values);
-
-    /**
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds
@@ -200,12 +173,12 @@ interface ProductRepositoryInterface
      */
     public function getFullProducts(array $productIds, array $attributeIds = array());
 
-    /**
-     * Find all common attribute ids linked to a family or with values from a list of product ids
+   /**
+     * Apply a filter by product ids
      *
-     * @param array $productIds
-     *
-     * @return integer[]
+     * @param mixed   $qb         query builder to update
+     * @param array   $productIds product ids
+     * @param boolean $include    true for in, false for not in
      */
-    public function findCommonAttributeIds(array $productIds);
+    public function applyFilterByIds($qb, array $productIds, $include);
 }

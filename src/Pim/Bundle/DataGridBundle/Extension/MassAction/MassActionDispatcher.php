@@ -104,7 +104,7 @@ class MassActionDispatcher
     ) {
         $qb = $datagrid->getAcceptedDatasource()->getQueryBuilder();
 
-        $repository = $datagrid->getDatasource()->getRepository();
+        $repository = $datagrid->getDatasource()->getMassActionRepository();
         $repository->applyMassActionParameters($qb, $inset, $values);
 
         $handler = $this->getMassActionHandler($massAction);

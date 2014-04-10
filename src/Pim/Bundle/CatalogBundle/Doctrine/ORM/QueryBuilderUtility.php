@@ -30,4 +30,43 @@ class QueryBuilderUtility
         }
         $qb->setParameters($parameters);
     }
+
+    /**
+     * Replaces name of tables in DBAL queries
+     *
+     * @param EntityManager $em
+     * @param string        $entityName
+     * @param string        $sql
+     *
+     * @return string
+     */
+    public static function prepareDBALQuery($em, $entityName, $sql)
+    {
+        $productMetadata = $em->getClassMetadata($entityName);
+
+        $categoryMapping = $productMetadata->getAssociationMapping('categories');
+        $familyMapping   = $productMetadata->getAssociationMapping('family');
+        $valueMapping    = $productMetadata->getAssociationMapping('values');
+
+        $valueMetadata = $em->getClassMetadata($valueMapping['targetEntity']);
+
+        $attributeMapping  = $valueMetadata->getAssociationMapping('attribute');
+        $attributeMetadata = $em->getClassMetadata($attributeMapping['targetEntity']);
+
+        $familyMetadata = $em->getClassMetadata($familyMapping['targetEntity']);
+
+        $attributeFamMapping = $familyMetadata->getAssociationMapping('attributes');
+
+        return strtr(
+            $sql,
+            [
+                '%category_join_table%'    => $categoryMapping['joinTable']['name'],
+                '%product_table%'          => $productMetadata->getTableName(),
+                '%product_value_table%'    => $valueMetadata->getTableName(),
+                '%attribute_table%'        => $attributeMetadata->getTableName(),
+                '%family_table%'           => $familyMetadata->getTableName(),
+                '%family_attribute_table%' => $attributeFamMapping['joinTable']['name']
+            ]
+        );
+    }
 }

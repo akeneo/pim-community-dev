@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\PimCatalogBundle;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -42,6 +43,11 @@ class EditCommonAttributes extends AbstractMassEditAction
      * @var ProductManager
      */
     protected $productManager;
+
+    /**
+     * @var ProductMassActionManager
+     */
+    protected $massActionManager;
 
     /**
      * @var UserContext
@@ -82,18 +88,20 @@ class EditCommonAttributes extends AbstractMassEditAction
     /**
      * Constructor
      *
-     * @param ProductManager  $productManager
-     * @param UserContext     $userContext
-     * @param CurrencyManager $currencyManager
-     * @param CatalogContext  $catalogContext
-     * @param ProductBuilder  $productBuilder
+     * @param ProductManager           $productManager
+     * @param UserContext              $userContext
+     * @param CurrencyManager          $currencyManager
+     * @param CatalogContext           $catalogContext
+     * @param ProductBuilder           $productBuilder
+     * @param ProductMassActionManager $massActionManager
      */
     public function __construct(
         ProductManager $productManager,
         UserContext $userContext,
         CurrencyManager $currencyManager,
         CatalogContext $catalogContext,
-        ProductBuilder $productBuilder
+        ProductBuilder $productBuilder,
+        ProductMassActionManager $massActionManager
     ) {
         $this->productManager      = $productManager;
         $this->userContext         = $userContext;
@@ -102,6 +110,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->displayedAttributes = new ArrayCollection();
         $this->catalogContext      = $catalogContext;
         $this->productBuilder      = $productBuilder;
+        $this->massActionManager   = $massActionManager;
     }
 
     /**
@@ -266,7 +275,7 @@ class EditCommonAttributes extends AbstractMassEditAction
         $this->catalogContext->setLocaleCode($currentLocaleCode);
 
         // Get common attributes
-        $attributes = $this->productManager->findCommonAttributes($productIds);
+        $attributes = $this->massActionManager->findCommonAttributes($productIds);
 
         foreach ($attributes as $attribute) {
             $attribute->setLocale($currentLocaleCode);

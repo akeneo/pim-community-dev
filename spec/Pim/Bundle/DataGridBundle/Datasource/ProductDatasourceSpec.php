@@ -8,12 +8,13 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository;
 
 class ProductDatasourceSpec extends ObjectBehavior
 {
-    function let(ObjectManager $manager, HydratorInterface $hydrator)
+    function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo)
     {
-        $this->beConstructedWith($manager, $hydrator);
+        $this->beConstructedWith($manager, $hydrator, $massActionRepo);
     }
 
     function it_is_a_datasource()

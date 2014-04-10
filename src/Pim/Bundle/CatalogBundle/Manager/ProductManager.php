@@ -569,24 +569,4 @@ class ProductManager
     {
         return $this->getProductRepository()->valueExists($value);
     }
-
-    /**
-     * Find common attributes
-     * Common attributes are:
-     *   - not unique (and not identifier)
-     *   - without value AND link to family
-     *   - with value
-     *
-     * @param array $productIds
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\AbstractAttribute[]
-     */
-    public function findCommonAttributes(array $productIds)
-    {
-        $attributeIds = $this->getProductRepository()->findCommonAttributeIds($productIds);
-
-        return $this
-            ->getAttributeRepository()
-            ->findWithGroups(array_unique($attributeIds), array('unique' => 0));
-    }
 }

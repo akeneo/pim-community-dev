@@ -75,7 +75,7 @@ class DeleteMassActionHandler implements MassActionHandlerInterface
         $objectIds = $datasource->getResults();
 
         try {
-            $countRemoved = $datasource->getRepository()->deleteFromIds($objectIds);
+            $countRemoved = $datasource->getMassActionRepository()->deleteFromIds($objectIds);
         } catch (\Exception $e) {
             $errorMessage = $e->getMessage();
 

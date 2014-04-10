@@ -20,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 
 class EditCommonAttributesSpec extends ObjectBehavior
 {
@@ -32,7 +33,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         AttributeRepository $attributeRepository,
         ProductValue $productValue,
         CatalogContext $catalogContext,
-        ProductBuilder $productBuilder
+        ProductBuilder $productBuilder,
+        ProductMassActionManager $massActionManager
     ) {
         $en->getCode()->willReturn('en_US');
         $de->getCode()->willReturn('de_DE');
@@ -49,7 +51,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $productManager->getAttributeRepository()->willReturn($attributeRepository);
 
-        $this->beConstructedWith($productManager, $userContext, $currencyManager, $catalogContext, $productBuilder);
+        $this->beConstructedWith($productManager, $userContext, $currencyManager, $catalogContext, $productBuilder, $massActionManager);
     }
 
     function it_is_a_mass_edit_action()
@@ -109,7 +111,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Product $product1,
         Product $product2,
         Attribute $name,
-        $productManager
+        $productManager,
+        $massActionManager
     ) {
         $this->setProductsToMassEdit([$product1, $product2]);
 
@@ -123,7 +126,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->getCode()->willReturn('name');
         $name->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes([1, 2])->willReturn([$name]);
+        $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 
         $this->initialize();
 
@@ -138,7 +141,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Product $product2,
         Attribute $attribute,
         $productManager,
-        $productValue
+        $productValue,
+        $massActionManager
     ) {
         $this->setProductsToMassEdit([$product1, $product2]);
 
@@ -152,7 +156,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->getCode()->willReturn('attribute');
         $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
 
-        $productManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
+        $massActionManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);
 
         $this->initialize([1, 2]);
