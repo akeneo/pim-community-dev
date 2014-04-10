@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
@@ -226,12 +227,14 @@ class ProductManager
     {
         $this->objectManager->persist($product);
 
-        if ($flush) {
+        if ($schedule) {
+            $product->setCompletenesses(new ArrayCollection());
+        }
+
+        if ($recalculate || $flush) {
             $this->objectManager->flush();
         }
-        if ($schedule) {
-            $this->completenessManager->schedule($product);
-        }
+
         if ($recalculate) {
             $this->completenessManager->generateMissingForProduct($product);
         }
