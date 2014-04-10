@@ -30,6 +30,9 @@
 - Fixed the CSV import of attribute option to throw exception when the attribute is not known
 - Fixed the CSV export of attributes to avoid to export the virtual group 'Other'
 
+## Bug Fixes
+- Prevent considering 0 as a null value when importing metric data
+
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
 - Add an argument $adapterClass (string for FQCN) in ProductFilterExtension and OrmFilterExtension constructors (MongoDBODM support)

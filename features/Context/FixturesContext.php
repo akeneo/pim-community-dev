@@ -398,7 +398,6 @@ class FixturesContext extends RawMinkContext
             $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
 
             $product = $this->getProduct($data['product']);
-            $this->refresh($product);
             $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
 
             if ($value && $value->getAttribute()->getBackendType() !== 'media') {
@@ -786,6 +785,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
 
@@ -849,6 +849,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($data, $productValue->getMetric()->getData());
@@ -948,7 +949,6 @@ class FixturesContext extends RawMinkContext
     {
         $this->clearUOW();
         $product = $this->getProduct($identifier);
-        $this->refresh($product);
 
         foreach ($table->getRowsHash() as $code => $value) {
             $productValue = $product->getValue($code);
@@ -1057,6 +1057,8 @@ class FixturesContext extends RawMinkContext
         if (!$product) {
             throw new \InvalidArgumentException(sprintf('Could not find a product with sku "%s"', $sku));
         }
+
+        $this->refresh($product);
 
         return $product;
     }
@@ -1172,8 +1174,6 @@ class FixturesContext extends RawMinkContext
         if (null === $product = $this->getProduct($identifier)) {
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
         }
-
-        $this->refresh($product);
 
         if (null === $value = $product->getValue($attribute, $locale, $scope)) {
             throw new \InvalidArgumentException(
