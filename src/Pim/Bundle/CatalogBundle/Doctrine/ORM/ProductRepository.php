@@ -705,7 +705,6 @@ class ProductRepository extends EntityRepository implements
         return $qb;
     }
 
-
     /**
      * {@inheritdoc}
      */
