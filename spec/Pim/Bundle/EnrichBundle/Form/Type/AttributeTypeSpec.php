@@ -122,7 +122,12 @@ class AttributeTypeSpec extends ObjectBehavior
 
     function it_sets_the_default_form_data_class(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults(['data_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute'])->shouldBeCalled();
+        $resolver->setDefaults(
+            [
+                'data_class' => 'Pim\Bundle\CatalogBundle\Entity\Attribute',
+                'cascade_validation' => true,
+            ]
+        )->shouldBeCalled();
         $this->setDefaultOptions($resolver);
     }
 
