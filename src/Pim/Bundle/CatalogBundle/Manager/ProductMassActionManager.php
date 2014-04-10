@@ -33,8 +33,7 @@ class ProductMassActionManager
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
         AttributeRepository $attributeRepository
-    )
-    {
+    ) {
         $this->massActionRepository = $massActionRepository;
         $this->attributeRepository  = $attributeRepository;
     }

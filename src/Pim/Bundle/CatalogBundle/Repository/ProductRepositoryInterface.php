@@ -173,7 +173,7 @@ interface ProductRepositoryInterface
      */
     public function getFullProducts(array $productIds, array $attributeIds = array());
 
-   /**
+    /**
      * Apply a filter by product ids
      *
      * @param mixed   $qb         query builder to update
