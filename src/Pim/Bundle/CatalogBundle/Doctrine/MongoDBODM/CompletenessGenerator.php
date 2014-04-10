@@ -234,7 +234,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $products = $productsQb->getQuery()->execute();
 
         foreach ($products as $product) {
-            // Flushing at each iteration has a big impact on perf
             $this->generateMissingForProduct($product, false);
         }
 

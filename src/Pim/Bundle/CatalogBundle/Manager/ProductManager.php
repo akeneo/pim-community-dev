@@ -227,8 +227,11 @@ class ProductManager
     {
         $this->objectManager->persist($product);
 
-        if ($schedule) {
-            $product->setCompletenesses(new ArrayCollection());
+        if ($schedule || $recalculate) {
+            foreach ($product->getCompletenesses() as $completenesses) {
+                $this->objectManager->remove($completenesses);
+            }
+            $product->getCompletenesses()->clear();
         }
 
         if ($recalculate || $flush) {
