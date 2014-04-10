@@ -37,8 +37,7 @@ services:
     pim_enrich.twig.category_extension:
         class: %pim_enrich.twig.category_extension.class%
         arguments:
-            - '@pim_catalog.manager.category'
-            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.product_category'
         tags:
             - { name: twig.extension }
 
