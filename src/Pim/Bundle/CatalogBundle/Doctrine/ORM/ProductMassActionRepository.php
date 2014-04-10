@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
 /**
  * Mass action repository for product entities
@@ -83,10 +84,11 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
                 '%product_ids_count%'  => count($productIds)
             ]
         );
-        $commonAttSql = $this->prepareDBALQuery($commonAttSql);
+        $commonAttSql = QueryBuilderUtility::prepareDBALQuery($this->em, $this->entityName, $commonAttSql);
+
 
         // Execute SQL query
-        $stmt = $this->getEntityManager()->getConnection()->prepare($commonAttSql);
+        $stmt = $this->em->getConnection()->prepare($commonAttSql);
         $stmt->execute();
 
         $attributes = $stmt->fetchAll();
