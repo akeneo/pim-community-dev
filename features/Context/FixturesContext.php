@@ -849,6 +849,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             assertEquals($data, $productValue->getMetric()->getData());
