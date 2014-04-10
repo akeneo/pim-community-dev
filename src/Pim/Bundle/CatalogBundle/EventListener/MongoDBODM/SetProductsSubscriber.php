@@ -55,6 +55,8 @@ class SetProductsSubscriber implements EventSubscriber
      * Injects related products inside the group
      *
      * @param LifecycleEventArgs $args
+     *
+     * @return null
      */
     public function postLoad(LifecycleEventArgs $args)
     {
