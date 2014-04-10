@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 /**
  * Mass action repository for product entities
@@ -13,6 +15,27 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
  */
 class ProductMassActionRepository implements ProductMassActionRepositoryInterface
 {
+    /** @var string */
+    protected $entityName;
+
+    /** @var EntityManager */
+    protected $em;
+
+    /** @var FamilyRepository */
+    protected $familyRepository;
+
+    /**
+     * @param EntityManager    $em
+     * @param string           $entityName
+     * @param FamilyRepository $repository
+     */
+    public function __construct(EntityManager $em, $entityName, FamilyRepository $repository)
+    {
+        $this->em = $em;
+        $this->entityName       = $entityName;
+        $this->familyRepository = $repository;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,7 +54,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             ->resetDQLPart('select')
             ->resetDQLPart('from')
             ->select($rootAlias)
-            ->from($this->_entityName, $rootAlias);
+            ->from($this->entityName, $rootAlias);
 
         // Remove 'entityIds' part from querybuilder (added by flexible pager)
         $whereParts = $qb->getDQLPart('where')->getParts();

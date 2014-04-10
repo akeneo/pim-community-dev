@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 /**
  * Mass action repository for product documents
@@ -13,6 +15,26 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
  */
 class ProductMassActionRepository implements ProductMassActionRepositoryInterface
 {
+    /** @var string */
+    protected $entityName;
+
+    /** @var DocumentManager */
+    protected $dm;
+
+    /** @var FamilyRepository */
+    protected $familyRepository;
+
+    /**
+     * @param DocumentManager  $dm
+     * @param string           $entityName
+     * @param FamilyRepository $repository
+     */
+    public function __construct(DocumentManager $dm, $entityName, FamilyRepository $repository)
+    {
+        $this->em = $em;
+        $this->entityName       = $entityName;
+        $this->familyRepository = $repository;
+    }
 
     /**
      * {@inheritdoc}
