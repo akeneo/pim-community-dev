@@ -13,6 +13,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Ajax\DeleteMassAction;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 class DeleteMassActionHandlerSpec extends ObjectBehavior
 {
@@ -24,7 +25,8 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         DatasourceInterface $datasource,
         DeleteMassAction $massAction,
         ActionConfiguration $options,
-        ProductRepositoryInterface $repository
+        ProductRepositoryInterface $repository,
+        ProductMassActionRepositoryInterface $massActionRepo
     ) {
         $this->beConstructedWith($hydrator, $translator, $eventDispatcher);
 
@@ -33,6 +35,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $datagrid->getDatasource()->willReturn($datasource);
         $datasource->setHydrator($hydrator)->shouldBeCalled();
         $datasource->getRepository()->willReturn($repository);
+        $datasource->getMassActionRepository()->willReturn($massActionRepo);
 
         // prepare mass action response
         $massAction->getOptions()->willReturn($options);
@@ -42,7 +45,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
     function it_should_handle_delete_mass_action(
         $eventDispatcher,
         $datasource,
-        $repository,
+        $massActionRepo,
         $datagrid,
         $massAction
     ) {
@@ -50,7 +53,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
-        $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
+        $massActionRepo->deleteFromIds($objectIds)->willReturn($countRemoved);
 
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
@@ -60,7 +63,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
     function it_should_dispatch_events(
         $eventDispatcher,
         $datasource,
-        $repository,
+        $massActionRepo,
         $datagrid,
         $massAction
     ) {
@@ -68,7 +71,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
-        $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
+        $massActionRepo->deleteFromIds($objectIds)->willReturn($countRemoved);
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
@@ -85,7 +88,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
     function it_should_return_successful_response(
         $eventDispatcher,
         $datasource,
-        $repository,
+        $massActionRepo,
         $datagrid,
         $massAction
     ) {
@@ -93,7 +96,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $countRemoved = count($objectIds);
 
         $datasource->getResults()->willReturn($objectIds);
-        $repository->deleteFromIds($objectIds)->willReturn($countRemoved);
+        $massActionRepo->deleteFromIds($objectIds)->willReturn($countRemoved);
 
         $eventDispatcher->dispatch(Argument::any(), Argument::any())->shouldBeCalled();
 
@@ -105,7 +108,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
     function it_should_return_failed_message_if_exception_during_mass_delete(
         $eventDispatcher,
         $datasource,
-        $repository,
+        $massActionRepo,
         $datagrid,
         $massAction,
         $translator
@@ -117,7 +120,7 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $translator->trans($e->getMessage())->shouldBeCalled();
 
         $datasource->getResults()->willReturn($objectIds);
-        $repository->deleteFromIds($objectIds)->willThrow($e);
+        $massActionRepo->deleteFromIds($objectIds)->willThrow($e);
 
         $eventDispatcher->dispatch(
             MassActionEvents::MASS_DELETE_PRE_HANDLER,
