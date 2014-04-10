@@ -8,6 +8,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -34,7 +36,7 @@ class EntitiesTypeSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return ['postLoad', 'prePersist', 'preFlush'];
+        return ['postLoad', 'prePersist', 'preUpdate'];
     }
 
     /**
@@ -58,21 +60,14 @@ class EntitiesTypeSubscriber implements EventSubscriber
                         )
                     );
                 }
-                if (!isset($mapping['idsField'])) {
-                    throw new \RuntimeException(
-                        sprintf(
-                            'Please provide the "idsField" of the %s::$%s field mapping',
-                            $metadata->name,
-                            $field
-                        )
+
+                $value = $metadata->reflFields[$field]->getValue($document);
+                if (!$value instanceof ReferencedCollection) {
+                    $metadata->reflFields[$field]->setValue(
+                        $document,
+                        $this->factory->create($mapping['targetEntity'], $value, $document)
                     );
                 }
-
-                $ids = $metadata->reflFields[$mapping['idsField']]->getValue($document);
-                $metadata->reflFields[$field]->setValue(
-                    $document,
-                    $this->factory->create($mapping['targetEntity'], $ids, $document)
-                );
             }
         }
     }
@@ -100,20 +95,26 @@ class EntitiesTypeSubscriber implements EventSubscriber
                         )
                     );
                 }
-                if (!isset($mapping['idsField'])) {
-                    throw new \RuntimeException(
-                        sprintf(
-                            'Please provide the "idsField" of the %s::$%s field mapping',
-                            $metadata->name,
-                            $field
-                        )
-                    );
-                }
 
                 $entities = $metadata->reflFields[$field]->getValue($document);
                 $metadata->reflFields[$field]->setValue(
                     $document,
-                    $this->factory->createFromCollection($mapping['targetEntity'], $document, $entities)
+                    $entities
+                        ->map(
+                            function ($item) {
+                                if (null === $id = $item->getId()) {
+                                    throw new \LogicException(
+                                        sprintf(
+                                            'Cannot get id of "%s" because it hasn\'t been persisted.',
+                                            (string) $item
+                                        )
+                                    );
+                                }
+
+                                return (int) $id;
+                            }
+                        )
+                        ->toArray()
                 );
             }
         }
@@ -123,63 +124,60 @@ class EntitiesTypeSubscriber implements EventSubscriber
      * Synchronizes update scheduled documents entities fields before flushing
      * No need to recompute the change set as it hasn't be calculated yet
      *
-     * @param PreFlushEventArgs $args
+     * @param PreUpdateEventArgs $args
      */
-    public function preFlush(PreFlushEventArgs $args)
+    public function preUpdate(PreUpdateEventArgs $args)
     {
-        $dm = $args->getDocumentManager();
-        $uow = $dm->getUnitOfWork();
-        foreach ($uow->getScheduledDocumentUpdates() as $document) {
-            $metadata = $dm->getClassMetadata(get_class($document));
-            $this->synchronizeReferencedCollectionIds($document, $metadata);
-        }
-        foreach ($uow->getScheduledDocumentInsertions() as $document) {
-            $metadata = $dm->getClassMetadata(get_class($document));
-            $this->synchronizeReferencedCollectionIds($document, $metadata);
-        }
-    }
+     #   $document = $args->getDocument();
+     #   $metadata = $args->getDocumentManager()->getClassMetadata(get_class($document));
+     #   foreach ($metadata->fieldMappings as $field => $mapping) {
+     #       if ('entities' === $mapping['type'] && $args->hasChangedField($field)) {
+     #           $value = $args->getNewValue($field);
+     #           if ($value instanceof ReferencedCollection) {
+     #               $args->setNewValue(
+     #                   $field,
+     #                   $value
+     #                       ->map(
+     #                           function ($item) {
+     #                               if (null === $id = $item->getId()) {
+     #                                   throw new \LogicException(
+     #                                       sprintf(
+     #                                           'Cannot get id of "%s" because it hasn\'t been persisted.',
+     #                                           (string) $item
+     #                                       )
+     #                                   );
+     #                               }
+     #
+     #                               return (int) $id;
+     #                           }
+     #                       )
+     #                       ->toArray()
+     #               );
+     #           }
+     #       }
+     #   }
 
-    /**
-     * Synchronizes ids field with the ids of object contained in the linked "entities" type field
-     *
-     * @param object        $document
-     * @param ClassMetadata $metadata
-     *
-     * @return null
-     */
-    private function synchronizeReferencedCollectionIds($document, ClassMetadata $metadata)
-    {
-        foreach ($metadata->fieldMappings as $field => $mapping) {
-            if ('entities' === $mapping['type']) {
-                $oldValue = $metadata->reflFields[$field]->getValue($document);
-                if (!$oldValue instanceof ReferencedCollection) {
-                    throw new \LogicException(
-                        sprintf(
-                            'Property "%s" of "%s" should be an instance of ' .
-                            'Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection, got "%s"',
-                            $field,
-                            get_class($document),
-                            is_object($oldValue) ? get_class($oldValue) : gettype($oldValue)
-                        )
-                    );
+        foreach ($args->getDocumentManager()->getUnitOfWork()->documentChangeSets as $i => $changeSets) {
+            foreach ($changeSets as $j => $changeSet) {
+                if ($changeSet[1] instanceof ReferencedCollection) {
+                    $args->getDocumentManager()->getUnitOfWork()->documentChangeSets[$i][$j][1] = 
+                        $changeSet[1]
+                            ->map(
+                                function ($item) {
+                                    if (null === $id = $item->getId()) {
+                                        throw new \LogicException(
+                                            sprintf(
+                                                'Cannot get id of "%s" because it hasn\'t been persisted.',
+                                                (string) $item
+                                            )
+                                        );
+                                    }
+
+                                    return (int) $id;
+                                }
+                            )
+                            ->toArray();
                 }
-                $newValue = $oldValue->map(
-                    function ($item) {
-                        if (null === $id = $item->getId()) {
-                            throw new \LogicException(
-                                sprintf(
-                                    'Cannot get id of "%s" because it hasn\'t been persisted.',
-                                    (string) $item
-                                )
-                            );
-                        }
-
-                        return $id;
-                    }
-                )
-                ->toArray();
-
-                $metadata->reflFields[$mapping['idsField']]->setValue($document, $newValue);
             }
         }
     }

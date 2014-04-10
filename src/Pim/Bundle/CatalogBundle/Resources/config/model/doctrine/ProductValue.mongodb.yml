@@ -34,12 +34,8 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
         options:
-            notSaved: true
             type: entities
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
-            idsField: optionIds
-        optionIds:
-            type: collection
         metric:
             embedded: true
             type: one

@@ -16,26 +16,4 @@ use Doctrine\Common\Collections\Collection;
  */
 class Entities extends Type
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function convertToDatabaseValue($value)
-    {
-        if (!$value instanceof Collection) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'Expecting instance of Doctrine\Common\Collections\Collection, got "%s"',
-                    'object' === gettype($value) ? get_class($value) : gettype($value)
-                )
-            );
-        }
-
-        return $value
-            ->map(
-                function ($val) {
-                    return $val->getId();
-                }
-            )
-            ->toArray();
-    }
 }
