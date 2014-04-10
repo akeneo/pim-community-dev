@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\ProductMassActionPersisterInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 
 /**
  * Mass action repository for product entities
