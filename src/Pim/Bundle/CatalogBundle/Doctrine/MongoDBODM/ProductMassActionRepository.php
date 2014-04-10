@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\Query\Expr;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
@@ -109,7 +110,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
         $expr = new Expr($this->dm);
-        $class = $this->getClassMetadata(get_class($this->documentName));
+        $class = $this->dm->getClassMetadata($this->documentName);
         $expr->setClassMetadata($class);
         $expr->field('_id')->in($productIds);
 
