@@ -37,6 +37,22 @@ class ProductCategoryManager
     }
 
     /**
+     * @return ProductRepositoryInterface
+     */
+    public function getProductRepository()
+    {
+        return $this->productRepository;
+    }
+
+    /**
+     * @return CategoryInterface
+     */
+    public function getCategoryRepository()
+    {
+        return $this->categoryRepository;
+    }
+
+    /**
      * Count products linked to a node.
      * You can define if you just want to get the property of the actual node
      * or with its children with the direct parameter

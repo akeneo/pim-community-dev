@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
@@ -30,33 +30,22 @@ class CategoryFilter extends NumberFilter
     const ALL_CATEGORY = -2;
 
     /**
-     * @var ProductManager $productManager
+     * @var ProductCategoryManager $productCategoryManager
      */
-    protected $productManager;
-
-    /**
-     * @var CategoryManager $categoryManager
-     */
-    protected $categoryManager;
+    protected $productCategoryManager;
 
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param FilterUtility        $util
-     * @param ProductManager       $productManager
-     * @param CategoryManager      $categoryManager
+     * @param FormFactoryInterface   $factory
+     * @param FilterUtility          $util
+     * @param ProductCategoryManager $manager
      */
-    public function __construct(
-        FormFactoryInterface $factory,
-        FilterUtility $util,
-        ProductManager $productManager,
-        CategoryManager $categoryManager
-    ) {
+    public function __construct(FormFactoryInterface $factory, FilterUtility $util, ProductCategoryManager $manager)
+    {
         parent::__construct($factory, $util);
 
-        $this->productManager = $productManager;
-        $this->categoryManager = $categoryManager;
+        $this->productCategoryManager = $manager;
     }
 
     /**
@@ -69,8 +58,8 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $categoryRepository = $this->categoryManager->getEntityRepository();
-        $productRepository  = $this->productManager->getProductRepository();
+        $categoryRepository = $this->productCategoryManager->getCategoryRepository();
+        $productRepository  = $this->productCategoryManager->getProductRepository();
         $qb         = $ds->getQueryBuilder();
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {
@@ -78,7 +67,7 @@ class CategoryFilter extends NumberFilter
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
             $tree = $categoryRepository->find($data['treeId']);
             if ($tree) {
-                $productIds = $this->productManager->getProductIdsInCategory($tree, true);
+                $productIds = $this->productCategoryManager->getProductIdsInCategory($tree, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $productRepository->applyFilterByIds($qb, $productIds, false);
 
@@ -90,7 +79,7 @@ class CategoryFilter extends NumberFilter
                 $category = $categoryRepository->find($data['treeId']);
             }
             if ($category) {
-                $productIds = $this->productManager->getProductIdsInCategory($category, $data['includeSub']);
+                $productIds = $this->productCategoryManager->getProductIdsInCategory($category, $data['includeSub']);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $productRepository->applyFilterByIds($qb, $productIds, true);
 
