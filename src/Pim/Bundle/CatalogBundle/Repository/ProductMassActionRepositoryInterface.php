@@ -13,6 +13,15 @@ namespace Pim\Bundle\CatalogBundle\Repository;
 interface ProductMassActionRepositoryInterface
 {
     /**
+     * Apply mass action parameters on query builder
+     *
+     * @param mixed   $qb
+     * @param boolean $inset
+     * @param array   $values
+     */
+    public function applyMassActionParameters($qb, $inset, $values);
+
+    /**
      * Apply a filter by product ids
      *
      * @param mixed   $qb         query builder to update

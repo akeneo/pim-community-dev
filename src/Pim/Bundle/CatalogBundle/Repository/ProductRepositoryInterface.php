@@ -164,15 +164,6 @@ interface ProductRepositoryInterface
     public function deleteFromIds(array $ids);
 
     /**
-     * Apply mass action parameters on query builder
-     *
-     * @param mixed   $qb
-     * @param boolean $inset
-     * @param array   $values
-     */
-    public function applyMassActionParameters($qb, $inset, $values);
-
-    /**
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds
