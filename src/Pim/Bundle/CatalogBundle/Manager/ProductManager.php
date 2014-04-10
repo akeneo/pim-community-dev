@@ -513,52 +513,6 @@ class ProductManager
     }
 
     /**
-     * Count products linked to a node.
-     * You can define if you just want to get the property of the actual node
-     * or with its children with the direct parameter
-     * The third parameter allow to include the actual node or not
-     *
-     * @param CategoryInterface $category   the requested category node
-     * @param boolean           $inChildren true to include children in count
-     * @param boolean           $inProvided true to include the provided none to count product
-     *
-     * @return integer
-     */
-    public function getProductsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
-    {
-        $categoryRepository = $this->getEntityManager()->getRepository(get_class($category));
-
-        $categoryQb = null;
-        if ($inChildren) {
-            $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
-        }
-
-        return $this->getProductRepository()->getProductsCountInCategory($category, $categoryQb);
-    }
-
-    /**
-     * Get product ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param boolean           $inChildren true to take children not into account
-     *
-     * @return array
-     */
-    public function getProductIdsInCategory(CategoryInterface $category, $inChildren = false)
-    {
-        $categoryRepository = $this->getEntityManager()->getRepository(get_class($category));
-
-        $categoryQb = null;
-        if ($inChildren) {
-            $categoryQb = $categoryRepository->getAllChildrenQueryBuilder($category, true);
-        }
-
-        return $this->getProductRepository()->getProductIdsInCategory($category, $categoryQb);
-    }
-
-    /**
      * Check if a product value with a specific value already exists
      *
      * @param ProductValueInterface $value
