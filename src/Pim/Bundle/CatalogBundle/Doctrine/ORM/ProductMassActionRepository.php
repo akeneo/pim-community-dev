@@ -80,7 +80,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
 
         $qb = $this->em->createQueryBuilder();
         $qb
-            ->delete($this->_entityName, 'p')
+            ->delete($this->entityName, 'p')
             ->where($qb->expr()->in('p.id', $ids));
 
         return $qb->getQuery()->execute();
