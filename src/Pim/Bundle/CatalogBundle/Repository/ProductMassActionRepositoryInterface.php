@@ -29,4 +29,13 @@ interface ProductMassActionRepositoryInterface
      * @return integer[]
      */
     public function findCommonAttributeIds(array $productIds);
+
+    /**
+     * Delete a list of product ids
+     *
+     * @param integer[] $ids
+     *
+     * @throws \LogicException
+     */
+    public function deleteFromIds(array $ids);
 }

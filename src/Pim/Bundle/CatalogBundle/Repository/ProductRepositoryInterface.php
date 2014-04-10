@@ -155,15 +155,6 @@ interface ProductRepositoryInterface
     public function setProductQueryBuilder($productQB);
 
     /**
-     * Delete a list of product ids
-     *
-     * @param integer[] $ids
-     *
-     * @throws \LogicException
-     */
-    public function deleteFromIds(array $ids);
-
-    /**
      * Get available attribute ids from a product ids list
      *
      * @param array $productIds
