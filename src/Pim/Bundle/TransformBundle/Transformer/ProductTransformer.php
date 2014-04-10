@@ -67,7 +67,7 @@ class ProductTransformer extends EntityTransformer
     /**
      * @var array
      */
-    protected $associationColumnsInfo = array();
+    protected $assocColumnsInfo = array();
 
     /**
      * @var array
@@ -169,7 +169,7 @@ class ProductTransformer extends EntityTransformer
      */
     protected function setProductValues($class, $entity, array $data)
     {
-        $requiredAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
+        $reqAttributeCodes = $this->attributeCache->getRequiredAttributeCodes($entity);
         $flexibleValueClass = $this->productManager->getProductValueName();
         $this->transformedColumns[$flexibleValueClass] = array();
         foreach ($this->attributeColumnsInfo as $columnInfo) {
@@ -180,7 +180,7 @@ class ProductTransformer extends EntityTransformer
             $transformerInfo = $this->getTransformerInfo($flexibleValueClass, $columnInfo);
             $value = $data[$label];
             if ((is_scalar($value) && '' !== trim($value)) ||
-                in_array($columnInfo->getName(), $requiredAttributeCodes)
+                in_array($columnInfo->getName(), $reqAttributeCodes)
             ) {
                 $error = $this->setProductValue($entity, $columnInfo, $transformerInfo, $value);
                 if ($error) {
@@ -198,12 +198,12 @@ class ProductTransformer extends EntityTransformer
      */
     protected function setAssociations($entity, array $data)
     {
-        if (!count($this->associationColumnsInfo)) {
+        if (!count($this->assocColumnsInfo)) {
             return;
         }
 
         $associations = array();
-        foreach ($this->associationColumnsInfo as $columnInfo) {
+        foreach ($this->assocColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
             if (!array_key_exists($label, $data)) {
                 continue;
@@ -293,7 +293,7 @@ class ProductTransformer extends EntityTransformer
             $suffixes = $columnInfo->getSuffixes();
             $lastSuffix = array_pop($suffixes);
             if (in_array($lastSuffix, array('groups', 'products'))) {
-                $this->associationColumnsInfo[] = $columnInfo;
+                $this->assocColumnsInfo[] = $columnInfo;
             } elseif (isset($this->attributes[$columnName])) {
                 $attribute = $this->attributes[$columnName];
                 $columnInfo->setAttribute($attribute);
@@ -318,7 +318,7 @@ class ProductTransformer extends EntityTransformer
         $this->attributes = array();
         $this->attributeColumnsInfo = array();
         $this->propertyColumnsInfo = array();
-        $this->associationColumnsInfo = array();
+        $this->assocColumnsInfo = array();
         $this->readLabels = array();
     }
 
