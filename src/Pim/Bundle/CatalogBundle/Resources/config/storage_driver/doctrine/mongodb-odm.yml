@@ -127,6 +127,13 @@ services:
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]
 
+    pim_catalog.repository.product_mass_action:
+        class: %pim_catalog.repository.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '@pim_catalog.repository.family'
+
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%
         factory_service: doctrine.odm.mongodb.document_manager

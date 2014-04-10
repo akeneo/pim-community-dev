@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 /**
  * Mass action repository for product entities
@@ -21,19 +20,14 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
     /** @var EntityManager */
     protected $em;
 
-    /** @var FamilyRepository */
-    protected $familyRepository;
-
     /**
      * @param EntityManager    $em
      * @param string           $entityName
-     * @param FamilyRepository $repository
      */
-    public function __construct(EntityManager $em, $entityName, FamilyRepository $repository)
+    public function __construct(EntityManager $em, $entityName)
     {
         $this->em = $em;
         $this->entityName       = $entityName;
-        $this->familyRepository = $repository;
     }
 
     /**

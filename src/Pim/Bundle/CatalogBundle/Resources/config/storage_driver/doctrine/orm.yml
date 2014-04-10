@@ -38,6 +38,12 @@ services:
             - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
 
+    pim_catalog.repository.product_mass_action:
+        class: %pim_catalog.repository.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+
     pim_catalog.repository.media:
         class: %doctrine.entity_repository.class%
         factory_service: doctrine.orm.entity_manager

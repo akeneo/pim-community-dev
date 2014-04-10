@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 class ProductMassActionRepository implements ProductMassActionRepositoryInterface
 {
     /** @var string */
-    protected $entityName;
+    protected $documentName;
 
     /** @var DocumentManager */
     protected $dm;
@@ -26,14 +26,14 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
 
     /**
      * @param DocumentManager  $dm
-     * @param string           $entityName
-     * @param FamilyRepository $repository
+     * @param string           $documentName
+     * @param FamilyRepository $familyRepository
      */
-    public function __construct(DocumentManager $dm, $entityName, FamilyRepository $repository)
+    public function __construct(DocumentManager $dm, $documentName, FamilyRepository $familyRepository)
     {
-        $this->em = $em;
-        $this->entityName       = $entityName;
-        $this->familyRepository = $repository;
+        $this->dm = $dm;
+        $this->documentName     = $documentName;
+        $this->familyRepository = $familyRepository;
     }
 
     /**
@@ -90,7 +90,8 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
         $collection = $this->dm->getDocumentCollection($this->documentName);
 
         $expr = new Expr($this->dm);
-        $expr->setClassMetadata($this->class);
+        $class = $this->getClassMetadata(get_class($this->documentName));
+        $expr->setClassMetadata($class);
         $expr->field('_id')->in($productIds);
 
         $pipeline = array(
