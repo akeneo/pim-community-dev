@@ -1,6 +1,7 @@
 parameters:
     pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessRepository
+    pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber

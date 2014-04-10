@@ -69,6 +69,12 @@ services:
         factory_method: getRepository
         arguments: [%pim_catalog.entity.locale.class%]
 
+    pim_catalog.repository.product_mass_action:
+        class: %pim_catalog.repository.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.repository.family'
+
     pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.product_query_builder.class%
         arguments: [@pim_catalog.context.catalog]
