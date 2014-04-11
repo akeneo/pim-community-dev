@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # add Akeneo/CustomEntityBundle to composer.json
-php composer.phar require akeneo/custom-entity-bundle:dev-master
+php composer.phar require akeneo/custom-entity-bundle dev-master --no-update
 
 # clone pim-docs repository
 git clone https://github.com/akeneo/pim-docs.git
