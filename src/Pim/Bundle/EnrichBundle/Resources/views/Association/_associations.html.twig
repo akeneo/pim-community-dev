@@ -39,7 +39,7 @@
                             paramName:     'associatedIds',
                             getParamValue: function(associationId) {
                                 var ids = $('#association-link-' + associationId).data('associated-group-ids');
-                                return ids ? String(ids).split(',') : [];
+                                return ids ? _.extend({}, String(ids).split(',')) : false;
                             }
                         }
                     };
@@ -52,6 +52,7 @@
                                 removeFieldId = '#' + $idField.siblings('[id$="' + datagrid.removeField + '"]').attr('id');
                                 mediator
                                     .trigger('column_form_listener:set_selectors:' + datagrid.name, { included: appendFieldId, excluded: removeFieldId })
+                                    .trigger('datagrid:removeParam:' + datagrid.name, datagrid.paramName)
                                     .trigger('datagrid:setParam:' + datagrid.name, datagrid.paramName, datagrid.getParamValue(associationId))
                                     .trigger('datagrid:doRefresh:' + datagrid.name);
                         });
@@ -148,7 +149,7 @@
                 {% set associatedGroupIds = associatedGroupIds|merge([group.id]) %}
             {% endfor %}
 
-            {{ dataGrid.renderGrid('association-group-grid', { associatedIds: associatedGroupIds }) }}
+            {{ dataGrid.renderGrid('association-group-grid', { _parameters: { associatedIds: associatedGroupIds } }) }}
         </div>
     </div>
 {% endif %}

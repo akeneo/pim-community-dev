@@ -22,10 +22,10 @@ class AssociationTransformer
      */
     public function transform(array $result, $associationTypeId, ProductInterface $product = null)
     {
-        $associationTypeId = (int) $associationTypeId;
-        $result['is_associated'] = false;
-
         if ($product) {
+            $associationTypeId = (int) $associationTypeId;
+            $result['is_associated'] = false;
+
             $currentAssociation = $product->getAssociations()->filter(
                 function ($association) use ($associationTypeId) {
                     return $association->getAssociationType()->getId() === $associationTypeId;
@@ -43,9 +43,9 @@ class AssociationTransformer
                     $result['is_associated'] = true;
                 }
             }
-        }
 
-        $result['is_checked'] = $result['is_associated'];
+            $result['is_checked'] = $result['is_associated'];
+        }
 
         return $result;
     }
