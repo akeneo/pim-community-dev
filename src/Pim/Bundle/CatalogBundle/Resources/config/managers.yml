@@ -28,7 +28,7 @@ services:
     pim_catalog.manager.product_category:
         class: %pim_catalog.manager.product_category.class%
         arguments:
-            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
 
     pim_catalog.builder.product:

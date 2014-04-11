@@ -59,7 +59,7 @@ class CategoryFilter extends NumberFilter
         }
 
         $categoryRepository = $this->productCategoryManager->getCategoryRepository();
-        $productRepository  = $this->productCategoryManager->getProductRepository();
+        $productRepository  = $this->productCategoryManager->getProductCategoryRepository();
         $qb         = $ds->getQueryBuilder();
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {

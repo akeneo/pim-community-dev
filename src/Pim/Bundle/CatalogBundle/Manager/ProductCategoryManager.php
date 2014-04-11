@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 class ProductCategoryManager
 {
     /**
-     * @var ProductRepositoryInterface $productRepository
+     * @var ProductCategoryRepositoryInterface $productRepository
      */
     protected $productRepository;
 
@@ -28,18 +28,18 @@ class ProductCategoryManager
     /**
      * Constructor
      *
-     * @param ProductRepositoryInterface $productRepo  Product repository
-     * @param CategoryRepository         $categoryRepo Category repository
+     * @param ProductCategoryRepositoryInterface $productRepo  Product repository
+     * @param CategoryRepository                 $categoryRepo Category repository
      */
-    public function __construct(ProductRepositoryInterface $productRepo, CategoryRepository $categoryRepo) {
+    public function __construct(ProductCategoryRepositoryInterface $productRepo, CategoryRepository $categoryRepo) {
         $this->productRepository = $productRepo;
         $this->categoryRepository = $categoryRepo;
     }
 
     /**
-     * @return ProductRepositoryInterface
+     * @return ProductCategoryRepositoryInterface
      */
-    public function getProductRepository()
+    public function getProductCategoryRepository()
     {
         return $this->productRepository;
     }
