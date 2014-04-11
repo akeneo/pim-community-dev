@@ -51,4 +51,13 @@ interface ProductCategoryRepositoryInterface
      * @return integer
      */
     public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
+
+    /**
+     * Apply a filter by product ids
+     *
+     * @param mixed   $qb         query builder to update
+     * @param array   $productIds product ids
+     * @param boolean $include    true for in, false for not in
+     */
+    public function applyFilterByIds($qb, array $productIds, $include);
 }
