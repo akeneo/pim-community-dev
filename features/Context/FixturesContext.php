@@ -755,6 +755,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theOfShouldBe($lang, $attribute, $identifier, $value)
     {
+        $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
 
         assertEquals($value, $productValue->getData());
@@ -771,6 +772,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
     {
+        $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
         assertEquals($value, $productValue->getData());
@@ -807,6 +809,7 @@ class FixturesContext extends RawMinkContext
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
     {
+        $this->clearUOW();
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $options = $productValue->getOptions();
