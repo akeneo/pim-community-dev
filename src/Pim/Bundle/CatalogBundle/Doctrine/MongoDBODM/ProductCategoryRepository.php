@@ -3,9 +3,11 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\Query\Expr;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder as OrmQueryBuilder;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
+use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -44,7 +46,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      * @param string           $documentName
      * @param FamilyRepository $familyRepository
      */
-    public function __construct(DocumentManager $dm, $documentName, EntityManager $entityManager)
+    public function __construct(DocumentManager $documentManager, $documentName, EntityManager $entityManager)
     {
         $this->documentManager = $documentManager;
         $this->entityManager   = $entityManager;
