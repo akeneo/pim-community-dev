@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product category manager
@@ -93,5 +94,17 @@ class ProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $categoryQb);
+    }
+
+    /**
+     * Return the number of times the product is present in each tree
+     *
+     * @param ProductInterface $product The product to look for in the trees
+     *
+     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     */
+    public function getProductCountByTree(ProductInterface $product)
+    {
+        return $this->productRepository->getProductCountByTree($product);
     }
 }
