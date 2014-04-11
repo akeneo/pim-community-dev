@@ -42,15 +42,24 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     protected $documentName;
 
     /**
+     * Category class
+     *
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
      * @param DocumentManager  $dm
      * @param string           $documentName
      * @param FamilyRepository $familyRepository
+     * @param string           $categoryClass
      */
-    public function __construct(DocumentManager $documentManager, $documentName, EntityManager $entityManager)
+    public function __construct(DocumentManager $docManager, $documentName, EntityManager $entManager, $categoryClass)
     {
-        $this->documentManager = $documentManager;
-        $this->entityManager   = $entityManager;
+        $this->documentManager = $docManager;
+        $this->entityManager   = $entManager;
         $this->documentName    = $documentName;
+        $this->categoryClass   = $categoryClass;
     }
 
     /**

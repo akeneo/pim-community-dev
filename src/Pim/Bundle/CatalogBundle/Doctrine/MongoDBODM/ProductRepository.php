@@ -44,12 +44,6 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $entityManager;
 
-    /**
-     * Category class
-     *
-     * @var string
-     */
-    protected $categoryClass;
 
     /**
      * @var AttributeRepository
@@ -66,18 +60,6 @@ class ProductRepository extends DocumentRepository implements
     public function setEntityManager(EntityManager $entityManager)
     {
         $this->entityManager = $entityManager;
-    }
-
-    /**
-     * Set the Category class
-     *
-     * @param string $categoryClass
-     *
-     * @return ProductRepository $this
-     */
-    public function setCategoryClass($categoryClass)
-    {
-        $this->categoryClass = $categoryClass;
     }
 
     /**
