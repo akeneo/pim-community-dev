@@ -88,7 +88,8 @@
             }
         },
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.1.x-dev",
+            "dev-1.0": "1.0.x-dev"
         }
     }
 }
