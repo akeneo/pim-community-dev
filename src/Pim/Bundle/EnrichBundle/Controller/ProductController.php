@@ -22,6 +22,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -47,6 +48,11 @@ class ProductController extends AbstractDoctrineController
      * @var CategoryManager
      */
     protected $categoryManager;
+
+    /**
+     * @var ProductCategoryManager
+     */
+    protected $productCatManager;
 
     /**
      * @var UserContext
@@ -91,6 +97,7 @@ class ProductController extends AbstractDoctrineController
      * @param UserContext              $userContext
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
+     * @param ProductCategoryManager   $prodCatManager
      */
     public function __construct(
         Request $request,
@@ -105,7 +112,8 @@ class ProductController extends AbstractDoctrineController
         CategoryManager $categoryManager,
         UserContext $userContext,
         VersionManager $versionManager,
-        SecurityFacade $securityFacade
+        SecurityFacade $securityFacade,
+        ProductCategoryManager $prodCatManager
     ) {
         parent::__construct(
             $request,
@@ -118,11 +126,12 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager  = $productManager;
-        $this->categoryManager = $categoryManager;
-        $this->userContext     = $userContext;
-        $this->versionManager  = $versionManager;
-        $this->securityFacade  = $securityFacade;
+        $this->productManager    = $productManager;
+        $this->categoryManager   = $categoryManager;
+        $this->userContext       = $userContext;
+        $this->versionManager    = $versionManager;
+        $this->securityFacade    = $securityFacade;
+        $this->productCatManager = $prodCatManager;
     }
 
     /**
@@ -233,7 +242,7 @@ class ProductController extends AbstractDoctrineController
         }
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->productManager->getProductRepository()->getProductCountByTree($product);
+        $trees    = $this->productCatManager->getProductCountByTree($product);
 
         return array(
             'form'             => $form->createView(),

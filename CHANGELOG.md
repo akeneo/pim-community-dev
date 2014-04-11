@@ -106,6 +106,7 @@
 - Move CatalogBundle\Model\CompletenessRepositoryInterface to CatalogBundle\Repository
 - EditCommonAttributes class needs the ProductBuilder and ProductMassActionManager now
 - Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
+- Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
 
 # 1.0.2
 ## Bug Fixes

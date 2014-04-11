@@ -42,7 +42,7 @@ class EntityTransformer implements EntityTransformerInterface
     /**
      * @var ColumnInfoTransformerInterface
      */
-    protected $columnInfoTransformer;
+    protected $colInfoTransformer;
 
     /**
      * @var array
@@ -65,18 +65,18 @@ class EntityTransformer implements EntityTransformerInterface
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param ColumnInfoTransformerInterface $colInfoTransformer
      */
     public function __construct(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $columnInfoTransformer
+        ColumnInfoTransformerInterface $colInfoTransformer
     ) {
         $this->doctrine = $doctrine;
         $this->propertyAccessor = $propertyAccessor;
         $this->guesser = $guesser;
-        $this->columnInfoTransformer = $columnInfoTransformer;
+        $this->colInfoTransformer = $colInfoTransformer;
     }
 
     /**
@@ -119,7 +119,7 @@ class EntityTransformer implements EntityTransformerInterface
     protected function setProperties($class, $entity, array $data)
     {
         foreach ($data as $label => $value) {
-            $columnInfo = $this->columnInfoTransformer->transform($class, $label);
+            $columnInfo = $this->colInfoTransformer->transform($class, $label);
             $transformerInfo = $this->getTransformerInfo($class, $columnInfo);
             $error = $this->setProperty($entity, $columnInfo, $transformerInfo, $value);
             if ($error) {

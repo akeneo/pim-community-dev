@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Product repository interface
@@ -95,40 +94,6 @@ interface ProductRepositoryInterface
     public function getFullProduct($id);
 
     /**
-     * Return the number of times the product is present in each tree
-     *
-     * @param ProductInterface $product The product to look for in the trees
-     *
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
-     */
-    public function getProductCountByTree(ProductInterface $product);
-
-    /**
-     * Get product ids linked to a category or its children.
-     * You can define if you just want to get the property of the actual node or with its children with the direct
-     * parameter
-     *
-     * @param CategoryInterface $category   the requested node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return array
-     */
-    public function getProductIdsInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
-
-    /**
-     * Count products linked to a node.
-     * You can define if you just want to get the property of the actual node
-     * or with its children with the direct parameter
-     * The third parameter allow to include the actual node or not
-     *
-     * @param CategoryInterface $category   the requested category node
-     * @param QueryBuilder      $categoryQb category query buider
-     *
-     * @return integer
-     */
-    public function getProductsCountInCategory(CategoryInterface $category, QueryBuilder $categoryQb = null);
-
-    /**
      * Returns true if a ProductValue with the provided value alread exists,
      * false otherwise.
      *
@@ -172,13 +137,4 @@ interface ProductRepositoryInterface
      * @return array
      */
     public function getFullProducts(array $productIds, array $attributeIds = array());
-
-    /**
-     * Apply a filter by product ids
-     *
-     * @param mixed   $qb         query builder to update
-     * @param array   $productIds product ids
-     * @param boolean $include    true for in, false for not in
-     */
-    public function applyFilterByIds($qb, array $productIds, $include);
 }

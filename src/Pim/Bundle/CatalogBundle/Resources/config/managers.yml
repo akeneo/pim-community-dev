@@ -25,6 +25,12 @@ services:
             - '@pim_catalog.repository.product_mass_action'
             - '@pim_catalog.repository.attribute'
 
+    pim_catalog.manager.product_category:
+        class: %pim_catalog.manager.product_category.class%
+        arguments:
+            - '@pim_catalog.repository.product_category'
+            - '@pim_catalog.repository.category'
+
     pim_catalog.builder.product:
         class: %pim_catalog.builder.product.class%
         arguments:
