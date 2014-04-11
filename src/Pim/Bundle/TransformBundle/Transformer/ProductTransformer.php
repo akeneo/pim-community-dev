@@ -80,7 +80,7 @@ class ProductTransformer extends EntityTransformer
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param ProductManager                 $productManager
      * @param AttributeCache                 $attributeCache
      * @param CachedReader                   $associationReader
@@ -89,12 +89,12 @@ class ProductTransformer extends EntityTransformer
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $columnInfoTransformer,
+        ColumnInfoTransformerInterface $colInfoTransformer,
         ProductManager $productManager,
         AttributeCache $attributeCache,
         CachedReader $associationReader
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->productManager = $productManager;
         $this->attributeCache = $attributeCache;
         $this->associationReader = $associationReader;
@@ -284,7 +284,7 @@ class ProductTransformer extends EntityTransformer
         }
 
         $class = $this->productManager->getProductName();
-        $columnsInfo = $this->columnInfoTransformer->transform($class, $labels);
+        $columnsInfo = $this->colInfoTransformer->transform($class, $labels);
 
         $this->attributes += $this->attributeCache->getAttributes($columnsInfo);
         foreach ($columnsInfo as $columnInfo) {
