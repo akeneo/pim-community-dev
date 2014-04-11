@@ -2,6 +2,7 @@ parameters:
     pim_catalog.repository.product.class:                   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     pim_catalog.repository.completeness.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository
+    pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.event_listener.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
@@ -133,6 +134,13 @@ services:
             - '@pim_catalog.object_manager.product'
             - '%pim_catalog.entity.product.class%'
             - '@pim_catalog.repository.family'
+
+    pim_catalog.repository.product_category:
+        class: %pim_catalog.repository.product_category.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '%pim_catalog.entity.product.class%'
+            - '@doctrine.orm.entity_manager'
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%
