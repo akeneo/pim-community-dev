@@ -31,7 +31,8 @@ class ProductCategoryManager
      * @param ProductCategoryRepositoryInterface $productRepo  Product repository
      * @param CategoryRepository                 $categoryRepo Category repository
      */
-    public function __construct(ProductCategoryRepositoryInterface $productRepo, CategoryRepository $categoryRepo) {
+    public function __construct(ProductCategoryRepositoryInterface $productRepo, CategoryRepository $categoryRepo)
+    {
         $this->productRepository = $productRepo;
         $this->categoryRepository = $categoryRepo;
     }

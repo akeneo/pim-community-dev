@@ -7,7 +7,6 @@ use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
