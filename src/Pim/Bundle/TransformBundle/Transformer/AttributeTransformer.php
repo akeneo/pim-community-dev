@@ -35,7 +35,7 @@ class AttributeTransformer extends NestedEntityTransformer
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      * @param AttributeManager               $attributeManager
      * @param DoctrineCache                  $doctrineCache
@@ -44,12 +44,12 @@ class AttributeTransformer extends NestedEntityTransformer
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $columnInfoTransformer,
+        ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         AttributeManager $attributeManager,
         DoctrineCache $doctrineCache
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer, $transformerRegistry);
         $this->attributeManager = $attributeManager;
         $this->doctrineCache = $doctrineCache;
     }

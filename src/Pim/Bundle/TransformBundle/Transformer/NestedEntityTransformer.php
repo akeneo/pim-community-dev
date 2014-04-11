@@ -28,17 +28,17 @@ class NestedEntityTransformer extends EntityTransformer
      * @param RegistryInterface              $doctrine
      * @param PropertyAccessorInterface      $propertyAccessor
      * @param GuesserInterface               $guesser
-     * @param ColumnInfoTransformerInterface $columnInfoTransformer
+     * @param ColumnInfoTransformerInterface $colInfoTransformer
      * @param EntityTransformerInterface     $transformerRegistry
      */
     public function __construct(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
-        ColumnInfoTransformerInterface $columnInfoTransformer,
+        ColumnInfoTransformerInterface $colInfoTransformer,
         EntityTransformerInterface $transformerRegistry
     ) {
-        parent::__construct($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
+        parent::__construct($doctrine, $propertyAccessor, $guesser, $colInfoTransformer);
         $this->transformerRegistry = $transformerRegistry;
     }
 
