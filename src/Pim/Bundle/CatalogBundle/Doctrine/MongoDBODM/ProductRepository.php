@@ -44,7 +44,6 @@ class ProductRepository extends DocumentRepository implements
      */
     protected $entityManager;
 
-
     /**
      * @var AttributeRepository
      */
