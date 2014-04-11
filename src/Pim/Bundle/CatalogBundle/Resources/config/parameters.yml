@@ -15,5 +15,6 @@ parameters:
     pim_catalog.manager.media.class:               Pim\Bundle\CatalogBundle\Manager\MediaManager
     pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
     pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
+    pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
 
     doctrine.orm.cache.apc.class: Pim\Bundle\CatalogBundle\Doctrine\ArrayApcCache

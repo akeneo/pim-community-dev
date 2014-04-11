@@ -35,7 +35,6 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->categoryExtension = new CategoryExtension(
-            $this->getCategoryManagerMock(),
             $this->getProductManagerMock()
         );
     }
@@ -63,7 +62,7 @@ class CategoryExtensionTest extends \PHPUnit_Framework_TestCase
     protected function getProductManagerMock()
     {
         $this->productManager = $this
-            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
+            ->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager')
             ->disableOriginalConstructor()
             ->getMock();
 
