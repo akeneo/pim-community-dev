@@ -40,7 +40,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      */
     public function getProductCountByTree(ProductInterface $product)
     {
-        $productMetadata = $this->getClassMetadata(get_class($product));
+        $productMetadata = $this->em->getClassMetadata(get_class($product));
 
         $categoryAssoc = $productMetadata->getAssociationMapping('categories');
 
