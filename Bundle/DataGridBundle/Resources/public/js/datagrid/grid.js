@@ -399,6 +399,10 @@ define(['jquery', 'underscore', 'backgrid', 'oro/translator', 'oro/mediator', 'o
                     grid.setAdditionalParameter(param, value);
                 });
 
+                mediator.on('datagrid:removeParam:' + grid.name, function (param) {
+                    grid.removeAdditionalParameter(param);
+                });
+
                 mediator.on('datagrid:restoreState:' + grid.name, function (columnName, dataField, included, excluded) {
                     grid.collection.each(function (model) {
                         if (_.indexOf(included, model.get(dataField)) !== -1) {
