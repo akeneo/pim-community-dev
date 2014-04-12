@@ -41,6 +41,10 @@ Feature: Execute a job
       | categories column | categories |
       | family column     | families   |
       | groups column     | groups     |
+    And the following association types:
+      | code    | label-en_US | label-fr_FR      |
+      | X_SELL  | Cross Sell  | Vente croisée    |
+      | UPSELL  | Upsell      | Vente incitative |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products
@@ -70,6 +74,25 @@ Feature: Execute a job
       | name | Donec |
     And the product "SKU-002" should have the following value:
       | description | Pellentesque habitant morbi tristique senectus et netus et malesuada fames |
+
+  Scenario: Successfully import a csv file of products with associations
+    Given the following file to import:
+      """
+      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name;description
+      SKU-001;Bag;CROSS;leather,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;Hat;;travel;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;Hat;;men;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the "acme_product_import" job to finish
+    Then there should be 3 products
+    Given I edit the "SKU-001" product
+    When I visit the "Associations" tab
+    And I visit the "X_SELL" group
+    Then I should see "2 products and 1 groups"
 
   Scenario: Successfully ignore duplicate unique data
     Given the following file to import:
