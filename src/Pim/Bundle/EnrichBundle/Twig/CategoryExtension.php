@@ -23,7 +23,7 @@ class CategoryExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param ProductManager $productManager
+     * @param ProductCategoryManager $productCategoryManager
      */
     public function __construct(ProductCategoryManager $productCategoryManager)
     {
