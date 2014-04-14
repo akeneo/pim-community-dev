@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Writer\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
 /**
  * Category writer using ORM method

@@ -71,13 +71,13 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_base_connector.processor.product
-                        writer:    pim_base_connector.writer.orm.product
+                        writer:    pim_base_connector.writer.doctrine.product
                 import_associations:
                     title:     pim_base_connector.jobs.csv_product_import.import_associations.title
                     services:
                         reader:    pim_base_connector.reader.cached_association
                         processor: pim_base_connector.processor.association
-                        writer:    pim_base_connector.writer.orm.association
+                        writer:    pim_base_connector.writer.doctrine.association
         csv_category_import:
             title: pim_base_connector.jobs.csv_category_import.title
             type:  import
@@ -87,7 +87,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_category
                         processor: pim_base_connector.processor.category
-                        writer:    pim_base_connector.writer.orm.category
+                        writer:    pim_base_connector.writer.doctrine.category
         csv_attribute_import:
             title: pim_base_connector.jobs.csv_attribute_import.title
             type:  import
@@ -97,7 +97,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute
                         processor: pim_base_connector.processor.attribute
-                        writer:    pim_base_connector.writer.orm.attribute
+                        writer:    pim_base_connector.writer.doctrine.attribute
         csv_attribute_option_import:
             title: pim_base_connector.jobs.csv_attribute_option_import.title
             type:  import
@@ -107,7 +107,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_attribute_option
                         processor: pim_base_connector.processor.attribute_option
-                        writer:    pim_base_connector.writer.orm.attribute_option
+                        writer:    pim_base_connector.writer.doctrine.attribute_option
         csv_association_type_import:
             title: pim_base_connector.jobs.csv_association_type_import.title
             type: import
@@ -117,7 +117,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_association_type
                         processor: pim_base_connector.processor.association_type
-                        writer:    pim_base_connector.writer.orm.association_type
+                        writer:    pim_base_connector.writer.doctrine.association_type
         csv_group_import:
             title: pim_base_connector.jobs.csv_group_import.title
             type: import
@@ -127,4 +127,4 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.file.csv_group
                         processor: pim_base_connector.processor.group
-                        writer:    pim_base_connector.writer.orm.group
+                        writer:    pim_base_connector.writer.doctrine.group

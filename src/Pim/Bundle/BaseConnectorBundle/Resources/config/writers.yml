@@ -1,12 +1,12 @@
 parameters:
-    pim_base_connector.writer.orm.product.class:  Pim\Bundle\BaseConnectorBundle\Writer\ORM\ProductWriter
-    pim_base_connector.writer.orm.entity.class:   Pim\Bundle\BaseConnectorBundle\Writer\ORM\Writer
-    pim_base_connector.writer.orm.category.class: Pim\Bundle\BaseConnectorBundle\Writer\ORM\CategoryWriter
+    pim_base_connector.writer.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter
+    pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
+    pim_base_connector.writer.doctrine.category.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\CategoryWriter
 
-    pim_base_connector.writer.file.class:         Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
+    pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
     pim_base_connector.writer.file.product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter
 
-    pim_base_connector.writer.dummy.class:        Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
+    pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
 
 services:
     pim_base_connector.writer.file:
@@ -21,8 +21,8 @@ services:
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%
 
-    pim_base_connector.writer.orm.product:
-        class: %pim_base_connector.writer.orm.product.class%
+    pim_base_connector.writer.doctrine.product:
+        class: %pim_base_connector.writer.doctrine.product.class%
         arguments:
             - '@pim_catalog.manager.product'
             - '@pim_transform.cache.doctrine_cache'
@@ -30,32 +30,18 @@ services:
         calls:
             - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
 
-    pim_base_connector.writer.orm.category:
-        class: %pim_base_connector.writer.orm.category.class%
+    pim_base_connector.writer.doctrine.category:
+        class: %pim_base_connector.writer.doctrine.category.class%
         arguments:
-            - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
-    pim_base_connector.writer.orm.association_type:
-        class: %pim_base_connector.writer.orm.entity.class%
+    pim_base_connector.writer.doctrine:
+        class: %pim_base_connector.writer.doctrine.class%
         arguments:
-            - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
 
-    pim_base_connector.writer.orm.group:
-        class: %pim_base_connector.writer.orm.entity.class%
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
-    pim_base_connector.writer.orm.attribute:
-        class: %pim_base_connector.writer.orm.entity.class%
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
-    pim_base_connector.writer.orm.attribute_option:
-        class: %pim_base_connector.writer.orm.entity.class%
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
-
-    pim_base_connector.writer.orm.association:
-        class: %pim_base_connector.writer.orm.entity.class%
-        arguments:
-            - '@doctrine.orm.default_entity_manager'
+    pim_base_connector.writer.doctrine.association_type: '@pim_base_connector.writer.doctrine'
+    pim_base_connector.writer.doctrine.group: '@pim_base_connector.writer.doctrine'
+    pim_base_connector.writer.doctrine.attribute: '@pim_base_connector.writer.doctrine'
+    pim_base_connector.writer.doctrine.attribute_option: '@pim_base_connector.writer.doctrine'
+    pim_base_connector.writer.doctrine.association: '@pim_base_connector.writer.doctrine'
