@@ -149,7 +149,7 @@
                 {% set associatedGroupIds = associatedGroupIds|merge([group.id]) %}
             {% endfor %}
 
-            {{ dataGrid.renderGrid('association-group-grid', { _parameters: { associatedIds: associatedGroupIds } }) }}
+            {{ dataGrid.renderGrid('association-group-grid', { associatedIds: associatedGroupIds }) }}
         </div>
     </div>
 {% endif %}
