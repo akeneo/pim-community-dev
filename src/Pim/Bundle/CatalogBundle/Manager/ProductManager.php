@@ -228,10 +228,7 @@ class ProductManager
         $this->objectManager->persist($product);
 
         if ($schedule || $recalculate) {
-            foreach ($product->getCompletenesses() as $completenesses) {
-                $this->objectManager->remove($completenesses);
-            }
-            $product->getCompletenesses()->clear();
+            $this->completenessManager->schedule($product);
         }
 
         if ($recalculate || $flush) {

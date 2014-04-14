@@ -90,7 +90,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $completenesses = $this->buildProductCompletenesses($product);
 
-        $product->setCompletenesses(new ArrayCollection($completenesses));
+        foreach ($completenesses as $completeness) {
+            $product->getCompletenesses()->add($completeness);
+        }
 
         if ($flush) {
             $this->documentManager->flush($product);
@@ -304,9 +306,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function schedule(ProductInterface $product)
     {
-        $product->setCompletenesses(new ArrayCollection());
-
-        $this->documentManager->flush($product);
+        $product->getCompletenesses()->clear();
     }
 
     /**
