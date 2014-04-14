@@ -58,7 +58,7 @@ define(
                             // the result is fed to the AJAX request `data` option
                             var id = null;
 
-                            if (node && node !== -1) {
+                            if (node && node !== -1 && node.attr) {
                                 id = node.attr('id').replace('node_', '');
                             } else {
                                 id = -1;

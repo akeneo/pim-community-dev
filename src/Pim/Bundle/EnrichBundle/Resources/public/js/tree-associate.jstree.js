@@ -55,7 +55,7 @@ define(
                             var data           = {},
                                 treeHasProduct = $('#tree-link-' + currentTree).hasClass('tree-has-product');
 
-                            if (node && node !== -1) {
+                            if (node && node !== -1 && node.attr) {
                                 data.id = node.attr('id').replace('node_', '');
                             } else {
                                 if (!treeHasProduct) {

@@ -66,7 +66,7 @@ define(
             },
 
             getNodeId = function (node) {
-                var nodeId = (node && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
+                var nodeId = (node && node.attr && node.attr('id')) ? node.attr('id').replace('node_', '') : '';
                 return +nodeId;
             },
 
