@@ -35,3 +35,4 @@ Available Columns: Colonnes disponibles
 Displayed Columns: Colonnes affichées
 datagrid_view.columns.min_message: Vous devez sélectionner au moins une colonne à afficher
 pim.grid.mass_action.quick_export.title: Export rapide
+pim.grid.action.launch.title: Démarrer
