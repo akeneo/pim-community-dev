@@ -51,7 +51,12 @@ class VersionBuilder
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        return new Version($resourceName, $resourceId, $versionNumber, $snapshot, $changeset, $user, $context);
+        $version = new Version($resourceName, $resourceId, $user, $context);
+        $version->setVersion($versionNumber)
+            ->setSnapshot($snapshot)
+            ->setChangeset($changeset);
+
+        return $version;
     }
 
 

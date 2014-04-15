@@ -29,15 +29,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
         $resourceName  = get_class($versionable);
         $resourceId    = $versionable->getId();
         $numVersion    = 2;
-        $this->version = new Version(
-            $resourceName,
-            $resourceId,
-            $numVersion,
-            ['field' => 'value'],
-            ['field' => 'value'],
-            $user,
-            'foo'
-        );
+        $this->version = new Version($resourceName, $resourceId, $user, 'foo');
+
+        $this->version
+            ->setVersion($numVersion)
+            ->setSnapshot(['field' => 'value'])
+            ->setChangeset(['field' => 'value']);
     }
 
     /**

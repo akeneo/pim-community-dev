@@ -48,7 +48,7 @@ class Version
     protected $resourceId;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
     protected $snapshot;
 
@@ -76,29 +76,16 @@ class Version
      *
      * @param string      $resourceName
      * @param string      $resourceId
-     * @param integer     $version
-     * @param array       $snapshot
-     * @param array       $changeset
      * @param User        $user
      * @param string|null $context
      */
-    public function __construct(
-        $resourceName,
-        $resourceId,
-        $version,
-        array $snapshot,
-        array $changeset,
-        User $user,
-        $context = null
-    ) {
+    public function __construct($resourceName, $resourceId, User $user, $context = null)
+    {
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
-        $this->version      = $version;
-        $this->snapshot     = $snapshot;
-        $this->changeset    = $changeset;
         $this->user         = $user;
         $this->context      = $context;
-        $this->loggedAt     = new \DateTime("now");
+        $this->loggedAt     = new \DateTime('now');
     }
 
     /**
@@ -112,7 +99,9 @@ class Version
     }
 
     /**
-     * @return integer
+     * Get resource id
+     *
+     * @return string
      */
     public function getResourceId()
     {
@@ -120,6 +109,8 @@ class Version
     }
 
     /**
+     * Get resource name
+     *
      * @return string
      */
     public function getResourceName()
@@ -128,7 +119,9 @@ class Version
     }
 
     /**
-     * @return array
+     * Get version
+     *
+     * @return integer
      */
     public function getVersion()
     {
@@ -136,6 +129,22 @@ class Version
     }
 
     /**
+     * Set version
+     *
+     * @param integer $version
+     *
+     * @return Version
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * Get snapshot
+     *
      * @return array
      */
     public function getSnapshot()
@@ -144,6 +153,22 @@ class Version
     }
 
     /**
+     * Set snapshot
+     *
+     * @param array $snapshot
+     *
+     * @return Version
+     */
+    public function setSnapshot(array $snapshot)
+    {
+        $this->snapshot = $snapshot;
+
+        return $this;
+    }
+
+    /**
+     * Get changeset
+     *
      * @return array
      */
     public function getChangeset()
@@ -152,6 +177,22 @@ class Version
     }
 
     /**
+     * Set changeset
+     *
+     * @param array $changeset
+     *
+     * @return Version
+     */
+    public function setChangeset(array $changeset)
+    {
+        $this->changeset = $changeset;
+
+        return $this;
+    }
+
+    /**
+     * Get context
+     *
      * @return string|null
      */
     public function getContext()
