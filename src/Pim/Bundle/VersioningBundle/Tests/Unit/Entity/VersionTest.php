@@ -47,7 +47,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($this->version->getResourceId(), 1);
         $this->assertEquals($this->version->getVersion(), 2);
-        $this->assertEquals($this->version->getData(), ['field' => 'value']);
+        $this->assertEquals($this->version->getSnapshot(), ['field' => 'value']);
         $this->assertEquals($this->version->getChangeset(), ['field' => 'value']);
         $this->assertEquals($this->version->getContext(), 'foo');
     }

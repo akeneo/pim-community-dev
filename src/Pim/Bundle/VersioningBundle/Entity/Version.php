@@ -50,7 +50,7 @@ class Version
     /**
      * @ORM\Column(type="array")
      */
-    protected $data;
+    protected $snapshot;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -77,7 +77,7 @@ class Version
      * @param string      $resourceName
      * @param string      $resourceId
      * @param integer     $version
-     * @param array       $data
+     * @param array       $snapshot
      * @param array       $changeset
      * @param User        $user
      * @param string|null $context
@@ -86,7 +86,7 @@ class Version
         $resourceName,
         $resourceId,
         $version,
-        array $data,
+        array $snapshot,
         array $changeset,
         User $user,
         $context = null
@@ -94,7 +94,7 @@ class Version
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
         $this->version      = $version;
-        $this->data         = $data;
+        $this->snapshot     = $snapshot;
         $this->changeset    = $changeset;
         $this->user         = $user;
         $this->context      = $context;
@@ -138,9 +138,9 @@ class Version
     /**
      * @return array
      */
-    public function getData()
+    public function getSnapshot()
     {
-        return $this->data;
+        return $this->snapshot;
     }
 
     /**

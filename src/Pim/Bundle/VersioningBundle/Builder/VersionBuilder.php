@@ -44,55 +44,55 @@ class VersionBuilder
         $resourceId   = $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldData       = $previousVersion ? $previousVersion->getData() : [];
+        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $data = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
+        $snapshot = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
 
-        $changeset = $this->buildDiffData($oldData, $data);
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        return new Version($resourceName, $resourceId, $versionNumber, $data, $changeset, $user, $context);
+        return new Version($resourceName, $resourceId, $versionNumber, $snapshot, $changeset, $user, $context);
     }
 
 
     /**
-     * Build diff data
+     * Build the changeset
      *
-     * @param array $oldData
-     * @param array $newData
+     * @param array $oldSnapshot
+     * @param array $newSnapshot
      *
      * @return array
      */
-    protected function buildDiffData(array $oldData, array $newData)
+    protected function buildChangeset(array $oldSnapshot, array $newSnapshot)
     {
-        return $this->filterDiffData($this->getMergedData($oldData, $newData));
+        return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
     }
 
     /**
-     * Merge the old and new data
+     * Merge the old and new snapshots
      *
-     * @param array $oldData
-     * @param array $newData
+     * @param array $oldSnapshot
+     * @param array $newSnapshot
      *
      * @return array
      */
-    protected function getMergedData(array $oldData, array $newData)
+    protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot)
     {
-        $newData = array_map(
+        $newSnapshot = array_map(
             function ($newItem) {
                 return ['new' => $newItem];
             },
-            $newData
+            $newSnapshot
         );
 
-        $oldData = array_map(
+        $oldSnapshot = array_map(
             function ($oldItem) {
                 return ['old' => $oldItem];
             },
-            $oldData
+            $oldSnapshot
         );
 
-        $mergedData = array_merge_recursive($newData, $oldData);
+        $mergedSnapshot = array_merge_recursive($newSnapshot, $oldSnapshot);
 
         return array_map(
             function ($mergedItem) {
@@ -101,23 +101,23 @@ class VersionBuilder
                     'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
                 ];
             },
-            $mergedData
+            $mergedSnapshot
         );
     }
 
     /**
-     * Filter diff data to remove values that are the same
+     * Filter changeset to remove values that are the same
      *
-     * @param array $diffData
+     * @param array $changeset
      *
      * @return array
      */
-    protected function filterDiffData(array $diffData)
+    protected function filterChangeset(array $changeset)
     {
         return array_filter(
-            $diffData,
-            function ($diffItem) {
-                return $diffItem['old'] != $diffItem['new'];
+            $changeset,
+            function ($item) {
+                return $item['old'] != $item['new'];
             }
         );
     }
