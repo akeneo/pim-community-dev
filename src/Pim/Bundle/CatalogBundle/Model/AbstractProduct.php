@@ -782,7 +782,6 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     public function addAssociation(Association $association)
     {
         if (!$this->associations->contains($association)) {
-            $association->setOwner($this);
             $this->associations->add($association);
         }
 
