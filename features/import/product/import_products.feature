@@ -94,6 +94,20 @@ Feature: Execute a job
     And I visit the "X_SELL" group
     Then I should see "2 products and 1 groups"
 
+  @pim-2445
+  Scenario: Successfully skip associations of invalid product
+    Given the following file to import:
+      """
+      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name;description
+      SKU-001;Bag;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      """
+    And the following job "acme_product_import" configuration:
+      | filePath | %file to import% |
+    When I am on the "acme_product_import" import job page
+    And I launch the import job
+    And I wait for the "acme_product_import" job to finish
+    Then there should be 0 product
+
   Scenario: Successfully ignore duplicate unique data
     Given the following file to import:
       """

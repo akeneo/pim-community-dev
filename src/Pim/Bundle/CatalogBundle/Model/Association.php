@@ -225,6 +225,6 @@ class Association implements ReferableInterface
      */
     public function getReference()
     {
-        return $this->owner->getIdentifier() . '.' . $this->associationType->getCode();
+        return $this->owner ? $this->owner->getIdentifier() . '.' . $this->associationType->getCode() : null;
     }
 }
