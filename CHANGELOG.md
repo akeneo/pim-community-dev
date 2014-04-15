@@ -29,11 +29,7 @@
 - Fixed the CSV import of attribute options which can fail due to missing columns when options are not 100% translated
 - Fixed the CSV import of attribute option to throw exception when the attribute is not known
 - Fixed the CSV export of attributes to avoid to export the virtual group 'Other'
-
-## Bug Fixes
 - Prevent considering 0 as a null value when importing metric data
-
-## Bug Fixes
 - Ensured attribute option validation
 
 ## BC breaks
