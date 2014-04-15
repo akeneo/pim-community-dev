@@ -14,6 +14,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
@@ -84,10 +85,11 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
     }
 
-    public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager)
+    public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager, PersistentCollection $completenesses)
     {
-        $manager->flush($product)->shouldBeCalled();
-        $product->setCompletenesses(Argument::type('Doctrine\Common\Collections\ArrayCollection'))->shouldBeCalled();
+        $manager->flush($product)->shouldNotBeCalled();
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->clear()->shouldBeCalled();
 
         $this->schedule($product);
     }
