@@ -341,3 +341,37 @@ jenkins-10-dev-4:
             output_path: null,app/build/logs/behat/
     filters:
         tags: ~skip&&~doc
+
+jenkins-pr-mongodb-1:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-mongodb-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-mongodb-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-pr-mongodb-2:
+    context:
+        parameters:
+            base_url: http://pim-pr-behat-mongodb-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-pr-behat-mongodb-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
