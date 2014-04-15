@@ -1157,12 +1157,23 @@ datagrid:
                     - v.version
                     - >
                       CONCAT(
+                        CASE WHEN u IS NOT NULL THEN
+                            CONCAT(
+                                CONCAT(u.firstName, ' '),
+                                CONCAT(u.lastName, ' ')
+                            )
+                        ELSE
+                            v.author
+                        END,
                         CONCAT(
-                            CONCAT(u.firstName, ' '),
-                            CONCAT(u.lastName, ' ')
-                        ),
-                        CONCAT(
-                            CONCAT(' - ', u.email),
+                            CONCAT(
+                                ' - ',
+                                CASE WHEN u IS NOT NULL THEN
+                                    u.email
+                                ELSE
+                                    'Removed user'
+                                END
+                            ),
                             CASE WHEN v.context IS NOT NULL THEN
                                 CONCAT(
                                     CONCAT(' (', v.context),
@@ -1178,8 +1189,10 @@ datagrid:
                 join:
                     left:
                         user:
-                            join: v.user
+                            join: %oro_user.entity.class%
                             alias: u
+                            conditionType: WITH
+                            condition: u.username = v.author
                 where:
                     and:
                         - v.resourceName = :objectClass AND v.resourceId = :objectId

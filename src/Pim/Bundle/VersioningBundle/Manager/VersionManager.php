@@ -30,9 +30,9 @@ class VersionManager
     protected $realTimeVersioning = true;
 
     /**
-     * @var User
+     * @var string
      */
-    protected $user;
+    protected $username = self::DEFAULT_SYSTEM_USER;
 
     /**
      * Versioning context
@@ -62,11 +62,11 @@ class VersionManager
     }
 
     /**
-     * @param User|null $user
+     * @param string $username
      */
-    public function setUser(User $user = null)
+    public function setUsername($username)
     {
-        $this->user = $user;
+        $this->username = $username;
     }
 
     /**
@@ -114,22 +114,17 @@ class VersionManager
      */
     public function buildVersion($versionable)
     {
-        $user = $this->getUser();
-
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
 
-            if ($user) {
-                $previousVersion = $this->getVersionRepository()
-                    ->getNewestLogEntry(get_class($versionable), $versionable->getId());
+            $previousVersion = $this->getVersionRepository()
+                ->getNewestLogEntry(get_class($versionable), $versionable->getId());
 
-                return $this->versionBuilder->buildVersion($versionable, $user, $previousVersion, $this->context);
-            }
+            return $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $username  = $user ? $user->getUsername() : self::DEFAULT_SYSTEM_USER;
             $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
 
-            return new Pending($className, $versionable->getId(), $username);
+            return new Pending($className, $versionable->getId(), $this->username);
         }
     }
 
@@ -177,20 +172,5 @@ class VersionManager
     public function getNewestLogEntry($versionable)
     {
         return $this->getVersionRepository()->getNewestLogEntry(get_class($versionable), $versionable->getId());
-    }
-
-    /**
-     * Get the current user
-     *
-     * @return User|null
-     */
-    protected function getUser()
-    {
-        if ($this->user) {
-            return $this->user;
-        }
-
-        return $this->registry->getRepository('OroUserBundle:User')
-            ->findOneBy(['username' => self::DEFAULT_SYSTEM_USER]);
     }
 }

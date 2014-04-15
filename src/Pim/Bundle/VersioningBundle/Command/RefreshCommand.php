@@ -92,10 +92,9 @@ class RefreshCommand extends ContainerAwareCommand
     protected function createVersion(Pending $pending)
     {
         $em = $this->getEntityManager();
-        $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
         $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
         $versionManager = $this->getVersionManager();
-        $versionManager->setUser($user);
+        $versionManager->setUsername($pending->getUsername());
         if (!in_array(spl_object_hash($versionable), $this->versionedEntities)) {
             $versionManager->buildVersion($versionable);
             $this->versionedEntities[] = spl_object_hash($versionable);

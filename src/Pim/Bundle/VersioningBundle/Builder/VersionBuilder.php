@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Builder;
 
 use Symfony\Component\Serializer\SerializerInterface;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -32,13 +31,13 @@ class VersionBuilder
      * Build a version from a versionable entity
      *
      * @param object       $versionable
-     * @param User         $user
+     * @param string       $author
      * @param Version|null $previousVersion
      * @param string|null  $context
      *
      * @return Version
      */
-    public function buildVersion($versionable, User $user, Version $previousVersion = null, $context = null)
+    public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
@@ -51,7 +50,7 @@ class VersionBuilder
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        $version = new Version($resourceName, $resourceId, $user, $context);
+        $version = new Version($resourceName, $resourceId, $author, $context);
         $version->setVersion($versionNumber)
             ->setSnapshot($snapshot)
             ->setChangeset($changeset);

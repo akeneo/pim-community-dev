@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Resource version entity
@@ -30,12 +29,11 @@ class Version
     protected $id;
 
     /**
-     * @var User $user
+     * @var string $author
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\Column(type="string")
      */
-    protected $user;
+    protected $author;
 
     /**
      * @ORM\Column(name="resource_name", type="string")
@@ -76,26 +74,26 @@ class Version
      *
      * @param string      $resourceName
      * @param string      $resourceId
-     * @param User        $user
+     * @param string      $author
      * @param string|null $context
      */
-    public function __construct($resourceName, $resourceId, User $user, $context = null)
+    public function __construct($resourceName, $resourceId, $author, $context = null)
     {
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
-        $this->user         = $user;
+        $this->author       = $author;
         $this->context      = $context;
         $this->loggedAt     = new \DateTime('now');
     }
 
     /**
-     * Get user
+     * Get author
      *
-     * @return User
+     * @return string
      */
-    public function getUser()
+    public function getAuthor()
     {
-        return $this->user;
+        return $this->author;
     }
 
     /**

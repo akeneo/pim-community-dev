@@ -30,12 +30,13 @@ class AddUserListenerSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn([KernelEvents::REQUEST => 'onKernelRequest']);
     }
 
-    function it_injects_current_user_into_the_version_manager(GetResponseEvent $event, $security, $token, User $user, $versionManager)
+    function it_injects_current_username_into_the_version_manager(GetResponseEvent $event, $security, $token, User $user, $versionManager)
     {
         $security->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+        $user->getUsername()->willReturn('foo');
 
-        $versionManager->setUser($user)->shouldBeCalled();
+        $versionManager->setUsername('foo')->shouldBeCalled();
 
         $this->onKernelRequest($event);
     }
@@ -44,7 +45,7 @@ class AddUserListenerSpec extends ObjectBehavior
     {
         $security->getToken()->willReturn(null);
 
-        $versionManager->setUser(Argument::any())->shouldNotBeCalled();
+        $versionManager->setUsername(Argument::any())->shouldNotBeCalled();
 
         $this->onKernelRequest($event);
     }

@@ -24,12 +24,12 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $user          = $this->getMock('Oro\Bundle\UserBundle\Entity\User');
+        $author        = 'admin';
         $versionable   = $this->getVersionableMock();
         $resourceName  = get_class($versionable);
         $resourceId    = $versionable->getId();
         $numVersion    = 2;
-        $this->version = new Version($resourceName, $resourceId, $user, 'foo');
+        $this->version = new Version($resourceName, $resourceId, $author, 'foo');
 
         $this->version
             ->setVersion($numVersion)
@@ -42,6 +42,7 @@ class VersionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetterSetter()
     {
+        $this->assertEquals($this->version->getAuthor(), 'admin');
         $this->assertEquals($this->version->getResourceId(), 1);
         $this->assertEquals($this->version->getVersion(), 2);
         $this->assertEquals($this->version->getSnapshot(), ['field' => 'value']);
