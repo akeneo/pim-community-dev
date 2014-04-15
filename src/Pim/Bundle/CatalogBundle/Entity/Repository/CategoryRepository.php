@@ -5,14 +5,12 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
-use Pim\Bundle\SegmentationTreeBundle\Entity\Repository\SegmentRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * Category repository
- * Override SegmentRepository of OroSegmentationTreeBundle
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
