@@ -225,12 +225,14 @@ class ProductManager
     {
         $this->objectManager->persist($product);
 
-        if ($flush) {
-            $this->objectManager->flush();
-        }
-        if ($schedule) {
+        if ($schedule || $recalculate) {
             $this->completenessManager->schedule($product);
         }
+
+        if ($recalculate || $flush) {
+            $this->objectManager->flush();
+        }
+
         if ($recalculate) {
             $this->completenessManager->generateMissingForProduct($product);
         }

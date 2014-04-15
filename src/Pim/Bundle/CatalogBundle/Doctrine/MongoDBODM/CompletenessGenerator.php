@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
@@ -90,7 +89,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $completenesses = $this->buildProductCompletenesses($product);
 
-        $product->setCompletenesses(new ArrayCollection($completenesses));
+        foreach ($completenesses as $completeness) {
+            $product->getCompletenesses()->add($completeness);
+        }
 
         if ($flush) {
             $this->documentManager->flush($product);
@@ -234,7 +235,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $products = $productsQb->getQuery()->execute();
 
         foreach ($products as $product) {
-            // Flushing at each iteration has a big impact on perf
             $this->generateMissingForProduct($product, false);
         }
 
@@ -305,9 +305,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function schedule(ProductInterface $product)
     {
-        $product->setCompletenesses(new ArrayCollection());
-
-        $this->documentManager->flush($product);
+        $product->getCompletenesses()->clear();
     }
 
     /**

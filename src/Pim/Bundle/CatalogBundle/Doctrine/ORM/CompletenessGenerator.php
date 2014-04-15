@@ -606,11 +606,11 @@ MAIN_SQL;
      */
     public function schedule(ProductInterface $product)
     {
-        $query = $this->doctrine->getManager()->createQuery(
-            "DELETE FROM Pim\Bundle\CatalogBundle\Model\Completeness c WHERE c.product = :product"
-        );
-        $query->setParameter('product', $product);
-        $query->execute();
+        foreach ($product->getCompletenesses() as $completeness) {
+            $this->doctrine->getManager()->remove($completeness);
+        }
+
+        $product->getCompletenesses()->clear();
     }
 
     /**
