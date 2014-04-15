@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;

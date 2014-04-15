@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
