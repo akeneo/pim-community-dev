@@ -182,6 +182,9 @@ class ProductImportValidatorTest extends ImportValidatorTestCase
             $this->values[$name]->expects($this->any())
                 ->method('getData')
                 ->will($this->returnValue($name . '_data'));
+            $this->values[$name]->expects($this->any())
+                ->method('getAttribute')
+                ->will($this->returnValue($this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute')));
         }
 
         return $this->values[$name];
