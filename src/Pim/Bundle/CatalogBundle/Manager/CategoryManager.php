@@ -56,7 +56,7 @@ class CategoryManager
      */
     public function getCategoryInstance()
     {
-        return new $this->getCategoryClass();
+        return new $this->categoryClass;
     }
 
     /**
