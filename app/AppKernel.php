@@ -61,7 +61,6 @@ class AppKernel extends OroKernel
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
-            new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
