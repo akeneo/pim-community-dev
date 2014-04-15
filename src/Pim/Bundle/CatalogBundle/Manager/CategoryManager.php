@@ -4,19 +4,41 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 
 /**
- * Extends SegmentManager for category tree
+ * Category manager
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryManager extends SegmentManager
+class CategoryManager
 {
+    /**
+     * @var ObjectManager $om
+     */
+    protected $om;
+
+    /**
+     * Class name for managed category
+     *
+     * @var string $categoryClass
+     */
+    protected $categoryClass;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $om
+     * @param string        $categoryClass
+     */
+    public function __construct(ObjectManager $om, $categoryClass)
+    {
+        $this->om = $om;
+        $this->categoryClass = $categoryClass;
+    }
+
     /**
      * Return object manager
      *
@@ -24,7 +46,39 @@ class CategoryManager extends SegmentManager
      */
     public function getObjectManager()
     {
-        return $this->storageManager;
+        return $this->om;
+    }
+
+    /**
+     * Get a new category instance
+     *
+     * @return CategoryInterface
+     */
+    public function getCategoryInstance()
+    {
+        return new $this->getCategoryClass();
+    }
+
+    /**
+     * Return category class name (mainly used in Doctrine context)
+     *
+     * @return string category class name
+     */
+    public function getCategoryClass()
+    {
+        return $this->categoryClass;
+    }
+
+    /**
+     * Return the entity repository reponsible for the category
+     *
+     * @return CategoryRepository
+     *
+     * TODO: Inject CategoryRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->om->getRepository($this->getCategoryClass());
     }
 
     /**
@@ -34,7 +88,7 @@ class CategoryManager extends SegmentManager
      */
     public function getTreeInstance()
     {
-        $tree = $this->getSegmentInstance();
+        $tree = $this->getCategoryInstance();
         $tree->setParent(null);
 
         return $tree;
@@ -46,6 +100,31 @@ class CategoryManager extends SegmentManager
     public function getTrees()
     {
         return $this->getEntityRepository()->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
+     * Get all direct children for a parent category id.
+     * If the $selectNodeId is provided, all the children
+     * level needed to provides the selectNode are returned
+     *
+     * @param integer $parentId
+     * @param integer $selectNodeId
+     *
+     * @return ArrayCollection
+     */
+    public function getChildren($parentId, $selectNodeId = false)
+    {
+        $children = array();
+
+        $entityRepository = $this->getEntityRepository();
+
+        if ($selectNodeId === false) {
+            $children = $entityRepository->getChildrenByParentId($parentId);
+        } else {
+            $children = $entityRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+        }
+
+        return $children;
     }
 
     /**
@@ -135,14 +214,14 @@ class CategoryManager extends SegmentManager
     /**
      * {@inheritdoc}
      */
-    public function remove(AbstractSegment $segment)
+    public function remove(CategoryInterface $category)
     {
-        if ($segment instanceof CategoryInterface) {
-            foreach ($segment->getProducts() as $product) {
-                $product->removeCategory($segment);
+        if ($category instanceof CategoryInterface) {
+            foreach ($category->getProducts() as $product) {
+                $product->removeCategory($category);
             }
         }
 
-        parent::remove($segment);
+        parent::remove($category);
     }
 }
