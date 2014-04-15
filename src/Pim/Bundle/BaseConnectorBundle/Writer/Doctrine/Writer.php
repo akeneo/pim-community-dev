@@ -53,7 +53,8 @@ class Writer extends AbstractConfigurableStepElement implements
         foreach ($items as $item) {
             if (!is_object($item)) {
                 throw new \InvalidArgumentException(
-                    'Expecting item of type object, got "%s"', gettype($item)
+                    'Expecting item of type object, got "%s"',
+                    gettype($item)
                 );
             }
 
