@@ -15,6 +15,10 @@ pim_importexport:
 pim_webservice:
     resource: "@PimWebServiceBundle/Resources/config/routing.yml"
 
+pim_ux:
+    resource: "@PimUxBundle/Resources/config/routing.yml"
+    prefix:   /ux
+
 # Oro platform
 
 oro_default:

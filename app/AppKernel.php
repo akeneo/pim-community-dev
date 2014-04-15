@@ -77,7 +77,8 @@ class AppKernel extends OroKernel
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
-            new Pim\Bundle\TransformBundle\PimTransformBundle()
+            new Pim\Bundle\TransformBundle\PimTransformBundle(),
+            new Pim\Bundle\UxBundle\PimUxBundle(),
         );
 
         $bundles = array_merge($bundles, $pimBundles);

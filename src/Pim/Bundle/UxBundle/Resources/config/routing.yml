@@ -1,0 +1,3 @@
+pim_ux_home:
+    pattern:  /
+    defaults: { _controller: PimUxBundle:Default:index }
