@@ -9,7 +9,7 @@
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
-- MongoDB support (WIP)
+- MongoDB support
 - Allow to add many quick export on datagrids
 - Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
