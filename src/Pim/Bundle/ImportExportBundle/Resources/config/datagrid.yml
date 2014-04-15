@@ -203,7 +203,7 @@ datagrid:
         actions:
             show:
                 type:      navigate
-                label:     Show
+                label:     pim.grid.action.show.title
                 icon:      list-alt
                 link:      show_link
                 rowAction: true
