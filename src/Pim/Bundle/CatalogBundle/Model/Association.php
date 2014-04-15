@@ -98,6 +98,7 @@ class Association implements ReferableInterface
     public function setOwner(ProductInterface $owner)
     {
         $this->owner = $owner;
+        $owner->addAssociation($this);
 
         return $this;
     }

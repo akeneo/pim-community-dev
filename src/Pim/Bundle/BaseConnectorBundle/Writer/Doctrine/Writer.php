@@ -1,9 +1,8 @@
 <?php
 
-namespace Pim\Bundle\BaseConnectorBundle\Writer\ORM;
+namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
-use Doctrine\ORM\EntityManager;
-
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
@@ -20,24 +19,18 @@ class Writer extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @var EntityManager
-     */
-    protected $em;
+    /** @var ManagerRegistry */
+    protected $registry;
 
-    /**
-     * @var StepExecution
-     */
+    /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * Constructor
-     *
-     * @param EntityManager $em
+     * @param ManagerRegistry $registry
      */
-    public function __construct(EntityManager $em)
+    public function __construct(ManagerRegistry $registry)
     {
-        $this->em = $em;
+        $this->registry = $registry;
     }
 
     /**
@@ -57,12 +50,20 @@ class Writer extends AbstractConfigurableStepElement implements
             $items = call_user_func_array('array_merge', $items);
         }
 
-        foreach ($items as $entity) {
-            $this->em->persist($entity);
-            $this->incrementCount($entity);
+        foreach ($items as $item) {
+            if (!is_object($item)) {
+                throw new \InvalidArgumentException(
+                    'Expecting item of type object, got "%s"', gettype($item)
+                );
+            }
+
+            $this->registry->getManagerForClass(get_class($item))->persist($item);
+            $this->incrementCount($item);
         }
 
-        $this->em->flush();
+        foreach ($this->registry->getManagers() as $manager) {
+            $manager->flush();
+        }
 
         $this->postWrite();
     }
@@ -83,11 +84,11 @@ class Writer extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * @param object $entity
+     * @param object $item
      */
-    protected function incrementCount($entity)
+    protected function incrementCount($item)
     {
-        if ($entity->getId()) {
+        if ($item->getId()) {
             $this->stepExecution->incrementSummaryInfo('update');
         } else {
             $this->stepExecution->incrementSummaryInfo('create');

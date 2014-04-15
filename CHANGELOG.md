@@ -103,6 +103,7 @@
 - EditCommonAttributes class needs the ProductBuilder and ProductMassActionManager now
 - Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
 - Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
+- Renamed service writer ids `pim_base_connector.writer.orm.*` -> `pim_base_connector.writer.doctrine.*`
 
 # 1.0.2
 ## Bug Fixes
