@@ -26,12 +26,11 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
         if ($entity instanceof ProductValueInterface) {
-            $product = $entity->getEntity();
-            if ($product) {
+            if ($product = $entity->getEntity()) {
                 $pendings[] = $product;
             }
 

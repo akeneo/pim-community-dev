@@ -42,7 +42,7 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
         if ($entity instanceof AbstractTranslation) {

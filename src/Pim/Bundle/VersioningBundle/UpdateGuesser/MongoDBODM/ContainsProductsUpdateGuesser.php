@@ -42,7 +42,7 @@ class ContainsProductsUpdateGuesser extends BaseContainsProductsUpdateGuesser
     /**
      * {@inheritdoc}
      */
-    public function guessUpdates(Entitymanager $em, $entity, $action)
+    public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
 
