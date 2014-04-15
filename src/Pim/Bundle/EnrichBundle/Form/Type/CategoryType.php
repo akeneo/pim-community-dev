@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Oro\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
+use Pim\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**

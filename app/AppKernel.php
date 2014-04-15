@@ -37,9 +37,7 @@ class AppKernel extends OroKernel
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
             'Oro\Bundle\CronBundle\OroCronBundle',
-            'Oro\Bundle\ImportExportBundle\OroImportExportBundle',
-            'Oro\Bundle\SearchBundle\OroSearchBundle',
-            'Oro\Bundle\TagBundle\OroTagBundle',
+            'Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle'
         );
         foreach ($oroBundles as $bundleIndex => $bundle) {
             if (in_array(get_class($bundle), $exclude)) {
@@ -63,6 +61,7 @@ class AppKernel extends OroKernel
             new Pim\Bundle\NavigationBundle\PimNavigationBundle(),
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
+            new Pim\Bundle\SearchBundle\PimSearchBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
 
             // PIM bundles
@@ -78,7 +77,8 @@ class AppKernel extends OroKernel
             new Pim\Bundle\WebServiceBundle\PimWebServiceBundle(),
             new Pim\Bundle\EnrichBundle\PimEnrichBundle(),
             new Pim\Bundle\BaseConnectorBundle\PimBaseConnectorBundle(),
-            new Pim\Bundle\TransformBundle\PimTransformBundle()
+            new Pim\Bundle\TransformBundle\PimTransformBundle(),
+            new Pim\Bundle\SegmentationTreeBundle\PimSegmentationTreeBundle()
         );
 
         $bundles = array_merge($bundles, $pimBundles);
