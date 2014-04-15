@@ -2,9 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\SegmentationTreeBundle\Form\Type\AbstractSegmentType;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryType extends AbstractSegmentType
+class CategoryType extends AbstractType
 {
     /**
      * Entity FQCN
@@ -48,6 +48,8 @@ class CategoryType extends AbstractSegmentType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         parent::buildForm($builder, $options);
+
+        $builder->add('code');
 
         $this->addLabelField($builder);
 
