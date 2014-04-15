@@ -27,7 +27,7 @@ use Prophecy\Argument;
  */
 class CompletenessGeneratorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         DocumentManager $manager,
         CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
@@ -80,13 +80,16 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->beConstructedWith($manager, $completenessFactory, $validator, 'pim_product_class', $channelManager);
     }
 
-    public function it_is_a_completeness_generator()
+    function it_is_a_completeness_generator()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
     }
 
-    public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager, PersistentCollection $completenesses)
-    {
+    function it_schedules_product_completeness(
+        ProductInterface $product,
+        DocumentManager $manager,
+        PersistentCollection $completenesses
+    ) {
         $manager->flush($product)->shouldNotBeCalled();
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->clear()->shouldBeCalled();
@@ -94,7 +97,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->schedule($product);
     }
 
-    public function it_builds_product_completenesses_with_one_channel_and_three_locales (
+    function it_builds_product_completenesses_with_one_channel_and_three_locales(
         ProductInterface $product,
         ValidatorInterface $validator,
         CompletenessFactory $completenessFactory,
@@ -122,7 +125,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->buildProductCompletenesses($product);
     }
 
-    public function it_doesnt_build_product_completenesses_without_family (
+    function it_doesnt_build_product_completenesses_without_family (
         ProductInterface $product,
         ValidatorInterface $validator,
         DocumentManager $manager
@@ -134,7 +137,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $this->generateMissingForProduct($product);
     }
-    public function it_builds_product_completenesses_with_two_channels_and_three_locales (
+    function it_builds_product_completenesses_with_two_channels_and_three_locales (
         ProductInterface $product,
         ValidatorInterface $validator,
         CompletenessFactory $completenessFactory,
