@@ -7,18 +7,18 @@ use Pim\Bundle\TransformBundle\Exception\ParametrizedExceptionInterface;
 use Pim\Bundle\TransformBundle\Exception\ParametrizedException;
 
 /**
- * Exception for duplicate identifiers in exports
+ * Exception for duplicate product values that should be unique, used during imports
  *
- * @author    Antoine Guigan <antoine@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DuplicateIdentifierException extends InvalidItemException implements ParametrizedExceptionInterface
+class DuplicateProductValueException extends InvalidItemException implements ParametrizedExceptionInterface
 {
     /**
      * @var string
      */
-    protected $messageTemplate = 'The unique code "%identifier%" was already read in this file';
+    protected $messageTemplate = 'The value "%value%" for unique attribute "%code%" was already read in this file';
 
     /**
      * @var array
@@ -28,19 +28,16 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
     /**
      * Constructor
      *
-     * @param string $identifier
+     * @param string $code
+     * @param string $value
      * @param array  $item
      */
-    public function __construct($identifier, array $item)
+    public function __construct($code, $value, array $item)
     {
-        $messageParameters = array(
-            '%identifier%' => $identifier
-        );
-        $exception = new ParametrizedException(
-            $this->messageTemplate,
-            $messageParameters
-        );
-        parent::__construct($exception->getMessage(), $item, $messageParameters);
+        $this->messageParameters = ['%code%'  => $code, '%value%' => $value];
+        $exception = new ParametrizedException($this->messageTemplate, $this->messageParameters);
+
+        parent::__construct($exception->getMessage(), $item, $this->messageParameters);
     }
 
     /**
