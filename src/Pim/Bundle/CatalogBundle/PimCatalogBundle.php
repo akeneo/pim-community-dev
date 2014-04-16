@@ -20,10 +20,10 @@ class PimCatalogBundle extends Bundle
     const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
 
     /** @staticvar string */
-    const VERSION = '1.1.0-DEV';
+    const VERSION = '1.1.0';
 
     /** @staticvar string */
-    const VERSION_CODENAME = '';
+    const VERSION_CODENAME = 'Rabbit Punch';
 
     /** @staticvar string */
     const MAJOR_VERSION = '1';
