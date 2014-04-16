@@ -144,7 +144,6 @@ services:
     pim_enrich.controller.media:
         scope: request
         class: %pim_enrich.controller.media.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@liip_imagine'
             - '@liip_imagine.filter.manager'

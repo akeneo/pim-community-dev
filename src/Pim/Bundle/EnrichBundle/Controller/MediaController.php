@@ -2,21 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Imagine\Image\ImagineInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
  * Media controller
@@ -25,15 +18,15 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaController extends AbstractDoctrineController
+class MediaController
 {
-    /** @var \Imagine\Image\ImagineInterface */
+    /** @var ImagineInterface */
     protected $imagine;
 
-    /** @var \Liip\ImagineBundle\Imagine\Filter\FilterManager */
+    /** @var FilterManager */
     protected $filterManager;
 
-    /** @var \Liip\ImagineBundle\Imagine\Cache\CacheManager */
+    /** @var CacheManager */
     protected $cacheManager;
 
     /** @var ObjectRepository */
@@ -42,44 +35,17 @@ class MediaController extends AbstractDoctrineController
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param ManagerRegistry          $doctrine
-     * @param ImagineInterface         $imagine
-     * @param FilterManager            $filterManager
-     * @param CacheManager             $cacheManager
-     * @param ObjectRepository         $mediaRepository
+     * @param ImagineInterface $imagine
+     * @param FilterManager    $filterManager
+     * @param CacheManager     $cacheManager
+     * @param ObjectRepository $mediaRepository
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        ManagerRegistry $doctrine,
         ImagineInterface $imagine,
         FilterManager $filterManager,
         CacheManager $cacheManager,
         ObjectRepository $mediaRepository
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
         $this->imagine         = $imagine;
         $this->filterManager   = $filterManager;
         $this->cacheManager    = $cacheManager;
@@ -91,13 +57,14 @@ class MediaController extends AbstractDoctrineController
      * @param string  $filename
      *
      * @return Response
+     * @throws NotFoundHttpException If media is not found
      */
     public function showAction(Request $request, $filename)
     {
         $media = $this->mediaRepository->findOneBy(['filename' => $filename]);
 
         if (!$media) {
-            throw $this->createNotFoundException(sprintf('Media "%s" not found', $filename));
+            throw new NotFoundHttpException(sprintf('Media "%s" not found', $filename));
         }
 
         $path = $media->getFilePath();
