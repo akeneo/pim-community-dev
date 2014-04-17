@@ -9,10 +9,10 @@ define(
                     '<%  var groups = {};' +
                         '_.each(filters, function(filter) {' +
                             'if (filter.group) {' +
-                                'groups[filter.groupOrder ? filter.groupOrder : "last"] = filter.group;' +
+                                'groups[filter.groupOrder !== null ? filter.groupOrder : "last"] = filter.group;' +
                             '} else {' +
                                 'filter.group = _.__("system_filter_group");' +
-                                'groups[0] = filter.group;' +
+                                'groups[-1] = filter.group;' +
                             '}' +
                        '});' +
                     '%>' +
