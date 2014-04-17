@@ -53,6 +53,7 @@ class FiltersConfigurator implements ConfiguratorInterface
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
 
+        $displayedFilters = [];
         foreach ($attributes as $attributeCode => $attribute) {
             $showFilter        = $attribute['useableAsGridFilter'];
             $attributeType     = $attribute['attributeType'];
@@ -74,18 +75,40 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig = $filterConfig + array(
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
-                    'enabled'                           => ($attributeType === 'pim_catalog_identifier')
+                    'enabled'                           => ($attributeType === 'pim_catalog_identifier'),
+                    'order'                             => $attribute['sortOrder'],
+                    'group'                             => $attribute['group'],
+                    'groupOrder'                        => $attribute['groupOrder']
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {
                     $filterConfig['family'] = $attribute['metricFamily'];
                 }
 
-                $this->configuration->offsetSetByPath(
-                    sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                    $filterConfig
-                );
+                $displayedFilters[$attributeCode] = $filterConfig;
             }
+        }
+
+        uasort(
+            $displayedFilters,
+            function ($a, $b) {
+                if ($a['groupOrder'] === null || $b['groupOrder'] === null) {
+                    return $a['groupOrder'] === $b['groupOrder'] ? 0 : ($a['groupOrder'] === null ? 1 : -1);
+                }
+
+                if ($a['groupOrder'] === $b['groupOrder']) {
+                    return $a['order'] > $b['order'] ? 1 : -1;
+                }
+
+                return $a['groupOrder'] > $b['groupOrder'] ? 1 : -1;
+            }
+        );
+
+        foreach ($displayedFilters as $attributeCode => $filterConfig) {
+            $this->configuration->offsetSetByPath(
+                sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
+                $filterConfig
+            );
         }
     }
 }
