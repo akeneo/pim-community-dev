@@ -53,6 +53,7 @@ class FiltersConfigurator implements ConfiguratorInterface
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
 
+        $displayedFilters = [];
         foreach ($attributes as $attributeCode => $attribute) {
             $showFilter        = $attribute['useableAsGridFilter'];
             $attributeType     = $attribute['attributeType'];
@@ -74,18 +75,52 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig = $filterConfig + array(
                     ProductFilterUtility::DATA_NAME_KEY => $attributeCode,
                     'label'                             => $attribute['label'],
-                    'enabled'                           => ($attributeType === 'pim_catalog_identifier')
+                    'enabled'                           => ($attributeType === 'pim_catalog_identifier'),
+                    'order'                             => $attribute['sortOrder'],
+                    'group'                             => $attribute['group'],
+                    'groupOrder'                        => $attribute['groupOrder']
                 );
 
                 if ($attributeType === 'pim_catalog_metric') {
                     $filterConfig['family'] = $attribute['metricFamily'];
                 }
 
-                $this->configuration->offsetSetByPath(
-                    sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
-                    $filterConfig
-                );
+                $displayedFilters[$attributeCode] = $filterConfig;
             }
         }
+        $this->sortFilters($displayedFilters);
+
+        foreach ($displayedFilters as $attributeCode => $filterConfig) {
+            $this->configuration->offsetSetByPath(
+                sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, $attributeCode),
+                $filterConfig
+            );
+        }
+    }
+
+    /**
+     * Sort filters by group and attribute sort order
+     *
+     * @param array &$filters
+     *
+     * @return null
+     */
+    protected function sortFilters(&$filters)
+    {
+        uasort(
+            $filters,
+            function ($first, $second) {
+                if ($first['groupOrder'] === null || $second['groupOrder'] === null) {
+                    return $first['groupOrder'] === $second['groupOrder'] ?
+                        0 : ($first['groupOrder'] === null ? 1 : -1);
+                }
+
+                if ($first['groupOrder'] === $second['groupOrder']) {
+                    return $first['order'] > $second['order'] ? 1 : -1;
+                }
+
+                return $first['groupOrder'] > $second['groupOrder'] ? 1 : -1;
+            }
+        );
     }
 }

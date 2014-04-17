@@ -1,3 +1,14 @@
+# 1.2.0
+
+## Features
+
+## Improvements
+- Group datagrid filters by attribute groups
+
+## Bug fixes
+
+## BC breaks
+
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
 ## Features

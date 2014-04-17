@@ -2,14 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 
 /**
  * Locale controller for configuration
@@ -18,18 +12,16 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class LocaleController extends AbstractDoctrineController
+class LocaleController
 {
     /**
      * List locales
      *
-     * @param Request $request
-     *
      * @Template
      * @AclAncestor("pim_enrich_locale_index")
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
         return array();
     }
