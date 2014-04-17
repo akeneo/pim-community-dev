@@ -1294,7 +1294,7 @@ class FixturesContext extends RawMinkContext
     {
         $manager = $this->getProductManager();
 
-        $value = $manager->createFlexibleValue();
+        $value = $manager->createProductValue();
         $value->setAttribute($attribute);
 
         switch ($attribute->getAttributeType()) {
