@@ -937,7 +937,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductManager()->getFlexibleRepository()->findAll());
+        $total = count($this->getProductManager()->getProductRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
