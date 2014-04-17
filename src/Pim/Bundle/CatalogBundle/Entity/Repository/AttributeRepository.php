@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Repository for attribute entity
@@ -283,18 +284,29 @@ class AttributeRepository extends EntityRepository implements
         $results = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
         if ($withLabel) {
-            $labelExpr = 'COALESCE(trans.label, CONCAT(\'[\', att.code, \']\'))';
+            $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
+            $groupLabelExpr = sprintf(
+                'CASE WHEN g IS NOT NULL THEN COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\')) ELSE \'%s\'',
+                AttributeGroup::DEFAULT_GROUP_CODE
+            );
+
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))
-                ->from($this->_entityName, 'att', 'att.code')
+                ->from($this->_entityName, 'att')
                 ->leftJoin('att.translations', 'trans', 'WITH', 'trans.locale = :locale')
+                ->leftJoin('att.group', 'g')
+                ->leftJoin('g.translations', 'gtrans', 'WITH', 'gtrans.locale = :locale')
+                ->addSelect('g.sortOrder')
+                ->addSelect(sprintf('%s as groupLabel', $groupLabelExpr))
                 ->setParameter('locale', $locale);
             if (!empty($ids)) {
                 $qb->andWhere('att.id IN (:ids)')->setParameter('ids', $ids);
             }
             $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
-            foreach ($labels as $code => $data) {
-                $results[$code]['label'] = $data['label'];
+            foreach ($labels as $data) {
+                $results[$data['code']]['label']      = $data['label'];
+                $results[$data['code']]['group']      = $data['groupLabel'];
+                $results[$data['code']]['groupOrder'] = $data['sortOrder'];
             }
         }
 
