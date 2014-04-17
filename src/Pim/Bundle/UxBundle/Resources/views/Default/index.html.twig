@@ -1,1 +1,20 @@
-Hello fron UX!
+<!DOCTYPE html>
+<html ng-app="App">
+    <head>
+        <title>UX</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" />
+        <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.13.0/css/semantic.min.css" />
+    </head>
+    <body>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/semantic-ui/0.13.0/javascript/semantic.js"></script>
+        <script src="{{  asset('bundles/pimux/js/app.js')  }}"></script>
+        <script src="{{  asset('bundles/pimux/js/services.js')  }}"></script>
+        <script src="{{  asset('bundles/pimux/js/controllers.js')  }}"></script>
+        <script src="{{  asset('bundles/pimux/js/directives.js')  }}"></script>
+        <script src="{{  asset('bundles/pimux/js/filters.js')  }}"></script>
+    </body>
+</html>
