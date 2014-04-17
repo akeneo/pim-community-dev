@@ -13,14 +13,13 @@
 
 ## Features
 - Implement creating, updating, applying and removing datagrid views
+- MongoDB storage support
 - Default product datagrid sorting is done descending on updated property
 
 ## Improvements
-- Removed useless ```app/entities``` directory
 - Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
 - Introduced custom ODM types to map document to one or many entities
 - Define specific route and configuration for datagrid quick exports
-- MongoDB support
 - Allow to add many quick export on datagrids
 - Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
@@ -28,6 +27,7 @@
 - Improve entity history context display for entities updated during import jobs
 - Dispatch event pre/post handler for each mass action
 - Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
+- Removed useless ```app/entities``` directory
 
 ## Bug fixes
 - Fixed verbose option always used
