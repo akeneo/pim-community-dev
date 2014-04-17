@@ -8,6 +8,7 @@
 ## Bug fixes
 
 ## BC breaks
+- Remove FlexibleEntityBundle
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
