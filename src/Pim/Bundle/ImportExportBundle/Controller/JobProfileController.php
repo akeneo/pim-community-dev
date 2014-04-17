@@ -314,6 +314,10 @@ class JobProfileController extends AbstractDoctrineController
             );
             $process = new Process($cmd);
             $process->start();
+
+            $pid = $process->getPid();
+            file_put_contents('/tmp/test_'.getmypid().'.log', "PID:$pid\nCMD:$cmd");
+
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
             return $this->redirectToReportView($jobExecution->getId());
