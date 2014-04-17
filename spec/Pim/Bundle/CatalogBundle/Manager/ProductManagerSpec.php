@@ -35,8 +35,8 @@ class ProductManagerSpec extends ObjectBehavior
         ProductRepositoryInterface $repository
     ) {
         $entityConfig = array(
-            'flexible_class' => self::PRODUCT_CLASS,
-            'flexible_value_class' => self::VALUE_CLASS,
+            'product_class' => self::PRODUCT_CLASS,
+            'product_value_class' => self::VALUE_CLASS,
             'attribute_class' => self::ATTRIBUTE_CLASS,
             'attribute_option_class' => self::OPTION_CLASS,
             'attribute_option_value_class' => self::OPT_VALUE_CLASS

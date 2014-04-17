@@ -296,7 +296,7 @@ class ProductManager
      */
     public function getProductName()
     {
-        return $this->configuration['flexible_class'];
+        return $this->configuration['product_class'];
     }
 
     /**
@@ -306,7 +306,7 @@ class ProductManager
      */
     public function getProductValueName()
     {
-        return $this->configuration['flexible_value_class'];
+        return $this->configuration['product_value_class'];
     }
 
     /**
