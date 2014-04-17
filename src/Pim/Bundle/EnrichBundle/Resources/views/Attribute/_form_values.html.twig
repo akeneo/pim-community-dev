@@ -7,10 +7,6 @@
 
 {% if form.options is defined %}
     {% set optionsContent %}
-        {% if form.autoOptionSorting is defined %}
-            {{ form_row(form.autoOptionSorting) }}
-        {% endif %}
-
         {% form_theme form 'PimEnrichBundle:Form:simple_layout.html.twig' %}
         <table id="sortable_options" class="table table-striped table-hover table-condensed options">
             <thead>

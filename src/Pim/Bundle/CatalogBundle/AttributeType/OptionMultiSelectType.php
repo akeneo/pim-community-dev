@@ -61,7 +61,10 @@ class OptionMultiSelectType extends AbstractAttributeType
                 'options'   => [
                     'label'         => 'Automatic option sorting',
                     'property_path' => 'properties[autoOptionSorting]',
-                    'help'          => 'info.attribute.auto option sorting'
+                    'help'          => 'info.attribute.auto option sorting',
+                    'attr'          => [
+                        'class' => 'hide'
+                    ]
                 ]
             ]
         ];

@@ -130,6 +130,8 @@ require(
                     $optionList.find('thead th').eq(0).removeClass('hide');
                 };
 
+                $(formName+'_autoOptionSorting').closest('.control-group').insertBefore($optionList).removeClass('hide');
+
                 $(formName+'_autoOptionSorting').closest('.has-switch').on('switch-change', function (e, data) {
                     if (data.value) {
                         disableOptionSorting();
