@@ -11,6 +11,14 @@ General
 
 - Update the assets to get new js filters, css with `php app/console pim:install --task=assets --force`
 
+Base connector writers and readers
+----------------------------------
+Suffix change
+-------------
+As in version 1.1 the PIM supports Doctrine ORM and Doctrine MongoDB ODM for product storage, we made sure that our product readers and writers will be compatible with both storage. So our service prefix that used to be `pim_base_connector.orm` has been switched to `pim_base_connector.doctrine`. For example, `pim_base_connector.writer.orm.product` became `pim_base_connector.orm.product`.
+
+So if your connectors' jobs use these natives writers or readers, you will need to rename them with the new suffix.
+
 CustomEntityBundle
 ------------------
 

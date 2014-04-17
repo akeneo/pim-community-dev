@@ -1,4 +1,4 @@
-# 1.1.0 -
+# 1.1.0 - "Rabbit Punch" (2014-04-16)
 
 ## Features
 - Implement creating, updating, applying and removing datagrid views
