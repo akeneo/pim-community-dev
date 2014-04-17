@@ -88,21 +88,7 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $displayedFilters[$attributeCode] = $filterConfig;
             }
         }
-
-        uasort(
-            $displayedFilters,
-            function ($a, $b) {
-                if ($a['groupOrder'] === null || $b['groupOrder'] === null) {
-                    return $a['groupOrder'] === $b['groupOrder'] ? 0 : ($a['groupOrder'] === null ? 1 : -1);
-                }
-
-                if ($a['groupOrder'] === $b['groupOrder']) {
-                    return $a['order'] > $b['order'] ? 1 : -1;
-                }
-
-                return $a['groupOrder'] > $b['groupOrder'] ? 1 : -1;
-            }
-        );
+        $this->sortFilters($displayedFilters);
 
         foreach ($displayedFilters as $attributeCode => $filterConfig) {
             $this->configuration->offsetSetByPath(
@@ -110,5 +96,31 @@ class FiltersConfigurator implements ConfiguratorInterface
                 $filterConfig
             );
         }
+    }
+
+    /**
+     * Sort filters by group and attribute sort order
+     *
+     * @param array &$filters
+     *
+     * @return null
+     */
+    protected function sortFilters(&$filters)
+    {
+        uasort(
+            $filters,
+            function ($first, $second) {
+                if ($first['groupOrder'] === null || $second['groupOrder'] === null) {
+                    return $first['groupOrder'] === $second['groupOrder'] ?
+                        0 : ($first['groupOrder'] === null ? 1 : -1);
+                }
+
+                if ($first['groupOrder'] === $second['groupOrder']) {
+                    return $first['order'] > $second['order'] ? 1 : -1;
+                }
+
+                return $first['groupOrder'] > $second['groupOrder'] ? 1 : -1;
+            }
+        );
     }
 }
