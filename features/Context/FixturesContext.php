@@ -937,7 +937,7 @@ class FixturesContext extends RawMinkContext
      */
     public function thereShouldBeProducts($expectedTotal)
     {
-        $total = count($this->getProductManager()->getFlexibleRepository()->findAll());
+        $total = count($this->getProductManager()->getProductRepository()->findAll());
 
         assertEquals($expectedTotal, $total);
     }
@@ -1294,7 +1294,7 @@ class FixturesContext extends RawMinkContext
     {
         $manager = $this->getProductManager();
 
-        $value = $manager->createFlexibleValue();
+        $value = $manager->createProductValue();
         $value->setAttribute($attribute);
 
         switch ($attribute->getAttributeType()) {

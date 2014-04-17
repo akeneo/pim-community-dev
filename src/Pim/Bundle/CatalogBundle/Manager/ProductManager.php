@@ -94,16 +94,6 @@ class ProductManager
     }
 
     /**
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductRepository
-     *
-     * @return ProductRepositoryInterface
-     */
-    public function getFlexibleRepository()
-    {
-        return $this->getProductRepository();
-    }
-
-    /**
      * @return ProductRepositoryInterface
      */
     public function getProductRepository()
@@ -284,16 +274,6 @@ class ProductManager
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProduct
-     */
-    public function createFlexible()
-    {
-        return $this->createProduct();
-    }
-
-    /**
      * Create a product value
      *
      * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
@@ -310,35 +290,13 @@ class ProductManager
     }
 
     /**
-     * Create a product value
-     *
-     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use createProductvalue
-     */
-    public function createFlexibleValue()
-    {
-        return $this->createProductValue();
-    }
-
-    /**
      * Get product FQCN
      *
      * @return string
      */
     public function getProductName()
     {
-        return $this->configuration['flexible_class'];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductName
-     */
-    public function getFlexibleName()
-    {
-        return $this->getProductName();
+        return $this->configuration['product_class'];
     }
 
     /**
@@ -348,17 +306,7 @@ class ProductManager
      */
     public function getProductValueName()
     {
-        return $this->configuration['flexible_value_class'];
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * @deprecated Deprecated since version 1.1, to be removed in 1.2. Use getProductValueName
-     */
-    public function getFlexibleValueName()
-    {
-        return $this->getProductValueName();
+        return $this->configuration['product_value_class'];
     }
 
     /**

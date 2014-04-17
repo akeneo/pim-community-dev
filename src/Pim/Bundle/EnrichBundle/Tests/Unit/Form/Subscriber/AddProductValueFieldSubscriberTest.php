@@ -129,7 +129,7 @@ class AddProductValueFieldSubscriberTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $attributeType = $this->getMockBuilder('Pim\Bundle\FlexibleEntityBundle\AttributeType\AttributeTypeInterface')
+        $attributeType = $this->getMockBuilder('Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeInterface')
             ->getMock();
         $attributeType->expects($this->once())
             ->method('buildValueFormType')

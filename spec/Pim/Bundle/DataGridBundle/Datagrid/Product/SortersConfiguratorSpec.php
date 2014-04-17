@@ -10,12 +10,12 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfigu
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, FlexibleManager $manager)
+    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, ProductManager $manager)
     {
         $attributes = [
             'sku' => [
