@@ -15,23 +15,22 @@
 ## Features
 - Implement creating, updating, applying and removing datagrid views
 - MongoDB storage support
-- Default product datagrid sorting is done descending on updated property
 
 ## Improvements
-- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
-- Introduced custom ODM types to map document to one or many entities
-- Define specific route and configuration for datagrid quick exports
 - Allow to add many quick export on datagrids
-- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
+- Introduced custom ODM types to map document to one or many entities
+- Define specific route and configuration for datagrid quick exports
+- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Dispatch event pre/post handler for each mass action
 - Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
-- Removed useless ```app/entities``` directory
+- Default product datagrid sorting is done descending on updated property
 
 ## Bug fixes
-- Fixed verbose option always used
+- Fixed the verbose option always used in the install command
 - Fixed issue on attribute option removal
 - Fixed identifier is required attribute
 - Fixed get common attributes with common values
@@ -42,7 +41,28 @@
 - Fixed the CSV import of attribute option to throw exception when the attribute is not known
 - Fixed the CSV export of attributes to avoid to export the virtual group 'Other'
 - Prevent considering 0 as a null value when importing metric data
-- Ensured attribute option validation
+- Ensured the attribute option validation when edit an option
+- Fixed the product CSV export when a metric attribute is exported without unit
+- Fixed the missed 'there are unsaved changes' message when I delete an option
+- Ensured the ability to change the user catalog locale from user fixtures
+- Fixed mass delete and pagination
+- Fixed the CSV import of family when an attribute does not exist
+- Fixed the CSV import of option when an attribute does not exist
+- Fixed the erroneous message on completeness tab to display "not yet calculated" instead of "locale non associated to this channel"
+- Fixed the 'null' displayed after a dynamic option creation
+- Fixed the quick Export to be able to export all the products
+- Ensured that we're able to configure the email to use in monolog handler
+- Fixed the missing translation keys
+- Fixed the route exception for less/address in prod.log
+- Fixed the categories tree get cut off on a long list on categiry management
+- Fixed the deletion of an attribute option
+- Remove the deprecated fallback property in locale and in locales.yml file
+- Avoid to recalculate the completeness when I add some products to one or more group with the mass-edit wizard
+- Fixed the unique attributes validation during product CSV imports
+- Fixed the exception on file_get_content if the image doesn't exist anymore
+- Ensure the required property for an identifier when importing attributes
+- Fixed the error message when the family is not known when importing products
+- Removed useless ```app/entities``` directory
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
