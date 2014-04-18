@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # clone custom-entity-bundle repository
-git clone https://github.com/akeneo/custom-entity-bundle.git
+git clone https://github.com/akeneo/CustomEntityBundle.git
 
 # clone pim-docs repository
 git clone https://github.com/akeneo/pim-docs.git
