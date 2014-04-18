@@ -1,6 +1,7 @@
 # 1.2.0
 
 ## Features
+- Add an option to automatically sort the choices of simple and multi select attributes
 
 ## Improvements
 - Group datagrid filters by attribute groups

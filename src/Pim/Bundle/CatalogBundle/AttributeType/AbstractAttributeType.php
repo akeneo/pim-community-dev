@@ -136,6 +136,13 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
             $options['auto_initialize'] = false;
 
             $types[] = $factory->createNamed($property['name'], $fieldType, $data, $options);
+
+            // Initialize the desired key in the properties array with an empty value
+            // if it hasn't been set before to be able to dynamically display the field in the form
+            if (!property_exists($attribute, $property['name']) &&
+                !array_key_exists($property['name'], $attribute->getProperties())) {
+                $attribute->setProperty($property['name'], null);
+            }
         }
 
         return $types;

@@ -221,6 +221,8 @@ info:
         remove from products: Deleting the association type will remove it from %count% products.
         none exist:           No association types exist.
         create one:           Click here to create one
+    attribute:
+        auto option sorting:  If enabled, options will be sorted automatically by their localized labels
 
 # Labels for channel colors
 color:
@@ -293,6 +295,7 @@ Search:                        Search
 Choose the attribute type:     Choose the attribute type
 Drop a file or click here:     Drop a file or click here
 Drop an image or click here:   Drop an image or click here
+Automatic option sorting:      Automatic option sorting
 
 Create:               Create
 Cancel:               Cancel

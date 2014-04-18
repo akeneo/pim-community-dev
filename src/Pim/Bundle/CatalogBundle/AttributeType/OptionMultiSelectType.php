@@ -54,6 +54,18 @@ class OptionMultiSelectType extends AbstractAttributeType
             'options' => [
                 'name'      => 'options',
                 'fieldType' => 'pim_enrich_options'
+            ],
+            'autoOptionSorting' => [
+                'name'      => 'autoOptionSorting',
+                'fieldType' => 'switch',
+                'options'   => [
+                    'label'         => 'Automatic option sorting',
+                    'property_path' => 'properties[autoOptionSorting]',
+                    'help'          => 'info.attribute.auto option sorting',
+                    'attr'          => [
+                        'class' => 'hide'
+                    ]
+                ]
             ]
         ];
     }
