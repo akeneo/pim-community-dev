@@ -10,7 +10,7 @@ git clone https://github.com/akeneo/pim-docs.git
 cd src
 ln -s ../pim-docs/src/Acme Acme
 cd Pim/Bundle
-ln -s ../../../custom-entity-bundle/CustomEntityBundle CustomEntityBundle
+ln -s ../../../CustomEntityBundle CustomEntityBundle
 cd ../../..
 
 # update AppKernel
