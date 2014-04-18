@@ -9,7 +9,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMassEditAction implements MassEditActionInterface
+abstract class AbstractMassEditAction implements MassEditOperationInterface
 {
     /** @var array */
     protected $objects;
@@ -34,7 +34,7 @@ abstract class AbstractMassEditAction implements MassEditActionInterface
      *
      * @param array $objects
      *
-     * @return MassEditActionInterface
+     * @return MassEditOperationInterface
      */
     public function setObjectsToMassEdit(array $objects)
     {

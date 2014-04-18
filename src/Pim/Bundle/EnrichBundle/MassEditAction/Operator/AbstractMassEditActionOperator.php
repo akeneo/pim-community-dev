@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
  * A batch operation operator
@@ -18,7 +18,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface;
 abstract class AbstractMassEditActionOperator
 {
     /**
-     * @var MassEditActionInterface $operation
+     * @var MassEditOperationInterface $operation
      * @Exclude
      */
     protected $operation;
@@ -36,7 +36,7 @@ abstract class AbstractMassEditActionOperator
     /**
      * The defined operations, indexed by code
      *
-     * @var MassEditActionInterface[] $operations
+     * @var MassEditOperationInterface[] $operations
      * @Exclude
      */
     protected $operations = array();
@@ -60,12 +60,12 @@ abstract class AbstractMassEditActionOperator
      * Register a batch operation into the operator
      *
      * @param string                  $alias
-     * @param MassEditActionInterface $operation
+     * @param MassEditOperationInterface $operation
      * @param string                  $acl
      *
      * @throws \InvalidArgumentException
      */
-    public function registerMassEditAction($alias, MassEditActionInterface $operation, $acl = null)
+    public function registerMassEditAction($alias, MassEditOperationInterface $operation, $acl = null)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
@@ -97,7 +97,7 @@ abstract class AbstractMassEditActionOperator
     /**
      * Get the batch operation
      *
-     * @return MassEditActionInterface
+     * @return MassEditOperationInterface
      */
     public function getOperation()
     {
@@ -125,7 +125,7 @@ abstract class AbstractMassEditActionOperator
      * @param string $operationAlias
      *
      * @throws InvalidArgumentException when the alias is not registered
-     * @return MassEditActionInterface
+     * @return MassEditOperationInterface
      */
     public function setOperationAlias($operationAlias)
     {
