@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\AttributeType;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
@@ -38,7 +39,19 @@ class OptionMultiSelectType extends AbstractAttributeType
             return $value->getAttribute()->getDefaultValue();
         }
 
-        return $value->getData();
+        $iterator = $value->getData()->getIterator();
+
+        if (true === $value->getAttribute()->getProperty('autoOptionSorting')) {
+            $iterator->uasort('strcasecmp');
+        } else {
+            $iterator->uasort(
+                function ($first, $second) {
+                    return $first->getSortOrder() < $second->getSortOrder() ? -1 : 1;
+                }
+            );
+        }
+
+        return new ArrayCollection(iterator_to_array($iterator));
     }
 
     /**
