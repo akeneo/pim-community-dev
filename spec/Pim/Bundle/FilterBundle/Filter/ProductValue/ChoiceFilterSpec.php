@@ -10,7 +10,6 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 Use Pim\Bundle\UserBundle\Context\UserContext;
@@ -107,7 +106,6 @@ class ChoiceFilterSpec extends ObjectBehavior
      */
     function it_provides_a_choice_filter_form(
         Form $form,
-        FlexibleManager $flexibleManager,
         AttributeRepository $attributeRepository,
         AbstractAttribute $attribute,
         $utility,
