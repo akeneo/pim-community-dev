@@ -19,9 +19,6 @@ class RegisterMassEditActionsPass implements CompilerPassInterface
     /** @var ReferenceFactory */
     protected $factory;
 
-    /** @var array */
-    protected $operators = [];
-
     /**
      * @param ReferenceFactory $factory
      */
@@ -38,11 +35,11 @@ class RegisterMassEditActionsPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds('pim_enrich.mass_edit_action') as $id => $config) {
 
             // Mass Edit Action was originally used by the product grid
-            // so, in order not to break BC, we fallback datagrid on product-grid.
-            // We may deprecate this behaviour in the future and enforce datagrid parameter
+            // so, in order not to break BC, we fallback operator to the product one.
+            // We may deprecate this behaviour in the future and enforce operator parameter
             // inside the tag.
-            $datagrid = isset($config[0]['datagrid']) ? $config[0]['datagrid'] : 'product-grid';
-            $operatorDef = $this->getOperatorDefinition($container, $datagrid);
+            $operatorId = isset($config[0]['operator']) ? $config[0]['operator'] : 'pim_enrich.mass_edit_action.operator.product';
+            $operatorDef = $container->getDefinition($operatorId);
 
             $operatorDef->addMethodCall(
                 'registerMassEditAction',
@@ -53,26 +50,5 @@ class RegisterMassEditActionsPass implements CompilerPassInterface
                 ]
             );
         }
-    }
-
-    protected function getOperatorDefinition(ContainerBuilder $container, $datagrid)
-    {
-        if (!isset($this->operators[$datagrid])) {
-            foreach ($container->findTaggedServiceIds('pim_enrich.mass_edit_action_operator') as $id => $config) {
-                if ($config[0]['datagrid'] === $datagrid) {
-                    $this->operators[$datagrid] = $container->getDefinition($id);
-                }
-            }
-        }
-
-        if (!isset($this->operators[$datagrid])) {
-            throw new \LogicException(
-                sprintf(
-                    'Cannot find any mass edit action operator for datagrid "%s"', $datagrid
-                )
-            );
-        }
-
-        return $this->operators[$datagrid];
     }
 }

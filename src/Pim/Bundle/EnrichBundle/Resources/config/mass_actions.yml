@@ -44,7 +44,11 @@ services:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: change-status, acl: pim_enrich_product_change_state }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-status
+                acl: pim_enrich_product_change_state
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
@@ -57,7 +61,11 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.manager.product_mass_action'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: edit-common-attributes
+                acl: pim_enrich_product_edit
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.classify:
         public: false
@@ -65,20 +73,32 @@ services:
         arguments:
             - '@pim_catalog.manager.category'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: classify, acl: pim_enrich_product_categories_view }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify
+                acl: pim_enrich_product_categories_view
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: change-family, acl: pim_enrich_product_change_family }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-family
+                acl: pim_enrich_product_change_family
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
         arguments:
             - '@pim_catalog.repository.group'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: add-to-groups, acl: pim_enrich_product_add_to_groups }
+            -
+                name: pim_enrich.mass_edit_action,
+                alias: add-to-groups,
+                acl: pim_enrich_product_add_to_groups
+                operator: pim_enrich.mass_edit_action.operator.product
 
     # Family Grid Mass edit actions
     pim_entich.mass_edit_action.set_attribute_requirements:
@@ -89,4 +109,4 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: set-attribute-requirements
                 acl: pim_enrich_product_add_to_groups
-                datagrid: family-grid
+                operator: pim_enrich.mass_edit_action.operator.family
