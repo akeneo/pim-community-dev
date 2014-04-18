@@ -243,10 +243,10 @@ jenkins-coverage-1:
 jenkins-docs-1:
     context:
         parameters:
-            base_url: http://pim-docs-behat-1.ci/
+            base_url: http://pim-docs-1.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-docs-behat-1.ci/
+            base_url: http://pim-docs-1.ci/
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat1
@@ -260,10 +260,10 @@ jenkins-docs-1:
 jenkins-docs-2:
     context:
         parameters:
-            base_url: http://pim-docs-behat-2.ci/
+            base_url: http://pim-docs-2.ci/
     extensions:
         Behat\MinkExtension\Extension:
-            base_url: http://pim-docs-behat-2.ci/
+            base_url: http://pim-docs-2.ci/
         Behat\Symfony2Extension\Extension:
             kernel:
                 env: behat2
