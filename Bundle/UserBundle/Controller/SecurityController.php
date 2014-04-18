@@ -14,7 +14,7 @@ class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="oro_user_security_login")
-     * @Template
+     * @Template("OroUserBundle:Security:login.html.twig")
      */
     public function loginAction()
     {
