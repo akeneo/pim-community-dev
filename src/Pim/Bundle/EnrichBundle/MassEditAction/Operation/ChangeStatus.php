@@ -1,6 +1,8 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
+
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Batch operation to change products status
@@ -9,7 +11,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ChangeStatus extends AbstractMassEditAction
+class ChangeStatus extends ProductMassEditOperation
 {
     /**
      * Whether or not to enable products
@@ -48,10 +50,8 @@ class ChangeStatus extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform()
+    protected function doPerform(AbstractProduct $product)
     {
-        foreach ($this->products as $product) {
-            $product->setEnabled($this->toEnable);
-        }
+        $product->setEnabled($this->toEnable);
     }
 }

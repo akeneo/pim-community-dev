@@ -123,11 +123,11 @@ class MassEditActionOperatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface
+     * @return Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface
      */
     protected function getMassEditActionMock()
     {
-        return $this->getMock('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+        return $this->getMock('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface');
     }
 
     /**

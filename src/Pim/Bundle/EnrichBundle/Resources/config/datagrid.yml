@@ -728,6 +728,12 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:  '@pim_catalog.repository.attribute->getAvailableAttributesAsLabelChoice'
+        mass_actions:
+            mass_edit:
+                type: edit
+                label: pim.grid.mass_action.mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                icon: edit
 
     currency-grid:
         options:

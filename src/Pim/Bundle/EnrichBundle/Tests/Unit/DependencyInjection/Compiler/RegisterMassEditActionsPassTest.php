@@ -41,7 +41,7 @@ class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
             ->addTag('pim_enrich.mass_edit_action', array('alias' => 'foo'));
         $container
             ->register('pim_enrich.mass_edit_action.bar')
-            ->addTag('pim_enrich.mass_edit_action', array('alias' => 'bar'));
+            ->addTag('pim_enrich.mass_edit_action', array('alias' => 'bar', 'datagrid' => 'bar-grid'));
         $container->register('unrelated_service');
         $container
             ->register('pim_enrich.mass_edit_action.operator');
@@ -52,8 +52,8 @@ class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
             ->getDefinition('pim_enrich.mass_edit_action.operator')
             ->getMethodCalls();
 
-        $this->assertHasMethodCall($calls, 0, 'registerMassEditAction', 'foo', 'pim_enrich.mass_edit_action.foo');
-        $this->assertHasMethodCall($calls, 1, 'registerMassEditAction', 'bar', 'pim_enrich.mass_edit_action.bar');
+        $this->assertHasMethodCall($calls, 0, 'registerMassEditAction', 'foo', 'pim_enrich.mass_edit_action.foo', 'product-grid');
+        $this->assertHasMethodCall($calls, 1, 'registerMassEditAction', 'bar', 'pim_enrich.mass_edit_action.bar', 'bar-grid');
     }
 
     /**
@@ -63,10 +63,11 @@ class RegisterMassEditActionsPassTest extends \PHPUnit_Framework_TestCase
      * @param string  $alias
      * @param string  $id
      */
-    public function assertHasMethodCall($calls, $position, $method, $alias, $id)
+    public function assertHasMethodCall($calls, $position, $method, $alias, $id, $datagrid)
     {
         $this->assertEquals($method, $calls[$position][0]);
         $this->assertEquals($alias, $calls[$position][1][0]);
         $this->assertAttributeEquals($id, 'id', $calls[$position][1][1]);
+        $this->assertEquals($datagrid, $calls[$position][1][3]);
     }
 }

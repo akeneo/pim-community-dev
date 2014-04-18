@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -19,6 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Edit common attributes of given products
@@ -27,7 +28,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends AbstractMassEditAction
+class EditCommonAttributes extends ProductMassEditOperation
 {
     /**
      * @var ArrayCollection
@@ -290,10 +291,17 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->products as $product) {
-            $this->setProductValues($product);
-        }
+        parent::perform();
+
         $this->productManager->handleAllMedia($this->products);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doPerform(AbstractProduct $product)
+    {
+        $this->setProductValues($product);
     }
 
     /**

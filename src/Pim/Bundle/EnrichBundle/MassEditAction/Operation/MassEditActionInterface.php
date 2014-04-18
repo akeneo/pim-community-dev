@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 /**
  * Operation to execute on a set of products
@@ -34,11 +34,4 @@ interface MassEditActionInterface
      * Perform an operation on a set of products
      */
     public function perform();
-
-    /**
-     * Indicates whether the operation requires recalculation of the product completeness
-     *
-     * @return boolean
-     */
-    public function affectsCompleteness();
 }

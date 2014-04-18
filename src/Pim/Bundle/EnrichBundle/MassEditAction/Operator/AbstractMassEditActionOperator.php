@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface;
 
 /**
  * A batch operation operator
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @Exclude
  */
-class MassEditActionOperator
+abstract class AbstractMassEditActionOperator
 {
     /**
      * @var MassEditActionInterface $operation
@@ -27,12 +27,6 @@ class MassEditActionOperator
      * @var string $operationAlias
      */
     protected $operationAlias;
-
-    /**
-     * @var ProductManager $manager
-     * @Exclude
-     */
-    protected $manager;
 
     /**
      * @var SecurityFacade
@@ -55,12 +49,10 @@ class MassEditActionOperator
     protected $acls = array();
 
     /**
-     * @param ProductManager $manager
      * @param SecurityFacade $securityFacade
      */
-    public function __construct(ProductManager $manager, SecurityFacade $securityFacade)
+    public function __construct(SecurityFacade $securityFacade)
     {
-        $this->manager = $manager;
         $this->securityFacade = $securityFacade;
     }
 
@@ -119,9 +111,9 @@ class MassEditActionOperator
      *
      * @return MassEditActionOperator
      */
-    public function setProductsToMassEdit(array $products)
+    public function setObjectsToMassEdit(array $products)
     {
-        $this->operation->setProductsToMassEdit($products);
+        $this->operation->setObjectsToMassEdit($products);
 
         return $this;
     }
@@ -185,15 +177,7 @@ class MassEditActionOperator
     /**
      * Finalize the batch operation - flush the products
      */
-    public function finalizeOperation()
-    {
-        set_time_limit(0);
-
-        $products = $this->operation->getProductsToMassEdit();
-
-        $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
-        $this->manager->saveAll($products, false, true, $scheduleCompleteness);
-    }
+    abstract public function finalizeOperation();
 
     /**
      * Returns true if the operation is allowed for the current user

@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler\RegisterMassEditActionsPass;
+use Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
 /**
  * Enrich bundle
@@ -20,6 +20,8 @@ class PimEnrichBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container->addCompilerPass(new RegisterMassEditActionsPass());
+        $container
+            ->addCompilerPass(new Compiler\RegisterMassEditActionOperatorsPass())
+            ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
     }
 }
