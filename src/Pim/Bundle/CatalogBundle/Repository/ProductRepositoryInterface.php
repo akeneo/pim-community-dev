@@ -37,7 +37,7 @@ interface ProductRepositoryInterface
     );
 
     /**
-     * Load a flexible entity with related attribute values
+     * Load a product entity with related attribute values
      *
      * @param integer $id
      *
@@ -111,7 +111,7 @@ interface ProductRepositoryInterface
     public function getProductQueryBuilder($qb);
 
     /**
-     * Set flexible query builder
+     * Set product query builder
      *
      * @param ProductQueryBuilder $productQB
      *
