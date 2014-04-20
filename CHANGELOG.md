@@ -10,6 +10,7 @@
 
 ## BC breaks
 - Remove FlexibleEntityBundle
+- Remove CategoryWriter and use the generic doctrine writer instead
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
