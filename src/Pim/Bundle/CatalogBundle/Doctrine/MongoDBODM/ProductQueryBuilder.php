@@ -8,8 +8,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
- * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
- * entity values
+ * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
+ * values
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
