@@ -201,6 +201,7 @@ info:
         keep products:   Products in these categories will not be deleted.
     product:
         no available attributes: There are no more attributes to add
+        no family defined:       No family defined
         change family:           Change the product family
         change family to:        Change the family to
         merge attributes:        Current attributes will be merged with the ones in the new family.
@@ -215,6 +216,7 @@ info:
         select products:     Please select products that should belong to this group.
         selectable products: The following selectable products have a defined value for each axis.
         no group types:      No group types exist, click here to create one
+        more products:       %count% more products...
     association type:
         show products:        Show products
         show groups:          Show groups
@@ -223,6 +225,8 @@ info:
         create one:           Click here to create one
     attribute:
         auto option sorting:  If enabled, options will be sorted automatically by their localized labels
+    completeness:
+        not calculated:       Not yet calculated
 
 # Labels for channel colors
 color:
