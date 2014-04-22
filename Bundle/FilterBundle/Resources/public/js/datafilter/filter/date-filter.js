@@ -138,6 +138,8 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide();
             } else if (this.typeValues.lessThan == parseInt(selectedValue)) {
                 this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.start).hide();
+            } else if ('empty' === selectedValue) {
+                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
             }
         },
 
