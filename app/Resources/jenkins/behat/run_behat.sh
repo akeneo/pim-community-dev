@@ -7,7 +7,7 @@
 #
 
 XDEBUG_EXTENSION="xdebug.so"
-CHECK_WAIT=2
+CHECK_WAIT="0.1"
 OUTPUT=`mktemp`
 
 usage() {
