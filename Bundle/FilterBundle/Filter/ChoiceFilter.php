@@ -116,6 +116,7 @@ class ChoiceFilter extends AbstractFilter
         $operatorTypes = array(
             ChoiceFilterType::TYPE_CONTAINS     => 'IN',
             ChoiceFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
+            ChoiceFilterType::TYPE_EMPTY        => 'EMPTY',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';

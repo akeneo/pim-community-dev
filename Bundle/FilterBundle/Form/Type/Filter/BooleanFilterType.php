@@ -6,9 +6,10 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class BooleanFilterType extends AbstractChoiceType
 {
-    const TYPE_YES = 1;
-    const TYPE_NO  = 2;
-    const NAME     = 'oro_type_boolean_filter';
+    const TYPE_YES   = 1;
+    const TYPE_NO    = 2;
+    const TYPE_EMPTY = 'empty';
+    const NAME       = 'oro_type_boolean_filter';
 
     /**
      * {@inheritDoc}
@@ -32,8 +33,9 @@ class BooleanFilterType extends AbstractChoiceType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $fieldChoices = array(
-            self::TYPE_YES => $this->translator->trans('oro.filter.form.label_type_yes'),
-            self::TYPE_NO  => $this->translator->trans('oro.filter.form.label_type_no'),
+            self::TYPE_YES   => $this->translator->trans('oro.filter.form.label_type_yes'),
+            self::TYPE_NO    => $this->translator->trans('oro.filter.form.label_type_no'),
+            self::TYPE_EMPTY => $this->translator->trans('oro.filter.form.label_type_empty'),
         );
 
         $resolver->setDefaults(

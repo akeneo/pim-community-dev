@@ -15,6 +15,7 @@ class NumberFilterType extends AbstractType
     const TYPE_EQUAL         = 3;
     const TYPE_LESS_EQUAL    = 4;
     const TYPE_LESS_THAN     = 5;
+    const TYPE_EMPTY         = 'empty';
     const NAME               = 'oro_type_number_filter';
 
     const DATA_INTEGER = 'data_integer';
@@ -60,6 +61,7 @@ class NumberFilterType extends AbstractType
             self::TYPE_GREATER_THAN  => $this->translator->trans('oro.filter.form.label_type_greater_than'),
             self::TYPE_LESS_EQUAL    => $this->translator->trans('oro.filter.form.label_type_less_equal'),
             self::TYPE_LESS_THAN     => $this->translator->trans('oro.filter.form.label_type_less_than'),
+            self::TYPE_EMPTY         => $this->translator->trans('oro.filter.form.label_type_empty'),
         );
 
         $resolver->setDefaults(

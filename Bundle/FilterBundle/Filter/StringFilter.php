@@ -72,6 +72,7 @@ class StringFilter extends AbstractFilter
             TextFilterType::TYPE_EQUAL        => '=',
             TextFilterType::TYPE_STARTS_WITH  => 'LIKE',
             TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
+            TextFilterType::TYPE_EMPTY        => 'EMPTY',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';
