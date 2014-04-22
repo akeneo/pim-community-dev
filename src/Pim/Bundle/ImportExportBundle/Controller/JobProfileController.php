@@ -303,7 +303,7 @@ class JobProfileController extends AbstractDoctrineController
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
-                'php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute_%s.log 2>&1',
+                'exec php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute_%s.log 2>&1',
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
