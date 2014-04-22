@@ -7,6 +7,11 @@
         <link rel="stylesheet" media="all" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.1.1/css/bootstrap.min.css" />
     </head>
     <body>
+        <nav>
+            {{ oro_menu_render('application_menu', {'template': 'PimUxBundle:Menu:menu.html.twig'}) }}
+        </nav>
+        <div ui-view>
+        </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
         <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.8/angular-ui-router.js"></script>

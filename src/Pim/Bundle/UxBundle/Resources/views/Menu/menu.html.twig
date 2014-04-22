@@ -1,0 +1,124 @@
+{% macro attributes(attributes) %}
+    {% for name, value in attributes %}
+        {%- if value is not none and value is not sameas(false) -%}
+            {{- ' %s="%s"'|format(name, value is sameas(true) ? name|e : value|e)|raw -}}
+        {%- endif -%}
+    {%- endfor -%}
+{% endmacro %}
+
+{% macro add_attribute_values(attributes, attribute, values) %}
+    {%- set _values = attributes[attribute] is defined ? attributes[attribute]|split(' ') : [] %}
+    {%- set _values = _values|merge(values) %}
+    {{- _values|join(' ') -}}
+{% endmacro %}
+
+{% block compressed_root %}
+    {% spaceless %}
+        {{ block('root') }}
+    {% endspaceless %}
+{% endblock %}
+
+{% block root %}
+    {% set listAttributes = item.childrenAttributes %}
+
+    {% if options.rootClass is defined %}
+        {% set listAttributes = listAttributes|merge({'class': _self.add_attribute_values(listAttributes, 'class', [options.rootClass])}) %}
+    {% endif %}
+    {{ block('list') -}}
+{% endblock %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+        <ul{{ _self.attributes(listAttributes) }}>
+            {{ block('children') }}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block children %}
+    {# save current variables #}
+    {% set currentOptions = options %}
+    {% set currentItem = item %}
+    {# update the depth for children #}
+    {% if options.depth is not none %}
+        {% set options = currentOptions|merge({'depth': currentOptions.depth - 1}) %}
+    {% endif %}
+    {% for item in currentItem.children %}
+        {%- set itemAttributes = item.attributes %}
+        {%- set childrenAttributes = item.childrenAttributes %}
+        {%- set classes = itemAttributes.class is defined ? itemAttributes.class|split(' ') : [] %}
+        {%- set childrenClasses = childrenAttributes.class is defined ? childrenAttributes.class|split(' ') : [] %}
+        {{ block('item') }}
+    {% endfor %}
+    {# restore current variables #}
+    {% set item = currentItem %}
+    {% set options = currentOptions %}
+{% endblock %}
+
+{% block item %}
+    {% if item.hasChildren and item.displayChildren %}
+        {%- set classes = classes|merge(['dropdown']) %}
+        {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
+    {% endif %}
+    {{ block('item_renderer') }}
+{% endblock %}
+
+{% block item_renderer %}
+    {% set showNonAuthorized = item.extras.showNonAuthorized is defined and item.extras.showNonAuthorized %}
+    {% set displayable = item.extras.isAllowed or showNonAuthorized %}
+    {% if item.displayed and displayable %}
+        {# building the class of the item #}
+        {%- if matcher.isCurrent(item) %}
+            {%- set classes = classes|merge([options.currentClass]) %}
+        {%- elseif matcher.isAncestor(item, options.depth) %}
+            {%- set classes = classes|merge([options.ancestorClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeFirst %}
+            {%- set classes = classes|merge([options.firstClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeLast %}
+            {%- set classes = classes|merge([options.lastClass]) %}
+        {%- endif %}
+        {%- if classes is not empty %}
+            {%- set itemAttributes = itemAttributes|merge({'class': classes|join(' ')}) %}
+        {%- endif %}
+        {# displaying the item #}
+        <li{{ _self.attributes(itemAttributes) }}>
+            {%- set linkAttributes = item.linkAttributes %}
+            {%- set labelAttributes = item.labelAttributes %}
+            {%- if item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+                {{ block('linkElement') }}
+            {%- else %}
+                {{ block('spanElement') }}
+            {%- endif %}
+            {# render the list of children#}
+            {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+            {%- set listAttributes = childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+            {{ block('list') }}
+        </li>
+    {% endif %}
+{% endblock %}
+
+{% block linkElement %}
+    {% if item.hasChildren and item.displayChildren and item.level is sameas(0)%}
+        {% set linkAttributes = linkAttributes|merge(
+        {'class': _self.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
+        %}
+    {% endif %}
+    <a href="{{ item.uri }}"{{ _self.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
+{% endblock %}
+
+{% block spanElement %}
+    <span{{ _self.attributes(labelAttributes) }}>{{ block('label') }}</span>
+{% endblock %}
+
+{% block label %}
+    {% if item.getExtra('icon') %}
+        <i class="{{- item.getExtra('icon') -}}"></i>
+    {% endif %}
+    {% if options.allow_safe_labels and item.getExtra('safe_label', false) %}
+        {{ item.label|raw }}
+    {% else %}
+        {{ item.label|trans(item.getExtra('translateParams', {}), item.getExtra('translateDomain', 'messages')) }}
+    {% endif %}
+{% endblock %}
