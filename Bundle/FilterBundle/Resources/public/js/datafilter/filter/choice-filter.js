@@ -201,6 +201,11 @@ function($, _, __, app, TextFilter) {
             $(e.currentTarget).parent().addClass('active');
             var parentDiv = $(e.currentTarget).parent().parent().parent();
             parentDiv.find('.name_input').val($(e.currentTarget).attr('data-value'));
+            if ($(e.currentTarget).attr('data-value') === 'empty') {
+                parentDiv.find('input[name="value"]').hide();
+            } else {
+                parentDiv.find('input[name="value"]').show();
+            }
             parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
             e.preventDefault();
         }
