@@ -317,7 +317,8 @@ class JobProfileController extends AbstractDoctrineController
             $process->start();
 
             $pid = $process->getPid();
-            file_put_contents('/tmp/test_'.getmypid().'.log', "PID:$pid\nCMD:$cmd\nRunning:".$process->isRunning()."\nStatus:".$process->getStatus());
+            sleep(2);
+            file_put_contents('/tmp/test_'.getmypid().'.log', "PID:$pid\nCMD:$cmd\nRunning:".$process->isRunning()."\nStatus:".$process->getStatus()."\nOutput:".$process->getOutput()."\nError output:".$process->getErrorOutput());
 
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
