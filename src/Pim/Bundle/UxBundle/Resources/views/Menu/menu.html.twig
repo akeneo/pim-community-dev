@@ -29,7 +29,7 @@
 
 {% block list %}
     {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
-        <ul{{ _self.attributes(listAttributes) }}>
+        <ul{{ _self.attributes(listAttributes|merge({'class': _self.add_attribute_values(listAttributes, 'class', ['navbar-nav'])})) }}>
             {{ block('children') }}
         </ul>
     {% endif %}
@@ -100,7 +100,7 @@
 {% endblock %}
 
 {% block linkElement %}
-    {% if item.hasChildren and item.displayChildren and item.level is sameas(0)%}
+    {% if item.hasChildren and item.displayChildren and item.level is sameas(1) %}
         {% set linkAttributes = linkAttributes|merge(
         {'class': _self.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
         %}
