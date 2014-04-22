@@ -13,7 +13,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
- * Segment class allowing to organize a flexible product class into trees
+ * Segment class allowing to organize a products into trees
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -23,10 +23,10 @@ interface AttributeTypeInterface
     public function getName();
 
     /**
-     * Build form type for flexible entity value
+     * Build form type for product value
      *
      * @param FormFactoryInterface  $factory the form factory
-     * @param ProductValueInterface $value   the flexible value
+     * @param ProductValueInterface $value   the product value
      *
      * @return FormInterface the form
      */

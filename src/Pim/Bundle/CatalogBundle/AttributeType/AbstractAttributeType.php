@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 abstract class AbstractAttributeType implements AttributeTypeInterface
 {
     /**
-     * Available backend storage, the flexible doctrine mapped field
+     * Available backend storage, the product doctrine mapped field
      *
      * @var string
      */
