@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Base class of product mass edit operations
@@ -27,11 +27,11 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     public function perform()
     {
         foreach ($this->objects as $object) {
-            if (!$object instanceof AbstractProduct) {
+            if (!$object instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf(
                         'Cannot perform mass edit action "%s" on object of type "%s", '.
-                        'expecting "Pim\Bundle\CatalogBundle\Model\AbstractProduct"',
+                        'expecting "Pim\Bundle\CatalogBundle\Model\ProductInterface"',
                         __CLASS__,
                         get_class($object)
                     )
@@ -46,5 +46,5 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      *
      * @param AbstractProduct $product
      */
-    abstract protected function doPerform(AbstractProduct $product);
+    abstract protected function doPerform(ProductInterface $product);
 }

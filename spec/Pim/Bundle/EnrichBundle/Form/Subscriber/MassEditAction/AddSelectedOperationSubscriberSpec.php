@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditActionOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 use Symfony\Component\Form\FormInterface;
 
@@ -24,7 +24,7 @@ class AddSelectedOperationSubscriberSpec extends ObjectBehavior
     function it_adds_the_operation_form_type_if_the_operation_is_set(
         FormEvent $event,
         FormInterface $form,
-        AbstractMassEditActionOperator $operator,
+        AbstractMassEditOperator $operator,
         MassEditOperationInterface $operation
     ) {
         $event->getForm()->willReturn($form);
@@ -54,7 +54,7 @@ class AddSelectedOperationSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_the_operation_is_not_set_in_the_operator(
         FormEvent $event,
         FormInterface $form,
-        AbstractMassEditActionOperator $operator
+        AbstractMassEditOperator $operator
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn($operator);

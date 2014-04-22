@@ -19,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Edit common attributes of given products
@@ -249,8 +248,8 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function initialize()
     {
         $productIds = array();
-        foreach ($this->products as $product) {
-            $productIds[] = $product->getId();
+        foreach ($this->objects as $object) {
+            $productIds[] = $object->getId();
         }
         $this->initializeCommonAttributes($productIds);
 
@@ -293,13 +292,13 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         parent::perform();
 
-        $this->productManager->handleAllMedia($this->products);
+        $this->productManager->handleAllMedia($this->objects);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(AbstractProduct $product)
+    protected function doPerform(ProductInterface $product)
     {
         $this->setProductValues($product);
     }

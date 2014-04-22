@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Batch operation to classify products
@@ -75,7 +75,7 @@ class Classify extends ProductMassEditOperation
         return 'pim_enrich_mass_classify';
     }
 
-    protected function doPerform(AbstractProduct $product)
+    protected function doPerform(ProductInterface $product)
     {
         foreach ($this->categories as $category) {
             $product->addCategory($category);

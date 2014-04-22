@@ -21,7 +21,7 @@ class PimEnrichBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\RegisterMassEditActionOperatorsPass())
-            ->addCompilerPass(new Compiler\RegisterMassEditActionsPass());
+            ->addCompilerPass(new Compiler\RegisterMassEditOperatorsPass())
+            ->addCompilerPass(new Compiler\RegisterMassEditOperationsPass());
     }
 }

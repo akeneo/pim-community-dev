@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Batch operation to change the family of products
@@ -56,7 +56,7 @@ class ChangeFamily extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(AbstractProduct $product)
+    protected function doPerform(ProductInterface $product)
     {
         $product->setFamily($this->family);
     }

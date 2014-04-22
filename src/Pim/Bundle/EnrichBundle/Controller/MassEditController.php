@@ -19,10 +19,10 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditActionOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 
 /**
  * Mass edit operation controller
@@ -31,9 +31,9 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditActionOperat
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditActionController extends AbstractDoctrineController
+class MassEditController extends AbstractDoctrineController
 {
-    /** @var MassEditActionOperator */
+    /** @var AbstractMassEditOperator */
     protected $operator;
 
     /** @var MassActionParametersParser */
@@ -258,10 +258,10 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * @return Form
      */
-    protected function getOperatorForm(AbstractMassEditActionOperator $operator)
+    protected function getOperatorForm(AbstractMassEditOperator $operator)
     {
         return $this->createForm(
-            new MassEditActionOperatorType(),
+            new MassEditOperatorType(),
             $operator,
             array('operations' => $operator->getOperationChoices())
         );

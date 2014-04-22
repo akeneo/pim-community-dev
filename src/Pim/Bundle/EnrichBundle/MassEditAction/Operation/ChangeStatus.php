@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Batch operation to change products status
@@ -15,7 +15,7 @@ class ChangeStatus extends ProductMassEditOperation
 {
     /**
      * Whether or not to enable products
-     * @var boolean $toEnable
+     * @var boolean
      */
     protected $toEnable = true;
 
@@ -50,7 +50,7 @@ class ChangeStatus extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(AbstractProduct $product)
+    protected function doPerform(ProductInterface $product)
     {
         $product->setEnabled($this->toEnable);
     }

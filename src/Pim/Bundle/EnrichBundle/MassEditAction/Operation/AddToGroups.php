@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Adds many products to many groups
@@ -71,7 +71,7 @@ class AddToGroups extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(AbstractProduct $product)
+    protected function doPerform(ProductInterface $product)
     {
         foreach ($this->groups as $group) {
             $group->addProduct($product);

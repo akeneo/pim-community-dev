@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction;
 
-use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditActionOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 
 /**
  * Registry of mass edit action operators indexed by gridName alias
@@ -22,7 +22,7 @@ class OperatorRegistry
      * @param string                 $gridName
      * @param MassEditActionOperator $operator
      */
-    public function register($gridName, AbstractMassEditActionOperator $operator)
+    public function register($gridName, AbstractMassEditOperator $operator)
     {
         $this->operators[$gridName] = $operator;
     }

@@ -1,4 +1,4 @@
-Pim\Bundle\EnrichBundle\MassEditAction\AddToGroups:
+Pim\Bundle\EnrichBundle\MassEditAction\Operation/AddToGroups:
     properties:
         groups:
             - Valid:

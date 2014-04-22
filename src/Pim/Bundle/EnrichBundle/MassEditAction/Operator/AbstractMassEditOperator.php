@@ -15,7 +15,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @Exclude
  */
-abstract class AbstractMassEditActionOperator
+abstract class AbstractMassEditOperator
 {
     /**
      * @var MassEditOperationInterface $operation

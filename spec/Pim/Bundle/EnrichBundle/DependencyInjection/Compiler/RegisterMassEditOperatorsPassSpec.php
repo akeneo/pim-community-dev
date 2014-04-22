@@ -9,7 +9,7 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
 
-class RegisterMassEditActionOperatorsPassSpec extends ObjectBehavior
+class RegisterMassEditOperatorsPassSpec extends ObjectBehavior
 {
     function let(ReferenceFactory $factory)
     {

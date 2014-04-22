@@ -1,16 +1,15 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
+namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 class AddToGroupsSpec extends ObjectBehavior
 {
@@ -24,7 +23,7 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_is_a_mass_edit_action()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
     function it_stores_groups_to_add_the_products_to($shirts, $pants)
@@ -57,12 +56,12 @@ class AddToGroupsSpec extends ObjectBehavior
 
     function it_adds_products_to_groups_when_performimg_the_operation(
         AbstractQuery $query,
-        ProductInterface $product1,
-        ProductInterface $product2,
+        AbstractProduct $product1,
+        AbstractProduct $product2,
         $shirts,
         $pants
     ) {
-        $this->setProductsToMassEdit([$product1, $product2]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
 
         $this->setGroups([$shirts, $pants]);
 
