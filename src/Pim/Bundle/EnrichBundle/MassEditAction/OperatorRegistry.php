@@ -13,8 +13,11 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
  */
 class OperatorRegistry
 {
-    /** array $operators */
+    /** @var array */
     protected $operators = [];
+
+    /** @var array */
+    protected $names = [];
 
     /**
      * Registers an operator inside a gridName index
@@ -24,7 +27,26 @@ class OperatorRegistry
      */
     public function register($gridName, AbstractMassEditOperator $operator)
     {
+        if (isset($this->operators[$gridName])) {
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'An operator with the alias "%s" is already registered',
+                    $gridName
+                )
+            );
+        }
+
+        if (in_array($operator->getName(), $this->names)) {
+            throw new \LogicException(
+                sprintf(
+                    'An operator with the name "%s" is already registered',
+                    $operator->getName()
+                )
+            );
+        }
+
         $this->operators[$gridName] = $operator;
+        $this->names[] = $operator->getName();
     }
 
     /**

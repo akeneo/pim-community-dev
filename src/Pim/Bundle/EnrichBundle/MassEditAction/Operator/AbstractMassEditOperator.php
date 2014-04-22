@@ -180,6 +180,14 @@ abstract class AbstractMassEditOperator
     abstract public function finalizeOperation();
 
     /**
+     * Returns the name of the operator
+     * Used in the view to generate translation key
+     *
+     * @return string
+     */
+    abstract public function getName();
+
+    /**
      * Returns true if the operation is allowed for the current user
      *
      * @param string $operationAlias

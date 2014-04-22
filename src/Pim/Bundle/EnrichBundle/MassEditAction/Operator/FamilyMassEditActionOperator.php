@@ -16,6 +16,11 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
  */
 class FamilyMassEditOperator extends AbstractMassEditOperator
 {
+    public function getName()
+    {
+        return 'family';
+    }
+
     public function finalizeOperation()
     {
         throw new \Exception('Not implemented yet');

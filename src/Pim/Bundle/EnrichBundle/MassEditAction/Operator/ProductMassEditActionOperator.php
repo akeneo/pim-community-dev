@@ -30,6 +30,11 @@ class ProductMassEditOperator extends AbstractMassEditActionOperator
         $this->manager = $manager;
     }
 
+    public function getName()
+    {
+        return 'product';
+    }
+
     /**
      * Finalize the batch operation - flush the products
      */
