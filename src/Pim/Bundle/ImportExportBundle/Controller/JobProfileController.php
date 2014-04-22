@@ -303,7 +303,7 @@ class JobProfileController extends AbstractDoctrineController
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
-                'exec /usr/bin/php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute_%s.log 2>&1',
+                '/usr/bin/php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute_%s.log 2>&1',
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
@@ -317,7 +317,7 @@ class JobProfileController extends AbstractDoctrineController
             $process->start();
 
             $pid = $process->getPid();
-            sleep(2);
+            //sleep(2);
             file_put_contents('/tmp/test_'.getmypid().'.log', "PID:$pid\nCMD:$cmd\nRunning:".$process->isRunning()."\nStatus:".$process->getStatus()."\nOutput:".$process->getOutput()."\nError output:".$process->getErrorOutput());
 
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
