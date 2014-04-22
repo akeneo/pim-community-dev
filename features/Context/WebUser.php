@@ -1669,7 +1669,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+        $this->getCurrentPage()->autoSelectTranslations(ucfirst($mode));
     }
 
     /**
