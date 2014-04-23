@@ -98,16 +98,6 @@ class ConfigureProductGridListener
     /**
      * @param DatagridConfiguration $datagridConfig
      *
-     * @return string
-     */
-    protected function getEntity(DatagridConfiguration $datagridConfig)
-    {
-        return $datagridConfig->offsetGetByPath(ProductDatasource::ENTITY_PATH);
-    }
-
-    /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
     protected function getContextConfigurator(DatagridConfiguration $datagridConfig)
@@ -148,8 +138,6 @@ class ConfigureProductGridListener
      */
     protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        $entity = $this->getEntity($datagridConfig);
-
-        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $entity);
+        return new FiltersConfigurator($datagridConfig, $this->confRegistry);
     }
 }

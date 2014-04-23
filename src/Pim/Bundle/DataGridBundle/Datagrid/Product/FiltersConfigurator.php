@@ -26,23 +26,15 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param $string
-     */
-    protected $flexibleEntity;
-
-    /**
-     * @param DatagridConfiguration $configuration  the grid config
-     * @param ConfigurationRegistry $registry       the conf registry
-     * @param string                $flexibleEntity the flexible entity FQCN
+     * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
      */
     public function __construct(
         DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry,
-        $flexibleEntity
+        ConfigurationRegistry $registry
     ) {
         $this->configuration  = $configuration;
         $this->registry       = $registry;
-        $this->flexibleEntity = $flexibleEntity;
     }
 
     /**
