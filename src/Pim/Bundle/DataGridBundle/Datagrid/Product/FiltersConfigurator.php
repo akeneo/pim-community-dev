@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Filters configurator for flexible grid
+ * Filters configurator for product grid
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
