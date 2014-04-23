@@ -48,4 +48,12 @@ class EntityFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter('family', 'IN', [1, 2]);
     }
+
+    function it_adds_an_empty_filter_on_a_field_in_the_query($qb)
+    {
+        $qb->field('family')->willReturn($qb);
+        $qb->exists(false)->willReturn($qb);
+
+        $this->addFieldFilter('family', 'EMPTY', null);
+    }
 }
