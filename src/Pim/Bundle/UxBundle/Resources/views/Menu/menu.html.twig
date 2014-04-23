@@ -105,7 +105,7 @@
         {'class': _self.add_attribute_values(linkAttributes, 'class', ['dropdown-toggle']), 'data-toggle': 'dropdown'})
         %}
     {% endif %}
-    <a href="{{ item.uri }}"{{ _self.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
+    <a {% if item.uri is not empty and item.uri != '#' %}ui-sref="{{ item.name }}"{% endif %}{{ _self.attributes(linkAttributes) }}><span class="title">{{ block('label') }}</span></a>
 {% endblock %}
 
 {% block spanElement %}

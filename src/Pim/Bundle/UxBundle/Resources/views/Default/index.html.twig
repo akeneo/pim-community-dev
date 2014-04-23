@@ -10,14 +10,14 @@
         <nav class="navbar navbar-inverse navbar-static-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a href="{{ path('oro_default') }}" title="{{ oro_config_value('oro_ui.application_title') }}">
+                    <a ui-sref="dashboard" title="{{ oro_config_value('oro_ui.application_title') }}">
                         <img src="{{ asset('/bundles/pimui/images/logo.png') }}" alt="{{ oro_config_value('oro_ui.application_name') }}">
                     </a>
                 </div>
                 {{ oro_menu_render('application_menu', {'template': 'PimUxBundle:Menu:menu.html.twig'}) }}
             </div>
         </nav>
-        <div ui-view>
+        <div class="container-fluid" ui-view>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.js"></script>
