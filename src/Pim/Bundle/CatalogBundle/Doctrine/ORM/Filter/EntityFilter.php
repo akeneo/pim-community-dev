@@ -56,6 +56,8 @@ class EntityFilter extends BaseFilter
                     $this->qb->expr()->isNull($entityAlias.'.id')
                 )
             );
+        } elseif ($operator === 'EMPTY') {
+            $this->qb->andWhere($this->qb->expr()->isNull($entityAlias.'.id'));
         } else {
             $this->qb->andWhere($this->qb->expr()->in($entityAlias.'.id', $value));
         }
