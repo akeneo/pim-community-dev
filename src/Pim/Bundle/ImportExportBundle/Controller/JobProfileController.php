@@ -303,25 +303,20 @@ class JobProfileController extends AbstractDoctrineController
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
             $cmd = sprintf(
-                '/usr/bin/php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute_%s.log 2>&1',
+                'php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
                 $uploadMode ? sprintf('-c \'%s\'', json_encode($jobInstance->getJob()->getConfiguration())) : '',
                 $instanceCode,
                 $executionId,
-                $this->rootDir,
-                getmypid()
+                $this->rootDir
             );
- //           $process = new Process($cmd, null, null, null, null);
+            // Please note we do not use Symfony Process as it has some problem
+            // when executed from HTTP request that stop fast (race condition that makes
+            // the process cloning fail when the parent process, i.e. HTTP request, stops
+            // at the same time
             exec($cmd.' &');
-//            $process->start();
-
-            //$pid = $process->getPid();
-//            exec('strace -p '.$pid.' > /tmp/strace_'.$pid.'.log 2>&1 &');
-            //sleep(2);
-            //file_put_contents('/tmp/test_'.getmypid().'.log', "PID:$pid\nCMD:$cmd\nRunning:".$process->isRunning()."\nStatus:".$process->getStatus()."\nOutput:".$process->getOutput()."\nError output:".$process->getErrorOutput());
-            file_put_contents('/tmp/test_'.getmypid().'.log', "CMD:$cmd");
 
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
