@@ -120,6 +120,9 @@ function($, _, __, app, TextFilter) {
         _getCriteriaHint: function() {
             var option, hint,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+            if (value.type === 'empty') {
+                return this._getChoiceOption(value.type).label;
+            }
             if (!value.value) {
                 hint = this.placeholder;
             } else {
@@ -164,7 +167,7 @@ function($, _, __, app, TextFilter) {
          * @inheritDoc
          */
         _triggerUpdate: function(newValue, oldValue) {
-            if (!app.isEqualsLoosely(newValue.value, oldValue.value)) {
+            if (!app.isEqualsLoosely(newValue.value, oldValue.value) || (newValue.type === 'empty' && !app.isEqualsLoosely(newValue.type, oldValue.type))) {
                 this.trigger('update');
             }
         },

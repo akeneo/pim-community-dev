@@ -189,6 +189,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
             var hint = '',
                 option, start, end, type,
                 value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
+            if (value.type === 'empty') {
+                return this._getChoiceOption(value.type).label;
+            }
             if (value.value) {
                 start = value.value.start;
                 end   = value.value.end;
@@ -327,6 +330,11 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _triggerUpdate: function(newValue, oldValue) {
+            if (newValue.type === 'empty' && newValue.type !== oldValue.type) {
+                this.trigger('update');
+                return;
+            }
+
             newValue = newValue.value;
             oldValue = oldValue.value;
 
