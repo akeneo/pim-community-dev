@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 
 /**
- * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
+ * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

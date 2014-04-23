@@ -79,7 +79,7 @@ class ConfigureProductGridListener
     }
 
     /**
-     * Check whenever grid is flexible and add flexible columns dynamically
+     * Configure product columns, filters, sorters dynamically
      *
      * @param BuildBefore $event
      *
@@ -93,16 +93,6 @@ class ConfigureProductGridListener
         $this->getColumnsConfigurator($datagridConfig)->configure();
         $this->getSortersConfigurator($datagridConfig)->configure();
         $this->getFiltersConfigurator($datagridConfig)->configure();
-    }
-
-    /**
-     * @param DatagridConfiguration $datagridConfig
-     *
-     * @return string
-     */
-    protected function getEntity(DatagridConfiguration $datagridConfig)
-    {
-        return $datagridConfig->offsetGetByPath(ProductDatasource::ENTITY_PATH);
     }
 
     /**
@@ -148,8 +138,6 @@ class ConfigureProductGridListener
      */
     protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig)
     {
-        $flexibleEntity = $this->getEntity($datagridConfig);
-
-        return new FiltersConfigurator($datagridConfig, $this->confRegistry, $flexibleEntity);
+        return new FiltersConfigurator($datagridConfig, $this->confRegistry);
     }
 }

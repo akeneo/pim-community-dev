@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\PropertyInterface;
 
 /**
- * Sorters configurator for flexible grid
+ * Sorters configurator for product grid
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
