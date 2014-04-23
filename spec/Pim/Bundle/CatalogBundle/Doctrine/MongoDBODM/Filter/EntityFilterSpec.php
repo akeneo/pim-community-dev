@@ -41,7 +41,7 @@ class EntityFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($color, 'IN', [1, 2]);
     }
 
-    function it_adds_a_in_filter_on_a_field_in_the_query(Builder $qb)
+    function it_adds_a_in_filter_on_a_field_in_the_query($qb)
     {
         $qb->field('family')->willReturn($qb);
         $qb->in([1, 2])->willReturn($qb);
