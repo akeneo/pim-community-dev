@@ -314,7 +314,7 @@ class JobProfileController extends AbstractDoctrineController
             // Please note we do not use Symfony Process as it has some problem
             // when executed from HTTP request that stop fast (race condition that makes
             // the process cloning fail when the parent process, i.e. HTTP request, stops
-            // at the same time
+            // at the same time)
             exec($cmd.' &');
 
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
