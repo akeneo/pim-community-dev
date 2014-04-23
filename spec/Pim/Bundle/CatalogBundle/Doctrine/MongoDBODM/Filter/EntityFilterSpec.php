@@ -13,11 +13,11 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class EntityFilterSpec extends ObjectBehavior
 {
-    function let(Builder $queryBuilder, CatalogContext $context)
+    function let(Builder $qb, CatalogContext $context)
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith($qb, $context);
     }
 
     function it_is_an_attribute_filter()
@@ -30,21 +30,21 @@ class EntityFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
     }
 
-    function it_adds_a_in_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $color)
+    function it_adds_a_in_filter_on_an_attribute_value_in_the_query($qb, AbstractAttribute $color)
     {
         $color->getCode()->willReturn('color');
         $color->isLocalizable()->willReturn(true);
         $color->isScopable()->willReturn(false);
-        $queryBuilder->field('normalizedData.color-en_US.id')->willReturn($queryBuilder);
-        $queryBuilder->in([1, 2])->willReturn($queryBuilder);
+        $qb->field('normalizedData.color-en_US.id')->willReturn($qb);
+        $qb->in([1, 2])->willReturn($qb);
 
         $this->addAttributeFilter($color, 'IN', [1, 2]);
     }
 
-    function it_adds_a_in_filter_on_a_field_in_the_query(Builder $queryBuilder)
+    function it_adds_a_in_filter_on_a_field_in_the_query(Builder $qb)
     {
-        $queryBuilder->field('family')->willReturn($queryBuilder);
-        $queryBuilder->in([1, 2])->willReturn($queryBuilder);
+        $qb->field('family')->willReturn($qb);
+        $qb->in([1, 2])->willReturn($qb);
 
         $this->addFieldFilter('family', 'IN', [1, 2]);
     }
