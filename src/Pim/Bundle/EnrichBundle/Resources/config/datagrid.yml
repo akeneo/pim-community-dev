@@ -299,6 +299,7 @@ datagrid:
                 type: delete
                 label: pim.grid.mass_action.delete
                 entity_name: product
+                acl_resource: pim_enrich_product_remove
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?
@@ -325,6 +326,7 @@ datagrid:
 
             mass_edit:
                 type: edit
+                acl_resource: pim_enrich_product_edit
                 label: pim.grid.mass_action.mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
