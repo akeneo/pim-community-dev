@@ -52,7 +52,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if ($operator === 'EMPTY') {
+        if ('EMPTY' === $operator) {
             $this->qb->field($field)->exists(false);
         } else {
             if (strpos($value, '/') !== false) {
