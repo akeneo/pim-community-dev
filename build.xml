@@ -37,6 +37,7 @@
         <mkdir dir="${basedir}/app/build/logs/phpunit"/>
         <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
+        <mkdir dir="${basedir}/app/build/logs/phpdoc"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
