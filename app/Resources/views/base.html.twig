@@ -1,0 +1,33 @@
+{% extends "OroUIBundle:Default:index.html.twig" %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(['pim/init'], function(init) {
+            init();
+        });
+    </script>
+    {% if uservoice_key is not null %}
+        {% include 'PimUIBundle:Default:pim_uservoice.js.twig' %}
+    {% endif %}
+    {{ block('head_script_component') }}
+{% endblock %}
+
+{% block head_style %}
+    {{ parent() }}
+    {% stylesheets
+        'bundles/pimui/css/pim.less'
+
+        debug=false
+        filter='cssrewrite,lessphp'
+        output='css/pim_all.css'
+    %}
+    <link rel="stylesheet" media="all" href="{{ asset_url }}" />
+    {% endstylesheets %}
+    {{ block('head_style_component') }}
+{% endblock %}
+
+{% block main %}
+    {{ parent() }}
+    {{ oro_windows_restore() }}
+{% endblock %}

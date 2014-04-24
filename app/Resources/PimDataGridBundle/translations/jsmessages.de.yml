@@ -1,0 +1,33 @@
+---
+Item deleted: Element gelöscht
+Are you sure you want to delete this item?: Möchten Sie dieses Element wirklich löschen?
+Delete Error: Fehler beim Löschen
+Are you sure you want to do remove selected items?: Sind Sie sicher, dass Sie die gewählten Elemente entfernen möchten?
+Selected items were removed.: Die ausgewählten Elemente wurden entfernt.
+Selected items were not removed.: Die ausgewählten Elemente wurden nicht entfernt.
+Please, select items to remove.: Bitte die Elemente auswählen, die entfernt werden sollen.
+Cannot delete item.: Element kann nicht gelöscht werden.
+Refresh Confirmation: Aktualisierungsbestätigung
+Your local changes will be lost. Are you sure you want to refresh grid?: Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Tabelle aktualisieren möchten?
+Reset Confirmation: Reset-Bestätigung
+Your local changes will be lost. Are you sure you want to reset grid?: Ihre lokalen Änderungen gehen verloren. Sind Sie sicher, dass Sie die Tabelle zurücksetzen möchten?
+Confirmation: Bestätigung
+edit: Bearbeiten
+copy: Kopieren
+remove: Entfernen
+Status: Status
+All: Alle
+Per page: Pro Seite
+Mass Action Confirmation: Massenaktion-Bestätigung
+Mass action performed.: Massenaktion durchgeführt.
+Mass action is not performed.: Massenaktion nicht durchgeführt.
+Please, select items to perform mass action.: Wählen Sie die Elemente zum Ausführen der Massenaktion.
+Execution Confirmation: Ausführungsbestätigung
+Are you sure you want to do this?: Sind Sie sicher, dass Sie das tun möchten?
+Action performed.: Aktion ausgeführt.
+Action is not performed.: Aktion nicht ausgeführt.
+Please, select item to perform action.: Bitte Element zum Ausführen der Aktion wählen.
+oro.datagrid.entityHint: Entität
+oro.datagrid.noentities: Keine Einträge gefunden
+oro.datagrid.noresults: 'Kein {{ entityHint }} stimmt mit der Suche überein. Versuchen Sie andere Suchkriterien...'
+oro.datagrid.nocolumns: Es sind keine Spalten für diese Tabelle konfiguriert

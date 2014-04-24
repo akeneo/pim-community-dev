@@ -1,0 +1,23 @@
+---
+pim_flexibleentity_boolean: Ja/Nee
+pim_flexibleentity_text: Tekstveld
+pim_flexibleentity_textarea: Tekstgebied
+pim_flexibleentity_date: Datum
+pim_flexibleentity_datetime: Datum tijd
+pim_flexibleentity_integer: Geheel getal
+pim_flexibleentity_money: Geld
+pim_flexibleentity_number: Nummer
+pim_flexibleentity_multiselect: Meervoudige selectie
+pim_flexibleentity_simpleselect: Enkelvoudige selectie
+pim_flexibleentity_metric: Meeteenheid
+pim_flexibleentity_file: Bestand uploaden
+pim_flexibleentity_image: Afbeelding uploaden
+pim_flexibleentity_fileurl: Bestands-url
+pim_flexibleentity_imageurl: Afbeeldings-url
+pim_flexibleentity_email: E-mail
+pim_flexibleentity_url: URL
+pim_flexibleentity_multicheckbox: Selectievakjes
+pim_flexibleentity_simpleradio: Radio
+pim_flexibleentity_price: Prijs
+pim_flexibleentity_phone_collection: Telefoon collectie
+pim_flexibleentity_email_collection: Email collectie

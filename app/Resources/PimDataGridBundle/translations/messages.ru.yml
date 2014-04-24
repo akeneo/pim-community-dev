@@ -1,0 +1,16 @@
+---
+oro_datagrid.no_data_hint %entityHint%: 'Сущность %entityHint% не существует.'
+oro_datagrid.not_found_hint %entityHint%: 'Ни одной сущности %entityHint% не найдено. Попробуйте изменить критерии поиска...'
+oro_datagrid.label_add_filter: Управление фильтрами
+oro_datagrid.label_loading_mask: Загрузка . . .
+oro.grid.mass_action.selected_rows: Выбранные строки
+oro.grid.mass_action.confirm_title: Подтверждение массового действия
+oro.grid.mass_action.confirm_content: Вы уверены, что хотите сделать это?
+oro.grid.mass_action.confirm_ok: Да, сделать это
+oro.grid.mass_action.error_title: Ошибка массового действия
+oro.grid.mass_action.error_content: Не удается выполнить массовое действие
+oro.grid.mass_action.delete.label: Удалить
+oro.grid.mass_action.delete.confirm_title: Подтверждение массового удаления
+oro.grid.mass_action.delete.confirm_content: Вы уверены, что вы хотите удалить выбранные элементы?
+oro.grid.datagrid.page_size.all: Все
+oro.grid.mass_action.delete.success_message: '{0} Ни одна сущность не была удалена|{1} Одна сущность была удалена|]1,Inf[ %count% сущностей было удалено'

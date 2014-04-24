@@ -1,0 +1,71 @@
+security:
+    acl:
+        connection: default
+        cache:
+            id: security.acl.cache.doctrine
+            prefix: sf2_acl_
+
+    providers:
+        chain_provider:
+            chain:
+                providers:                  [in_memory, oro_user]
+        oro_user:
+            id:                             oro_user.security.provider
+        in_memory:
+            memory:
+                users:                      []
+
+    encoders:
+        Oro\Bundle\UserBundle\Entity\User: sha512
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    firewalls:
+        dev:
+            pattern:                        ^/(_(profiler|wdt)|css|images|js)/
+            security:                       false
+
+        install:
+            pattern:                        ^/installer
+            security:                       false
+            anonymous:                      true
+
+        liip_imagine:
+            pattern:                        ^/media
+            security:                       false
+
+        wsse_secured:
+            pattern:                        ^/api/(rest|soap).*
+            wsse:
+                lifetime:                   3600
+                realm:                      "Secured API"
+                profile:                    "UsernameToken"
+            context:                        main
+
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            provider:                       chain_provider
+            anonymous:                      true
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+            anonymous:                      true
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            form_login:
+                csrf_provider:              form.csrf_provider
+                check_path:                 oro_user_security_check
+                login_path:                 oro_user_security_login
+            logout:
+                path:                       oro_user_security_logout
+            remember_me:
+                key:                        %secret%
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+            anonymous:                      false
+
+    access_control:
+        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/api/rest/(latest|v1)/pinbars, role: ROLE_USER }

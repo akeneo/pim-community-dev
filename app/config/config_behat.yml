@@ -1,0 +1,36 @@
+imports:
+    - { resource: config.yml }
+    - { resource: parameters_test.yml }
+
+framework:
+    test: ~
+    session:
+        storage_id: session.storage.mock_file
+    csrf_protection: true
+
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                metadata_cache_driver: array
+                query_cache_driver:    array
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: error
+            handler:      nested
+        nested:
+            type:  stream
+            path:  %kernel.logs_dir%/%kernel.environment%.log
+            level: debug
+
+swiftmailer:
+    disable_delivery: true
+
+assetic:
+    use_controller: false
+
+pim_enrich:
+    record_mails: true

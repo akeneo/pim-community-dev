@@ -1,0 +1,16 @@
+---
+Close: Закрыть
+Update: Обновить
+Selected Rows: Выбранные строки
+Localized value: Локализованное значение
+Columns: Столбцы
+Datagrid Configuration: Настройки таблицы
+Apply: Применить
+Action: Действие
+Unit: Единица
+Currency: Валюта
+jstree:
+  all: Все продукты
+  unclassified: Неклассифицированные продукты
+  no_tree: Дерево категорий недоступно
+  include_sub: Включить подкатегории

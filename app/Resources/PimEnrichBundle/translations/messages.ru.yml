@@ -1,0 +1,479 @@
+---
+attribute:
+  overview: обзор атрибутов
+  create: создать атрибут
+  edit: редактировать атрибут
+attribute group:
+  overview: Обзор групп атрибутов
+  create: создать группу атрибутов
+  edit: редактировать группу атриубтов
+category:
+  overview: обзор категории
+  create: создать категорию
+  edit: изменить категорию
+tree:
+  create: создать дерево категорий
+  edit: редактировать дерево категорий
+channel:
+  overview: обзор канала
+  create: создать канал
+  edit: редактировать канал
+currency:
+  overview: обзор валют
+  create: создать валюту
+  edit: редактировать валюту
+family:
+  overview: обзор семейства
+  create: создать семейство
+  edit: редактировать семейство
+locale:
+  overview: обзор локалей
+  create: создать локаль
+  edit: редактировать локаль
+product:
+  overview: обзор продукта
+  create: создать продукт
+  edit: редактировать продукт
+group:
+  overview: обзор групп
+  create: создать группу
+  edit: редактировать группу
+group type:
+  overview: обзор типов группы
+  create: создать тип группы
+  edit: редактировать тип группы
+variant group:
+  overview: обзор вариативных групп
+  create: создать вариатвную группу
+  edit: редактировать вариативную группу
+association type:
+  overview: обзор типов ассоциации
+  create: создать тип ассоциации
+  edit: редактировать тип ассоциации
+products: продукты
+btn:
+  create:
+    attribute: создать атрибут
+    attribute group: создать группу атрибутов
+    category: создать категорию
+    tree: создать дерево категорий
+    channel: создать канал
+    currency: создать валюту
+    family: создать семейство
+    locale: создать локаль
+    product: создать продукт
+    group: создать группу
+    variant group: создать вариативную группу
+    association type: создать тип асоциации
+    group type: создать тип группы
+  edit: редактировать
+  save: сохранить
+  save and back: сохранить и вернуться к списку
+  save and create: сохранить и создать новый
+  remove: удалить
+  delete: удалить
+  cancel: отмена
+  next: вперед
+  back: назад
+  confirm: Подтвердить
+  to grid: вернуться к списку
+  to parent: вернуться к родительскому объекту
+confirmation:
+  delete: Подтверждение удаления
+  leave: Вы уверены, что хотите покинуть эту страницу?
+  discard changes: 'Если вы покините страницу, изменения будут потеряны в %entity%.'
+  remove:
+    item: Вы уверены, что хотите удалить этот элемент?
+    attribute: 'Вы уверены, что хотите удалить атрибут %name%?'
+    attribute group: 'Вы уверены, что хотите удалить группу атрибутов %name%?'
+    category: 'Вы действительно хотите удалить дерево категорий %name%?'
+    family: 'Вы уверены, что хотите удалить семейство %name%?'
+    product: 'Вы уверены, что хотите удалить продукт %name%?'
+    channel: 'Вы уверены, что хотите удалить канал %name%?'
+    group: 'Вы уверены, что хотите удалить группу %name%?'
+    variant group: 'Вы уверены, что хотите удалить вариативную группу %name%?'
+    association type: 'Вы уверены, что хотите удалить тип ассоциации %name%?'
+    group type: 'Вы уверены, что хотите удалить тип группы %name%?'
+    user: 'Вы уверены, что хотите удалить пользователя %name%?'
+  attribute group:
+    remove attribute: 'Вы уверены, что хотите удалить из этой группы атрибут %name% ?'
+  family:
+    remove attribute: 'Вы уверены, что хотите удалить  из этого семейства атрибут %name%?'
+  product:
+    remove attribute: 'Вы уверены, что хотите удалить из этого продукта атрибут %name%?'
+flash:
+  entity:
+    removed: Элемент был удален
+  attribute:
+    created: Атрибут успешно создан
+    updated: Атрибут успешно обновлен
+    removed: Атрибут успешно удален
+    identifier not removable: Идентификатор атрибута не может быть удален
+    used by groups: 'Этот атрибут не может быть удален, поскольку он используется в %count% группах'
+    option created: Свойство успешно добавлено
+    error creating option: Произошла ошибка при попытке создать свойство, пожалуйста, попробуйте снова
+  attribute group:
+    created: Группа атрибутов успешно создана
+    updated: Группа атрибутов успешно обновлена
+    removed: Группа атрибутов успешно удалена
+    attributes added: Атрибуты успешно добавлены в группу
+    attribute removed: Атрибуты успешно удалены из группы
+  category:
+    created: Категория успешно создана
+    updated: Категория успешно обновлена
+    removed: Категория успешно удалена
+  tree:
+    created: Дерево категорий успешно создано
+    updated: Дерево категорий успешно обновлено
+    removed: Дерево категорий успешно удалено
+    not removable: Нельзя удалить деревья подключенные к каналам.
+  channel:
+    saved: Канал успешно сохранен
+    removed: Канал успешно удален
+    not removable: Нельзя удалить последний канал
+  currency:
+    updated: Валюта успешно обновлена
+  family:
+    created: Семейство успешно создано
+    updated: Семейство успешно обновлено
+    removed: Семейство успешно удалено
+    identifier not removable: Идентификатор атрибута не может быть удален из семейства
+    label attribute not removable: Этот атрибут не может быть удален, поскольку он используется, как метка семейства
+    attribute not found: Атрибут не принадлежит этому семейству
+    attributes added: Атрибуты успешно добавлены к семейству
+    attribute removed: Атрибут успешно удален из семейства
+  product:
+    created: Продукт успешно создан
+    updated: Продукт успешно обновлен
+    removed: Продукт успешно удален
+    invalid: Пожалуйста, проверьте введенные данные и попробуйте еще раз
+    attributes added: Атрибуты успешно добавлены в продукт
+    attribute removed: Атрибут успешно удален из продукта
+    attribute not removable: Атрибут не может быть удален из этого продукта
+  group:
+    created: Группа успешно создана
+    updated: Группа успешно обновлена
+    removed: Группа успешно удалена
+  variant group:
+    created: Вариативная группа успешно создана
+    updated: Вариативная группа успешно обновлена
+    removed: Вариативная группа успешно удалена
+  group type:
+    created: Тип группы успешно создан
+    updated: Тип группы успешно обновлен
+    removed: Тип группы успешно удален
+    cant remove variant: Вариативная группа не может быть удалена
+    cant remove used: Тип группы используется некоторыми группами и не может быть удален
+  association type:
+    created: Тип ассоциации успешно создан
+    updated: Тип ассоциации успешно обновлен
+    removed: Тип ассоциации успешно удален
+  user:
+    removed: Пользователь успешно удален
+  error ocurred: Не удалось выполнить. Повторите попытку.
+info:
+  updated: Имеются несохраненные изменения.
+  category:
+    remove children: Все подкатегории будут удалены.
+    keep products: Товары в этих категориях не будут удалены.
+  product:
+    no available attributes: Нет больше атрибутов для добавления
+    change family: Изменить семейство продуктов
+    change family to: Изменить семейство на
+    merge attributes: Текущие атрибуты будут объединены с существующими, в новом семействе.
+    keep attributes: Атрибуты не будут удалены.
+    number of associations: '%productCount% продуктов и %groupCount% групп'
+    enable: Включить
+    enabled: Включено
+    disable: Отключить
+    disabled: Отключено
+  group:
+    axis: 'Ось вариации: %attributes%'
+    select products: Пожалуйста, выберите продукты, которые должны принадлежать этой группе.
+    selectable products: Следующие выбираемые продукты имеют определенное значение для каждой оси.
+    no group types: Типы групп отсутствуют, нажмите здесь, чтобы создать
+  association type:
+    show products: Показать продукты
+    show groups: Показать группы
+    remove from products: 'Удаление типа ассоциация удалит его из %count% продуктов.'
+    none exist: Титпы ассоциаций отсутствуют.
+    create one: Нажмите здесь, чтобы создать
+color:
+  gray: Серый
+  white: Белый
+  yellow: Желтый
+  orange: Оранжевый
+  magenta: Пурпурный
+  violet: Фиолетовый
+  blue: Синий
+  cyan: Голубой
+Options: Параметры
+Created at: Создано
+Updated at: Обновлено
+Created: Создано
+Updated: Обновлено
+Last update: Последнее обновление
+by: Создано
+N/A: Н/Д
+Add an option: Добавить свойство
+Manage products: Управление продуктами
+Manage groups: Управление группами
+Code: Код
+Name: Имя
+Type: Тип
+Scope: Область
+Required: Обязательно
+Unique: Уникальный
+Not required: Не обязательно
+Translatable: Переводимое
+Scopable: Область назначаема
+Localizable: Локализуемые
+Unique value: Уникальное значение
+Attribute group: Группа атрибутов
+Other: Другие
+Variants behavior when edited: Варианты поведения при редактировании
+Edit: Редактировать
+Remove: Удалить
+Delete: Удалить
+Parameters: Параметры
+Values: Значения
+General parameters: Общие параметры
+Backend parameters: Параметры базы данных
+Label: Метка
+Default label: Метка по умолчанию
+Default value: Значение по умолчанию
+Attributetype: Тип атрибута
+Attribute type: Тип атрибута
+Defaultvalue: Значение по умолчанию
+Variant: Вариант
+Smart: Smart
+Useable as grid column: Может использоваться как столбец таблицы
+Useable as grid filter: Может использоваться как фильтр таблицы
+Family: Семейство
+Available locales: Доступные локали
+Locale specific: Специфично для локали
+default: По умолчанию
+Axis: Ось
+Add attributes: Добавить атрибуты
+Translate from: Перевести с
+"Yes": true
+"No": false
+Close: Закрыть
+Choose a color: Выбрать цвет
+Create: Создать
+Cancel: Отмена
+Choose a family: Выберите семейство
+Choose a unit: Выберите единицу измерения
+No matches found: Совпадений не найдено
+Category tree: Дерево категорий
+Completeness: Завершенность
+Attribute used as label: Атрибут используется в качестве метки
+Global: Глобальный
+Channel: Канал
+Always override: Всегда переопределять
+Ask: Спросить
+General Properties: Общие свойства
+Group values: Значения группы
+New group: Новая группа
+Groups overview: Обзор групп
+"Y-m-d h:i:s": d-m-Y H:i:s
+Max characters: Максимум символов
+Validation rule: Правило проверки
+Validation regexp: Регулярное выражения для правила проверки
+Wysiwyg enabled: WYSIWYG включен
+Number min: Мин. число
+Number max: Макс. число
+Decimals allowed: Разрешить значения после запятой
+Negative allowed: Разрешить отрацательные значения
+Date min: Мин. дата
+Date max: Макс. дата
+Metric family: Семейство измерений
+Default metric unit: Единица измерения по умолчанию
+Max file size: Максимальный размер файла (МБ)
+Allowed extensions: Допустимые расширения
+None: Нет
+E-mail: E-mail
+URL: URL
+Regular expression: Регулярное выражение
+Minimum input length: Минимальная длина ввода
+Default: По умолчанию
+Attributes: Атрибуты
+Title: Название
+pim_catalog_identifier: Идентификатор
+pim_catalog_text: Текст
+pim_catalog_textarea: Текст
+pim_catalog_number: Число
+pim_catalog_price_collection: Цена
+pim_catalog_multiselect: Множественный выбор
+pim_catalog_simpleselect: Простой выбор
+pim_catalog_file: Файл
+pim_catalog_image: Изображение
+pim_catalog_boolean: Да/Нет
+pim_catalog_date: Дата
+pim_catalog_metric: Метрическая
+Activated: Активированный
+Disable: Отключить
+pim_enrich.mass_edit_action:
+  page_title: Продукты
+  page_subtitle: 'Массовое редактирование (1 продукт) |Массовое редактирование (%count% продуктов)'
+  title: Выберите операцию
+  subtitle: 'Выберите операцию, которую вы хотите выполнить на выбранном продукте |Выберите операцию, которую вы хотите выполнить на %count% выбранных продуктах'
+  confirm: 'Вы собираетесь обновить продукт со следующей информацией, пожалуйста, подтвердите. |Вы собираетесь обновить %count% продуктов со следующей информацией, пожалуйста, подтвердите.'
+  limit_exceeded: 'Пожалуйста, выберите меньше чем %limit% продуктов для редактирования'
+  change-status:
+    label: Изменить статус (включить / выключить)
+    description: Выбранные продукты будут активированы или деактивированы.
+    success_flash: Статус продукта(ов) был изменен
+  edit-common-attributes:
+    label: Редактировать атрибуты
+    description: Выбранные атрибуты будут изменены для выбранного языка.
+    empty: Пожалуйста, выберите один или несколько атрибутов, которые вы хотите редактировать
+    success_flash: Атрибуты товаров были обновлены
+  classify:
+    label: Классифицировать товары в категориях
+    description: Продукты будут добавлены в следующие категории, исходное расположение сохраниться.
+    success_flash: 'В выбранных категориях товары были классифицированы '
+  change-family:
+    label: Изменить семейство продуктов
+    description: Семейство для выбранных продуктов будет изменено на выбранное семейство
+    success_flash: Семейство для выбранных продуктов успешно изменено
+  add-to-groups:
+    label: Добавить в группы
+    description: Выберите группы, в которые нужно добавить выбранные продукты
+    success_flash: Продукты были успешно добавлены в выбранные группы
+Choose products: Выбрать продукты
+Choose operation: Выберите действие
+Configure: Настроить
+Confirm: Подтвердить
+To enable: Включить
+Select attributes: Выберите атрибуты
+Select: Выбрать
+Remove this attribute: Удалить этот атрибут
+pim_enrich.completeness:
+  progress_bar.title: '%ratio%% выполнено (1 требуемое значение) | %ratio%% выполнено (требуется %count% значений)'
+  subtitle: '{0} Готово|{1} 1 отсутствующее значение|]1, Inf] %count% отсутствующих значений'
+  missing_attributes: Отсутствует значение|Отсутствующие значения
+  legend:
+    locale_not_associated: Локаль, не связана с этим каналом
+pim_enrich.group:
+  axis.help: Оси являются атрибутами, которые определяют вариативность группы. Оси это атрибуты с параметрами, не локализуемые и не определяемые областью. Эту настройку нельзя изменить после создания вариативной группы.
+  type:
+    VARIANT: Вариативная
+    X_SELL: Перекрестные продажи
+    ADDITIONAL: Дополнительные
+    RELATED: Связанные
+pim_enrich.product:
+  no_comparison_locale_available: Нет другой локали для сравнения
+  no_compared_media: Нет медиа доступной для сравнения
+Copy: Копия
+Current tab: Текущая вкладка
+pim_enrich.channel.pick_conversion_unit: Выбрать единицу преобразования для каждого метрического атрибута, которая будет использована во время экспорта продуктов
+Group: Группа
+View group: Посмотреть группу
+Products: Продукты
+pim_enrich:
+  acl:
+    currency:
+      index: Список валют
+      toggle: Переключение валют
+    product:
+      index: Список продуктов
+      create: Создать продукт
+      edit: Редактировать продукт
+      remove: Удалить продукт
+      add_attribute: Добавить атрибут к продукту
+      remove_attribute: Удалить атрибут из продукта
+      categories_view: Обращение к категории продукта
+      associations_view: Просмотр типов ассоциаций продукта
+      change_family: Изменить семейство продуктов
+      change_state: Изменить статус продукта
+      add_to_groups: Добавление продукта в группы
+      mass_edit: 'Операции массового редактирования продуктов '
+    category:
+      list: Список категорий
+      create: Создать категорию
+      edit: Редактировать категорию
+      remove: Удалить категорию
+      move: Переместить категорию
+      children: Посмотреть дочерние категории
+      products: Посмотреть продукты в категории
+    channel:
+      index: Список каналов
+      create: Создать канал
+      edit: Редактировать канал
+      remove: Удалить канал
+    family:
+      create: Создать семейство
+      edit: Редактировать семейство
+      remove: Удалить семейство
+      add_attribute: Добавить атрибут в семейство
+      remove_attribute: Удалить атрибут из семейства
+    attribute_group:
+      create: Создать группу атрибутов
+      edit: Редактировать группу атрибутов
+      remove: Удалить группу атрибутов
+      sort: Сортировка групп атрибутов
+      add_attribute: Добавление атрибута в группу
+      remove_attribute: Удаление атрибута из группы
+    attribute:
+      index: Список атрибутов
+      create: Создать атрибут
+      edit: Редактировать атрибут
+      remove: Удалить атрибут
+      sort: Сортировка атрибутов внутри группы
+    group:
+      index: Список групп
+      create: Создать группу
+      edit: Редактировать группу
+      remove: Удалить группу
+    group_type:
+      index: Список типов группы
+      create: Создать тип группы
+      edit: Редактировать тип группы
+      remove: Удалить тип группы
+    association_type:
+      index: Список типов ассоциаций
+      create: Создать тип ассоциации
+      edit: Редактировать тип ассоциации
+      remove: Удалить тип ассоциации
+pim_menu:
+  tab:
+    collect: Собрать данные
+    enrich: Дополнить данные
+    settings: Настройки
+    spread: Распространить данные
+  item:
+    association_type: Типы ассоциаций
+    attribute: Атрибуты
+    attribute_group: Группы атрибутов
+    category: Категории
+    channel: Каналы
+    currency: Валюты
+    family: Семейства
+    group: Группы
+    group_type: Типы групп
+    locale: Локали
+    product: Продукты
+    variant_group: Вариативные группы
+Properties: Свойства
+History: Журнал
+pane.accordion:
+  node_values: Значения узлов
+  general_properties: Общие свойства
+  locale_values: Данные локали
+  backend_parameters: Параметры сервера
+  general_parameters: Общие параметры
+  label_translations: Переводы меток
+  options: Параметры
+  group_values: Значения группы
+popin.create:
+  association_type.title: Создать новый тип ассоциации
+  family.title: Создать новое семейство
+  group.title: Создать новую группу
+  group_type.title: Создать новый тип группы
+  product.title: Создать новый продукт
+  variant_group.title: Создать новую вариативную группу
+  option.title: Создать новое свойство
+In group: В группе
+Attribute as label: Атрибут как метка
+Is associated: Связанный

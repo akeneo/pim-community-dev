@@ -1,0 +1,5 @@
+---
+Sorry, page was not loaded correctly: 申し訳ありませんが、ページが正しく読み込まれませんでした。
+Your local changes will be lost. Are you sure you want to refresh the page?: ローカルの変更は失われます。ページを更新してもよろしいですか。
+navigation.message.content.outdated: "{{ title }}のコンテンツ ページは古くなっています。 <a href='#' data-action='page-refresh'>ページを更新</a> してください。"
+Content of pinned page is outdated: ピン付されたページのコンテンツが古くなっています

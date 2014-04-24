@@ -1,0 +1,113 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+
+framework:
+    #esi:             ~
+    translator:      { fallback: %locale% }
+    secret:          %secret%
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: "%kernel.debug%"
+    form:            true
+    csrf_protection: true
+    validation:      { enable_annotations: true }
+    templating:      { engines: ['twig', 'php'] } #assets_version: SomeVersionScheme
+    default_locale:           "%locale%"
+    trusted_proxies:          ~
+    session:
+        name:                 BAPID
+        handler_id:           %session_handler%
+        save_path:            %kernel.root_dir%/cache/sessions
+        gc_maxlifetime:       3600
+    fragments:
+        enabled:              true
+        path:                 /_fragment # used for controller action in template
+    serializer:
+        enabled:              true
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+        uservoice_key: %uservoice_key%
+
+# Assetic Configuration
+assetic:
+    debug:          "%kernel.debug%"
+    use_controller: false
+    filters:
+        cssrewrite: ~
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        default_connection:   default
+        connections:
+            default:
+                driver:       "%database_driver%"
+                host:         "%database_host%"
+                port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_source:
+                driver:       "%database_driver%"
+                host:         "%database_host%"
+                port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+            report_target:
+                driver:       "%database_driver%"
+                host:         "%database_host%"
+                port:         "%database_port%"
+                unix_socket:  "%database_unix_socket%"
+                dbname:       "%database_name%"
+                user:         "%database_user%"
+                password:     "%database_password%"
+                charset:      UTF8
+        types:
+            date:     Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateType
+            datetime: Oro\Bundle\LocaleBundle\DoctrineExtensions\DBAL\Types\UTCDateTimeType
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        auto_mapping:                true
+        class_metadata_factory_name: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport:                "%mailer_transport%"
+    host:                     "%mailer_host%"
+    username:                 "%mailer_user%"
+    password:                 "%mailer_password%"
+    spool:                    { type: memory }
+
+pim_catalog:
+    storage_driver: 'doctrine/orm'
+
+services:
+    oro.cache.abstract:
+        abstract:  true
+        class:     Doctrine\Common\Cache\PhpFileCache
+        arguments: [%kernel.cache_dir%]
+    twig.extension.intl:
+         class: Twig_Extensions_Extension_Intl
+         tags:
+             - { name: twig.extension }
+    doctrine.dbal.default.wrapped_connection:
+        factory_service:      doctrine.dbal.default_connection
+        factory_method:       getWrappedConnection
+        class:                PDO
+    session.handler.pdo:
+        class:                Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
+        arguments:
+            - "@doctrine.dbal.default.wrapped_connection"
+            -
+              db_table:       oro_session
+              db_id_col:      id

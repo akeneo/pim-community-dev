@@ -1,0 +1,16 @@
+---
+Close: Sluiten
+Update: Bijwerken
+Selected Rows: Geselecteerde rijen
+Localized value: Gelokaliseerde waarde
+Columns: Kolommen
+Datagrid Configuration: Datagrid configuratie
+Apply: Toepassen
+Action: Actie
+Unit: Eenheid
+Currency: Valuta
+jstree:
+  all: Alle producten
+  unclassified: Niet-geclassificeerde producten
+  no_tree: Geen structuur beschikbaar
+  include_sub: Inclusief subcategorieën

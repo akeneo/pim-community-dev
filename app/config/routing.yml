@@ -1,0 +1,44 @@
+# PIM
+
+pim_datagrid:
+    resource: "@PimDataGridBundle/Resources/config/routing.yml"
+
+pim_enrich:
+    resource: "@PimEnrichBundle/Resources/config/routing.yml"
+
+pim_ui:
+    resource: "@PimUIBundle/Resources/config/routing.yml"
+
+pim_importexport:
+    resource: "@PimImportExportBundle/Resources/config/routing.yml"
+
+pim_webservice:
+    resource: "@PimWebServiceBundle/Resources/config/routing.yml"
+
+# Oro platform
+
+oro_default:
+    pattern:  /
+    defaults:
+        template:    PimDashboardBundle:Dashboard:index.html.twig
+        _controller: FrameworkBundle:Template:template
+
+oro_auto_routing:
+    resource: .
+    type:     oro_auto
+
+# other third party
+
+nelmio_api_doc:
+    resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
+    prefix:   /api/doc
+
+fos_js_routing:
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+
+_imagine:
+    resource: .
+    type:     imagine
+
+_apy_jsformvalidation:
+    resource: "@APYJsFormValidationBundle/Resources/config/routing/routing.yml"

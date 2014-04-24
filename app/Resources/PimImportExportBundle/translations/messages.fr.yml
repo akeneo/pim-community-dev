@@ -1,0 +1,123 @@
+---
+Job: Job
+Connector: Connecteur
+pim_import_export:
+  status:
+    - Prêt
+  batch_status:
+    1: TERMINÉ
+    2: DÉMARRAGE EN COURS
+    3: DÉMARRÉ
+    4: ARRÊT EN COURS
+    5: ARRÊTÉ
+    6: EN ÉCHEC
+    7: ABANDONNÉ
+    8: INCONNU
+  download_archive:
+    archive: Télécharger le fichier générés|Télécharger les fichiers générés
+    output: Télécharger le fichier générés|Télécharger les fichiers générés
+    input: Télécharger le fichier lu|Télécharger les fichiers lus
+    invalid: Télécharger données invalides
+pim_title.export_profile.index: "Gestion de profils d'export"
+pim_title.export_profile.edit: "Profile d'export %job.label% | Edition"
+pim_title.export_profile.show: "Profile d'export %job.label% | Visualisation"
+pim_title.export_execution.index: "Exporter l'historique d'exécutions"
+pim_title.export_execution.show: "Executions d'exports | Détails"
+pim_title.import_profile.index: Importer gestion de profils
+pim_title.import_profile.edit: "Profil d'import %job.label% | Edition"
+pim_title.import_profile.show: "Profil d'import %job.label% | Visualisation"
+pim_title.import_execution.index: "Importer l'historique des exécutions"
+pim_title.import_execution.show: "Executions d'imports | Détails"
+export profile:
+  title: "Profil d'export"
+  overview: "Liste des profils d'export"
+  create: "Créer un profil d'export"
+  edit: "Modifier un profil d'export"
+export report:
+  overview: "Rapports d'exportations"
+import profile:
+  title: "Profil d'import"
+  overview: "Liste des profils d'import"
+  create: "Créer un profil d'import"
+  edit: "Modifier un profil d'import"
+import report:
+  overview: "Rapports d'importations"
+pim_importexport:
+  acl:
+    export_profile:
+      index: "Visualiser la liste des profils d'export"
+      create: "Créer un profil d'export"
+      show: "Voir le profil d'export"
+      edit: "Modifier un profil d'export"
+      remove: "Supprimer un profil d'export"
+      launch: "Lancer un profil d'export"
+    import_profile:
+      index: "Visualiser la liste des profils d'import"
+      create: "Créer un profil d'import"
+      show: "Voir le profil d'import"
+      edit: "Modifier un profil d'import"
+      remove: "Supprimer un profil d'import"
+      launch: "Lancer un profil d'import"
+    export_execution:
+      index: "Visualiser la liste des rapports d'export"
+      show: "Visualiser les détails du rapport d'export"
+      dl_log: "Télécharger le rapport d'export"
+      dl_files: Télécharger les fichiers exportés
+    import_execution:
+      index: "Visualiser la liste des rapports d'import"
+      show: "Visualiser les détails du rapport d'import"
+      dl_log: "Télécharger le rapport d'import"
+      dl_files: Télécharger les fichiers importés
+btn:
+  create:
+    export profile: "Créer un profil d'export"
+    import profile: "Créer un profil d'import"
+Upload and import: Upload et importation
+Upload and import now: Télécharger et importer maintenant
+import now: Importer maintenant
+export now: Exporter maintenant
+confirmation:
+  remove:
+    export profile: "Êtes-vous sûr de vouloir supprimer le profil d'export %name% ?"
+    import profile: "Êtes-vous sûr de vouloir supprimer le profil d'import %name% ?"
+flash:
+  export:
+    created: "L'export a été correctement crée"
+    removed: "Le profil d'export a été supprimé"
+    updated: "L'export a correctement été mis à jour"
+  import:
+    created: "L'import a été correctement crée"
+    removed: "Le profil d'import a été supprimé"
+    updated: "L'import a correctement été mis à jour"
+pim_menu:
+  item:
+    export_history: Historique des exports
+    export_profile: "Profils d'export"
+    import_history: Historique des imports
+    import_profile: "Profils d'import"
+General properties: Propriétés générales
+History: Historique
+pane.accordion:
+  properties: Propriétés
+  global_settings: Paramètres généraux
+popin.create:
+  export_profile.title: "Créer un nouveau profil d'export"
+  import_profile.title: "Créer un nouveau profil d'import"
+Display item: "Afficher l'élément"
+Hide item: "Masquer l'élément"
+Collecting data about job execution...: "Collecte de données de l'exécution..."
+You must select a file to upload: Vous devez sélectionner un fichier à télécharger
+Download log: "Télécharger l'historique"
+Show profile: Afficher le profil
+execution details: "détails d'exécution"
+job_execution.summary:
+  read: lire
+  write: écrire
+  skip: ignorer
+  create: créer
+  update: mettre à jour
+Step: Étape
+Status: Statut
+Summary: Résumé
+Start: Début
+End: Fin
