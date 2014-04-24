@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
