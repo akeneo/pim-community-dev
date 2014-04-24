@@ -1,4 +1,3 @@
-pim-enterprise-dev
-==================
+Akeneo PIM Enterprise Edition Bundles
+=====================================
 
-Akeneo PIM Enterprise development repository
