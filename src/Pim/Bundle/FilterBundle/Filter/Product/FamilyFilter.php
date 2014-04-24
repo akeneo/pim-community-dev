@@ -28,7 +28,12 @@ class FamilyFilter extends ChoiceFilter
         $ids = $data['value'];
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
-        $pqb->addFieldFilter('family', 'IN', $ids);
+
+        if ($data['value'] === 'EMPTY') {
+            $pqb->addFieldFilter('family', 'EMPTY', $ids);
+        } else {
+            $pqb->addFieldFilter('family', 'IN', $ids);
+        }
 
         return true;
     }
