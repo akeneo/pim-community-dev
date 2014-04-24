@@ -14,6 +14,7 @@
 - Remove FlexibleEntityBundle
 - Remove CategoryWriter and use the generic doctrine writer instead
 - Remove entity argument from FiltersConfigurator constructor
+- Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

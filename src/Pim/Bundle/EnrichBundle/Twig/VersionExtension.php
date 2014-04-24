@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\PimCatalogBundle;
+use Pim\Bundle\CatalogBundle\Version;
 
 /**
  * Extension to display version of the Akeneo
@@ -30,9 +30,9 @@ class VersionExtension extends \Twig_Extension
      */
     public function version()
     {
-        $version = PimCatalogBundle::VERSION;
-        if (PimCatalogBundle::VERSION_CODENAME) {
-            $version .= sprintf(' %s', PimCatalogBundle::VERSION_CODENAME);
+        $version = Version::VERSION;
+        if (Version::VERSION_CODENAME) {
+            $version .= sprintf(' %s', Version::VERSION_CODENAME);
         }
 
         return $version;
