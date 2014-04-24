@@ -6,6 +6,7 @@
 - Group datagrid filters by attribute groups
 
 ## Bug fixes
+- replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
 
 ## BC breaks
 
