@@ -90,6 +90,16 @@ class AttributeRequirement
     }
 
     /**
+     * Get attribute code
+     *
+     * @return string
+     */
+    public function getAttributeCode()
+    {
+        return $this->attribute->getCode();
+    }
+
+    /**
      * Setter channel
      *
      * @param Channel $channel
@@ -111,6 +121,16 @@ class AttributeRequirement
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * Get channel code
+     *
+     * @return string
+     */
+    public function getChannelCode()
+    {
+        return $this->channel->getCode();
     }
 
     /**

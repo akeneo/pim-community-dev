@@ -2,6 +2,12 @@
 
 namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+
 /**
  * Set attribute requirements
  *
@@ -13,11 +19,82 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
  */
 class SetAttributeRequirements extends AbstractMassEditAction
 {
-    public function getFormType()
-    {
-        return '';
+    /** @var ChannelRepository */
+    protected $channelRepository;
+
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
+    /** @var AttributeRequirementFactory */
+    protected $factory;
+
+    /** @var ArrayCollection */
+    protected $attributeRequirements;
+
+    public function __construct(
+        ChannelRepository $channelRepository,
+        AttributeRepository $attributeRepository,
+        AttributeRequirementFactory $factory
+    ) {
+        $this->channelRepository = $channelRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->factory = $factory;
+        $this->attributeRequirements = new ArrayCollection();
     }
 
+    /**
+     * Get attribute requirements
+     *
+     * @return ArrayCollection
+     */
+    public function getAttributeRequirements()
+    {
+        return $this->attributeRequirements;
+    }
+
+    public function addAttributeRequirement(AttributeRequirement $attributeRequirement)
+    {
+        if (!$this->attributeRequirements->contains($attributeRequirement)) {
+            $this->attributeRequirements->set(
+                sprintf(
+                    '%s_%s',
+                    $attributeRequirement->getAttributeCode(),
+                    $attributeRequirement->getChannelCode()
+                ),
+                $attributeRequirement
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFormType()
+    {
+        return 'pim_enrich_mass_set_attribute_requirements';
+   }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->channels = $this->channelRepository->findAll();
+
+        foreach ($this->attributeRepository->getNonIdentifierAttributes() as $attribute) {
+            $this->attributes[(string) $attribute->getVirtualGroup()][] = $attribute;
+
+            foreach ($this->channels as $channel) {
+                $this->addAttributeRequirement(
+                    $this->factory->createAttributeRequirement($attribute, $channel, false)
+                );
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function perform()
     {
     }

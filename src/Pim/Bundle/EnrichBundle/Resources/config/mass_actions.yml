@@ -104,6 +104,10 @@ services:
     pim_entich.mass_edit_action.set_attribute_requirements:
         public: false
         class: %pim_entich.mass_edit_action.set_attribute_requirements.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute_requirement'
         tags:
             -
                 name: pim_enrich.mass_edit_action
