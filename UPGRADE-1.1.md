@@ -4,12 +4,20 @@ UPGRADE FROM 1.0 to 1.1
 General
 -------
 
-- Update the doctrine schema with php app/console doctrine:schema:update --force to :
+To be able to upgrade a PIM standard installation from 1.0 to 1.1 (keep the same storage).
+
+- Remove your composer.lock, remove your vendor, run `php ../composer.phar install`
+
+- Update the doctrine schema with `php app/console doctrine:schema:update --force` to :
  - remove the `fallback` field in the `Locale` entity
  - add the `properties` field in the `Attribute` entity
  - create the `pim_enrich_datagrid_view` and `pim_enrich_datagrid_configuration` tables
 
 - Update the assets to get new js filters, css with `php app/console pim:install --task=assets --force`
+
+- Update the parameters.yml file to ad missing parameters, update the AppKernel.php and the config.yml (compare with pim-community-standard 1.1)
+
+- Clear the cache by running `php app/console cache:clear`
 
 Base connector writers and readers
 ----------------------------------

@@ -36,9 +36,9 @@ class OutdateIndexedValuesListener implements EventSubscriber
     {
         $object = $args->getObject();
         if ($object instanceof AbstractProductValue) {
-            $flexibleObject = $object->getEntity();
-            if ($flexibleObject instanceof AbstractProduct) {
-                $flexibleObject->markIndexedValuesOutdated();
+            $product = $object->getEntity();
+            if ($product instanceof AbstractProduct) {
+                $product->markIndexedValuesOutdated();
             }
         } elseif ($object instanceof AbstractProduct) {
             $object->markIndexedValuesOutdated();

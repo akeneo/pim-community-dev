@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Property\FieldProperty as OroFieldProperty;
 
 /**
- * Field property, able to render majority of flexible attribute values
+ * Field property, able to render majority of product attribute values
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

@@ -10,7 +10,7 @@ use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
- * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config,
+ * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
  * attributes config, current locale
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>

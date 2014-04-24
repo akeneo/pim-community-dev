@@ -50,7 +50,7 @@ class ProductMassActionRepository implements ProductMassActionRepositoryInterfac
             ->select($rootAlias)
             ->from($this->entityName, $rootAlias);
 
-        // Remove 'entityIds' part from querybuilder (added by flexible pager)
+        // Remove 'entityIds' part from querybuilder (added by product pager)
         $whereParts = $qb->getDQLPart('where')->getParts();
         $qb->resetDQLPart('where');
 

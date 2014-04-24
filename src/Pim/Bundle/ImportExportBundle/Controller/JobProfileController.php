@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\Process\Process;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -312,8 +311,12 @@ class JobProfileController extends AbstractDoctrineController
                 $executionId,
                 $this->rootDir
             );
-            $process = new Process($cmd);
-            $process->start();
+            // Please note we do not use Symfony Process as it has some problem
+            // when executed from HTTP request that stop fast (race condition that makes
+            // the process cloning fail when the parent process, i.e. HTTP request, stops
+            // at the same time)
+            exec($cmd.' &');
+
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
             return $this->redirectToReportView($jobExecution->getId());

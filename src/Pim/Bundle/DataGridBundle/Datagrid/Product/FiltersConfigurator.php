@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
- * Filters configurator for flexible grid
+ * Filters configurator for product grid
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -26,23 +26,15 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param $string
-     */
-    protected $flexibleEntity;
-
-    /**
-     * @param DatagridConfiguration $configuration  the grid config
-     * @param ConfigurationRegistry $registry       the conf registry
-     * @param string                $flexibleEntity the flexible entity FQCN
+     * @param DatagridConfiguration $configuration the grid config
+     * @param ConfigurationRegistry $registry      the conf registry
      */
     public function __construct(
         DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry,
-        $flexibleEntity
+        ConfigurationRegistry $registry
     ) {
         $this->configuration  = $configuration;
         $this->registry       = $registry;
-        $this->flexibleEntity = $flexibleEntity;
     }
 
     /**

@@ -4,8 +4,8 @@ services:
         class: %pim_catalog.manager.product.class%
         arguments:
             -
-                  flexible_class:               %pim_catalog.entity.product.class%
-                  flexible_value_class:         %pim_catalog.entity.product_value.class%
+                  product_class:                %pim_catalog.entity.product.class%
+                  product_value_class:          %pim_catalog.entity.product_value.class%
                   attribute_class:              %pim_catalog.entity.attribute.class%
                   attribute_option_class:       %pim_catalog.entity.attribute_option.class%
                   attribute_option_value_class: %pim_catalog.entity.attribute_option_value.class%
@@ -16,8 +16,6 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
-        tags:
-            - { name: pim_flexibleentity_manager, entity: %pim_catalog.entity.product.class%}
 
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%

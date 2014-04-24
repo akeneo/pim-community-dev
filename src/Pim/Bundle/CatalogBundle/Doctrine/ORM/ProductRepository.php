@@ -35,7 +35,7 @@ class ProductRepository extends EntityRepository implements
     protected $attributeRepository;
 
     /**
-     * Set flexible query builder
+     * Set product query builder
      *
      * @param ProductQueryBuilder $productQB
      *
@@ -484,7 +484,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Load a flexible entity with its attribute values
+     * Load a product entity with its attribute values
      *
      * @param integer $id
      *

@@ -54,7 +54,7 @@ class AddProductValueFieldSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Build and add the relevant value form for each flexible entity values
+     * Build and add the relevant value form for each product values
      *
      * @param FormEvent $event
      */

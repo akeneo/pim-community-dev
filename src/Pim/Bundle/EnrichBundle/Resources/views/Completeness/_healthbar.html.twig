@@ -1,9 +1,9 @@
 <div class="progress-cell">
 {% if product.getFamily is null %}
-    {{ 'No family defined'|trans }}
+    {{ 'info.product.no family defined'|trans }}
 {% elseif completeness is null %}
     {% if channel.hasLocale(locale) %}
-        {{ 'Not yet calculated'|trans }}
+        {{ 'info.completeness.not calculated'|trans }}
     {% else %}
         <div class="progress">
             <div class="bar bar-disabled" style="width: 100%;"></div>
