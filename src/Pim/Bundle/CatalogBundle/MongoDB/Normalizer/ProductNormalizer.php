@@ -67,10 +67,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data[self::UPDATED_FIELD] = $this->serializer->normalize($object->getUpdated(), $format, $context);
         }
         foreach ($object->getValues() as $value) {
-            $data = array_merge(
-                $data,
-                $this->serializer->normalize($value, $format, $context)
-            );
+            $normalizedData = $this->serializer->normalize($value, $format, $context);
+            if (null !== $normalizedData) {
+                $data = array_merge($data, $normalizedData);
+            }
         }
 
         $completenesses = array();

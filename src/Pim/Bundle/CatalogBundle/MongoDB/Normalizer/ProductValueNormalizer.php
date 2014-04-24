@@ -25,6 +25,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($object, $format = null, array $context = array())
     {
+        $data = null;
         $valueKey = $this->getFieldValue($object);
         if ($object->getData() instanceof Collection) {
             $data[$valueKey] = [];
@@ -33,7 +34,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             }
 
         } else {
-            $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
+            if ($object->getData() !== null) {
+                $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
+            }
         }
 
         return $data;

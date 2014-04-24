@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -45,7 +46,10 @@ class StringFilter extends OroStringFilter
      */
     protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
     {
-        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || !array_key_exists('type', $data)
+            || (!$data['value'] && TextFilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 

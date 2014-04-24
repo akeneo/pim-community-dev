@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -35,5 +36,22 @@ class NumberFilter extends OroNumberFilter
         );
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || !array_key_exists('type', $data)
+            || (!is_numeric($data['value']) && NumberFilterType::TYPE_EMPTY !== $data['type'])) {
+            return false;
+        }
+
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
+
+        return $data;
     }
 }

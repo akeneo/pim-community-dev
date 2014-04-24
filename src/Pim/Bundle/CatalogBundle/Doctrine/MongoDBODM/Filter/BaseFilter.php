@@ -52,10 +52,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
-        if (strpos($value, '/') !== false) {
-            $value = new \MongoRegex($value);
+        if ('EMPTY' === $operator) {
+            $this->qb->field($field)->exists(false);
+        } else {
+            if (strpos($value, '/') !== false) {
+                $value = new \MongoRegex($value);
+            }
+            $this->qb->field($field)->equals($value);
         }
-        $this->qb->field($field)->equals($value);
 
         return $this;
     }
