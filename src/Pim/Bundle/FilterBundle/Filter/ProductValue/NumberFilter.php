@@ -41,6 +41,23 @@ class NumberFilter extends OroNumberFilter
     /**
      * {@inheritdoc}
      */
+    public function getOperator($type)
+    {
+        $operatorTypes = array(
+            NumberFilterType::TYPE_EQUAL         => '=',
+            NumberFilterType::TYPE_GREATER_EQUAL => '>=',
+            NumberFilterType::TYPE_GREATER_THAN  => '>',
+            NumberFilterType::TYPE_LESS_EQUAL    => '<=',
+            NumberFilterType::TYPE_LESS_THAN     => '<',
+            NumberFilterType::TYPE_EMPTY         => 'EMPTY',
+        );
+
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function parseData($data)
     {
         if (!is_array($data)
