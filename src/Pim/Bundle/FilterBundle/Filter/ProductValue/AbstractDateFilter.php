@@ -46,6 +46,37 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
+    protected function isValidData($data)
+    {
+        if (!is_array($data) || !array_key_exists('value', $data) || !is_array($data['value'])) {
+            return false;
+        }
+
+        // Empty operator does not need any value
+        if (DateRangeFilterType::TYPE_EMPTY === $data['type']) {
+            return true;
+        }
+
+        if (!isset($data['value']['start']) && !isset($data['value']['end'])) {
+            return false;
+        }
+
+        // check start date
+        if (isset($data['value']['start']) && !$data['value']['start'] instanceof \DateTime) {
+            return false;
+        }
+
+        // check end date
+        if (isset($data['value']['end']) && !$data['value']['end'] instanceof \DateTime) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFilterDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         switch ($type) {
@@ -57,6 +88,14 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 break;
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
                 $this->applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
+                break;
+            case DateRangeFilterType::TYPE_EMPTY:
+                $this->util->applyFilterByAttribute(
+                    $ds,
+                    $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                    null,
+                    'EMPTY'
+                );
                 break;
             default:
             case DateRangeFilterType::TYPE_BETWEEN:
