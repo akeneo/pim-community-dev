@@ -1,0 +1,76 @@
+{
+    "name": "akeneo/pim-enterprise-dev",
+    "description": "Akeneo PIM, Enterprise Edition Bundles",
+    "license": "proprietary",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Akeneo",
+            "homepage": "http://www.akeneo.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "": "src/",
+            "Context": "features/",
+            "OroEmail\\": "app/emails/"
+        }
+    },
+    "require": {
+        "php": ">=5.4.4",
+        "akeneo/pim-community-dev": "1.2.*",
+        "oro/platform": "dev-pim-1.2#bf7d959ea29df4881e752f906a1a9b86ce83bc17",
+        "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
+        "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
+        "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/pim-community-dev.git",
+            "branch": "master"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/akeneo/platform.git",
+            "branch": "master"
+        }
+    ],
+    "scripts": {
+        "post-install-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "php app/console fos:js-routing:dump --target=web/js/routes.js"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
+            "php app/console fos:js-routing:dump --target=web/js/routes.js"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "dev",
+    "extra": {
+        "symfony-app-dir": "app",
+        "symfony-web-dir": "web",
+        "symfony-assets-install": "symlink",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml",
+            "env-map": {
+                "database_host": "PIM_DATABASE_HOST",
+                "database_port": "PIM_DATABASE_PORT",
+                "database_name": "PIM_DATABASE_NAME",
+                "database_user": "PIM_DATABASE_USER",
+                "database_password": "PIM_DATABASE_PASSWORD"
+            }
+        }
+    }
+}
