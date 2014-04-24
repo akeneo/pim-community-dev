@@ -5,7 +5,7 @@ parameters:
     pim_enrich.controller.currency.class: Pim\Bundle\EnrichBundle\Controller\CurrencyController
     pim_enrich.controller.family.class: Pim\Bundle\EnrichBundle\Controller\FamilyController
     pim_enrich.controller.locale.class: Pim\Bundle\EnrichBundle\Controller\LocaleController
-    pim_enrich.controller.mass_edit.class: Pim\Bundle\EnrichBundle\Controller\MassEditController
+    pim_enrich.controller.mass_edit_action.class: Pim\Bundle\EnrichBundle\Controller\MassEditActionController
     pim_enrich.controller.attribute.class: Pim\Bundle\EnrichBundle\Controller\AttributeController
     pim_enrich.controller.product.class: Pim\Bundle\EnrichBundle\Controller\ProductController
     pim_enrich.controller.association.class: Pim\Bundle\EnrichBundle\Controller\AssociationController

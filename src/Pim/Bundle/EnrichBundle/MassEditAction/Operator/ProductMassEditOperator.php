@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @Exclude
  */
-class ProductMassEditOperator extends AbstractMassEditActionOperator
+class ProductMassEditOperator extends AbstractMassEditOperator
 {
     protected $manager;
 
