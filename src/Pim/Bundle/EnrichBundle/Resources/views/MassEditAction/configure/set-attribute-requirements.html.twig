@@ -1,0 +1,156 @@
+{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block formTitle %}
+    {# Attributes selection #}
+    <div class="pull-right">
+        <select id="pim_catalog_mass_edit_family_add_attribute" class="input-large" multiple="multiple">
+            {% for groupLabel, attributes in form.operation.vars.value.attributes %}
+            <optgroup label="{{ groupLabel }}">
+                {% for attribute in attributes %}
+                <option value="{{ attribute.code }}">{{ attribute.label }}</option>
+                {% endfor %}
+            </optgroup>
+            {% endfor %}
+        </select>
+    </div>
+{% endblock %}
+
+{% block formContent %}
+    {# Requirements grid #}
+    {% set columnWidth = 10 %}
+    <table class="table groups">
+        <thead>
+            <th width="10%">{{ 'Label'|trans|upper }}</th>
+            {% for channel in form.operation.vars.value.channels %}
+                <th class="channel" width="{{ columnWidth }}%">{{ channel.label|upper }}</th>
+            {% endfor %}
+            <th width="5%">&nbsp;</th>
+        </thead>
+        {% for groupLabel, attributes in form.operation.vars.value.attributes %}
+        <tbody>
+            <tr class="hide group">
+                <td colspan="10"><i class="icon-collapse-alt"></i>{{ groupLabel }}</td>
+            </tr>
+            {% for attribute in attributes %}
+            <tr class="hide attribute" data-code="{{ attribute.code }}">
+                <td>{{ attribute.label }}</td>
+                {% for channel in form.operation.vars.value.channels %}
+                    <td>
+                        {{ form_widget(form.operation.attributeRequirements[(attribute.code ~ '_' ~ channel.code)]) }}
+                    </td>
+                {% endfor %}
+                <td>
+                    <i class="icon-trash remove-attribute" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'Remove this attribute'|trans }}"></i>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        {% endfor %}
+    </table>
+
+    {# Scripts #}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'bootstrap', 'jquery.multiselect', 'jquery.multiselect.filter'],
+            function ($) {
+                'use strict';
+
+                $(function() {
+                    // Group collapsing
+                    $('.group').click(function() {
+                        if ($(this).find('i').is('.icon-collapse-alt')) {
+                            $(this)
+                                .addClass('collapsed')
+                                .parent()
+                                .find('tr:not(.group):not(.hide)')
+                                .hide();
+                        } else {
+                            $(this)
+                                .removeClass('collapsed')
+                                .parent()
+                                .find('tr:not(.group):not(.hide)')
+                                .removeAttr("style");
+                        }
+                        $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
+                    });
+
+                    // Requirement tick
+                    $('.attribute-requirement:not(.identifier) i').on('click', function() {
+                        $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
+
+                        var $input = $(this).siblings('input[type="checkbox"]').eq(0);
+                        var checked = $input.is(':checked');
+                        $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
+                        $input.prop('checked', !checked).trigger('change');
+                    });
+
+                    // Attribute addition
+                    var opts = {
+                        title: '{{ "Select attributes"|trans }}',
+                        placeholder: '{{ "Search"|trans }}',
+                        header: '',
+                        height: 175,
+                        minWidth: 50,
+                        classes: 'pimmultiselect',
+                        position: {
+                            my: 'right top',
+                            at: 'right bottom',
+                            collision: 'none'
+                        }
+                    };
+                    opts.selectedText = opts.title;
+                    opts.noneSelectedText = opts.title;
+                    var $el = $('#pim_catalog_mass_edit_family_add_attribute')
+                        .addClass('pimmultiselect')
+                        .multiselect(opts)
+                        .multiselectfilter({
+                            label: false,
+                            placeholder: opts.placeholder
+                        });
+                    var $menu = $('.ui-multiselect-menu.pimmultiselect').appendTo('#container');
+                    var saveButton = '{{ "Select"|trans }}';
+
+                    var footerContainer = $('<div>').addClass('ui-multiselect-footer').appendTo($menu);
+                    var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
+                        $el.multiselect('close');
+                        var checked = _.map($el.multiselect('getChecked'), function(el) {
+                            return el.value;
+                        });
+                        $('tr.attribute').each(function() {
+                            var $field = $(this);
+                            if (_.contains(checked, $field.data('code'))) {
+                                $field.removeClass('hide');
+                                // Hide it if the group is collapsed
+                                if ($(this).parent().find('tr.group').is('.collapsed')) {
+                                    $field.hide();
+                                }
+                            } else {
+                                $field.addClass('hide');
+                            }
+                        });
+                        $('tr.group').each(function() {
+                            if ($(this).parent('tbody').find('tr.attribute:not(.hide)').length) {
+                                $(this).removeClass('hide');
+                            } else {
+                                $(this).addClass('hide');
+                            }
+                        });
+                    }).appendTo(footerContainer);
+
+                    var $openButton = $('button.pimmultiselect').addClass('btn btn-group');
+                    $openButton.append($('<span>', { 'class': 'caret' })).removeAttr('style');
+
+                    $menu.find('input[type="search"]').width(207);
+
+                    /**
+                     * Manage removal of attributes from the form
+                     */
+                    $('.remove-attribute').on('click', function () {
+                        $el.multiselect('widget').find('input[value="' + $(this).parents('tr').data('code') + '"]').click();
+                        $saveButton.click();
+                    });
+                });
+            }
+        );
+    </script>
+{% endblock %}

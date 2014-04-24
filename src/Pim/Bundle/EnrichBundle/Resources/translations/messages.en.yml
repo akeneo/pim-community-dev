@@ -484,6 +484,12 @@ pim_enrich.mass_edit_action:
         label:         Add to groups
         description:   Select the groups in which to add the selected products
         success_flash: Products were successfully added to the selected groups
+
+    set-attribute-requirements:
+        label:         Set attribute requirements
+        description:   The following attribute requirements will be applied to the selected families
+        success_flash: Attribute requirements were applied to the selected families
+
 To enable: To enable
 Select attributes: Select attributes
 Select: Select
