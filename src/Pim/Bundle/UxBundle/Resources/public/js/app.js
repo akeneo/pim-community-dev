@@ -11,6 +11,6 @@ config(function($stateProvider, $urlRouterProvider) {
         })
         .state('pim_enrich_product', {
             url: '/products',
-            template: '<h3>Products</h3>'
+            templateUrl: '/bundles/pimux/templates/product/index.html'
         });
 });
