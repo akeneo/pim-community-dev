@@ -431,14 +431,33 @@ Activated: Activated
 Edit:      Edit
 Disable:   Disable
 
-# Batch operations
+# Mass edit operations
 pim_enrich.mass_edit_action:
-    page_title:     Products
-    page_subtitle:  Mass Edit (1 product)|Mass Edit (%count% products)
-    title:          Choose operation
-    subtitle:       Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
-    confirm:        You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
-    limit_exceeded: Please choose less than %limit% products to edit
+    product:
+        page_title: Products
+        page_subtitle: Mass Edit (1 product)|Mass Edit (%count% products)
+        title: Choose operation
+        subtitle: Choose the operation you wish to perform on the selected product|Choose the operation you wish to perform on the selected %count% products
+        confirm: You are about to update a product with the following information, please confirm.|You are about to update %count% products with the following information, please confirm.
+        limit_exceeded: Please choose less than %limit% products to edit
+        steps:
+            first: Choose products
+            second: Choose operation
+            third: Configure
+            fourth: Confirm
+
+    family:
+        page_title: Families
+        page_subtitle: Mass Edit (1 family)|Mass Edit (%count% families)
+        title: Choose operation
+        subtitle: Choose the operation you wish to perform on the selected family|Choose the operation you wish to perform on the selected %count% families
+        confirm: You are about to update a family with the following information, please confirm.|You are about to update %count% families with the following information, please confirm.
+        limit_exceeded: Please choose less than %limit% families to edit
+        steps:
+            first: Choose families
+            second: Choose operation
+            third: Configure
+            fourth: Confirm
 
     change-status:
         label:         Change status (enable / disable)
@@ -465,10 +484,6 @@ pim_enrich.mass_edit_action:
         label:         Add to groups
         description:   Select the groups in which to add the selected products
         success_flash: Products were successfully added to the selected groups
-Choose products: Choose products
-Choose operation: Choose operation
-Configure: Configure
-Confirm: Confirm
 To enable: To enable
 Select attributes: Select attributes
 Select: Select
