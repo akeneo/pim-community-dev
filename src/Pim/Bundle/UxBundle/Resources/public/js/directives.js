@@ -8,10 +8,11 @@ angular.module('App.directives', [])
             scope: {
                 name: '@'
             },
-            template: '<div><p>This is "{{ name }}"</p><p>{{ gridData }}</p></div>',
+            templateUrl: '/bundles/pimux/templates/grid/grid.html',
             controller: function(GridManager, $scope) {
                 GridManager.load($scope.name).then(function (data) {
-                    $scope.gridData = data;
+                    $scope.metaData = data.metadata;
+                    $scope.data = JSON.parse(data.data);
                 });
             }
         };
