@@ -64,8 +64,6 @@ class StringFilter extends AbstractFilter
      */
     protected function getOperator($type)
     {
-        $type = (int)$type;
-
         $operatorTypes = array(
             TextFilterType::TYPE_CONTAINS     => 'LIKE',
             TextFilterType::TYPE_NOT_CONTAINS => 'NOT LIKE',

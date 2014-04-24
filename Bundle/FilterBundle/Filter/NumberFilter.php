@@ -63,8 +63,6 @@ class NumberFilter extends AbstractFilter
      */
     public function getOperator($type)
     {
-        $type = (int)$type;
-
         $operatorTypes = array(
             NumberFilterType::TYPE_EQUAL         => '=',
             NumberFilterType::TYPE_GREATER_EQUAL => '>=',
