@@ -46,7 +46,7 @@ class NumberFilter extends OroNumberFilter
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !array_key_exists('type', $data)
-            || (!is_numeric($data['value']) && $data['type'] !== NumberFilterType::TYPE_EMPTY)) {
+            || (!is_numeric($data['value']) && NumberFilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 

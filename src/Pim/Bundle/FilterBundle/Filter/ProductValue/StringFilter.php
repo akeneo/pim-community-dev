@@ -49,7 +49,7 @@ class StringFilter extends OroStringFilter
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !array_key_exists('type', $data)
-            || (!$data['value'] && $data['type'] !== TextFilterType::TYPE_EMPTY)) {
+            || (!$data['value'] && TextFilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 
