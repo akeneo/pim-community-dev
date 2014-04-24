@@ -201,6 +201,10 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             );
         }
 
+        if ($operator === 'EMPTY') {
+            return $this->qb->expr()->isNull($field);
+        }
+
         throw new ProductQueryException('operator '.$operator.' is not supported');
     }
 }
