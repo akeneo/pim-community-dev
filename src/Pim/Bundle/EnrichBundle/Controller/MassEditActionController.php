@@ -134,7 +134,7 @@ class MassEditActionController extends AbstractDoctrineController
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams() + ['operationAlias' => $this->operator->getOperationAlias()]
+                    $this->getQueryParams() + ['operationAlias' => $operator->getOperationAlias()]
                 );
             }
         }
@@ -172,20 +172,20 @@ class MassEditActionController extends AbstractDoctrineController
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $this->operator->initializeOperation();
-        $form = $this->getOperatorForm();
+        $operator->initializeOperation();
+        $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $this->operator->initializeOperation();
-            $form = $this->getOperatorForm();
+            $operator->initializeOperation();
+            $form = $this->getOperatorForm($operator);
         }
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'         => $form->createView(),
-                'operator'     => $this->operator,
+                'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
             )
@@ -206,20 +206,24 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         try {
-            $this->operator
+            $operator = $this->operatorRegistry->getOperator(
+                $this->request->get('gridName')
+            );
+
+            $operator
                 ->setOperationAlias($operationAlias)
                 ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $this->operator->initializeOperation();
-        $form = $this->getOperatorForm();
+        $operator->initializeOperation();
+        $form = $this->getOperatorForm($operator);
         $form->submit($this->request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation();
-        foreach ($this->validator->validate($this->operator) as $violation) {
+        $operator->performOperation();
+        foreach ($this->validator->validate($operator) as $violation) {
             $form->addError(
                 new FormError(
                     $violation->getMessage(),
@@ -231,7 +235,7 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->operator->finalizeOperation();
+            $operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
@@ -244,7 +248,7 @@ class MassEditActionController extends AbstractDoctrineController
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'         => $form->createView(),
-                'operator'     => $this->operator,
+                'operator'     => $operator,
                 'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
             )
