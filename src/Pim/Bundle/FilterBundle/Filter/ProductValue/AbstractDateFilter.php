@@ -149,4 +149,62 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             $this->util->applyFilterByAttribute($ds, $fieldName, $values, $operators);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        if (!$this->isValidData($data)) {
+            return false;
+        }
+
+        if (isset($data['value']['start'])) {
+            /** @var \DateTime $startDate */
+            $startDate = $data['value']['start'];
+            $startDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['start'] = $startDate->format(static::DATETIME_FORMAT);
+        } else {
+            $data['value']['start'] = null;
+        }
+
+        if (isset($data['value']['end'])) {
+            /** @var \DateTime $endDate */
+            $endDate = $data['value']['end'];
+            $endDate->setTimezone(new \DateTimeZone('UTC'));
+            $data['value']['end'] = $endDate->format(static::DATETIME_FORMAT);
+        } else {
+            $data['value']['end'] = null;
+        }
+
+        if (!isset($data['type'])) {
+            $data['type'] = null;
+        }
+
+        if (!in_array(
+            $data['type'],
+            array(
+                DateRangeFilterType::TYPE_BETWEEN,
+                DateRangeFilterType::TYPE_NOT_BETWEEN,
+                DateRangeFilterType::TYPE_MORE_THAN,
+                DateRangeFilterType::TYPE_LESS_THAN,
+                DateRangeFilterType::TYPE_EMPTY
+            )
+        )
+        ) {
+            $data['type'] = DateRangeFilterType::TYPE_BETWEEN;
+        }
+
+        if ($data['type'] == DateRangeFilterType::TYPE_MORE_THAN) {
+            $data['value']['end'] = null;
+        } elseif ($data['type'] == DateRangeFilterType::TYPE_LESS_THAN) {
+            $data['value']['start'] = null;
+        }
+
+        return array(
+            'date_start' => $data['value']['start'],
+            'date_end'   => $data['value']['end'],
+            'type'       => $data['type']
+        );
+    }
 }
