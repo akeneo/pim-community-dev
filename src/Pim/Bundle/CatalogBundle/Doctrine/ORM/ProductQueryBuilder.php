@@ -181,7 +181,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected function getAllowedOperators($attribute)
     {
         $operators = [
-            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE'],
+            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE', 'IN'],
             'pim_catalog_text'             => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
             'pim_catalog_textarea'         => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
             'pim_catalog_simpleselect'     => ['IN', 'NOT IN'],
@@ -189,8 +189,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'pim_catalog_number'           => ['=', '<', '<=', '>', '>=', 'EMPTY'],
             'pim_catalog_boolean'          => ['='],
             'pim_catalog_date'             => ['=', '<', '<=', '>', '>=', 'BETWEEN', 'EMPTY'],
-            'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>='],
-            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=']
+            'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>=', 'EMPTY'],
+            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=', 'EMPTY']
         ];
 
         $attributeType = $attribute->getAttributeType();

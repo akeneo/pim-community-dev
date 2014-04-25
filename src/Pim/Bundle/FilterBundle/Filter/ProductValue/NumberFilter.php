@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -49,7 +50,7 @@ class NumberFilter extends OroNumberFilter
             NumberFilterType::TYPE_GREATER_THAN  => '>',
             NumberFilterType::TYPE_LESS_EQUAL    => '<=',
             NumberFilterType::TYPE_LESS_THAN     => '<',
-            NumberFilterType::TYPE_EMPTY         => 'EMPTY',
+            FilterType::TYPE_EMPTY               => 'EMPTY',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
@@ -63,7 +64,7 @@ class NumberFilter extends OroNumberFilter
         if (!is_array($data)
             || !array_key_exists('value', $data)
             || !array_key_exists('type', $data)
-            || (!is_numeric($data['value']) && NumberFilterType::TYPE_EMPTY !== $data['type'])) {
+            || (!is_numeric($data['value']) && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 

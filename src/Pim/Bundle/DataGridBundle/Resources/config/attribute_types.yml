@@ -6,6 +6,10 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
+            options:
+                field_options:
+                    attr:
+                        choice_list: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:
@@ -14,6 +18,10 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_textarea:
         column:
@@ -22,6 +30,10 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_simpleselect:
         column:
@@ -52,6 +64,10 @@ parameters:
         filter:
             type:        product_value_number
             parent_type: number
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_boolean:
         column:
@@ -71,6 +87,10 @@ parameters:
         filter:
             type:          product_value_date
             parent_type:   date
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:            product_value
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
@@ -92,6 +112,10 @@ parameters:
         filter:
             type:        product_value_price
             parent_type: price
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:          ~
     pim_datagrid.product.attribute_type.pim_catalog_metric:
         column:
@@ -102,4 +126,8 @@ parameters:
         filter:
             type:          product_value_metric
             parent_type:   metric
+            options:
+                field_options:
+                    attr:
+                        empty_choice: true
         sorter:            ~

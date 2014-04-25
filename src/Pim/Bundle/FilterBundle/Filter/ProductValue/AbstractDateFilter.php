@@ -3,6 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -53,7 +54,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         }
 
         // Empty operator does not need any value
-        if (DateRangeFilterType::TYPE_EMPTY === $data['type']) {
+        if (isset($data['type']) && FilterType::TYPE_EMPTY === $data['type']) {
             return true;
         }
 
@@ -89,7 +90,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
                 $this->applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
                 break;
-            case DateRangeFilterType::TYPE_EMPTY:
+            case FilterType::TYPE_EMPTY:
                 $this->util->applyFilterByAttribute(
                     $ds,
                     $this->get(ProductFilterUtility::DATA_NAME_KEY),
@@ -188,7 +189,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 DateRangeFilterType::TYPE_NOT_BETWEEN,
                 DateRangeFilterType::TYPE_MORE_THAN,
                 DateRangeFilterType::TYPE_LESS_THAN,
-                DateRangeFilterType::TYPE_EMPTY
+                FilterType::TYPE_EMPTY
             )
         )
         ) {
