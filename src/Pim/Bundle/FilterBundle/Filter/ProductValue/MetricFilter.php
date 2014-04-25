@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
@@ -127,13 +128,13 @@ class MetricFilter extends OroNumberFilter
 
         if (!is_array($data)
             || !array_key_exists('value', $data)
-            || (!is_numeric($data['value']) && NumberFilterType::TYPE_EMPTY !== $data['type'])) {
+            || (!is_numeric($data['value']) && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 
         if (!is_array($data)
             || !array_key_exists('unit', $data)
-            || (!is_string($data['unit']) && NumberFilterType::TYPE_EMPTY !== $data['type'])) {
+            || (!is_string($data['unit']) && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 
@@ -163,7 +164,7 @@ class MetricFilter extends OroNumberFilter
             NumberFilterType::TYPE_GREATER_THAN  => '>',
             NumberFilterType::TYPE_LESS_EQUAL    => '<=',
             NumberFilterType::TYPE_LESS_THAN     => '<',
-            NumberFilterType::TYPE_EMPTY         => 'EMPTY'
+            FilterType::TYPE_EMPTY               => 'EMPTY'
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
