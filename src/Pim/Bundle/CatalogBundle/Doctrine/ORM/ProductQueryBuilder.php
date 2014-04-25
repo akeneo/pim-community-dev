@@ -190,7 +190,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             'pim_catalog_boolean'          => ['='],
             'pim_catalog_date'             => ['=', '<', '<=', '>', '>=', 'BETWEEN', 'EMPTY'],
             'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>='],
-            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=']
+            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=', 'EMPTY']
         ];
 
         $attributeType = $attribute->getAttributeType();
