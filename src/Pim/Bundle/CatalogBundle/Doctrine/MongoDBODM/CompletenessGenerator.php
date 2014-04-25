@@ -87,6 +87,10 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             return;
         }
 
+        foreach ($product->getCompletenesses() as $completeness) {
+            $product->getCompletenesses()->removeElement($completeness);
+        }
+
         $completenesses = $this->buildProductCompletenesses($product);
 
         foreach ($completenesses as $completeness) {
@@ -260,11 +264,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $combinations = $this->getChannelLocaleCombinations($channel);
 
             if (!empty($combinations)) {
-                $orItems = new Expr();
+                $orItems = array();
                 foreach ($combinations as $combination) {
-                    $orItems->field('normalizedData.completenesses.'.$combination)->exists(false);
+                    $expr = new Expr();
+                    $expr->field('normalizedData.completenesses.'.$combination)->exists(false);
+                    $productsQb->addOr($expr);
                 }
-                $productsQb->addOr($orItems);
             }
         }
 
