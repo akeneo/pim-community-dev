@@ -53,7 +53,7 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         }
 
         // Empty operator does not need any value
-        if (DateRangeFilterType::TYPE_EMPTY === $data['type']) {
+        if (isset($data['type']) && DateRangeFilterType::TYPE_EMPTY === $data['type']) {
             return true;
         }
 
