@@ -70,8 +70,8 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
-                if (value.type === 'empty') {
-                    return this._getChoiceOption(value.type).label;
+                if (value.type === 'empty' && value.currency) {
+                    return this._getChoiceOption(value.type).label + ': ' + value.currency;
                 }
                 if (!value.value) {
                     return this.placeholder;
@@ -94,7 +94,7 @@ define(
                             '</button>' +
                             '<ul class="dropdown-menu">' +
                                 '<% _.each(choices, function (option) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
                             '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
@@ -148,7 +148,7 @@ define(
             _isValueValid: function(value) {
                 return (value.currency && value.type && value.value) ||
                        (!value.currency && !value.type && !value.value) ||
-                       value.type === 'empty';
+                       (value.type === 'empty' && value.currency);
             },
 
             /**
@@ -206,11 +206,13 @@ define(
              */
             _onClickChoiceValue: function(e) {
                 NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
-                var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
-                if ($(e.currentTarget).attr('data-value') === 'empty') {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
-                } else {
-                    parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
+                if ($(e.currentTarget).attr('data-input-toggle')) {
+                    var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                    if ($(e.currentTarget).attr('data-value') === 'empty') {
+                        parentDiv.find('input[name="value"]').hide();
+                    } else {
+                        parentDiv.find('input[name="value"]').show();
+                    }
                 }
             }
         });
