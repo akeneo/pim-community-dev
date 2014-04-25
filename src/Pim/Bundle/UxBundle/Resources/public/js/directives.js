@@ -37,7 +37,7 @@ angular.module('App.directives', [])
             }
         };
     })
-    .directive('gridCell', function() {
+    .directive('gridCell', function(CellManager) {
         return {
             restrict: 'A',
             scope: {
@@ -46,6 +46,9 @@ angular.module('App.directives', [])
             },
             templateUrl: '/bundles/pimux/templates/grid/cell.html',
             controller: function($scope) {
+                $scope.renderCell = function (cell, column) {
+                    return CellManager.render(cell, column);
+                };
             }
         };
     });
