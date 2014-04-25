@@ -50,7 +50,7 @@ class ValidMetricValidator extends ConstraintValidator
             $familyProperty = 'metricFamily';
             $unitProperty   = 'defaultMetricUnit';
         } else {
-            if (!$entity->getData()) {
+            if (null === $entity || (null !== $entity && !$entity->getData())) {
                 return;
             }
             $familyProperty = 'family';
