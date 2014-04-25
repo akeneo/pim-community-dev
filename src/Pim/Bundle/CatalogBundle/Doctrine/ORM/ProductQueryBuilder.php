@@ -181,7 +181,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected function getAllowedOperators($attribute)
     {
         $operators = [
-            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE'],
+            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE', 'IN'],
             'pim_catalog_text'             => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
             'pim_catalog_textarea'         => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
             'pim_catalog_simpleselect'     => ['IN', 'NOT IN'],

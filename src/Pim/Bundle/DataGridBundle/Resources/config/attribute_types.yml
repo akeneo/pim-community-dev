@@ -6,6 +6,10 @@ parameters:
         filter:
             type:        product_value_string
             parent_type: string
+            options:
+                field_options:
+                    attr:
+                        choice_list: true
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_text:
         column:
