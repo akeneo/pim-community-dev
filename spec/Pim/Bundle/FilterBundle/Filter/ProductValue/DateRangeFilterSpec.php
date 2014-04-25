@@ -45,11 +45,12 @@ class DateRangeFilterSpec extends ObjectBehavior
             'value' => [
                 'start' => $start,
                 'end'   => $end,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
-            'type'       => 1,
+            'type'       => 1
         ]);
     }
 
@@ -61,7 +62,8 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData([
             'value' => [
                 'start' => $start,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => null,
@@ -77,7 +79,8 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData([
             'value' => [
                 'end'   => $end,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => null,
             'date_end'   => '2014-01-23',
@@ -198,24 +201,29 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData([])->shouldReturn(false);
     }
 
+    function it_does_not_parse_array_without_type_key()
+    {
+        $this->parseData(['value' => ['start' => '1987-05-14']])->shouldReturn(false);
+    }
+
     function it_does_not_parse_array_without_value_key_of_type_array()
     {
-        $this->parseData(['value' => true])->shouldReturn(false);
+        $this->parseData(['value' => true, 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_without_start_and_end_values()
     {
-        $this->parseData(['value' => []])->shouldReturn(false);
+        $this->parseData(['value' => [], 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_with_not_datetime_type_start()
     {
-        $this->parseData(['value' => ['start' => 'yesterday']])->shouldReturn(false);
+        $this->parseData(['value' => ['start' => 'yesterday'], 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_with_not_datetime_type_end()
     {
-        $this->parseData(['value' => ['end' => 'tomorrow']])->shouldReturn(false);
+        $this->parseData(['value' => ['end' => 'tomorrow'], 'type' => 1])->shouldReturn(false);
     }
 
     function it_applies_between_date_range_filter(
