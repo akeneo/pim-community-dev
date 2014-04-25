@@ -1,5 +1,5 @@
 /* global define */
-define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter'],
+define(['jquery', 'underscore', 'oro/translator', 'oro/app', 'oro/datafilter/text-filter', 'jquery.select2'],
 function($, _, __, app, TextFilter) {
     'use strict';
 
@@ -203,14 +203,34 @@ function($, _, __, app, TextFilter) {
             });
             $(e.currentTarget).parent().addClass('active');
             var parentDiv = $(e.currentTarget).parent().parent().parent();
-            parentDiv.find('.name_input').val($(e.currentTarget).attr('data-value'));
-            if ($(e.currentTarget).attr('data-value') === 'empty') {
-                parentDiv.find('input[name="value"]').hide();
+            parentDiv.find(this.criteriaValueSelectors.type).val($(e.currentTarget).attr('data-value'));
+
+            if ($(e.currentTarget).attr('data-value') === 'in') {
+                this._enableListSelection();
             } else {
-                parentDiv.find('input[name="value"]').show();
+                this._disableListSelection();
+            }
+            if ($(e.currentTarget).attr('data-value') === 'empty') {
+                parentDiv.find(this.criteriaValueSelectors.value).hide();
+            } else {
+                parentDiv.find(this.criteriaValueSelectors.value).show();
             }
             parentDiv.find('button').html($(e.currentTarget).html() + '<span class="caret"></span>');
             e.preventDefault();
+        },
+
+        _enableListSelection: function() {
+            this.$(this.criteriaValueSelectors.value).select2({
+                multiple: true,
+                tokenSeparators: [',', ' ', ';'],
+                tags: [],
+                width: '290px',
+                formatNoMatches: function() { return ''; }
+            });
+        },
+
+        _disableListSelection: function() {
+            this.$(this.criteriaValueSelectors.value).select2('destroy');
         }
     });
 });

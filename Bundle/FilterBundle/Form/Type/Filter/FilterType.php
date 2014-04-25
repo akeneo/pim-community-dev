@@ -11,8 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FilterType extends AbstractType
 {
-    const NAME       = 'oro_type_filter';
-    const TYPE_EMPTY = 'empty';
+    const NAME         = 'oro_type_filter';
+    const TYPE_EMPTY   = 'empty';
+    const TYPE_IN_LIST = 'in';
 
     /**
      * @var TranslatorInterface
@@ -51,6 +52,11 @@ class FilterType extends AbstractType
             } else {
                 $options['operator_choices'] += $emptyChoice;
             }
+        }
+
+        if (isset($options['field_options']['attr']['choice_list'])) {
+            $options['operator_choices'][self::TYPE_IN_LIST] =
+                $this->translator->trans('oro.filter.form.label_type_in_list');
         }
 
         $builder->add('type', $options['operator_type'], $this->createOperatorOptions($options));
