@@ -2,6 +2,7 @@
 
 namespace Oro\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\TextFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
@@ -70,7 +71,7 @@ class StringFilter extends AbstractFilter
             TextFilterType::TYPE_EQUAL        => '=',
             TextFilterType::TYPE_STARTS_WITH  => 'LIKE',
             TextFilterType::TYPE_ENDS_WITH    => 'LIKE',
-            TextFilterType::TYPE_EMPTY        => 'EMPTY',
+            FilterType::TYPE_EMPTY            => 'EMPTY',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'LIKE';

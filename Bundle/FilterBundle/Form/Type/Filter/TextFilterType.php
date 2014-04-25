@@ -13,7 +13,6 @@ class TextFilterType extends AbstractType
     const TYPE_EQUAL        = 3;
     const TYPE_STARTS_WITH  = 4;
     const TYPE_ENDS_WITH    = 5;
-    const TYPE_EMPTY        = 'empty';
     const NAME              = 'oro_type_text_filter';
 
     /**
@@ -56,7 +55,6 @@ class TextFilterType extends AbstractType
             self::TYPE_EQUAL        => $this->translator->trans('oro.filter.form.label_type_equals'),
             self::TYPE_STARTS_WITH  => $this->translator->trans('oro.filter.form.label_type_start_with'),
             self::TYPE_ENDS_WITH    => $this->translator->trans('oro.filter.form.label_type_end_with'),
-            self::TYPE_EMPTY        => $this->translator->trans('oro.filter.form.label_type_empty'),
         );
 
         $resolver->setDefaults(

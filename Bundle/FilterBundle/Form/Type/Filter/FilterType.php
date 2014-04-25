@@ -11,7 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class FilterType extends AbstractType
 {
-    const NAME = 'oro_type_filter';
+    const NAME       = 'oro_type_filter';
+    const TYPE_EMPTY = 'empty';
 
     /**
      * @var TranslatorInterface
@@ -39,6 +40,19 @@ class FilterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $emptyChoice = false;
+        if (isset($options['field_options']['attr']['empty_choice'])) {
+            $emptyChoice = $options['field_options']['attr']['empty_choice'];
+        }
+        if ($emptyChoice) {
+            $emptyChoice = [self::TYPE_EMPTY => $this->translator->trans('oro.filter.form.label_type_empty')];
+            if (isset($options['field_options']['choices'])) {
+                $options['field_options']['choices'] += $emptyChoice;
+            } else {
+                $options['operator_choices'] += $emptyChoice;
+            }
+        }
+
         $builder->add('type', $options['operator_type'], $this->createOperatorOptions($options));
         $builder->add('value', $options['field_type'], $this->createFieldOptions($options));
     }

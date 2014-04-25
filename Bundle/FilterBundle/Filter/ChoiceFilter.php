@@ -5,6 +5,7 @@ namespace Oro\Bundle\FilterBundle\Filter;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Symfony\Component\Form\Extension\Core\View\ChoiceView;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
 class ChoiceFilter extends AbstractFilter
@@ -111,12 +112,10 @@ class ChoiceFilter extends AbstractFilter
      */
     protected function getOperator($type)
     {
-        $type = (int)$type;
-
         $operatorTypes = array(
             ChoiceFilterType::TYPE_CONTAINS     => 'IN',
             ChoiceFilterType::TYPE_NOT_CONTAINS => 'NOT IN',
-            ChoiceFilterType::TYPE_EMPTY        => 'EMPTY',
+            FilterType::TYPE_EMPTY              => 'EMPTY',
         );
 
         return isset($operatorTypes[$type]) ? $operatorTypes[$type] : 'IN';
