@@ -1,8 +1,8 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = 'pim_enrich.mass_edit_action.page_title'|trans %}
-    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productCount) %}
+    {% set title = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_title')|trans %}
+    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_subtitle')|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
