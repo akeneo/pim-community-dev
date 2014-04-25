@@ -357,6 +357,8 @@ datagrid:
                     data_name: family
                     options:
                         field_options:
+                            attr:
+                                empty_choice: true
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
@@ -365,6 +367,8 @@ datagrid:
                     data_name: groups
                     options:
                         field_options:
+                            attr:
+                                empty_choice: true
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
