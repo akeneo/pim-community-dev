@@ -16,6 +16,15 @@ angular.module('App.directives', [])
             }
         };
     })
+    .directive('gridHeader', function() {
+        return {
+            restrict: 'A',
+            scope: {
+                metaData: '='
+            },
+            templateUrl: '/bundles/pimux/templates/grid/header.html',
+        };
+    })
     .directive('gridRow', function() {
         return {
             restrict: 'A',
@@ -32,7 +41,7 @@ angular.module('App.directives', [])
                         if (columns[i].name === columnName) {
                             return columns[i];
                         }
-                    };
+                    }
                 };
             }
         };
