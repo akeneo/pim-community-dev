@@ -6,6 +6,7 @@
 ## Improvements
 - Group datagrid filters by attribute groups
 - Allow filtering by empty values for attribute of type text, number, datetime, simple and multiselect and for family property
+- Ease the adding of new filters and sorters in ProductQueryBuilder
 
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
