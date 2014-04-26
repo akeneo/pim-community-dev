@@ -19,9 +19,6 @@ angular.module('App.directives', [])
     .directive('gridHeader', function() {
         return {
             restrict: 'A',
-            scope: {
-                metaData: '='
-            },
             templateUrl: '/bundles/pimux/templates/grid/header.html',
         };
     })
