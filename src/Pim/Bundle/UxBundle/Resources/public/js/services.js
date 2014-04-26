@@ -15,4 +15,28 @@ angular.module('App.services', [])
         return {
             load: this.loadGrid
         };
+    })
+    .service('CellManager', function($sce) {
+        this.renderCell = function(cell, column) {
+            if (typeof column != 'undefined') {
+                switch (column.type) {
+                    case 'string':
+                        return cell;
+                    break;
+                    case 'date':
+                        //for example
+                        return (new Date(cell)).toDateString();
+                    break;
+                    case 'html':
+                        return $sce.trustAsHtml(cell);
+                    break;
+                }
+            }
+
+            return cell;
+        };
+
+        return {
+            render: this.renderCell
+        };
     });
