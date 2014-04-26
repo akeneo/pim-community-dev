@@ -11,7 +11,7 @@ angular.module('App.directives', [])
             controller: function(GridManager, $scope) {
                 GridManager.load($scope.name).then(function (data) {
                     $scope.metaData = data.metadata;
-                    $scope.data = JSON.parse(data.data);
+                    $scope.data     = data.data;
                 });
             }
         };
@@ -32,13 +32,7 @@ angular.module('App.directives', [])
             templateUrl: '/bundles/pimux/templates/grid/row.html',
             controller: function($scope) {
                 $scope.getCellConfig = function (columnName) {
-                    var columns = $scope.metaData.columns;
-
-                    for (var i = columns.length - 1; i >= 0; i--) {
-                        if (columns[i].name === columnName) {
-                            return columns[i];
-                        }
-                    }
+                    return _.find($scope.metaData.columns, {name: columnName});
                 };
             }
         };

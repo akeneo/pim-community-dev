@@ -1,1 +1,1 @@
-<td grid-cell ng-repeat="(key, value) in row" cell="value" column="getCellConfig(key)"></td>
+<td grid-cell ng-repeat="cell in row" cell="cell.value" column="getCellConfig(cell.column)"></td>
