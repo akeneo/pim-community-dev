@@ -1,3 +1,8 @@
-<table>
-    <tr grid-row ng-repeat="row in data.data" row="row" meta-data="metaData"></tr>
+<table class="table table-condensed table-hover">
+    <thead>
+        <tr grid-header meta-data="metaData"></tr>
+    </thead>
+    <tbody>
+        <tr grid-row ng-repeat="row in data.data" row="row" meta-data="metaData"></tr>
+    </tbody>
 </table>
