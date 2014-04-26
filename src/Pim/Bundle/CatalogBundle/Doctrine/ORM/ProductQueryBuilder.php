@@ -25,6 +25,35 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $attributeFilters = [
+        'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+        'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+        'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
+        'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
+    ];
+
+    /** @var array */
+    protected $fieldFilters = [
+        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+        'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
+    ];
+
+    /** @var array */
+    protected $attributeSorters = [
+        'pim_catalog_multiselect'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+        'pim_catalog_simpleselect' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
+        'pim_catalog_metric'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter'
+    ];
+
+    /** @var array */
+    protected $fieldSorters = [
+        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
+        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
+        'in_group'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter'
+    ];
+
     /**
      * Constructor
      *
@@ -79,15 +108,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             }
         }
 
-        $customFilters = [
-            'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-            'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-            'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
-        ];
-
-        if (isset($customFilters[$attributeType])) {
-            $filterClass = $customFilters[$attributeType];
+        if (isset($this->attributeFilters[$attributeType])) {
+            $filterClass = $this->attributeFilters[$attributeType];
         } else {
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
@@ -104,13 +126,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $customFilters = [
-            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-            'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
-        ];
-        if (isset($customFilters[$field])) {
-            $filterClass = $customFilters[$field];
+        if (isset($this->fieldFilters[$field])) {
+            $filterClass = $this->fieldFilters[$field];
         } else {
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
         }
@@ -127,14 +144,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $attributeType = $attribute->getAttributeType();
-        $customSorters = [
-            'pim_catalog_multiselect'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_simpleselect' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
-            'pim_catalog_metric'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter'
-        ];
-
-        if (isset($customSorters[$attributeType])) {
-            $sorterClass = $customSorters[$attributeType];
+        if (isset($this->attributeSorters[$attributeType])) {
+            $sorterClass = $this->attributeSorters[$attributeType];
         } else {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
@@ -151,14 +162,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addFieldSorter($field, $direction)
     {
         $field = (strpos($field, 'in_group_') !== false) ? 'in_group' : $field;
-        $customSorters = [
-            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
-            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
-            'in_group'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter'
-        ];
 
-        if (isset($customSorters[$field])) {
-            $sorterClass = $customSorters[$field];
+        if (isset($this->fieldSorters[$field])) {
+            $sorterClass = $this->fieldSorters[$field];
         } else {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
         }
