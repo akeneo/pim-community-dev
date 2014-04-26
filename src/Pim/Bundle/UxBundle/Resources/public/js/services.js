@@ -7,7 +7,7 @@ angular.module('App.services', [])
         this.loadGrid = function (name) {
             var deferred = $q.defer();
 
-            $http.get('/datagrid/' + name + '/load').then(function(resp) {
+            $http.get('/datagrid/' + name + '/load?params%5BdataLocale%5D=en_US').then(function(resp) {
                 deferred.resolve(self.prepareGridConfig(resp.data));
             });
 
