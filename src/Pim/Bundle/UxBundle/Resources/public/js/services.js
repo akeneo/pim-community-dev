@@ -16,20 +16,16 @@ angular.module('App.services', [])
             load: this.loadGrid
         };
     })
-    .service('CellManager', function($sce) {
+    .service('CellManager', function($sce, $filter) {
         this.renderCell = function(cell, column) {
             if (typeof column != 'undefined') {
                 switch (column.type) {
                     case 'string':
                         return cell;
-                    break;
                     case 'date':
-                        //for example
-                        return (new Date(cell)).toDateString();
-                    break;
+                        return $filter('date')(cell, 'mediumDate');
                     case 'html':
                         return $sce.trustAsHtml(cell);
-                    break;
                 }
             }
 
