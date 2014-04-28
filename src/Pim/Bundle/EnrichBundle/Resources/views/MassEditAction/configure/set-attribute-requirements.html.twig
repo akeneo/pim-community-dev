@@ -18,7 +18,7 @@
 {% block formContent %}
     {# Requirements grid #}
     {% set columnWidth = 10 %}
-    <table class="table groups">
+    <table class="table attributes">
         <thead>
             <th width="10%">{{ 'Label'|trans|upper }}</th>
             {% for channel in form.operation.vars.value.channels %}
@@ -78,10 +78,10 @@
                     $('.attribute-requirement:not(.identifier) i').on('click', function() {
                         $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
 
-                        var $input = $(this).siblings('input[type="checkbox"]').eq(0);
-                        var checked = $input.is(':checked');
+                        var $input = $(this).siblings('input[type="hidden"]').eq(0);
+                        var checked = ($input.val() == 1);
                         $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
-                        $input.prop('checked', !checked).trigger('change');
+                        $input.val(checked ? "0" : "1").trigger('change');
                     });
 
                     // Attribute addition
@@ -148,6 +148,15 @@
                     $('.remove-attribute').on('click', function () {
                         $el.multiselect('widget').find('input[value="' + $(this).parents('tr').data('code') + '"]').click();
                         $saveButton.click();
+                    });
+
+                    /**
+                     * Remove hidden attributes from the form before submitting
+                     */
+                    $('#{{ form.vars.id }}').submit(function(event){
+                        $('tr.attribute.hide').remove();
+
+                        return true;
                     });
                 });
             }
