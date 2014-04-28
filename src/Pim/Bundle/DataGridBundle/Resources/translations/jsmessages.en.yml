@@ -37,7 +37,7 @@ oro.datagrid.pagination.totalRecords: "{{ totalRecords }} records"
 oro.datagrid.action.reset: "Reset"
 oro.datagrid.action.refresh: "Refresh"
 oro_datagrid.select.all: "All"
-oro_datagrid.select.visible: "Visible"
+oro_datagrid.select.visible: "All visible"
 oro_datagrid.select.none: "None"
 pim.grid.ajax_choice_filter.label_empty: is empty
 
