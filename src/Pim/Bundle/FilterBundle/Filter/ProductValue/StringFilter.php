@@ -54,8 +54,13 @@ class StringFilter extends OroStringFilter
         }
 
         $data['type']  = isset($data['type']) ? $data['type'] : null;
-        $format = $ds->getFormatByComparisonType($data['type']);
-        $data['value'] = sprintf($format, $data['value']);
+
+        if ('in' === $data['type']) {
+            $data['value'] = explode(',', $data['value']);
+        } else {
+            $format = $ds->getFormatByComparisonType($data['type']);
+            $data['value'] = sprintf($format, $data['value']);
+        }
 
         return $data;
     }
