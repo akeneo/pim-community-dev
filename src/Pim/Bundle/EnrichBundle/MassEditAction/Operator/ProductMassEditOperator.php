@@ -37,6 +37,14 @@ class ProductMassEditOperator extends AbstractMassEditOperator
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getPerformedOperationRedirectionRoute()
+    {
+        return 'pim_enrich_product_index';
+    }
+
+    /**
      * Finalize the batch operation - flush the products
      */
     public function finalizeOperation()

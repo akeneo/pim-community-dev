@@ -42,6 +42,14 @@ class FamilyMassEditOperator extends AbstractMassEditOperator
     /**
      * {@inheritdoc}
      */
+    public function getPerformedOperationRedirectionRoute()
+    {
+        return 'pim_enrich_family_index';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function finalizeOperation()
     {
         set_time_limit(0);

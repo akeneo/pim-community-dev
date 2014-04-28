@@ -189,6 +189,13 @@ abstract class AbstractMassEditOperator
     abstract public function getName();
 
     /**
+     * Get the route name to which to redirect at the end of the operation performing)
+     *
+     * @return string
+     */
+    abstract public function getPerformedOperationRedirectionRoute();
+
+    /**
      * Returns true if the operation is allowed for the current user
      *
      * @param string $operationAlias

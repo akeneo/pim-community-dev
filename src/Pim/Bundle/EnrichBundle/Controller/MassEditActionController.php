@@ -241,7 +241,7 @@ class MassEditActionController extends AbstractDoctrineController
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
             );
 
-            return $this->redirectToRoute('pim_enrich_product_index');
+            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         return $this->render(
