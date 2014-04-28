@@ -9,8 +9,8 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families page
     # These families don't have attribute Length
-    When I mass edit families boots, sneakers and sandals
-    And I add attribute "Length"
+    When I mass-edit families boots, sneakers and sandals
+    And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
     And I move on to the next step
     Then attribute "Length" should be required in family "boots" for channel "Mobile"
@@ -25,8 +25,8 @@ Feature: Mass Edit Families
     And I am logged in as "Julia"
     And I am on the families page
     # These families already have attribute Name
-    When I mass edit families boots, sneakers and sandals
-    And I add attribute "Name"
+    When I mass-edit families boots, sneakers and sandals
+    And I display the Name attribute
     And I switch the attribute "Name" requirement in channel "Mobile"
     And I move on to the next step
     Then attribute "Name" should be required in family "boots" for channel "Mobile"
