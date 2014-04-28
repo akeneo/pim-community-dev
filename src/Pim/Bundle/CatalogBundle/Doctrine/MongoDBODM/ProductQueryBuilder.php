@@ -23,6 +23,34 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var CatalogContext */
     protected $context;
 
+    /** @var array */
+    protected $attributeFilters = [
+        'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+        'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+        'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
+        'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
+        'pim_catalog_date'             => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter'
+    ];
+
+    /** @var array */
+    protected $fieldFilters = [
+        'id'            => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
+        'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
+        'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
+        'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
+        'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter',
+        'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
+    ];
+
+    /** @var array */
+    protected $attributeSorters = [];
+
+    /** @var array */
+    protected $fieldSorters = [
+        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
+        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
+    ];
+
     /**
      * Constructor
      *
@@ -67,16 +95,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $attributeType = $attribute->getAttributeType();
-        $customFilters = [
-            'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\MetricFilter',
-            'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\PriceFilter',
-            'pim_catalog_date'             => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter'
-        ];
-
-        if (isset($customFilters[$attributeType])) {
-            $filterClass = $customFilters[$attributeType];
+        if (isset($this->attributeFilters[$attributeType])) {
+            $filterClass = $this->attributeFilters[$attributeType];
         } else {
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
@@ -92,17 +112,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $customFilters = [
-            'id'            => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\ProductIdFilter',
-            'created'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-            'updated'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\DateFilter',
-            'family'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\EntityFilter',
-            'groups'        => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\GroupsFilter',
-            'completeness'  => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\CompletenessFilter'
-        ];
-
-        if (isset($customFilters[$field])) {
-            $filterClass = $customFilters[$field];
+        if (isset($this->fieldFilters[$field])) {
+            $filterClass = $this->fieldFilters[$field];
         } else {
             $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter\BaseFilter';
         }
@@ -119,10 +130,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $attributeType = $attribute->getAttributeType();
-        $customSorters = [];
-
-        if (isset($customSorters[$attributeType])) {
-            $sorterClass = $customSorters[$attributeType];
+        if (isset($this->attributeSorters[$attributeType])) {
+            $sorterClass = $this->attributeSorters[$attributeType];
         } else {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\BaseSorter';
         }
@@ -138,13 +147,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $customSorters = [
-            'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\FamilySorter',
-            'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\CompletenessSorter',
-        ];
-
-        if (isset($customSorters[$field])) {
-            $sorterClass = $customSorters[$field];
+        if (isset($this->fieldSorters[$field])) {
+            $sorterClass = $this->fieldSorters[$field];
         } elseif (strpos($field, 'in_group_') !== false) {
             $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Sorter\InGroupSorter';
         } else {
