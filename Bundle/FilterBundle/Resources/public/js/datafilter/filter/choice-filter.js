@@ -187,6 +187,11 @@ function($, _, __, app, TextFilter) {
                     menu.parent().find('button').html(item.html() + '<span class="caret"></span>');
                 }
             });
+            if (newValue.type === 'empty') {
+                this.$(this.criteriaValueSelectors.value).hide();
+            } else {
+                this.$(this.criteriaValueSelectors.value).show();
+            }
 
             TextFilter.prototype._onValueUpdated.apply(this, arguments);
         },
