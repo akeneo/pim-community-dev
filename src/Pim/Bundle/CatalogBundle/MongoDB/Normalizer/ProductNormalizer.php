@@ -80,7 +80,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
                 $this->serializer->normalize($completeness, $format, $context)
             );
         }
-        $data[self::COMPLETENESSES_FIELD] = $completenesses;
+        if (0 === count($completenesses)) {
+            $data[self::COMPLETENESSES_FIELD] = null;
+        } else {
+            $data[self::COMPLETENESSES_FIELD] = $completenesses;
+        }
         $data[self::ENABLED_FIELD] = (int) $object->isEnabled();
 
         return $data;

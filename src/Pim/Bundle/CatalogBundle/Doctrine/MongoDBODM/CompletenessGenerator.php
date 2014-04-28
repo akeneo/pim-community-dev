@@ -272,7 +272,14 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function getCompletenesses(array $normalizedData, array $normalizedReqs)
     {
         $completenesses = array();
-        $missingComps = array_diff(array_keys($normalizedReqs), array_keys($normalizedData['completenesses']));
+        $allCompletenesses = false;
+
+        if (null === $normalizedData['completenesses']) {
+            $missingComps = array_keys($normalizedReqs);
+            $allCompletenesses = true;
+        } else {
+            $missingComps = array_diff(array_keys($normalizedReqs), array_keys($normalizedData['completenesses']));
+        }
 
         $normalizedData = array_filter(
             $normalizedData,
@@ -307,29 +314,50 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             );
         }
 
-        return $completenesses;
+        return array('completenesses' => $completenesses, 'all' => $allCompletenesses);
     }
 
     /**
      * Save the completenesses data for the product directly to MongoDB.
      *
      * @param string $productId
-     * @param array $completenesses
+     * @param array $compData
      */
-    protected function saveCompletenesses($productId, array $completenesses)
+    protected function saveCompletenesses($productId, array $compData)
     {
+        $completenesses = $compData['completenesses'];
+        $all = $compData['all'];
+
         $collection = $this->documentManager->getDocumentCollection($this->productClass);
 
-        foreach ($completenesses as $key => $value) {
-            $query = array('_id' => $productId);
+        $query = array('_id' => $productId);
+        $options = array('multiple' => false);
 
-            $compObject = array('$push' => array('completenesses' => $value['object']));
-            $options = array('multiple' => false);
+        if ($all) {
+            $compObjects = array();
+            $normalizedComps = array();
 
+            foreach ($completenesses as $key => $value) {
+                $compObjects[] = $value['object'];
+                $normalizedComps[$key] = $value['ratio'];
+            }
+            $normalizedComps = array('normalizedData.completenesses' => $normalizedComps);
+
+            $compObject = array('$set' => array('completenesses' => $compObjects));
             $collection->update($query, $compObject, $options);
 
-            $normalizedComp = array('$set' => array('normalizedData.completenesses.'.$key => $value['ratio']));
+            $normalizedComp = array('$set' => $normalizedComps);
             $collection->update($query, $normalizedComp, $options);
+        } else {
+            foreach ($completenesses as $key => $value) {
+
+                $compObject = array('$push' => array('completenesses' => $value['object']));
+
+                $collection->update($query, $compObject, $options);
+
+                $normalizedComp = array('$set' => array('normalizedData.completenesses.'.$key => $value['ratio']));
+                $collection->update($query, $normalizedComp, $options);
+            }
         }
     }
 
