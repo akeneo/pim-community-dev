@@ -83,6 +83,10 @@
                         $('textarea.wysiwyg[id]').each(function () {
                             wysiwyg.readonly($(this).attr('id'), true);
                         });
+
+                        {% block disableFormScript %}
+                        {% endblock %}
+
                     }
 
                     var enableForm = function() {
@@ -107,6 +111,9 @@
                         $('textarea.wysiwyg[id]').each(function () {
                             wysiwyg.readonly($(this).attr('id'), false);
                         });
+
+                        {% block enableFormScript %}
+                        {% endblock %}
                     };
 
                     $('select.operation-param').change(function () {

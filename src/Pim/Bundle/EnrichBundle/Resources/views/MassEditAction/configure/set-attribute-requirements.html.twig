@@ -18,7 +18,7 @@
 {% block formContent %}
     {# Requirements grid #}
     {% set columnWidth = 10 %}
-    <table class="table attributes">
+    <table class="table groups attributes">
         <thead>
             <th width="10%">{{ 'Label'|trans|upper }}</th>
             {% for channel in form.operation.vars.value.channels %}
@@ -75,7 +75,7 @@
                     });
 
                     // Requirement tick
-                    $('.attribute-requirement:not(.identifier) i').on('click', function() {
+                    $('table.attributes').on('click', '.attribute-requirement:not(.read-only) i', function() {
                         $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
 
                         var $input = $(this).siblings('input[type="hidden"]').eq(0);
@@ -162,4 +162,12 @@
             }
         );
     </script>
+{% endblock %}
+
+{% block disableFormScript %}
+    $('.attribute-requirement').addClass('read-only');
+{% endblock %}
+
+{% block enableFormScript %}
+    $('.attribute-requirement').removeClass('read-only');
 {% endblock %}
