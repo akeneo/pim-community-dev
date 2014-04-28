@@ -18,12 +18,12 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     public function applyMassActionParameters($qb, $inset, $values)
     {
         if ($values) {
-        $rootAlias = $qb->getRootAlias();
-            $valueWhereCondition =
-                $inset
-                ? $qb->expr()->in($rootAlias, $values)
-                : $qb->expr()->notIn($rootAlias, $values);
-            $qb->andWhere($valueWhereCondition);
+            $rootAlias = $qb->getRootAlias();
+                $valueWhereCondition =
+                    $inset
+                    ? $qb->expr()->in($rootAlias, $values)
+                    : $qb->expr()->notIn($rootAlias, $values);
+                $qb->andWhere($valueWhereCondition);
         }
         $whereParts = $qb->getDQLPart('where')->getParts();
         $qb->resetDQLPart('where');
