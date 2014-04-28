@@ -54,6 +54,8 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 
         if ('EMPTY' === $operator) {
             $this->qb->field($field)->exists(false);
+        } elseif ('IN' === $operator) {
+            $this->qb->field($field)->in($value);
         } else {
             if (strpos($value, '/') !== false) {
                 $value = new \MongoRegex($value);

@@ -40,6 +40,9 @@ Feature: Filter products
       | SKU     | starts with boo       | book and book2                 |
       | SKU     | is equal to book      | book                           |
       | SKU     | ends with book        | book and ebook                 |
+      | SKU     | in list book          | book                           |
+      | SKU     | in list postit, book2 | postit and book2               |
+      | Name    | empty                 |                                |
 
 #      | Name    | contains chair/       | chair                          |
 #      | Name    | contains /            | chair                          |

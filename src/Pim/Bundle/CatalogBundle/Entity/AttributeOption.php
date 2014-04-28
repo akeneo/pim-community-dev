@@ -269,7 +269,7 @@ class AttributeOption implements ReferableInterface
      */
     public function getReference()
     {
-        return $this->attribute->getCode() . '.' . $this->code;
+        return ($this->attribute ? $this->attribute->getCode() : '') . '.' . $this->code;
     }
 
     /**

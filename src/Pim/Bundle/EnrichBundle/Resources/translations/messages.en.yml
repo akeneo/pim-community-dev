@@ -315,6 +315,8 @@ Attribute used as label: Attribute used as label
 # Scopes
 Global:  Global
 Channel: Channel
+Expand all channels:   Expand all channels
+Collapse all channels: Collapse all channels
 
 # Variants
 Always override:         Always override

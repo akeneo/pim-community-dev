@@ -180,6 +180,11 @@ define(
                         item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
                     }
                 });
+                if (newValue.type === 'empty') {
+                    this.$(this.criteriaValueSelectors.value).hide();
+                } else {
+                    this.$(this.criteriaValueSelectors.value).show();
+                }
 
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
