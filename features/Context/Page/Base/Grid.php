@@ -13,11 +13,13 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-    const FILTER_CONTAINS = 1;
+    const FILTER_CONTAINS         = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
-    const FILTER_IS_EQUAL_TO = 3;
-    const FILTER_STARTS_WITH = 4;
-    const FILTER_ENDS_WITH = 5;
+    const FILTER_IS_EQUAL_TO      = 3;
+    const FILTER_STARTS_WITH      = 4;
+    const FILTER_ENDS_WITH        = 5;
+    const FILTER_IS_EMPTY         = 'empty';
+    const FILTER_IN_LIST          = 'in';
 
     /**
      * {@inheritdoc}
@@ -126,7 +128,9 @@ class Grid extends Index
                 $filter->find('css', 'button.dropdown-toggle')->click();
                 $filter->find('css', '[data-value="'.$operator.'"]')->click();
             }
-            $elt->fillField('value', $value);
+            if ($value !== false) {
+                $elt->fillField('value', $value);
+            }
             $filter->find('css', 'button.filter-update')->click();
         } else {
             throw new \InvalidArgumentException(
