@@ -37,6 +37,14 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         ]);
     }
 
+    function it_removes_its_own_attribute_requirements(AttributeRequirement $requirement)
+    {
+        $this->addAttributeRequirement($requirement);
+        $this->removeAttributeRequirement($requirement);
+
+        $this->getAttributeRequirements()->toArray()->shouldHaveCount(0);
+    }
+
     function it_uses_the_set_attribute_requirements_form_type()
     {
         $this->getFormType()->shouldReturn('pim_enrich_mass_set_attribute_requirements');

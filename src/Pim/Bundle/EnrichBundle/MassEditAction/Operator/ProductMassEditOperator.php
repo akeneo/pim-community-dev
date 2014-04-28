@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 
 /**
  * A batch operation operator
@@ -44,7 +45,7 @@ class ProductMassEditOperator extends AbstractMassEditOperator
 
         $products = $this->operation->getObjectsToMassEdit();
 
-        if ($this->operation instanceof ProductMassEditionOperation) {
+        if ($this->operation instanceof ProductMassEditOperation) {
             $this->manager->saveAll($products, false, true, $this->operation->affectsCompleteness());
         }
     }

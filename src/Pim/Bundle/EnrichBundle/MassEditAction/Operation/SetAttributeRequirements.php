@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 
 /**
  * Set attribute requirements
@@ -17,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class SetAttributeRequirements extends AbstractMassEditAction
+class SetAttributeRequirements extends FamilyMassEditOperation
 {
     /** @var ChannelRepository */
     protected $channelRepository;
@@ -66,6 +67,11 @@ class SetAttributeRequirements extends AbstractMassEditAction
         }
     }
 
+    public function removeAttributeRequirement(AttributeRequirement $attributeRequirement)
+    {
+        $this->attributeRequirements->removeElement($attributeRequirement);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -95,7 +101,17 @@ class SetAttributeRequirements extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform()
+    protected function doPerform(Family $family)
     {
+        foreach ($this->attributeRequirements as $attributeRequirement) {
+            $family->addAttribute($attributeRequirement->getAttribute());
+            $family->addAttributeRequirement(
+                $this->factory->createAttributeRequirement(
+                    $attributeRequirement->getAttribute(),
+                    $attributeRequirement->getChannel(),
+                    $attributeRequirement->isRequired()
+                )
+            );
+        }
     }
 }

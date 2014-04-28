@@ -36,6 +36,8 @@ services:
         public: false
         parent: pim_enrich.mass_edit_action.operator
         class: %pim_enrich.mass_edit_action.operator.family.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: pim_enrich.mass_edit_action_operator, datagrid: family-grid }
 
