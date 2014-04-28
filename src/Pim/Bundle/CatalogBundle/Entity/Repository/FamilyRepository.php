@@ -130,7 +130,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin('f.attributeAsLabel', 'a');
 
-        return $qb;
+        return $qb->select('f');
     }
 
     /**
