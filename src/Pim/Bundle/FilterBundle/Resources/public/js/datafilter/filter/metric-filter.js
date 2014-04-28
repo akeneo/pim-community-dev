@@ -186,6 +186,11 @@ define(
                         item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
                     }
                 });
+                if (newValue.type === 'empty') {
+                    this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
+                } else {
+                    this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
+                }
 
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
