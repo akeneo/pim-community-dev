@@ -1349,6 +1349,9 @@ class FixturesContext extends RawMinkContext
                 break;
 
             default:
+                if ("" === $data) {
+                    $data = null;
+                }
                 $value->setData($data);
         }
         $value->setLocale($locale);
