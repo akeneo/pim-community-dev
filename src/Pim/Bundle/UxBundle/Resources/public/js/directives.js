@@ -34,6 +34,10 @@ angular.module('App.directives', [])
                 $scope.getCellConfig = function (columnName) {
                     return _.find($scope.metaData.columns, {name: columnName});
                 };
+
+                $scope.performRowAction = function (action) {
+
+                }
             }
         };
     })
