@@ -53,7 +53,7 @@ Feature: Filter products by number field
     And I should be able to use the following filters:
       | filter | value | result |
       | pages  | empty | postit |
-      
+
   Scenario: Successfully filter products by empty value for scopable number attribute
     Given the following attributes:
       | label | type   | localizable | scopable | useable as grid filter | decimals allowed |
@@ -101,4 +101,3 @@ Feature: Filter products by number field
     And I should be able to use the following filters:
       | filter | value | result |
       | pages  | empty | book   |
-      
