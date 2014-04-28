@@ -59,9 +59,9 @@ abstract class AbstractMassEditOperator
     /**
      * Register a batch operation into the operator
      *
-     * @param string                  $alias
+     * @param string                     $alias
      * @param MassEditOperationInterface $operation
-     * @param string                  $acl
+     * @param string                     $acl
      *
      * @throws \InvalidArgumentException
      */
@@ -125,6 +125,7 @@ abstract class AbstractMassEditOperator
      * @param string $operationAlias
      *
      * @throws InvalidArgumentException when the alias is not registered
+     *
      * @return MassEditOperationInterface
      */
     public function setOperationAlias($operationAlias)
