@@ -28,10 +28,6 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
-        if ('IN' === $operator) {
-            $data['value'] = explode(',', $data['value']);
-        }
-
         $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
@@ -58,8 +54,13 @@ class StringFilter extends OroStringFilter
         }
 
         $data['type']  = isset($data['type']) ? $data['type'] : null;
-        $format = $ds->getFormatByComparisonType($data['type']);
-        $data['value'] = sprintf($format, $data['value']);
+
+        if ('in' === $data['type']) {
+            $data['value'] = explode(',', $data['value']);
+        } else {
+            $format = $ds->getFormatByComparisonType($data['type']);
+            $data['value'] = sprintf($format, $data['value']);
+        }
 
         return $data;
     }
