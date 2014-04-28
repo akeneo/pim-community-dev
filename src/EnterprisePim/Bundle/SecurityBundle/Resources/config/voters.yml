@@ -1,0 +1,10 @@
+parameters:
+    enterprise_pim_security.voter.attribute_group.class: EnterprisePim\Bundle\SecurityBundle\Voter\AttributeGroupVoter
+
+services:
+    enterprise_pim_security.voter.attribute_group_voter:
+        class: %enterprise_pim_security.voter.attribute_group.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: security.voter }
