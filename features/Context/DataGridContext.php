@@ -428,20 +428,27 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
-        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with) ([^">=<]*)$/';
+        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|empty$/';
         $operator = false;
 
         $matches = array();
         if (preg_match($operatorPattern, $value, $matches)) {
-            $operator = $matches[1];
-            $value    = $matches[2];
+            if (count($matches) === 1) {
+                $operator = $matches[0];
+                $value    = false;
+            } else {
+                $operator = $matches[1];
+                $value    = $matches[2];
+            }
 
             $operators = array(
                 'contains'         => Grid::FILTER_CONTAINS,
                 'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
                 'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
                 'starts with'      => Grid::FILTER_STARTS_WITH,
-                'ends with'        => Grid::FILTER_ENDS_WITH
+                'ends with'        => Grid::FILTER_ENDS_WITH,
+                'empty'            => Grid::FILTER_IS_EMPTY,
+                'in list'          => Grid::FILTER_IN_LIST,
             );
 
             $operator = $operators[$operator];
