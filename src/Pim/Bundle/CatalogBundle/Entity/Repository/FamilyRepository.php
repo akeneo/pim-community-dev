@@ -81,6 +81,38 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
+     * Returns all families code with their required attributes code
+     * Requirements can be restricted to a channel.
+     *
+     * @param Channel $channel
+     *
+     * return array
+     */
+    public function getFullFamilies(Family $family = null, Channel $channel = null)
+    {
+        $qb = $this->createQueryBuilder('f')
+            ->select('f, c, l, r, a, cu')
+            ->join('f.requirements', 'r')
+            ->join('r.attribute', 'a')
+            ->join('r.channel', 'c')
+            ->join('c.locales', 'l')
+            ->join('c.currencies', 'cu')
+            ->where('r.required = 1');
+
+        if (null !== $channel) {
+            $qb->andWhere('r.channel = :channel')
+                ->setParameter('channel', $channel);
+        }
+
+        if (null !== $family) {
+            $qb->andWhere('f.family = :family')
+                ->setParameter('family', $family);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder()

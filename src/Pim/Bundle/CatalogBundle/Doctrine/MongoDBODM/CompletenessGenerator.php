@@ -7,10 +7,12 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
@@ -56,6 +58,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $channelManager;
 
     /**
+     * @var FamilyRepository
+     */
+    protected $familyRepository;
+
+    /**
      * Constructor
      *
      * @param DocumentManager     $documentManager
@@ -63,19 +70,22 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * @param ValidatorInterface  $validator
      * @param string              $productClass
      * @param ChannelManager      $channelManager
+     * @param FamilyRepository    $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
         CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
         $productClass,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        FamilyRepository $familyRepository
     ) {
         $this->documentManager     = $documentManager;
         $this->completenessFactory = $completenessFactory;
         $this->validator           = $validator;
         $this->productClass        = $productClass;
         $this->channelManager      = $channelManager;
+        $this->familyRepository    = $familyRepository;
     }
 
     /**
@@ -227,22 +237,204 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Generate missing completenesses for a channel if provided or a product
      * if provided.
      *
-     * @param Product $product
-     * @param Channel $channel
+     * @param ProductInterface $product
+     * @param Channel          $channel
      */
     protected function generate(ProductInterface $product = null, Channel $channel = null)
     {
         $productsQb = $this->documentManager->createQueryBuilder($this->productClass);
 
+        $familyReqs = $this->getFamilyRequirements($product, $channel);
+
         $this->applyFindMissingQuery($productsQb, $product, $channel);
 
-        $products = $productsQb->getQuery()->execute();
+        $products = $productsQb->select('family', 'normalizedData')
+            ->hydrate(false)
+            ->getQuery()
+            ->execute();
 
         foreach ($products as $product) {
-            $this->generateMissingForProduct($product, false);
+            $familyId = $product['family'];
+            $completenesses = $this->getCompletenesses($product['normalizedData'], $familyReqs[$familyId]);
+            $this->saveCompletenesses($product['_id'], $completenesses);
+        }
+    }
+
+    /**
+     * Generate completenesses data from normalized data from product and
+     * its family requirements. Only missing completenesses are generated.
+     *
+     * @param array $normalizedData
+     * @parma array $normalizedReqs
+     *
+     * @return array $completenesses
+     */
+    protected function getCompletenesses(array $normalizedData, array $normalizedReqs)
+    {
+        $completenesses = array();
+        $missingComps = array_diff(array_keys($normalizedReqs), array_keys($normalizedData['completenesses']));
+
+        $normalizedData = array_filter(
+            $normalizedData,
+            function ($value) {
+                return ('null' != $value);
+            }
+        );
+
+        $dataFields = array_keys($normalizedData);
+
+        foreach ($missingComps as $missingComp) {
+            $reqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+            $requiredCount = count($reqs);
+
+            $missingAttributes = array_diff($reqs, $dataFields);
+            $missingCount = count($missingAttributes);
+    
+            $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
+
+            $compObject = array(
+                '_id'           => new \MongoId(),
+                'missingCount'  => $missingCount,
+                'requiredCount' => $requiredCount,
+                'ratio'         => $ratio,
+                'channel'       => $normalizedReqs[$missingComp]['channel'],
+                'locale'        => $normalizedReqs[$missingComp]['locale']
+            );
+
+            $completenesses[$missingComp] = array(
+                'object' => $compObject,
+                'ratio'  => $ratio
+            );
         }
 
-        $this->documentManager->flush();
+        return $completenesses;
+    }
+
+    /**
+     * Save the completenesses data for the product directly to MongoDB.
+     *
+     * @param string $productId
+     * @param array $completenesses
+     */
+    protected function saveCompletenesses($productId, array $completenesses)
+    {
+        $collection = $this->documentManager->getDocumentCollection($this->productClass);
+
+        foreach ($completenesses as $key => $value) {
+            $query = array('_id' => $productId);
+
+            $compObject = array('$push' => array('completenesses' => $value['object']));
+            $options = array('multiple' => false);
+
+            $collection->update($query, $compObject, $options);
+
+            $normalizedComp = array('$set' => array('normalizedData.completenesses.'.$key => $value['ratio']));
+            $collection->update($query, $normalizedComp, $options);
+        }
+    }
+
+    /**
+     * Generate family requirements information to be used to 
+     * calculate completenesses.
+     *
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     */
+    protected function getFamilyRequirements(ProductInterface $product = null, Channel $channel = null)
+    {
+        $selectFamily = null;
+
+        if (null !== $product) {
+            $selectFamily = $product->getFamily();
+        }
+        $families = $this->familyRepository->getFullFamilies($selectFamily, $channel);
+        $familyRequirements = array();
+
+        foreach ($families as $family) {
+            $reqsByChannels = array();
+            $channels = array();
+
+            foreach ($family->getAttributeRequirements() as $attributeReq) {
+                $channel = $attributeReq->getChannel();
+
+                $channels[$channel->getCode()] = $channel;
+
+                if (!isset($reqsByChannels[$channel->getCode()])) {
+                    $reqsByChannels[$channel->getCode()] = array();
+                }
+
+                $reqsByChannels[$channel->getCode()][] = $attributeReq;
+            }
+
+            $familyRequirements[$family->getId()] = $this->getFieldsNames($channels, $reqsByChannels);
+        }
+
+        return $familyRequirements;
+    }
+
+    /**
+     * Generate fields name that should be present and not null for the product
+     * to be defined as complete for channels and family
+     * Familyreqs must be indexed by channel code
+     *
+     * @param array $channels
+     * @param array $familyReqs
+     *
+     * @return array
+     */
+    protected function getFieldsNames(array $channels, array $familyReqs)
+    {
+        $fields = array();
+        foreach ($channels as $channel) {
+            foreach ($channel->getLocales() as $locale) {
+                $expectedCompleteness = $channel->getCode().'-'.$locale->getCode();
+                $fields[$expectedCompleteness] = array();
+                $fields[$expectedCompleteness]['channel'] = $channel->getId();
+                $fields[$expectedCompleteness]['locale'] = $locale->getId();
+                $fields[$expectedCompleteness]['reqs'] = array();
+                $fields[$expectedCompleteness]['reqs']['attributes'] = array();
+                $fields[$expectedCompleteness]['reqs']['prices'] = array();
+
+                foreach ($familyReqs[$channel->getCode()] as $requirement) {
+                    $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
+
+                    if ('prices' === $requirement->getAttribute()->getBackendType()) {
+                        $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = array();
+                        foreach ($channel->getCurrencies() as $currency) {
+                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                        }
+                    } else {
+                        $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
+                    }
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+
+    /**
+     * Get the name of a normalized data field
+     *
+     * @param AbstractAttribute $attribute
+     * @param Channel           $channel
+     * @parma Locale            $locale
+     *
+     * @return string
+     */
+    protected function getNormalizedFieldName(AbstractAttribute $attribute, Channel $channel, Locale $locale)
+    {
+        $suffix = '';
+
+        if ($attribute->isLocalizable()) {
+            $suffix = sprintf('-%s', $locale->getCode());
+        }
+        if ($attribute->isScopable()) {
+            $suffix .= sprintf('-%s', $channel->getCode());
+        }
+
+        return $attribute->getCode() . $suffix;
     }
 
     /**
@@ -264,7 +456,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $combinations = $this->getChannelLocaleCombinations($channel);
 
             if (!empty($combinations)) {
-                $orItems = array();
                 foreach ($combinations as $combination) {
                     $expr = new Expr();
                     $expr->field('normalizedData.completenesses.'.$combination)->exists(false);
