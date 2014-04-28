@@ -10,6 +10,7 @@
 
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- add missing translation keys for "manage filters", "all", "records", etc
 
 ## BC breaks
 - Remove FlexibleEntityBundle
