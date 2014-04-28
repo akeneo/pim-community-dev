@@ -167,7 +167,7 @@ function($, _, __, app, TextFilter) {
          * @inheritDoc
          */
         _triggerUpdate: function(newValue, oldValue) {
-            if (!app.isEqualsLoosely(newValue.value, oldValue.value) || (newValue.type === 'empty' && !app.isEqualsLoosely(newValue.type, oldValue.type))) {
+            if (!app.isEqualsLoosely(newValue.value, oldValue.value) || !app.isEqualsLoosely(newValue.type, oldValue.type)) {
                 this.trigger('update');
             }
         },
