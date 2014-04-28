@@ -22,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ 'pim_enrich.mass_edit_action.confirm'|transchoice(productCount) }}
+                {{ ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.confirm')|transchoice(productCount) }}
             </div>
         </div>
 
