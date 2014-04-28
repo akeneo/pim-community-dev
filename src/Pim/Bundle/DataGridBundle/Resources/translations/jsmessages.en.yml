@@ -26,6 +26,7 @@ Are you sure you want to do this?: Are you sure you want to do this?
 Action performed.: Action performed.
 Action is not performed.: Action is not performed.
 Please, select item to perform action.: Please, select item to perform action.
+View per page: View per page
 oro.datagrid.entityHint: Entity
 oro.datagrid.noentities: No records found
 oro.datagrid.noresults: "No {{ entityHint }} was found to match your search. Try modifying your search criteria..."
