@@ -28,6 +28,10 @@ class StringFilter extends OroStringFilter
 
         $operator = $this->getOperator($data['type']);
 
+        if ('IN' === $operator) {
+            $data['value'] = explode(',', $data['value']);
+        }
+
         $this->util->applyFilterByAttribute(
             $ds,
             $this->get(ProductFilterUtility::DATA_NAME_KEY),
