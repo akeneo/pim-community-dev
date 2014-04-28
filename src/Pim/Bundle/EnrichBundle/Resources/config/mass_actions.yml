@@ -97,8 +97,8 @@ services:
             - '@pim_catalog.repository.group'
         tags:
             -
-                name: pim_enrich.mass_edit_action,
-                alias: add-to-groups,
+                name: pim_enrich.mass_edit_action
+                alias: add-to-groups
                 acl: pim_enrich_product_add_to_groups
                 operator: pim_enrich.mass_edit_action.operator.product
 
@@ -114,5 +114,5 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: set-attribute-requirements
-                acl: pim_enrich_product_add_to_groups
+                acl: pim_enrich_family_edit
                 operator: pim_enrich.mass_edit_action.operator.family
