@@ -391,6 +391,8 @@ class Family implements TranslatableInterface, ReferableInterface
         if (!isset($requirements[$requirementKey])) {
             $requirement->setFamily($this);
             $this->requirements->add($requirement);
+        } else {
+            $requirements[$requirementKey]->setRequired($requirement->isRequired());
         }
 
         return $this;
