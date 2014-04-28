@@ -310,28 +310,13 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $filter = $item['filter'];
 
             $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
-            if (isset($item['operator']) && 'is empty' === $item['operator']) {
-                $steps[] = new Step\Then(sprintf('I filter by "%s" for empty value', $filter));
-            } else {
-                $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
-            }
+            $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
             $steps[] = new Step\Then(sprintf('I should see entities %s', $item['result']));
             $steps[] = new Step\Then(sprintf('I hide the filter "%s"', $filter));
         }
 
         return $steps;
-    }
-
-    /**
-     * @param string $filter
-     *
-     * @Then /^I filter by "([^"]*)" for empty value$/
-     */
-    public function iFilterByForEmptyValue($filter)
-    {
-        $this->datagrid->filterBy($filter, null, 'empty');
-        $this->wait();
     }
 
     /**
