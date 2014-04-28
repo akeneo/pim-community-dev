@@ -441,8 +441,8 @@ class Family implements TranslatableInterface, ReferableInterface
     {
         return sprintf(
             '%s_%s',
-            $requirement->getAttribute()->getCode(),
-            $requirement->getChannel()->getCode()
+            $requirement->getAttributeCode(),
+            $requirement->getChannelCode()
         );
     }
 

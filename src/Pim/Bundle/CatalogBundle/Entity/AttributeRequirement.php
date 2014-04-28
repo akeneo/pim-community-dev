@@ -142,7 +142,7 @@ class AttributeRequirement
      */
     public function setRequired($required)
     {
-        $this->required = $required;
+        $this->required = (bool) $required;
 
         return $this;
     }
