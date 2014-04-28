@@ -10,24 +10,28 @@ Feature: Filter products by text field
 
   Scenario: Successfully filter products by empty value for text attribute
     Given the following attributes:
-      | label | type | localizable | scopable | useable as grid filter |
-      | name  | text | no          | no       | yes                    |
+      | label       | type     | localizable | scopable | useable as grid filter |
+      | name        | text     | no          | no       | yes                    |
+      | description | textarea | no          | no       | yes                    |
     And the following products:
       | sku    |
       | postit |
       | book   |
       | mug    |
     And the following product values:
-      | product | attribute | value    |
-      | postit  | name      | MyPostit |
-      | book    | name      |          |
+      | product | attribute   | value            |
+      | postit  | name        | MyPostit         |
+      | postit  | description |                  |
+      | book    | name        |                  |
+      | mug     | description | MyMugDescription |
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     When I show the filter "name"
     And I should be able to use the following filters:
-      | filter | operator | result |
-      | name   | is empty | book   |
+      | filter      | operator | result |
+      | name        | is empty | book   |
+      | description | is empty | postit |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
