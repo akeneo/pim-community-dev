@@ -30,8 +30,8 @@ Feature: Filter products by text field
     When I show the filter "name"
     And I should be able to use the following filters:
       | filter      | value | result |
-      | name        | empty    | book   |
-      | description | empty    | postit |
+      | name        | empty | book   |
+      | description | empty | postit |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
@@ -54,7 +54,7 @@ Feature: Filter products by text field
     When I show the filter "name"
     And I should be able to use the following filters:
       | filter | value | result |
-      | name   | empty    | book   |
+      | name   | empty | book   |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -104,4 +104,4 @@ Feature: Filter products by text field
     When I show the filter "name"
     And I should be able to use the following filters:
       | filter | value | result |
-      | name   | empty    | book   |
+      | name   | empty | book   |
