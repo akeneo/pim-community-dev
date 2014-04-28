@@ -2,8 +2,8 @@
 <td grid-cell-actions>
     <ul>
         <li>
-            <span class="action" title="{{ action.label }}" ng-repeat="action in metaData.rowActions" nb-click="performRowAction(action)">
-                <i class="glyphicon glyphicon-{{ action.icon }} hide-text"></i>{{ action.label }}
+            <span class="action" title="{{ action.label }}" ng-repeat="action in metaData.rowActions" ng-click="performRowAction(action)">
+                <i class="glyphicon glyphicon-{{ action.icon }}"></i>{{ action.label }}
             </span>
         </li>
     </ul>
