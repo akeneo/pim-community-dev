@@ -8,7 +8,7 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "admin"
 
-  Scenario: Successfully filter products by empty value for text attribute
+  Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
       | label       | type     | localizable | scopable | useable as grid filter |
       | name        | text     | no          | no       | yes                    |
