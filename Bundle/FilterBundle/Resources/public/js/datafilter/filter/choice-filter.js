@@ -203,7 +203,7 @@ function($, _, __, app, TextFilter) {
             });
             $(e.currentTarget).parent().addClass('active');
             var parentDiv = $(e.currentTarget).parent().parent().parent();
-            parentDiv.find(this.criteriaValueSelectors.type).val($(e.currentTarget).attr('data-value'));
+            parentDiv.find('.name_input').val($(e.currentTarget).attr('data-value'));
 
             if ($(e.currentTarget).attr('data-value') === 'in') {
                 this._enableListSelection();
