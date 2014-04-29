@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Subscriber to remove product value when user has no right to at least see it
@@ -14,6 +15,17 @@ use Symfony\Component\Form\FormEvents;
  */
 class RemoveProductValueSubscriber implements EventSubscriberInterface
 {
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
+    /**
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,8 +48,9 @@ class RemoveProductValueSubscriber implements EventSubscriberInterface
 
         foreach ($formValues as $formValue) {
             $productValue = $formValue->getData();
-            // TODO: exemple
-            if ($productValue->getAttribute()->getCode() === 'sku') {
+            $attribute = $productValue->getAttribute();
+            $attributeGroup = $attribute->getVirtualGroup();
+            if (false === $this->securityContext->isGranted('GROUP_VIEW_ATTRIBUTES', $attributeGroup)) {
                 $formValueName = $formValue->getName();
                 $formValues->remove($formValueName);
             }
