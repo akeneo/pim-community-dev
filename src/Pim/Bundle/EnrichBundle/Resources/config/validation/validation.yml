@@ -1,0 +1,10 @@
+Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator:
+    properties:
+        operation:
+            - Valid: ~
+
+Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups:
+    properties:
+        groups:
+            - Valid:
+                traverse: true

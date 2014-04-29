@@ -1,5 +1,0 @@
-Pim\Bundle\EnrichBundle\MassEditAction\Operation/AddToGroups:
-    properties:
-        groups:
-            - Valid:
-                traverse: true
