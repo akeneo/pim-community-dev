@@ -7,7 +7,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
- * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a 
+ * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
  * user depending on his roles
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
