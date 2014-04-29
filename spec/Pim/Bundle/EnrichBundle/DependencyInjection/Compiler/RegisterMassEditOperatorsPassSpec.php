@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\Definition;
 

@@ -4,7 +4,7 @@ namespace Pim\Bundle\EnrichBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
+use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
  *
