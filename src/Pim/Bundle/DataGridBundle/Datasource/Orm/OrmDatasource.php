@@ -71,7 +71,7 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     public function getResults()
     {
-        return $this->hydrator->hydrate($this->qb, []);
+        return $this->hydrator->hydrate($this->qb);
     }
 
     /**
