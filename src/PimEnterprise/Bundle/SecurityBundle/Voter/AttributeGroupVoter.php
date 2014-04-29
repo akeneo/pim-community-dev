@@ -4,11 +4,11 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
- * Enterprise Security Bundle
+ * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a 
+ * user depending on his roles
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -20,20 +20,6 @@ class AttributeGroupVoter implements VoterInterface
 
     /** @var string */
     const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
-
-    /**
-     * @var \Doctrine\Common\Persistence\ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * Constructor
-     * @param ObjectManager $objectManager the storage manager
-     */
-    public function __construct(ObjectManager $objectManager)
-    {
-        $this->objectManager = $objectManager;
-    }
 
     /**
      * {@inheritdoc}
@@ -64,7 +50,10 @@ class AttributeGroupVoter implements VoterInterface
                     return VoterInterface::ACCESS_GRANTED;
                 } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'general') {
                     return VoterInterface::ACCESS_GRANTED;
+                } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'marketing') {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
+
             }
         }
 

@@ -4,7 +4,5 @@ parameters:
 services:
     pimee_security.voter.attribute_group_voter:
         class: %pimee_security.voter.attribute_group.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
         tags:
             - { name: security.voter }
