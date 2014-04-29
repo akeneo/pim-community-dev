@@ -449,6 +449,14 @@ class FixturesContext extends RawMinkContext
                         $metric->setUnit($unit);
 
                         $value->setMetric($metric);
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['date']) {
+                        if ("" === $data['value']) {
+                            $data = null;
+                        } elseif (!$data instanceof \DateTime) {
+                            $data = new \DateTime($data['value']);
+                        }
+
+                        $value->setData($data);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -1134,6 +1142,52 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^attribute "([^"]*)" should be required in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributeShouldBeRequiredInFamilyForChannel($attribute, $family, $channel)
+    {
+        $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+        assertNotNull($requirement);
+        assertTrue($requirement->isRequired());
+    }
+
+    /**
+     * @Given /^attribute "([^"]*)" should be optionnal in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributeShouldBeOptionnalInFamilyForChannel($attribute, $family, $channel)
+    {
+        $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+        assertNotNull($requirement);
+        assertFalse($requirement->isRequired());
+    }
+
+
+    /**
+     * @param string $attributeCode
+     * @param string $familyCode
+     * @param string $channelCode
+     */
+    private function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
+    {
+        $em = $this->getEntityManager();
+        $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
+
+        $attribute = $this->getAttribute($attributeCode);
+        $family = $this->getFamily($familyCode);
+        $channel = $this->getChannel($channelCode);
+
+        return $repo->findOneBy(
+            [
+                'attribute' => $attribute,
+                'family' => $family,
+                'channel' => $channel,
+            ]
+        );
+    }
+
+    /**
      * @param string $language
      *
      * @return string
@@ -1340,15 +1394,33 @@ class FixturesContext extends RawMinkContext
                 break;
 
             case $this->attributeTypes['metric']:
-                list($data, $unit) = explode(' ', $data);
                 $metric = new Metric();
                 $metric->setFamily($attribute->getMetricFamily());
+                if ($data !== "") {
+                    list($data, $unit) = explode(' ', $data);
+                } else {
+                    $data = null;
+                    $unit = null;
+                }
                 $metric->setData($data);
                 $metric->setUnit($unit);
                 $value->setData($metric);
                 break;
 
+            case $this->attributeTypes['date']:
+                if ("" === $data) {
+                    $data = null;
+                } elseif (!$data instanceof \DateTime) {
+                    $data = new \DateTime($data);
+                }
+
+                $value->setData($data);
+                break;
+
             default:
+                if ("" === $data) {
+                    $data = null;
+                }
                 $value->setData($data);
         }
         $value->setLocale($locale);
@@ -1508,6 +1580,9 @@ class FixturesContext extends RawMinkContext
      */
     private function listToPrices($prices)
     {
+        if ($prices === "") {
+            $data['EUR'] = null;
+        }
         $prices = explode(',', $prices);
         $data = array();
 

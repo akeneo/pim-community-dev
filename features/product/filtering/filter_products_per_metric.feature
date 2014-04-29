@@ -17,13 +17,20 @@ Feature: Filter products per metric
       | sku    | family    | enabled | weight-ecommerce |
       | postit | furniture | yes     | 120 GRAM         |
       | book   | library   | no      | 0.2 KILOGRAM     |
+    And the following product:
+      | sku |
+      | mug |
+    And the following product values:
+      | product | attribute | value    | scope     |
+      | mug     | Weight    |          | ecommerce |
+      | mug     | Weight    | 120 GRAM | mobile    |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by metric
     Given I am on the products page
     Then I should see the filter SKU
     And I should not see the filter Weight
-    And the grid should contain 2 elements
+    And the grid should contain 3 elements
     And I should see products postit and book
     And I should be able to use the following filters:
       | filter | value            | result          |
@@ -34,3 +41,4 @@ Feature: Filter products per metric
       | Weight | <= 120 Gram      | postit          |
       | Weight | <= 0.25 Kilogram | postit and book |
       | Weight | > 4 Kilogram     |                 |
+      | Weight | empty            | mug             |

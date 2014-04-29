@@ -298,7 +298,7 @@
     {% set originalId = id %}
     {% set id         = 'input-' ~ originalId %}
     {% set switchId   = 'switch-' ~ originalId %}
-    <div id="{{ switchId }}" class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ (attr['data-on-label'] is defined ? attr['data-on-label'] : 'Yes')|trans }}" data-off-label="{{ (attr['data-off-label'] is defined ? attr['data-off-label'] : 'No')|trans }}">
+    <div id="{{ switchId }}" class="switch switch-{{ attr.size is defined ? attr.size : 'small' }}" data-on-label="{{ attr['data-on-label']|trans }}" data-off-label="{{ attr['data-off-label']|trans }}">
         {% if required %}{% set required = false %}{% endif %}
         <input id="{{ originalId }}" type="checkbox" {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %}{% if disabled %} disabled="disabled"{% endif %}>
         <input type="hidden" {{ block('widget_attributes') }}{% if checked or attr.checked is defined and attr.checked %} value="1"{% endif %}>
@@ -371,8 +371,13 @@
     {% set requiredTitle = 'Required'|trans %}
     {% set nonRequiredTitle = 'Not required'|trans %}
     <div class="attribute-requirement" data-required-title="{{ requiredTitle }}" data-not-required-title="{{ nonRequiredTitle }}">
-        <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
-        <i class="icon-{{ form.required.vars.checked ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
+        {% if form.required.vars.keep_non_required %}
+            <input type="hidden" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" value="{{ form.required.vars.value ? '1': '0' }}" />
+            <i class="icon-{{ form.required.vars.value ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.value ? requiredTitle : nonRequiredTitle }}"></i>
+        {% else %}
+            <input type="checkbox" id="{{ form.required.vars.id }}" name="{{ form.required.vars.full_name }}" class="hide" {% if form.required.vars.checked %}checked="checked"{% endif %} />
+            <i class="icon-{{ form.required.vars.checked ? 'ok ' : 'circle non-' }}required" data-toggle="tooltip" data-placement="right" data-original-title="{{ form.required.vars.checked ? requiredTitle : nonRequiredTitle }}"></i>
+        {% endif %}
     </div>
 {% endblock pim_enrich_attribute_requirement_widget %}
 

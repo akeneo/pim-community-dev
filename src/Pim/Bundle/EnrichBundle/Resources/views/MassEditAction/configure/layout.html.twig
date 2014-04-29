@@ -1,8 +1,8 @@
 {% extends 'PimEnrichBundle:MassEditAction:layout.html.twig' %}
 
 {% block content %}
-    {% set title = 'pim_enrich.mass_edit_action.page_title'|trans %}
-    {% set subtitle = 'pim_enrich.mass_edit_action.page_subtitle'|transchoice(productCount) %}
+    {% set title = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_title')|trans %}
+    {% set subtitle = ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.page_subtitle')|transchoice(productCount) %}
     {{ elements.page_header(title, null, subtitle) }}
 
     {{ parent() }}
@@ -22,7 +22,7 @@
 
         <div class="row offset1 span12 buffer-top confirmation hide">
             <div class="alert alert-info">
-                {{ 'pim_enrich.mass_edit_action.confirm'|transchoice(productCount) }}
+                {{ ('pim_enrich.mass_edit_action.' ~ operator.name ~ '.confirm')|transchoice(productCount) }}
             </div>
         </div>
 
@@ -83,6 +83,9 @@
                         $('textarea.wysiwyg[id]').each(function () {
                             wysiwyg.readonly($(this).attr('id'), true);
                         });
+
+                        {% block disableFormScript %}
+                        {% endblock %}
                     }
 
                     var enableForm = function() {
@@ -107,6 +110,9 @@
                         $('textarea.wysiwyg[id]').each(function () {
                             wysiwyg.readonly($(this).attr('id'), false);
                         });
+
+                        {% block enableFormScript %}
+                        {% endblock %}
                     };
 
                     $('select.operation-param').change(function () {

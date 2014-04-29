@@ -3,7 +3,12 @@
 {% block content %}
     <div class="row wizard-header">
         <ul class="wizard">
-            <li>{{ 'Choose products'|trans }}</li><li>{{ 'Choose operation'|trans }}</li><li>{{ 'Configure'|trans }}</li><li>{{ 'Confirm'|trans }}</li>
+            {% spaceless %}
+            <li>{{ ('pim_enrich.mass_edit_action.' ~ operator.name ~  '.steps.first')|trans }}</li>
+            <li>{{ ('pim_enrich.mass_edit_action.' ~ operator.name ~  '.steps.second')|trans }}</li>
+            <li>{{ ('pim_enrich.mass_edit_action.' ~ operator.name ~  '.steps.third')|trans }}</li>
+            <li>{{ ('pim_enrich.mass_edit_action.' ~ operator.name ~  '.steps.fourth')|trans }}</li>
+            {% endspaceless %}
         </ul>
     </div>
 {% endblock %}
