@@ -449,6 +449,14 @@ class FixturesContext extends RawMinkContext
                         $metric->setUnit($unit);
 
                         $value->setMetric($metric);
+                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['date']) {
+                        if ("" === $data['value']) {
+                            $data = null;
+                        } elseif (!$data instanceof \DateTime) {
+                            $data = new \DateTime($data['value']);
+                        }
+
+                        $value->setData($data);
                     } else {
                         $value->setData($data['value']);
                     }
@@ -1340,15 +1348,33 @@ class FixturesContext extends RawMinkContext
                 break;
 
             case $this->attributeTypes['metric']:
-                list($data, $unit) = explode(' ', $data);
                 $metric = new Metric();
                 $metric->setFamily($attribute->getMetricFamily());
+                if ($data !== "") {
+                    list($data, $unit) = explode(' ', $data);
+                } else {
+                    $data = null;
+                    $unit = null;
+                }
                 $metric->setData($data);
                 $metric->setUnit($unit);
                 $value->setData($metric);
                 break;
 
+            case $this->attributeTypes['date']:
+                if ("" === $data) {
+                    $data = null;
+                } elseif (!$data instanceof \DateTime) {
+                    $data = new \DateTime($data);
+                }
+
+                $value->setData($data);
+                break;
+
             default:
+                if ("" === $data) {
+                    $data = null;
+                }
                 $value->setData($data);
         }
         $value->setLocale($locale);
@@ -1508,6 +1534,9 @@ class FixturesContext extends RawMinkContext
      */
     private function listToPrices($prices)
     {
+        if ($prices === "") {
+            $data['EUR'] = null;
+        }
         $prices = explode(',', $prices);
         $data = array();
 
