@@ -30,8 +30,8 @@ class ProductEditType extends AbstractType
     /** @var string */
     protected $categoryClass;
 
-    /** EventSubscriberInterface */
-    protected $subscriber;
+    /** @var array of EventSubscriberInterface */
+    protected $subscribers = [];
 
     /**
      * Constructor
@@ -39,18 +39,12 @@ class ProductEditType extends AbstractType
      * @param ProductFormView          $productFormView
      * @param FamilyRepository         $repository
      * @param string                   $categoryClass
-     * @param EventSubscriberInterface $subscriber
      */
-    public function __construct(
-        ProductFormView $productFormView,
-        FamilyRepository $repository,
-        $categoryClass,
-        EventSubscriberInterface $subscriber = null
-    ) {
+    public function __construct(ProductFormView $productFormView, FamilyRepository $repository, $categoryClass)
+    {
         $this->productFormView = $productFormView;
         $this->repository      = $repository;
         $this->categoryClass   = $categoryClass;
-        $this->subscriber      = $subscriber;
     }
 
     /**
@@ -112,8 +106,8 @@ class ProductEditType extends AbstractType
                 )
             );
 
-        if ($this->subscriber) {
-            $builder->addEventSubscriber($this->subscriber);
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
         }
     }
 
@@ -136,5 +130,15 @@ class ProductEditType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['groups'] = $this->productFormView->getView();
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[]= $subscriber;
     }
 }
