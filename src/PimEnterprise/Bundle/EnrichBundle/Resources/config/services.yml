@@ -1,5 +1,6 @@
 parameters:
     pim_enterprise_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+    pim_enrich.form.type.attribute_group.class:         PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupType
 
 services:
     pim_enterprise_enrich.twig.version_extension:
