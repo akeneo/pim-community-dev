@@ -1348,6 +1348,16 @@ class FixturesContext extends RawMinkContext
                 $value->setData($metric);
                 break;
 
+            case $this->attributeTypes['date']:
+                if ("" === $data) {
+                    $data = null;
+                } elseif (!$data instanceof \DateTime) {
+                    $data = new \DateTime($data);
+                }
+
+                $value->setData($data);
+                break;
+
             default:
                 if ("" === $data) {
                     $data = null;
