@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -29,18 +30,27 @@ class ProductEditType extends AbstractType
     /** @var string */
     protected $categoryClass;
 
+    /** EventSubscriberInterface */
+    protected $subscriber;
+
     /**
      * Constructor
      *
-     * @param ProductFormView  $productFormView
-     * @param FamilyRepository $repository
-     * @param string           $categoryClass
+     * @param ProductFormView          $productFormView
+     * @param FamilyRepository         $repository
+     * @param string                   $categoryClass
+     * @param EventSubscriberInterface $subscriber
      */
-    public function __construct(ProductFormView $productFormView, FamilyRepository $repository, $categoryClass)
-    {
+    public function __construct(
+        ProductFormView $productFormView,
+        FamilyRepository $repository,
+        $categoryClass,
+        EventSubscriberInterface $subscriber = null
+    ) {
         $this->productFormView = $productFormView;
         $this->repository      = $repository;
         $this->categoryClass   = $categoryClass;
+        $this->subscriber      = $subscriber;
     }
 
     /**
@@ -101,6 +111,10 @@ class ProductEditType extends AbstractType
                     'multiple' => true,
                 )
             );
+
+        if ($this->subscriber) {
+            $builder->addEventSubscriber($this->subscriber);
+        }
     }
 
     /**
