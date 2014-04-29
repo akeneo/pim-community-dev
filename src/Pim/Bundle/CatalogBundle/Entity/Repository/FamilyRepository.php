@@ -41,6 +41,10 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
                 }
             )
         );
+
+        // Allows hydration as object.
+        // Family mass edit operation receives an array instead of a Family object
+        $qb->select($qb->getRootAlias());
     }
 
     /**
@@ -130,7 +134,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
             ->leftJoin($rootAlias . '.translations', 'translation', 'WITH', 'translation.locale = :localeCode')
             ->leftJoin('f.attributeAsLabel', 'a');
 
-        return $qb->select('f');
+        return $qb;
     }
 
     /**
