@@ -49,6 +49,6 @@ class RolesType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enterprise_security_roles';
+        return 'pimee_security_roles';
     }
 }

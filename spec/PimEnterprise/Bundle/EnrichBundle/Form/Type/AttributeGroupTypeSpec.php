@@ -21,7 +21,7 @@ class AttributeGroupTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('rights', 'pim_enterprise_enrich_attribute_group_rights')
+            ->add('rights', 'pimee_enrich_attribute_group_rights')
             ->shouldHaveBeenCalled();
     }
 }

@@ -42,6 +42,6 @@ class VersionExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'pim_enterprise_version_extension';
+        return 'pimee_version_extension';
     }
 }

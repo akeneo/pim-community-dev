@@ -15,7 +15,7 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enterprise_enrich_attribute_group_rights');
+        $this->getName()->shouldReturn('pimee_enrich_attribute_group_rights');
     }
 
     function it_has_read_and_write_permission_fields(FormBuilderInterface $builder)
@@ -23,11 +23,11 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('read', 'pim_enterprise_security_roles', ['label' => 'attribute group.rights.read.label'])
+            ->add('read', 'pimee_security_roles', ['label' => 'attribute group.rights.read.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('write', 'pim_enterprise_security_roles', ['label' => 'attribute group.rights.write.label'])
+            ->add('write', 'pimee_security_roles', ['label' => 'attribute group.rights.write.label'])
             ->shouldHaveBeenCalled();
     }
 

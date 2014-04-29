@@ -17,7 +17,7 @@ class RolesTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pim_enterprise_security_roles');
+        $this->getName()->shouldReturn('pimee_security_roles');
     }
 
     function it_extends_the_entity_form_type()

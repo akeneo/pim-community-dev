@@ -19,8 +19,8 @@ class AttributeGroupRightsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('read', 'pim_enterprise_security_roles', ['label' => 'attribute group.rights.read.label']);
-        $builder->add('write', 'pim_enterprise_security_roles', ['label' => 'attribute group.rights.write.label']);
+        $builder->add('read', 'pimee_security_roles', ['label' => 'attribute group.rights.read.label']);
+        $builder->add('write', 'pimee_security_roles', ['label' => 'attribute group.rights.write.label']);
     }
 
     /**
@@ -36,6 +36,6 @@ class AttributeGroupRightsType extends AbstractType
      */
     public function getName()
     {
-        return 'pim_enterprise_enrich_attribute_group_rights';
+        return 'pimee_enrich_attribute_group_rights';
     }
 }

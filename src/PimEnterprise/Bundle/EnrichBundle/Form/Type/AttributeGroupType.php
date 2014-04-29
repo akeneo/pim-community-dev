@@ -20,6 +20,6 @@ class AttributeGroupType extends BaseAttributeGroupType
     {
         parent::buildForm($builder, $options);
 
-        $builder->add('rights', 'pim_enterprise_enrich_attribute_group_rights');
+        $builder->add('rights', 'pimee_enrich_attribute_group_rights');
     }
 }
