@@ -16,6 +16,12 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  */
 class AttributeGroupVoter implements VoterInterface
 {
+    /** @var string */
+    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
+
+    /** @var string */
+    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+
     /**
      * @var \Doctrine\Common\Persistence\ObjectManager
      */
@@ -35,7 +41,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array('VIEW_PRODUCT_DATA', 'EDIT_PRODUCT_DATA'));
+        return in_array($attribute, array(self::VIEW_ATTRIBUTES, self::EDIT_ATTRIBUTES));
     }
 
     /**
@@ -51,18 +57,18 @@ class AttributeGroupVoter implements VoterInterface
      */
     function vote(TokenInterface $token, $object, array $attributes)
     {
+        // TODO: hard coded rules to validate first UC
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute) && $this->supportsClass($object)) {
-
-                // TODO : delegate this to a dedicated service / repository ?
-                $role = $this->objectManager->getRepository('OroUserBundle:Role')->findOneByRole('ROLE_ADMINISTRATOR');
                 $user = $token->getUser();
-                if ($user->hasRole($role)) {
+                if ($user->hasRole('ROLE_ADMINISTRATOR')) {
+                    return VoterInterface::ACCESS_GRANTED;
+                } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'general') {
                     return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
-        
+
         return VoterInterface::ACCESS_DENIED;
     }
 }
