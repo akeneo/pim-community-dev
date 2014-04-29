@@ -188,17 +188,21 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             return $this->qb->expr()->$method($field, $value)->__toString();
         }
 
-        if ($operator == 'NOT LIKE') {
+        if ('NOT LIKE' === $operator) {
             return sprintf('%s NOT LIKE %s', $field, $this->qb->expr()->literal($value));
         }
 
-        if ($operator == 'BETWEEN') {
+        if ('BETWEEN' === $operator) {
             return sprintf(
                 '%s BETWEEN %s AND %s',
                 $field,
                 $this->qb->expr()->literal($value[0]),
                 $this->qb->expr()->literal($value[1])
             );
+        }
+
+        if ('EMPTY' === $operator) {
+            return $this->qb->expr()->isNull($field);
         }
 
         throw new ProductQueryException('operator '.$operator.' is not supported');

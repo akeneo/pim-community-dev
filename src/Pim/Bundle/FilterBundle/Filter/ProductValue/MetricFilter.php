@@ -7,6 +7,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
@@ -98,8 +100,12 @@ class MetricFilter extends OroNumberFilter
         $ds->generateParameterName($this->getName());
 
         // Convert value to base unit
-        $this->converter->setFamily($this->family);
-        $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
+        if ('EMPTY' !== $operator) {
+            $this->converter->setFamily($this->family);
+            $baseValue = $this->converter->convertBaseToStandard($data['unit'], $data['value']);
+        } else {
+            $baseValue = null;
+        }
 
         $this->util->applyFilterByAttribute(
             $ds,
@@ -118,9 +124,17 @@ class MetricFilter extends OroNumberFilter
      */
     public function parseData($data)
     {
-        $data = parent::parseData($data);
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
 
-        if (!is_array($data) || !array_key_exists('unit', $data) || !is_string($data['unit'])) {
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || (!is_numeric($data['value']) && FilterType::TYPE_EMPTY !== $data['type'])) {
+            return false;
+        }
+
+        if (!is_array($data)
+            || !array_key_exists('unit', $data)
+            || (!is_string($data['unit']) && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 
@@ -137,5 +151,22 @@ class MetricFilter extends OroNumberFilter
         $metadata['units'] = $this->measureManager->getUnitSymbolsForFamily($this->family);
 
         return $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperator($type)
+    {
+        $operatorTypes = array(
+            NumberFilterType::TYPE_EQUAL         => '=',
+            NumberFilterType::TYPE_GREATER_EQUAL => '>=',
+            NumberFilterType::TYPE_GREATER_THAN  => '>',
+            NumberFilterType::TYPE_LESS_EQUAL    => '<=',
+            NumberFilterType::TYPE_LESS_THAN     => '<',
+            FilterType::TYPE_EMPTY               => 'EMPTY'
+        );
+
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
     }
 }

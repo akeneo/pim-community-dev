@@ -10,3 +10,5 @@ from: from
 to: to
 and: and
 system_filter_group: System
+oro_filter.filters.manage: Manage filters
+oro_filter.placeholder.all: All

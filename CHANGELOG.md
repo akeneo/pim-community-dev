@@ -5,14 +5,19 @@
 
 ## Improvements
 - Group datagrid filters by attribute groups
+- Allow filtering by empty values for attribute of type text, number, datetime, simple and multiselect and for family property
+- Ease the adding of new filters and sorters in ProductQueryBuilder
+- Add an option to filter products by a list of identifier values
 
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- add missing translation keys for "manage filters", "all", "records", etc
 
 ## BC breaks
 - Remove FlexibleEntityBundle
 - Remove CategoryWriter and use the generic doctrine writer instead
 - Remove entity argument from FiltersConfigurator constructor
+- Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
