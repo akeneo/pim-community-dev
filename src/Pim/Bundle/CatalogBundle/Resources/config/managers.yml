@@ -1,4 +1,14 @@
+parameters:
+    pim_catalog.persister.product.class: Pim\Bundle\CatalogBundle\Persistence\BasicPersister
+
 services:
+    # Persister
+    pim_catalog.persister.product:
+        class: %pim_catalog.persister.product.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.completeness'
+
     # Managers
     pim_catalog.manager.product:
         class: %pim_catalog.manager.product.class%
@@ -7,15 +17,15 @@ services:
                   product_class:                %pim_catalog.entity.product.class%
                   product_value_class:          %pim_catalog.entity.product_value.class%
                   attribute_class:              %pim_catalog.entity.attribute.class%
-                  attribute_option_class:       %pim_catalog.entity.attribute_option.class%
-                  attribute_option_value_class: %pim_catalog.entity.attribute_option_value.class%
             - '@pim_catalog.object_manager.product'
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.persister.product'
             - '@event_dispatcher'
             - '@pim_catalog.manager.media'
-            - '@pim_catalog.manager.completeness'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
 
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%
