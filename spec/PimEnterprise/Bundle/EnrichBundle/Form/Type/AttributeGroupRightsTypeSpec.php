@@ -8,17 +8,17 @@ use PhpSpec\ObjectBehavior;
 
 class AttributeGroupRightsTypeSpec extends ObjectBehavior
 {
-    public function it_is_a_form_type()
+    function it_is_a_form_type()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Form\AbstractType');
     }
 
-    public function it_has_a_name()
+    function it_has_a_name()
     {
         $this->getName()->shouldReturn('pim_enterprise_enrich_attribute_group_rights');
     }
 
-    public function it_has_read_and_write_permission_fields(FormBuilderInterface $builder)
+    function it_has_read_and_write_permission_fields(FormBuilderInterface $builder)
     {
         $this->buildForm($builder, []);
 
@@ -31,7 +31,7 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
             ->shouldHaveBeenCalled();
     }
 
-    public function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)
+    function it_does_not_map_the_fields_to_the_entity_by_default(OptionsResolverInterface $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
