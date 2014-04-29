@@ -51,4 +51,9 @@ angular.module('App.directives', [])
                 };
             }
         };
+    })
+    .directive('gridFilters', function() {
+        return {
+            templateUrl: '/bundles/pimux/templates/grid/filters.html'
+        };
     });
