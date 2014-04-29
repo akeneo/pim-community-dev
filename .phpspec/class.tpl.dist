@@ -1,0 +1,12 @@
+<?php
+
+namespace %namespace%;
+
+/**
+ *
+ * @author    
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ */
+class %name%
+{
+}
