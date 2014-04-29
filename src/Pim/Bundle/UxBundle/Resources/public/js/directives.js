@@ -25,10 +25,6 @@ angular.module('App.directives', [])
     .directive('gridRow', function() {
         return {
             restrict: 'A',
-            scope: {
-                row: '=',
-                metaData: '='
-            },
             templateUrl: '/bundles/pimux/templates/grid/row.html',
             controller: function($scope) {
                 $scope.getCellConfig = function (columnName) {
@@ -37,7 +33,7 @@ angular.module('App.directives', [])
 
                 $scope.performRowAction = function (action) {
 
-                }
+                };
             }
         };
     })
