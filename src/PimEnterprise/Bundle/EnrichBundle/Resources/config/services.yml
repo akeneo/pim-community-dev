@@ -1,0 +1,8 @@
+parameters:
+    pim_enterprise_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+
+services:
+    pim_enterprise_enrich.twig.version_extension:
+        class: %pim_enterprise_enrich.twig.version_extension.class%
+        tags:
+            - { name: twig.extension }

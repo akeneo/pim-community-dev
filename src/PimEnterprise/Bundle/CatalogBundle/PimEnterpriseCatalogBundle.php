@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\CatalogBundle;
+namespace PimEnterprise\Bundle\CatalogBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -10,6 +10,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterprisePimCatalogBundle extends Bundle
+class PimEnterpriseCatalogBundle extends Bundle
 {
 }
