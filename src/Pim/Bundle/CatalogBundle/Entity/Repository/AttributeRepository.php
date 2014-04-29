@@ -407,4 +407,20 @@ class AttributeRepository extends EntityRepository implements
 
         return $this->identifierCode;
     }
+
+    /**
+     * Get non identifier attributes
+     *
+     * @return Attribute[]
+     */
+    public function getNonIdentifierAttributes()
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        $qb
+            ->andWhere($qb->expr()->neq('a.attributeType', '?1'))
+            ->setParameter(1, 'pim_catalog_identifier');
+
+        return $qb->getQuery()->getResult();
+    }
 }

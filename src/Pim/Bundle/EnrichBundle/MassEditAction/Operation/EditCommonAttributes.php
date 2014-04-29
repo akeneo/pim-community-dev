@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,7 +27,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EditCommonAttributes extends AbstractMassEditAction
+class EditCommonAttributes extends ProductMassEditOperation
 {
     /**
      * @var ArrayCollection
@@ -248,8 +248,8 @@ class EditCommonAttributes extends AbstractMassEditAction
     public function initialize()
     {
         $productIds = array();
-        foreach ($this->products as $product) {
-            $productIds[] = $product->getId();
+        foreach ($this->objects as $object) {
+            $productIds[] = $object->getId();
         }
         $this->initializeCommonAttributes($productIds);
 
@@ -290,10 +290,17 @@ class EditCommonAttributes extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->products as $product) {
-            $this->setProductValues($product);
-        }
-        $this->productManager->handleAllMedia($this->products);
+        parent::perform();
+
+        $this->productManager->handleAllMedia($this->objects);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doPerform(ProductInterface $product)
+    {
+        $this->setProductValues($product);
     }
 
     /**

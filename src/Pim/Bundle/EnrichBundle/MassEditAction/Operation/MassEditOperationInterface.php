@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 /**
  * Operation to execute on a set of products
@@ -9,7 +9,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface MassEditActionInterface
+interface MassEditOperationInterface
 {
     /**
      * Get the form type to use in order to configure the operation
@@ -34,11 +34,4 @@ interface MassEditActionInterface
      * Perform an operation on a set of products
      */
     public function perform();
-
-    /**
-     * Indicates whether the operation requires recalculation of the product completeness
-     *
-     * @return boolean
-     */
-    public function affectsCompleteness();
 }

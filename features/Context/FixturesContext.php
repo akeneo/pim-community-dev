@@ -1142,6 +1142,52 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @Then /^attribute "([^"]*)" should be required in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributeShouldBeRequiredInFamilyForChannel($attribute, $family, $channel)
+    {
+        $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+        assertNotNull($requirement);
+        assertTrue($requirement->isRequired());
+    }
+
+    /**
+     * @Given /^attribute "([^"]*)" should be optionnal in family "([^"]*)" for channel "([^"]*)"$/
+     */
+    public function attributeShouldBeOptionnalInFamilyForChannel($attribute, $family, $channel)
+    {
+        $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
+
+        assertNotNull($requirement);
+        assertFalse($requirement->isRequired());
+    }
+
+
+    /**
+     * @param string $attributeCode
+     * @param string $familyCode
+     * @param string $channelCode
+     */
+    private function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
+    {
+        $em = $this->getEntityManager();
+        $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
+
+        $attribute = $this->getAttribute($attributeCode);
+        $family = $this->getFamily($familyCode);
+        $channel = $this->getChannel($channelCode);
+
+        return $repo->findOneBy(
+            [
+                'attribute' => $attribute,
+                'family' => $family,
+                'channel' => $channel,
+            ]
+        );
+    }
+
+    /**
      * @param string $language
      *
      * @return string

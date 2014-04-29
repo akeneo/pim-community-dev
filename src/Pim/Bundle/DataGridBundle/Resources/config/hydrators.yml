@@ -1,4 +1,6 @@
-parameters: ~
+parameters:
+    pim_datagrid.datasource.result_record.hydrator.default.class:    Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ResultRecordHydrator
+    pim_datagrid.datasource.result_record.hydrator.orm.object.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\Orm\ObjectHydrator
 
 services:
     pim_datagrid.datasource.result_record.hydrator.product:
@@ -9,3 +11,9 @@ services:
 
     pim_datagrid.datasource.result_record.hydrator.object:
         class: %pim_datagrid.datasource.result_record.hydrator.object.class%
+
+    pim_datagrid.datasource.result_record.hydrator.default:
+        class: %pim_datagrid.datasource.result_record.hydrator.default.class%
+
+    pim_datagrid.datasource.result_record.hydrator.orm.object:
+        class: %pim_datagrid.datasource.result_record.hydrator.orm.object.class%

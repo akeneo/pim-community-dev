@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
+namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
@@ -13,7 +13,7 @@ class ChangeFamilySpec extends ObjectBehavior
 {
     function it_is_a_mass_edit_action()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
     function it_stores_the_family_to_add_the_products_to(Family $mugs)
@@ -38,7 +38,7 @@ class ChangeFamilySpec extends ObjectBehavior
         ProductInterface $product2
     ) {
         $this->setFamily($mugs);
-        $this->setProductsToMassEdit([$product1, $product2]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
 
         $product1->setFamily($mugs)->shouldBeCalled();
         $product2->setFamily($mugs)->shouldBeCalled();
