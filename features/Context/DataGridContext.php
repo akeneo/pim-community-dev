@@ -91,6 +91,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $currency
+     *
+     * @Then /^I filter by price "([^"]*)" with empty value on "([^"]*)" currency$/
+     */
+    public function iFilterByPriceWithEmptyValue($filterName, $currency)
+    {
+        $this->datagrid->filterPerPrice($filterName, 'is empty', null, $currency);
+        $this->wait();
+    }
+
+    /**
      * @param string $code
      *
      * @Given /^I filter by "category" with value "([^"]*)"$/

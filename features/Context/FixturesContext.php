@@ -1534,6 +1534,9 @@ class FixturesContext extends RawMinkContext
      */
     private function listToPrices($prices)
     {
+        if ($prices === "") {
+            $data['EUR'] = null;
+        }
         $prices = explode(',', $prices);
         $data = array();
 

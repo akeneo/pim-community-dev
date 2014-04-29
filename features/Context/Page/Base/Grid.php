@@ -646,8 +646,10 @@ class Grid extends Index
 
         $this->openFilter($filter);
 
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
+        if (null !== $value) {
+            $criteriaElt = $filter->find('css', 'div.filter-criteria');
+            $criteriaElt->fillField('value', $value);
+        }
 
         $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
         $actionButton = array_shift($buttons);
