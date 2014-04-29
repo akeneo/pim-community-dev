@@ -27,6 +27,7 @@ Are you sure you want to do this?: Êtes-vous sûr de que vouloir faire cela ?
 Action performed.: Action exécutée.
 Action is not performed.: "L'action n'a pas été exécutée."
 Please, select item to perform action.: "Veuillez sélectionner des éléments afin d'effectuer l'action."
+View per page: Par page
 oro.datagrid.entityHint: Entité
 oro.datagrid.noentities: Aucun enregistrement trouvé
 oro.datagrid.noresults: 'Aucun {{ entityHint }} ne correspond à votre recherche. Essayez de modifier vos critères de recherche...'
@@ -37,7 +38,7 @@ oro.datagrid.pagination.totalRecords: '{{ totalRecords }} éléments'
 oro.datagrid.action.reset: Réinitialiser
 oro.datagrid.action.refresh: Mettre à jour
 oro_datagrid.select.all: Tous
-oro_datagrid.select.visible: Visible
+oro_datagrid.select.visible: Tous les visibles
 oro_datagrid.select.none: Aucun
 pim.grid.ajax_choice_filter.label_empty: est vide
 Available Columns: Colonnes disponibles
