@@ -5,7 +5,6 @@ namespace PimEnterprise\Bundle\SecurityBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormConfigInterface;
 
 /**
  * Subscriber to remove product value when user has no right to at least see it

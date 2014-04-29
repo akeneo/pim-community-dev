@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -55,7 +54,7 @@ class AttributeGroupVoter implements VoterInterface
     /**
      * {@inheritdoc}
      */
-    function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, $object, array $attributes)
     {
         // TODO: hard coded rules to validate first UC
         foreach ($attributes as $attribute) {
