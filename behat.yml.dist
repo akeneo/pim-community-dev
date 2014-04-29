@@ -1,0 +1,20 @@
+default:
+    paths:
+        features: features
+    context:
+        class:  Context\FeatureContext
+        parameters:
+            base_url: http://akeneo-pim-enterprise-behat.local/
+            window_width: 1280
+            window_height: 1024
+    extensions:
+        Behat\MinkExtension\Extension:
+            default_session: symfony2
+            show_cmd: chromium-browser %s
+            selenium2: ~
+            base_url: http://akeneo-pim-enterprise-behat.local/
+            files_path: 'features/Context/fixtures/'
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat
+        SensioLabs\Behat\PageObjectExtension\Extension: ~
