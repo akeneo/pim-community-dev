@@ -3,7 +3,6 @@
 angular.module('App.directives', [])
     .directive('grid', function() {
         return {
-            restrict: 'A',
             scope: {
                 name: '@'
             },
@@ -18,28 +17,21 @@ angular.module('App.directives', [])
     })
     .directive('gridHeader', function() {
         return {
-            restrict: 'A',
             templateUrl: '/bundles/pimux/templates/grid/header.html',
         };
     })
     .directive('gridRow', function() {
         return {
-            restrict: 'A',
             templateUrl: '/bundles/pimux/templates/grid/row.html',
             controller: function($scope) {
                 $scope.getCellConfig = function (columnName) {
                     return _.find($scope.metaData.columns, {name: columnName});
-                };
-
-                $scope.performRowAction = function (action) {
-
                 };
             }
         };
     })
     .directive('gridCell', function(CellManager) {
         return {
-            restrict: 'A',
             scope: {
                 cell: '=',
                 column: '='
