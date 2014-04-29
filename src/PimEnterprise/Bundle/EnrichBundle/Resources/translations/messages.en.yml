@@ -1,0 +1,6 @@
+Rights: Rights
+pane.accordion.rights: Rights
+
+attribute group.rights:
+    read.label: Rights to view attributes
+    write.label: Rights to edit attributes

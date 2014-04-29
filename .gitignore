@@ -15,5 +15,7 @@ app/bootstrap.php.cache
 build/
 vendor
 bin
+behat.yml
+.phpspec/*.tpl
 composer.phar
 composer.lock

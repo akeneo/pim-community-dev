@@ -1,8 +1,15 @@
 parameters:
-    pim_enterprise_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+    pimee_enrich.twig.version_extension.class:           PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+    pimee_enrich.form.type.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupRightsType
+    pim_enrich.form.type.attribute_group.class:          PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupType
 
 services:
-    pim_enterprise_enrich.twig.version_extension:
-        class: %pim_enterprise_enrich.twig.version_extension.class%
+    pimee_enrich.twig.version_extension:
+        class: %pimee_enrich.twig.version_extension.class%
         tags:
             - { name: twig.extension }
+
+    pimee_enrich.form.type.attribute_group_rights:
+        class: %pimee_enrich.form.type.attribute_group_rights.class%
+        tags:
+            - { name: form.type, alias: pimee_enrich_attribute_group_rights }

@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.form.type.roles.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\RolesType
+
+services:
+    pimee_security.form.type.roles:
+        class: %pimee_security.form.type.roles.class%
+        tags:
+            - { name: form.type, alias: pimee_security_roles }
