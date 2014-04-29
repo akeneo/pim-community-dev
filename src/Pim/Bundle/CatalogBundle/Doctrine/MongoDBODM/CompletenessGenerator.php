@@ -291,10 +291,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $dataFields = array_keys($normalizedData);
 
         foreach ($missingComps as $missingComp) {
-            $reqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
-            $requiredCount = count($reqs);
+            $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+            $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
+            $requiredCount = count($attributesReqs) + count($pricesReqs);
 
-            $missingAttributes = array_diff($reqs, $dataFields);
+            $missingAttributes = array_diff($attributesReqs, $dataFields);
             $missingCount = count($missingAttributes);
     
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
