@@ -122,7 +122,11 @@ class Grid extends Index
         $this->openFilter($filter);
 
         if ($elt = $filter->find('css', 'select')) {
-            $elt->selectOption($value);
+            if ($elt->getText() === "between not between more than less than is empty") {
+                $this->filterByDate($filter, $value, $operator);
+            } else {
+                $elt->selectOption($value);
+            }
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
             if ($operator !== false) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
@@ -137,6 +141,23 @@ class Grid extends Index
                 sprintf('Filtering by "%s" is not yet implemented"', $filterName)
             );
         }
+    }
+
+    /**
+     * @param NodeElement $filter
+     * @param string      $value
+     * @param string      $operator
+     */
+    protected function filterByDate($filter, $value, $operator)
+    {
+        $elt = $filter->find('css', 'select');
+        if ('empty' === $operator) {
+            $elt->selectOption('is empty');
+        } else {
+            $elt->selectOption($operator);
+        }
+
+        $filter->find('css', 'button.filter-update')->click();
     }
 
     /**
