@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\SecurityBundle;
+namespace PimEnterprise\Bundle\SecurityBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -10,6 +10,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterprisePimSecurityBundle extends Bundle
+class PimEnterpriseSecurityBundle extends Bundle
 {
 }

@@ -1,8 +1,8 @@
 <?php
 
-namespace EnterprisePim\Bundle\EnrichBundle\Twig;
+namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use EnterprisePim\Bundle\CatalogBundle\Version;
+use PimEnterprise\Bundle\CatalogBundle\Version;
 
 /**
  * Extension to display version of the Akeneo
@@ -42,6 +42,6 @@ class VersionExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'enterprise_pim_version_extension';
+        return 'pim_enterprise_version_extension';
     }
 }

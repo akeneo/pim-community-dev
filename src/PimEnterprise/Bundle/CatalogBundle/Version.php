@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\CatalogBundle;
+namespace PimEnterprise\Bundle\CatalogBundle;
 
 /**
  * PIM Enterprise Version
