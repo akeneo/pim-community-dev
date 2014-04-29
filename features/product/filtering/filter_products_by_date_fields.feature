@@ -97,4 +97,3 @@ Feature: Filter products by date field
     And I should be able to use the following filters:
       | filter | value | result |
       | pages  | empty | book   |
-      
