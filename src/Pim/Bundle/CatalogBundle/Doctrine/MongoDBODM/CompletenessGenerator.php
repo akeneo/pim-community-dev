@@ -274,7 +274,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $completenesses = array();
         $allCompletenesses = false;
 
-        if (null === $normalizedData['completenesses']) {
+        if ((null === $normalizedData['completenesses'])||(0 === count($normalizedData['completenesses']))) {
             $missingComps = array_keys($normalizedReqs);
             $allCompletenesses = true;
         } else {
