@@ -8,6 +8,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@oro_security.acl_helper'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: pim_orm }
 
