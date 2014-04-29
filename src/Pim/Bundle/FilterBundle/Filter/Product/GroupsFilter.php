@@ -29,11 +29,7 @@ class GroupsFilter extends ChoiceFilter
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
 
-        if ($data['value'] === 'EMPTY') {
-            $pqb->addFieldFilter('groups', 'EMPTY', $ids);
-        } else {
-            $pqb->addFieldFilter('groups', 'IN', $ids);
-        }
+        $pqb->addFieldFilter('groups', 'EMPTY', $ids);
 
         return true;
     }
