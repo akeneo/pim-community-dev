@@ -20,7 +20,8 @@ class ProductPriceNormalizer implements NormalizerInterface
     public function normalize($object, $format = null, array $context = array())
     {
         $data = [
-            $object->getCurrency() => [
+            ProductValueNormalizer::NORM_ITEM_KEY => $object->getCurrency(),
+            ProductValueNormalizer::NORM_ITEM_VALUE=>  [
                 'data'     => $object->getData(),
                 'currency' => $object->getCurrency()
             ]

@@ -33,6 +33,11 @@ class AttributeOptionNormalizer implements NormalizerInterface
         }
         $data['optionValues'] = $values;
 
+        $data = [
+            ProductValueNormalizer::NORM_ITEM_KEY => $object->getId(),
+            ProductValueNormalizer::NORM_ITEM_VALUE => $data
+        ];
+
         return $data;
     }
 
