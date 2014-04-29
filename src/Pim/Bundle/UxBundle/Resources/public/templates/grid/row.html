@@ -1,10 +1,6 @@
 <td grid-cell ng-repeat="cell in row" cell="cell.value" column="getCellConfig(cell.column)"></td>
 <td grid-cell-actions>
-    <ul>
-        <li>
-            <span class="action" title="{{ action.label }}" ng-repeat="action in metaData.rowActions" ng-click="performRowAction(action)">
-                <i class="glyphicon glyphicon-{{ action.icon }}"></i>{{ action.label }}
-            </span>
-        </li>
-    </ul>
+    <a class="btn action" title="{{ action.label }}" ng-repeat="action in metaData.rowActions" ng-click="performRowAction(action)">
+        <i class="glyphicon glyphicon-{{ action.icon }}"></i>
+    </a>
 </td>
