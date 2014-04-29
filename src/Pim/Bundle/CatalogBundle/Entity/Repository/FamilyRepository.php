@@ -15,6 +15,9 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
  */
 class FamilyRepository extends ReferableEntityRepository implements ChoicesProviderInterface
 {
+    /**
+     * @TODO Move this code
+     */
     public function applyMassActionParameters($qb, $inset, $values)
     {
         if ($values) {

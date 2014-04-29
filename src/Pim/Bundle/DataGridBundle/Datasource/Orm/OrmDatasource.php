@@ -20,16 +20,13 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
  */
 class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     const TYPE = 'pim_orm';
 
-    /**
-     * @var string
-     */
+    /** @var string */
     const ENTITY_PATH = '[source][entity]';
 
+    /** @var HydratorInterface */
     protected $hydrator;
 
     /** @var array */
@@ -41,6 +38,11 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
     /** @var EntityRepository $repository */
     protected $repository;
 
+    /**
+     * @param EntityManager     $em
+     * @param AclHelper         $aclHelper
+     * @param HydratorInterface $hydrator
+     */
     public function __construct(EntityManager $em, AclHelper $aclHelper, HydratorInterface $hydrator)
     {
         parent::__construct($em, $aclHelper);
