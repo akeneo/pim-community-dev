@@ -22,5 +22,6 @@ class EnterprisePimSecurityExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('voters.yml');
+        $loader->load('subscribers.yml');
     }
 }
