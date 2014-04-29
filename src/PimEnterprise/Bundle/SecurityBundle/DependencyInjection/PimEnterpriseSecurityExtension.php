@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\SecurityBundle\DependencyInjection;
+namespace PimEnterprise\Bundle\SecurityBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class EnterprisePimSecurityExtension extends Extension
+class PimEnterpriseSecurityExtension extends Extension
 {
     /**
      * {@inheritdoc}

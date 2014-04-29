@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\SecurityBundle\Voter;
+namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;

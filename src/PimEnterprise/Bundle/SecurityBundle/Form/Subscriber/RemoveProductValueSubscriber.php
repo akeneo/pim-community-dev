@@ -1,6 +1,6 @@
 <?php
 
-namespace EnterprisePim\Bundle\SecurityBundle\Form\Subscriber;
+namespace PimEnterprise\Bundle\SecurityBundle\Form\Subscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;

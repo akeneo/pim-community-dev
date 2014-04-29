@@ -1,9 +1,0 @@
-parameters:
-    enterprise_pim_security.form.subscriber.remove_product_value_subscriber: EnterprisePim\Bundle\SecurityBundle\Form\Subscriber\RemoveProductValueSubscriber
-
-services:
-    enterprise_pim_security.form.subscriber.remove_product_value_subscriber:
-        class: %enterprise_pim_security.form.subscriber.remove_product_value_subscriber%
-#        arguments:
-#            - '@enterprise_pim_security.voter.attribute_group_voter'
-
