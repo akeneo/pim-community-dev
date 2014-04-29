@@ -1,3 +1,12 @@
+<li class="dropdown">
+    <a class="dropdown-toggle">Manage filters</a>
+    <ul class="dropdown-menu">
+        <li ng-repeat="filter in metaData.filters | filter:{enabled:false}">
+            <a ng-click="filter.enabled = true" ng-bind="filter.label"></a>
+        </li>
+    </ul>
+</li>
+
 <div class="pull-left" ng-repeat="filter in metaData.filters | filter:{enabled:true}">
     <button class="btn" ng-init="filter.selectedChoice = 'All'">
         {{ filter.label }}
