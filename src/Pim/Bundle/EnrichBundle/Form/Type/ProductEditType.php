@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
@@ -28,6 +29,9 @@ class ProductEditType extends AbstractType
 
     /** @var string */
     protected $categoryClass;
+
+    /** @var array of EventSubscriberInterface */
+    protected $subscribers = [];
 
     /**
      * Constructor
@@ -101,6 +105,10 @@ class ProductEditType extends AbstractType
                     'multiple' => true,
                 )
             );
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -122,5 +130,15 @@ class ProductEditType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['groups'] = $this->productFormView->getView();
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[]= $subscriber;
     }
 }
