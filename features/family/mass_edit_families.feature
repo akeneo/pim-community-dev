@@ -17,9 +17,9 @@ Feature: Mass Edit Families
     Then attribute "Length" should be required in family "boots" for channel "Mobile"
     And attribute "Length" should be required in family "sneakers" for channel "Mobile"
     And attribute "Length" should be required in family "sandals" for channel "Mobile"
-    But attribute "Length" should be optionnal in family "boots" for channel "Tablet"
-    And attribute "Length" should be optionnal in family "sneakers" for channel "Tablet"
-    And attribute "Length" should be optionnal in family "sandals" for channel "Tablet"
+    But attribute "Length" should be optional in family "boots" for channel "Tablet"
+    And attribute "Length" should be optional in family "sneakers" for channel "Tablet"
+    And attribute "Length" should be optional in family "sandals" for channel "Tablet"
 
   Scenario: Successfully set existing attribute requirements of many families
     Given the "footwear" catalog configuration
@@ -34,6 +34,6 @@ Feature: Mass Edit Families
     Then attribute "Name" should be required in family "boots" for channel "Mobile"
     And attribute "Name" should be required in family "sneakers" for channel "Mobile"
     And attribute "Name" should be required in family "sandals" for channel "Mobile"
-    But attribute "Name" should be optionnal in family "boots" for channel "Tablet"
-    And attribute "Name" should be optionnal in family "sneakers" for channel "Tablet"
-    And attribute "Name" should be optionnal in family "sandals" for channel "Tablet"
+    But attribute "Name" should be optional in family "boots" for channel "Tablet"
+    And attribute "Name" should be optional in family "sneakers" for channel "Tablet"
+    And attribute "Name" should be optional in family "sandals" for channel "Tablet"
