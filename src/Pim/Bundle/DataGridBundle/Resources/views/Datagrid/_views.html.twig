@@ -71,8 +71,12 @@ require(
             });
         }
 
+        var truncateTitle = function(title) {
+            return title.length > 20 ? title.substr(0, 17) + '...' : title;
+        };
+
         var opts = {
-            title: activeViewLabel,
+            title: truncateTitle(activeViewLabel),
             placeholder: '{{ 'Search'|trans }}',
             header: '',
             height: 175,
@@ -187,7 +191,11 @@ require(
             });
         });
 
-        var setTitle = function(title) {
+        var setTitle = function(title, suffix) {
+            title = truncateTitle(title);
+            if (suffix) {
+                title += suffix;
+            }
             $selector.multiselect({
                 title: title,
                 selectedText: title,
@@ -205,7 +213,7 @@ require(
                 $cloneButton.hide();
 
             } else {
-                setTitle(activeViewLabel + ' *');
+                setTitle(activeViewLabel, ' *');
                 if (!!$activeView.data('removable') || !!$activeView.data('default')) {
                     $updateButtton.show();
                 } else {
