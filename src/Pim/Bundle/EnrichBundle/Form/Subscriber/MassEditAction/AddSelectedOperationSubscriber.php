@@ -27,7 +27,7 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
     }
 
     /**
-    * @param FormEvent $event
+     * @param FormEvent $event
      */
     public function postSetData(FormEvent $event)
     {

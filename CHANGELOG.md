@@ -23,6 +23,7 @@
 - The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
+- Changed the HydratorInterface::hydrate() method signature
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

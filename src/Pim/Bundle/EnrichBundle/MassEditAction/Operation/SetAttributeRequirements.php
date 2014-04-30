@@ -32,6 +32,11 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     /** @var ArrayCollection */
     protected $attributeRequirements;
 
+    /**
+     * @param ChannelRepository           $channelRepository
+     * @param AttributeRepository         $attributeRepository
+     * @param AttributeRequirementFactory $factory
+     */
     public function __construct(
         ChannelRepository $channelRepository,
         AttributeRepository $attributeRepository,
@@ -53,6 +58,11 @@ class SetAttributeRequirements extends FamilyMassEditOperation
         return $this->attributeRequirements;
     }
 
+    /**
+     * Add an attribute requirement
+     *
+     * @param AttributeRequirement $attributeRequirement
+     */
     public function addAttributeRequirement(AttributeRequirement $attributeRequirement)
     {
         if (!$this->attributeRequirements->contains($attributeRequirement)) {
@@ -67,6 +77,11 @@ class SetAttributeRequirements extends FamilyMassEditOperation
         }
     }
 
+    /**
+     * Remove an attribute requirement
+     *
+     * @param AttributeRequirement $attributeRequirement
+     */
     public function removeAttributeRequirement(AttributeRequirement $attributeRequirement)
     {
         $this->attributeRequirements->removeElement($attributeRequirement);
@@ -78,7 +93,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     public function getFormType()
     {
         return 'pim_enrich_mass_set_attribute_requirements';
-   }
+    }
 
     /**
      * {@inheritdoc}
