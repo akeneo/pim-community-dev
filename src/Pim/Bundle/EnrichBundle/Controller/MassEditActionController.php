@@ -103,7 +103,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @Template
      * @AclAncestor("pim_enrich_mass_edit")
      *
-     * @return array|RedirectResponse
+     * @return array
      */
     public function chooseAction()
     {
@@ -114,18 +114,6 @@ class MassEditActionController extends AbstractDoctrineController
         $operator = $this->operatorRegistry->getOperator(
             $this->request->get('gridName')
         );
-
-        // Redirect to the available operation if there is only one
-        if (1 === count($operator->getOperationChoices())) {
-            return $this->redirectToRoute(
-                'pim_enrich_mass_edit_action_configure',
-                $this->getQueryParams() + [
-                    'operationAlias' => array_keys(
-                        $operator->getOperationChoices()
-                    )[0]
-                ]
-            );
-        }
 
         $form = $this->getOperatorForm($operator);
 
