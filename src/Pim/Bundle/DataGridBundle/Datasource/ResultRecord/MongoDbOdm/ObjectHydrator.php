@@ -16,7 +16,7 @@ class ObjectHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($qb, $options)
+    public function hydrate($qb, array $options = [])
     {
         $cursor = $qb->getQuery()->execute();
 

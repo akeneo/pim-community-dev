@@ -31,6 +31,9 @@ class ProductMassEditOperator extends AbstractMassEditOperator
         $this->manager = $manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'product';

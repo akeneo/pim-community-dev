@@ -44,7 +44,7 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     /**
      * Perform operation on the product instance
      *
-     * @param AbstractProduct $product
+     * @param ProductInterface $product
      */
     abstract protected function doPerform(ProductInterface $product);
 }
