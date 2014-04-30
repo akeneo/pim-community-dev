@@ -360,6 +360,18 @@ function($, _, __, ChoiceFilter, localeSettings) {
                 return true;
             }
             return value.type === 'empty' || value.value.start || value.value.end;
+        },
+
+        /**
+         * @inheritDoc
+         */
+        _onValueUpdated: function(newValue, oldValue) {
+            ChoiceFilter.prototype._onValueUpdated.apply(this, arguments);
+            if (newValue.type === 'empty') {
+                this.$el.find('.filter-separator').hide().end().find(this.criteriaValueSelectors.value.end).hide().end().find(this.criteriaValueSelectors.value.start).hide();
+            } else {
+                this.$el.find('.filter-separator').show().end().find(this.criteriaValueSelectors.value.end).show().end().find(this.criteriaValueSelectors.value.start).show();
+            }
         }
     });
 });
