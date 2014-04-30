@@ -53,7 +53,6 @@ class AttributeGroupVoter implements VoterInterface
                 } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'marketing') {
                     return VoterInterface::ACCESS_GRANTED;
                 }
-
             }
         }
 
