@@ -125,7 +125,16 @@ class Grid extends Index
             if ($elt->getText() === "between not between more than less than is empty") {
                 $this->filterByDate($filter, $value, $operator);
             } else {
-                $elt->selectOption($value);
+                $values = explode(',', $value);
+                if (!is_array($values)) {
+                    $values = [$values];
+                }
+                $multiple = false;
+                foreach ($values as $value) {
+                    $elt->selectOption($value, $multiple);
+                    $multiple = true;
+                    sleep(1);
+                }
             }
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
             if ($operator !== false) {
