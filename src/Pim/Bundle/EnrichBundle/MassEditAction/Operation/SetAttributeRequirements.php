@@ -93,7 +93,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     public function getFormType()
     {
         return 'pim_enrich_mass_set_attribute_requirements';
-   }
+    }
 
     /**
      * {@inheritdoc}
