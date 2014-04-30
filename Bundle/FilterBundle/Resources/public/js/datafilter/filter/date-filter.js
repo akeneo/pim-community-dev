@@ -330,7 +330,7 @@ function($, _, __, ChoiceFilter, localeSettings) {
          * @inheritDoc
          */
         _triggerUpdate: function(newValue, oldValue) {
-            if (newValue.type === 'empty' && newValue.type !== oldValue.type) {
+            if ((newValue.type === 'empty' || oldValue.type === 'empty') && newValue.type !== oldValue.type) {
                 this.trigger('update');
                 return;
             }
@@ -356,6 +356,9 @@ function($, _, __, ChoiceFilter, localeSettings) {
         },
 
         _isValueValid: function(value) {
+            if (_.isEqual(value, this.emptyValue) && !_.isEqual(this.value, value)) {
+                return true;
+            }
             return value.type === 'empty' || value.value.start || value.value.end;
         }
     });
