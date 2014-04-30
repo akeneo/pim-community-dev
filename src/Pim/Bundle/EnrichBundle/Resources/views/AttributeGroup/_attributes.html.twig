@@ -1,0 +1,53 @@
+{% set removalGranted = resource_granted('pim_enrich_attribute_group_remove_attribute') %}
+{% set sortGranted = resource_granted('pim_enrich_attribute_sort') %}
+
+<div class="tab-pane" id="attributes">
+    <div id="attribute-buttons"></div>
+    <div class="clearfix"></div>
+    <table class="table groups">
+        <thead>
+            {% if sortGranted %}
+                <th>&nbsp;</th>
+            {% endif %}
+            <th>{{ 'Name'|trans }}</th>
+            <th>{{ 'Type'|trans }}</th>
+            <th>{{ 'Scope'|trans }}</th>
+            <th>{{ 'Localizable'|trans }}</th>
+            {% if removalGranted %}
+                <th>&nbsp;</th>
+            {% endif %}
+        </thead>
+            <tbody id="attributes-sortable">
+                {% for attribute in group.attributes %}
+                    <tr>
+                        {% if sortGranted %}
+                            <td>
+                                <span class="handle">
+                                    <i class="icon-reorder"></i>
+                                    <input name="{{ attribute.id }}" type="hidden" value="{{ attribute.sortOrder }}">
+                                </span>
+                            </td>
+                        {% endif %}
+                        <td>{{ attribute.label }}</td>
+                        <td>{{ attribute.attributeType|trans }}</td>
+                        <td>{{ attribute.scopable ? 'Channel'|trans : 'Global'|trans }}</td>
+                        <td>
+                            <input type="checkbox" disabled="disabled"{% if attribute.localizable %} checked="checked"{% endif %}>
+                        </td>
+                        {% if removalGranted %}
+                            <td>
+                                <a {{ elements.deleteLinkAttributes(
+                                    path('pim_enrich_attributegroup_removeattribute', {'groupId': group.id, 'attributeId': attribute.id}),
+                                    path('pim_enrich_attributegroup_edit', {'id': group.id, 'boost': "now"|date("U") }),
+                                    'confirmation.attribute group.remove attribute'|trans({'%name%': attribute.label}),
+                                    'flash.attribute group.attribute removed'|trans
+                                ) }} class="remove-attribute">
+                                    <i class="icon-trash"></i>
+                                </a>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+    </table>
+</div>
