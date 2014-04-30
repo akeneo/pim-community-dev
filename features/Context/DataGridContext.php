@@ -587,18 +587,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $entities
-     *
-     * @return Then[]
-     *
      * @When /^I mass-edit products? (.*)$/
      */
-    public function iMassEdit($entities)
+    public function iMassEditProducts($products)
     {
         return [
             new Step\Then('I change the page size to 100'),
-            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then(sprintf('I select rows %s', $products)),
             new Step\Then('I press mass-edit button')
+        ];
+    }
+
+    /**
+     * Usefull because it auto-redirects to the configuration step of the set attribute requirement wizard
+     *
+     * @When /^I mass-edit families? (.*)$/
+     */
+    public function iMassEditFamilies($families)
+    {
+        return [
+            new Step\Then('I change the page size to 100'),
+            new Step\Then(sprintf('I select rows %s', $families)),
+            new Step\Then('I press family grid mass-edit button')
         ];
     }
 
@@ -609,6 +619,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getCurrentPage()->massEdit();
         $this->wait();
+    }
+
+    /**
+     * @When /^I press family grid mass-edit button$/
+     */
+    public function iPressFamilyGridMassEditButton()
+    {
+        $this->getCurrentPage()->massEdit();
+        $this->wait();
+        $this->getNavigationContext()->currentPage = 'Batch SetAttributeRequirements';
+
     }
 
     /**

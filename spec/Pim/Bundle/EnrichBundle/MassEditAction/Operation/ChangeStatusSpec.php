@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
+namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +12,7 @@ class ChangeStatusSpec extends ObjectBehavior
 {
     function it_is_a_mass_edit_action()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
     function it_stores_the_desired_product_status()
@@ -36,7 +36,7 @@ class ChangeStatusSpec extends ObjectBehavior
         ProductInterface $product2,
         ProductInterface $product1
     ) {
-        $this->setProductsToMassEdit([$product1, $product2]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
 
         $this->setToEnable(false);
         $product1->setEnabled(false)->shouldBeCalled();

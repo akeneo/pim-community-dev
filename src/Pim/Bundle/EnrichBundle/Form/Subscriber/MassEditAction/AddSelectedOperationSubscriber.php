@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
  * Add selected operation field if one is set
@@ -27,7 +27,7 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param FormEvent $event
+    * @param FormEvent $event
      */
     public function postSetData(FormEvent $event)
     {
@@ -39,7 +39,7 @@ class AddSelectedOperationSubscriber implements EventSubscriberInterface
         }
 
         $operation = $data->getOperation();
-        if ($operation instanceof MassEditActionInterface) {
+        if ($operation instanceof MassEditOperationInterface) {
             $form
                 ->remove('operationAlias')
                 ->add('operation', $operation->getFormType(), $operation->getFormOptions());

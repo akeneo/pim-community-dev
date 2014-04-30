@@ -8,6 +8,8 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Doctrine\ORM\EntityManager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -28,6 +30,8 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     const ENTITY_PATH = '[source][entity]';
 
+    protected $hydrator;
+
     /** @var array */
     protected $parameters = array();
 
@@ -36,6 +40,13 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
 
     /** @var EntityRepository $repository */
     protected $repository;
+
+    public function __construct(EntityManager $em, AclHelper $aclHelper, HydratorInterface $hydrator)
+    {
+        parent::__construct($em, $aclHelper);
+
+        $this->hydrator = $hydrator;
+    }
 
     /**
      * {@inheritdoc}
@@ -58,15 +69,7 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     public function getResults()
     {
-        $query = $this->qb->getQuery();
-
-        $results = $query->execute();
-        $rows    = [];
-        foreach ($results as $result) {
-            $rows[] = new ResultRecord($result);
-        }
-
-        return $rows;
+        return $this->hydrator->hydrate($this->qb, []);
     }
 
     /**

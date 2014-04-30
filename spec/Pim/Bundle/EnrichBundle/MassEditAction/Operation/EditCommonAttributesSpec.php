@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\EnrichBundle\MassEditAction;
+namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -56,7 +56,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
     function it_is_a_mass_edit_action()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionInterface');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
     function it_stores_the_desired_product_values()
@@ -114,7 +114,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productManager,
         $massActionManager
     ) {
-        $this->setProductsToMassEdit([$product1, $product2]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);
@@ -144,7 +144,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productValue,
         $massActionManager
     ) {
-        $this->setProductsToMassEdit([$product1, $product2]);
+        $this->setObjectsToMassEdit([$product1, $product2]);
 
         $product1->getId()->willReturn(1);
         $product2->getId()->willReturn(2);

@@ -14,7 +14,7 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\MassEditAction\AddSelectedOperationS
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MassEditActionOperatorType extends AbstractType
+class MassEditOperatorType extends AbstractType
 {
     /**
      * {@inheritdoc}

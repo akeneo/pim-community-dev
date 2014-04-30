@@ -2,6 +2,8 @@
 
 ## Features
 - Add an option to automatically sort the choices of simple and multi select attributes
+- Add a mass family edition operation to allow adding or changing attribute requirements on many families at once
+- All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
 
 ## Improvements
 - Group datagrid filters by attribute groups
@@ -18,6 +20,9 @@
 - Remove CategoryWriter and use the generic doctrine writer instead
 - Remove entity argument from FiltersConfigurator constructor
 - Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
+- The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
+- Mass edit operator has been moved to an Operator sub-namespace
+- Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

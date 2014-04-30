@@ -30,9 +30,9 @@ class ChangeStatusType extends AbstractType
     {
 
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\ChangeStatus'
-            )
+            [
+                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\ChangeStatus',
+            ]
         );
     }
 

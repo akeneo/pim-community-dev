@@ -1,9 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Adds many products to many groups
@@ -12,27 +13,21 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddToGroups extends AbstractMassEditAction
+class AddToGroups extends ProductMassEditOperation
 {
-    /**
-     * @var GroupRepository $groupRepository
-     */
+    /** @var GroupRepository */
     protected $groupRepository;
 
-    /**
-     * @var ArrayCollection $groups
-     */
+    /** @var ArrayCollection */
     protected $groups;
 
     /**
-     * Constructor
-     *
      * @param GroupRepository $groupRepository
      */
     public function __construct(GroupRepository $groupRepository)
     {
-        $this->groupRepository   = $groupRepository;
-        $this->groups            = new ArrayCollection();
+        $this->groupRepository = $groupRepository;
+        $this->groups = new ArrayCollection();
     }
 
     /**
@@ -60,11 +55,9 @@ class AddToGroups extends AbstractMassEditAction
      */
     public function getFormOptions()
     {
-        $groups = $this->groupRepository->findAll();
-
-        return array(
-            'groups' => $groups,
-        );
+        return [
+            'groups' => $this->groupRepository->findAll(),
+        ];
     }
 
     /**
@@ -78,12 +71,10 @@ class AddToGroups extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function perform()
+    protected function doPerform(ProductInterface $product)
     {
-        foreach ($this->products as $product) {
-            foreach ($this->getGroups() as $group) {
-                $group->addProduct($product);
-            }
+        foreach ($this->groups as $group) {
+            $group->addProduct($product);
         }
     }
 }

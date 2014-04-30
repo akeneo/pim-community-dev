@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
@@ -54,14 +55,24 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
     public function addFieldFilter($field, $operator, $value)
     {
         $value = is_array($value) ? $value : [$value];
-        $value = array_map('intval', $value);
 
         if ($operator === 'NOT IN') {
             $this->qb->field($field)->notIn($value);
-        } elseif ($operator === 'EMPTY') {
-            $this->qb->field($field)->exists(false);
         } else {
-            $this->qb->field($field)->in($value);
+            $expr = [];
+            if (in_array('empty', $value)) {
+                unset($value[array_search('empty', $value)]);
+
+                $exprNull = new Expr();
+                $exprNull = $exprNull->field($field)->exists(false);
+                $this->qb->addOr($exprNull);
+            }
+
+            if (count($value) > 0) {
+                $exprIn =new Expr();
+                $exprIn->field($field)->in($value);
+                $this->qb->addOr($exprIn);
+            }
         }
 
         return $this;

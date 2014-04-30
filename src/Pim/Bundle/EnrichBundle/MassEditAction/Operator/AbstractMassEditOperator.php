@@ -1,10 +1,10 @@
 <?php
 
-namespace Pim\Bundle\EnrichBundle\MassEditAction;
+namespace Pim\Bundle\EnrichBundle\MassEditAction\Operator;
 
 use JMS\Serializer\Annotation\Exclude;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface;
 
 /**
  * A batch operation operator
@@ -15,10 +15,10 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @Exclude
  */
-class MassEditActionOperator
+abstract class AbstractMassEditOperator
 {
     /**
-     * @var MassEditActionInterface $operation
+     * @var MassEditOperationInterface $operation
      * @Exclude
      */
     protected $operation;
@@ -29,12 +29,6 @@ class MassEditActionOperator
     protected $operationAlias;
 
     /**
-     * @var ProductManager $manager
-     * @Exclude
-     */
-    protected $manager;
-
-    /**
      * @var SecurityFacade
      */
     protected $securityFacade;
@@ -42,7 +36,7 @@ class MassEditActionOperator
     /**
      * The defined operations, indexed by code
      *
-     * @var MassEditActionInterface[] $operations
+     * @var MassEditOperationInterface[] $operations
      * @Exclude
      */
     protected $operations = array();
@@ -55,25 +49,23 @@ class MassEditActionOperator
     protected $acls = array();
 
     /**
-     * @param ProductManager $manager
      * @param SecurityFacade $securityFacade
      */
-    public function __construct(ProductManager $manager, SecurityFacade $securityFacade)
+    public function __construct(SecurityFacade $securityFacade)
     {
-        $this->manager = $manager;
         $this->securityFacade = $securityFacade;
     }
 
     /**
      * Register a batch operation into the operator
      *
-     * @param string                  $alias
-     * @param MassEditActionInterface $operation
-     * @param string                  $acl
+     * @param string                     $alias
+     * @param MassEditOperationInterface $operation
+     * @param string                     $acl
      *
      * @throws \InvalidArgumentException
      */
-    public function registerMassEditAction($alias, MassEditActionInterface $operation, $acl = null)
+    public function registerMassEditAction($alias, MassEditOperationInterface $operation, $acl = null)
     {
         if (array_key_exists($alias, $this->operations)) {
             throw new \InvalidArgumentException(sprintf('Operation "%s" is already registered', $alias));
@@ -105,7 +97,7 @@ class MassEditActionOperator
     /**
      * Get the batch operation
      *
-     * @return MassEditActionInterface
+     * @return MassEditOperationInterface
      */
     public function getOperation()
     {
@@ -119,9 +111,9 @@ class MassEditActionOperator
      *
      * @return MassEditActionOperator
      */
-    public function setProductsToMassEdit(array $products)
+    public function setObjectsToMassEdit(array $products)
     {
-        $this->operation->setProductsToMassEdit($products);
+        $this->operation->setObjectsToMassEdit($products);
 
         return $this;
     }
@@ -133,7 +125,8 @@ class MassEditActionOperator
      * @param string $operationAlias
      *
      * @throws InvalidArgumentException when the alias is not registered
-     * @return MassEditActionInterface
+     *
+     * @return MassEditOperationInterface
      */
     public function setOperationAlias($operationAlias)
     {
@@ -185,15 +178,22 @@ class MassEditActionOperator
     /**
      * Finalize the batch operation - flush the products
      */
-    public function finalizeOperation()
-    {
-        set_time_limit(0);
+    abstract public function finalizeOperation();
 
-        $products = $this->operation->getProductsToMassEdit();
+    /**
+     * Returns the name of the operator
+     * Used in the view to generate translation key
+     *
+     * @return string
+     */
+    abstract public function getName();
 
-        $scheduleCompleteness = $this->operation ? $this->operation->affectsCompleteness() : true;
-        $this->manager->saveAll($products, false, true, $scheduleCompleteness);
-    }
+    /**
+     * Get the route name to which to redirect at the end of the operation performing)
+     *
+     * @return string
+     */
+    abstract public function getPerformedOperationRedirectionRoute();
 
     /**
      * Returns true if the operation is allowed for the current user
