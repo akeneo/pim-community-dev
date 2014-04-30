@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.voter.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter
+
+services:
+    pimee_security.voter.attribute_group_voter:
+        class: %pimee_security.voter.attribute_group.class%
+        tags:
+            - { name: security.voter }
