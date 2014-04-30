@@ -59,7 +59,6 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
         if ($operator === 'NOT IN') {
             $this->qb->field($field)->notIn($value);
         } else {
-            $expr = [];
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
