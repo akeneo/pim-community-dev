@@ -191,6 +191,7 @@ info:
     keep products: Les produits associés à ces catégories ne seront pas supprimés.
   product:
     no available attributes: "Il n'y a plus d'attributs disponibles"
+    no family defined: Pas de famille définie
     change family: Changer la famille du produit
     change family to: Changer la famille pour
     merge attributes: Les attributs existants seront fusionnés avec ceux de la nouvelle famille.
@@ -205,12 +206,17 @@ info:
     select products: Veuillez sélectionner les produits qui devraient appartenir à ce groupe.
     selectable products: Les produits sélectionnables suivants ont une valeur définie pour chaque axe.
     no group types: Aucun type de groupe existe, cliquez ici pour en créer un
+    more products: '%count% produits de plus...'
   association type:
     show products: Afficher les produits
     show groups: Afficher les groupes
     remove from products: "La suppression du type d'association l'enlèvera de %count% produits."
     none exist: "Aucun type d'association n'existe."
     create one: Cliquez ici pour en créer un
+  attribute:
+    auto option sorting: Si activé, les options sont automatiquement triées par leurs valeurs traduites
+  completeness:
+    not calculated: Pas encore calculé
 color:
   title: Couleur
   gray: Gris
@@ -279,6 +285,7 @@ Search: Recherche
 Choose the attribute type: "Choisissez le type d'attribut"
 Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
+Automatic option sorting: Option de tri automatique
 Create: Créer
 Cancel: Annuler
 Choose a family: Choisissez une famille
@@ -289,6 +296,8 @@ Completeness: Complétude
 Attribute used as label: Attribut utilisé comme étiquette
 Global: Général
 Channel: Canal
+Expand all channels: Afficher tous les canaux
+Collapse all channels: Masquer les canaux
 Always override: Toujours écraser
 Ask: Demander
 General Properties: Propriétés générales

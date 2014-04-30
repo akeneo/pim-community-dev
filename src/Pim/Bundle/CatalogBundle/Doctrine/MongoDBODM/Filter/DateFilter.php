@@ -70,6 +70,10 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
                 $this->qb->field($field)->equals($this->getTimestamp($value));
                 break;
 
+            case 'EMPTY':
+                $this->qb->field($field)->exists(false);
+                break;
+
             default:
                 $this->qb->addAnd(
                     $this->qb->expr()

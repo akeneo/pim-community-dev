@@ -28,3 +28,9 @@ With 1.2 :
 ```
 
 ./src/Pim/Bundle/CatalogBundle/Manager/ProductManager.php has been updated to use these new configuration parameters
+
+
+MongoDB implementation
+----------------------
+
+We removed null values from normalizedData field to avoid storing useless values

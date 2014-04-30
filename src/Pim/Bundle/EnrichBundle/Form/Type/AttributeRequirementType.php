@@ -5,6 +5,8 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Attribute requirement form type
@@ -20,7 +22,21 @@ class AttributeRequirementType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('required', 'checkbox');
+        if ($options['keep_non_required']) {
+            // Hidden value is used to store 1 or 0 and send the "uncheck" value
+            // (which is impossible to do with a checkbox)
+            $builder->add('required', 'hidden');
+        } else {
+            $builder->add('required', 'checkbox');
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+        $view['required']->vars['keep_non_required'] = $options['keep_non_required'];
     }
 
     /**
@@ -30,7 +46,8 @@ class AttributeRequirementType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement'
+                'data_class' => 'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement',
+                'keep_non_required' => false,
             )
         );
     }

@@ -16,6 +16,41 @@ use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
 class FamilyRepository extends ReferableEntityRepository implements ChoicesProviderInterface
 {
     /**
+     * @TODO Move this code
+     */
+    public function applyMassActionParameters($qb, $inset, $values)
+    {
+        if ($values) {
+            $rootAlias = $qb->getRootAlias();
+                $valueWhereCondition =
+                    $inset
+                    ? $qb->expr()->in($rootAlias, $values)
+                    : $qb->expr()->notIn($rootAlias, $values);
+                $qb->andWhere($valueWhereCondition);
+        }
+        $whereParts = $qb->getDQLPart('where')->getParts();
+        $qb->resetDQLPart('where');
+
+        foreach ($whereParts as $part) {
+            if (!is_string($part) || !strpos($part, 'entityIds')) {
+                $qb->andWhere($part);
+            }
+        }
+
+        $qb->setParameters(
+            $qb->getParameters()->filter(
+                function ($parameter) {
+                    return $parameter->getName() !== 'entityIds';
+                }
+            )
+        );
+
+        // Allows hydration as object.
+        // Family mass edit operation receives an array instead of a Family object
+        $qb->select($qb->getRootAlias());
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getChoices(array $options)

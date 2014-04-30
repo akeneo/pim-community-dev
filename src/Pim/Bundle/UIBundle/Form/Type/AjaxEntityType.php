@@ -106,6 +106,7 @@ class AjaxEntityType extends AbstractType
                 'route'                 => 'pim_ui_ajaxentity_list',
                 'route_parameters'      => array(),
                 'data_class'            => null,
+                'error_bubbling'        => false,
                 'minimum_input_length'  => 0
             )
         );

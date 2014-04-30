@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Filter\StringFilter as OroStringFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -45,13 +46,21 @@ class StringFilter extends OroStringFilter
      */
     protected function prepareData(FilterDatasourceAdapterInterface $ds, $data)
     {
-        if (!is_array($data) || !array_key_exists('value', $data) || !$data['value']) {
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || !array_key_exists('type', $data)
+            || (!$data['value'] && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
 
         $data['type']  = isset($data['type']) ? $data['type'] : null;
-        $format = $ds->getFormatByComparisonType($data['type']);
-        $data['value'] = sprintf($format, $data['value']);
+
+        if ('in' === $data['type']) {
+            $data['value'] = explode(',', $data['value']);
+        } else {
+            $format = $ds->getFormatByComparisonType($data['type']);
+            $data['value'] = sprintf($format, $data['value']);
+        }
 
         return $data;
     }

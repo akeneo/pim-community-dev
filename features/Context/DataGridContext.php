@@ -91,6 +91,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $filterName
+     * @param string $currency
+     *
+     * @Then /^I filter by price "([^"]*)" with empty value on "([^"]*)" currency$/
+     */
+    public function iFilterByPriceWithEmptyValue($filterName, $currency)
+    {
+        $this->datagrid->filterPerPrice($filterName, 'is empty', null, $currency);
+        $this->wait();
+    }
+
+    /**
      * @param string $code
      *
      * @Given /^I filter by "category" with value "([^"]*)"$/
@@ -308,6 +320,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
+
             $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
             $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
@@ -428,20 +441,27 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
-        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with) ([^">=<]*)$/';
+        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
         $operator = false;
 
         $matches = array();
         if (preg_match($operatorPattern, $value, $matches)) {
-            $operator = $matches[1];
-            $value    = $matches[2];
+            if (count($matches) === 1) {
+                $operator = $matches[0];
+                $value    = false;
+            } else {
+                $operator = $matches[1];
+                $value    = $matches[2];
+            }
 
             $operators = array(
                 'contains'         => Grid::FILTER_CONTAINS,
                 'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
                 'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
                 'starts with'      => Grid::FILTER_STARTS_WITH,
-                'ends with'        => Grid::FILTER_ENDS_WITH
+                'ends with'        => Grid::FILTER_ENDS_WITH,
+                'empty'            => Grid::FILTER_IS_EMPTY,
+                'in list'          => Grid::FILTER_IN_LIST,
             );
 
             $operator = $operators[$operator];
@@ -567,18 +587,28 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @param string $entities
-     *
-     * @return Then[]
-     *
      * @When /^I mass-edit products? (.*)$/
      */
-    public function iMassEdit($entities)
+    public function iMassEditProducts($products)
     {
         return [
             new Step\Then('I change the page size to 100'),
-            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then(sprintf('I select rows %s', $products)),
             new Step\Then('I press mass-edit button')
+        ];
+    }
+
+    /**
+     * Usefull because it auto-redirects to the configuration step of the set attribute requirement wizard
+     *
+     * @When /^I mass-edit families? (.*)$/
+     */
+    public function iMassEditFamilies($families)
+    {
+        return [
+            new Step\Then('I change the page size to 100'),
+            new Step\Then(sprintf('I select rows %s', $families)),
+            new Step\Then('I press family grid mass-edit button')
         ];
     }
 
@@ -589,6 +619,17 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getCurrentPage()->massEdit();
         $this->wait();
+    }
+
+    /**
+     * @When /^I press family grid mass-edit button$/
+     */
+    public function iPressFamilyGridMassEditButton()
+    {
+        $this->getCurrentPage()->massEdit();
+        $this->wait();
+        $this->getNavigationContext()->currentPage = 'Batch SetAttributeRequirements';
+
     }
 
     /**

@@ -13,11 +13,13 @@ use Behat\Mink\Element\NodeElement;
  */
 class Grid extends Index
 {
-    const FILTER_CONTAINS = 1;
+    const FILTER_CONTAINS         = 1;
     const FILTER_DOES_NOT_CONTAIN = 2;
-    const FILTER_IS_EQUAL_TO = 3;
-    const FILTER_STARTS_WITH = 4;
-    const FILTER_ENDS_WITH = 5;
+    const FILTER_IS_EQUAL_TO      = 3;
+    const FILTER_STARTS_WITH      = 4;
+    const FILTER_ENDS_WITH        = 5;
+    const FILTER_IS_EMPTY         = 'empty';
+    const FILTER_IN_LIST          = 'in';
 
     /**
      * {@inheritdoc}
@@ -120,19 +122,51 @@ class Grid extends Index
         $this->openFilter($filter);
 
         if ($elt = $filter->find('css', 'select')) {
-            $elt->selectOption($value);
+            if ($elt->getText() === "between not between more than less than is empty") {
+                $this->filterByDate($filter, $value, $operator);
+            } else {
+                $values = explode(',', $value);
+                if (!is_array($values)) {
+                    $values = [$values];
+                }
+                $multiple = false;
+                foreach ($values as $value) {
+                    $elt->selectOption($value, $multiple);
+                    $multiple = true;
+                    sleep(1);
+                }
+            }
         } elseif ($elt = $filter->find('css', 'div.filter-criteria')) {
             if ($operator !== false) {
                 $filter->find('css', 'button.dropdown-toggle')->click();
                 $filter->find('css', '[data-value="'.$operator.'"]')->click();
             }
-            $elt->fillField('value', $value);
+            if ($value !== false) {
+                $elt->fillField('value', $value);
+            }
             $filter->find('css', 'button.filter-update')->click();
         } else {
             throw new \InvalidArgumentException(
                 sprintf('Filtering by "%s" is not yet implemented"', $filterName)
             );
         }
+    }
+
+    /**
+     * @param NodeElement $filter
+     * @param string      $value
+     * @param string      $operator
+     */
+    protected function filterByDate($filter, $value, $operator)
+    {
+        $elt = $filter->find('css', 'select');
+        if ('empty' === $operator) {
+            $elt->selectOption('is empty');
+        } else {
+            $elt->selectOption($operator);
+        }
+
+        $filter->find('css', 'button.filter-update')->click();
     }
 
     /**
@@ -621,8 +655,10 @@ class Grid extends Index
 
         $this->openFilter($filter);
 
-        $criteriaElt = $filter->find('css', 'div.filter-criteria');
-        $criteriaElt->fillField('value', $value);
+        if (null !== $value) {
+            $criteriaElt = $filter->find('css', 'div.filter-criteria');
+            $criteriaElt->fillField('value', $value);
+        }
 
         $buttons = $filter->findAll('css', '.currencyfilter button.dropdown-toggle');
         $actionButton = array_shift($buttons);

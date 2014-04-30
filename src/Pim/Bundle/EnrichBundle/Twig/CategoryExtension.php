@@ -18,16 +18,16 @@ class CategoryExtension extends \Twig_Extension
     /**
      * @var ProductCategoryManager
      */
-    protected $productCategoryManager;
+    protected $manager;
 
     /**
      * Constructor
      *
-     * @param ProductCategoryManager $productCategoryManager
+     * @param ProductCategoryManager $manager
      */
-    public function __construct(ProductCategoryManager $productCategoryManager)
+    public function __construct(ProductCategoryManager $manager)
     {
-        $this->productCategoryManager = $productCategoryManager;
+        $this->manager = $manager;
     }
 
     /**
@@ -379,9 +379,7 @@ class CategoryExtension extends \Twig_Extension
      */
     protected function countProducts(CategoryInterface $category, $includeSub)
     {
-        return $this
-            ->productCategoryManager
-            ->getProductsCountInCategory($category, $includeSub);
+        return $this->manager->getProductsCountInCategory($category, $includeSub);
     }
 
     /**

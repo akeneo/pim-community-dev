@@ -57,6 +57,9 @@ class MetricFilter implements AttributeFilterInterface
             case '>=':
                 $this->qb->field($fieldData)->gte($data);
                 break;
+            case 'EMPTY':
+                $this->qb->field($fieldData)->equals(null);
+                break;
             default:
                 $this->qb->field($fieldData)->equals($data);
         }

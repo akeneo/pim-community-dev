@@ -19,9 +19,10 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\EnrichBundle\Form\Type\MassEditActionOperatorType;
+use Pim\Bundle\EnrichBundle\Form\Type\MassEditOperatorType;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
+use Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator;
 
 /**
  * Mass edit operation controller
@@ -32,7 +33,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator;
  */
 class MassEditActionController extends AbstractDoctrineController
 {
-    /** @var MassEditActionOperator */
+    /** @var AbstractMassEditOperator */
     protected $operator;
 
     /** @var MassActionParametersParser */
@@ -47,8 +48,8 @@ class MassEditActionController extends AbstractDoctrineController
     /** @var integer */
     protected $massEditLimit;
 
-    /** @var array $products */
-    protected $products = null;
+    /** @var array */
+    protected $objects;
 
     /**
      * Constructor
@@ -61,7 +62,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
      * @param ManagerRegistry            $doctrine
-     * @param MassEditActionOperator     $operator
+     * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param integer                    $massEditLimit
@@ -75,7 +76,7 @@ class MassEditActionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         ManagerRegistry $doctrine,
-        MassEditActionOperator $operator,
+        OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         $massEditLimit
@@ -91,17 +92,18 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator            = $validator;
-        $this->operator             = $operator;
-        $this->parametersParser     = $parametersParser;
+        $this->validator = $validator;
+        $this->operatorRegistry = $operatorRegistry;
+        $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
-        $this->massEditLimit        = $massEditLimit;
+        $this->massEditLimit = $massEditLimit;
     }
 
     /**
      * @Template
      * @AclAncestor("pim_enrich_mass_edit")
-     * @return template|RedirectResponse
+     *
+     * @return array
      */
     public function chooseAction()
     {
@@ -109,22 +111,27 @@ class MassEditActionController extends AbstractDoctrineController
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
-        $form = $this->getOperatorForm();
+        $operator = $this->operatorRegistry->getOperator(
+            $this->request->get('gridName')
+        );
+
+        $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
             if ($form->isValid()) {
                 return $this->redirectToRoute(
                     'pim_enrich_mass_edit_action_configure',
-                    $this->getQueryParams() + ['operationAlias' => $this->operator->getOperationAlias()]
+                    $this->getQueryParams() + ['operationAlias' => $operator->getOperationAlias()]
                 );
             }
         }
 
         return array(
-            'form'         => $form->createView(),
-            'productCount' => $this->getProductCount(),
-            'queryParams'  => $this->getQueryParams()
+            'form' => $form->createView(),
+            'count' => $this->getObjectCount(),
+            'queryParams' => $this->getQueryParams(),
+            'operator' => $operator,
         );
     }
 
@@ -142,28 +149,32 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         try {
-            $this->operator
+            $operator = $this->operatorRegistry->getOperator(
+                $this->request->get('gridName')
+            );
+
+            $operator
                 ->setOperationAlias($operationAlias)
-                ->setProductsToMassEdit($this->getProducts());
+                ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $this->operator->initializeOperation();
-        $form = $this->getOperatorForm();
+        $operator->initializeOperation();
+        $form = $this->getOperatorForm($operator);
 
         if ($this->request->isMethod('POST')) {
             $form->submit($this->request);
-            $this->operator->initializeOperation();
-            $form = $this->getOperatorForm();
+            $operator->initializeOperation();
+            $form = $this->getOperatorForm($operator);
         }
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'         => $form->createView(),
-                'operator'     => $this->operator,
-                'productCount' => $this->getProductCount(),
+                'operator'     => $operator,
+                'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
@@ -183,20 +194,24 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         try {
-            $this->operator
+            $operator = $this->operatorRegistry->getOperator(
+                $this->request->get('gridName')
+            );
+
+            $operator
                 ->setOperationAlias($operationAlias)
-                ->setProductsToMassEdit($this->getProducts());
+                ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
         }
 
-        $this->operator->initializeOperation();
-        $form = $this->getOperatorForm();
+        $operator->initializeOperation();
+        $form = $this->getOperatorForm($operator);
         $form->submit($this->request);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
-        $this->operator->performOperation();
-        foreach ($this->validator->validate($this->operator) as $violation) {
+        $operator->performOperation();
+        foreach ($this->validator->validate($operator) as $violation) {
             $form->addError(
                 new FormError(
                     $violation->getMessage(),
@@ -208,28 +223,28 @@ class MassEditActionController extends AbstractDoctrineController
         }
 
         if ($form->isValid()) {
-            $this->operator->finalizeOperation();
+            $operator->finalizeOperation();
             $this->addFlash(
                 'success',
                 sprintf('pim_enrich.mass_edit_action.%s.success_flash', $operationAlias)
             );
 
-            return $this->redirectToRoute('pim_enrich_product_index');
+            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         return $this->render(
             sprintf('PimEnrichBundle:MassEditAction:configure/%s.html.twig', $operationAlias),
             array(
                 'form'         => $form->createView(),
-                'operator'     => $this->operator,
-                'productCount' => $this->getProductCount(),
+                'operator'     => $operator,
+                'productCount' => $this->getObjectCount(),
                 'queryParams'  => $this->getQueryParams()
             )
         );
     }
 
     /**
-     * Temporary method to avoid editing too many products
+     * Temporary method to avoid editing too many objects
      *
      * @return boolean
      *
@@ -237,7 +252,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function exceedsMassEditLimit()
     {
-        if ($this->getProductCount() > $this->massEditLimit) {
+        if ($this->getObjectCount() > $this->massEditLimit) {
             $this->addFlash('error', 'pim_enrich.mass_edit_action.limit_exceeded', ['%limit%' => $this->massEditLimit]);
 
             return true;
@@ -249,23 +264,23 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * @return Form
      */
-    protected function getOperatorForm()
+    protected function getOperatorForm(AbstractMassEditOperator $operator)
     {
         return $this->createForm(
-            new MassEditActionOperatorType(),
-            $this->operator,
-            array('operations' => $this->operator->getOperationChoices())
+            new MassEditOperatorType(),
+            $operator,
+            array('operations' => $operator->getOperationChoices())
         );
     }
 
     /**
-     * Get the count of products to perform the mass action on
+     * Get the count of objects to perform the mass action on
      *
      * @return integer
      */
-    protected function getProductCount()
+    protected function getObjectCount()
     {
-        return count($this->getProducts());
+        return count($this->getObjects());
     }
 
     /**
@@ -291,7 +306,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     protected function dispatchMassAction()
     {
-        $this->products = $this->massActionDispatcher->dispatch($this->request);
+        $this->objects = $this->massActionDispatcher->dispatch($this->request);
     }
 
     /**
@@ -299,12 +314,12 @@ class MassEditActionController extends AbstractDoctrineController
      *
      * @return array
      */
-    protected function getProducts()
+    protected function getObjects()
     {
-        if ($this->products === null) {
+        if ($this->objects === null) {
             $this->dispatchMassAction();
         }
 
-        return $this->products;
+        return $this->objects;
     }
 }

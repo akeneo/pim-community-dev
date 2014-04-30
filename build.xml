@@ -37,6 +37,7 @@
         <mkdir dir="${basedir}/app/build/logs/phpunit"/>
         <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
+        <mkdir dir="${basedir}/app/build/logs/phpdoc"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -170,7 +171,6 @@
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
-            <arg path="${basedir}/features" />
         </exec>
     </target>
 
