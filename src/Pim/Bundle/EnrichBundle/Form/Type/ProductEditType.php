@@ -30,7 +30,7 @@ class ProductEditType extends AbstractType
     /** @var string */
     protected $categoryClass;
 
-    /** @var array of EventSubscriberInterface */
+    /** @var EventSubscriberInterface[] */
     protected $subscribers = [];
 
     /**
@@ -139,6 +139,6 @@ class ProductEditType extends AbstractType
      */
     public function addEventSubscriber(EventSubscriberInterface $subscriber)
     {
-        $this->subscribers[]= $subscriber;
+        $this->subscribers[] = $subscriber;
     }
 }
