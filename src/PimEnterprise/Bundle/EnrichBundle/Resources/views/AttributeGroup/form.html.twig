@@ -1,0 +1,61 @@
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
+{% set editMode = form.vars.value.id ? true : false %}
+
+{{ JSFV(form) }}
+{{ form_start(form, {
+    'action': editMode ? path('pim_enrich_attributegroup_edit', { id: form.vars.value.id }) : path('pim_enrich_attributegroup_create'),
+    'attr': {
+        'data-updated-title': 'confirmation.leave'|trans,
+        'data-updated-message': 'confirmation.discard changes'|trans({ '%entity%': 'attribute group.title'|trans })
+    }
+}) }}
+
+    {% set title = editMode ? 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label : 'attribute group.create'|trans %}
+
+    {% set buttons %}
+        {% if editMode %}
+            {{ elements.deleteLink(
+                path('pim_enrich_attributegroup_remove', {'id': form.vars.value.id}),
+                'pim_enrich_attribute_group_remove',
+                path('pim_enrich_attributegroup_index'),
+                'confirmation.remove.attribute group'|trans({'%name%': form.vars.data.label}),
+                'flash.attribute group.removed'|trans)
+            }}
+        {% endif %}
+        {{ elements.submitBtn() }}
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
+
+    {% set tabs = ['Properties'] %}
+    {% if editMode %}
+        {% set tabs = tabs|merge(['Attributes', 'Rights', 'History']) %}
+    {% endif %}
+
+    {{ elements.form_navbar(tabs) }}
+
+    <div class="tab-content">
+        {{ elements.form_errors(form) }}
+
+        <div class="tab-pane active" id="properties">
+            {{ elements.accordion({ 'pane.accordion.general_properties': form_row(form.code), 'pane.accordion.group_values': form_row(form.label) }) }}
+        </div>
+        {{ form_row(form.sort_order) }}
+
+        {% if editMode %}
+            {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
+
+            <div class="tab-pane" id="rights">
+                {{ elements.accordion({ 'pane.accordion.rights': form_widget(form.rights) }) }}
+            </div>
+
+            <div class="tab-pane" id="history">
+                {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+                {{ dataGrid.renderHistoryGrid(form.vars.value) }}
+            </div>
+        {% endif %}
+    </div>
+{{ form_end(form) }}
