@@ -133,6 +133,7 @@ class AjaxEntityTypeTest extends \PHPUnit_Framework_TestCase
             'route_parameters'      => array(),
             'data_class'            => null,
             'minimum_input_length'  => 0,
+            'error_bubbling'	    => false,
             'locale'                => 'locale',
             'url'                   => 'pim_ui_ajaxentity_list?&class=class&dataLocale=locale&collectionId='
         );
