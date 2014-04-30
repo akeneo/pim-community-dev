@@ -1,0 +1,25 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
+    type: entity
+    table: pimee_security_attribute_group_access
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        attributeGroupId:
+            type: integer
+            column: attribute_group_id
+        roleId:
+            type: integer
+            column: role_id
+        viewAttributes:
+            type: boolean
+            column: view_attributes
+            options:
+                default: false
+        editAttributes:
+            type: boolean
+            column: edit_attributes
+            options:
+                default: false
