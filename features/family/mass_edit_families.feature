@@ -10,6 +10,7 @@ Feature: Mass Edit Families
     And I am on the families page
     # These families don't have attribute Length
     When I mass-edit families boots, sneakers and sandals
+    And I choose the "Set attribute requirements" operation
     And I display the Length attribute
     And I switch the attribute "Length" requirement in channel "Mobile"
     And I move on to the next step
@@ -26,6 +27,7 @@ Feature: Mass Edit Families
     And I am on the families page
     # These families already have attribute Name
     When I mass-edit families boots, sneakers and sandals
+    And I choose the "Set attribute requirements" operation
     And I display the Name attribute
     And I switch the attribute "Name" requirement in channel "Mobile"
     And I move on to the next step
