@@ -62,15 +62,15 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
             if (in_array('empty', $value)) {
                 unset($value[array_search('empty', $value)]);
 
-                $exprNull = new Expr();
-                $exprNull = $exprNull->field($field)->exists(false);
-                $this->qb->addOr($exprNull);
+                $expr = new Expr();
+                $expr = $expr->field($field)->exists(false);
+                $this->qb->addOr($expr);
             }
 
             if (count($value) > 0) {
-                $exprIn =new Expr();
-                $exprIn->field($field)->in($value);
-                $this->qb->addOr($exprIn);
+                $expr = new Expr();
+                $expr->field($field)->in($value);
+                $this->qb->addOr($expr);
             }
         }
 
