@@ -343,6 +343,20 @@ function($, _, __, ChoiceFilter, localeSettings) {
             ) {
                 this.trigger('update');
             }
+        },
+        
+        /**
+         * @inheritDoc
+         */
+        setValue: function(value) {
+            if (this._isValueValid(value)) {
+                return ChoiceFilter.prototype.setValue.apply(this, arguments);
+            }
+            return this;
+        },
+
+        _isValueValid: function(value) {
+            return value.type === 'empty' || value.value.start || value.value.end;
         }
     });
 });
