@@ -13,6 +13,12 @@ angular.module('App.directives', [])
                     $scope.metaData = data.metadata;
                     $scope.data     = data.data;
                 });
+
+                $scope.$on('grid.need.reload', function (event) {
+                    GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
+                        $scope.data = data;
+                    });
+                });
             }
         };
     })
@@ -59,6 +65,14 @@ angular.module('App.directives', [])
     })
     .directive('gridPagination', function() {
         return {
-            templateUrl: '/bundles/pimux/templates/grid/pagination.html'
+            templateUrl: '/bundles/pimux/templates/grid/pagination.html',
+            controller: function($scope) {
+                $scope.$watch('metaData.state.currentPage', function (newValue, oldValue) {
+                    if (oldValue) {
+                        $scope.$broadcast('grid.pagination.updated', newValue);
+                        $scope.$broadcast('grid.need.reload');
+                    }
+                });
+            }
         };
     });

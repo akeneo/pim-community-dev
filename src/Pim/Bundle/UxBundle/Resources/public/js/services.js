@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('App.services', [])
-    .service('GridManager', function ($http, $q) {
+    .service('GridManager', function ($http, $q, $window) {
         var self = this;
 
         this.loadGrid = function (name) {
@@ -14,8 +14,35 @@ angular.module('App.services', [])
             return deferred.promise;
         };
 
+        this.loadGridData = function (name, params) {
+            var deferred = $q.defer();
+
+            var url = '/datagrid/' +
+                name +
+                '?' +
+                name +
+                '%5BdataLocale%5D=en_US&product-grid%5B_pager%5D%5B_page%5D=' +
+                params.state.currentPage;
+
+            $http.get(url).then(function(resp) {
+                var data = {
+                    metadata: params,
+                    data: resp.data
+                };
+
+                deferred.resolve(self.prepareGridConfig(data));
+            });
+
+            return deferred.promise;
+        };
+
         this.prepareGridConfig = function (config) {
-            config.data = JSON.parse(config.data);
+
+            try {
+                config.data = JSON.parse(config.data);
+            } catch (e) {
+
+            }
 
             var columns = _.pluck(config.metadata.columns, 'name');
 
@@ -32,7 +59,8 @@ angular.module('App.services', [])
         };
 
         return {
-            load: this.loadGrid
+            load: this.loadGrid,
+            loadData: this.loadGridData
         };
     })
     .service('CellManager', function($sce, $filter) {
