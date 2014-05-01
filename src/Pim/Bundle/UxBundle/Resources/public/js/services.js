@@ -17,12 +17,19 @@ angular.module('App.services', [])
         this.loadGridData = function (name, params) {
             var deferred = $q.defer();
 
+            var urlParams = {};
+
+            urlParams[name] = {
+                dataLocale: 'en_US',
+                _pager: {
+                    _page: params.state.currentPage
+                }
+            };
+
             var url = '/datagrid/' +
                 name +
                 '?' +
-                name +
-                '%5BdataLocale%5D=en_US&product-grid%5B_pager%5D%5B_page%5D=' +
-                params.state.currentPage;
+                $.param(urlParams);
 
             $http.get(url).then(function(resp) {
                 var data = {
