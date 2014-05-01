@@ -59,12 +59,11 @@ angular.module('App.directives', [])
         return {
             templateUrl: '/bundles/pimux/templates/grid/pagination.html',
             controller: function($scope) {
-                $scope.$watch('metaData.state.currentPage', function (newValue, oldValue) {
+                $scope.$watch('metaData.state', function (newValue, oldValue) {
                     if (oldValue) {
-                        $scope.$broadcast('grid.pagination.updated', newValue);
                         $scope.$broadcast('grid.need.reload');
                     }
-                });
+                }, true);
             }
         };
     });

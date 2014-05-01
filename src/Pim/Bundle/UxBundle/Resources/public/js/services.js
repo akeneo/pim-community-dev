@@ -22,7 +22,8 @@ angular.module('App.services', [])
             urlParams[name] = {
                 dataLocale: 'en_US',
                 _pager: {
-                    _page: params.state.currentPage
+                    _page: params.state.currentPage,
+                    _per_page: params.state.pageSize
                 }
             };
 
