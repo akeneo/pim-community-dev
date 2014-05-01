@@ -15,7 +15,7 @@ angular.module('App.directives', [])
 
                 $scope.$on('grid.need.reload', function (event) {
                     GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
-                        $scope.data = data;
+                        $scope.data = data.data;
                     });
                 });
             }
