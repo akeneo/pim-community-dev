@@ -24,7 +24,8 @@ angular.module('App.services', [])
                 _pager: {
                     _page: params.state.currentPage,
                     _per_page: params.state.pageSize
-                }
+                },
+                _sort_by: params.state.sorters
             };
 
             var url = '/datagrid/' +
