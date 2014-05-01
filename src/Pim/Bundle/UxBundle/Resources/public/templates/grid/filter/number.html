@@ -1,0 +1,8 @@
+<li class="dropdown">
+    <a class="dropdown-toggle" ng-bind="filter.selectedChoice"></a>
+    <ul class="dropdown-menu">
+        <li ng-repeat="choice in filter.choices">
+            <a ng-click="filter.selectedChoice = choice.label" ng-bind="choice.label"></a>
+        </li>
+    </ul>
+</li>

@@ -1,4 +1,4 @@
-<li class="dropdown">
+<li class="dropdown" ng-hide="!(metaData.filters|filter:{enabled:false}).length">
     <a class="dropdown-toggle">Manage filters</a>
     <ul class="dropdown-menu">
         <li ng-repeat="filter in metaData.filters | filter:{enabled:false}">
@@ -10,14 +10,7 @@
 <div class="pull-left" ng-repeat="filter in metaData.filters | filter:{enabled:true}">
     <button class="btn" ng-init="filter.selectedChoice = 'All'">
         {{ filter.label }}
-        <li class="dropdown">
-            <a class="dropdown-toggle" ng-bind="filter.selectedChoice"></a>
-            <ul class="dropdown-menu">
-                <li ng-repeat="choice in filter.choices">
-                    <a ng-click="filter.selectedChoice = choice.label" ng-bind="choice.label"></a>
-                </li>
-            </ul>
-        </li>
+        <div grid-filter></div>
         <button class="btn btn-xs" ng-click="filter.enabled = false">&times;</button>
     </button>
 </div>

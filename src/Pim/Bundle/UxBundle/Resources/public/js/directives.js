@@ -55,6 +55,11 @@ angular.module('App.directives', [])
             templateUrl: '/bundles/pimux/templates/grid/filters.html'
         };
     })
+    .directive('gridFilter', function() {
+        return {
+            template: '<div ng-include="\'/bundles/pimux/templates/grid/filter/\' + filter.type + \'.html\'"></div>'
+        };
+    })
     .directive('gridPagination', function() {
         return {
             templateUrl: '/bundles/pimux/templates/grid/pagination.html',
