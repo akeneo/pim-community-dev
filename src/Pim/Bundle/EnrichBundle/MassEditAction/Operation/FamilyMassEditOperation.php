@@ -36,7 +36,7 @@ abstract class FamilyMassEditOperation extends AbstractMassEditAction
     /**
      * Perform operation on the product instance
      *
-     * @param AbstractProduct $product
+     * @param Family $family
      */
     abstract protected function doPerform(Family $family);
 }

@@ -262,6 +262,8 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
+     * @param AbstractMassEditOperator $operator
+     *
      * @return Form
      */
     protected function getOperatorForm(AbstractMassEditOperator $operator)

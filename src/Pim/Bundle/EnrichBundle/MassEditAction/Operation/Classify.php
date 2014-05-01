@@ -75,6 +75,9 @@ class Classify extends ProductMassEditOperation
         return 'pim_enrich_mass_classify';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function doPerform(ProductInterface $product)
     {
         foreach ($this->categories as $category) {
