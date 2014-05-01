@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Pim\Bundle\EnrichBundle\DependencyInjection\Reference\ReferenceFactory;
 
 /**
+ * Register mass edit operators
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

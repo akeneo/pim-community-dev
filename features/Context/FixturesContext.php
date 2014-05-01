@@ -1153,9 +1153,9 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^attribute "([^"]*)" should be optionnal in family "([^"]*)" for channel "([^"]*)"$/
+     * @Given /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
      */
-    public function attributeShouldBeOptionnalInFamilyForChannel($attribute, $family, $channel)
+    public function attributeShouldBeOptionalInFamilyForChannel($attribute, $family, $channel)
     {
         $requirement = $this->getAttributeRequirement($attribute, $family, $channel);
 

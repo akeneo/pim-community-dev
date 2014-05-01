@@ -38,7 +38,9 @@ class RegisterMassEditOperationsPass implements CompilerPassInterface
             // so, in order not to break BC, we fallback operator to the product one.
             // We may deprecate this behaviour in the future and enforce operator parameter
             // inside the tag.
-            $operatorId = isset($config[0]['operator']) ? $config[0]['operator'] : 'pim_enrich.mass_edit_action.operator.product';
+            $operatorId = isset($config[0]['operator']) ?
+                $config[0]['operator'] :
+                'pim_enrich.mass_edit_action.operator.product';
             $operatorDef = $container->getDefinition($operatorId);
 
             $operatorDef->addMethodCall(
