@@ -35,8 +35,8 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            FormEvents::PRE_SET_DATA => 'preSetData',
-            FormEvents::POST_SUBMIT  => 'postSubmit'
+            FormEvents::POST_SET_DATA => 'postSetData',
+            FormEvents::POST_SUBMIT   => 'postSubmit'
         );
     }
 
@@ -47,13 +47,18 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
      *
      * @return null
      */
-    public function preSetData(FormEvent $event)
+    public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData()) {
+        if (null === $event->getData() || null === $event->getData()->getId()) {
             return;
         }
 
-        $form = $event->getForm();
+        $viewRoles = $this->accessManager->getGrantedRoles($event->getData(), 'VIEW');
+        $editRoles = $this->accessManager->getGrantedRoles($event->getData(), 'EDIT');
+
+        $form = $event->getForm()->get('rights');
+        $form->get('view')->setData($viewRoles);
+        $form->get('edit')->setData($editRoles);
     }
 
     /**
@@ -67,10 +72,10 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
         if ($form->isValid()) {
-            $group = $event->getData();
-            $view  = $form->get('rights')->get('view')->getData();
-            $edit  = $form->get('rights')->get('edit')->getData();
-            $this->accessManager->setAccess($group, $view, $edit);
+            $group     = $event->getData();
+            $viewRoles = $form->get('rights')->get('view')->getData();
+            $editRoles = $form->get('rights')->get('edit')->getData();
+            $this->accessManager->setAccess($group, $viewRoles, $editRoles);
         }
     }
 }

@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\UserBundle\Entity\Role;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 
@@ -30,16 +29,40 @@ class AttributeGroupAccessManager
     }
 
     /**
+     * Get roles that have the specified access to an attribute group
+     *
+     * @param AttributeGroup $group
+     * @param string         $accessLevel
+     *
+     * @return Role[]
+     */
+    public function getGrantedRoles(AttributeGroup $group, $accessLevel)
+    {
+        $qb = $this->objectManager
+            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
+            ->createQueryBuilder('a');
+
+        $accessField = $accessLevel === 'EDIT' ? 'a.editAttributes' : 'a.viewAttributes';
+
+        $qb->select('r')
+            ->leftJoin('OroUserBundle:Role', 'r', 'WITH', 'a.roleId = r.id')
+            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()))
+            ->andWhere($qb->expr()->eq($accessField, true));
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Grant access on an attribute group to specified roles
      *
      * @param AttributeGroup $group
-     * @param Role[]         $readRoles
+     * @param Role[]         $viewRoles
      * @param Role[]         $editRoles
      */
-    public function setAccess(AttributeGroup $group, Collection $readRoles, Collection $editRoles)
+    public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
     {
         $grantedRoleIds = [];
-        foreach ($readRoles as $role) {
+        foreach ($viewRoles as $role) {
             $this->grantAccess($group, $role, 'VIEW');
             $grantedRoleIds[] = $role->getId();
         }
