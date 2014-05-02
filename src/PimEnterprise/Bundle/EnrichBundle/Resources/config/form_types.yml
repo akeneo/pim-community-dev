@@ -1,6 +1,5 @@
 parameters:
     pimee_enrich.form.type.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupRightsType
-    pim_enrich.form.type.attribute_group.class:          PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupType
 
 services:
     pim_enrich.form.type.product_edit:
@@ -19,8 +18,8 @@ services:
         class: %pim_enrich.form.type.attribute_group.class%
         tags:
             - { name: form.type, alias: pim_enrich_attribute_group }
-        arguments:
-            - '@pimee_enrich.form.subscriber.attribute_group_rights'
+        calls:
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_rights']]
 
     pimee_enrich.form.type.attribute_group_rights:
         class: %pimee_enrich.form.type.attribute_group_rights.class%

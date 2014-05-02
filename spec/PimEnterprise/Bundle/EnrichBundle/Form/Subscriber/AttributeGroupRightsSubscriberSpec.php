@@ -26,10 +26,19 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
+                FormEvents::PRE_SET_DATA  => 'preSetData',
                 FormEvents::POST_SET_DATA => 'postSetData',
                 FormEvents::POST_SUBMIT   => 'postSubmit'
             ]
         );
+    }
+
+    function it_adds_rights_to_the_form(FormEvent $event, Form $form)
+    {
+        $event->getForm()->willReturn($form);
+        $form->add('rights', 'pimee_enrich_attribute_group_rights')->shouldBeCalled();
+
+        $this->preSetData($event);
     }
 
     function it_injects_defined_roles_in_the_form_data(

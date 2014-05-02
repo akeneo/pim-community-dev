@@ -35,9 +35,20 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            FormEvents::PRE_SET_DATA  => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
             FormEvents::POST_SUBMIT   => 'postSubmit'
         );
+    }
+
+    /**
+     * Add the rights subform to the form
+     *
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        $event->getForm()->add('rights', 'pimee_enrich_attribute_group_rights');
     }
 
     /**
