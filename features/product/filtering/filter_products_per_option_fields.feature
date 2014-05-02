@@ -32,3 +32,4 @@ Feature: Filter products per option
       | filter | value      | result          |
       | size   | M          | Sweat           |
       | size   | M,is empty | Sweat and Shirt |
+      | size   | is empty   | Shirt           |
