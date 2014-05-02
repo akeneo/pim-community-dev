@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
