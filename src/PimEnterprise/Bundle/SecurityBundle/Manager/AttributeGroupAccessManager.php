@@ -116,10 +116,10 @@ class AttributeGroupAccessManager
             ->createQueryBuilder('a');
 
         $qb->delete()
-            ->where($qb->expr()->notIn('a.roleId', $excludedIds));
+            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()));
 
         if (!empty($excludedIds)) {
-            $qb->andWhere($qb->expr()->eq('a.attributeGroupId', $group->getId()));
+            $qb->andWhere($qb->expr()->notIn('a.roleId', $excludedIds));
         }
 
         return $qb->getQuery()->execute();
