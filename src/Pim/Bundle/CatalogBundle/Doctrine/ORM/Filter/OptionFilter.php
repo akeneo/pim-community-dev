@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
- * Filtering by option backend type
+ * Filtering by simple option backend type
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
