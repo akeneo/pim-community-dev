@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 
 /**
  * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
@@ -20,6 +21,19 @@ class AttributeGroupVoter implements VoterInterface
 
     /** @var string */
     const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+
+    /**
+     * @var AttributeGroupAccessManager
+     */
+    protected $accessManager;
+
+    /**
+     * @param AttributeGroupAccessManager $accessManager
+     */
+    public function __construct(AttributeGroupAccessManager $accessManager)
+    {
+        $this->accessManager = $accessManager;
+    }
 
     /**
      * {@inheritdoc}
@@ -42,16 +56,20 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        // TODO: hard coded rules to validate first UC
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute) && $this->supportsClass($object)) {
                 $user = $token->getUser();
-                if ($user->hasRole('ROLE_ADMINISTRATOR')) {
-                    return VoterInterface::ACCESS_GRANTED;
-                } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'general') {
-                    return VoterInterface::ACCESS_GRANTED;
-                } elseif ($attribute === self::VIEW_ATTRIBUTES and $object->getCode() === 'marketing') {
-                    return VoterInterface::ACCESS_GRANTED;
+
+                if ($attribute === self::EDIT_ATTRIBUTES) {
+                    $grantedRoles = $this->accessManager->getEditRoles($object);
+                } else {
+                    $grantedRoles = $this->accessManager->getViewRoles($object);
+                }
+
+                foreach ($grantedRoles as $role) {
+                    if ($user->hasRole($role)) {
+                        return VoterInterface::ACCESS_GRANTED;
+                    }
                 }
             }
         }

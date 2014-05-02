@@ -4,5 +4,7 @@ parameters:
 services:
     pimee_security.voter.attribute_group_voter:
         class: %pimee_security.voter.attribute_group.class%
+        arguments:
+            - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: security.voter }
