@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.manager.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager
+
+services:
+    pimee_security.manager.attribute_group_access:
+        class: %pimee_security.manager.attribute_group_access.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'

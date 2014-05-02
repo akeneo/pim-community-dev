@@ -1,6 +1,12 @@
 PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
     type: entity
     table: pimee_security_attribute_group_access
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
+    uniqueConstraints:
+        group_role_idx:
+            columns:
+                - attribute_group_id
+                - role_id
     fields:
         id:
             type: integer

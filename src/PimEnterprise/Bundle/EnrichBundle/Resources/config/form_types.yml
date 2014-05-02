@@ -1,3 +1,6 @@
+parameters:
+    pimee_enrich.form.type.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupRightsType
+
 services:
     pim_enrich.form.type.product_edit:
         class: %pim_enrich.form.type.product_edit.class%
@@ -9,3 +12,15 @@ services:
             - { name: form.type, alias: pim_product_edit }
         calls:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.remove_product_value_subscriber']]
+
+    pim_enrich.form.type.attribute_group:
+        class: %pim_enrich.form.type.attribute_group.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_attribute_group }
+        calls:
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_rights']]
+
+    pimee_enrich.form.type.attribute_group_rights:
+        class: %pimee_enrich.form.type.attribute_group_rights.class%
+        tags:
+            - { name: form.type, alias: pimee_enrich_attribute_group_rights }
