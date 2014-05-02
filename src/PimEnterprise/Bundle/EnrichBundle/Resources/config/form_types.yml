@@ -5,7 +5,6 @@ services:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.repository.family'
             - '%pim_catalog.entity.category.class%'
-            - '@pimee_security.form.subscriber.remove_product_value_subscriber'
         tags:
             - { name: form.type, alias: pim_product_edit }
         calls:
