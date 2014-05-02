@@ -8,9 +8,9 @@
 </li>
 
 <div class="pull-left" ng-repeat="filter in metaData.filters | filter:{enabled:true}">
-    <button class="btn" ng-init="filter.selectedChoice = 'All'">
+    <button class="btn btn-default" ng-init="filter.selectedChoice = 'All'">
         {{ filter.label }}
         <div grid-filter></div>
-        <button class="btn btn-xs" ng-click="filter.enabled = false">&times;</button>
+        <button class="btn btn-default btn-xs" ng-click="filter.enabled = false">&times;</button>
     </button>
 </div>
