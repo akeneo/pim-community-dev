@@ -18,16 +18,16 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pimee_enrich_attribute_group_rights');
     }
 
-    function it_has_read_and_write_permission_fields(FormBuilderInterface $builder)
+    function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
     {
         $this->buildForm($builder, []);
 
         $builder
-            ->add('read', 'pimee_security_roles', ['label' => 'attribute group.rights.read.label'])
+            ->add('view', 'pimee_security_roles', ['label' => 'attribute group.rights.view.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('write', 'pimee_security_roles', ['label' => 'attribute group.rights.write.label'])
+            ->add('edit', 'pimee_security_roles', ['label' => 'attribute group.rights.edit.label'])
             ->shouldHaveBeenCalled();
     }
 
