@@ -62,17 +62,14 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
      * Persist the rights defined in the form
      *
      * @param FormEvent $event
-     *
-     * @return null
      */
     public function postSubmit(FormEvent $event)
     {
         $form = $event->getForm();
         if ($form->isValid()) {
-            $group     = $event->getData();
             $viewRoles = $form->get('rights')->get('view')->getData();
             $editRoles = $form->get('rights')->get('edit')->getData();
-            $this->accessManager->setAccess($group, $viewRoles, $editRoles);
+            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
         }
     }
 }
