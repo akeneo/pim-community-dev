@@ -16,6 +16,9 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class AttributeGroupType extends AbstractType
 {
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +38,10 @@ class AttributeGroupType extends AbstractType
             )
             ->add('sort_order', 'hidden')
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -55,5 +62,15 @@ class AttributeGroupType extends AbstractType
     public function getName()
     {
         return 'pim_enrich_attribute_group';
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 }
