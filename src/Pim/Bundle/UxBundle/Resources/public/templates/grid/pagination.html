@@ -5,11 +5,11 @@
     </li>
     <li ng-hide="metaData.state.currentPage * metaData.state.pageSize >= data.options.totalRecords"><a ng-click="metaData.state.currentPage = metaData.state.currentPage + 1">&raquo;</a></li>
 </ul>
-<li class="dropdown">
-    <a class="dropdown-toggle" ng-bind="metaData.state.pageSize"></a>
+<div class="dropdown">
+    <a class="btn btn-default dropdown-toggle" ng-bind="metaData.state.pageSize"></a>
     <ul class="dropdown-menu">
         <li ng-repeat="item in metaData.options.toolbarOptions.pageSize.items">
             <a ng-click="metaData.state.pageSize = item; metaData.state.currentPage = 1" ng-bind="item"></a>
         </li>
     </ul>
-</li>
+</div>
