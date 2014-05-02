@@ -17,7 +17,7 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($accessManager);
     }
 
-    function it_is_an_event_subsriber()
+    function it_is_an_event_subscriber()
     {
         $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
