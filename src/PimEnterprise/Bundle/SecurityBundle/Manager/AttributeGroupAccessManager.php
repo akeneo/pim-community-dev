@@ -29,27 +29,31 @@ class AttributeGroupAccessManager
     }
 
     /**
-     * Get roles that have the specified access to an attribute group
+     * Get roles that have view access to an attribute group
      *
      * @param AttributeGroup $group
-     * @param string         $accessLevel
      *
      * @return Role[]
      */
-    public function getGrantedRoles(AttributeGroup $group, $accessLevel)
+    public function getViewRoles(AttributeGroup $group)
     {
-        $qb = $this->objectManager
+        return $this->objectManager
             ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
-            ->createQueryBuilder('a');
+            ->getGrantedRoles($group, 'VIEW');
+    }
 
-        $accessField = $accessLevel === 'EDIT' ? 'a.editAttributes' : 'a.viewAttributes';
-
-        $qb->select('r')
-            ->leftJoin('OroUserBundle:Role', 'r', 'WITH', 'a.roleId = r.id')
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()))
-            ->andWhere($qb->expr()->eq($accessField, true));
-
-        return $qb->getQuery()->getResult();
+    /**
+     * Get roles that have edit access to an attribute group
+     *
+     * @param AttributeGroup $group
+     *
+     * @return Role[]
+     */
+    public function getEditRoles(AttributeGroup $group)
+    {
+        return $this->objectManager
+            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
+            ->getGrantedRoles($group, 'EDIT');
     }
 
     /**
@@ -134,17 +138,8 @@ class AttributeGroupAccessManager
      */
     protected function revokeAccess(AttributeGroup $group, array $excludedIds = [])
     {
-        $qb = $this->objectManager
+        return $this->objectManager
             ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
-            ->createQueryBuilder('a');
-
-        $qb->delete()
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()));
-
-        if (!empty($excludedIds)) {
-            $qb->andWhere($qb->expr()->notIn('a.roleId', $excludedIds));
-        }
-
-        return $qb->getQuery()->execute();
+            ->revokeAccess($group, $excludedIds);
     }
 }

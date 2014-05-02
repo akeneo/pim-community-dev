@@ -53,12 +53,9 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $viewRoles = $this->accessManager->getGrantedRoles($event->getData(), 'VIEW');
-        $editRoles = $this->accessManager->getGrantedRoles($event->getData(), 'EDIT');
-
         $form = $event->getForm()->get('rights');
-        $form->get('view')->setData($viewRoles);
-        $form->get('edit')->setData($editRoles);
+        $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
+        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
     }
 
     /**
