@@ -23,6 +23,22 @@ class OptionFilter extends EntityFilter
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+
+        $optionAlias = $joinAlias .'.option';
+        if (in_array('empty', $value)) {
+            unset($value[array_search('empty', $value)]);
+            $expr = $this->qb->expr()->isNull($optionAlias);
+
+            if (count($value) > 0) {
+                $exprIn = $this->qb->expr()->in($optionAlias, $value);
+                $expr = $this->qb->expr()->orX($expr, $exprIn);
+            }
+        } else {
+            $expr = $this->qb->expr()->in($optionAlias, $value);
+        }
+
+        $condition .= ' AND ( '. $expr .' ) ';
+
         $this->qb->innerJoin(
             $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
             $joinAlias,
@@ -30,17 +46,24 @@ class OptionFilter extends EntityFilter
             $condition
         );
 
-        $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
 
-        if (in_array('empty', $value)) {
-            $expr = $this->qb->expr()->isNull($joinAlias .'.option');
-            $this->qb->andWhere($expr);
-        } else {
-            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+        // SELECT     p0_.*
+        // FROM       pim_catalog_product p0_
+        // INNER JOIN pim_catalog_product_value p1_ ON p0_.id = p1_.entity_id
+        //        AND (p1_.attribute_id = 4 AND (p1_.option_id IN ('11') OR p1_.option_id IS NULL))
+        // GROUP BY   p0_.id;
 
-            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
-        }
+//         $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
+//         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+
+//         if (in_array('empty', $value)) {
+//             $expr = $this->qb->expr()->isNull($joinAlias .'.option');
+//             $this->qb->andWhere($expr);
+//         } else {
+//             $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+
+//             $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+//         }
 
         return $this;
     }
