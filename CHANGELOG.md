@@ -10,6 +10,7 @@
 - Group datagrid filters by attribute groups
 - Ease the adding of new filters and sorters in ProductQueryBuilder
 - All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
+- Ease the adding of subscribers in product edit and attribute group types with addEventSubscriber methods
 
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
