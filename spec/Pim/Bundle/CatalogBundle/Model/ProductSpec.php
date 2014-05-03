@@ -11,7 +11,9 @@ class ProductSpec extends ObjectBehavior
 {
     function it_has_family(Family $family)
     {
+        $family->getId()->willReturn(42);
         $this->setFamily($family);
         $this->getFamily()->shouldReturn($family);
+        $this->getFamilyId()->shouldReturn(42);
     }
 }
