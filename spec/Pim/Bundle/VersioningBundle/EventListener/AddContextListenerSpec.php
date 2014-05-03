@@ -12,8 +12,12 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 class AddContextListenerSpec extends ObjectBehavior
 {
-    function let(VersionManager $versionManager, JobExecutionEvent $event, JobExecution $jobExecution, JobInstance $jobInstance)
-    {
+    function let(
+        VersionManager $versionManager,
+        JobExecutionEvent $event,
+        JobExecution $jobExecution,
+        JobInstance $jobInstance
+    ) {
         $this->beConstructedWith($versionManager);
 
         $event->getJobExecution()->willReturn($jobExecution);

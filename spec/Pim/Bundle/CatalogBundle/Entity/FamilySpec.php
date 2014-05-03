@@ -4,7 +4,6 @@ namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Doctrine\Common\Collections\ArrayCollection;
 
 class FamilySpec extends ObjectBehavior
 {
@@ -21,7 +20,9 @@ class FamilySpec extends ObjectBehavior
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $this->addAttribute($sku)->shouldReturn($this);
         $this->hasAttribute($sku)->shouldReturn(true);
-        $this->shouldThrow(new \InvalidArgumentException('Identifier cannot be removed from a family.'))->duringRemoveAttribute($sku);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Identifier cannot be removed from a family.'))
+            ->duringRemoveAttribute($sku);
         $this->hasAttribute($sku)->shouldReturn(true);
     }
 

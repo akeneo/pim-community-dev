@@ -24,7 +24,7 @@ use Prophecy\Argument;
  */
 class CompletenessRepositorySpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         DocumentManager $manager,
         Channel $ecommerce,
         Channel $mobile,
@@ -71,12 +71,12 @@ class CompletenessRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($manager, $channelManager, $categoryRepository, 'pim_product_class');
     }
 
-    public function it_is_a_completeness_repository()
+    function it_is_a_completeness_repository()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface');
     }
 
-    public function it_counts_products_per_channels(Cursor $cursor)
+    function it_counts_products_per_channels(Cursor $cursor)
     {
         $countList = array(3, 2);
 
@@ -90,7 +90,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
         ));
     }
 
-    public function it_counts_complete_products_per_channels(Cursor $cursor)
+    function it_counts_complete_products_per_channels(Cursor $cursor)
     {
         $countList = array(0, 1, 2);
 

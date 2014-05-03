@@ -85,11 +85,8 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
     }
 
-    function it_schedules_product_completeness(
-        ProductInterface $product,
-        DocumentManager $manager,
-        PersistentCollection $completenesses
-    ) {
+    function it_schedules_product_completeness($product, $manager, PersistentCollection $completenesses)
+    {
         $manager->flush($product)->shouldNotBeCalled();
         $product->getCompletenesses()->willReturn($completenesses);
         $completenesses->clear()->shouldBeCalled();
@@ -98,17 +95,17 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     }
 
     function it_builds_product_completenesses_with_one_channel_and_three_locales(
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        CompletenessFactory $completenessFactory,
-        Family $family,
-        AttributeRequirement $requireVarcharEcommerce,
-        Channel $ecommerce,
-        Locale $frFr,
-        Locale $enUs,
-        Locale $nlNl,
-        ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations
+        $product,
+        $validator,
+        $completenessFactory,
+        $family,
+        $requireVarcharEcommerce,
+        $ecommerce,
+        $frFr,
+        $enUs,
+        $nlNl,
+        $noViolation,
+        $withViolations
     ) {
         $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce));
 
@@ -126,9 +123,9 @@ class CompletenessGeneratorSpec extends ObjectBehavior
     }
 
     function it_doesnt_build_product_completenesses_without_family (
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        DocumentManager $manager
+        $product,
+        $validator,
+        $manager
     ) {
         $product->getFamily()->willReturn(null);
 
@@ -137,24 +134,24 @@ class CompletenessGeneratorSpec extends ObjectBehavior
 
         $this->generateMissingForProduct($product);
     }
-    function it_builds_product_completenesses_with_two_channels_and_three_locales (
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        CompletenessFactory $completenessFactory,
-        Family $family,
-        AttributeRequirement $requireVarcharEcommerce,
-        AttributeRequirement $requireVarcharMobile,
-        Channel $ecommerce,
-        Channel $mobile,
-        Locale $frFr,
-        Locale $enUs,
-        Locale $nlNl,
-        ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations
+    function it_builds_product_completenesses_with_two_channels_and_three_locales(
+        $product,
+        $validator,
+        $completenessFactory,
+        $family,
+        $requireVarcharEcommerce,
+        $requireVarcharMobile,
+        $ecommerce,
+        $mobile,
+        $frFr,
+        $enUs,
+        $nlNl,
+        $noViolation,
+        $withViolations
     ) {
         $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce, $requireVarcharMobile));
 
-        $violationsList = array($noViolation, $withViolations, $noViolation, $noViolation, $noViolation, $withViolations);
+        $violationsList = [$noViolation, $withViolations, $noViolation, $noViolation, $noViolation, $withViolations];
 
         $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
             return array_shift($violationsList);

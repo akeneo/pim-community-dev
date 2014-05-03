@@ -10,7 +10,7 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    public function let(TranslatorInterface $translator)
+    function let(TranslatorInterface $translator)
     {
         $this->beConstructedWith($translator);
     }

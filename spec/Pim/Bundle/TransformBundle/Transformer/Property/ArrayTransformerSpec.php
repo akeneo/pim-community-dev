@@ -8,7 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ArrayTransformerSpec extends ObjectBehavior
 {
-    public function let(PropertyAccessorInterface $propertyAccessor)
+    function let(PropertyAccessorInterface $propertyAccessor)
     {
         $this->beConstructedWith($propertyAccessor);
     }

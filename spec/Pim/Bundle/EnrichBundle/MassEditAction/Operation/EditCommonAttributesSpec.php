@@ -5,19 +5,15 @@ namespace spec\Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -51,7 +47,14 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
         $productManager->getAttributeRepository()->willReturn($attributeRepository);
 
-        $this->beConstructedWith($productManager, $userContext, $currencyManager, $catalogContext, $productBuilder, $massActionManager);
+        $this->beConstructedWith(
+            $productManager,
+            $userContext,
+            $currencyManager,
+            $catalogContext,
+            $productBuilder,
+            $massActionManager
+        );
     }
 
     function it_is_a_mass_edit_action()

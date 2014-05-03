@@ -22,7 +22,7 @@ use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
 
 class AttributeOptionTransformerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,

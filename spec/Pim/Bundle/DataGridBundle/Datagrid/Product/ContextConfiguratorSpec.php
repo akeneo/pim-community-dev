@@ -12,8 +12,13 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 class ContextConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ProductManager $manager, RequestParameters $requestParams, Request $request, SecurityContextInterface $securityContext)
-    {
+    function let(
+        DatagridConfiguration $configuration,
+        ProductManager $manager,
+        RequestParameters $requestParams,
+        Request $request,
+        SecurityContextInterface $securityContext
+    ) {
         $this->beConstructedWith($configuration, $manager, $requestParams, $request, $securityContext);
     }
 
