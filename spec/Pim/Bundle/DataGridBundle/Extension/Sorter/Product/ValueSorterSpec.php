@@ -5,9 +5,8 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
@@ -30,7 +29,7 @@ class ValueSorterSpec extends ObjectBehavior
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
         CustomAttributeRepository $attributeRepository,
-        Attribute $sku
+        AbstractAttribute $sku
     ) {
         // TODO : how to mock the following magic method ?
         $attributeRepository->findOneByCode('sku')->willReturn($sku);

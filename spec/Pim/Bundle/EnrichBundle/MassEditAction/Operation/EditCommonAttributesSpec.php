@@ -11,7 +11,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
@@ -110,7 +110,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $productRepository,
         Product $product1,
         Product $product2,
-        Attribute $name,
+        AbstractAttribute $name,
         $productManager,
         $massActionManager
     ) {
@@ -139,7 +139,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $query,
         Product $product1,
         Product $product2,
-        Attribute $attribute,
+        AbstractAttribute $attribute,
         $productManager,
         $productValue,
         $massActionManager

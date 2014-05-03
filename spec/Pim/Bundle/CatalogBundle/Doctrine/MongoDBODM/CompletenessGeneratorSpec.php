@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -32,7 +32,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
         ProductInterface $product,
-        ProductValue $value,
+        ProductValueInterface $value,
         AbstractAttribute $varchar,
         Family $family,
         AttributeRequirement $requireVarcharEcommerce,
