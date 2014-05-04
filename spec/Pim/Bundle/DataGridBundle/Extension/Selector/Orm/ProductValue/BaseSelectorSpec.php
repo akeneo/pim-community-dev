@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 
-class ValuesSelectorSpec extends ObjectBehavior
+class BaseSelectorSpec extends ObjectBehavior
 {
     function it_is_a_selector()
     {
