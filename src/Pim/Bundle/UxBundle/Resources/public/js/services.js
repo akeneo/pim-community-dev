@@ -56,12 +56,15 @@ angular.module('App.services', [])
             var columns = _.pluck(config.metadata.columns, 'name');
 
             config.data.data = _.map(config.data.data, function (row) {
-                return _.map(columns, function (column) {
-                    return {
-                        value: row[column],
-                        column: column
-                    };
-                });
+                return {
+                    row: _.map(columns, function (column) {
+                        return {
+                            value: row[column],
+                            column: column
+                        };
+                    }),
+                    entity: row
+                }
             });
 
             return config;
