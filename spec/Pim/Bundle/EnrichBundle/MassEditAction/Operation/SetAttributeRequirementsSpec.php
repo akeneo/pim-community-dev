@@ -70,7 +70,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
             $name, $description
         ]);
 
-
         $factory->createAttributeRequirement($name, $ecommerce, false)->willReturn($r1);
         $r1->getAttributeCode()->willReturn('name');
         $r1->getChannelCode()->willReturn('ecommerce');

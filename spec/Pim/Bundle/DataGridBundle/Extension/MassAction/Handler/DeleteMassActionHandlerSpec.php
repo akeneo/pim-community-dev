@@ -42,13 +42,8 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $options->offsetGetByPath(Argument::cetera())->willReturn('qux');
     }
 
-    function it_should_handle_delete_mass_action(
-        $eventDispatcher,
-        $datasource,
-        $massActionRepo,
-        $datagrid,
-        $massAction
-    ) {
+    function it_handles_delete_mass_action($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
+    {
         $objectIds    = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
@@ -60,13 +55,8 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $this->handle($datagrid, $massAction);
     }
 
-    function it_should_dispatch_events(
-        $eventDispatcher,
-        $datasource,
-        $massActionRepo,
-        $datagrid,
-        $massAction
-    ) {
+    function it_dispatches_events($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
+    {
         $objectIds    = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
@@ -85,13 +75,8 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
         $this->handle($datagrid, $massAction);
     }
 
-    function it_should_return_successful_response(
-        $eventDispatcher,
-        $datasource,
-        $massActionRepo,
-        $datagrid,
-        $massAction
-    ) {
+    function it_returns_successful_response($eventDispatcher, $datasource, $massActionRepo, $datagrid, $massAction)
+    {
         $objectIds    = array('foo', 'bar', 'baz');
         $countRemoved = count($objectIds);
 
@@ -102,10 +87,10 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $this
             ->handle($datagrid, $massAction)
-            ->beAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
+            ->shouldReturnAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
     }
 
-    function it_should_return_failed_message_if_exception_during_mass_delete(
+    function it_returns_failed_message_if_an_exception_occurs(
         $eventDispatcher,
         $datasource,
         $massActionRepo,
@@ -133,6 +118,6 @@ class DeleteMassActionHandlerSpec extends ObjectBehavior
 
         $this
             ->handle($datagrid, $massAction)
-            ->beAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
+            ->shouldReturnAnInstanceOf('Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionResponseInterface');
     }
 }
