@@ -1,3 +1,4 @@
+<th></th>
 <th ng-repeat="column in metaData.columns">
     <a ng-if="column.sortable && metaData.state.sorters[column.name] !== 'ASC'" ng-click="metaData.state.sorters = {}; metaData.state.sorters[column.name] = 'ASC'">
         {{ column.label }}
@@ -9,3 +10,4 @@
     </a>
     <spam ng-if="!column.sortable">{{ column.label }}</span>
 </th>
+<th>Actions</th>

@@ -71,4 +71,9 @@ angular.module('App.directives', [])
                 }, true);
             }
         };
+    })
+    .directive('gridSelection', function() {
+        return {
+            templateUrl: '/bundles/pimux/templates/grid/selection.html'
+        };
     });

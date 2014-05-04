@@ -1,10 +1,11 @@
 <div grid-filters></div>
 <div grid-pagination></div>
+<div grid-selection></div>
 <table class="table table-condensed table-hover">
     <thead>
         <tr grid-header></tr>
     </thead>
     <tbody>
-        <tr grid-row ng-repeat="row in data.data" row="row"></tr>
+        <tr grid-row ng-repeat="item in data.data" row="item.row" entity="item.entity"></tr>
     </tbody>
 </table>
