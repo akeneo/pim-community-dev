@@ -287,12 +287,12 @@ datagrid:
                 type:  tab-redirect
                 label: Classify the product
                 tab:   categories
-                icon:  folder-close
+                icon:  folder
                 link:  edit_link
             delete:
                 type:  delete
                 label: Delete the product
-                icon:  trash
+                icon:  trash-o
                 link:  delete_link
         mass_actions:
             delete:
