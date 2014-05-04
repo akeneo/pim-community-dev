@@ -2,11 +2,15 @@
 <th ng-repeat="column in metaData.columns">
     <a ng-if="column.sortable && metaData.state.sorters[column.name] !== 'ASC'" ng-click="metaData.state.sorters = {}; metaData.state.sorters[column.name] = 'ASC'">
         {{ column.label }}
-        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">{{ metaData.state.sorters[column.name] }}</span>
+        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">
+            <i class="fa fa-caret-down"></i>
+        </span>
     </a>
     <a ng-if="column.sortable && metaData.state.sorters[column.name] === 'ASC'" ng-click="metaData.state.sorters = {}; metaData.state.sorters[column.name] = 'DESC'">
         {{ column.label }}
-        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">{{ metaData.state.sorters[column.name] }}</span>
+        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">
+            <i class="fa fa-caret-up"></i>
+        </span>
     </a>
     <spam ng-if="!column.sortable">{{ column.label }}</span>
 </th>
