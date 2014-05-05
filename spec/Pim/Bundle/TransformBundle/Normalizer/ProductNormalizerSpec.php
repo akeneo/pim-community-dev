@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class ProductNormalizerSpec extends ObjectBehavior
@@ -62,8 +62,14 @@ class ProductNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_the_values_of_product(Product $product, AbstractAttribute $attribute, ProductValue $value, ArrayCollection $collection, \ArrayIterator $iterator, $serializer)
-    {
+    function it_normalizes_the_values_of_product(
+        Product $product,
+        AbstractAttribute $attribute,
+        ProductValueInterface $value,
+        ArrayCollection $collection,
+        \ArrayIterator $iterator,
+        $serializer
+    ) {
         $product->getAssociations()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);

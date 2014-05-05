@@ -2,9 +2,15 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 
 /**
  * Grid listener to configure column, filter and sorter based on attributes and business rules
@@ -15,6 +21,37 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator;
  */
 class ConfigureGroupProductGridListener extends ConfigureProductGridListener
 {
+    /** @var GroupRepository */
+    protected $groupRepository;
+
+    /**
+     * Constructor
+     *
+     * @param ProductManager           $productManager
+     * @param ConfigurationRegistry    $confRegistry
+     * @param RequestParameters        $requestParams
+     * @param SecurityContextInterface $securityContext
+     * @param GroupRepository          $groupRepository
+     */
+    public function __construct(
+        ProductManager $productManager,
+        ConfigurationRegistry $confRegistry,
+        RequestParameters $requestParams,
+        SecurityContextInterface $securityContext,
+        EntityRepository $datagridViewRepository,
+        GroupRepository $groupRepository
+    ) {
+        parent::__construct(
+            $productManager,
+            $confRegistry,
+            $requestParams,
+            $securityContext,
+            $datagridViewRepository,
+            $groupRepository
+        );
+
+        $this->groupRepository = $groupRepository;
+    }
     /**
      * @param DatagridConfiguration $datagridConfig
      *
@@ -27,8 +64,7 @@ class ConfigureGroupProductGridListener extends ConfigureProductGridListener
             $groupId = $this->requestParams->get('currentGroup', null);
         }
 
-        $em = $this->productManager->getEntityManager();
-        $group = $em->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->findOne($groupId);
+        $group = $this->groupRepository->findOne($groupId);
 
         return new GroupColumnsConfigurator($datagridConfig, $this->confRegistry, $group);
     }

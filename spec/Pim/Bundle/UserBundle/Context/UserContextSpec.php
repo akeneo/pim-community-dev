@@ -54,7 +54,14 @@ class UserContextSpec extends ObjectBehavior
 
         $securityFacade->isGranted(Argument::any())->willReturn(true);
 
-        $this->beConstructedWith($securityContext, $securityFacade, $localeManager, $channelManager, $categoryManager, 'en_US');
+        $this->beConstructedWith(
+            $securityContext,
+            $securityFacade,
+            $localeManager,
+            $channelManager,
+            $categoryManager,
+            'en_US'
+        );
     }
 
     function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
@@ -80,7 +87,9 @@ class UserContextSpec extends ObjectBehavior
     {
         $securityFacade->isGranted(Argument::any())->willReturn(false);
 
-        $this->shouldThrow(new \Exception("User doesn't have access to any activated locales"))->duringGetCurrentLocale();
+        $this
+            ->shouldThrow(new \Exception("User doesn't have access to any activated locales"))
+            ->duringGetCurrentLocale();
     }
 
     function its_get_current_locale_code_method_returns_a_locale_code()

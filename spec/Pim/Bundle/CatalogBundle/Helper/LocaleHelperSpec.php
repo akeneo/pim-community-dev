@@ -53,7 +53,19 @@ class LocaleHelperSpec extends ObjectBehavior
 
     function it_provides_a_locale_flag()
     {
-        $this->getFlag('en_US')->shouldReturn('<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>');
-        $this->getFlag('en_US', true)->shouldReturn('<span class="flag-language"><i class="flag flag-us"></i><span class="language">English (United States)</span></span>');
+        $this
+            ->getFlag('en_US')
+            ->shouldReturn(
+                '<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>'
+            );
+
+        $this
+            ->getFlag('en_US', true)
+            ->shouldReturn(
+                sprintf(
+                    '<span class="flag-language"><i class="flag flag-us"></i><span class="language">%s</span></span>',
+                    'English (United States)'
+                )
+            );
     }
 }

@@ -100,7 +100,10 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $documentMetadata->reflFields = ['bar' => $reflFoo];
         $documentMetadata->fieldMappings = [
             'foo' => ['type' => 'text'],
-            'bar' => ['type' => 'entity', 'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'],
+            'bar' => [
+                'type'         => 'entity',
+                'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'
+            ],
         ];
 
         $reflFoo->getValue($entity)->willReturn($foo);
@@ -125,8 +128,11 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         ];
         $documentMetadata->name = 'Acme/Document';
 
-        $exception = new \RuntimeException('Please provide the "targetEntity" of the Acme/Document::$bar field mapping');
-        $this->shouldThrow($exception)->duringPostLoad($args);
+        $this
+            ->shouldThrow(
+                new \RuntimeException('Please provide the "targetEntity" of the Acme/Document::$bar field mapping')
+            )
+            ->duringPostLoad($args);
     }
 
     function it_transformes_entities_into_ids_before_update(
