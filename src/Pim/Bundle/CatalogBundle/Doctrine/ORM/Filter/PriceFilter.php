@@ -59,6 +59,15 @@ class PriceFilter extends BaseFilter
         return $this;
     }
 
+    /**
+     * Prepare price condition to join
+     *
+     * @param string $joinAlias
+     * @param string $operator
+     * @param string $value
+     *
+     * @return string
+     */
     protected function preparePriceCondition($joinAlias, $operator, $value)
     {
         list($value, $currency) = explode(' ', $value);
