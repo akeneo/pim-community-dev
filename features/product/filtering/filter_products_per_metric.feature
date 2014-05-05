@@ -31,7 +31,7 @@ Feature: Filter products per metric
     Given I am on the products page
     Then I should see the filter SKU
     And I should not see the filter Weight
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
     And I should see products postit and book
     And I should be able to use the following filters:
       | filter | value            | result          |
