@@ -5,9 +5,11 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
@@ -45,6 +47,30 @@ class ProductValueNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_value_with_collection_data(
+        SerializerInterface $serializer,
+        ProductValueInterface $value,
+        AbstractAttribute $attribute
+    ) {
+        $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->setSerializer($serializer);
+
+        $attribute->getCode()->willReturn('code');
+        $attribute->isLocalizable()->willReturn(false);
+        $attribute->isScopable()->willReturn(false);
+
+        $price = new ProductPrice();
+        $price->setData(42);
+        $price->setCurrency('EUR');
+        $collection = new ArrayCollection([$price]);
+
+        $value->getData()->willReturn($collection);
+        $value->getAttribute()->willReturn($attribute);
+        $serializer->normalize($price, 'mongodb_json', [])->willReturn(['data' => 42, 'currency' => 'EUR']);
+
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => [['data' => 42, 'currency' => 'EUR']]]);
+    }
+
+    function it_normalizes_value_with_empty_collection_data(
         ProductValueInterface $value,
         AbstractAttribute $attribute,
         Collection $collection,
@@ -58,6 +84,6 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($attribute);
 
-        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => []]);
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(null);
     }
 }
