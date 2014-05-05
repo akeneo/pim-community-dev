@@ -14,6 +14,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Grid listener to configure columns, filters and sorters based on product attributes and business rules
@@ -44,6 +45,9 @@ class ConfigureProductGridListener
      */
     protected $securityContext;
 
+    /** @var EntityRepository */
+    protected $datagridViewRepository;
+
     /**
      * @var Request
      */
@@ -61,12 +65,14 @@ class ConfigureProductGridListener
         ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        EntityRepository $datagridViewRepository
     ) {
         $this->productManager  = $productManager;
         $this->confRegistry    = $confRegistry;
         $this->requestParams   = $requestParams;
         $this->securityContext = $securityContext;
+        $this->datagridViewRepository = $datagridViewRepository;
     }
 
     /**
@@ -106,7 +112,8 @@ class ConfigureProductGridListener
             $this->productManager,
             $this->requestParams,
             $this->request,
-            $this->securityContext
+            $this->securityContext,
+            $this->datagridViewRepository
         );
     }
 

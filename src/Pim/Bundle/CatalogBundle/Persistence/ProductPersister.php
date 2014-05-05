@@ -2,10 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Persistence;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 
 /**
  * Synchronize product with the database

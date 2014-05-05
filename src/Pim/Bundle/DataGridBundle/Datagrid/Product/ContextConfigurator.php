@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
@@ -115,19 +116,22 @@ class ContextConfigurator implements ConfiguratorInterface
      * @param RequestParameters        $requestParams   request parameters
      * @param Request                  $request         request
      * @param SecurityContextInterface $securityContext the security context
+     * @param EntityRepository         $datagridViewRepositiory
      */
     public function __construct(
         DatagridConfiguration $configuration,
         ProductManager $productManager,
         RequestParameters $requestParams,
         Request $request,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        EntityRepository $datagridViewRepository
     ) {
-        $this->configuration   = $configuration;
-        $this->productManager  = $productManager;
-        $this->requestParams   = $requestParams;
-        $this->request         = $request;
-        $this->securityContext = $securityContext;
+        $this->configuration          = $configuration;
+        $this->productManager         = $productManager;
+        $this->requestParams          = $requestParams;
+        $this->request                = $request;
+        $this->securityContext        = $securityContext;
+        $this->datagridViewRepository = $datagridViewRepository;
     }
 
     /**
@@ -363,9 +367,8 @@ class ContextConfigurator implements ConfiguratorInterface
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        $view = $this->productManager
-            ->getEntityManager()
-            ->getRepository('PimDataGridBundle:DatagridView')
+        $view = $this
+            ->datagridViewRepository
             ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
 
         if ($view) {
