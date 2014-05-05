@@ -20,6 +20,7 @@ Feature: Filter products per metric
     And the following product:
       | sku |
       | mug |
+      | pen |
     And the following product values:
       | product | attribute | value    | scope     |
       | mug     | Weight    |          | ecommerce |
@@ -41,4 +42,4 @@ Feature: Filter products per metric
       | Weight | <= 120 Gram      | postit          |
       | Weight | <= 0.25 Kilogram | postit and book |
       | Weight | > 4 Kilogram     |                 |
-      | Weight | empty            | mug             |
+      | Weight | empty            | mug and pen     |

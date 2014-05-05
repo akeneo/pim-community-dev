@@ -28,6 +28,6 @@ Feature: Filter products by number field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter | value | result |
-      | count  | empty | book   |
-      | rate   | empty | mug    |
+      | filter | value | result         |
+      | count  | empty | book and mug   |
+      | rate   | empty | mug and postit |

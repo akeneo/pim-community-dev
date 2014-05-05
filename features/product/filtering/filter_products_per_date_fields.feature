@@ -25,5 +25,5 @@ Feature: Filter products by date field
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
-      | filter  | value | result |
-      | release | empty | book   |
+      | filter  | value | result       |
+      | release | empty | book and mug |

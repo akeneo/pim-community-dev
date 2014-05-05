@@ -20,6 +20,7 @@ Feature: Filter products per price
     And the following product:
       | sku |
       | mug |
+      | pen |
     And the following product values:
       | product | attribute | value    | scope     |
       | mug     | Price     |          | ecommerce |
@@ -43,4 +44,4 @@ Feature: Filter products per price
       | Price  | > 40.5 EUR |                 |
     When I show the filter "Price"
     And I filter by price "Price" with empty value on "EUR" currency
-    And I should see product mug
+    And I should see product mug and pen
