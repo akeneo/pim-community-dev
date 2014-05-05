@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdoc>
+    <parser>
+        <target>build/api_cache</target>
+    </parser>
+
+    <transformer>
+        <target>build/api</target>
+    </transformer>
+
+    <files>
+        <directory>src</directory>
+        <ignore>*Tests*</ignore>
+    </files>
+
+    <logging>
+        <level>warn</level>
+        <paths>
+            <default>app/build/logs/phpdoc/{DATE}.log</default>
+            <errors>app/build/logs/phpdoc/{DATE}.errors.log</errors>
+        </paths>
+    </logging>
+</phpdoc>
