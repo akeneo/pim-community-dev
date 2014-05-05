@@ -18,37 +18,60 @@ class OptionsFilter extends EntityFilter
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-            $joinAlias,
-            'WITH',
-            $condition
-        );
-
-        // prepare join on multi option value condition
-        $backendType = $attribute->getBackendType();
+        $joinAlias    = 'filter'.$attribute->getCode().$this->aliasCounter++;
         $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
         $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
+
         if (in_array('empty', $value)) {
-            unset($value[array_search('empty', $value)]);
-            $expr = $this->qb->expr()->isNull($backendField);
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+            );
 
-            if (count($value) > 0) {
-                $exprIn = $this->qb->expr()->in($backendField, $value);
-                $expr = $this->qb->expr()->orX($expr, $exprIn);
-            }
-
-            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt);
-            $this->qb->andWhere($expr);
+            $condition = $this->prepareEmptyCondition($backendField, $operator, $value);
+            $this->qb
+                ->leftJoin($joinAlias .'.'. $attribute->getBackendType(), $joinAliasOpt)
+                ->andWhere($condition);
         } else {
-            $expr = $this->qb->expr()->in($backendField, $value);
-            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $expr);
+            $this->qb
+                ->innerJoin(
+                    $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                    $joinAlias,
+                    'WITH',
+                    $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+                )
+                ->innerJoin(
+                    $joinAlias .'.'. $attribute->getBackendType(),
+                    $joinAliasOpt,
+                    'WITH',
+                    $this->qb->expr()->in($backendField, $value)
+                );
         }
 
         return $this;
+    }
+
+    /**
+     * Prepare empty condition for options
+     *
+     * @param string $backendField
+     * @param string $operator
+     * @param string $value
+     *
+     * @return \Doctrine\ORM\Query\Expr
+     */
+    protected function prepareEmptyCondition($backendField, $operator, $value)
+    {
+        unset($value[array_search('empty', $value)]);
+        $expr = $this->qb->expr()->isNull($backendField);
+
+        if (count($value) > 0) {
+            $exprIn = $this->qb->expr()->in($backendField, $value);
+            $expr   = $this->qb->expr()->orX($expr, $exprIn);
+        }
+
+        return $expr;
     }
 }
