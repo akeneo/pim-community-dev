@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer;
 
 class ProductPriceNormalizerSpec extends ObjectBehavior
 {
@@ -25,6 +26,9 @@ class ProductPriceNormalizerSpec extends ObjectBehavior
         $price->getData()->willReturn('12.75');
         $price->getCurrency()->willReturn('EUR');
 
-        $this->normalize($price, 'mongodb_json', [])->shouldReturn(['EUR' => ['data' => '12.75', 'currency' => 'EUR']]);
+        $this->normalize($price, 'mongodb_json', [])->shouldReturn([
+            ProductValueNormalizer::NORM_ITEM_KEY  => 'EUR',
+            ProductValueNormalizer::NORM_ITEM_VALUE => ['data' => '12.75', 'currency' => 'EUR']
+        ]);
     }
 }

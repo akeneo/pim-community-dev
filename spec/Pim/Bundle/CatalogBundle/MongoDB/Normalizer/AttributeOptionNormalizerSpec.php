@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue;
+use Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductValueNormalizer;
 
 class AttributeOptionNormalizerSpec extends ObjectBehavior
 {
@@ -36,11 +37,14 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
 
         $this->normalize($option, 'mongodb_json', [])->shouldReturn(
             [
-                'id' => 42,
-                'code' => 'red',
-                'optionValues' => [
-                    'en_US' => ['value' => 'Red', 'locale' => 'en_US'],
-                    'fr_FR' => ['value' => 'Rouge', 'locale' => 'fr_FR']
+                ProductValueNormalizer::NORM_ITEM_KEY => 42,
+                ProductValueNormalizer::NORM_ITEM_VALUE => [
+                    'id' => 42,
+                    'code' => 'red',
+                    'optionValues' => [
+                        'en_US' => ['value' => 'Red', 'locale' => 'en_US'],
+                        'fr_FR' => ['value' => 'Rouge', 'locale' => 'fr_FR']
+                    ]
                 ]
             ]
         );

@@ -17,6 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    const NORM_ITEM_KEY   = 'normKey';
+    const NORM_ITEM_VALUE = 'normValue';
+
     /** @var SerializerInterface */
     protected $serializer;
 
@@ -30,11 +33,17 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         if ($object->getData() instanceof Collection) {
             $data[$valueKey] = [];
             foreach ($object->getData() as $item) {
-                $data[$valueKey][] = $this->serializer->normalize($item, $format, $context);
+                $normalizedItem = $this->serializer->normalize($item, $format, $context);
+                $data[$valueKey][$normalizedItem[self::NORM_ITEM_KEY]] = $normalizedItem[self::NORM_ITEM_VALUE];
             }
 
         } else {
             if ($object->getData() !== null) {
+                $normalizedValue = $this->serializer->normalize($object->getData(), $format, $context);
+                if (is_array($normalizedValue) &&
+                    ([self::NORM_ITEM_KEY, self::NORM_ITEM_VALUE] === array_keys($normalizedValue))) {
+                    $normalizedValue = $normalizedValue[self::NORM_ITEM_VALUE];
+                }
                 $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
             }
         }
