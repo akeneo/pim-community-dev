@@ -2,11 +2,11 @@
 <project name="pim" default="build">
     <property name="symfony.upload.dir" value="product" />
 
-    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit,phpspec,phpcb"/>
+    <target name="build" depends="prepare,composer,vendors,setupdb,fixtures,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpspec,phpcb"/>
 
-    <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
+    <target name="build-phpspec" depends="prepare,composer,require-mongo,vendors-no-scripts,phpspec,phpspec-junit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
+    <target name="build-phpspec-coverage" depends="prepare,composer,vendors"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -34,7 +34,6 @@
         <mkdir dir="${basedir}/app/build/coverage"/>
         <mkdir dir="${basedir}/app/build/coverage-parts"/>
         <mkdir dir="${basedir}/app/build/logs"/>
-        <mkdir dir="${basedir}/app/build/logs/phpunit"/>
         <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
         <mkdir dir="${basedir}/app/build/logs/phpdoc"/>
@@ -181,36 +180,6 @@
         </exec>
     </target>
 
-    <target name="phpunit-coverage" description="Run unit tests with PHPUnit and generate coverage">
-        <exec executable="sh" outputproperty="xdebug_path">
-            <arg value="-c" />
-            <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
-        </exec>
-        <exec executable="php">
-            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="/usr/bin/phpunit" />
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
-            <arg value="--testsuite=Jenkins_PIM_Test" />
-        </exec>
-    </target>
-
-    <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
-        <exec executable="phpunit" failonerror="false">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--filter=LocaleManagerTest" />
-        </exec>
-    </target>
-
-    <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="phpunit">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--testsuite=Jenkins_PIM_Test" />
-        </exec>
-    </target>
-
     <target name="phpspec" description="Run specs with PhpSpec Dot formatter">
         <exec executable="./phpspec-fix">
             <arg value="-fdot" />
@@ -327,20 +296,6 @@
         <exec executable="app/console" failonerror="true">
           <arg value="pim:install" />
           <arg value="--task=db" />
-          <arg value="--force" />
-          <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
-          <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
-          <env key="SYMFONY__DATABASE__PASSWORD" value="${symfony.database.password}" />
-          <env key="SYMFONY__MONGODB__DATABASE" value="${symfony.mongodb.database}" />
-          <env key="SYMFONY__UPLOAD__DIR" value="${symfony.upload.dir}" />
-        </exec>
-    </target>
-
-    <target name="setupdb-test" description="Setup db for test env">
-        <exec executable="app/console" failonerror="true">
-          <arg value="pim:install" />
-          <arg value="--task=db" />
-          <arg value="--env=test" />
           <arg value="--force" />
           <env key="SYMFONY__DATABASE__NAME" value="${symfony.database.name}" />
           <env key="SYMFONY__DATABASE__USER" value="${symfony.database.user}" />
