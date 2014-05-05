@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
@@ -68,9 +67,9 @@ class ProductManager
      * @param EventDispatcherInterface   $eventDispatcher
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
-     * @param ProductRepositoryInterface $productRepository,
-     * @param AssociationTypeRepository  $associationTypeRepository,
-     * @param AttributeRepository        $attributeRepository,
+     * @param ProductRepositoryInterface $productRepository
+     * @param AssociationTypeRepository  $associationTypeRepository
+     * @param AttributeRepository        $attributeRepository
      * @param AttributeOptionRepository  $attributeOptionRepository
      */
     public function __construct(
@@ -214,6 +213,8 @@ class ProductManager
      * @param boolean          $recalculate Whether or not to directly recalculate the completeness
      * @param boolean          $flush       Whether or not to flush the entity manager
      * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
+     *
+     * @return null
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
     {

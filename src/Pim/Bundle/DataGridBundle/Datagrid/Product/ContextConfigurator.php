@@ -111,12 +111,12 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $request;
 
     /**
-     * @param DatagridConfiguration    $configuration   the grid config
-     * @param ProductManager           $productManager  product manager
-     * @param RequestParameters        $requestParams   request parameters
-     * @param Request                  $request         request
-     * @param SecurityContextInterface $securityContext the security context
-     * @param EntityRepository         $datagridViewRepositiory
+     * @param DatagridConfiguration    $configuration
+     * @param ProductManager           $productManager
+     * @param RequestParameters        $requestParams
+     * @param Request                  $request
+     * @param SecurityContextInterface $securityContext
+     * @param EntityRepository         $datagridViewRepository
      */
     public function __construct(
         DatagridConfiguration $configuration,
