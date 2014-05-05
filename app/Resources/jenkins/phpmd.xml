@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<ruleset name="Symfony2 ruleset" xmlns="http://pmd.sf.net/ruleset/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://pmd.sf.net/ruleset/1.0.0 http://pmd.sf.net/ruleset_xml_schema.xsd" xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
+    <description>
+        Custom ruleset.
+    </description>
+
+    <rule ref="rulesets/design.xml">
+        <exclude name="CouplingBetweenObjects" />
+    </rule>
+
+    <rule ref="rulesets/unusedcode.xml">
+        <exclude name="UnusedFormalParameter" />
+    </rule>
+
+    <rule ref="rulesets/codesize.xml" />
+
+    <rule ref="rulesets/naming.xml">
+        <exclude name="ShortVariable" />
+    </rule>
+
+    <rule name="ShortVariableWithExclusion"
+          since="0.2"
+          message="Avoid variables with short names like {0}. Configured minimum length is {1}."
+          class="Akeneo_PMD_Rule_Naming_ShortVariableWithExclusion"
+          externalInfoUrl="http://phpmd.org/rules/naming.html#shortvariable">
+        <description>
+Detects when a field, local, or parameter has a very short name and does not belong to a list of acceptable shortname
+        </description>
+        <priority>3</priority>
+        <properties>
+            <property name="minimum" description="Minimum length for a variable, property or parameter name" value="3"/>
+            <property name="excludeVariables" description="Exclude variables from length check" value="$id|$qb|$em|$e|$ds|$om|$dm"/>
+        </properties>
+        <example>
+            <![CDATA[
+class Something {
+    private $q = 15; // VIOLATION - Field
+    public static function main( array $as ) {  // VIOLATION - Formal
+        $r = 20 + $this->q; // VIOLATION - Local
+        for (int $i = 0; $i < 10; $i++) { // Not a Violation (inside FOR)
+            $r += $this->q;
+        }
+    }
+}
+            ]]>
+        </example>
+    </rule>
+
+</ruleset>

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+SCRIPT_DIR=`dirname $0`
+
+PHP_INCLUDE_PATH=`php -i | grep include_path | cut -d " " -f 3`
+CUSTOM_CLASSPATH=$SCRIPT_DIR/php
+NEW_INCLUDE_PATH=$CUSTOM_CLASSPATH":"$PHP_INCLUDE_PATH
+
+ORIGINAL_PHPMD=`which phpmd`
+
+DEFAULT_OUTPUT_FORMAT='text'
+
+EXCLUDE_PATTERN="*/Tests/*"
+
+if [ -z $2 ]; then
+  OUTPUT_FORMAT=$DEFAULT_OUTPUT_FORMAT
+else
+  OUTPUT_FORMAT=$2
+fi
+
+php -d "include_path=$NEW_INCLUDE_PATH" $ORIGINAL_PHPMD $1 $OUTPUT_FORMAT $SCRIPT_DIR/phpmd.xml --exclude $EXCLUDE_PATTERN --strict $3 $4
