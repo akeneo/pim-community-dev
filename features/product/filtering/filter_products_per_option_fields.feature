@@ -29,7 +29,10 @@ Feature: Filter products per option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | value      | result                 |
-      | size   | M          | Sweat                  |
-      | size   | M,is empty | Sweat, Shoes and Shirt |
-      | size   | is empty   | Shirt and Shoes        |
+      | filter | value          | result                 |
+      | size   | M              | Sweat                  |
+      | size   | M,is empty     | Sweat, Shoes and Shirt |
+      | size   | is empty       | Shirt and Shoes        |
+      | color  | Black          | Shoes                  |
+      | color  | Black,is empty | Shoes, Shirt and Sweat |
+      | color  | is empty       | Shirt and Sweat        |
