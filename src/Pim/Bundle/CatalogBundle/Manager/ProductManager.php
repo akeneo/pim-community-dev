@@ -12,9 +12,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
+use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 
 /**
  * Product manager
@@ -25,72 +29,72 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  */
 class ProductManager
 {
-    /**
-     * @var MediaManager $mediaManager
-     */
-    protected $mediaManager;
-
-    /**
-     * @var CompletenessManager
-     */
-    protected $completenessManager;
-
-    /**
-     * @var ObjectManager
-     */
-    protected $objectManager;
-
-    /**
-     * @var ProductBuilder
-     */
-    protected $builder;
-
-    /**
-     * @var EntityManager Used for purely entity stuff
-     */
-    protected $entityManager;
-
-    /**
-     * Product entity config
-     * @var array
-     */
+    /** @var array */
     protected $configuration;
 
-    /**
-     * @var EventDispatcherInterface $eventDispatcher
-     */
+    /** @var ProductPersister */
+    protected $persister;
+
+    /** @var ObjectManager */
+    protected $objectManager;
+
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
+
+    /** @var MediaManager */
+    protected $mediaManager;
+
+    /** @var ProductBuilder */
+    protected $builder;
+
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
+
+    /** @var AssociationTypeRepository */
+    protected $associationTypeRepository;
+
+    /** @var AttributeRepository */
+    protected $attributeRepository;
+
+    /** @var AttributeOptionRepository */
+    protected $attributeOptionRepository;
 
     /**
      * Constructor
      *
-     * @param array                      $configuration       Product config
-     * @param ObjectManager              $objectManager       Storage manager for product
-     * @param EntityManager              $entityManager       Entity manager for other entitites
-     * @param EventDispatcherInterface   $eventDispatcher     Event dispatcher
-     * @param MediaManager               $mediaManager        Media manager
-     * @param CompletenessManager        $completenessManager Completeness manager
-     * @param ProductBuilder             $builder             Product builder
-     * @param ProductRepositoryInterface $repo                Product repository
+     * @param array                      $configuration
+     * @param ObjectManager              $objectManager
+     * @param ProductPersister           $persister
+     * @param EventDispatcherInterface   $eventDispatcher
+     * @param MediaManager               $mediaManager
+     * @param ProductBuilder             $builder
+     * @param ProductRepositoryInterface $productRepository,
+     * @param AssociationTypeRepository  $associationTypeRepository,
+     * @param AttributeRepository        $attributeRepository,
+     * @param AttributeOptionRepository  $attributeOptionRepository
      */
     public function __construct(
         $configuration,
         ObjectManager $objectManager,
-        EntityManager $entityManager,
+        ProductPersister $persister,
         EventDispatcherInterface $eventDispatcher,
         MediaManager $mediaManager,
-        CompletenessManager $completenessManager,
         ProductBuilder $builder,
-        ProductRepositoryInterface $repo
+        ProductRepositoryInterface $productRepository,
+        AssociationTypeRepository $associationTypeRepository,
+        AttributeRepository $attributeRepository,
+        AttributeOptionRepository $attributeOptionRepository
     ) {
-        $this->configuration       = $configuration;
-        $this->objectManager       = $objectManager;
-        $this->eventDispatcher     = $eventDispatcher;
-        $this->entityManager       = $entityManager;
-        $this->mediaManager        = $mediaManager;
-        $this->completenessManager = $completenessManager;
-        $this->builder             = $builder;
-        $this->repository          = $repo;
+        $this->configuration = $configuration;
+        $this->persister = $persister;
+        $this->objectManager = $objectManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->mediaManager = $mediaManager;
+        $this->builder = $builder;
+        $this->productRepository = $productRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
+        $this->attributeRepository = $attributeRepository;
+        $this->attributeOptionRepository = $attributeOptionRepository;
     }
 
     /**
@@ -98,7 +102,7 @@ class ProductManager
      */
     public function getProductRepository()
     {
-        return $this->repository;
+        return $this->productRepository;
     }
 
     /**
@@ -213,19 +217,13 @@ class ProductManager
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
     {
-        $this->objectManager->persist($product);
+        $options = [
+            'recalculate' => $recalculate,
+            'flush' => $flush,
+            'schedule' => $schedule,
+        ];
 
-        if ($schedule || $recalculate) {
-            $this->completenessManager->schedule($product);
-        }
-
-        if ($recalculate || $flush) {
-            $this->objectManager->flush();
-        }
-
-        if ($recalculate) {
-            $this->completenessManager->generateMissingForProduct($product);
-        }
+        return $this->persister->persist($product, $options);
     }
 
     /**
@@ -254,7 +252,7 @@ class ProductManager
      */
     public function getIdentifierAttribute()
     {
-        return $this->getAttributeRepository()->findOneBy(array('attributeType' => 'pim_catalog_identifier'));
+        return $this->attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier']);
     }
 
     /**
@@ -370,9 +368,7 @@ class ProductManager
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssocTypes = $this->entityManager
-            ->getRepository('PimCatalogBundle:AssociationType')
-            ->findMissingAssociationTypes($product);
+        $missingAssocTypes = $this->associationTypeRepository->findMissingAssociationTypes($product);
 
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {
@@ -416,19 +412,13 @@ class ProductManager
     }
 
     /**
-     * FIXME_MONGO: Use an AttributeManager instead of using the same
-     * objectManager than the one used by the Product
-     *
-     * All methods overload below are linked to that issue
-     */
-    /**
      * Return related repository
      *
      * @return ObjectRepository
      */
     public function getAttributeRepository()
     {
-        return $this->entityManager->getRepository($this->getAttributeName());
+        return $this->attributeRepository;
     }
 
     /**
@@ -438,17 +428,7 @@ class ProductManager
      */
     public function getAttributeOptionRepository()
     {
-        return $this->entityManager->getRepository($this->getAttributeOptionName());
-    }
-
-    /**
-     * Get the entity manager
-     *
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->entityManager;
+        return $this->attributeOptionRepository;
     }
 
     /**
@@ -470,6 +450,6 @@ class ProductManager
      */
     public function valueExists(ProductValueInterface $value)
     {
-        return $this->getProductRepository()->valueExists($value);
+        return $this->productRepository->valueExists($value);
     }
 }
