@@ -30,20 +30,26 @@ class OptionFilter extends EntityFilter
                 $exprIn = $this->qb->expr()->in($optionAlias, $value);
                 $expr = $this->qb->expr()->orX($expr, $exprIn);
             }
+
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+            );
+            $this->qb->andWhere($expr);
         } else {
-            $expr = $this->qb->expr()->in($optionAlias, $value);
+            // inner join to value
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
+
+            $this->qb->innerJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
         }
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $condition .= ' AND ( '. $expr .' ) ';
-
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-            $joinAlias,
-            'WITH',
-            $condition
-        );
 
         return $this;
     }
