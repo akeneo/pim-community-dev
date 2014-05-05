@@ -25,19 +25,47 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $data = null;
         $valueKey = $this->getFieldValue($object);
+        $normalized = null;
         if ($object->getData() instanceof Collection) {
-            $data[$valueKey] = [];
-            foreach ($object->getData() as $item) {
-                $data[$valueKey][] = $this->serializer->normalize($item, $format, $context);
-            }
+            $normalized = $this->normalizeCollection($object->getData(), $format, $context);
+        } elseif ($object->getData() !== null) {
+            $normalized = $this->normalizeSingle($object->getData(), $format, $context);
+        }
 
-        } else {
-            if ($object->getData() !== null) {
-                $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
+        return ($normalized === null) ? $normalized : [$valueKey => $normalized];
+    }
+
+    /**
+     * @param Collection $collection
+     * @param string     $format
+     * @param array      $context
+     *
+     * @return array|null
+     */
+    protected function normalizeCollection(Collection $collection, $format, $context)
+    {
+        $normalized = [];
+        foreach ($collection as $item) {
+            $data = $this->serializer->normalize($item, $format, $context);
+            if ($data !== null) {
+                $normalized[] = $data;
             }
         }
+
+        return (count($normalized) > 0) ? $normalized : null;
+    }
+
+    /**
+     * @param mixed  $single
+     * @param string $format
+     * @param array  $context
+     *
+     * @return array|null|string
+     */
+    protected function normalizeSingle($single, $format, $context)
+    {
+        $data = $this->serializer->normalize($single, $format, $context);
 
         return $data;
     }
