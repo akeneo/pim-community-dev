@@ -1,0 +1,16 @@
+parameters:
+    pim_catalog.persister.product.class: PimEnterprise\Bundle\CatalogBundle\Persistence\RevisionPersister
+    pim_catalog.factory.revision.class: PimEnterprise\Bundle\CatalogBundle\Factory\RevisionFactory
+
+services:
+    # Persister
+    pim_catalog.persister.product:
+        class: %pim_catalog.persister.product.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.completeness'
+            - '@security.context'
+            - '@pim_catalog.factory.revision'
+
+    pim_catalog.factory.revision:
+        class: %pim_catalog.factory.revision.class%

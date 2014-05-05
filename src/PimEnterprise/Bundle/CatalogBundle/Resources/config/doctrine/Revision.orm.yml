@@ -1,0 +1,27 @@
+PimEnterprise\Bundle\CatalogBundle\Entity\Revision:
+    type: entity
+    table: pim_catalog_product_revision
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        createdAt:
+            type: datetime
+            column: created_at
+        newValues:
+            type: array
+            column: new_values
+    manyToOne:
+        product:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+        createdBy:
+            targetEntity: Symfony\Component\Security\Core\User\UserInterface
+            joinColumn:
+                name: user_id
+                referencedColumnName: id
+                nullable: false
