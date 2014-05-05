@@ -18,3 +18,37 @@ default:
             kernel:
                 env: behat
         SensioLabs\Behat\PageObjectExtension\Extension: ~
+
+jenkins-1:
+    context:
+        parameters:
+            base_url: http://pim-enterprise-behat-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-enterprise-behat-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
+
+jenkins-pr-1:
+    context:
+        parameters:
+            base_url: http://pim-enterprise-pr-behat-1.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-enterprise-pr-behat-1.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat1
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc
