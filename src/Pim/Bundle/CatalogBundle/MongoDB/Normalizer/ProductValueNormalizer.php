@@ -30,7 +30,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         if ($object->getData() instanceof Collection) {
             $normalized = $this->normalizeCollection($object->getData(), $format, $context);
         } elseif ($object->getData() !== null) {
-            $normalized = $this->normalizeSingle($object->getData(), $format, $context);
+            $normalized = $this->serializer->normalize($object->getData(), $format, $context);
         }
 
         return ($normalized === null) ? $normalized : [$valueKey => $normalized];
@@ -54,20 +54,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         return (count($normalized) > 0) ? $normalized : null;
-    }
-
-    /**
-     * @param mixed  $single
-     * @param string $format
-     * @param array  $context
-     *
-     * @return array|null|string
-     */
-    protected function normalizeSingle($single, $format, $context)
-    {
-        $data = $this->serializer->normalize($single, $format, $context);
-
-        return $data;
     }
 
     /**
