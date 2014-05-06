@@ -24,6 +24,8 @@ parameters:
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
 
+    pim_catalog.event_listener.metric_base_values.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\MetricBaseValuesSubscriber
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.odm.mongodb.document_manager
