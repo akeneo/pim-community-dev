@@ -26,6 +26,7 @@
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
 - Changed the HydratorInterface::hydrate() method signature
 - Avoid to store null values in Product::normalizedData (MongoDB support)
+- Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
