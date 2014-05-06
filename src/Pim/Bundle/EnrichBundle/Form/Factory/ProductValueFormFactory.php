@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent;
+use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 
 /**
@@ -63,7 +63,7 @@ class ProductValueFormFactory
             $attributeType->prepareValueFormOptions($value)
         );
 
-        $event = new BuildProductValueFormEvent($value, $type, $data, $options);
+        $event = new CreateProductValueFormEvent($value, $type, $data, $options);
         $this->eventDispatcher->dispatch(EnrichEvents::CREATE_PRODUCT_VALUE_FORM, $event);
 
         $valueForm = $this->formFactory->createNamed($name, $type, $data, $options);
