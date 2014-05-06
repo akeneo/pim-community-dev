@@ -19,9 +19,11 @@ class UnknownColumnException extends ParametrizedException
      */
     public function __construct(array $labels, $class)
     {
+        $class = explode('\\', $class);
+
         parent::__construct(
             'Properties [%labels%] do not exist in %class%.',
-            array('%labels%' => implode(', ', $labels), '%class%' => end(explode('\\', $class)))
+            array('%labels%' => implode(', ', $labels), '%class%' => end($class))
         );
     }
 }
