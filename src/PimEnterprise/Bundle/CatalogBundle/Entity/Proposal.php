@@ -6,13 +6,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Revision of a product
+ * Proposal of changes of a product
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Revision
+class Proposal
 {
     /** @var int */
     protected $id;
@@ -27,7 +26,7 @@ class Revision
     protected $createdAt;
 
     /** @var array */
-    protected $newValues;
+    protected $changes;
 
     /**
      * @return int
@@ -86,18 +85,18 @@ class Revision
     }
 
     /**
-     * @param array $newValues
+     * @param array $changes
      */
-    public function setNewValues(array $newValues)
+    public function setChanges(array $changes)
     {
-        $this->newValues = $newValues;
+        $this->changes = $changes;
     }
 
     /**
      * @return array
      */
-    public function getNewValues()
+    public function getChanges()
     {
-        return $this->newValues;
+        return $this->changes;
     }
 }

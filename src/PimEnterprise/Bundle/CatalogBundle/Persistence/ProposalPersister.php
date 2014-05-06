@@ -7,16 +7,15 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use PimEnterprise\Bundle\CatalogBundle\Factory\RevisionFactory;
+use PimEnterprise\Bundle\CatalogBundle\Factory\ProposalFactory;
 
 /**
- * Store product through revisions
+ * Store product through proposals
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class RevisionPersister implements ProductPersister
+class ProposalPersister implements ProductPersister
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -27,24 +26,32 @@ class RevisionPersister implements ProductPersister
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var RevisionFactory */
+    /** @var ProposalFactory */
     protected $factory;
 
+    /** @var ProductChangesProvider */
+    protected $changesProvider;
+
     /**
-     * @param ManagerRegistry     $registry
-     * @param CompletenessManager $completenessManager
-     * @param RevisionFactory     $factory
+     * @param ManagerRegistry          $registry
+     * @param CompletenessManager      $completenessManager
+     * @param SecurityContextInterface $securityContext
+     * @param ProposalFactory          $factory
+     * @param ProductChangesProvider   $changesProvider
+     *
      */
     public function __construct(
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
-        RevisionFactory $factory
+        ProposalFactory $factory,
+        ProductChangesProvider $changesProvider
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
+        $this->changesProvider = $changesProvider;
     }
 
     /**
@@ -52,10 +59,10 @@ class RevisionPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
-        if (true /** Condition based on user right to edit the product */) {
+        if (false /** Condition based on user right to edit the product */) {
             $this->persistProduct($product, $options);
         } else {
-            $this->persistRevision($product);
+            $this->persistProposal($product);
         }
     }
 
@@ -93,22 +100,23 @@ class RevisionPersister implements ProductPersister
     }
 
     /**
-     * Persist a revision of the product
+     * Persist a proposal of the product
      *
      * @param ProductInterface $product
      */
-    private function persistRevision(ProductInterface $product)
+    private function persistProposal(ProductInterface $product)
     {
-        $revision = $this->factory->createRevision(
+        $proposal = $this->factory->createProposal(
             $product,
             $this->getUser(),
-            $this->computeNewValues($product)
+            $this->changesProvider->computeNewValues($product)
         );
 
-        $this->registry->getManagerForClass(get_class($product))->refresh($product);
+        // TODO	(2014-05-05 14:35 by Gildas): Find a way to prevent product modification saving
+        // $this->registry->getManagerForClass(get_class($product))->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($product));
 
-        $manager = $this->registry->getManagerForClass(get_class($revision));
-        $manager->persist($revision);
+        $manager = $this->registry->getManagerForClass(get_class($proposal));
+        $manager->persist($proposal);
         $manager->flush();
     }
 
@@ -130,29 +138,5 @@ class RevisionPersister implements ProductPersister
         }
 
         return $user;
-    }
-
-    private function computeNewValues(ProductInterface $product)
-    {
-        $manager = $this->registry->getManagerForClass(get_class($product));
-        $uow = $manager->getUnitOfWork();
-
-        if ($uow instanceof \Doctrine\ORM\UnitOfWork) {
-            $changeSet = $uow->getEntityChangeSet($product);
-            $newValues = [];
-
-            // $newValues only contain new values of attributes (not product property)
-
-            return $newValues;
-        } elseif (method_exists($uow, 'getDocumentChangeSet')) {
-            $changeSet = $uow->getDocumentChangeSet($product);
-            $newValues = [];
-
-            // $newValues only contain new values of attributes (not product property)
-
-            return $newValues;
-        }
-
-        throw new \LogicException('Cannot compute product new values');
     }
 }

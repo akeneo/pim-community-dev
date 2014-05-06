@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\CatalogBundle\Entity\Revision:
+PimEnterprise\Bundle\CatalogBundle\Entity\Proposal:
     type: entity
-    table: pim_catalog_product_revision
+    table: pimee_catalog_product_proposal
     id:
         id:
             type: integer
@@ -9,7 +9,7 @@ PimEnterprise\Bundle\CatalogBundle\Entity\Revision:
         createdAt:
             type: datetime
             column: created_at
-        newValues:
+        changes:
             type: array
             column: new_values
     manyToOne:
