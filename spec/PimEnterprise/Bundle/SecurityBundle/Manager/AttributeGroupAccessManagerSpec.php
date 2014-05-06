@@ -34,8 +34,8 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
         Role $user,
         Role $admin
     ) {
-        $user->getId()->willReturn(1);
-        $admin->getId()->willReturn(2);
+        $admin->getId()->willReturn(1);
+        $user->getId()->willReturn(2);
         $repository->findOneBy(Argument::any())->willReturn(null);
 
         $objectManager

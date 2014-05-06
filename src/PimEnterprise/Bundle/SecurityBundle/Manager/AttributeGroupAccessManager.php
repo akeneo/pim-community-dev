@@ -66,14 +66,16 @@ class AttributeGroupAccessManager
     public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
     {
         $grantedRoleIds = [];
-        foreach ($viewRoles as $role) {
-            $this->grantAccess($group, $role, 'VIEW');
-            $grantedRoleIds[] = $role->getId();
-        }
-
         foreach ($editRoles as $role) {
             $this->grantAccess($group, $role, 'EDIT');
             $grantedRoleIds[] = $role->getId();
+        }
+
+        foreach ($viewRoles as $role) {
+            if (!in_array($role->getId(), $grantedRoleIds)) {
+                $this->grantAccess($group, $role, 'VIEW');
+                $grantedRoleIds[] = $role->getId();
+            }
         }
 
         $this->revokeAccess($group, array_unique($grantedRoleIds));
