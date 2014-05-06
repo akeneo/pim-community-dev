@@ -41,8 +41,10 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
-        $field = sprintf('%s.%s.id', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $this->addFieldFilter($field, $operator, $value);
+        $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
+        $field = sprintf('%s.id', $field);
+        $value = array_map('intval', $value);
+        $this->qb->field($field)->in($value);
 
         return $this;
     }
