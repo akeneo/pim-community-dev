@@ -50,6 +50,13 @@ class EntityChangesProvider implements ProductChangesProvider
         $current = [];
         foreach ($product->getValues() as $value) {
             $current[$value->getId()] = $this->normalizer->normalize($value, 'json', ['locales' => ['en_US']]);
+
+            //FIXME For some reason prices are not refreshed
+            if ($value->getData() instanceof \Doctrine\Common\Collections\Collection) {
+                foreach ($value->getData() as $data) {
+                    $manager->refresh($data);
+                }
+            }
             $manager->refresh($value);
         }
 
