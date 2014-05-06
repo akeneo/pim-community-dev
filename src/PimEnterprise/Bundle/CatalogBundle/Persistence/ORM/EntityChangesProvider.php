@@ -47,23 +47,24 @@ class EntityChangesProvider implements ProductChangesProvider
     {
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        $current = [];
-        foreach ($product->getValues() as $value) {
-            $current[$value->getId()] = $this->normalizer->normalize($value, 'json', ['locales' => ['en_US']]);
+        // TODO (2014-05-06 18:28 by Gildas): We should normalize only values
+        $current = $this->normalizer->normalize($product, 'csv');
 
-            //FIXME For some reason prices are not refreshed
+        //FIXME Why do we need to refresh manually the values and values collection data?
+        foreach ($product->getValues() as $value) {
+            if ($manager->contains($value)) {
+                $manager->refresh($value);
+            }
             if ($value->getData() instanceof \Doctrine\Common\Collections\Collection) {
                 foreach ($value->getData() as $data) {
-                    $manager->refresh($data);
+                    if ($manager->contains($data)) {
+                        $manager->refresh($data);
+                    }
                 }
             }
-            $manager->refresh($value);
         }
 
-        $previous = [];
-        foreach ($product->getValues() as $value) {
-            $previous[$value->getId()] = $this->normalizer->normalize($value, 'json', ['locales' => ['en_US']]);
-        }
+        $previous = $this->normalizer->normalize($product, 'csv');
 
         return $this->engine->diff($previous, $current);
     }
