@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent;
+use Pim\Bundle\EnrichBundle\EnrichEvents;
 
 /**
  * Build the product value form
@@ -64,10 +66,8 @@ class ProductValueFormFactory
             $attributeType->prepareValueFormOptions($value)
         );
 
-        /*
-        $event = new FilterProductEvent($this, $product);
-        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT, $event);
-         */
+        $event = new BuildProductValueFormEvent($value, $type, $data, $options);
+        $this->eventDispatcher->dispatch(EnrichEvents::CREATE_PRODUCT_VALUE_FORM, $event);
 
         $valueForm = $this->formFactory->createNamed($name, $type, $data, $options);
 
