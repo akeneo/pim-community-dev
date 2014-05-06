@@ -9,7 +9,7 @@ PimEnterprise\Bundle\CatalogBundle\Entity\Proposal:
         createdAt:
             type: datetime
             column: created_at
-        newValues:
+        changes:
             type: array
             column: new_values
     manyToOne:

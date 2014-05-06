@@ -7,15 +7,15 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use PimEnterprise\Bundle\CatalogBundle\Factory\RevisionFactory;
+use PimEnterprise\Bundle\CatalogBundle\Factory\ProposalFactory;
 
 /**
- * Store product through revisions
+ * Store product through proposals
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class RevisionPersister implements ProductPersister
+class ProposalPersister implements ProductPersister
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -26,7 +26,7 @@ class RevisionPersister implements ProductPersister
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var RevisionFactory */
+    /** @var ProposalFactory */
     protected $factory;
 
     /** @var ProductChangesProvider */
@@ -36,7 +36,7 @@ class RevisionPersister implements ProductPersister
      * @param ManagerRegistry          $registry
      * @param CompletenessManager      $completenessManager
      * @param SecurityContextInterface $securityContext
-     * @param RevisionFactory          $factory
+     * @param ProposalFactory          $factory
      * @param ProductChangesProvider   $changesProvider
      *
      */
@@ -44,7 +44,7 @@ class RevisionPersister implements ProductPersister
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
-        RevisionFactory $factory,
+        ProposalFactory $factory,
         ProductChangesProvider $changesProvider
     ) {
         $this->registry = $registry;
@@ -59,10 +59,10 @@ class RevisionPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
-        if (true /** Condition based on user right to edit the product */) {
+        if (false /** Condition based on user right to edit the product */) {
             $this->persistProduct($product, $options);
         } else {
-            $this->persistRevision($product);
+            $this->persistProposal($product);
         }
     }
 
@@ -100,13 +100,13 @@ class RevisionPersister implements ProductPersister
     }
 
     /**
-     * Persist a revision of the product
+     * Persist a proposal of the product
      *
      * @param ProductInterface $product
      */
-    private function persistRevision(ProductInterface $product)
+    private function persistProposal(ProductInterface $product)
     {
-        $revision = $this->factory->createRevision(
+        $proposal = $this->factory->createProposal(
             $product,
             $this->getUser(),
             $this->changesProvider->computeNewValues($product)
@@ -115,8 +115,8 @@ class RevisionPersister implements ProductPersister
         // TODO	(2014-05-05 14:35 by Gildas): Find a way to prevent product modification saving
         // $this->registry->getManagerForClass(get_class($product))->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($product));
 
-        $manager = $this->registry->getManagerForClass(get_class($revision));
-        $manager->persist($revision);
+        $manager = $this->registry->getManagerForClass(get_class($proposal));
+        $manager->persist($proposal);
         $manager->flush();
     }
 
