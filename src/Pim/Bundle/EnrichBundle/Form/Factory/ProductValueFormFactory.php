@@ -66,7 +66,7 @@ class ProductValueFormFactory
         $event = new CreateProductValueFormEvent($value, $type, $data, $options);
         $this->eventDispatcher->dispatch(EnrichEvents::CREATE_PRODUCT_VALUE_FORM, $event);
 
-        $valueForm = $this->formFactory->createNamed($name, $type, $data, $options);
+        $valueForm = $this->formFactory->createNamed($name, $event->getFormType(), $event->getFormData(), $event->getFormOptions());
 
         return $valueForm;
     }
