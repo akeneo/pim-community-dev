@@ -29,9 +29,9 @@ class ArrayDiff
 
         if (!array_key_exists($head, $b)) {
             $diffs[$head] = null;
-        } else if (is_array($a[$head]) && [] !== $diff = $this->diff($a[$head], $b[$head])) {
+        } elseif (is_array($a[$head]) && [] !== $diff = $this->diff($a[$head], $b[$head])) {
             $diffs[$head] = $diff;
-        } else if ($a[$head] !== $b[$head]) {
+        } elseif ($a[$head] != $b[$head]) {
             $diffs[$head] = $b[$head];
         }
 

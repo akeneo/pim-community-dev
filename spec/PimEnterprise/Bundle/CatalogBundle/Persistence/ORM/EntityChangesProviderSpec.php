@@ -38,12 +38,15 @@ class EntityChangesProviderSpec extends ObjectBehavior
 
         $normalizer->normalize($sku, 'json', Argument::any())->willReturn(['value' => 'foo'], ['value' => 'foo']);
         $sku->getId()->willReturn(1);
+        $sku->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
 
         $normalizer->normalize($name, 'json', Argument::any())->willReturn(['value' => 'bar'], ['value' => 'baz']);
         $name->getId()->willReturn(2);
+        $name->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
 
         $normalizer->normalize($description, 'json', Argument::any())->willReturn(['value' => ''], ['value' => 'desc']);
         $description->getId()->willReturn(3);
+        $description->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
 
         $manager->refresh($sku)->shouldBeCalled();
         $manager->refresh($name)->shouldBeCalled();
