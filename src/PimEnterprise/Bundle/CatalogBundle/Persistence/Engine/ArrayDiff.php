@@ -31,7 +31,7 @@ class ArrayDiff
             $diffs[$head] = null;
         } else if (is_array($a[$head]) && [] !== $diff = $this->diff($a[$head], $b[$head])) {
             $diffs[$head] = $diff;
-        } else if ($a[$head] !== $b[$head]) {
+        } else if ($a[$head] != $b[$head]) {
             $diffs[$head] = $b[$head];
         }
 
