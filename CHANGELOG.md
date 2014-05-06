@@ -27,6 +27,7 @@
 - Changed the HydratorInterface::hydrate() method signature
 - Avoid to store null values in Product::normalizedData (MongoDB support)
 - Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
+- Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
