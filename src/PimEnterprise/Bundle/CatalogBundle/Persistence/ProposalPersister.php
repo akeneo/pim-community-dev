@@ -112,9 +112,6 @@ class ProposalPersister implements ProductPersister
             $this->changesProvider->computeNewValues($product)
         );
 
-        // TODO	(2014-05-05 14:35 by Gildas): Find a way to prevent product modification saving
-        // $this->registry->getManagerForClass(get_class($product))->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($product));
-
         $manager = $this->registry->getManagerForClass(get_class($proposal));
         $manager->persist($proposal);
         $manager->flush();

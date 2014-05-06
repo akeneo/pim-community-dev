@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Persistence\ORM;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Persistence\ProductChangesProvider;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PimEnterprise\Bundle\CatalogBundle\Persistence\Engine\ArrayDiff;
 
 /**
@@ -21,6 +21,9 @@ class EntityChangesProvider implements ProductChangesProvider
 
     /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var ArrayDiff */
+    protected $engine;
 
     /**
      * @param ManagerRegistry     $registry
@@ -47,6 +50,13 @@ class EntityChangesProvider implements ProductChangesProvider
         $current = [];
         foreach ($product->getValues() as $value) {
             $current[$value->getId()] = $this->normalizer->normalize($value, 'json', ['locales' => ['en_US']]);
+
+            //FIXME For some reason prices are not refreshed
+            if ($value->getData() instanceof \Doctrine\Common\Collections\Collection) {
+                foreach ($value->getData() as $data) {
+                    $manager->refresh($data);
+                }
+            }
             $manager->refresh($value);
         }
 
