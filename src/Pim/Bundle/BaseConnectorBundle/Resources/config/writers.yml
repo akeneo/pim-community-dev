@@ -1,5 +1,6 @@
 parameters:
     pim_base_connector.writer.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductWriter
+    pim_base_connector.writer.doctrine.product_association.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\ProductAssociationWriter
     pim_base_connector.writer.doctrine.class: Pim\Bundle\BaseConnectorBundle\Writer\Doctrine\Writer
 
     pim_base_connector.writer.file.class: Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter
@@ -29,6 +30,10 @@ services:
         calls:
             - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
 
+    pim_base_connector.writer.doctrine.product_association:
+        class: %pim_base_connector.writer.doctrine.product_association.class%
+        parent: pim_base_connector.writer.doctrine
+
     pim_base_connector.writer.doctrine:
         class: %pim_base_connector.writer.doctrine.class%
         arguments:
@@ -38,5 +43,5 @@ services:
     pim_base_connector.writer.doctrine.group: '@pim_base_connector.writer.doctrine'
     pim_base_connector.writer.doctrine.attribute: '@pim_base_connector.writer.doctrine'
     pim_base_connector.writer.doctrine.attribute_option: '@pim_base_connector.writer.doctrine'
-    pim_base_connector.writer.doctrine.association: '@pim_base_connector.writer.doctrine'
+    pim_base_connector.writer.doctrine.association: '@pim_base_connector.writer.doctrine.product_association'
     pim_base_connector.writer.doctrine.category: '@pim_base_connector.writer.doctrine'
