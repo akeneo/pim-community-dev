@@ -36,34 +36,19 @@ class EntityChangesProviderSpec extends ObjectBehavior
 
         $product->getValues()->willReturn([$sku, $name, $description]);
 
-        $normalizer->normalize($sku, 'json', Argument::any())->willReturn(['value' => 'foo'], ['value' => 'foo']);
-        $sku->getId()->willReturn(1);
+        $normalizer->normalize($product, 'csv')->willReturn(['current'], ['previous']);
+
+        $manager->contains($sku)->willReturn(true); // FIXME Remove this when product values refreshing is working
+        $manager->contains($name)->willReturn(true); // FIXME Remove this when product values refreshing is working
+        $manager->contains($description)->willReturn(true); // FIXME Remove this when product values refreshing is working
+        $manager->refresh($sku)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
+        $manager->refresh($name)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
+        $manager->refresh($description)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
         $sku->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
-
-        $normalizer->normalize($name, 'json', Argument::any())->willReturn(['value' => 'bar'], ['value' => 'baz']);
-        $name->getId()->willReturn(2);
         $name->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
-
-        $normalizer->normalize($description, 'json', Argument::any())->willReturn(['value' => ''], ['value' => 'desc']);
-        $description->getId()->willReturn(3);
         $description->getData()->willReturn(null); // FIXME Remove this when product prices refreshing is working
 
-        $manager->refresh($sku)->shouldBeCalled();
-        $manager->refresh($name)->shouldBeCalled();
-        $manager->refresh($description)->shouldBeCalled();
-
-        $engine->diff(
-            [
-                1 => ['value' => 'foo'],
-                2 => ['value' => 'baz'],
-                3 => ['value' => 'desc'],
-            ],
-            [
-                1 => ['value' => 'foo'],
-                2 => ['value' => 'bar'],
-                3 => ['value' => ''],
-            ]
-        )->willReturn('differences');
+        $engine->diff(['previous'], ['current'])->willReturn('differences');
 
         $this->computeNewValues($product)->shouldReturn('differences');
     }
