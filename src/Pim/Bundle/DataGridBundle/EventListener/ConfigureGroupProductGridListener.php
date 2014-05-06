@@ -31,6 +31,7 @@ class ConfigureGroupProductGridListener extends ConfigureProductGridListener
      * @param ConfigurationRegistry    $confRegistry
      * @param RequestParameters        $requestParams
      * @param SecurityContextInterface $securityContext
+     * @param EntityRepository         $gridViewRepository
      * @param GroupRepository          $groupRepository
      */
     public function __construct(
@@ -38,7 +39,7 @@ class ConfigureGroupProductGridListener extends ConfigureProductGridListener
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
         SecurityContextInterface $securityContext,
-        EntityRepository $datagridViewRepository,
+        EntityRepository $gridViewRepository,
         GroupRepository $groupRepository
     ) {
         parent::__construct(
@@ -46,7 +47,7 @@ class ConfigureGroupProductGridListener extends ConfigureProductGridListener
             $confRegistry,
             $requestParams,
             $securityContext,
-            $datagridViewRepository,
+            $gridViewRepository,
             $groupRepository
         );
 

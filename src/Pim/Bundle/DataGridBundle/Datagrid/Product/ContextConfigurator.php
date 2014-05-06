@@ -111,12 +111,17 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $request;
 
     /**
+     * @var EntityRepository
+     */
+    protected $gridViewRepository;
+
+    /**
      * @param DatagridConfiguration    $configuration
      * @param ProductManager           $productManager
      * @param RequestParameters        $requestParams
      * @param Request                  $request
      * @param SecurityContextInterface $securityContext
-     * @param EntityRepository         $datagridViewRepository
+     * @param EntityRepository         $gridViewRepository
      */
     public function __construct(
         DatagridConfiguration $configuration,
@@ -124,14 +129,14 @@ class ContextConfigurator implements ConfiguratorInterface
         RequestParameters $requestParams,
         Request $request,
         SecurityContextInterface $securityContext,
-        EntityRepository $datagridViewRepository
+        EntityRepository $gridViewRepository
     ) {
-        $this->configuration          = $configuration;
-        $this->productManager         = $productManager;
-        $this->requestParams          = $requestParams;
-        $this->request                = $request;
-        $this->securityContext        = $securityContext;
-        $this->datagridViewRepository = $datagridViewRepository;
+        $this->configuration      = $configuration;
+        $this->productManager     = $productManager;
+        $this->requestParams      = $requestParams;
+        $this->request            = $request;
+        $this->securityContext    = $securityContext;
+        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**
@@ -368,7 +373,7 @@ class ContextConfigurator implements ConfiguratorInterface
         }
 
         $view = $this
-            ->datagridViewRepository
+            ->gridViewRepository
             ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
 
         if ($view) {

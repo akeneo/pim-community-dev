@@ -46,7 +46,7 @@ class ConfigureProductGridListener
     protected $securityContext;
 
     /** @var EntityRepository */
-    protected $datagridViewRepository;
+    protected $gridViewRepository;
 
     /**
      * @var Request
@@ -56,23 +56,24 @@ class ConfigureProductGridListener
     /**
      * Constructor
      *
-     * @param ProductManager           $productManager  product manager
-     * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
-     * @param RequestParameters        $requestParams   request parameters
-     * @param SecurityContextInterface $securityContext the security context
+     * @param ProductManager           $productManager     product manager
+     * @param ConfigurationRegistry    $confRegistry       attribute type configuration registry
+     * @param RequestParameters        $requestParams      request parameters
+     * @param SecurityContextInterface $securityContext    the security context
+     * @param EntityRepository         $gridViewRepository DatagridView repository
      */
     public function __construct(
         ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
         SecurityContextInterface $securityContext,
-        EntityRepository $datagridViewRepository
+        EntityRepository $gridViewRepository
     ) {
-        $this->productManager  = $productManager;
-        $this->confRegistry    = $confRegistry;
-        $this->requestParams   = $requestParams;
-        $this->securityContext = $securityContext;
-        $this->datagridViewRepository = $datagridViewRepository;
+        $this->productManager     = $productManager;
+        $this->confRegistry       = $confRegistry;
+        $this->requestParams      = $requestParams;
+        $this->securityContext    = $securityContext;
+        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**
@@ -113,7 +114,7 @@ class ConfigureProductGridListener
             $this->requestParams,
             $this->request,
             $this->securityContext,
-            $this->datagridViewRepository
+            $this->gridViewRepository
         );
     }
 
