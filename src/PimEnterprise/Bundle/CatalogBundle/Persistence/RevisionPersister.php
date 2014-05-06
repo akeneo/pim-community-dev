@@ -29,21 +29,29 @@ class RevisionPersister implements ProductPersister
     /** @var RevisionFactory */
     protected $factory;
 
+    /** @var ProductChangesProvider */
+    protected $changesProvider;
+
     /**
-     * @param ManagerRegistry     $registry
-     * @param CompletenessManager $completenessManager
-     * @param RevisionFactory     $factory
+     * @param ManagerRegistry          $registry
+     * @param CompletenessManager      $completenessManager
+     * @param SecurityContextInterface $securityContext
+     * @param RevisionFactory          $factory
+     * @param ProductChangesProvider   $changesProvider
+     *
      */
     public function __construct(
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
-        RevisionFactory $factory
+        RevisionFactory $factory,
+        ProductChangesProvider $changesProvider
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
+        $this->changesProvider = $changesProvider;
     }
 
     /**
@@ -101,10 +109,11 @@ class RevisionPersister implements ProductPersister
         $revision = $this->factory->createRevision(
             $product,
             $this->getUser(),
-            $this->computeNewValues($product)
+            $this->changesProvider->computeNewValues($product)
         );
 
-        $this->registry->getManagerForClass(get_class($product))->refresh($product);
+        // TODO	(2014-05-05 14:35 by Gildas): Find a way to prevent product modification saving
+        // $this->registry->getManagerForClass(get_class($product))->getUnitOfWork()->clearEntityChangeSet(spl_object_hash($product));
 
         $manager = $this->registry->getManagerForClass(get_class($revision));
         $manager->persist($revision);
@@ -129,29 +138,5 @@ class RevisionPersister implements ProductPersister
         }
 
         return $user;
-    }
-
-    private function computeNewValues(ProductInterface $product)
-    {
-        $manager = $this->registry->getManagerForClass(get_class($product));
-        $uow = $manager->getUnitOfWork();
-
-        if ($uow instanceof \Doctrine\ORM\UnitOfWork) {
-            $changeSet = $uow->getEntityChangeSet($product);
-            $newValues = [];
-
-            // $newValues only contain new values of attributes (not product property)
-
-            return $newValues;
-        } elseif (method_exists($uow, 'getDocumentChangeSet')) {
-            $changeSet = $uow->getDocumentChangeSet($product);
-            $newValues = [];
-
-            // $newValues only contain new values of attributes (not product property)
-
-            return $newValues;
-        }
-
-        throw new \LogicException('Cannot compute product new values');
     }
 }
