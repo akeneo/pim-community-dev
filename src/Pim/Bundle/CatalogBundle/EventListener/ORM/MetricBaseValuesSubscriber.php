@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
@@ -48,9 +48,7 @@ class MetricBaseValuesSubscriber implements EventSubscriber
      */
     public function getSubscribedEvents()
     {
-        return array(
-            'prePersist', 'preUpdate'
-        );
+        return array('prePersist', 'preUpdate');
     }
 
     /**
@@ -77,9 +75,6 @@ class MetricBaseValuesSubscriber implements EventSubscriber
         $object = $args->getObject();
         if ($object instanceof Metric && $object->getUnit()) {
             $this->createMetricBaseValues($object);
-
-            $class = new ClassMetadata($object);
-            $args->getObjectManager()->getUnitOfWork()->recomputeSingleDocumentChangeSet($class, $object);
         }
     }
 
