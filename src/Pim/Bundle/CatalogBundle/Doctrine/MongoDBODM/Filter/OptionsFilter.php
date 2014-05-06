@@ -5,19 +5,17 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 use Doctrine\MongoDB\Query\Expr;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
- * Entity filter
+ * Multi options filter for MongoDB
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
+class OptionsFilter extends EntityFilter
 {
     /** @var QueryBuilder */
     protected $qb;
@@ -42,9 +40,7 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
-        $field = sprintf('%s.id', $field);
-        $value = array_map('intval', $value);
-        $this->qb->field($field)->in($value);
+        $this->addFieldFilter($field, $operator, $value);
 
         return $this;
     }
@@ -69,7 +65,8 @@ class EntityFilter implements AttributeFilterInterface, FieldFilterInterface
 
             if (count($value) > 0) {
                 $expr = new Expr();
-                $expr->field($field)->in($value);
+                $value = array_map('intval', $value);
+                $expr->field($field .'.id')->in($value);
                 $this->qb->addOr($expr);
             }
         }

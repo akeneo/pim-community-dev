@@ -22,28 +22,62 @@ class PriceFilter extends BaseFilter
         $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
 
-        // inner join to value
+        // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-            $joinAlias,
-            'WITH',
-            $condition
-        );
 
-        $joinAliasOpt = 'filterP'.$attribute->getCode().$this->aliasCounter;
+        if ('EMPTY' === $operator) {
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
 
-        list($value, $currency) = explode(' ', $value);
+            // join to price
+            $joinAliasPrice = 'filterP'.$attribute->getCode().$this->aliasCounter;
+            $priceData      = $joinAlias.'.'.$backendType;
+            $this->qb->leftJoin($priceData, $joinAliasPrice);
 
-        $currencyField = sprintf('%s.%s', $joinAliasOpt, 'currency');
-        $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $currency);
+            // add conditions
+            $condition = $this->preparePriceCondition($joinAliasPrice, $operator, $value);
+            $exprNull = $this->qb->expr()->isNull($joinAliasPrice.'.id');
+            $exprOr = $this->qb->expr()->orX($condition, $exprNull);
+            $this->qb->andWhere($exprOr);
+        } else {
+            $this->qb->innerJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
 
-        $valueField = sprintf('%s.%s', $joinAliasOpt, 'data');
-        $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value);
-
-        $condition = sprintf('(%s AND %s)', $currencyCondition, $valueCondition);
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+            $joinAliasPrice = 'filterP'.$attribute->getCode().$this->aliasCounter;
+            $condition = $this->preparePriceCondition($joinAliasPrice, $operator, $value);
+            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasPrice, 'WITH', $condition);
+        }
 
         return $this;
+    }
+
+    /**
+     * Prepare price condition to join
+     *
+     * @param string $joinAlias
+     * @param string $operator
+     * @param string $value
+     *
+     * @return string
+     */
+    protected function preparePriceCondition($joinAlias, $operator, $value)
+    {
+        list($value, $currency) = explode(' ', $value);
+
+        $valueField     = sprintf('%s.%s', $joinAlias, 'data');
+        $valueCondition = $this->prepareCriteriaCondition($valueField, $operator, $value);
+
+        $currencyField     = sprintf('%s.%s', $joinAlias, 'currency');
+        $currencyCondition = $this->prepareCriteriaCondition($currencyField, '=', $currency);
+
+        return sprintf('%s AND %s', $currencyCondition, $valueCondition);
     }
 }
