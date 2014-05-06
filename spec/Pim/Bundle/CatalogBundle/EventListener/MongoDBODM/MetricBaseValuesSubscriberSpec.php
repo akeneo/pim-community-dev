@@ -1,12 +1,14 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventListener;
+namespace spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
 class MetricBaseValuesSubscriberSpec extends ObjectBehavior
@@ -52,9 +54,17 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
         LifecycleEventArgs $args,
         Metric $metric,
         MeasureManager $manager,
-        MeasureConverter $converter
+        MeasureConverter $converter,
+        DocumentManager $dm,
+        UnitOfWork $uow
     ) {
         $args->getObject()->willReturn($metric);
+        $args->getObjectManager()->willReturn($dm);
+        $dm->getUnitOfWork()->willReturn($uow);
+        $uow->recomputeSingleDocumentChangeSet(
+            Argument::type('Doctrine\Common\Persistence\Mapping\ClassMetadata'),
+            $metric
+        )->shouldBeCalled();
 
         $metric->getUnit()->willReturn('cm');
         $metric->getFamily()->willReturn('distance');
