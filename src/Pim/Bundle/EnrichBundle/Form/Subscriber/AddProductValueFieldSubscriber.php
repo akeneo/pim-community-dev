@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory;
 
 /**
  * Add a relevant form for each product value
@@ -20,25 +21,18 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 class AddProductValueFieldSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var FormFactoryInterface
+     * @var ProductValueFormFactory
      */
     protected $factory;
 
     /**
-     * @var AttributeTypeFactory
-     */
-    protected $attributeTypeFactory;
-
-    /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param AttributeTypeFactory $attTypeFactory
+     * @param ProductValueFormFactory $factory
      */
-    public function __construct(FormFactoryInterface $factory, AttributeTypeFactory $attTypeFactory)
+    public function __construct(ProductValueFormFactory $factory)
     {
         $this->factory = $factory;
-        $this->attributeTypeFactory = $attTypeFactory;
     }
 
     /**
@@ -68,11 +62,8 @@ class AddProductValueFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $attributeTypeAlias = $value->getAttribute()->getAttributeType();
-        $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
+        $valueForm = $this->factory->buildProductValueForm($value);
 
-        /** @var FormInterface $valueForm */
-        $valueForm = $attributeType->buildValueFormType($this->factory, $value);
         $form->add($valueForm);
     }
 }
