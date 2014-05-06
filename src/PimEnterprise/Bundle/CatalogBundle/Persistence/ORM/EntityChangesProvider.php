@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Persistence\ORM;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Persistence\ProductChangesProvider;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use PimEnterprise\Bundle\CatalogBundle\Persistence\Engine\ArrayDiff;
 
 /**
@@ -21,6 +21,9 @@ class EntityChangesProvider implements ProductChangesProvider
 
     /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var ArrayDiff */
+    protected $engine;
 
     /**
      * @param ManagerRegistry     $registry

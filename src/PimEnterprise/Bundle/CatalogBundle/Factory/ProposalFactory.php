@@ -29,7 +29,7 @@ class ProposalFactory
         $proposal->setProduct($product);
         $proposal->setCreatedBy($user);
         $proposal->setCreatedAt(new \DateTime());
-        $proposal->setChanges($newValues);
+        $proposal->setChanges($changes);
 
         return $proposal;
     }
