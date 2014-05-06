@@ -1,0 +1,36 @@
+{% extends bap.layout %}
+
+{% macro renderWidget(widget) %}
+    <div class="quick-launchpad-widget span6">
+        <div class="clearfix">
+            {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': widget })) }}
+        </div>
+    </div>
+{% endmacro %}
+{% import _self as __ %}
+
+{% block content %}
+    <div class="dashboard header">
+        <h3>{{ 'pim_dashboard.title'|trans }}</h3>
+    </div>
+
+    <div class="scrollable-container quick-launchpad dashboard">
+        <div class="container">
+            <div class="row buffer-bottom">
+                {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': 'links' })) }}
+            </div>
+
+            <div class="row">
+                {% set widgetsArray = ['completeness', 'last_operations', 'proposals'] %}
+
+                {% for widget in widgetsArray %}
+                    {{ __.renderWidget(widget) }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="version-container muted">
+            {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
+        </div>
+    </div>
+{% endblock %}

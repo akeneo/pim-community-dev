@@ -1,0 +1,8 @@
+parameters:
+    pimee_dashboard.widget.proposal.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget
+
+services:
+    pimee_dashboard.widget.proposal:
+        class: %pimee_dashboard.widget.proposal.class%
+        tags:
+            - { name: pim_dashboard.widget, alias: proposals }
