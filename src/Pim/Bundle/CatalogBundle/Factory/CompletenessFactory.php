@@ -20,8 +20,8 @@ class CompletenessFactory
      *
      * @param Channel $channel
      * @param Locale  $locale
-     * @param int     $missingCount
-     * @param int     $requiredCount
+     * @param integer $missingCount
+     * @param integer $requiredCount
      *
      * @return Completeness
      */

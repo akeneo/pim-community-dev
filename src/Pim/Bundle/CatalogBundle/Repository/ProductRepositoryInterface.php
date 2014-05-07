@@ -20,11 +20,11 @@ interface ProductRepositoryInterface
     /**
      * Finds entities and attributes values by a set of criteria, same coverage than findBy
      *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
+     * @param array        $attributes attribute codes
+     * @param array|null   $criteria   criterias
+     * @param array|null   $orderBy    order by
+     * @param integer|null $limit      limit
+     * @param integer|null $offset     offset
      *
      * @return array The objects.
      */
