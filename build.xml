@@ -6,7 +6,7 @@
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -195,16 +195,8 @@
         </exec>
     </target>
 
-    <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
-        <exec executable="phpunit" failonerror="false">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--filter=LocaleManagerTest" />
-        </exec>
-    </target>
-
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="phpunit">
+        <exec executable="${basedir}/bin/phpunit">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
