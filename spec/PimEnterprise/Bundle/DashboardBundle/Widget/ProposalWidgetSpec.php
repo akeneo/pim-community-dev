@@ -34,7 +34,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
     function it_passes_proposals_from_the_repository_to_the_template($repository)
     {
-        $repository->findBy([], ['createdAt' => 'ASC'], 10)->willReturn(['proposal one', 'proposal two']);
+        $repository->findBy([], ['createdAt' => 'DESC'], 10)->willReturn(['proposal one', 'proposal two']);
         $this->getParameters()->shouldReturn(['params' => ['proposal one', 'proposal two']]);
     }
 }

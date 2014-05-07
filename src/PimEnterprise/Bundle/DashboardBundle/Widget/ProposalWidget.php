@@ -43,7 +43,7 @@ class ProposalWidget implements WidgetInterface
     {
         $proposals = $this->manager
             ->getRepository('PimEnterpriseCatalogBundle:Proposal')
-            ->findBy([], ['createdAt' => 'ASC'], 10);
+            ->findBy([], ['createdAt' => 'DESC'], 10);
 
         return [
             'params' => $proposals
