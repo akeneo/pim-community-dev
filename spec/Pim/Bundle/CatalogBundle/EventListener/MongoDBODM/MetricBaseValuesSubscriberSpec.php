@@ -11,6 +11,10 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ * @require Doctrine\ODM\MongoDB\UnitOfWork
+ */
 class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 {
     function let(MeasureConverter $converter, MeasureManager $manager)
