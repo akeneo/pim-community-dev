@@ -66,24 +66,4 @@ class CurrencyManager
             $this->getActiveCurrencies()
         );
     }
-
-    /**
-     * Get active code choices
-     *
-     * Prior to PHP 5.4 array_combine() does not accept
-     * empty array as argument.
-     *
-     * @see http://php.net/array_combine#refsect1-function.array-combine-changelog
-     *
-     * @return array
-     */
-    public function getActiveCodeChoices()
-    {
-        $codes = $this->getActiveCodes();
-        if (empty($codes)) {
-            return array();
-        }
-
-        return array_combine($codes, $codes);
-    }
 }

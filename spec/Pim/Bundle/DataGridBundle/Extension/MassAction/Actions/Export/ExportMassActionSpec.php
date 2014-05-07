@@ -8,24 +8,23 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class ExportMassActionSpec extends ObjectBehavior
 {
-    function it_must_implement_export_mass_action_interface()
+    function it_is_an_export_mass_action()
     {
-        $this->shouldBeAnInstanceOf(
+        $this->shouldImplement(
             'Pim\Bundle\DataGridBundle\Extension\MassAction\Actions\Export\ExportMassActionInterface'
         );
     }
 
-    function it_should_have_required_format_route_parameter()
+    function it_requires_the_format_route_parameter()
     {
-        $params = array();
-        $options = ActionConfiguration::createNamed('export', $params);
+        $options = ActionConfiguration::createNamed('export', []);
 
         $this->shouldThrow(
             new \LogicException('There is no route_parameter named "_format" for action "export"')
         )->duringSetOptions($options);
     }
 
-    function it_should_have_required_content_type_route_parameter()
+    function it_requires_the_content_type_route_parameter()
     {
         $params = array(
             'route_parameters' => array('_format' => 'foo')
@@ -37,7 +36,7 @@ class ExportMassActionSpec extends ObjectBehavior
         )->duringSetOptions($options);
     }
 
-    function it_should_define_default_values()
+    function it_defines_default_values()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $params = array('route_parameters' => $routeParams);
@@ -53,7 +52,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('handler')->shouldReturn('quick_export');
     }
 
-    function it_should_overwrite_default_values()
+    function it_overwrites_default_values()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $context     = array('baz' => 'qux');
@@ -74,7 +73,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('handler')->shouldReturn('my_handler');
     }
 
-    function it_should_get_export_context()
+    function it_gets_export_context()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $context     = array('baz' => 'qux');
@@ -89,7 +88,7 @@ class ExportMassActionSpec extends ObjectBehavior
         $this->getExportContext()->shouldReturn($context);
     }
 
-    function it_should_be_impossible_to_override_frontend()
+    function it_doesnt_allow_overriding_frontend_type()
     {
         $routeParams = array('_format' => 'foo', '_contentType' => 'bar');
         $params = array('route_parameters' => $routeParams, 'frontend_type' => 'bar');

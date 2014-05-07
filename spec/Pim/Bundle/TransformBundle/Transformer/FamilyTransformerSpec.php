@@ -15,17 +15,24 @@ use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 
 class FamilyTransformerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer,
         EntityTransformerInterface $transformerRegistry,
         FamilyFactory $factory
-    )
-    {
+    ) {
         $requirementClass = 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement';
-        $this->beConstructedWith($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer, $transformerRegistry, $factory, $requirementClass);
+        $this->beConstructedWith(
+            $doctrine,
+            $propertyAccessor,
+            $guesser,
+            $columnInfoTransformer,
+            $transformerRegistry,
+            $factory,
+            $requirementClass
+        );
     }
 
     function it_is_a_nested_entity_transformer()

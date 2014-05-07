@@ -76,7 +76,12 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobExecution->getFailureExceptions()->willReturn([]);
         $jobExecution->getLabel()->willReturn('My Job');
 
-        $exception = new \RuntimeException('Cannot normalize job execution of "My Job" because injected serializer is not a normalizer');
-        $this->shouldThrow($exception)->duringNormalize($jobExecution, 'any');
+        $this
+            ->shouldThrow(
+                new \RuntimeException(
+                    'Cannot normalize job execution of "My Job" because injected serializer is not a normalizer'
+                )
+            )
+            ->duringNormalize($jobExecution, 'any');
     }
 }

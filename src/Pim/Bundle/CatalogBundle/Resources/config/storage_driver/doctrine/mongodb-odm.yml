@@ -14,6 +14,7 @@ parameters:
     pim_catalog.mongodb.normalizer.attribute_option.class:  Pim\Bundle\CatalogBundle\MongoDB\Normalizer\AttributeOptionNormalizer
     pim_catalog.mongodb.normalizer.product_price.class:     Pim\Bundle\CatalogBundle\MongoDB\Normalizer\ProductPriceNormalizer
     pim_catalog.mongodb.normalizer.media.class:             Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MediaNormalizer
+    pim_catalog.mongodb.normalizer.metric.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\MetricNormalizer
     pim_catalog.mongodb.normalizer.datetime.class:          Pim\Bundle\CatalogBundle\MongoDB\Normalizer\DateTimeNormalizer
     pim_catalog.doctrine.product_query_builder.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryBuilder
     pim_catalog.doctrine.smart_manager_registry.class:      Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
@@ -22,6 +23,8 @@ parameters:
     pim_catalog.event_listener.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
+
+    pim_catalog.event_listener.metric_base_values.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\MetricBaseValuesSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -81,6 +84,12 @@ services:
 
     pim_catalog.mongodb.normalizer.media:
         class: %pim_catalog.mongodb.normalizer.media.class%
+        public: false
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pim_catalog.mongodb.normalizer.metric:
+        class: %pim_catalog.mongodb.normalizer.metric.class%
         public: false
         tags:
             - { name: pim_serializer.normalizer }

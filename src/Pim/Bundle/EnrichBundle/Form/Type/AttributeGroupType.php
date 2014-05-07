@@ -5,6 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
 
 /**
@@ -16,6 +17,9 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class AttributeGroupType extends AbstractType
 {
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
     /**
      * {@inheritdoc}
      */
@@ -35,6 +39,10 @@ class AttributeGroupType extends AbstractType
             )
             ->add('sort_order', 'hidden')
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -55,5 +63,15 @@ class AttributeGroupType extends AbstractType
     public function getName()
     {
         return 'pim_enrich_attribute_group';
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 }

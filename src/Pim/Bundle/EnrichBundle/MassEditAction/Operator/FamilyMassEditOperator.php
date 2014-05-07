@@ -24,9 +24,9 @@ class FamilyMassEditOperator extends AbstractMassEditOperator
      * @param SecurityFacade $securityFacade
      * @param EntityManager  $manager
      */
-    public function __construct(Securityfacade $securityfacade, EntityManager $manager)
+    public function __construct(Securityfacade $securityFacade, EntityManager $manager)
     {
-        parent::__construct($securityfacade);
+        parent::__construct($securityFacade);
 
         $this->manager = $manager;
     }

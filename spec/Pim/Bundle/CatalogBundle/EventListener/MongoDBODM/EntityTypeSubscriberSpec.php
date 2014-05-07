@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
@@ -14,6 +14,7 @@ use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 /**
  * @require Doctrine\ODM\MongoDB\Events
  * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+ * @require Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs
  * @require Doctrine\ODM\MongoDB\DocumentManager
  * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
  */
@@ -100,7 +101,10 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $documentMetadata->reflFields = ['bar' => $reflFoo];
         $documentMetadata->fieldMappings = [
             'foo' => ['type' => 'text'],
-            'bar' => ['type' => 'entity', 'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'],
+            'bar' => [
+                'type'         => 'entity',
+                'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'
+            ],
         ];
 
         $reflFoo->getValue($entity)->willReturn($foo);
@@ -125,8 +129,11 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         ];
         $documentMetadata->name = 'Acme/Document';
 
-        $exception = new \RuntimeException('Please provide the "targetEntity" of the Acme/Document::$bar field mapping');
-        $this->shouldThrow($exception)->duringPostLoad($args);
+        $this
+            ->shouldThrow(
+                new \RuntimeException('Please provide the "targetEntity" of the Acme/Document::$bar field mapping')
+            )
+            ->duringPostLoad($args);
     }
 
     function it_transformes_entities_into_ids_before_update(

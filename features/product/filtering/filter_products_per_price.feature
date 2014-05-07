@@ -20,6 +20,7 @@ Feature: Filter products per price
     And the following product:
       | sku |
       | mug |
+      | pen |
     And the following product values:
       | product | attribute | value    | scope     |
       | mug     | Price     |          | ecommerce |
@@ -30,7 +31,7 @@ Feature: Filter products per price
     Given I am on the products page
     Then I should see the filter SKU
     And I should not see the filter Price
-    And the grid should contain 3 elements
+    And the grid should contain 4 elements
     And I should see products postit, book and mug
     And I should be able to use the following filters:
       | filter | value      | result          |
@@ -43,4 +44,4 @@ Feature: Filter products per price
       | Price  | > 40.5 EUR |                 |
     When I show the filter "Price"
     And I filter by price "Price" with empty value on "EUR" currency
-    And I should see product mug
+    And I should see product mug and pen

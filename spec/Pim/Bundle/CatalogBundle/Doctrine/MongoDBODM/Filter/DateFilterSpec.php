@@ -18,6 +18,8 @@ class DateFilterSpec extends ObjectBehavior
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
         $this->beConstructedWith($queryBuilder, $context);
+
+        $queryBuilder->field(Argument::any())->willReturn($queryBuilder);
     }
 
     function it_is_an_attribute_filter()
@@ -30,46 +32,42 @@ class DateFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
     }
 
-    function it_adds_a_lesser_than_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $date)
+    function it_adds_a_less_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)
     {
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.release_date-en_US-mobile')->willReturn($queryBuilder);
         $queryBuilder->lt(strtotime('2014-03-15'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, '<', '2014-03-15');
     }
 
-    function it_adds_a_greater_than_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $date)
+    function it_adds_a_greater_than_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)
     {
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.release_date-en_US-mobile')->willReturn($queryBuilder);
         $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, '>', '2014-03-15');
     }
 
-    function it_adds_a_between_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $date)
+    function it_adds_a_between_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)
     {
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.release_date-en_US-mobile')->willReturn($queryBuilder);
         $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
         $queryBuilder->lt(strtotime('2014-03-20'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, 'BETWEEN', ['2014-03-15', '2014-03-20']);
     }
 
-    function it_adds_a_not_between_filter_on_an_attribute_value_in_the_query(Builder $queryBuilder, AbstractAttribute $date)
+    function it_adds_a_not_between_filter_on_an_attribute_value_in_the_query($queryBuilder, AbstractAttribute $date)
     {
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
-        $queryBuilder->field('normalizedData.release_date-en_US-mobile')->willReturn($queryBuilder);
         $queryBuilder->expr()->willReturn($queryBuilder);
         $queryBuilder->addAnd($queryBuilder)->willReturn($queryBuilder);
         $queryBuilder->addOr($queryBuilder)->willReturn($queryBuilder);
@@ -80,9 +78,8 @@ class DateFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($date, ['from' => '<', 'to' => '>'], ['from' => '2014-03-15', 'to' => '2014-03-20']);
     }
 
-    function it_adds_a_between_filter_on_a_field_in_the_query(Builder $queryBuilder)
+    function it_adds_a_between_filter_on_a_field_in_the_query($queryBuilder)
     {
-        $queryBuilder->field('normalizedData.created')->willReturn($queryBuilder);
         $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
         $queryBuilder->lt(strtotime('2014-03-20'))->willReturn($queryBuilder);
 

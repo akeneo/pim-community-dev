@@ -3,13 +3,14 @@
 ## Features
 - Add an option to automatically sort the choices of simple and multi select attributes
 - Add a mass family edition operation to allow adding or changing attribute requirements on many families at once
-- All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
+- Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
+- Add an option to filter products by a list of identifier values
 
 ## Improvements
 - Group datagrid filters by attribute groups
-- Allow filtering by empty values for attribute of type text, number, datetime, simple and multiselect and for family property
 - Ease the adding of new filters and sorters in ProductQueryBuilder
-- Add an option to filter products by a list of identifier values
+- All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
+- Ease the adding of subscribers in product edit and attribute group types with addEventSubscriber methods
 
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -24,6 +25,8 @@
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
 - Changed the HydratorInterface::hydrate() method signature
+- Avoid to store null values in Product::normalizedData (MongoDB support)
+- Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

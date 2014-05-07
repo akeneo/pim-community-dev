@@ -29,9 +29,9 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     When I show the filter "name"
     And I should be able to use the following filters:
-      | filter      | value | result |
-      | name        | empty | book   |
-      | description | empty | postit |
+      | filter      | value | result          |
+      | name        | empty | book and mug    |
+      | description | empty | postit and book |
 
   Scenario: Successfully filter products by empty value for localizable text attribute
     Given the following attributes:
@@ -53,8 +53,8 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     When I show the filter "name"
     And I should be able to use the following filters:
-      | filter | value | result |
-      | name   | empty | book   |
+      | filter | value | result       |
+      | name   | empty | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable text attribute
     Given the following attributes:
@@ -76,8 +76,8 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     When I show the filter "name"
     And I should be able to use the following filters:
-      | filter | value | result |
-      | name   | empty | book   |
+      | filter | value | result       |
+      | name   | empty | book and mug |
 
   Scenario: Successfully filter products by empty value for scopable and localizable text attribute
     Given the following attributes:
@@ -103,5 +103,5 @@ Feature: Filter products by text field
     And I should see products postit, book and mug
     When I show the filter "name"
     And I should be able to use the following filters:
-      | filter | value | result |
-      | name   | empty | book   |
+      | filter | value | result       |
+      | name   | empty | book and mug |
