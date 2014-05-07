@@ -20,11 +20,12 @@ class BasicPersister implements ProductPersister
     protected $manager;
 
     /**
-     * @param ObjectManager $manager
+     * @param ManagerRegistry     $registry
+     * @param CompletenessManager $completenessManager
      */
     public function __construct(ManagerRegistry $registry, CompletenessManager $completenessManager)
     {
-        $this->registry = $registry;
+        $this->registry            = $registry;
         $this->completenessManager = $completenessManager;
     }
 
