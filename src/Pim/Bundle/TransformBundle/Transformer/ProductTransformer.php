@@ -221,7 +221,10 @@ class ProductTransformer extends EntityTransformer
         }
 
         foreach ($associations as $association) {
-            $this->associationReader->addItem($association);
+            if ((isset($association['products']) && !empty($association['products']))
+                || (isset($association['groups']) && !empty($association['groups']))) {
+                $this->associationReader->addItem($association);
+            }
         }
     }
 
