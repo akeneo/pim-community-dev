@@ -31,9 +31,7 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
     }
 
     /**
-     * Specifies the list of events to listen
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
