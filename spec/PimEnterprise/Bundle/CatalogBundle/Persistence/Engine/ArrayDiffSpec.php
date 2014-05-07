@@ -43,8 +43,8 @@ class ArrayDiffSpec extends ObjectBehavior
         ];
 
         $b = [
-            'a' => 'x',
             'b' => 'y',
+            'a' => 'x',
         ];
 
         $this->diff($a, $b)->shouldReturn(['a' => 'x']);
