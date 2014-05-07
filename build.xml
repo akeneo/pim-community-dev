@@ -188,7 +188,7 @@
         </exec>
         <exec executable="php">
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="/usr/bin/phpunit" />
+            <arg value="${basedir}/bin/phpunit" />
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
