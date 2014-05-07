@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 /**
@@ -12,6 +13,21 @@ use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
  */
 class ProposalWidget implements WidgetInterface
 {
+    /**
+     * @var ObjectManager
+     */
+    protected $manager;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager $manager
+     */
+    public function __construct(ObjectManager $manager)
+    {
+        $this->manager = $manager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -25,10 +41,12 @@ class ProposalWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $params = [];
+        $proposals = $this->manager
+            ->getRepository('PimEnterpriseCatalogBundle:Proposal')
+            ->findBy([], ['createdAt' => 'ASC'], 10);
 
         return [
-            'params' => $params
+            'params' => $proposals
         ];
     }
 }

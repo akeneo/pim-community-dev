@@ -16,13 +16,17 @@
             {% for proposal in widget.params %}
                 <tr>
                     <td>
-                        {% set timeFormat = 'now'|date('Y-m-d') == proposal.date|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
-                        {{ proposal.date|date(timeFormat) }}
+                        {% set timeFormat = 'now'|date('Y-m-d') == proposal.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
+                        {{ proposal.createdAt|date(timeFormat) }}
                     </td>
-                    <td>{{ proposal.author }}</td>
-                    <td>{{ proposal.product }}</td>
+                    <td>{{ proposal.createdBy }}</td>
                     <td>
-                        <a class="btn btn-mini" href="{{ path('pim_enrich_product_edit', { id: proposal.productId }) }}">
+                        <a href="{# {{ path('pim_enrich_product_edit', { id: proposal.product.id }) }} #}">
+                            {{ proposal.product }}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-mini" href="{# {{ path('pim_enrich_product_edit', { id: proposal.product.id }) }} #}">
                             {{ 'pimee_dashboard.widget.proposals.review'|trans }}
                         </a>
                     </td>

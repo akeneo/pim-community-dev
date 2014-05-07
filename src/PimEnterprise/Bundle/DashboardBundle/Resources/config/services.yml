@@ -4,5 +4,7 @@ parameters:
 services:
     pimee_dashboard.widget.proposal:
         class: %pimee_dashboard.widget.proposal.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
         tags:
             - { name: pim_dashboard.widget, alias: proposals }
