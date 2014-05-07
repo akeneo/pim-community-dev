@@ -3,10 +3,6 @@
 namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
-use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
