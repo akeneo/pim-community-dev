@@ -40,7 +40,8 @@
         "kriswallsmith/buzz": ">=0.5",
         "phpspec/phpspec": "dev-develop@dev",
         "akeneo/phpspec-skip-example-extension": "1.0.*@dev",
-        "phpunit/phpunit": "3.7.*@stable"
+        "phpunit/phpunit": "3.7.*@stable",
+        "squizlabs/php_codesniffer": "1.*@stable"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
