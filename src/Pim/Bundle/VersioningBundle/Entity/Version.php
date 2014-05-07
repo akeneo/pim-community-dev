@@ -70,6 +70,11 @@ class Version
     protected $loggedAt;
 
     /**
+     * @ORM\Column(name="pending", type="boolean")
+     */
+    protected $pending;
+
+    /**
      * Constructor
      *
      * @param string      $resourceName
@@ -84,6 +89,7 @@ class Version
         $this->author       = $author;
         $this->context      = $context;
         $this->loggedAt     = new \DateTime('now');
+        $this->pending      = true;
     }
 
     /**
@@ -183,6 +189,10 @@ class Version
      */
     public function setChangeset(array $changeset)
     {
+        if (!empty($changeset)) {
+            $this->pending = false;
+        }
+
         $this->changeset = $changeset;
 
         return $this;
