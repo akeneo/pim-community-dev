@@ -129,7 +129,7 @@ class MassActionDispatcher
             }
         );
 
-        /** @var MassActionExtension|bool $extension */
+        /** @var MassActionExtension|boolean $extension */
         $extension = reset($extensions);
         if ($extension === false) {
             throw new \LogicException("MassAction extension is not applied to datagrid.");
