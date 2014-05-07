@@ -95,22 +95,6 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * {@inheritdoc}
      */
-    public function buildValueFormType(FormFactoryInterface $factory, ProductValueInterface $value)
-    {
-        $name    = $this->prepareValueFormName($value);
-        $type    = $this->prepareValueFormAlias($value);
-        $data    = $this->prepareValueFormData($value);
-        $options = array_merge(
-            $this->prepareValueFormConstraints($value),
-            $this->prepareValueFormOptions($value)
-        );
-
-        return $factory->createNamed($name, $type, $data, $options);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function buildAttributeFormTypes(FormFactoryInterface $factory, AbstractAttribute $attribute)
     {
         $properties = $this->defineCustomAttributeProperties($attribute);
@@ -155,7 +139,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @return string
      */
-    protected function prepareValueFormName(ProductValueInterface $value)
+    public function prepareValueFormName(ProductValueInterface $value)
     {
         return $value->getAttribute()->getBackendType();
     }
@@ -167,7 +151,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @return string
      */
-    protected function prepareValueFormAlias(ProductValueInterface $value)
+    public function prepareValueFormAlias(ProductValueInterface $value)
     {
         return $this->getFormType();
     }
@@ -179,7 +163,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @return array
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         return array(
             'label'           => $value->getAttribute()->getLabel(),
@@ -196,7 +180,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @return array
      */
-    protected function prepareValueFormConstraints(ProductValueInterface $value)
+    public function prepareValueFormConstraints(ProductValueInterface $value)
     {
         if ($this->constraintGuesser->supportAttribute($attribute = $value->getAttribute())) {
             return array(
@@ -214,7 +198,7 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
      *
      * @return mixed
      */
-    protected function prepareValueFormData(ProductValueInterface $value)
+    public function prepareValueFormData(ProductValueInterface $value)
     {
         return is_null($value->getData()) ? $value->getAttribute()->getDefaultValue() : $value->getData();
     }

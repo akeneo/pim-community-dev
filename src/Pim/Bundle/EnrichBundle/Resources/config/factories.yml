@@ -1,0 +1,7 @@
+services:
+    pim_enrich.factory.product_value_form_factory:
+        class: %pim_enrich.form.factory.product_value_form_factory%
+        arguments:
+            - '@form.factory'
+            - '@pim_catalog.factory.attribute_type'
+            - '@event_dispatcher'
