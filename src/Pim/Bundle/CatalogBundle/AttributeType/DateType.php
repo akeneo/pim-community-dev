@@ -17,7 +17,7 @@ class DateType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $options['widget'] = 'single_text';

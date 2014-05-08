@@ -257,5 +257,4 @@ services:
     pim_enrich.form.subscriber.add_value_field_subscriber:
         class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
         arguments:
-            - '@form.factory'
-            - '@pim_catalog.factory.attribute_type'
+            - '@pim_enrich.factory.product_value_form_factory'

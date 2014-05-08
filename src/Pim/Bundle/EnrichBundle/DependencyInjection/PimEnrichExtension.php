@@ -36,6 +36,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('colors.yml');
         $loader->load('attribute_icons.yml');
         $loader->load('mass_actions.yml');
+        $loader->load('factories.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
