@@ -36,7 +36,8 @@
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
 - InstallerBundle/LoaderInterface has been changed to pass a ProdutManager to manage media (loading images from fixtures)
 - Refactor VersioningBundle - a lot of API changes.
-- Remove Doctrine registry dependency from Pim\Bundle\CatalogBundle\Manager\CompletenessManager and use only the family repository
+- Remove the Doctrine registry dependency from Pim\Bundle\CatalogBundle\Manager\CompletenessManager and use only the family repository
+- Remove the Doctrine registry dependency from Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator and use only the entity manager
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

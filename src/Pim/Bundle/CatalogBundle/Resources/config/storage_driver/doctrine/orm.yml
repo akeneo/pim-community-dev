@@ -19,7 +19,7 @@ services:
     pim_catalog.doctrine.completeness_generator:
         class: %pim_catalog.doctrine.completeness_generator.class%
         arguments:
-            - '@doctrine'
+            - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.product_value.class%
             - %pim_catalog.entity.attribute.class%

@@ -6,7 +6,8 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Symfony\Bridge\Doctrine\ManagerRegistry;
+use Doctrine\DBAL\Connection;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
 /**
@@ -21,10 +22,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 {
     const COMPLETE_PRICES_TABLE = 'complete_price';
     const MISSING_TABLE = 'missing_completeness';
+
     /**
-     * @var RegistryInterface
+     * @var Connection
      */
-    protected $doctrine;
+    protected $connection;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $manager;
+
     /**
      * @var string
      */
@@ -43,14 +51,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Constructor
      *
-     * @param ManagerRegistry $doctrine
-     * @param string          $productClass
-     * @param string          $productValueClass
-     * @param string          $attributeClass
+     * @param EntityManagerInterface $manager
+     * @param string                 $productClass
+     * @param string                 $productValueClass
+     * @param string                 $attributeClass
      */
-    public function __construct(ManagerRegistry $doctrine, $productClass, $productValueClass, $attributeClass)
+    public function __construct(EntityManagerInterface $manager, $productClass, $productValueClass, $attributeClass)
     {
-        $this->doctrine          = $doctrine;
+        $this->manager           = $manager;
+        $this->connection        = $manager->getConnection();
         $this->productClass      = $productClass;
         $this->productValueClass = $productValueClass;
         $this->attributeClass    = $attributeClass;
@@ -93,7 +102,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $sql = $this->getInsertCompletenessSQL($criteria);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
 
         foreach ($criteria as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
@@ -113,7 +122,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function prepareCompletePrices($criteria = array())
     {
         $cleanupSql = "DROP TABLE IF EXISTS ".self::COMPLETE_PRICES_TABLE."\n";
-        $cleanupStmt = $this->doctrine->getConnection()->prepare($cleanupSql);
+        $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getCompletePricesSQL();
@@ -126,7 +135,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
 
         foreach ($criteria as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
@@ -143,7 +152,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected function prepareMissingCompletenesses(array $criteria = array())
     {
         $cleanupSql = "DROP TABLE IF EXISTS ".self::MISSING_TABLE."\n";
-        $cleanupStmt = $this->doctrine->getConnection()->prepare($cleanupSql);
+        $cleanupStmt = $this->connection->prepare($cleanupSql);
         $cleanupStmt->execute();
 
         $sql = $this->getMissingCompletenessesSQL();
@@ -156,7 +165,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
 
         foreach ($criteria as $placeholder => $value) {
             $stmt->bindValue($placeholder, $value);
@@ -598,7 +607,7 @@ MAIN_SQL;
      */
     protected function getClassMetadata($className)
     {
-        return $this->doctrine->getManager()->getClassMetadata($className);
+        return $this->manager->getClassMetadata($className);
     }
 
     /**
@@ -607,7 +616,7 @@ MAIN_SQL;
     public function schedule(ProductInterface $product)
     {
         foreach ($product->getCompletenesses() as $completeness) {
-            $this->doctrine->getManager()->remove($completeness);
+            $this->manager->remove($completeness);
         }
 
         $product->getCompletenesses()->clear();
@@ -625,7 +634,7 @@ MAIN_SQL;
 
         $sql = $this->applyTableNames($sql);
 
-        $stmt = $this->doctrine->getConnection()->prepare($sql);
+        $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('family_id', $family->getId());
 
         $stmt->execute();
