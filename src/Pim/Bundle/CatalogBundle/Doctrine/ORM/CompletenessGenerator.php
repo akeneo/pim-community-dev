@@ -2,11 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping\ClassMetadataInfo;
 
@@ -636,6 +636,26 @@ MAIN_SQL;
 
         $stmt = $this->connection->prepare($sql);
         $stmt->bindValue('family_id', $family->getId());
+
+        $stmt->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    {
+        $sql = <<<SQL
+            DELETE c FROM pim_catalog_completeness c
+            WHERE c.channel_id = :channel_id
+            AND c.locale_id = :locale_id
+SQL;
+
+        $sql = $this->applyTableNames($sql);
+
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bindValue('channel_id', $channel->getId());
+        $stmt->bindValue('locale_id', $locale->getId());
 
         $stmt->execute();
     }

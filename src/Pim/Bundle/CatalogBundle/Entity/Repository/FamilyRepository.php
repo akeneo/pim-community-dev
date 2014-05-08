@@ -105,7 +105,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
      * Returns a querybuilder to get full requirements
      *
      * @param Family $family
-     * @param type   $localeCode
+     * @param string $localeCode
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

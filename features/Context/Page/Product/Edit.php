@@ -335,7 +335,7 @@ class Edit extends Form
                     sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif ($info !== "none") {
             $infoPassed = ($info === 'Complete')
                 ? ($completenessCell->getText() === $info)
                 : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
@@ -367,7 +367,7 @@ class Edit extends Form
                     sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif($ratio !== 'none') {
             $title = $completenessCell
                 ->find('css', 'div.progress')
                 ->getAttribute('data-original-title');
