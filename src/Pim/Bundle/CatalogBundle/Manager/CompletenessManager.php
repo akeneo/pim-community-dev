@@ -3,13 +3,13 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
@@ -23,9 +23,9 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 class CompletenessManager
 {
     /**
-     * @var RegistryInterface
+     * @var FamilyRepository
      */
-    protected $doctrine;
+    protected $familyRepository;
 
     /**
      * @var CompletenessGeneratorInterface
@@ -45,21 +45,21 @@ class CompletenessManager
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
-     * @param CompletenessGeneratorInterface $generator
-     * @param ValidatorInterface             $validator
-     * @param string                         $class
+     * @param FamilyRepository                $familyRepository
+     * @param CompletenessGeneratorInterface  $generator
+     * @param ValidatorInterface              $validator
+     * @param string                          $class
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        FamilyRepository $familyRepository,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class
     ) {
-        $this->doctrine  = $doctrine;
-        $this->generator = $generator;
-        $this->validator = $validator;
-        $this->class     = $class;
+        $this->familyRepository = $familyRepository;
+        $this->generator        = $generator;
+        $this->validator        = $validator;
+        $this->class            = $class;
     }
 
     /**
@@ -151,8 +151,7 @@ class CompletenessManager
             $channel = $completeness->getChannel();
             $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
         }
-        $requirements = $this->doctrine
-            ->getRepository(get_class($family))
+        $requirements = $this->familyRepository
             ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
             ->getResult();
