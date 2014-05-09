@@ -21,12 +21,12 @@
                     </td>
                     <td>{{ proposal.createdBy }}</td>
                     <td>
-                        <a href="{# {{ path('pim_enrich_product_edit', { id: proposal.product.id }) }} #}">
+                        <a href="{{ path('pim_enrich_product_edit', { id: proposal.product.id }) }}">
                             {{ proposal.product }}
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-mini" href="{# {{ path('pim_enrich_product_edit', { id: proposal.product.id }) }} #}">
+                        <a class="btn btn-mini" href="{{ path('pim_enrich_product_edit', { id: proposal.product.id }) }}">
                             {{ 'pimee_dashboard.widget.proposals.review'|trans }}
                         </a>
                     </td>

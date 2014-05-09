@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 /**
@@ -14,18 +14,18 @@ use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 class ProposalWidget implements WidgetInterface
 {
     /**
-     * @var ObjectManager
+     * @var SmartManagerRegistry
      */
-    protected $manager;
+    protected $registry;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $manager
+     * @param SmartManagerRegistry $registry
      */
-    public function __construct(ObjectManager $manager)
+    public function __construct(SmartManagerRegistry $registry)
     {
-        $this->manager = $manager;
+        $this->registry = $registry;
     }
 
     /**
@@ -41,7 +41,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $proposals = $this->manager
+        $proposals = $this->registry
             ->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')
             ->findBy([], ['createdAt' => 'DESC'], 10);
 

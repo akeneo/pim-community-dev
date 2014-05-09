@@ -5,6 +5,6 @@ services:
     pimee_dashboard.widget.proposal:
         class: %pimee_dashboard.widget.proposal.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
             - { name: pim_dashboard.widget, alias: proposals }
