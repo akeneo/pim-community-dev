@@ -50,7 +50,9 @@ class EntityChangesProvider implements ProductChangesProvider
         // TODO (2014-05-06 18:28 by Gildas): We should normalize only values
         $current = $this->normalizer->normalize($product, 'csv');
 
-        //FIXME Why do we need to refresh manually the values and values collection data?
+        $manager->refresh($product);
+
+        //FIXME Why do we need to refresh manually the values and values collection data (only for ORM support)?
         foreach ($product->getValues() as $value) {
             if ($manager->contains($value)) {
                 $manager->refresh($value);

@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\CatalogBundle\Entity;
+namespace PimEnterprise\Bundle\CatalogBundle\Model;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

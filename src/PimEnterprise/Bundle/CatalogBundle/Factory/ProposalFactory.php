@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\CatalogBundle\Factory;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\CatalogBundle\Entity\Proposal;
+use PimEnterprise\Bundle\CatalogBundle\Model\Proposal;
 
 /**
  * PimEnterprise\Bundle\CatalogBundle\Factory
