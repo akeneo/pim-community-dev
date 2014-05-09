@@ -25,6 +25,9 @@ class ArrayDiff
             return $diffs + $b;
         }
 
+        ksort($a);
+        ksort($b);
+
         $head = $this->head($a);
 
         if (!array_key_exists($head, $b)) {

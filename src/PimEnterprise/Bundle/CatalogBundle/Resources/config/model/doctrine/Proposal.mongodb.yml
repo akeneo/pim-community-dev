@@ -1,0 +1,20 @@
+PimEnterprise\Bundle\CatalogBundle\Model\Proposal:
+    type: document
+    collection: pimee_catalog_product_proposal
+    fields:
+        id:
+            id: true
+            generator:
+                strategy: AUTO
+        createdAt:
+            type: date
+            column: created_at
+        changes:
+            type: hash
+        product:
+            reference: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\Product
+        createdBy:
+            type: entity
+            targetEntity: Symfony\Component\Security\Core\User\UserInterface
