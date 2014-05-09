@@ -4,8 +4,7 @@ PimEnterprise\Bundle\CatalogBundle\Model\Proposal:
     fields:
         id:
             id: true
-            generator:
-                strategy: AUTO
+            generator: { strategy: AUTO }
         createdAt:
             type: date
             column: created_at
@@ -14,6 +13,6 @@ PimEnterprise\Bundle\CatalogBundle\Model\Proposal:
         product:
             reference: true
             type: one
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Product
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
         createdBy:
             type: string
