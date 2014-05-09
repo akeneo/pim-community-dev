@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Factory;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\CatalogBundle\Model\Proposal;
 
@@ -18,16 +17,16 @@ class ProposalFactory
      * Create and configure a Proposal instance
      *
      * @param ProductInterface $product
-     * @param UserInterface    $user
+     * @param string           $username
      * @param array            $changes
      *
      * @return Proposal
      */
-    public function createProposal(ProductInterface $product, UserInterface $user, array $changes)
+    public function createProposal(ProductInterface $product, $username, array $changes)
     {
         $proposal = new Proposal();
         $proposal->setProduct($product);
-        $proposal->setCreatedBy($user);
+        $proposal->setCreatedBy($username);
         $proposal->setCreatedAt(new \DateTime());
         $proposal->setChanges($changes);
 
