@@ -11,7 +11,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(ObjectManager $manager, EntityRepository $repository)
     {
-        $manager->getRepository('PimEnterpriseCatalogBundle:Proposal')->willReturn($repository);
+        $manager->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')->willReturn($repository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 
         $this->beConstructedWith($manager);

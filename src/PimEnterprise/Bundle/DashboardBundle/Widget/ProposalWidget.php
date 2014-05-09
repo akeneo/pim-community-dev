@@ -42,7 +42,7 @@ class ProposalWidget implements WidgetInterface
     public function getParameters()
     {
         $proposals = $this->manager
-            ->getRepository('PimEnterpriseCatalogBundle:Proposal')
+            ->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')
             ->findBy([], ['createdAt' => 'DESC'], 10);
 
         return [
