@@ -16,5 +16,4 @@ PimEnterprise\Bundle\CatalogBundle\Model\Proposal:
             type: one
             targetDocument: Pim\Bundle\CatalogBundle\Model\Product
         createdBy:
-            type: entity
-            targetEntity: Symfony\Component\Security\Core\User\UserInterface
+            type: string

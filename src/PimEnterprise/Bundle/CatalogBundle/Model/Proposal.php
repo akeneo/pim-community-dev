@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Model;
 
-use Symfony\Component\Security\Core\User\UserInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -19,7 +18,7 @@ class Proposal
     /** @var ProductInterface */
     protected $product;
 
-    /** @var UserInterface */
+    /** @var string */
     protected $createdBy;
 
     /** @var DateTime */
@@ -53,15 +52,15 @@ class Proposal
     }
 
     /**
-     * @param UserInterface $createdBy
+     * @param string $createdBy
      */
-    public function setCreatedBy(UserInterface $createdBy)
+    public function setCreatedBy($createdBy)
     {
         $this->createdBy = $createdBy;
     }
 
     /**
-     * @return UserInterface
+     * @return string
      */
     public function getCreatedBy()
     {

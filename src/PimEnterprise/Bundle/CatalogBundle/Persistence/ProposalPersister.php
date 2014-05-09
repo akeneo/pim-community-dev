@@ -38,7 +38,6 @@ class ProposalPersister implements ProductPersister
      * @param SecurityContextInterface $securityContext
      * @param ProposalFactory          $factory
      * @param ProductChangesProvider   $changesProvider
-     *
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -47,11 +46,11 @@ class ProposalPersister implements ProductPersister
         ProposalFactory $factory,
         ProductChangesProvider $changesProvider
     ) {
-        $this->registry = $registry;
+        $this->registry            = $registry;
         $this->completenessManager = $completenessManager;
-        $this->securityContext = $securityContext;
-        $this->factory = $factory;
-        $this->changesProvider = $changesProvider;
+        $this->securityContext     = $securityContext;
+        $this->factory             = $factory;
+        $this->changesProvider     = $changesProvider;
     }
 
     /**
@@ -108,7 +107,7 @@ class ProposalPersister implements ProductPersister
     {
         $proposal = $this->factory->createProposal(
             $product,
-            $this->getUser(),
+            $this->getUser()->getUsername(),
             $this->changesProvider->computeNewValues($product)
         );
 
