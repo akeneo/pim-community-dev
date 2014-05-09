@@ -20,6 +20,19 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
      */
     public function process(ContainerBuilder $container)
     {
+        $this->resolveTargetEntities($container);
+
+        $this->resolveTargetDocuments($container);
+    }
+
+    /**
+     * Resolve target entity interfaces by using container parameters
+     *
+     * @param ContainerBuilder $container
+     *
+     */
+    protected function resolveTargetEntities(ContainerBuilder $container)
+    {
         $definition = $container->findDefinition('doctrine.orm.listeners.resolve_target_entity');
         foreach ($this->getParametersMapping() as $interface => $parameterName) {
             $definition->addMethodCall(
@@ -31,6 +44,32 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
                 )
             );
         }
+    }
+
+    /**
+     * Resolve target document interfaces by using container parameters
+     *
+     * @param ContainerBuilder $container
+     *
+     */
+    protected function resolveTargetDocuments(ContainerBuilder $container)
+    {
+        if (!$container->hasDefinition('doctrine_mongodb.odm.listeners.resolve_target_document')) {
+            return;
+        }
+        $definition = $container->findDefinition('doctrine_mongodb.odm.listeners.resolve_target_document');
+
+        foreach ($this->getParametersMapping() as $interface => $parameterName) {
+            $definition->addMethodCall(
+                'addResolveTargetDocument',
+                array(
+                    $interface,
+                    new Parameter($parameterName),
+                    array()
+                )
+            );
+        }
+
     }
 
     /**
