@@ -19,8 +19,12 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 
 class IsAssociatedFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, RequestParameters $params, CustomAssociationTypeRepository $assocRepository)
-    {
+    function let(
+        FormFactoryInterface $factory,
+        ProductFilterUtility $utility,
+        RequestParameters $params,
+        CustomAssociationTypeRepository $assocRepository
+    ) {
         $this->beConstructedWith($factory, $utility, $params, $assocRepository);
     }
 
@@ -35,8 +39,8 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         ProductRepositoryInterface $prodRepository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
-        RequestParameters $params,
-        CustomAssociationTypeRepository $assocRepository,
+        $params,
+        $assocRepository,
         ProductManager $productManager,
         AssociationType $assocType,
         Association $association,

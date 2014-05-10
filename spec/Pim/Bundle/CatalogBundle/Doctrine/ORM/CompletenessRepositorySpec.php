@@ -15,7 +15,7 @@ use Prophecy\Argument;
  */
 class CompletenessRepositorySpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         EntityManager $manager,
         Connection $connection,
         Statement $statement,
@@ -28,12 +28,12 @@ class CompletenessRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($manager, 'pim_product_class');
     }
 
-    public function it_is_a_completeness_repository()
+    function it_is_a_completeness_repository()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\CompletenessRepositoryInterface');
     }
 
-    public function it_counts_products_per_channels(Statement $statement)
+    function it_counts_products_per_channels(Statement $statement)
     {
         $statement->execute()->willReturn(null);
 
@@ -41,14 +41,14 @@ class CompletenessRepositorySpec extends ObjectBehavior
             array('label' => 'ECommerce', 'total' => 3),
             array('label' => 'Mobile', 'total' => 2)
         ));
-        
+
         $this->getProductsCountPerChannels()->shouldReturn(array(
             array('label' => 'ECommerce', 'total' => 3),
             array('label' => 'Mobile', 'total' => 2)
         ));
     }
 
-    public function it_counts_complete_products_per_channels(Statement $statement)
+    function it_counts_complete_products_per_channels(Statement $statement)
     {
         $statement->execute()->willReturn(null);
 
@@ -57,7 +57,7 @@ class CompletenessRepositorySpec extends ObjectBehavior
             array('locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1),
             array('locale' => 'en_US', 'label' => 'Mobile', 'total' => 2),
         ));
-        
+
         $this->getCompleteProductsCountPerChannels()->shouldReturn(array(
             array('locale' => 'en_US', 'label' => 'ECommerce', 'total' => 0),
             array('locale' => 'fr_FR', 'label' => 'ECommerce', 'total' => 1),

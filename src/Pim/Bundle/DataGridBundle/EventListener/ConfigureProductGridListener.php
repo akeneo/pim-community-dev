@@ -14,6 +14,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Grid listener to configure columns, filters and sorters based on product attributes and business rules
@@ -44,6 +45,9 @@ class ConfigureProductGridListener
      */
     protected $securityContext;
 
+    /** @var EntityRepository */
+    protected $gridViewRepository;
+
     /**
      * @var Request
      */
@@ -52,21 +56,24 @@ class ConfigureProductGridListener
     /**
      * Constructor
      *
-     * @param ProductManager           $productManager  product manager
-     * @param ConfigurationRegistry    $confRegistry    attribute type configuration registry
-     * @param RequestParameters        $requestParams   request parameters
-     * @param SecurityContextInterface $securityContext the security context
+     * @param ProductManager           $productManager     product manager
+     * @param ConfigurationRegistry    $confRegistry       attribute type configuration registry
+     * @param RequestParameters        $requestParams      request parameters
+     * @param SecurityContextInterface $securityContext    the security context
+     * @param EntityRepository         $gridViewRepository DatagridView repository
      */
     public function __construct(
         ProductManager $productManager,
         ConfigurationRegistry $confRegistry,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        EntityRepository $gridViewRepository
     ) {
-        $this->productManager  = $productManager;
-        $this->confRegistry    = $confRegistry;
-        $this->requestParams   = $requestParams;
-        $this->securityContext = $securityContext;
+        $this->productManager     = $productManager;
+        $this->confRegistry       = $confRegistry;
+        $this->requestParams      = $requestParams;
+        $this->securityContext    = $securityContext;
+        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**
@@ -106,7 +113,8 @@ class ConfigureProductGridListener
             $this->productManager,
             $this->requestParams,
             $this->request,
-            $this->securityContext
+            $this->securityContext,
+            $this->gridViewRepository
         );
     }
 

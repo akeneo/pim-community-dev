@@ -3,12 +3,11 @@
 namespace spec\Pim\Bundle\CatalogBundle\Entity;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
-use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class FamilySpec extends ObjectBehavior
 {
-    function it_contains_attributes(Attribute $sku, Attribute $name)
+    function it_contains_attributes(AbstractAttribute $sku, AbstractAttribute $name)
     {
         $this->addAttribute($sku)->shouldReturn($this);
         $this->addAttribute($name)->shouldReturn($this);
@@ -16,16 +15,18 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($name)->shouldReturn(true);
     }
 
-    function it_throws_an_exception_when_removes_identifier_attribute(Attribute $sku)
+    function it_throws_an_exception_when_removes_identifier_attribute(AbstractAttribute $sku)
     {
         $sku->getAttributeType()->willReturn('pim_catalog_identifier');
         $this->addAttribute($sku)->shouldReturn($this);
         $this->hasAttribute($sku)->shouldReturn(true);
-        $this->shouldThrow(new \InvalidArgumentException('Identifier cannot be removed from a family.'))->duringRemoveAttribute($sku);
+        $this
+            ->shouldThrow(new \InvalidArgumentException('Identifier cannot be removed from a family.'))
+            ->duringRemoveAttribute($sku);
         $this->hasAttribute($sku)->shouldReturn(true);
     }
 
-    function it_removes_attribute(Attribute $name)
+    function it_removes_attribute(AbstractAttribute $name)
     {
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $this->addAttribute($name)->shouldReturn($this);
@@ -34,7 +35,7 @@ class FamilySpec extends ObjectBehavior
         $this->hasAttribute($name)->shouldReturn(false);
     }
 
-    function it_defines_attribute_as_label(Attribute $name)
+    function it_defines_attribute_as_label(AbstractAttribute $name)
     {
         $name->getAttributeType()->willReturn('pim_catalog_text');
         $this->getAttributeAsLabel()->shouldReturn(null);;

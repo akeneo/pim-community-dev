@@ -22,8 +22,11 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
     }
 
-    function it_processes_a_datasource_with_repository_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
-    {
+    function it_processes_a_datasource_with_repository_configuration(
+        $manager,
+        DatagridInterface $grid,
+        ProductRepository $repository
+    ) {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
             'entity'            => 'Product'
@@ -34,8 +37,11 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_processes_a_datasource_with_repository_configuration_and_parameters(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
-    {
+    function it_processes_a_datasource_with_repository_configuration_and_parameters(
+        $manager,
+        DatagridInterface $grid,
+        ProductRepository $repository
+    ) {
         $config = [
             'repository_method'     => 'createDatagridQueryBuilder',
             'repository_parameters' => ['locale' => 'fr_FR'],
@@ -47,10 +53,13 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_processes_a_datasource_with_default_query_builder(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
-    {
+    function it_processes_a_datasource_with_default_query_builder(
+        $manager,
+        DatagridInterface $grid,
+        ProductRepository $repository
+    ) {
         $config = [
-            'entity'            => 'Product'
+            'entity' => 'Product'
         ];
         $manager->getRepository('Product')->willReturn($repository);
         $repository->createQueryBuilder('o')->shouldBeCalled();
@@ -58,14 +67,21 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this->process($grid, $config);
     }
 
-    function it_throws_exception_when_process_with_missing_configuration(ObjectManager $manager, DatagridInterface $grid, ProductRepository $repository)
-    {
+    function it_throws_exception_when_process_with_missing_configuration(
+        $manager,
+        DatagridInterface $grid,
+        ProductRepository $repository
+    ) {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
         ];
-        $exception = new \Exception('"Pim\Bundle\DataGridBundle\Datasource\ProductDatasource" expects to be configured with "entity"');
 
-        $this->shouldThrow($exception)->duringProcess($grid, $config);
+        $this
+            ->shouldThrow(
+                new \Exception(
+                    '"Pim\Bundle\DataGridBundle\Datasource\ProductDatasource" expects to be configured with "entity"'
+                )
+            )
+            ->duringProcess($grid, $config);
     }
-
 }

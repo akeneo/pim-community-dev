@@ -8,7 +8,7 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class EditMassActionSpec extends ObjectBehavior
 {
-    function it_should_have_required_route()
+    function it_requires_the_route()
     {
         $params = array();
         $options = ActionConfiguration::createNamed('edit', $params);
@@ -18,7 +18,7 @@ class EditMassActionSpec extends ObjectBehavior
         )->duringSetOptions($options);;
     }
 
-    function it_should_define_default_values()
+    function it_defines_default_values()
     {
         $params = array('route' => 'foo');
         $options = ActionConfiguration::createNamed('edit', $params);
@@ -31,7 +31,7 @@ class EditMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('handler')->shouldReturn('mass_edit');
     }
 
-    function it_should_overwrite_default_values()
+    function it_overwrites_default_values()
     {
         $routeParams = array('foo' => 'bar');
         $params = array(
@@ -49,7 +49,7 @@ class EditMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('route_parameters')->shouldReturn($routeParams);
     }
 
-    function it_should_be_impossible_to_override_frontend()
+    function it_doesnt_allow_overriding_frontend_type()
     {
         $params = array('route' => 'foo', 'frontend_type' => 'bar');
         $options = ActionConfiguration::createNamed('edit', $params);

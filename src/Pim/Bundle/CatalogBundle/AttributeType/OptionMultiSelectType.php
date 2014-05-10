@@ -18,7 +18,7 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
@@ -33,7 +33,7 @@ class OptionMultiSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormData(ProductValueInterface $value)
+    public function prepareValueFormData(ProductValueInterface $value)
     {
         if ($value->getData() && $value->getData()->isEmpty()) {
             return $value->getAttribute()->getDefaultValue();

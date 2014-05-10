@@ -50,18 +50,27 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $backendType = $attribute->getBackendType();
         $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
+        $backendField = sprintf('%s.%s', $joinAlias, $attribute->getBackendType());
 
-        $backendField = sprintf('%s.%s', $joinAlias, $backendType);
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
-            $joinAlias,
-            'WITH',
-            $condition
-        );
+        if ($operator === 'EMPTY') {
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $this->prepareAttributeJoinCondition($attribute, $joinAlias)
+            );
+            $this->qb->andWhere($this->prepareCriteriaCondition($backendField, $operator, $value));
+        } else {
+            $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
+            $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
+            $this->qb->innerJoin(
+                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
+        }
 
         return $this;
     }

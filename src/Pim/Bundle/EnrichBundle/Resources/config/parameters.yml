@@ -56,3 +56,5 @@ parameters:
     pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
     pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
     pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
+
+    pim_enrich.form.factory.product_value_form_factory: Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory

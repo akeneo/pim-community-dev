@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class SetAttributeRequirementsSpec extends ObjectBehavior
 {
@@ -55,8 +55,8 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         Channel $ecommerce,
         Channel $mobile,
         AttributeRepository $attributeRepository,
-        Attribute $name,
-        Attribute $description,
+        AbstractAttribute $name,
+        AbstractAttribute $description,
         AttributeRequirementFactory $factory,
         AttributeRequirement $r1,
         AttributeRequirement $r2,
@@ -69,7 +69,6 @@ class SetAttributeRequirementsSpec extends ObjectBehavior
         $attributeRepository->getNonIdentifierAttributes()->willReturn([
             $name, $description
         ]);
-
 
         $factory->createAttributeRequirement($name, $ecommerce, false)->willReturn($r1);
         $r1->getAttributeCode()->willReturn('name');

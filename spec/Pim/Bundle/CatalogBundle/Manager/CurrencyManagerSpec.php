@@ -48,9 +48,4 @@ class CurrencyManagerSpec extends ObjectBehavior
     {
         $this->getActiveCodes()->shouldReturn(['EUR', 'USD']);
     }
-
-    function it_provides_active_currency_code_choices()
-    {
-        $this->getActiveCodeChoices()->shouldReturn(['EUR' => 'EUR', 'USD' => 'USD']);
-    }
 }

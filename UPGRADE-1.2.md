@@ -7,8 +7,7 @@ General
 FlexibleEntityBundle
 --------------------
 
-As announced in 1.1 upgrade, this bundle has been removed.
-
+As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
 
 CatalogBundle
 -------------
