@@ -1,8 +1,9 @@
 <div class="dropdown">
-    <a class="dropdown-toggle" ng-bind="filter.selectedChoice"></a>
+    <a class="dropdown-toggle" ng-bind="filter.selectedChoice" ng-init="filter.selectedChoice = filter.placeholder"></a>
     <ul class="dropdown-menu">
+        <li ng-click="filter.selectedChoice = filter.placeholder; applyFilter(filter.name, {})">{{ filter.placeholder }}</li>
         <li ng-repeat="choice in filter.choices">
-            <a ng-click="filter.selectedChoice = choice.label" ng-bind="choice.label"></a>
+            <a ng-click="filter.selectedChoice = choice.label; applyFilter(filter.name, { value: choice.value })" ng-bind="choice.label"></a>
         </li>
     </ul>
 </div>
