@@ -29,7 +29,6 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
      * Resolve target entity interfaces by using container parameters
      *
      * @param ContainerBuilder $container
-     *
      */
     protected function resolveTargetEntities(ContainerBuilder $container)
     {
@@ -50,7 +49,6 @@ abstract class AbstractResolveDoctrineOrmTargetEntitiesPass implements CompilerP
      * Resolve target document interfaces by using container parameters
      *
      * @param ContainerBuilder $container
-     *
      */
     protected function resolveTargetDocuments(ContainerBuilder $container)
     {
