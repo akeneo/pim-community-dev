@@ -8,10 +8,28 @@ angular.module('App.services', [])
 
         this.initializeGridParams = function(name) {
             self.gridParams[name] = {
+                dataLocale: 'en_US',
                 params: {
                     dataLocale: 'en_US'
                 }
             };
+        };
+
+        this.applyGridParams = function(name, params) {
+            self.gridParams[name] = _.assign(
+                self.gridParams[name],
+                {
+                    _pager: {
+                        _page: params.state.currentPage,
+                        _per_page: params.state.pageSize
+                    },
+                    _sort_by: params.state.sorters
+                }
+            );
+        };
+
+        this.applyFilter = function(name, filterConfig) {
+            self.gridParams[name] = _.assign(self.gridParams[name], { _filter: filterConfig });
         };
 
         this.loadGrid = function (name) {
@@ -28,16 +46,10 @@ angular.module('App.services', [])
         this.loadGridData = function (name, params) {
             var deferred = $q.defer();
 
-            var urlParams = {};
+            self.applyGridParams(name, params);
 
-            urlParams[name] = {
-                dataLocale: 'en_US',
-                _pager: {
-                    _page: params.state.currentPage,
-                    _per_page: params.state.pageSize
-                },
-                _sort_by: params.state.sorters
-            };
+            var urlParams = {};
+            urlParams[name] = self.gridParams[name];
 
             var url = '/datagrid/' +
                 name +
@@ -83,7 +95,8 @@ angular.module('App.services', [])
 
         return {
             load: this.loadGrid,
-            loadData: this.loadGridData
+            loadData: this.loadGridData,
+            applyFilter: this.applyFilter
         };
     })
     .service('CellManager', function($sce, $filter) {

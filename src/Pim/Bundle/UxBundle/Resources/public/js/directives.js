@@ -13,6 +13,14 @@ angular.module('App.directives', [])
                     $scope.data     = data.data;
                 });
 
+                $scope.applyFilter = function(filterName, value) {
+                    var config = {};
+                    config[filterName] = value;
+
+                    GridManager.applyFilter($scope.name, config);
+                    $scope.$broadcast('grid.need.reload');
+                };
+
                 $scope.$on('grid.need.reload', function (event) {
                     GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
                         $scope.data = data.data;
