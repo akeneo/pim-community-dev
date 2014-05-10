@@ -4,10 +4,21 @@ angular.module('App.services', [])
     .service('GridManager', function ($http, $q, $window) {
         var self = this;
 
+        this.gridParams = {};
+
+        this.initializeGridParams = function(name) {
+            self.gridParams[name] = {
+                params: {
+                    dataLocale: 'en_US'
+                }
+            };
+        };
+
         this.loadGrid = function (name) {
+            self.initializeGridParams(name);
             var deferred = $q.defer();
 
-            $http.get('/datagrid/' + name + '/load?params%5BdataLocale%5D=en_US').then(function(resp) {
+            $http.get('/datagrid/' + name + '/load?' + $.param(self.gridParams[name])).then(function(resp) {
                 deferred.resolve(self.prepareGridConfig(resp.data));
             });
 
@@ -64,7 +75,7 @@ angular.module('App.services', [])
                         };
                     }),
                     entity: row
-                }
+                };
             });
 
             return config;
