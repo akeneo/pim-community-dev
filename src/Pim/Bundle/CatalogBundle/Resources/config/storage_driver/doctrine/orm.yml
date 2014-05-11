@@ -44,13 +44,13 @@ services:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.product_category:
         class: %pim_catalog.repository.product_category.class%
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.media:
         class: %doctrine.entity_repository.class%
