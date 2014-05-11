@@ -68,13 +68,44 @@ angular.module('App.directives', [])
             template: '<div ng-include="\'/bundles/pimux/templates/grid/filter/\' + filter.type + \'.html\'"></div>'
         };
     })
-    .directive('gridPagination', function() {
+    .directive('gridPagination', function($rootScope) {
         return {
+            scope: {
+                currentPage: '=',
+                pageSize: '=',
+                pageSizeOptions: '=',
+                totalRecords: '=',
+                metaData: '='
+            },
             templateUrl: '/bundles/pimux/templates/grid/pagination.html',
             controller: function($scope) {
-                $scope.$watch('metaData.state', function (newValue, oldValue) {
+                $scope.lastPage = Math.round($scope.totalRecords / $scope.pageSize);
+
+                $scope.$watch('currentPage', function (newValue, oldValue) {
                     if (oldValue) {
-                        $scope.$broadcast('grid.need.reload');
+                        if ($scope.currentPage < 0) {
+                            $scope.currentPage = 0;
+                        } else if ($scope.currentPage > $scope.lastPage) {
+                            $scope.currentPage = $scope.lastPage;
+                        }
+
+                        //This should be asked by the grid manager
+                        $scope.metaData.state.currentPage = $scope.currentPage;
+                        $rootScope.$broadcast('grid.need.reload');
+                    }
+                }, true);
+
+                $scope.$watch('pageSize', function (newValue, oldValue) {
+                    if (oldValue) {
+                        $scope.lastPage = Math.round($scope.totalRecords / $scope.pageSize);
+
+                        //This will trigger the "watch" event on current page and ask for a second reload
+                        //We should handle that with http request aborting.
+                        $scope.currentPage = 1;
+
+                        //This should be asked by the grid manager
+                        $scope.metaData.state.pageSize = $scope.pageSize;
+                        $rootScope.$broadcast('grid.need.reload');
                     }
                 }, true);
             }

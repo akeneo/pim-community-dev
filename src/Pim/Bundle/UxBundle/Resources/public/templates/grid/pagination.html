@@ -1,15 +1,16 @@
 <ul class="pagination input-group">
-    <li><a ng-click="metaData.state.currentPage = metaData.state.currentPage - 1 || 1">&laquo;</a></li>
+    <li ng-hide="currentPage === 0"><a ng-click="currentPage = currentPage - 1">&laquo;</a></li>
     <li class="pull-left">
-        <input class="form-control" type="text" ng-model="metaData.state.currentPage">
+        <input class="form-control" type="text" ng-model="currentPage">
     </li>
-    <li ng-hide="metaData.state.currentPage * metaData.state.pageSize >= data.options.totalRecords"><a ng-click="metaData.state.currentPage = metaData.state.currentPage + 1">&raquo;</a></li>
+    <li ng-hide="currentPage === lastPage"><a ng-click="currentPage = currentPage + 1">&raquo;</a></li>
 </ul>
 <div class="dropdown">
-    <a class="btn btn-default dropdown-toggle" ng-bind="metaData.state.pageSize"></a>
+    <a class="btn btn-default dropdown-toggle" ng-bind="pageSize"></a>
     <ul class="dropdown-menu">
-        <li ng-repeat="item in metaData.options.toolbarOptions.pageSize.items">
-            <a ng-click="metaData.state.pageSize = item; metaData.state.currentPage = 1" ng-bind="item"></a>
+        <li ng-repeat="item in pageSizeOptions">
+            <!-- I don't understand why I need to specifically call the parent scope -->
+            <a ng-bind="item" ng-click="$parent.pageSize = item"></a>
         </li>
     </ul>
 </div>
