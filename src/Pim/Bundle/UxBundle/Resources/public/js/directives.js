@@ -21,6 +21,18 @@ angular.module('App.directives', [])
                     $scope.$broadcast('grid.need.reload');
                 };
 
+                $scope.$on('grid.page_size.changed', function (event, pageSize) {
+                    $scope.metaData.state.pageSize = pageSize;
+
+                    $scope.$emit('grid.need.reload');
+                });
+
+                $scope.$on('grid.current_page.changed', function (event, currentPage) {
+                    $scope.metaData.state.currentPage = currentPage;
+
+                    $scope.$emit('grid.need.reload');
+                });
+
                 $scope.$on('grid.need.reload', function (event) {
                     GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
                         $scope.data = data.data;
@@ -74,38 +86,36 @@ angular.module('App.directives', [])
                 currentPage: '=',
                 pageSize: '=',
                 pageSizeOptions: '=',
-                totalRecords: '=',
-                metaData: '='
+                totalRecords: '='
             },
             templateUrl: '/bundles/pimux/templates/grid/pagination.html',
             controller: function($scope) {
-                $scope.lastPage = Math.round($scope.totalRecords / $scope.pageSize);
+                //We initialize the state of the pagination directive
+                $scope.state = {
+                    currentPage: $scope.currentPage,
+                    pageSize: $scope.pageSize,
+                    lastPage: Math.round($scope.totalRecords / $scope.pageSize)
+                };
 
-                $scope.$watch('currentPage', function (newValue, oldValue) {
-                    if (oldValue) {
-                        if ($scope.currentPage < 0) {
-                            $scope.currentPage = 0;
-                        } else if ($scope.currentPage > $scope.lastPage) {
-                            $scope.currentPage = $scope.lastPage;
+                $scope.$watch('state.currentPage', function (newValue, oldValue) {
+                    if (oldValue && newValue != oldValue) {
+                        if ($scope.state.currentPage < 1) {
+                            $scope.state.currentPage = 1;
+                        } else if ($scope.state.currentPage > $scope.state.lastPage) {
+                            $scope.state.currentPage = $scope.state.lastPage;
                         }
 
-                        //This should be asked by the grid manager
-                        $scope.metaData.state.currentPage = $scope.currentPage;
-                        $rootScope.$broadcast('grid.need.reload');
+                        $rootScope.$broadcast('grid.current_page.changed', $scope.state.currentPage);
                     }
                 }, true);
 
-                $scope.$watch('pageSize', function (newValue, oldValue) {
-                    if (oldValue) {
-                        $scope.lastPage = Math.round($scope.totalRecords / $scope.pageSize);
+                $scope.$watch('state.pageSize', function (newValue, oldValue) {
+                    if (oldValue && newValue != oldValue) {
+                        $scope.state.lastPage = Math.round($scope.totalRecords / $scope.state.pageSize);
 
-                        //This will trigger the "watch" event on current page and ask for a second reload
-                        //We should handle that with http request aborting.
-                        $scope.currentPage = 1;
+                        $scope.state.currentPage = 1;
 
-                        //This should be asked by the grid manager
-                        $scope.metaData.state.pageSize = $scope.pageSize;
-                        $rootScope.$broadcast('grid.need.reload');
+                        $rootScope.$broadcast('grid.page_size.changed', $scope.state.pageSize);
                     }
                 }, true);
             }
