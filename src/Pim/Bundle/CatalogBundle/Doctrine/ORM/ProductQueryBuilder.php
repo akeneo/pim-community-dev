@@ -37,7 +37,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $fieldFilters = [
         'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
         'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
+        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
+        'created'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
+        'updated'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
     ];
 
     /** @var array */
