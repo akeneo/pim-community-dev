@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 
 /**
@@ -14,16 +14,16 @@ use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 class ProposalWidget implements WidgetInterface
 {
     /**
-     * @var SmartManagerRegistry
+     * @var ManagerRegistry
      */
     protected $registry;
 
     /**
      * Constructor
      *
-     * @param SmartManagerRegistry $registry
+     * @param ManagerRegistry $registry
      */
-    public function __construct(SmartManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry)
     {
         $this->registry = $registry;
     }

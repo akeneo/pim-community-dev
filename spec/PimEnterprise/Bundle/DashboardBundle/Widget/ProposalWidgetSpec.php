@@ -2,19 +2,19 @@
 
 namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityRepository;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityRepository;
 
 class ProposalWidgetSpec extends ObjectBehavior
 {
-    function let(ObjectManager $manager, EntityRepository $repository)
+    function let(ManagerRegistry $registry, EntityRepository $repository)
     {
-        $manager->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')->willReturn($repository);
+        $registry->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')->willReturn($repository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 
-        $this->beConstructedWith($manager);
+        $this->beConstructedWith($registry);
     }
 
     function it_is_a_widget()
