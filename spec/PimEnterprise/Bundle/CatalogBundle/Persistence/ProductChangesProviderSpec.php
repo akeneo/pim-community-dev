@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\CatalogBundle\Persistence\ORM;
+namespace spec\PimEnterprise\Bundle\CatalogBundle\Persistence;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\CatalogBundle\Persistence\Engine\ArrayDiff;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 
-class EntityChangesProviderSpec extends ObjectBehavior
+class ProductChangesProviderSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, NormalizerInterface $normalizer, ArrayDiff $engine)
     {
@@ -41,6 +41,7 @@ class EntityChangesProviderSpec extends ObjectBehavior
         $manager->contains($sku)->willReturn(true); // FIXME Remove this when product values refreshing is working
         $manager->contains($name)->willReturn(true); // FIXME Remove this when product values refreshing is working
         $manager->contains($description)->willReturn(true); // FIXME Remove this when product values refreshing is working
+        $manager->refresh($product)->shouldBeCalled();
         $manager->refresh($sku)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
         $manager->refresh($name)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
         $manager->refresh($description)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
@@ -50,6 +51,6 @@ class EntityChangesProviderSpec extends ObjectBehavior
 
         $engine->diff(['previous'], ['current'])->willReturn('differences');
 
-        $this->computeNewValues($product)->shouldReturn('differences');
+        $this->computeChanges($product)->shouldReturn('differences');
     }
 }

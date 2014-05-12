@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\CatalogBundle\Persistence\ProposalPersister
     pim_catalog.factory.proposal.class: PimEnterprise\Bundle\CatalogBundle\Factory\ProposalFactory
-    pim_catalog.persister.product_changes_provider.class: PimEnterprise\Bundle\CatalogBundle\Persistence\ORM\EntityChangesProvider
+    pim_catalog.persister.product_changes_provider.class: PimEnterprise\Bundle\CatalogBundle\Persistence\ProductChangesProvider
 
 services:
     pim_catalog.persister.product:

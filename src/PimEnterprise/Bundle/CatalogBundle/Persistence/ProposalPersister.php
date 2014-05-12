@@ -105,10 +105,10 @@ class ProposalPersister implements ProductPersister
      */
     private function persistProposal(ProductInterface $product)
     {
+        $changes = $this->changesProvider->computeChanges($product);
         $proposal = $this->factory->createProposal(
             $product,
             $this->getUser()->getUsername(),
-            $this->changesProvider->computeNewValues($product)
         );
 
         $manager = $this->registry->getManagerForClass(get_class($proposal));
