@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\CatalogBundle\Factory\ProposalFactory;
+use Doctrine\Common\Persistence\ObjectManager;
 
 /**
  * Store product through proposals
@@ -58,20 +59,23 @@ class ProposalPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
-        if (false /** Condition based on user right to edit the product */) {
-            $this->persistProduct($product, $options);
+        $manager = $this->registry->getManagerForClass(get_class($product));
+
+        if (!$manager->contains($product)) {
+            $this->persistProduct($manager, $product, $options);
         } else {
-            $this->persistProposal($product);
+            $this->persistProposal($manager, $product);
         }
     }
 
     /**
      * Persist the product
      *
+     * @param ObjectManager    $manager
      * @param ProductInterface $product
      * @param array            $options
      */
-    private function persistProduct(ProductInterface $product, array $options)
+    private function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
     {
         $options = array_merge(
             [
@@ -82,7 +86,6 @@ class ProposalPersister implements ProductPersister
             $options
         );
 
-        $manager = $this->registry->getManagerForClass(get_class($product));
         $manager->persist($product);
 
         if ($options['schedule'] || $options['recalculate']) {
@@ -101,9 +104,10 @@ class ProposalPersister implements ProductPersister
     /**
      * Persist a proposal of the product
      *
+     * @param ObjectManager    $manager
      * @param ProductInterface $product
      */
-    private function persistProposal(ProductInterface $product)
+    private function persistProposal(ObjectManager $manager, ProductInterface $product)
     {
         $changes = $this->changesProvider->computeChanges($product);
 
@@ -113,7 +117,6 @@ class ProposalPersister implements ProductPersister
 
         $proposal = $this->factory->createProposal($product, $this->getUser()->getUsername(), $changes);
 
-        $manager = $this->registry->getManagerForClass(get_class($proposal));
         $manager->persist($proposal);
         $manager->flush();
     }

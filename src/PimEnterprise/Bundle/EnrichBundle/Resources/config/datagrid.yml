@@ -1,0 +1,28 @@
+datagrid:
+    proposals-grid:
+        source:
+            type: orm
+            query:
+                select:
+                    - p.id
+                    - p.createdBy
+                    - p.createdAt
+                    - p.changes
+                from:
+                    - { table: PimEnterprise\Bundle\CatalogBundle\Model\Proposal, alias: p }
+                # where:
+                #     - p.product = :product
+        columns:
+            createdBy:
+                label: Proposed by
+                type: field
+                frontend_type: string
+            changes:
+                label: Changes
+                type: twig
+                template: PimEnterpriseEnrichBundle:Datagrid:Property/changes.html.twig
+                frontend_type: html
+            createdAt:
+                label: Proposed at
+                type: field
+                frontend_type: datetime
