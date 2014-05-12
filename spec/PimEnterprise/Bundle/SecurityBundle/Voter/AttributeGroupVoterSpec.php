@@ -2,19 +2,13 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Oro\Bundle\UserBundle\Entity\User;
-
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-
-use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
-
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\UserBundle\Entity\User;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {
