@@ -56,24 +56,42 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function vote(TokenInterface $token, $object, array $attributes)
     {
-        foreach ($attributes as $attribute) {
-            if ($this->supportsAttribute($attribute) && $this->supportsClass($object)) {
-                $user = $token->getUser();
+        $result = VoterInterface::ACCESS_ABSTAIN;
 
-                if ($attribute === self::EDIT_ATTRIBUTES) {
-                    $grantedRoles = $this->accessManager->getEditRoles($object);
-                } else {
-                    $grantedRoles = $this->accessManager->getViewRoles($object);
-                }
+        if ($this->supportsClass($object)) {
+            foreach ($attributes as $attribute) {
+                if ($this->supportsAttribute($attribute)) {
+                    $result       = VoterInterface::ACCESS_DENIED;
+                    $grantedRoles = $this->extractRoles($attribute, $object);
 
-                foreach ($grantedRoles as $role) {
-                    if ($user->hasRole($role)) {
-                        return VoterInterface::ACCESS_GRANTED;
+                    foreach ($grantedRoles as $role) {
+                        if ($token->getUser()->hasRole($role)) {
+                            return VoterInterface::ACCESS_GRANTED;
+                        }
                     }
                 }
             }
         }
 
-        return VoterInterface::ACCESS_DENIED;
+        return $result;
+    }
+
+    /**
+     * Get roles for specific attribute and object
+     *
+     * @param string         $attribute
+     * @param AttributeGroup $object
+     *
+     * @return Role[]
+     */
+    protected function extractRoles($attribute, $object)
+    {
+        if ($attribute === self::EDIT_ATTRIBUTES) {
+            $grantedRoles = $this->accessManager->getEditRoles($object);
+        } else {
+            $grantedRoles = $this->accessManager->getViewRoles($object);
+        }
+
+        return $grantedRoles;
     }
 }
