@@ -27,3 +27,32 @@ Feature: Filter products by date field
     And I should be able to use the following filters:
       | filter  | value | result       |
       | release | empty | book and mug |
+
+  Scenario: Successfully filter products by date attributes
+    Given the following attributes:
+      | label   | code    | type | localizable | scopable | useable as grid filter | useable as grid column |
+      | release | release | date | no          | no       | yes                    | yes                    |
+    And the following products:
+      | sku    |
+      | postit |
+      | book   |
+      | mug    |
+      | tshirt |
+      | pen    |
+    And the following product values:
+      | product | attribute | value      |
+      | postit  | release    | 2014-05-01 |
+      | book    | release    | 2014-05-02 |
+      | mug     | release    | 2014-05-03 |
+      | tshirt  | release    | 2014-05-03 |
+      | pen     | release    | 2014-05-06 |
+    And I am on the products page
+    Then the grid should contain 5 elements
+    And I should see products postit, book, mug, tshirt and pen
+    And I should be able to use the following filters:
+      | filter  | value                                     | result                    |
+      | release | more than 2014-05-02                    | mug and tshirt and pen  |
+      | release | less than 2014-05-03                    | postit and book          |
+      | release | between 2014-05-02 and 2014-05-03      | book and mug and tshirt |
+      | release | not between 2014-05-02 and 2014-05-03 | postit and pen           |
+

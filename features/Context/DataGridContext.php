@@ -442,7 +442,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $value)
     {
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
-        $datePattern = '/^(more than|less than|between|not between) ([^">=<]*)( and )?([^">=<]*)?$/';
+        $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator = false;
 
         $matches = array();
@@ -743,7 +743,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     protected function filterByDate($filterName, $values, $operator)
     {
         if (!is_array($values)) {
-            $values = array($values);
+            $values = array($values, $values);
         }
 
         $filter = $this->datagrid->getFilter($filterName);
@@ -756,11 +756,11 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $criteriaElt = $filter->find('css', 'div.filter-criteria');
         $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
 
-        $script = <<<JS
-        require(['jquery', 'jquery-ui'], function($){
-            $('input.hasDatepicker:visible').each(function() {
-                $(this).datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
-            });
+        $script = <<<'JS'
+        require(['jquery', 'jquery-ui'], function($) {
+            $inputs = $('input.hasDatepicker:visible');
+            $inputs.first().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
+            $inputs.last().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
         });
 JS;
 
