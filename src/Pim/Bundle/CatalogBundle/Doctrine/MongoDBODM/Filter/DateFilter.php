@@ -94,7 +94,7 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
      *
      * @return integer
      */
-    private function getTimestamp($data, $endOfDay = false)
+    protected function getTimestamp($data, $endOfDay = false)
     {
         if ($data instanceof \DateTime && true === $endOfDay) {
             $data->setTime(23, 59, 59);

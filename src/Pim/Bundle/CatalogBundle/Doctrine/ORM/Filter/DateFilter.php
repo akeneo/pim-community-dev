@@ -21,21 +21,21 @@ class DateFilter extends BaseFilter
         
         switch ($operator) {
             case 'BETWEEN':
-                $conditions[] = $this->qb->expr()->gt($field, $this->qb->expr()->literal($this->getDateValue($value[0])));
-                $conditions[] = $this->qb->expr()->lt($field, $this->qb->expr()->literal($this->getDateValue($value[1], true)));
+                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[0]));
+                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[1], true));
                 break;
 
             case '>':
-                $conditions[] = $this->qb->expr()->gt($field, $this->qb->expr()->literal($this->getDateValue($value, true)));
+                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true));
                 break;
 
             case '<':
-                $conditions[] = $this->qb->expr()->lt($field, $this->qb->expr()->literal($this->getDateValue($value)));
+                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value));
                 break;
 
             case '=':
-                $conditions[] = $this->qb->expr()->gt($field, $this->qb->expr()->literal($this->getDateValue($value)));
-                $conditions[] = $this->qb->expr()->lt($field, $this->qb->expr()->literal($this->getDateValue($value, true)));
+                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value));
+                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value, true));
                 break;
 
             case 'EMPTY':
@@ -44,8 +44,8 @@ class DateFilter extends BaseFilter
 
             default:
                 $conditions[] = $this->qb->expr()->orX(
-                    $this->qb->expr()->lt($field, $this->qb->expr()->literal($this->getDateValue($value['from']))),
-                    $this->qb->expr()->gt($field, $this->qb->expr()->literal($this->getDateValue($value['to'], true)))
+                    $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value['from'])),
+                    $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value['to'], true))
                 );
                 break;
         }
@@ -58,14 +58,27 @@ class DateFilter extends BaseFilter
     }
 
     /**
-     * Get timestamp from data
+     * Get the literal expression of the date
+     *
+     * @param string  $data
+     * @param boolean $endOfDay
+     *
+     * @return Literal
+     */
+    protected function getDateLiteralExpr($data, $endOfDay = false)
+    {
+        return $this->qb->expr()->literal($this->getDateValue($data, $endOfDay));
+    }
+
+    /**
+     * Get the date formatted from data
      *
      * @param \DateTime|string $data
      * @param boolean          $endOfDay
      *
-     * @return integer
+     * @return string
      */
-    private function getDateValue($data, $endOfDay = false)
+    protected function getDateValue($data, $endOfDay = false)
     {
         if ($data instanceof \DateTime && true === $endOfDay) {
             $data->setTime(23, 59, 59);
