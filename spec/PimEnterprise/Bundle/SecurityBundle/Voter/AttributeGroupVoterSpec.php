@@ -2,11 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-
-use Symfony\Component\Security\Core\User\UserInterface;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
@@ -50,5 +50,35 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         $this
             ->vote($token, $attGroup, $this->attributes)
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
+    }
+
+    function it_returns_denied_access_if_user_has_no_access(
+        $accessManager,
+        $token,
+        AttributeGroup $attGroup,
+        User $user
+    ) {
+        $token->getUser()->willReturn($user);
+        $user->hasRole('foo')->willReturn(false);
+        $accessManager->getEditRoles($attGroup)->willReturn(array('foo'));
+
+        $this
+            ->vote($token, $attGroup, array(AttributeGroupVoter::EDIT_ATTRIBUTES))
+            ->shouldReturn(VoterInterface::ACCESS_DENIED);
+    }
+
+    function it_returns_granted_access_if_user_has_access(
+        $accessManager,
+        $token,
+        AttributeGroup $attGroup,
+        User $user
+    ) {
+        $token->getUser()->willReturn($user);
+        $user->hasRole('foo')->willReturn(true);
+        $accessManager->getViewRoles($attGroup)->willReturn(array('foo'));
+
+        $this
+            ->vote($token, $attGroup, array(AttributeGroupVoter::VIEW_ATTRIBUTES))
+            ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }
