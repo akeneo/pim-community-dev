@@ -29,12 +29,14 @@ pim_title.import_profile.show: 'Import-Profile %job.label% | Anzeigen'
 pim_title.import_execution.index: Historie der ausgeführten Importe
 pim_title.import_execution.show: Ausgeführte Importe | Details
 export profile:
+  title: Profil exportieren
   overview: Export-Profilübersicht
   create: Exportprofil anlegen
   edit: Exportprofil bearbeiten
 export report:
   overview: Export-Berichte
 import profile:
+  title: Profil importieren
   overview: Import-Profilübersicht
   create: Importprofil anlegen
   edit: Importprofil bearbeiten
@@ -71,6 +73,9 @@ btn:
     export profile: Exportprofil anlegen
     import profile: Importprofil anlegen
 Upload and import: Hochladen und importieren
+Upload and import now: Hochladen und jetzt importieren
+import now: Jetzt importieren
+export now: Jetzt exportieren
 confirmation:
   remove:
     export profile: 'Sind Sie sicher, dass Sie das Export-Profil %name% löschen möchten?'
@@ -102,3 +107,17 @@ Display item: Element anzeigen
 Hide item: Element ausblenden
 Collecting data about job execution...: Sammle Daten zur Ausführung des Jobs...
 You must select a file to upload: Sie müssen eine Datei für den Upload auswählen
+Download log: Log herunterladen
+Show profile: Profil anzeigen
+execution details: Ausführungsdetails
+job_execution.summary:
+  read: Lesen
+  write: Schreiben
+  skip: Überspringen
+  create: Erstellen
+  update: Bearbeiten
+Step: Schritt
+Status: Status
+Summary: Zusammenfassung
+Start: Start
+End: Ende
