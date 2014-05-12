@@ -3,9 +3,9 @@
 namespace spec\Pim\Bundle\VersioningBundle\Builder;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 class VersionBuilderSpec extends ObjectBehavior
 {
@@ -34,5 +34,16 @@ class VersionBuilderSpec extends ObjectBehavior
         $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Entity\Version');
         $version->getAuthor()->shouldReturn('baz');
         $version->isPending()->shouldReturn(true);
+    }
+
+    function it_builds_pending_versions(Version $pending)
+    {
+        $pending->setVersion(1)->willReturn($pending);
+        $pending->setSnapshot(['foo' => 'bar'])->willReturn($pending);
+        $pending->getChangeset()->willReturn(['foo' => 'bar']);
+
+        $pending->setChangeset(['foo' => ['old' => '', 'new' => 'bar']])->shouldBeCalled();
+
+        $this->buildPendingVersion($pending);
     }
 }
