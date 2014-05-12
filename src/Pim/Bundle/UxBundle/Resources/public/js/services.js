@@ -6,6 +6,8 @@ angular.module('App.services', [])
 
         this.gridParams = {};
 
+        var loadGridDataCanceler;
+
         this.initializeGridParams = function(name) {
             self.gridParams[name] = {
                 dataLocale: 'en_US',
@@ -44,6 +46,12 @@ angular.module('App.services', [])
         };
 
         this.loadGridData = function (name, params) {
+            //we cancel the previous request
+            if (loadGridDataCanceler) {
+                loadGridDataCanceler.resolve();
+            }
+
+            loadGridDataCanceler = $q.defer();
             var deferred = $q.defer();
 
             self.applyGridParams(name, params);
@@ -56,7 +64,7 @@ angular.module('App.services', [])
                 '?' +
                 $.param(urlParams);
 
-            $http.get(url).then(function(resp) {
+            $http({method:'GET', url: url, timeout: loadGridDataCanceler.promise}).then(function(resp) {
                 var data = {
                     metadata: params,
                     data: resp.data
