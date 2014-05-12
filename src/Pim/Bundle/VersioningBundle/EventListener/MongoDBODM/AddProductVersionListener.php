@@ -6,7 +6,6 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 
@@ -117,7 +116,7 @@ class AddProductVersionListener implements EventSubscriber
     public function createVersion($versionable)
     {
         $version = $this->versionManager->buildVersion($versionable);
-        if ($version && ($version instanceof Pending || $version->getChangeset())) {
+        if ($version && $version->getChangeset()) {
             $this->computeChangeSet($version);
         }
     }

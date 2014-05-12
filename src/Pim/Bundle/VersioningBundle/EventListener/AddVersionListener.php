@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
@@ -127,7 +126,7 @@ class AddVersionListener implements EventSubscriber
     protected function createVersion(EntityManager $em, $versionable)
     {
         $version = $this->versionManager->buildVersion($versionable);
-        if ($version && ($version instanceof Pending || $version->getChangeset())) {
+        if ($version && $version->getChangeset()) {
             $this->computeChangeSet($em, $version);
         }
     }

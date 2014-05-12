@@ -23,7 +23,7 @@ class VersionRepository extends EntityRepository
     public function getLogEntries($resourceName, $resourceId)
     {
         return $this->findBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
             ['loggedAt' => 'desc']
         );
     }
@@ -37,7 +37,7 @@ class VersionRepository extends EntityRepository
     public function getOldestLogEntry($resourceName, $resourceId)
     {
         return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
             ['loggedAt' => 'asc']
         );
     }
@@ -51,8 +51,18 @@ class VersionRepository extends EntityRepository
     public function getNewestLogEntry($resourceName, $resourceId)
     {
         return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
             ['loggedAt' => 'desc']
         );
+    }
+
+    /**
+     * Get pending versions
+     *
+     * @return Version[]
+     */
+    public function getPendingVersions()
+    {
+        return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
     }
 }

@@ -1206,7 +1206,7 @@ datagrid:
                             condition: u.username = v.author
                 where:
                     and:
-                        - v.resourceName = :objectClass AND v.resourceId = :objectId
+                        - v.resourceName = :objectClass AND v.resourceId = :objectId AND v.pending = false
         columns:
             version:
                 label: Version

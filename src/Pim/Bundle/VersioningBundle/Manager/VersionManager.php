@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -109,10 +108,11 @@ class VersionManager
      * Build a version from a versionable entity
      *
      * @param object $versionable
+     * @param array  $changeset
      *
-     * @return Version|Pending
+     * @return Version
      */
-    public function buildVersion($versionable)
+    public function buildVersion($versionable, array $changeset = array())
     {
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
@@ -122,9 +122,7 @@ class VersionManager
 
             return $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
-
-            return new Pending($className, $versionable->getId(), $this->username);
+            return $this->versionBuilder->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
     }
 
@@ -137,7 +135,7 @@ class VersionManager
     }
 
     /**
-     * Return product logs
+     * Return log entries
      *
      * @param object $versionable
      *
@@ -172,5 +170,53 @@ class VersionManager
     public function getNewestLogEntry($versionable)
     {
         return $this->getVersionRepository()->getNewestLogEntry(get_class($versionable), $versionable->getId());
+    }
+
+    /**
+     * Return versionable entity from version
+     *
+     * @param Version $version
+     *
+     * @return object
+     */
+    public function getRelatedVersionable(Version $version)
+    {
+        return $this->registry->getRepository($version->getResourceName())->find($version->getResourceId());
+    }
+
+    /**
+     * Build pending versions for a single versionable entity
+     *
+     * @param object $versionable
+     */
+    public function buildPendingVersions($versionable)
+    {
+        $pendingVersions = $this->getVersionRepository()->findBy(
+            [
+                'resourceId'   => $versionable->getId(),
+                'resourceName' => get_class($versionable),
+                'pending'      => true
+            ],
+            ['loggedAt' => 'asc']
+        );
+
+        foreach ($pendingVersions as $pending) {
+            $this->buildPendingVersion($pending);
+        }
+    }
+
+    /**
+     * Build a pending version
+     *
+     * @param Version $pending
+     *
+     * @return Version
+     */
+    public function buildPendingVersion(Version $pending)
+    {
+        $previousVersion = $this->getVersionRepository()
+            ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
+
+        return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
     }
 }

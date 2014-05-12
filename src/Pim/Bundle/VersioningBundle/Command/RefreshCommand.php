@@ -7,8 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Monolog\Handler\StreamHandler;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Refresh versioning data
@@ -59,10 +58,10 @@ class RefreshCommand extends ContainerAwareCommand
         }
 
         $em = $this->getEntityManager();
-        $pendingVersions = $this->getPendingManager()->getAllPendingVersions();
+        $pendingVersions = $this->getVersionManager()->getVersionRepository()->getPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
-            $output->writeln(sprintf('<info>Versioning is already up to date.</info>'));
+            $output->writeln('<info>Versioning is already up to date.</info>');
 
         } else {
             $progress = $this->getHelperSet()->get('progress');
@@ -85,29 +84,15 @@ class RefreshCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param Pending $pending
+     * @param Version $version
      *
      * @return null
      */
-    protected function createVersion(Pending $pending)
+    protected function createVersion(Version $version)
     {
-        $em = $this->getEntityManager();
-        $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
-        $versionManager = $this->getVersionManager();
-        $versionManager->setUsername($pending->getUsername());
-        if (!in_array(spl_object_hash($versionable), $this->versionedEntities)) {
-            $versionManager->buildVersion($versionable);
-            $this->versionedEntities[] = spl_object_hash($versionable);
-        }
-        $em->remove($pending);
-    }
+        $version = $this->getVersionManager()->buildPendingVersion($version);
 
-    /**
-     * @return PendingManager
-     */
-    protected function getPendingManager()
-    {
-        return $this->getContainer()->get('pim_versioning.manager.pending');
+        $this->getEntityManager()->persist($version);
     }
 
     /**

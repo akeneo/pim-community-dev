@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Builder;
 
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -15,20 +15,20 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class VersionBuilder
 {
     /**
-     * @var SerializerInterface
+     * @var NormalizerInterface
      */
-    protected $serializer;
+    protected $normalizer;
 
     /**
-     * @param SerializerInterface $serializer
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
-     * Build a version from a versionable entity
+     * Build a version for a versionable entity
      *
      * @param object       $versionable
      * @param string       $author
@@ -46,7 +46,7 @@ class VersionBuilder
         $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $snapshot = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
+        $snapshot = $this->normalizer->normalize($versionable, 'csv', array('versioning' => true));
 
         $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
@@ -58,6 +58,49 @@ class VersionBuilder
         return $version;
     }
 
+    /**
+     * Create a pending version for a versionable entity
+     *
+     * @param object      $versionable
+     * @param string      $author
+     * @param array       $changeset
+     * @param string|null $context
+     *
+     * @return Version
+     */
+    public function createPendingVersion($versionable, $author, array $changeset, $context = null)
+    {
+        $resourceName = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
+
+        $version = new Version($resourceName, $versionable->getId(), $author, $context);
+        $version->setChangeset($changeset);
+
+        return $version;
+    }
+
+    /**
+     * Build a pending version
+     *
+     * @param Version      $pending
+     * @param Version|null $previousVersion
+     *
+     * @return Version
+     */
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    {
+        $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
+        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
+
+        $modification = $pending->getChangeset();
+        $snapshot     = $oldSnapshot + $modification;
+        $changeset    = $this->buildChangeset($oldSnapshot, $snapshot);
+
+        $pending->setVersion($versionNumber)
+            ->setSnapshot($snapshot)
+            ->setChangeset($changeset);
+
+        return $pending;
+    }
 
     /**
      * Build the changeset

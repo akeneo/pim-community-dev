@@ -51,7 +51,7 @@ class Version
     protected $snapshot;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array")
      */
     protected $changeset;
 
@@ -61,7 +61,8 @@ class Version
     protected $context;
 
     /**
-     * @ORM\Column(type="integer") */
+     * @ORM\Column(type="integer", nullable=true)
+     */
     protected $version;
 
     /**
@@ -165,6 +166,10 @@ class Version
      */
     public function setSnapshot(array $snapshot)
     {
+        if (!empty($snapshot)) {
+            $this->pending = false;
+        }
+
         $this->snapshot = $snapshot;
 
         return $this;
@@ -189,10 +194,6 @@ class Version
      */
     public function setChangeset(array $changeset)
     {
-        if (!empty($changeset)) {
-            $this->pending = false;
-        }
-
         $this->changeset = $changeset;
 
         return $this;
@@ -214,5 +215,13 @@ class Version
     public function getLoggedAt()
     {
         return $this->loggedAt;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPending()
+    {
+        return $this->pending;
     }
 }
