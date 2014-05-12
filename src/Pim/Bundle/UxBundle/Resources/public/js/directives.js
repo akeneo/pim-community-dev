@@ -118,6 +118,18 @@ angular.module('App.directives', [])
                         $rootScope.$broadcast('grid.page_size.changed', $scope.state.pageSize);
                     }
                 }, true);
+
+                $scope.$on('grid.page_size.changed', function (event, pageSize) {
+                    if (pageSize != $scope.state.pageSize) {
+                        $scope.state.pageSize = pageSize;
+                    }
+                });
+
+                $scope.$on('grid.current_page.changed', function (event, currentPage) {
+                    if (currentPage != $scope.state.currentPage) {
+                        $scope.state.currentPage = currentPage;
+                    }
+                });
             }
         };
     })
