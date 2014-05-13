@@ -24,3 +24,9 @@ services:
         class: %pimee_enrich.form.type.attribute_group_rights.class%
         tags:
             - { name: form.type, alias: pimee_enrich_attribute_group_rights }
+
+    pim_enrich.form.type.product.view:
+        public: false
+        class: %pim_enrich.form.type.product.view.class%
+        arguments:
+            - '@security.context'
