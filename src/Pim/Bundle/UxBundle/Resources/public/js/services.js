@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('App.services', [])
-    .service('GridManager', function ($http, $q, $window) {
+    .service('GridManager', function ($http, $q) {
         var self = this;
 
         this.gridParams = {};

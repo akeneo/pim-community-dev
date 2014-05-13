@@ -21,19 +21,13 @@ angular.module('App.directives', [])
                     $scope.$broadcast('grid.need.reload');
                 };
 
-                $scope.$on('grid.page_size.changed', function (event, pageSize) {
-                    $scope.metaData.state.pageSize = pageSize;
+                $scope.$watch('metaData.state', function (newValue, oldValue) {
+                    if (oldValue) {
+                        $scope.$broadcast('grid.need.reload');
+                    }
+                }, true);
 
-                    $scope.$emit('grid.need.reload');
-                });
-
-                $scope.$on('grid.current_page.changed', function (event, currentPage) {
-                    $scope.metaData.state.currentPage = currentPage;
-
-                    $scope.$emit('grid.need.reload');
-                });
-
-                $scope.$on('grid.need.reload', function (event) {
+                $scope.$on('grid.need.reload', function () {
                     GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
                         $scope.data = data.data;
                     });
@@ -78,59 +72,6 @@ angular.module('App.directives', [])
     .directive('gridFilter', function() {
         return {
             template: '<div ng-include="\'/bundles/pimux/templates/grid/filter/\' + filter.type + \'.html\'"></div>'
-        };
-    })
-    .directive('gridPagination', function($rootScope) {
-        return {
-            scope: {
-                currentPage: '=',
-                pageSize: '=',
-                pageSizeOptions: '=',
-                totalRecords: '='
-            },
-            templateUrl: '/bundles/pimux/templates/grid/pagination.html',
-            controller: function($scope) {
-                //We initialize the state of the pagination directive
-                $scope.state = {
-                    currentPage: $scope.currentPage,
-                    pageSize: $scope.pageSize,
-                    lastPage: Math.round($scope.totalRecords / $scope.pageSize)
-                };
-
-                $scope.$watch('state.currentPage', function (newValue, oldValue) {
-                    if (oldValue && newValue != oldValue) {
-                        if ($scope.state.currentPage < 1) {
-                            $scope.state.currentPage = 1;
-                        } else if ($scope.state.currentPage > $scope.state.lastPage) {
-                            $scope.state.currentPage = $scope.state.lastPage;
-                        }
-
-                        $rootScope.$broadcast('grid.current_page.changed', $scope.state.currentPage);
-                    }
-                }, true);
-
-                $scope.$watch('state.pageSize', function (newValue, oldValue) {
-                    if (oldValue && newValue != oldValue) {
-                        $scope.state.lastPage = Math.round($scope.totalRecords / $scope.state.pageSize);
-
-                        $scope.state.currentPage = 1;
-
-                        $rootScope.$broadcast('grid.page_size.changed', $scope.state.pageSize);
-                    }
-                }, true);
-
-                $scope.$on('grid.page_size.changed', function (event, pageSize) {
-                    if (pageSize != $scope.state.pageSize) {
-                        $scope.state.pageSize = pageSize;
-                    }
-                });
-
-                $scope.$on('grid.current_page.changed', function (event, currentPage) {
-                    if (currentPage != $scope.state.currentPage) {
-                        $scope.state.currentPage = currentPage;
-                    }
-                });
-            }
         };
     })
     .directive('gridSelection', function() {

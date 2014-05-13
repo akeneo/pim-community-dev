@@ -1,5 +1,5 @@
 <div grid-filters></div>
-<div grid-pagination ng-if="metaData" current-page="metaData.state.currentPage" page-size="metaData.state.pageSize" page-size-options="metaData.options.toolbarOptions.pageSize.items" total-records="data.options.totalRecords"></div>
+<div ng-include="'/bundles/pimux/templates/grid/pagination.html'"></div>
 <div grid-selection></div>
 <table class="table table-condensed table-hover">
     <thead>
@@ -9,4 +9,3 @@
         <tr grid-row ng-repeat="item in data.data" row="item.row" entity="item.entity"></tr>
     </tbody>
 </table>
-<div grid-pagination ng-if="metaData" current-page="metaData.state.currentPage" page-size="metaData.state.pageSize" page-size-options="metaData.options.toolbarOptions.pageSize.items" total-records="data.options.totalRecords"></div>
