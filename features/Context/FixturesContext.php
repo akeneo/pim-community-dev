@@ -453,7 +453,7 @@ class FixturesContext extends RawMinkContext
                         if ("" === $data['value']) {
                             $data = null;
                         } elseif (!$data instanceof \DateTime) {
-                            $data = new \DateTime($data['value']);
+                            $data = new \DateTime($data['value'], new \DateTimeZone('UTC'));
                         }
 
                         $value->setData($data);
@@ -1411,7 +1411,7 @@ class FixturesContext extends RawMinkContext
                 if ("" === $data) {
                     $data = null;
                 } elseif (!$data instanceof \DateTime) {
-                    $data = new \DateTime($data);
+                    $data = new \DateTime($data, new \DateTimeZone('UTC'));
                 }
 
                 $value->setData($data);
