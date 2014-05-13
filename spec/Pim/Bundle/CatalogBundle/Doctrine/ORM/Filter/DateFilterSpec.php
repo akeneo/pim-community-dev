@@ -53,8 +53,8 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_a_between_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
-        $qb->andWhere("p.release_date > '2014-03-15'")->willReturn($qb);
+        $qb->andWhere("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
+        $expr->andX("p.release_date > '2014-03-15'", "p.release_date < '2014-03-20 23:59:59'")->willReturn("p.release_date > '2014-03-15' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-15')->willReturn("p.release_date > '2014-03-15'");
@@ -67,8 +67,8 @@ class DateFilterSpec extends ObjectBehavior
 
     function it_adds_an_equal_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
     {
-        $qb->andWhere("p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
-        $qb->andWhere("p.release_date > '2014-03-20'")->willReturn($qb);
+        $qb->andWhere("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'")->willReturn($qb);
+        $expr->andX("p.release_date > '2014-03-20'", "p.release_date < '2014-03-20 23:59:59'")->willReturn("p.release_date > '2014-03-20' AND p.release_date < '2014-03-20 23:59:59'");
         $qb->expr()->willReturn($expr);
 
         $expr->gt('p.release_date', '2014-03-20')->willReturn("p.release_date > '2014-03-20'");
