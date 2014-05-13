@@ -92,7 +92,7 @@ class VersionBuilder
         $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         $modification = $pending->getChangeset();
-        $snapshot     = $oldSnapshot + $modification;
+        $snapshot     = $modification + $oldSnapshot;
         $changeset    = $this->buildChangeset($oldSnapshot, $snapshot);
 
         $pending->setVersion($versionNumber)
