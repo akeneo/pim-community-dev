@@ -77,7 +77,8 @@ class PimCatalogBundle extends Bundle
                 )
             );
 
-            // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
+            // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
+            // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
             $definition = $container->register(
                 'doctrine_mongodb.odm.listeners.resolve_target_document',
                 'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
