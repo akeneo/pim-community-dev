@@ -84,6 +84,7 @@ class RefreshCommand extends ContainerAwareCommand
                 if (($ind % $batchSize) == 0) {
                     $em->flush();
                     $em->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+                    $previousVersions = [];
                 }
                 $progress->advance();
             }
