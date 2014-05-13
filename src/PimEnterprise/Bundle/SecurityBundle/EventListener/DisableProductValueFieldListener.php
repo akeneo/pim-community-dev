@@ -48,7 +48,8 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
 
         if (false === $this->securityContext->isGranted('GROUP_EDIT_ATTRIBUTES', $attributeGroup)) {
             $formOptions = $event->getFormOptions();
-            $formOptions['disabled'] = true;
+            $formOptions['disabled']  = true;
+            $formOptions['read_only'] = true;
             $event->updateFormOptions($formOptions);
         }
     }
