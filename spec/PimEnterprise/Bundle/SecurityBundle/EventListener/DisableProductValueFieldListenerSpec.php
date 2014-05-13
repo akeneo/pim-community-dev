@@ -25,18 +25,24 @@ class DisableProductValueFieldListenerSpec extends ObjectBehavior
 
     function it_subscribes_to_create_product_value_form()
     {
-        $this->getSubscribedEvents()->shouldReturn([EnrichEvents::CREATE_PRODUCT_VALUE_FORM => ['onCreateProductValueForm']]);
+        $this->getSubscribedEvents()->shouldReturn(
+            [EnrichEvents::CREATE_PRODUCT_VALUE_FORM => ['onCreateProductValueForm']]
+        );
     }
 
-    function it_disables_the_product_value_form_when_no_edit_right(CreateProductValueFormEvent $event, AbstractProductValue $value, AbstractAttribute $sku, AttributeGroup $group, $context)
-    {
+    function it_disables_the_product_value_form_when_no_edit_right(
+        CreateProductValueFormEvent $event,
+        AbstractProductValue $value,
+        AbstractAttribute $sku,
+        AttributeGroup $group, $context
+    ) {
         $event->getProductValue()->willReturn($value);
         $event->getFormOptions()->willReturn([]);;
         $value->getAttribute()->willReturn($sku);
         $sku->getVirtualGroup()->willReturn($group);
 
         $context->isGranted('GROUP_EDIT_ATTRIBUTES', $group)->willReturn(false);
-        $event->updateFormOptions(['disabled' => true])->shouldBeCalled();
+        $event->updateFormOptions(['disabled' => true, 'read_only' => true])->shouldBeCalled();
 
         $this->onCreateProductValueForm($event);
     }
