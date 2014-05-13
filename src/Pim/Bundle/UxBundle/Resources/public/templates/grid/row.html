@@ -3,7 +3,7 @@
 </td>
 <td grid-cell ng-repeat="cell in item.row" cell="cell.value" column="getCellConfig(cell.column)"></td>
 <td grid-cell-actions>
-    <a class="btn btn-default action" title="{{ action.label }}" ng-repeat="action in metaData.rowActions" ng-click="performRowAction(action)">
+    <a class="btn btn-default action" title="{{ action.label }}" ng-repeat="action in metadata.rowActions" ng-click="performRowAction(action)">
         <i class="fa fa-{{ action.icon }}"></i>
     </a>
 </td>

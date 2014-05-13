@@ -1,14 +1,14 @@
 <th></th>
-<th ng-repeat="column in metaData.columns">
-    <a ng-if="column.sortable && metaData.state.sorters[column.name] !== 'ASC'" ng-click="metaData.state.sorters = {}; metaData.state.sorters[column.name] = 'ASC'">
+<th ng-repeat="column in metadata.columns">
+    <a ng-if="column.sortable && metadata.state.sorters[column.name] !== 'ASC'" ng-click="metadata.state.sorters = {}; metadata.state.sorters[column.name] = 'ASC'">
         {{ column.label }}
-        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">
+        <span ng-if="metadata.state.sorters[column.name]" ng-class="metadata.state.sorters[column.name]">
             <i class="fa fa-caret-down"></i>
         </span>
     </a>
-    <a ng-if="column.sortable && metaData.state.sorters[column.name] === 'ASC'" ng-click="metaData.state.sorters = {}; metaData.state.sorters[column.name] = 'DESC'">
+    <a ng-if="column.sortable && metadata.state.sorters[column.name] === 'ASC'" ng-click="metadata.state.sorters = {}; metadata.state.sorters[column.name] = 'DESC'">
         {{ column.label }}
-        <span ng-if="metaData.state.sorters[column.name]" ng-class="metaData.state.sorters[column.name]">
+        <span ng-if="metadata.state.sorters[column.name]" ng-class="metadata.state.sorters[column.name]">
             <i class="fa fa-caret-up"></i>
         </span>
     </a>

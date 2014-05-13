@@ -1,13 +1,13 @@
-<div class="dropdown" ng-hide="!(metaData.filters|filter:{enabled:false}).length">
+<div class="dropdown" ng-hide="!(metadata.filters|filter:{enabled:false}).length">
     <a class="dropdown-toggle">Manage filters</a>
     <ul class="dropdown-menu">
-        <li ng-repeat="filter in metaData.filters | filter:{enabled:false}">
+        <li ng-repeat="filter in metadata.filters | filter:{enabled:false}">
             <a ng-click="filter.enabled = true" ng-bind="filter.label"></a>
         </li>
     </ul>
 </div>
 
-<div class="pull-left" ng-repeat="filter in metaData.filters | filter:{enabled:true}">
+<div class="pull-left" ng-repeat="filter in metadata.filters | filter:{enabled:true}">
     <button class="btn btn-default" ng-init="filter.selectedChoice = 'All'">
         {{ filter.label }}
         <div grid-filter></div>

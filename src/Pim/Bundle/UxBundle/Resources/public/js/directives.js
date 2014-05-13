@@ -9,7 +9,7 @@ angular.module('App.directives', [])
             templateUrl: '/bundles/pimux/templates/grid/grid.html',
             controller: function(GridManager, $scope) {
                 GridManager.load($scope.name).then(function (data) {
-                    $scope.metaData = data.metadata;
+                    $scope.metadata = data.metadata;
                     $scope.data     = data.data;
                 });
 
@@ -21,14 +21,14 @@ angular.module('App.directives', [])
                     $scope.$broadcast('grid.need.reload');
                 };
 
-                $scope.$watch('metaData.state', function (newValue, oldValue) {
+                $scope.$watch('metadata.state', function (newValue, oldValue) {
                     if (oldValue) {
                         $scope.$broadcast('grid.need.reload');
                     }
                 }, true);
 
                 $scope.$on('grid.need.reload', function () {
-                    GridManager.loadData($scope.name, $scope.metaData).then(function (data) {
+                    GridManager.loadData($scope.name, $scope.metadata).then(function (data) {
                         $scope.data = data.data;
                     });
                 });
@@ -45,7 +45,7 @@ angular.module('App.directives', [])
             templateUrl: '/bundles/pimux/templates/grid/row.html',
             controller: function($scope) {
                 $scope.getCellConfig = function (columnName) {
-                    return _.find($scope.metaData.columns, {name: columnName});
+                    return _.find($scope.metadata.columns, {name: columnName});
                 };
             }
         };

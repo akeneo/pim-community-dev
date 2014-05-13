@@ -1,9 +1,9 @@
-<pagination ng-model="metaData.state.currentPage" total-items="data.options.totalRecords" items-per-page="metaData.state.pageSize" previous-text="&laquo;" next-text="&raquo;"></pagination>
+<pagination ng-model="metadata.state.currentPage" total-items="data.options.totalRecords" items-per-page="metadata.state.pageSize" previous-text="&laquo;" next-text="&raquo;"></pagination>
 <div class="dropdown">
-    <a class="btn btn-default dropdown-toggle" ng-bind="metaData.state.pageSize"></a>
+    <a class="btn btn-default dropdown-toggle" ng-bind="metadata.state.pageSize"></a>
     <ul class="dropdown-menu">
-        <li ng-repeat="item in metaData.options.toolbarOptions.pageSize.items">
-            <a ng-bind="item" ng-click="metaData.state.pageSize = item; metaData.state.currentPage = 1"></a>
+        <li ng-repeat="item in metadata.options.toolbarOptions.pageSize.items">
+            <a ng-bind="item" ng-click="metadata.state.pageSize = item; metadata.state.currentPage = 1"></a>
         </li>
     </ul>
 </div>
