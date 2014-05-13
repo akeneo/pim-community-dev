@@ -2,6 +2,9 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+
 /**
  * Attribute Group Access entity
  *
@@ -16,14 +19,14 @@ class AttributeGroupAccess
     protected $id;
 
     /**
-     * @var integer $attributeGroupId
+     * @var AttributeGroup $attributeGroup
      */
-    protected $attributeGroupId;
+    protected $attributeGroup;
 
     /**
-     * @var integer $roleId
+     * @var Role $role
      */
-    protected $roleId;
+    protected $role;
 
     /**
      * @var boolean $viewAttributes
@@ -36,49 +39,49 @@ class AttributeGroupAccess
     protected $editAttributes;
 
     /**
-     * Get attribute group id
+     * Get attribute group
      *
-     * @return integer
+     * @return AttributeGroup
      */
-    public function getAttributeGroupId()
+    public function getAttributeGroup()
     {
-        return $this->attributeGroupId;
+        return $this->attributeGroup;
     }
 
     /**
-     * Set attribute group id
+     * Set attribute group
      *
-     * @param integer $attributeGroupId
+     * @param AttributeGroup $attributeGroup
      *
      * @return AttributeGroupAccess
      */
-    public function setAttributeGroupId($attributeGroupId)
+    public function setAttributeGroup(AttributeGroup $attributeGroup)
     {
-        $this->attributeGroupId = $attributeGroupId;
+        $this->attributeGroup = $attributeGroup;
 
         return $this;
     }
 
     /**
-     * Get role id
+     * Get role
      *
-     * @return integer
+     * @return Role
      */
-    public function getRoleId()
+    public function getRole()
     {
-        return $this->roleId;
+        return $this->role;
     }
 
     /**
-     * Set role id
+     * Set role
      *
-     * @param integer $roleId
+     * @param Role $roleId
      *
      * @return AttributeGroupAccess
      */
-    public function setRoleId($roleId)
+    public function setRole(Role $role)
     {
-        $this->roleId = $roleId;
+        $this->role = $role;
 
         return $this;
     }
