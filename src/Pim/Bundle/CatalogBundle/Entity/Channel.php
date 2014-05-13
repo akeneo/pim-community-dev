@@ -7,6 +7,7 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Channel entity
@@ -23,7 +24,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  *     }
  * )
  */
-class Channel implements ReferableInterface
+class Channel implements ReferableInterface, VersionableInterface
 {
     /** @var integer $id */
     protected $id;
