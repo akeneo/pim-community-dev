@@ -1,0 +1,2 @@
+parameters:
+    pim_enrich.form.type.product.view.class: PimEnterprise\Bundle\EnrichBundle\Form\View\ProductFormView
