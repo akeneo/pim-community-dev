@@ -1,6 +1,7 @@
 PimEnterprise\Bundle\CatalogBundle\Model\Proposal:
     type: entity
     table: pimee_catalog_product_proposal
+    repositoryClass: PimEnterprise\Bundle\CatalogBundle\Model\Repository\ORM\ProposalRepository
     id:
         id:
             type: integer

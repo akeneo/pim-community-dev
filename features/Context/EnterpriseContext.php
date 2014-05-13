@@ -52,17 +52,6 @@ class EnterpriseContext extends RawMinkContext
             ->setAccess($attributeGroup, [$role], [$role]);
     }
 
-    /**
-     * @Given /^there should be (\d+) product changes proposal$/
-     */
-    public function thereShouldBeProductChangesProposal($count)
-    {
-        return [
-            new Step\When('I visit the "Proposals" tab'),
-            new Step\Then(sprintf('the grid should contain %d elements', $count))
-        ];
-    }
-
     protected function getAttributeGroupAccessManager()
     {
         return $this->getContainer()->get('pimee_security.manager.attribute_group_access');

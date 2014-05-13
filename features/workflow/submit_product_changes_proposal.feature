@@ -16,6 +16,7 @@ Feature: Submit a product changes proposal
     And I change the Name to "Basket"
     And I save the product
     Then the product Name should be "Sandals"
-    And there should be 1 product changes proposal
+    When I visit the "Proposals" tab
+    Then the grid should contain 1 element
 
   Scenario: Succesfully view a product changes proposal

@@ -1,17 +1,9 @@
 datagrid:
     proposals-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - p.id
-                    - p.createdBy
-                    - p.createdAt
-                    - p.changes
-                from:
-                    - { table: PimEnterprise\Bundle\CatalogBundle\Model\Proposal, alias: p }
-                # where:
-                #     - p.product = :product
+            type: pim_orm
+            entity: %pimee_catalog.entity.proposal.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             createdBy:
                 label: Proposed by
