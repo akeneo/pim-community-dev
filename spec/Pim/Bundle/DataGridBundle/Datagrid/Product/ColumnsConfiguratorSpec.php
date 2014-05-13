@@ -30,8 +30,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
 
     function it_configures_datagrid_columns($configuration, $registry)
     {
-        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-
         $attributes = [
             'sku' => [
                 'code'  => 'sku',
@@ -58,7 +56,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $displayColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::DISPLAYED_COLUMNS_KEY);
         $configuration->offsetGetByPath($displayColumnPath)->shouldBeCalled();
 
-        $columns = [
+        $availableColumns = [
             'sku' => [
                 'identifier_config',
                 'label' => 'Sku'
@@ -71,10 +69,15 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
                 'label' => 'Name'
             ]
         ];
-        $configuration->offsetSetByPath($columnConfPath, $columns)->shouldBeCalled();
+
+        $displayedColumns = $availableColumns;
+        array_pop($displayedColumns);
+
+        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
+        $configuration->offsetSetByPath($columnConfPath, $displayedColumns)->shouldBeCalled();
 
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
-        $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
+        $configuration->offsetSetByPath($availableColumnPath, $availableColumns)->shouldBeCalled();
 
         $this->configure();
     }

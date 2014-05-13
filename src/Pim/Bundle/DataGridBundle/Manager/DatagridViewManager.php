@@ -7,6 +7,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
+use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 
 /**
  * Datagrid view manager
@@ -59,20 +60,25 @@ class DatagridViewManager
     /**
      * Get datagrid column choices for the provided datagrid alias
      *
-     * @param string $alias
+     * @param string  $alias
+     * @param boolean $displayedColumns
      *
      * @return array
      */
-    public function getColumnChoices($alias)
+    public function getColumnChoices($alias, $displayedColumns = false)
     {
         $choices = array();
+
+        $path = (true === $displayedColumns) ?
+            sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY) :
+            sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
 
         $columnsConfig = $this
             ->datagridManager
             ->getDatagrid($alias)
             ->getAcceptor()
             ->getConfig()
-            ->offsetGetByPath(sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY));
+            ->offsetGetByPath($path);
 
         if ($columnsConfig) {
             foreach ($columnsConfig as $code => $meta) {
@@ -107,7 +113,7 @@ class DatagridViewManager
                 ->setType(DatagridView::TYPE_DEFAULT)
                 ->setOwner($user)
                 ->setDatagridAlias($alias)
-                ->setColumns(array_keys($this->getColumnChoices($alias)));
+                ->setColumns(array_keys($this->getColumnChoices($alias, true)));
 
             $this->entityManager->persist($view);
             $this->entityManager->flush();
