@@ -110,20 +110,29 @@ class VersionManager
      * @param object $versionable
      * @param array  $changeset
      *
-     * @return Version
+     * @return Version[]
      */
     public function buildVersion($versionable, array $changeset = array())
     {
+        $createdVersions = [];
+
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
 
-            $previousVersion = $this->getVersionRepository()
-                ->getNewestLogEntry(get_class($versionable), $versionable->getId());
+            $createdVersions = $this->buildPendingVersions($versionable);
 
-            return $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
+            if (!empty($createdVersions)) {
+                $previousVersion = end($createdVersions);
+            } else {
+                $previousVersion = $this->getNewestLogEntry($versionable);
+            }
+
+            $createdVersions[] = $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            return $this->versionBuilder->createPendingVersion($versionable, $this->username, $changeset, $this->context);
+            $createdVersions[] = $this->versionBuilder->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
+
+        return $createdVersions;
     }
 
     /**
@@ -173,24 +182,34 @@ class VersionManager
     }
 
     /**
-     * Return versionable entity from version
+     * Build a pending version
      *
-     * @param Version $version
+     * @param Version      $pending
+     * @param Version|null $previousVersion
      *
-     * @return object
+     * @return Version
      */
-    public function getRelatedVersionable(Version $version)
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
     {
-        return $this->registry->getRepository($version->getResourceName())->find($version->getResourceId());
+        if (null === $previousVersion) {
+            $previousVersion = $this->getVersionRepository()
+                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
+        }
+
+        return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
     }
 
     /**
      * Build pending versions for a single versionable entity
      *
      * @param object $versionable
+     *
+     * @return Version[]
      */
-    public function buildPendingVersions($versionable)
+    protected function buildPendingVersions($versionable)
     {
+        $createdVersions = [];
+
         $pendingVersions = $this->getVersionRepository()->findBy(
             [
                 'resourceId'   => $versionable->getId(),
@@ -200,23 +219,15 @@ class VersionManager
             ['loggedAt' => 'asc']
         );
 
+        $previousVersion = null;
         foreach ($pendingVersions as $pending) {
-            $this->buildPendingVersion($pending);
+            $version = $this->buildPendingVersion($pending, $previousVersion);
+            if ($version->getChangeset()) {
+                $previousVersion = $version;
+                $createdVersions[] = $version;
+            }
         }
-    }
 
-    /**
-     * Build a pending version
-     *
-     * @param Version $pending
-     *
-     * @return Version
-     */
-    public function buildPendingVersion(Version $pending)
-    {
-        $previousVersion = $this->getVersionRepository()
-            ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
-
-        return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
+        return $createdVersions;
     }
 }

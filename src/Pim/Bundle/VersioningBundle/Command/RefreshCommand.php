@@ -68,8 +68,18 @@ class RefreshCommand extends ContainerAwareCommand
             $ind = 0;
             $batchSize = $input->getOption('batch-size');
             $progress->start($output, $nbPendings);
+
+            $previousVersions = [];
             foreach ($pendingVersions as $pending) {
-                $this->createVersion($pending);
+                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId());
+
+                $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
+                $version = $this->createVersion($pending, $previousVersion);
+
+                if ($version) {
+                    $previousVersions[$key] = $version;
+                }
+
                 $ind++;
                 if (($ind % $batchSize) == 0) {
                     $em->flush();
@@ -85,14 +95,19 @@ class RefreshCommand extends ContainerAwareCommand
 
     /**
      * @param Version $version
+     * @param Version $previousVersion
      *
-     * @return null
+     * @return Version|null
      */
-    protected function createVersion(Version $version)
+    protected function createVersion(Version $version, Version $previousVersion = null)
     {
-        $version = $this->getVersionManager()->buildPendingVersion($version);
+        $version = $this->getVersionManager()->buildPendingVersion($version, $previousVersion);
 
-        $this->getEntityManager()->persist($version);
+        if ($version->getChangeset()) {
+            $this->getEntityManager()->persist($version);
+
+            return $version;
+        }
     }
 
     /**
