@@ -18,5 +18,3 @@ Feature: Submit a product changes proposal
     Then the product Name should be "Sandals"
     When I visit the "Proposals" tab
     Then the grid should contain 1 element
-
-  Scenario: Succesfully view a product changes proposal
