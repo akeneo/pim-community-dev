@@ -40,7 +40,7 @@ Feature: Filter products by date field
       | tshirt |
       | pen    |
     And the following product values:
-      | product | attribute | value      |
+      | product | attribute  | value      |
       | postit  | release    | 2014-05-01 |
       | book    | release    | 2014-05-02 |
       | mug     | release    | 2014-05-03 |
@@ -50,9 +50,8 @@ Feature: Filter products by date field
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen
     And I should be able to use the following filters:
-      | filter  | value                                     | result                    |
-      | release | more than 2014-05-02                    | mug and tshirt and pen  |
-      | release | less than 2014-05-03                    | postit and book          |
-      | release | between 2014-05-02 and 2014-05-03      | book and mug and tshirt |
-      | release | not between 2014-05-02 and 2014-05-03 | postit and pen           |
-
+      | filter  | value                                 | result                  |
+      | release | more than 2014-05-02                  | mug and tshirt and pen  |
+      | release | less than 2014-05-03                  | postit and book         |
+      | release | between 2014-05-02 and 2014-05-03     | book and mug and tshirt |
+      | release | not between 2014-05-02 and 2014-05-03 | postit and pen          |
