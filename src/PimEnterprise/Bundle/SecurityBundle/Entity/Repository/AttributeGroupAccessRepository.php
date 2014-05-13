@@ -23,14 +23,14 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(AttributeGroup $group, $accessLevel)
     {
+        $accessField = ($accessLevel === 'EDIT') ? 'a.editAttributes' : 'a.viewAttributes';
+
         $qb = $this->createQueryBuilder('a');
-
-        $accessField = $accessLevel === 'EDIT' ? 'a.editAttributes' : 'a.viewAttributes';
-
         $qb->select('r')
-            ->leftJoin('OroUserBundle:Role', 'r', 'WITH', 'a.roleId = r.id')
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()))
-            ->andWhere($qb->expr()->eq($accessField, true));
+            ->innerJoin('OroUserBundle:Role', 'r')
+            ->where('a.attributeGroup = :group')
+            ->andWhere($qb->expr()->eq($accessField, true))
+            ->setParameter('group', $group);
 
         return $qb->getQuery()->getResult();
     }
