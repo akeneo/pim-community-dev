@@ -17,41 +17,46 @@ class DateFilter extends BaseFilter
     public function addFieldFilter($field, $operator, $value)
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
-        $conditions = array();
         
         switch ($operator) {
             case 'BETWEEN':
-                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[0]));
-                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[1], true));
+                $this->qb->andWhere(
+                    $this->qb->expr()->andX(
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value[0])),
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value[1], true))
+                    )
+                );
                 break;
 
             case '>':
-                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true));
+                $this->qb->andWhere($this->qb->expr()->gt($field, $this->getDateLiteralExpr($value, true)));
                 break;
 
             case '<':
-                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value));
+                $this->qb->andWhere($this->qb->expr()->lt($field, $this->getDateLiteralExpr($value)));
                 break;
 
             case '=':
-                $conditions[] = $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value));
-                $conditions[] = $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value, true));
+                $this->qb->andWhere(
+                    $this->qb->expr()->andX(
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value)),
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value, true))
+                    )
+                );
                 break;
 
             case 'EMPTY':
-                $conditions[] = $this->qb->expr()->isNull($field);
+                $this->qb->andWhere($this->qb->expr()->isNull($field));
                 break;
 
             default:
-                $conditions[] = $this->qb->expr()->orX(
-                    $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value['from'])),
-                    $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value['to'], true))
+                $this->qb->andWhere(
+                    $this->qb->expr()->orX(
+                        $this->qb->expr()->lt($field, $this->getDateLiteralExpr($value['from'])),
+                        $this->qb->expr()->gt($field, $this->getDateLiteralExpr($value['to'], true))
+                    )
                 );
                 break;
-        }
-
-        foreach ($conditions as $condition) {
-            $this->qb->andWhere($condition);
         }
 
         return $this;
@@ -82,8 +87,7 @@ class DateFilter extends BaseFilter
     {
         if ($data instanceof \DateTime && true === $endOfDay) {
             $data->setTime(23, 59, 59);
-        }
-        elseif (!$data instanceof \DateTime && true === $endOfDay) {
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
             $data = sprintf('%s 23:59:59', $data);
         }
 
