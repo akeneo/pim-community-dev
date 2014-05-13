@@ -582,7 +582,7 @@ class Grid extends Index
      *
      * @throws \InvalidArgumentException
      */
-    protected function openFilter(NodeElement $filter)
+    public function openFilter(NodeElement $filter)
     {
         if ($element = $filter->find('css', 'button')) {
             $element->click();
