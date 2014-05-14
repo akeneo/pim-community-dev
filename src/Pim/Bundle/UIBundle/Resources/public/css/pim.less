@@ -44,6 +44,24 @@ table.grid {
   }
 }
 
+.grid .action-cell {
+  vertical-align: top;
+  a.action {
+    display: table-cell;
+    i {
+      padding: 4px 10px;
+      border: 1px solid #ccc;
+      .border-radius(3px);
+    }
+  }
+}
+tr:hover>.action-cell a.action>i {
+  background-color: @backgroundColor-white;
+  &:hover {
+    background-color: @color-light_grey;
+  }
+}
+
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
     background-color: @color-purple_light;
