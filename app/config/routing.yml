@@ -15,6 +15,9 @@ pim_importexport:
 pim_webservice:
     resource: "@PimWebServiceBundle/Resources/config/routing.yml"
 
+pim_workflow:
+    resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:

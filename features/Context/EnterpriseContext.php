@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
+use Behat\Gherkin\Node\TableNode;
 
 class EnterpriseContext extends RawMinkContext
 {
@@ -52,8 +53,29 @@ class EnterpriseContext extends RawMinkContext
             ->setAccess($attributeGroup, [$role], [$role]);
     }
 
+    /**
+     * @Given /^"([^"]*)" has submitted the following proposal for "([^"]*)":$/
+     */
+    public function hasSubmittedTheFollowingProposalForMySandals($username, $product, TableNode $table)
+    {
+        $proposal = $this->getProposalFactory()->createProposal(
+            $this->getProduct($product),
+            $username,
+            $table->getRowsHash()
+        );
+
+        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposal));
+        $manager->persist($proposal);
+        $manager->flush();
+    }
+
     protected function getAttributeGroupAccessManager()
     {
         return $this->getContainer()->get('pimee_security.manager.attribute_group_access');
+    }
+
+    protected function getProposalFactory()
+    {
+        return $this->getContainer()->get('pimee_workflow.factory.proposal');
     }
 }
