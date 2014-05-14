@@ -37,9 +37,7 @@ class AttributeGroupAccessManager
      */
     public function getViewRoles(AttributeGroup $group)
     {
-        return $this->objectManager
-            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
-            ->getGrantedRoles($group, 'VIEW');
+        return $this->getRepository()->getGrantedRoles($group, 'VIEW');
     }
 
     /**
@@ -51,9 +49,7 @@ class AttributeGroupAccessManager
      */
     public function getEditRoles(AttributeGroup $group)
     {
-        return $this->objectManager
-            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
-            ->getGrantedRoles($group, 'EDIT');
+        return $this->getRepository()->getGrantedRoles($group, 'EDIT');
     }
 
     /**
@@ -65,20 +61,20 @@ class AttributeGroupAccessManager
      */
     public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
     {
-        $grantedRoleIds = [];
+        $grantedRoles = array();
         foreach ($editRoles as $role) {
             $this->grantAccess($group, $role, 'EDIT');
-            $grantedRoleIds[] = $role->getId();
+            $grantedRoles[] = $role;
         }
 
         foreach ($viewRoles as $role) {
-            if (!in_array($role->getId(), $grantedRoleIds)) {
+            if (!in_array($role, $grantedRoles)) {
                 $this->grantAccess($group, $role, 'VIEW');
-                $grantedRoleIds[] = $role->getId();
+                $grantedRoles[] = $role;
             }
         }
 
-        $this->revokeAccess($group, array_unique($grantedRoleIds));
+        $this->revokeAccess($group, array_unique($grantedRoles));
         $this->objectManager->flush();
     }
 
@@ -92,7 +88,6 @@ class AttributeGroupAccessManager
     protected function grantAccess(AttributeGroup $group, Role $role, $accessLevel)
     {
         $access = $this->getAttributeGroupAccess($group, $role);
-
         $access
             ->setViewAttributes(true)
             ->setEditAttributes($accessLevel === 'EDIT');
@@ -110,20 +105,19 @@ class AttributeGroupAccessManager
      */
     protected function getAttributeGroupAccess(AttributeGroup $group, Role $role)
     {
-        $access = $this->objectManager
-            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
+        $access = $this->getRepository()
             ->findOneBy(
                 [
-                    'attributeGroupId' => $group->getId(),
-                    'roleId'           => $role->getId()
+                    'attributeGroup' => $group,
+                    'role'           => $role
                 ]
             );
 
         if (!$access) {
             $access = new AttributeGroupAccess();
             $access
-                ->setAttributeGroupId($group->getId())
-                ->setRoleId($role->getId());
+                ->setAttributeGroup($group)
+                ->setRole($role);
         }
 
         return $access;
@@ -134,14 +128,22 @@ class AttributeGroupAccessManager
      * If excludedIds are provided, access will not be revoked for roles with these ids
      *
      * @param AttributeGroup $group
-     * @param integer[]      $excludedIds
+     * @param Role[]         $excludedRoles
      *
      * @return integer
      */
-    protected function revokeAccess(AttributeGroup $group, array $excludedIds = [])
+    protected function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
     {
-        return $this->objectManager
-            ->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')
-            ->revokeAccess($group, $excludedIds);
+        return $this->getRepository()->revokeAccess($group, $excludedRoles);
+    }
+
+    /**
+     * Get repository
+     *
+     * @return AttributeGroupAccessRepository
+     */
+    protected function getRepository()
+    {
+        return $this->objectManager->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess');
     }
 }

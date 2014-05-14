@@ -40,19 +40,21 @@ class AttributeGroupAccessRepository extends EntityRepository
      * If excludedIds are provided, access will not be revoked for roles with these ids
      *
      * @param AttributeGroup $group
-     * @param integer[]      $excludedIds
+     * @param Role[]         $excludedRoles
      *
      * @return integer
      */
-    public function revokeAccess(AttributeGroup $group, array $excludedIds = [])
+    public function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
     {
         $qb = $this->createQueryBuilder('a');
-
         $qb->delete()
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()));
+            ->where('a.attributeGroup = :group')
+            ->setParameter('group', $group);
 
-        if (!empty($excludedIds)) {
-            $qb->andWhere($qb->expr()->notIn('a.roleId', $excludedIds));
+        if (!empty($excludedRoles)) {
+            $qb
+                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
+                ->setParameter('excludedRoles', $excludedRoles);
         }
 
         return $qb->getQuery()->execute();
