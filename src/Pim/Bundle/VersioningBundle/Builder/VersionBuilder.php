@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Builder;
 
-use Symfony\Component\Serializer\SerializerInterface;
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
@@ -16,83 +15,131 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
 class VersionBuilder
 {
     /**
-     * @var SerializerInterface
+     * @var NormalizerInterface
      */
-    protected $serializer;
+    protected $normalizer;
 
     /**
-     * @param SerializerInterface $serializer
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(SerializerInterface $serializer)
+    public function __construct(NormalizerInterface $normalizer)
     {
-        $this->serializer = $serializer;
+        $this->normalizer = $normalizer;
     }
 
     /**
-     * Build a version from a versionable entity
+     * Build a version for a versionable entity
      *
      * @param object       $versionable
-     * @param User         $user
+     * @param string       $author
      * @param Version|null $previousVersion
      * @param string|null  $context
      *
      * @return Version
      */
-    public function buildVersion($versionable, User $user, Version $previousVersion = null, $context = null)
+    public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
         $resourceName = get_class($versionable);
         $resourceId   = $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
-        $oldData       = $previousVersion ? $previousVersion->getData() : [];
+        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
 
         // TODO: we don't use direct json serialize due to convert to audit data based on array_diff
-        $data = $this->serializer->normalize($versionable, 'csv', array('versioning' => true));
+        $snapshot = $this->normalizer->normalize($versionable, 'csv', array('versioning' => true));
 
-        $changeset = $this->buildDiffData($oldData, $data);
+        $changeset = $this->buildChangeset($oldSnapshot, $snapshot);
 
-        return new Version($resourceName, $resourceId, $versionNumber, $data, $changeset, $user, $context);
-    }
+        $version = new Version($resourceName, $resourceId, $author, $context);
+        $version->setVersion($versionNumber)
+            ->setSnapshot($snapshot)
+            ->setChangeset($changeset);
 
-
-    /**
-     * Build diff data
-     *
-     * @param array $oldData
-     * @param array $newData
-     *
-     * @return array
-     */
-    protected function buildDiffData(array $oldData, array $newData)
-    {
-        return $this->filterDiffData($this->getMergedData($oldData, $newData));
+        return $version;
     }
 
     /**
-     * Merge the old and new data
+     * Create a pending version for a versionable entity
      *
-     * @param array $oldData
-     * @param array $newData
+     * @param object      $versionable
+     * @param string      $author
+     * @param array       $changeset
+     * @param string|null $context
+     *
+     * @return Version
+     */
+    public function createPendingVersion($versionable, $author, array $changeset, $context = null)
+    {
+        $resourceName = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
+
+        $version = new Version($resourceName, $versionable->getId(), $author, $context);
+        $version->setChangeset($changeset);
+
+        return $version;
+    }
+
+    /**
+     * Build a pending version
+     *
+     * @param Version      $pending
+     * @param Version|null $previousVersion
+     *
+     * @return Version
+     */
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
+    {
+        $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
+        $oldSnapshot   = $previousVersion ? $previousVersion->getSnapshot() : [];
+
+        $modification = $pending->getChangeset();
+        $snapshot     = $modification + $oldSnapshot;
+        $changeset    = $this->buildChangeset($oldSnapshot, $snapshot);
+
+        $pending->setVersion($versionNumber)
+            ->setSnapshot($snapshot)
+            ->setChangeset($changeset);
+
+        return $pending;
+    }
+
+    /**
+     * Build the changeset
+     *
+     * @param array $oldSnapshot
+     * @param array $newSnapshot
      *
      * @return array
      */
-    protected function getMergedData(array $oldData, array $newData)
+    protected function buildChangeset(array $oldSnapshot, array $newSnapshot)
     {
-        $newData = array_map(
+        return $this->filterChangeset($this->mergeSnapshots($oldSnapshot, $newSnapshot));
+    }
+
+    /**
+     * Merge the old and new snapshots
+     *
+     * @param array $oldSnapshot
+     * @param array $newSnapshot
+     *
+     * @return array
+     */
+    protected function mergeSnapshots(array $oldSnapshot, array $newSnapshot)
+    {
+        $newSnapshot = array_map(
             function ($newItem) {
                 return ['new' => $newItem];
             },
-            $newData
+            $newSnapshot
         );
 
-        $oldData = array_map(
+        $oldSnapshot = array_map(
             function ($oldItem) {
                 return ['old' => $oldItem];
             },
-            $oldData
+            $oldSnapshot
         );
 
-        $mergedData = array_merge_recursive($newData, $oldData);
+        $mergedSnapshot = array_merge_recursive($newSnapshot, $oldSnapshot);
 
         return array_map(
             function ($mergedItem) {
@@ -101,23 +148,23 @@ class VersionBuilder
                     'new' => array_key_exists('new', $mergedItem) ? $mergedItem['new'] : ''
                 ];
             },
-            $mergedData
+            $mergedSnapshot
         );
     }
 
     /**
-     * Filter diff data to remove values that are the same
+     * Filter changeset to remove values that are the same
      *
-     * @param array $diffData
+     * @param array $changeset
      *
      * @return array
      */
-    protected function filterDiffData(array $diffData)
+    protected function filterChangeset(array $changeset)
     {
         return array_filter(
-            $diffData,
-            function ($diffItem) {
-                return $diffItem['old'] != $diffItem['new'];
+            $changeset,
+            function ($item) {
+                return $item['old'] != $item['new'];
             }
         );
     }

@@ -11,6 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Segment class allowing to organize a products into trees
@@ -27,7 +28,8 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableInterface
+class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableInterface,
+ VersionableInterface
 {
     /**
      * @var CategoryInterface $parent

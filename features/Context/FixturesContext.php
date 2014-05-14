@@ -74,6 +74,8 @@ class FixturesContext extends RawMinkContext
 
     private $placeholderValues = array();
 
+    private $username;
+
     /**
      * @BeforeScenario
      */
@@ -1086,6 +1088,14 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
      * @param string $columns
      *
      * @Given /^I\'ve displayed the columns (.*)$/
@@ -1093,7 +1103,7 @@ class FixturesContext extends RawMinkContext
     public function iVeDisplayedTheColumns($columns)
     {
         $alias = 'product-grid';
-        $user  = $this->getUser('Julia');
+        $user  = $this->getUser($this->username);
 
         $view = $this->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
             [

@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Entity\Version;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -30,9 +29,9 @@ class VersionManager
     protected $realTimeVersioning = true;
 
     /**
-     * @var User
+     * @var string
      */
-    protected $user;
+    protected $username = self::DEFAULT_SYSTEM_USER;
 
     /**
      * Versioning context
@@ -62,11 +61,11 @@ class VersionManager
     }
 
     /**
-     * @param User|null $user
+     * @param string $username
      */
-    public function setUser(User $user = null)
+    public function setUsername($username)
     {
-        $this->user = $user;
+        $this->username = $username;
     }
 
     /**
@@ -109,28 +108,38 @@ class VersionManager
      * Build a version from a versionable entity
      *
      * @param object $versionable
+     * @param array  $changeset
      *
-     * @return Version|Pending
+     * @return Version[]
      */
-    public function buildVersion($versionable)
+    public function buildVersion($versionable, array $changeset = array())
     {
-        $user = $this->getUser();
+        $createdVersions = [];
 
         if ($this->realTimeVersioning) {
             $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
 
-            if ($user) {
-                $previousVersion = $this->getVersionRepository()
-                    ->getNewestLogEntry(get_class($versionable), $versionable->getId());
+            $createdVersions = $this->buildPendingVersions($versionable);
 
-                return $this->versionBuilder->buildVersion($versionable, $user, $previousVersion, $this->context);
+            $builtVersions = array_filter(
+                $createdVersions,
+                function ($version) {
+                    return count($version->getChangeset()) > 0;
+                }
+            );
+
+            if (!empty($builtVersions)) {
+                $previousVersion = end($builtVersions);
+            } else {
+                $previousVersion = $this->getNewestLogEntry($versionable);
             }
-        } else {
-            $username  = $user ? $user->getUsername() : self::DEFAULT_SYSTEM_USER;
-            $className = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
 
-            return new Pending($className, $versionable->getId(), $username);
+            $createdVersions[] = $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
+        } else {
+            $createdVersions[] = $this->versionBuilder->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
+
+        return $createdVersions;
     }
 
     /**
@@ -142,7 +151,7 @@ class VersionManager
     }
 
     /**
-     * Return product logs
+     * Return log entries
      *
      * @param object $versionable
      *
@@ -180,17 +189,52 @@ class VersionManager
     }
 
     /**
-     * Get the current user
+     * Build a pending version
      *
-     * @return User|null
+     * @param Version      $pending
+     * @param Version|null $previousVersion
+     *
+     * @return Version
      */
-    protected function getUser()
+    public function buildPendingVersion(Version $pending, Version $previousVersion = null)
     {
-        if ($this->user) {
-            return $this->user;
+        if (null === $previousVersion) {
+            $previousVersion = $this->getVersionRepository()
+                ->getNewestLogEntry($pending->getResourceName(), $pending->getResourceId());
         }
 
-        return $this->registry->getRepository('OroUserBundle:User')
-            ->findOneBy(['username' => self::DEFAULT_SYSTEM_USER]);
+        return $this->versionBuilder->buildPendingVersion($pending, $previousVersion);
+    }
+
+    /**
+     * Build pending versions for a single versionable entity
+     *
+     * @param object $versionable
+     *
+     * @return Version[]
+     */
+    protected function buildPendingVersions($versionable)
+    {
+        $createdVersions = [];
+
+        $pendingVersions = $this->getVersionRepository()->findBy(
+            [
+                'resourceId'   => $versionable->getId(),
+                'resourceName' => get_class($versionable),
+                'pending'      => true
+            ],
+            ['loggedAt' => 'asc']
+        );
+
+        $previousVersion = null;
+        foreach ($pendingVersions as $pending) {
+            $version = $this->buildPendingVersion($pending, $previousVersion);
+            $createdVersions[] = $version;
+            if ($version->getChangeset()) {
+                $previousVersion = $version;
+            }
+        }
+
+        return $createdVersions;
     }
 }

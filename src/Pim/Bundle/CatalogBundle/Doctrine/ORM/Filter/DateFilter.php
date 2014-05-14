@@ -17,7 +17,7 @@ class DateFilter extends BaseFilter
     public function addFieldFilter($field, $operator, $value)
     {
         $field = current($this->qb->getRootAliases()).'.'.$field;
-        
+
         switch ($operator) {
             case 'BETWEEN':
                 $this->qb->andWhere(
