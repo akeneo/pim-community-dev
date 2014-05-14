@@ -42,6 +42,8 @@ services:
     # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
+        arguments:
+            - '@pim_transform.filter.product_value'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

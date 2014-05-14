@@ -2,11 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\TransformBundle\Filter\FilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * A normalizer to transform a product entity into an array
@@ -36,19 +37,28 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     const FIELD_VALUES = 'values';
 
     /** @var SerializerInterface */
-    protected $serializer;
+    protected $valuesSerializer;
+
+    /** @var  FilterInterface */
+    protected $valuesFilter;
+
+    /** @var string[] $supportedFormats */
+    protected $supportedFormats = ['json', 'xml'];
 
     /**
-     * @var string[] $supportedFormats
+     * @param FilterInterface $filter
      */
-    protected $supportedFormats = ['json', 'xml'];
+    public function __construct(FilterInterface $filter)
+    {
+        $this->valuesFilter = $filter;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function setSerializer(SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
+        $this->valuesSerializer = $serializer;
     }
 
     /**
@@ -56,7 +66,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
+        if (!$this->valuesSerializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
 
@@ -96,45 +106,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return ArrayCollection
      */
-    protected function normalizeValues($values, $format, array $context = [])
+    protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        $locales  = isset($context['locales'])  ? $context['locales']  : [];
-        $channels = isset($context['channels']) ? $context['channels'] : [];
-        $values   = $this->filterValues($values, $channels, $locales);
-
+        $values = $this->valuesFilter->filter($values, $context);
         $data = [];
 
         foreach ($values as $value) {
-            $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
+            $data[$value->getAttribute()->getCode()][] = $this->valuesSerializer->normalize($value, $format, $context);
         }
 
         return $data;
-    }
-
-    /**
-     * Returns a subset of values that match the channel and locale requirements
-     *
-     * @param ArrayCollection $values
-     * @param string[]        $channels
-     * @param string[]        $locales
-     *
-     * @return ArrayCollection
-     */
-    protected function filterValues($values, array $channels = [], array $locales = [])
-    {
-        $values = $values->filter(
-            function ($value) use ($channels) {
-                return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
-            }
-        );
-
-        $values = $values->filter(
-            function ($value) use ($locales) {
-                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $locales));
-            }
-        );
-
-        return $values;
     }
 
     /**
