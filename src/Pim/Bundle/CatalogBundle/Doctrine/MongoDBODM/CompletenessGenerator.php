@@ -296,7 +296,17 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $requiredCount = count($attributesReqs) + count($pricesReqs);
 
             $missingAttributes = array_diff($attributesReqs, $dataFields);
-            $missingCount = count($missingAttributes);
+
+            $missingPricesCount = count($pricesReqs);
+
+            foreach ($pricesReqs as $priceField => $currencies) {
+                if (isset($normalizedData[$priceField]) &&
+                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) == 0) {
+                    $missingPricesCount --;
+                }
+            }
+
+            $missingCount = count($missingAttributes) + $missingPricesCount;
     
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
