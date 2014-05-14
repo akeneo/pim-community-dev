@@ -1,0 +1,33 @@
+datagrid:
+    proposals-grid:
+        source:
+            type: pim_orm
+            entity: %pimee_workflow.entity.proposal.class%
+            repository_method: createDatagridQueryBuilder
+        columns:
+            createdBy:
+                label: Proposed by
+                type: field
+                frontend_type: string
+            changes:
+                label: Changes
+                type: twig
+                template: PimEnterpriseEnrichBundle:Datagrid:Property/changes.html.twig
+                frontend_type: html
+            createdAt:
+                label: Proposed at
+                type: field
+                frontend_type: datetime
+        properties:
+            id: ~
+            approve_link:
+                type: url
+                route: pimee_workflow_proposal_approve
+                params:
+                    - id
+        actions:
+            approve:
+                type: navigate
+                label: Approve
+                icon: ok
+                link: approve_link

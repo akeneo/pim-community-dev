@@ -1,0 +1,3 @@
+pimee_workflow_proposal_approve:
+    path: /{id}/approve
+    defaults: { _controller: pimee_workflow.controller.proposal:approveAction }

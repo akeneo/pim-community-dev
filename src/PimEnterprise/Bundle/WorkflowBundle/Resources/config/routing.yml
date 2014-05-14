@@ -1,0 +1,3 @@
+proposal:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/proposal.yml'
+    prefix: /proposal

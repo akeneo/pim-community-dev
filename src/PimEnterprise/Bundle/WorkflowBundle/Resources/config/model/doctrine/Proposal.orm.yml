@@ -1,0 +1,30 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
+    type: entity
+    table: pimee_workflow_proposal
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM\ProposalRepository
+    id:
+        id:
+            type: integer
+            generator: { strategy: AUTO }
+    fields:
+        createdAt:
+            type: datetime
+            column: created_at
+            nullalble: false
+        changes:
+            type: array
+            nullalble: false
+        createdBy:
+            type: string
+            nullalble: false
+        status:
+            type: integer
+            nullable: true
+    manyToOne:
+        product:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            joinColumn:
+                name: product_id
+                referencedColumnName: id
+                nullable: false
+                onDelete: CASCADE
