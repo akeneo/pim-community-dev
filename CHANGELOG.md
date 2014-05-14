@@ -16,6 +16,7 @@
 ## Bug fixes
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
 - add missing translation keys for "manage filters", "all", "records", etc
+- images import from fixtures now works
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -31,6 +32,7 @@
 - Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
 - Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
+- InstallerBundle/LoaderInterface has been changed to pass a ProdutManager to manage media (loading images from fixtures)
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
