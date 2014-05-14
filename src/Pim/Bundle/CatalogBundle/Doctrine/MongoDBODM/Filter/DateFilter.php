@@ -98,8 +98,7 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         if ($data instanceof \DateTime && true === $endOfDay) {
             $data->setTime(23, 59, 59);
-        }
-        elseif (!$data instanceof \DateTime && true === $endOfDay) {
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
             $data = sprintf('%s 23:59:59', $data);
         }
 
