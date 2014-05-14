@@ -2,7 +2,6 @@ parameters:
     pim_versioning.versionable_entities:                   ~
     pim_versioning.manager.version.class:                  Pim\Bundle\VersioningBundle\Manager\VersionManager
     pim_versioning.builder.version.class:                  Pim\Bundle\VersioningBundle\Builder\VersionBuilder
-    pim_versioning.manager.pending.class:                  Pim\Bundle\VersioningBundle\Manager\PendingManager
     pim_versioning.event_listener.addversion.class:        Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
     pim_versioning.event_listener.adduser.class:           Pim\Bundle\VersioningBundle\EventListener\AddUserListener
     pim_versioning.event_listener.addcontext.class:        Pim\Bundle\VersioningBundle\EventListener\AddContextListener
@@ -13,5 +12,3 @@ parameters:
     pim_versioning.update_guesser.product_value.class:     Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser
     pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
     pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
-
-    pim_versioning.event_listener.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener

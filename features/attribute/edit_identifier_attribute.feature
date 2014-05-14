@@ -30,10 +30,10 @@ Feature: Edit an identifier attribute
       | Max characters | 199 |
     And I press the "Save" button
     When I visit the "History" tab
-    Then there should be 1 update
+    Then there should be 2 updates
     And I should see history:
       | version | property       | value |
-      | 1       | max_characters | 199   |
+      | 2       | max_characters | 199   |
 
   @javascript
   Scenario: Successfully display a message when there are unsaved changes
