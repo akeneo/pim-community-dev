@@ -26,13 +26,15 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
     manyToOne:
         attributeGroup:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
-            joinColumn:
-                name: attribute_group_id
-                referencedColumnName: id
-                nullable: false
+            joinColumns:
+                attribute_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
         role:
             targetEntity: Oro\Bundle\UserBundle\Entity\Role
-            joinColumn:
-                name: role_id
-                referencedColumnName: id
-                nullable: false
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
