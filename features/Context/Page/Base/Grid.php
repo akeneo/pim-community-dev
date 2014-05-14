@@ -98,7 +98,6 @@ class Grid extends Index
     public function clickOnAction($element, $actionName)
     {
         $rowElement = $this->getRow($element);
-        $rowElement->find('css', 'a.dropdown-toggle')->click();
 
         $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
