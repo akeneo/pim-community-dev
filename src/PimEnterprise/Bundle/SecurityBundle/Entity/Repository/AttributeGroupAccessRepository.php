@@ -26,8 +26,9 @@ class AttributeGroupAccessRepository extends EntityRepository
         $accessField = ($accessLevel === 'EDIT') ? 'a.editAttributes' : 'a.viewAttributes';
 
         $qb = $this->createQueryBuilder('a');
-        $qb->select('r')
-            ->innerJoin('OroUserBundle:Role', 'r')
+        $qb
+            ->select('r')
+            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
             ->where('a.attributeGroup = :group')
             ->andWhere($qb->expr()->eq($accessField, true))
             ->setParameter('group', $group);
