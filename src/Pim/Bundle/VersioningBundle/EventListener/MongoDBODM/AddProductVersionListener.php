@@ -164,10 +164,9 @@ class AddProductVersionListener implements EventSubscriber
 
         if ($version->getChangeset()) {
             $manager->persist($version);
+            $manager->getUnitOfWork()->computeChangeSet($manager->getClassMetadata(get_class($version)), $version);
         } else {
             $manager->remove($version);
         }
-
-        $manager->getUnitOfWork()->computeChangeSet($manager->getClassMetadata(get_class($version)), $version);
     }
 }

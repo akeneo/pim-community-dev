@@ -121,8 +121,15 @@ class VersionManager
 
             $createdVersions = $this->buildPendingVersions($versionable);
 
-            if (!empty($createdVersions)) {
-                $previousVersion = end($createdVersions);
+            $builtVersions = array_filter(
+                $createdVersions,
+                function ($version) {
+                    return !empty($version->getChangeset());
+                }
+            );
+
+            if (!empty($builtVersions)) {
+                $previousVersion = end($builtVersions);
             } else {
                 $previousVersion = $this->getNewestLogEntry($versionable);
             }
@@ -222,9 +229,9 @@ class VersionManager
         $previousVersion = null;
         foreach ($pendingVersions as $pending) {
             $version = $this->buildPendingVersion($pending, $previousVersion);
+            $createdVersions[] = $version;
             if ($version->getChangeset()) {
                 $previousVersion = $version;
-                $createdVersions[] = $version;
             }
         }
 

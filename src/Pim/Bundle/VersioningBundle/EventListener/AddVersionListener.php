@@ -213,10 +213,9 @@ class AddVersionListener implements EventSubscriber
     {
         if ($version->getChangeset()) {
             $em->persist($version);
+            $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(get_class($version)), $version);
         } else {
             $em->remove($version);
         }
-
-        $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(get_class($version)), $version);
     }
 }
