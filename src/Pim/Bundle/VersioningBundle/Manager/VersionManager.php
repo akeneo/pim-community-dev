@@ -124,7 +124,7 @@ class VersionManager
             $builtVersions = array_filter(
                 $createdVersions,
                 function ($version) {
-                    return !empty($version->getChangeset());
+                    return count($version->getChangeset()) > 0;
                 }
             );
 
