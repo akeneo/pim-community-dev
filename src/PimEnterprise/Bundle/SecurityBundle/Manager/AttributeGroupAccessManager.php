@@ -74,7 +74,7 @@ class AttributeGroupAccessManager
             }
         }
 
-        $this->revokeAccess($group, array_unique($grantedRoles));
+        $this->revokeAccess($group, $grantedRoles);
         $this->objectManager->flush();
     }
 
