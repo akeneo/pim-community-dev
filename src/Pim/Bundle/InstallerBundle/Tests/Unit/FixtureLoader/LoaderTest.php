@@ -27,7 +27,15 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
             ->disableOriginalConstructor()
             ->getMock();
-        $loader = new Loader($objectManager, $doctrineCache, $reader, $processor, $eventSubscriber, false, $productManager);
+        $loader = new Loader(
+            $objectManager,
+            $doctrineCache,
+            $reader,
+            $processor,
+            $eventSubscriber,
+            false,
+            $productManager
+        );
 
         $reader->expects($this->once())
             ->method('setFilePath')
