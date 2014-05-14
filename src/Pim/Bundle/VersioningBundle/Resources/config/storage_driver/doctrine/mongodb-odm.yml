@@ -1,5 +1,6 @@
 parameters:
-    pim_versioning.update_guesser.contains_products.class: Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
+    pim_versioning.update_guesser.contains_products.class:          Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
+    pim_versioning.event_listener.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener
 
 services:
     pim_versioning.update_guesser.contains_products:
@@ -9,3 +10,11 @@ services:
             - %pim_catalog.entity.product.class%
         tags:
             - { name: pim_versioning.update_guesser }
+
+    pim_versioning.event_listener.mongodb.product_addversion:
+        class: %pim_versioning.event_listener.mongodb.product_addversion.class%
+        arguments:
+            - '@pim_versioning.manager.version'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }

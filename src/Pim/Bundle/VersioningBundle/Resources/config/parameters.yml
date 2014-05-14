@@ -12,5 +12,3 @@ parameters:
     pim_versioning.update_guesser.product_value.class:     Pim\Bundle\VersioningBundle\UpdateGuesser\ProductValueUpdateGuesser
     pim_versioning.update_guesser.translations.class:      Pim\Bundle\VersioningBundle\UpdateGuesser\TranslationsUpdateGuesser
     pim_versioning.update_guesser.versionable.class:       Pim\Bundle\VersioningBundle\UpdateGuesser\VersionableUpdateGuesser
-
-    pim_versioning.event_listener.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener
