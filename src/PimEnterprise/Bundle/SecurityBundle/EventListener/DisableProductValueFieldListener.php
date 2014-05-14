@@ -3,9 +3,10 @@
 namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
  * Disable the product value form
@@ -46,7 +47,7 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
         $value = $event->getProductValue();
         $attributeGroup = $value->getAttribute()->getVirtualGroup();
 
-        if (false === $this->securityContext->isGranted('GROUP_EDIT_ATTRIBUTES', $attributeGroup)) {
+        if (false === $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attributeGroup)) {
             $formOptions = $event->getFormOptions();
             $formOptions['disabled']  = true;
             $formOptions['read_only'] = true;
