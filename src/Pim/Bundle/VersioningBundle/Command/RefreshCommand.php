@@ -108,6 +108,8 @@ class RefreshCommand extends ContainerAwareCommand
             $this->getEntityManager()->persist($version);
 
             return $version;
+        } else {
+            $this->getEntityManager()->remove($version);
         }
     }
 
