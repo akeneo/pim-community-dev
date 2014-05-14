@@ -100,6 +100,8 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->username = $username;
         $this->password = $username;
+
+        $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
     }
 
     /**
