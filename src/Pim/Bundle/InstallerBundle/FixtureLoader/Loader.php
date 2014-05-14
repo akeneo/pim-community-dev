@@ -8,6 +8,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\InstallerBundle\Event\FixtureLoaderEvent;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Fixture Loader
@@ -59,6 +60,11 @@ class Loader implements LoaderInterface
     protected $multiple;
 
     /**
+     * @var ProductManager
+     */
+    protected $productManager;
+
+    /**
      * Constructor
      *
      * @param ObjectManager            $objectManager
@@ -67,6 +73,7 @@ class Loader implements LoaderInterface
      * @param ItemProcessorInterface   $processor
      * @param EventDispatcherInterface $eventDispatcher
      * @param boolean                  $multiple
+     * @param ProductManager           $productManager
      */
     public function __construct(
         ObjectManager $objectManager,
@@ -74,7 +81,8 @@ class Loader implements LoaderInterface
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         EventDispatcherInterface $eventDispatcher,
-        $multiple
+        $multiple,
+        ProductManager $productManager
     ) {
         $this->objectManager = $objectManager;
         $this->doctrineCache = $doctrineCache;
@@ -82,6 +90,7 @@ class Loader implements LoaderInterface
         $this->processor = $processor;
         $this->eventDispatcher = $eventDispatcher;
         $this->multiple = $multiple;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -117,6 +126,9 @@ class Loader implements LoaderInterface
      */
     protected function persistObject($object)
     {
+        if ($object instanceof \Pim\Bundle\CatalogBundle\Model\ProductInterface) {
+            $this->productManager->handleMedia($object);
+        }
         $this->objectManager->persist($object);
         $this->doctrineCache->setReference($object);
     }

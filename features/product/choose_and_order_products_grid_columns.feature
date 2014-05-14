@@ -12,21 +12,21 @@ Feature: Choose and order product grids columns
       | basket  |
     And I am logged in as "Julia"
 
-  Scenario: Succesfully display all columns by default
+  Scenario: Succesfully display default columns
     Given I am on the products page
-    Then I should see the columns Sku, Label, Family, Status, Complete, Created At, Updated At, Groups, Color, Name, Price, Rating and Size
+    Then I should see the columns Sku, Label, Family, Status, Complete, Created At, Updated At, Groups
 
   @skip
   Scenario: Succesfully hide some columns
     Given I am on the products page
-    When I hide the "Color" column
-    Then I should see the columns Sku, Label, Family, Status, Complete, Created At, Updated At, Groups, Name, Price, Rating and Size
+    When I hide the "Label" column
+    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups
 
   @skip
   Scenario: Succesfully order some columns
     Given I am on the products page
-    When I put the "Color" column before the "Complete" one
-    Then I should see the columns Sku, Label, Family, Status, Color, Complete, Created At, Updated At, Groups, Name, Price, Rating and Size
+    When I put the "Complete" column before the "Sku" one
+    Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups
 
   Scenario: Succesfully hide removed attribute column that was previously selected to be displayed
     Given I've displayed the columns sku, family and name

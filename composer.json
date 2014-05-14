@@ -17,7 +17,7 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "oro/platform": "dev-pim-1.2#979498dd6fd99720381fd092c83e88dab181c7d6",
+        "oro/platform": "dev-pim-1.2#e92097693914785e12f678be83d8f1ee004e884d",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-gaufrette-bundle": "0.1.7@stable",
         "knplabs/gaufrette": "~0.1.7@stable",
@@ -39,7 +39,10 @@
         "sensiolabs/behat-page-object-extension": "dev-master#6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
         "kriswallsmith/buzz": ">=0.5",
         "phpspec/phpspec": "dev-develop@dev",
-        "akeneo/phpspec-skip-example-extension": "1.0.*@dev"
+        "akeneo/phpspec-skip-example-extension": "1.0.*@dev",
+        "phpunit/phpunit": "3.7.*@stable",
+        "squizlabs/php_codesniffer": "1.*@stable",
+        "phpmd/phpmd": "1.*@stable"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"

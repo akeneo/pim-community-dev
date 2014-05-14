@@ -56,12 +56,6 @@ pim_enrich_product_completeness:
     requirements:
         id: '[0-9a-f]+'
 
-pim_enrich_product_configure_mass_edit_action:
-    path: /batch
-    defaults: { _controller: PimEnrichBundle:Product:configureMassEditAction }
-    requirements:
-        _method: GET
-
 pim_enrich_product_history:
     path: /{id}/history.{_format}
     defaults: { _controller: pim_enrich.controller.product:historyAction, _format: html }

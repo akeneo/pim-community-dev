@@ -167,7 +167,7 @@ class ProductExportController extends ExportController
             } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
                 array_unshift($fieldsList, $attCode);
             } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
-                foreach ($this->currencyManager->getActiveCodeChoices() as $currencyCode) {
+                foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
                     $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
                 }
             } else {

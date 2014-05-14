@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\ORM\EntityManager;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Aims to audit data updates on versionable entities
@@ -43,15 +44,25 @@ class AddVersionListener implements EventSubscriber
     protected $guesser;
 
     /**
+     * @var NormalizerInterface
+     */
+    protected $normalizer;
+
+    /**
      * Constructor
      *
      * @param VersionManager       $versionManager
      * @param ChainedUpdateGuesser $guesser
+     * @param NormalizerInterface  $normalizer
      */
-    public function __construct(VersionManager $versionManager, ChainedUpdateGuesser $guesser)
-    {
+    public function __construct(
+        VersionManager $versionManager,
+        ChainedUpdateGuesser $guesser,
+        NormalizerInterface $normalizer
+    ) {
         $this->versionManager = $versionManager;
         $this->guesser        = $guesser;
+        $this->normalizer     = $normalizer;
     }
 
     /**
@@ -126,8 +137,13 @@ class AddVersionListener implements EventSubscriber
      */
     protected function createVersion(EntityManager $em, $versionable)
     {
-        $version = $this->versionManager->buildVersion($versionable);
-        if ($version && ($version instanceof Pending || $version->getChangeset())) {
+        $changeset = [];
+        if (!$this->versionManager->isRealTimeVersioning()) {
+            $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
+        }
+        $versions = $this->versionManager->buildVersion($versionable, $changeset);
+
+        foreach ($versions as $version) {
             $this->computeChangeSet($em, $version);
         }
     }
@@ -188,15 +204,19 @@ class AddVersionListener implements EventSubscriber
     }
 
     /**
-     * Compute change set
+     * Compute version change set
      *
      * @param EntityManager $em
-     * @param object        $entity
+     * @param Version       $version
      */
-    protected function computeChangeSet(EntityManager $em, $entity)
+    protected function computeChangeSet(EntityManager $em, Version $version)
     {
-        $class = $em->getClassMetadata(get_class($entity));
-        $em->persist($entity);
-        $em->getUnitOfWork()->computeChangeSet($class, $entity);
+        if ($version->getChangeset()) {
+            $em->persist($version);
+        } else {
+            $em->remove($version);
+        }
+
+        $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(get_class($version)), $version);
     }
 }

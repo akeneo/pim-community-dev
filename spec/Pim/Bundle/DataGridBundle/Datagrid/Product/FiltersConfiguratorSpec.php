@@ -20,7 +20,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
-    function it_configures_datagrid_filters(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function it_configures_datagrid_filters($configuration, $registry)
     {
         $attributes = [
             'sku' => [
@@ -45,8 +45,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $configuration->offsetGetByPath($path)->willReturn($attributes);
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('filter' => array('text_config')));
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn(['filter' => ['text_config']]);
 
         $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'sku');
         $expectedConf = [
@@ -74,7 +74,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $this->configure();
     }
 
-    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
     {
         $attributes = [
             'sku' => [
@@ -99,8 +99,8 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $configuration->offsetGetByPath($path)->willReturn($attributes);
 
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('filter' => array('identifier_config')));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
+        $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $this->shouldThrow('\LogicException')->duringConfigure();
     }

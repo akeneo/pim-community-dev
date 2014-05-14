@@ -6,6 +6,7 @@ parameters:
     pim_catalog.repository.product_category.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
     pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
+    pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\ORM\MetricBaseValuesSubscriber
     pim_catalog.doctrine.product_query_builder.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder
 
 services:
@@ -43,13 +44,13 @@ services:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.product_category:
         class: %pim_catalog.repository.product_category.class%
         arguments:
             - '@pim_catalog.object_manager.product'
-            - '%pim_catalog.entity.product.class%'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.repository.media:
         class: %doctrine.entity_repository.class%

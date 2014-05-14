@@ -18,17 +18,17 @@ class InGroupSorterSpec extends ObjectBehavior
         $this->beConstructedWith($repository, $params);
     }
 
-    function it_should_be_a_sorter()
+    function it_is_a_sorter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface');
     }
 
     function it_applies_a_sort_on_in_group_products(
         ProductDatasource $datasource,
-        ProductRepositoryInterface $repository,
+        $repository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
-        RequestParameters $params
+        $params
     ) {
         $datasource->getQueryBuilder()->willReturn($qb);
         $params->get('currentGroup', null)->willReturn(12);

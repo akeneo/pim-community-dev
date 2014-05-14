@@ -16,13 +16,16 @@ class MetricSelectorSpec extends ObjectBehavior
         $this->beConstructedWith($predecessor);
     }
 
-    function it_should_be_a_selector()
+    function it_is_a_selector()
     {
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
     }
 
-    function it_applies_join_on_datasource_query(BaseSelector $predecessor, OrmDatasource $datasource, DatagridConfiguration $configuration, QueryBuilder $queryBuilder)
-    {
+    function it_applies_join_on_datasource_query(
+        OrmDatasource $datasource,
+        DatagridConfiguration $configuration,
+        QueryBuilder $queryBuilder
+    ) {
         $datasource->getQueryBuilder()->willReturn($queryBuilder);
         $queryBuilder->leftJoin('values.metric', 'metric')->willReturn($queryBuilder);
         $queryBuilder->addSelect('metric')->willReturn($queryBuilder);

@@ -77,4 +77,4 @@ services:
 
     pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.product_query_builder.class%
-        arguments: [@pim_catalog.context.catalog]
+        arguments: ['@pim_catalog.context.catalog']

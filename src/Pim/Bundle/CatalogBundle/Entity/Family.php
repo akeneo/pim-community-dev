@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Family entity
@@ -18,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Family implements TranslatableInterface, ReferableInterface
+class Family implements TranslatableInterface, ReferableInterface, VersionableInterface
 {
     /**
      * @var integer $id
@@ -391,6 +392,8 @@ class Family implements TranslatableInterface, ReferableInterface
         if (!isset($requirements[$requirementKey])) {
             $requirement->setFamily($this);
             $this->requirements->add($requirement);
+        } else {
+            $requirements[$requirementKey]->setRequired($requirement->isRequired());
         }
 
         return $this;
@@ -441,8 +444,8 @@ class Family implements TranslatableInterface, ReferableInterface
     {
         return sprintf(
             '%s_%s',
-            $requirement->getAttribute()->getCode(),
-            $requirement->getChannel()->getCode()
+            $requirement->getAttributeCode(),
+            $requirement->getChannelCode()
         );
     }
 

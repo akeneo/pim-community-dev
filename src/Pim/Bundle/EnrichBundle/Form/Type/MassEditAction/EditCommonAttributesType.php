@@ -107,11 +107,11 @@ class EditCommonAttributesType extends AbstractType
     {
 
         $resolver->setDefaults(
-            array(
-                'data_class'       => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\EditCommonAttributes',
-                'locales'          => array(),
-                'commonAttributes' => array(),
-            )
+            [
+                'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
+                'locales' => [],
+                'commonAttributes' => [],
+            ]
         );
     }
 

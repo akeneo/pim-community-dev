@@ -27,8 +27,8 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
     /** @var array */
     protected $attributeFilters = [
-        'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-        'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
+        'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter',
+        'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionFilter',
         'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
         'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
     ];
@@ -37,7 +37,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $fieldFilters = [
         'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
         'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter'
+        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
+        'created'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
+        'updated'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
     ];
 
     /** @var array */

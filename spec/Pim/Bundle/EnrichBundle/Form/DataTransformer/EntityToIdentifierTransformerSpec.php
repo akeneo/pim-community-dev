@@ -138,7 +138,9 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         PropertyAccessorInterface $propertyAccessor
     ) {
         $this->beConstructedWith($repository, true, $propertyAccessor);
-        $this->shouldThrow(new UnexpectedTypeException($foo->getWrappedObject(), 'array'))->duringReverseTransform($foo);
+        $this
+            ->shouldThrow(new UnexpectedTypeException($foo->getWrappedObject(), 'array'))
+            ->duringReverseTransform($foo);
     }
 
     function it_throws_exception_when_reverse_transforming_string_value_in_multiple_mode_without_delimiter(

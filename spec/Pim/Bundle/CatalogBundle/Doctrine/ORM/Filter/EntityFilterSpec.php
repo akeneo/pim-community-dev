@@ -49,6 +49,6 @@ class EntityFilterSpec extends ObjectBehavior
         $expr->isNull('filterfamily.id')->willReturn('filterfamily.id IS NULL');
         $qb->expr()->willReturn($expr);
 
-        $this->addFieldFilter('family', 'EMPTY', [1, 2]);
+        $this->addFieldFilter('family', 'IN', ['empty']);
     }
 }

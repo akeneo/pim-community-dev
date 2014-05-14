@@ -1,25 +1,56 @@
 parameters:
-    pim_enrich.mass_edit_action.operator.class:               Pim\Bundle\EnrichBundle\MassEditAction\MassEditActionOperator
-    pim_enrich.mass_edit_action.change_status.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeStatus
-    pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\EditCommonAttributes
-    pim_enrich.mass_edit_action.classify.class:               Pim\Bundle\EnrichBundle\MassEditAction\Classify
-    pim_enrich.mass_edit_action.change_family.class:          Pim\Bundle\EnrichBundle\MassEditAction\ChangeFamily
-    pim_enrich.mass_edit_action.add_to_groups.class:          Pim\Bundle\EnrichBundle\MassEditAction\AddToGroups
+    pim_enrich.mass_edit_action.operator.registry.class: Pim\Bundle\EnrichBundle\MassEditAction\OperatorRegistry
+    pim_enrich.mass_edit_action.operator.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\AbstractMassEditOperator
+    pim_enrich.mass_edit_action.operator.product.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\ProductMassEditOperator
+    pim_enrich.mass_edit_action.operator.family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operator\FamilyMassEditOperator
+    pim_enrich.mass_edit_action.change_status.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
+    pim_enrich.mass_edit_action.edit_common_attributes.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
+    pim_enrich.mass_edit_action.classify.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pim_enrich.mass_edit_action.change_family.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
+    pim_enrich.mass_edit_action.add_to_groups.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
+    pim_entich.mass_edit_action.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\MassEditAction\Operation\SetAttributeRequirements
 
 services:
+    # Mass edit action operator registry
+    pim_enrich.mass_edit_action.operator.registry:
+        class: %pim_enrich.mass_edit_action.operator.registry.class%
+
     # Mass edit action operator
     pim_enrich.mass_edit_action.operator:
+        public: false
+        abstract: true
         class: %pim_enrich.mass_edit_action.operator.class%
         arguments:
-            - '@pim_catalog.manager.product'
             - '@oro_security.security_facade'
 
-    # Mass edit actions
+    pim_enrich.mass_edit_action.operator.product:
+        public: false
+        parent: pim_enrich.mass_edit_action.operator
+        class: %pim_enrich.mass_edit_action.operator.product.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+        tags:
+            - { name: pim_enrich.mass_edit_action_operator, datagrid: product-grid }
+
+    pim_enrich.mass_edit_action.operator.family:
+        public: false
+        parent: pim_enrich.mass_edit_action.operator
+        class: %pim_enrich.mass_edit_action.operator.family.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: pim_enrich.mass_edit_action_operator, datagrid: family-grid }
+
+    # Product Grid Mass edit actions
     pim_enrich.mass_edit_action.change_status:
         public: false
         class: %pim_enrich.mass_edit_action.change_status.class%
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: change-status, acl: pim_enrich_product_change_state }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-status
+                acl: pim_enrich_product_change_state
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
@@ -32,7 +63,11 @@ services:
             - '@pim_catalog.builder.product'
             - '@pim_catalog.manager.product_mass_action'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: edit-common-attributes, acl: pim_enrich_product_edit }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: edit-common-attributes
+                acl: pim_enrich_product_edit
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.classify:
         public: false
@@ -40,17 +75,44 @@ services:
         arguments:
             - '@pim_catalog.manager.category'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: classify, acl: pim_enrich_product_categories_view }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify
+                acl: pim_enrich_product_categories_view
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.change_family:
         public: false
         class: %pim_enrich.mass_edit_action.change_family.class%
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: change-family, acl: pim_enrich_product_change_family }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: change-family
+                acl: pim_enrich_product_change_family
+                operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.add_to_groups:
         class: %pim_enrich.mass_edit_action.add_to_groups.class%
         arguments:
             - '@pim_catalog.repository.group'
         tags:
-            - { name: pim_enrich.mass_edit_action, alias: add-to-groups, acl: pim_enrich_product_add_to_groups }
+            -
+                name: pim_enrich.mass_edit_action
+                alias: add-to-groups
+                acl: pim_enrich_product_add_to_groups
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    # Family Grid Mass edit actions
+    pim_entich.mass_edit_action.set_attribute_requirements:
+        public: false
+        class: %pim_entich.mass_edit_action.set_attribute_requirements.class%
+        arguments:
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.factory.attribute_requirement'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: set-attribute-requirements
+                acl: pim_enrich_family_edit
+                operator: pim_enrich.mass_edit_action.operator.family

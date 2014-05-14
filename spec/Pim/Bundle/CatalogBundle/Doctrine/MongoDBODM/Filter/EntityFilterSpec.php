@@ -2,6 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\Filter;
 
+use Doctrine\MongoDB\Query\Expr;
+
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ODM\MongoDB\Query\Builder;
@@ -43,17 +45,22 @@ class EntityFilterSpec extends ObjectBehavior
 
     function it_adds_a_in_filter_on_a_field_in_the_query($qb)
     {
-        $qb->field('family')->willReturn($qb);
-        $qb->in([1, 2])->willReturn($qb);
+        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
         $this->addFieldFilter('family', 'IN', [1, 2]);
     }
 
     function it_adds_an_empty_filter_on_a_field_in_the_query($qb)
     {
-        $qb->field('family')->willReturn($qb);
-        $qb->exists(false)->willReturn($qb);
+        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
 
-        $this->addFieldFilter('family', 'EMPTY', null);
+        $this->addFieldFilter('family', 'IN', ['empty']);
+    }
+
+    function it_adds_empty_and_in_filters_on_a_field_in_the_query($qb)
+    {
+        $qb->addOr(Argument::type('Doctrine\MongoDB\Query\Expr'))->willReturn($qb);
+
+        $this->addFieldFilter('family', 'IN', ['empty', 1, 2]);
     }
 }
