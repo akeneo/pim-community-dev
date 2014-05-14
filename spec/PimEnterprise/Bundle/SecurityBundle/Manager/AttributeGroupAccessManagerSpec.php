@@ -42,6 +42,6 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
-        $this->setAccess($group, [$user], [$admin]);
+        $this->setAccess($group, [$user, $admin], [$admin]);
     }
 }
