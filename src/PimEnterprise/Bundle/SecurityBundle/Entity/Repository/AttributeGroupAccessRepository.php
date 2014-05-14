@@ -38,7 +38,7 @@ class AttributeGroupAccessRepository extends EntityRepository
 
     /**
      * Revoke access to an attribute group
-     * If excludedIds are provided, access will not be revoked for roles with these ids
+     * If excluded roles are provided, access will not be revoked for these roles
      *
      * @param AttributeGroup $group
      * @param Role[]         $excludedRoles
@@ -48,7 +48,8 @@ class AttributeGroupAccessRepository extends EntityRepository
     public function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->delete()
+        $qb
+            ->delete()
             ->where('a.attributeGroup = :group')
             ->setParameter('group', $group);
 

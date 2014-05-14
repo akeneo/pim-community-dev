@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 
 /**
