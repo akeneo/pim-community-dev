@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Fixture Loader  factory
@@ -67,8 +68,9 @@ class LoaderFactory
         $processor = $this->configRegistry->getProcessor($name, $extension);
         $class = $this->configRegistry->getClass($name);
         $multiple = $this->configRegistry->isMultiple($name);
+        $productManager = $this->configRegistry->getProductManager();
 
-        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple);
+        return $this->createLoader($objectManager, $reader, $processor, $class, $multiple, $productManager);
     }
 
     /**
@@ -79,6 +81,7 @@ class LoaderFactory
      * @param ItemProcessorInterface $processor
      * @param string                 $class
      * @param boolean                $multiple
+     * @param ProductManager         $productManager
      *
      * @return LoaderInterface
      */
@@ -87,7 +90,8 @@ class LoaderFactory
         ItemReaderInterface $reader,
         ItemProcessorInterface $processor,
         $class,
-        $multiple
+        $multiple,
+        ProductManager $productManager
     ) {
         return new $class(
             $objectManager,
@@ -95,7 +99,8 @@ class LoaderFactory
             $reader,
             $processor,
             $this->eventDispatcher,
-            $multiple
+            $multiple,
+            $productManager
         );
     }
 }
