@@ -34,15 +34,14 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
         Role $user,
         Role $admin
     ) {
-        $admin->getId()->willReturn(1);
-        $user->getId()->willReturn(2);
-        $repository->findOneBy(Argument::any())->willReturn(null);
+        $repository->findOneBy(Argument::any())->willReturn(array());
 
         $objectManager
             ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess'))
             ->shouldBeCalledTimes(2);
-        $repository->revokeAccess($group, [1, 2])->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
+
+        $repository->revokeAccess($group, [$admin, $user])->shouldBeCalled();
 
         $this->setAccess($group, [$user], [$admin]);
     }
