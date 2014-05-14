@@ -23,36 +23,40 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(AttributeGroup $group, $accessLevel)
     {
+        $accessField = ($accessLevel === 'EDIT') ? 'a.editAttributes' : 'a.viewAttributes';
+
         $qb = $this->createQueryBuilder('a');
-
-        $accessField = $accessLevel === 'EDIT' ? 'a.editAttributes' : 'a.viewAttributes';
-
-        $qb->select('r')
-            ->leftJoin('OroUserBundle:Role', 'r', 'WITH', 'a.roleId = r.id')
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()))
-            ->andWhere($qb->expr()->eq($accessField, true));
+        $qb
+            ->select('r')
+            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
+            ->where('a.attributeGroup = :group')
+            ->andWhere($qb->expr()->eq($accessField, true))
+            ->setParameter('group', $group);
 
         return $qb->getQuery()->getResult();
     }
 
     /**
      * Revoke access to an attribute group
-     * If excludedIds are provided, access will not be revoked for roles with these ids
+     * If excluded roles are provided, access will not be revoked for these roles
      *
      * @param AttributeGroup $group
-     * @param integer[]      $excludedIds
+     * @param Role[]         $excludedRoles
      *
      * @return integer
      */
-    public function revokeAccess(AttributeGroup $group, array $excludedIds = [])
+    public function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
     {
         $qb = $this->createQueryBuilder('a');
+        $qb
+            ->delete()
+            ->where('a.attributeGroup = :group')
+            ->setParameter('group', $group);
 
-        $qb->delete()
-            ->where($qb->expr()->eq('a.attributeGroupId', $group->getId()));
-
-        if (!empty($excludedIds)) {
-            $qb->andWhere($qb->expr()->notIn('a.roleId', $excludedIds));
+        if (!empty($excludedRoles)) {
+            $qb
+                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
+                ->setParameter('excludedRoles', $excludedRoles);
         }
 
         return $qb->getQuery()->execute();

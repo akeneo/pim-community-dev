@@ -13,12 +13,6 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
             id: true
             generator:
                 strategy: AUTO
-        attributeGroupId:
-            type: integer
-            column: attribute_group_id
-        roleId:
-            type: integer
-            column: role_id
         viewAttributes:
             type: boolean
             column: view_attributes
@@ -29,3 +23,18 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
             column: edit_attributes
             options:
                 default: false
+    manyToOne:
+        attributeGroup:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeGroup
+            joinColumns:
+                attribute_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        role:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
