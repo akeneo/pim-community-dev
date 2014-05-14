@@ -17,6 +17,7 @@
 - replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
 - add missing translation keys for "manage filters", "all", "records", etc
 - images import from fixtures now works
+- Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -33,6 +34,7 @@
 - Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
 - InstallerBundle/LoaderInterface has been changed to pass a ProdutManager to manage media (loading images from fixtures)
+- Refactor VersioningBundle - a lot of API changes.
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
