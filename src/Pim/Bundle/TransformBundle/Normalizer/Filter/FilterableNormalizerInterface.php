@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Filter;
+namespace Pim\Bundle\TransformBundle\Normalizer\Filter;
 
 /**
  * Defines the interface of filterable normalizers.
@@ -9,7 +9,7 @@ namespace Pim\Bundle\TransformBundle\Filter;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FilterableInterface
+interface FilterableNormalizerInterface
 {
     /**
      * @param array $filters

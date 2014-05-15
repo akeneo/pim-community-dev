@@ -1,8 +1,10 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Filter;
+namespace Pim\Bundle\TransformBundle\Normalizer\Filter;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+
 
 /**
  * Filter for ProductValue objects.
@@ -11,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductValueFilter implements FilterInterface
+class ProductValueNormalizerFilter implements NormalizerFilterInterface
 {
     /**
      * {@inheritdoc}
@@ -23,6 +25,11 @@ class ProductValueFilter implements FilterInterface
 
         $objects = $objects->filter(
             function ($value) use ($channels) {
+
+                if (!$value instanceof ProductValueInterface) {
+                    throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+                }
+
                 return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
             }
         );

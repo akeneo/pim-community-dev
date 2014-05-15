@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Filter;
+namespace Pim\Bundle\TransformBundle\Normalizer\Filter;
 
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Filter for ProductValue objects during flat export.
@@ -11,7 +12,7 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FlatProductValueFilter implements FilterInterface
+class FlatProductValueNormalizerFilter implements NormalizerFilterInterface
 {
     /**
      * {@inheritdoc}
@@ -28,6 +29,11 @@ class FlatProductValueFilter implements FilterInterface
 
         return $objects->filter(
             function ($value) use ($identifier, $scopeCode, $localeCodes) {
+
+                if (!$value instanceof ProductValueInterface) {
+                    throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+                }
+
                 return (
                     ($value !== $identifier) &&
                     (

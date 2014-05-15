@@ -492,7 +492,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \Pim\Bundle\TransformBundle\Filter\FlatProductValueFilter
+     * @return \Pim\Bundle\TransformBundle\Normalizer\Filter\FlatProductValueNormalizerFilter
      */
     protected function getValuesFilterMock()
     {

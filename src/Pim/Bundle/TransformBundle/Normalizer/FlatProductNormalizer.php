@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use Pim\Bundle\TransformBundle\Filter\FilterInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
@@ -46,7 +46,7 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @var array $fields */
     protected $fields = array();
 
-    /** @var  FilterInterface[] */
+    /** @var NormalizerFilterInterface[] */
     protected $valuesFilters;
 
     /**
@@ -137,6 +137,9 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields)) {
 
+            $filteredValues = array();
+            $normalizedValues = array();
+
             foreach ($this->valuesFilters as $filter) {
                 $filteredValues = $filter->filter(
                     $product->getValues(),
@@ -148,7 +151,6 @@ class FlatProductNormalizer implements NormalizerInterface
                 );
             }
 
-            $normalizedValues = array();
             foreach ($filteredValues as $value) {
                 $normalizedValues = array_merge(
                     $normalizedValues,

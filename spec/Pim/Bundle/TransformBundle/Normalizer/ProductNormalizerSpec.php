@@ -3,7 +3,7 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\TransformBundle\Filter\FilterInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, FilterInterface $filter)
+    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);

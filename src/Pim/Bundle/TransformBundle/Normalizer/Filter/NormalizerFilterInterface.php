@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Filter;
+namespace Pim\Bundle\TransformBundle\Normalizer\Filter;
 
 use Doctrine\Common\Collections\Collection;
 
@@ -11,7 +11,7 @@ use Doctrine\Common\Collections\Collection;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FilterInterface
+interface NormalizerFilterInterface
 {
     /**
      * Filters an object into a set of arrays/scalars
