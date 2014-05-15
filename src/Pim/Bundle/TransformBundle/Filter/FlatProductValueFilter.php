@@ -31,12 +31,12 @@ class FlatProductValueFilter implements FilterInterface
                 return (
                     ($value !== $identifier) &&
                     (
-                        ($scopeCode == null) ||
+                        ($scopeCode === null) ||
                         (!$value->getAttribute()->isScopable()) ||
                         ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
                     ) &&
                     (
-                        (count($localeCodes) == 0) ||
+                        (count($localeCodes) === 0) ||
                         (!$value->getAttribute()->isLocalizable()) ||
                         ($value->getAttribute()->isLocalizable() && in_array($value->getLocale(), $localeCodes))
 

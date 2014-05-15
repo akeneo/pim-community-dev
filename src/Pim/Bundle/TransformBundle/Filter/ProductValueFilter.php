@@ -35,5 +35,4 @@ class ProductValueFilter implements FilterInterface
 
         return $objects;
     }
-
 } 

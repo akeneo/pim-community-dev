@@ -14,11 +14,11 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer, FilterInterface $valuesFilter)
+    function let(SerializerInterface $serializer, FilterInterface $filter)
     {
-        $this->beConstructedWith($valuesFilter);
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
+        $this->setFilters(array($filter));
     }
 
     function it_is_a_normalizer()
@@ -49,7 +49,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         Product $product,
         ArrayCollection $values,
         \ArrayIterator $iterator,
-        FilterInterface $valuesFilter
+        $filter
     ) {
         $values->getIterator()->willReturn($iterator);
 
@@ -60,7 +60,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->isEnabled()->willReturn(true);
         $product->getValues()->willReturn($values);
 
-        $valuesFilter->filter($values, array('entity' => 'product'))->shouldBeCalled()->willReturn($values);
+        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
 
         $this->normalize($product, 'csv')->shouldReturn([
             'family' => null,
@@ -78,7 +78,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         ProductValueInterface $value,
         ArrayCollection $values,
         \ArrayIterator $iterator,
-        FilterInterface $valuesFilter,
+        $filter,
         $serializer
     ) {
         $values->getIterator()->willReturn($iterator);
@@ -94,7 +94,7 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $product->getValues()->willReturn($values);
 
-        $valuesFilter->filter($values, array('entity' => 'product'))->shouldBeCalled()->willReturn($values);
+        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
 
         $iterator->rewind()->willReturn(null);
         $valueCount = 1;

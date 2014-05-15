@@ -46,19 +46,27 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @var array $fields */
     protected $fields = array();
 
-    /** @var  FilterInterface */
-    protected $valuesFilter;
+    /** @var  FilterInterface[] */
+    protected $valuesFilters;
 
     /**
      * Constructor
      *
      * @param MediaManager $mediaManager
-     * @param FilterInterface $filter
      */
-    public function __construct(MediaManager $mediaManager, FilterInterface $filter)
+    public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
-        $this->valuesFilter = $filter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFilters(array $filters)
+    {
+        $this->valuesFilters = $filters;
+
+        return $this;
     }
 
     /**
@@ -129,14 +137,16 @@ class FlatProductNormalizer implements NormalizerInterface
     {
         if (empty($this->fields)) {
 
-            $filteredValues = $this->valuesFilter->filter(
-                $product->getValues(),
-                array(
-                    'identifier'  => $product->getIdentifier(),
-                    'scopeCode'   => $scopeCode,
-                    'localeCodes' => $localeCodes,
-                )
-            );
+            foreach ($this->valuesFilters as $filter) {
+                $filteredValues = $filter->filter(
+                    $product->getValues(),
+                    array(
+                        'identifier'  => $product->getIdentifier(),
+                        'scopeCode'   => $scopeCode,
+                        'localeCodes' => $localeCodes,
+                    )
+                );
+            }
 
             $normalizedValues = array();
             foreach ($filteredValues as $value) {

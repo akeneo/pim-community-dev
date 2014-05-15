@@ -42,8 +42,8 @@ services:
     # Normalizers
     pim_serializer.normalizer.product:
         class: %pim_serializer.normalizer.product.class%
-        arguments:
-            - '@pim_transform.filter.product_value'
+        calls:
+            - [setFilters, ['@pim_transform.filter.product_value']]
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -77,6 +77,8 @@ services:
         class: %pim_serializer.normalizer.flat_product.class%
         arguments:
             - '@pim_catalog.manager.media'
+        calls:
+            - [setFilters, ['@pim_transform.filter.flat_product_value']]
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

@@ -17,7 +17,7 @@ interface FilterInterface
      * Filters an object into a set of arrays/scalars
      *
      * @param Collection $objects
-     * @param array $context
+     * @param array      $context
      *
      * @return Collection
      */

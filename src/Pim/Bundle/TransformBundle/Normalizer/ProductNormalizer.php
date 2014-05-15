@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\TransformBundle\Filter\FilterableInterface;
 use Pim\Bundle\TransformBundle\Filter\FilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
@@ -16,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableInterface
 {
     /** @staticvar string */
     const FIELD_FAMILY = 'family';
@@ -39,19 +40,11 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /** @var SerializerInterface */
     protected $valuesSerializer;
 
-    /** @var  FilterInterface */
-    protected $valuesFilter;
+    /** @var  FilterInterface[] */
+    protected $valuesFilters;
 
     /** @var string[] $supportedFormats */
     protected $supportedFormats = ['json', 'xml'];
-
-    /**
-     * @param FilterInterface $filter
-     */
-    public function __construct(FilterInterface $filter)
-    {
-        $this->valuesFilter = $filter;
-    }
 
     /**
      * {@inheritdoc}
@@ -59,6 +52,16 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     public function setSerializer(SerializerInterface $serializer)
     {
         $this->valuesSerializer = $serializer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFilters(array $filters)
+    {
+        $this->valuesFilters = $filters;
+
+        return $this;
     }
 
     /**
@@ -108,7 +111,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        $values = $this->valuesFilter->filter($values, $context);
+        foreach ($this->valuesFilters as $filter) {
+            $values = $filter->filter($values, $context);
+        }
+
         $data = [];
 
         foreach ($values as $value) {
