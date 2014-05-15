@@ -47,7 +47,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $fields = array();
 
     /** @var NormalizerFilterInterface[] */
-    protected $valuesFilters;
+    protected $valuesFilters = [];
 
     /**
      * Constructor

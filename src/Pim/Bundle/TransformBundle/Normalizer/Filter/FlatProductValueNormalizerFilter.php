@@ -51,4 +51,4 @@ class FlatProductValueNormalizerFilter implements NormalizerFilterInterface
             }
         );
     }
-} 
+}

@@ -22,4 +22,4 @@ interface NormalizerFilterInterface
      * @return Collection
      */
     public function filter(Collection $objects, array $context = []);
-} 
+}
