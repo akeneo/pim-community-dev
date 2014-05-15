@@ -12,7 +12,6 @@ use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
-use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
@@ -36,11 +35,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $documentManager;
 
     /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
      * @var string
      */
     protected $productClass;
@@ -58,21 +52,18 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Constructor
      *
-     * @param DocumentManager    $documentManager
-     * @param ValidatorInterface $validator
-     * @param string             $productClass
-     * @param ChannelManager     $channelManager
-     * @param FamilyRepository   $familyRepository
+     * @param DocumentManager  $documentManager
+     * @param string           $productClass
+     * @param ChannelManager   $channelManager
+     * @param FamilyRepository $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
-        ValidatorInterface $validator,
         $productClass,
         ChannelManager $channelManager,
         FamilyRepository $familyRepository
     ) {
         $this->documentManager     = $documentManager;
-        $this->validator           = $validator;
         $this->productClass        = $productClass;
         $this->channelManager      = $channelManager;
         $this->familyRepository    = $familyRepository;
