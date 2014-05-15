@@ -1,0 +1,7 @@
+parameters:
+    doctrine.orm.listeners.resolve_target_repository.class: Pim\Bundle\CatalogBundle\Doctrine\ResolveTargetRepositoryListener
+
+services:
+    doctrine.orm.listeners.resolve_target_repository:
+        class: %doctrine.orm.listeners.resolve_target_repository.class%
+        public: false
