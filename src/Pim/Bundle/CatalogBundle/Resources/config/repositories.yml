@@ -12,6 +12,7 @@ parameters:
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
 
     pim_catalog.doctrine.repository.registry.class: Pim\Bundle\CatalogBundle\Doctrine\RepositoryRegistry
+    pim_catalog.doctrine.repository.factory.class:  Pim\Bundle\CatalogBundle\Doctrine\RepositoryFactory
 
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
     doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
@@ -111,3 +112,8 @@ services:
 
     pim_catalog.doctrine.repository.registry:
         class: %pim_catalog.doctrine.repository.registry.class%
+
+    pim_catalog.doctrine.repository.factory:
+        class: %pim_catalog.doctrine.repository.factory.class%
+        arguments:
+            - '@pim_catalog.doctrine.repository.registry'
