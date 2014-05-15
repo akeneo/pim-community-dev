@@ -50,12 +50,8 @@ class ProductChangesProvider
     {
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        // TODO (2014-05-06 18:28 by Gildas): We should normalize only values
-        $current = $this->normalizer->normalize($product, 'csv');
+        $current = $this->normalizer->normalize($product, 'proposal');
 
-        $manager->refresh($product);
-
-        //FIXME Why do we need to refresh manually the values and values collection data (only for ORM support)?
         foreach ($product->getValues() as $value) {
             if ($manager->contains($value)) {
                 $manager->refresh($value);
@@ -69,7 +65,7 @@ class ProductChangesProvider
             }
         }
 
-        $previous = $this->normalizer->normalize($product, 'csv');
+        $previous = $this->normalizer->normalize($product, 'proposal');
 
         return $this->engine->diff($previous, $current);
     }

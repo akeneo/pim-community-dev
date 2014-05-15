@@ -36,12 +36,11 @@ class ProductChangesProviderSpec extends ObjectBehavior
 
         $product->getValues()->willReturn([$sku, $name, $description]);
 
-        $normalizer->normalize($product, 'csv')->willReturn(['current'], ['previous']);
+        $normalizer->normalize($product, 'proposal')->willReturn(['current'], ['previous']);
 
         $manager->contains($sku)->willReturn(true); // FIXME Remove this when product values refreshing is working
         $manager->contains($name)->willReturn(true); // FIXME Remove this when product values refreshing is working
         $manager->contains($description)->willReturn(true); // FIXME Remove this when product values refreshing is working
-        $manager->refresh($product)->shouldBeCalled();
         $manager->refresh($sku)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
         $manager->refresh($name)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working
         $manager->refresh($description)->shouldBeCalled(); // FIXME Remove this when product values refreshing is working

@@ -2,8 +2,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use PimEnterprise\Bundle\WorkflowBundle\Serializer\ProductNormalizer;
 
 /**
  * Applies product changes
@@ -20,39 +21,8 @@ class ProductChangesApplier
         $this->denormalizer = $denormalizer;
     }
 
-    public function apply(AbstractProduct $product, $key, $data)
+    public function apply(AbstractProduct $product, array $changes)
     {
-        $key = $this->parseKey($key);
-        if (null === $value = $product->getValue($key['code'], $key['locale'], $key['scope'])) {
-            return;
-        }
-
-        $this->denormalizer->denormalize($data, $value->getAttribute()->getAttributeType(), null, [
-            'instance' => $value
-        ]);
-    }
-
-    protected function parseKey($key)
-    {
-        $parts = explode('-', $key);
-        $code = $locale = $scope = null;
-
-        if (isset($parts[0])) {
-            $code = $parts[0];
-        }
-
-        if (isset($parts[1])) {
-            $locale = $parts[1];
-        }
-
-        if (isset($parts[2])) {
-            $scope = $parts[2];
-        }
-
-        return [
-            'code' => $code,
-            'locale' => $locale,
-            'scope' => $scope,
-        ];
+        $this->denormalizer->denormalize($changes, 'product', ProductNormalizer::FORMAT, ['instance' => $product]);
     }
 }

@@ -36,9 +36,8 @@ class ProposalManager
     public function approve(Proposal $proposal)
     {
         $product = $proposal->getProduct();
-        foreach ($proposal->getChanges() as $key => $data) {
-            $this->applier->apply($product, $key, $data);
-        }
+
+        $this->applier->apply($product, $proposal->getChanges());
 
         $proposal->setStatus(Proposal::APPROVED);
 

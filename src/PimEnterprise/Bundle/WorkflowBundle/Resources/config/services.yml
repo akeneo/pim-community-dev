@@ -4,7 +4,6 @@ parameters:
     pimee_workflow.persister.product_changes_provider.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesProvider
     pimee_workflow.entity.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
     pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
-    pimee_workflow.denormalizer.flat_product_value.class: PimEnterprise\Bundle\WorkflowBundle\Serialization\FlatProductValueDenormalizer
     pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
 
@@ -61,9 +60,3 @@ services:
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
             - '@pim_serializer'
-
-    pimee_workflow.denormalizer.flat_product_value:
-        public: false
-        class: %pimee_workflow.denormalizer.flat_product_value.class%
-        tags:
-            - { name: pim_serializer.normalizer }
