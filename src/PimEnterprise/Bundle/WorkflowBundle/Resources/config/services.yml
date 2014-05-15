@@ -60,8 +60,10 @@ services:
         public: false
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
-            - '@pimee_workflow.denormalizer.flat_product_value'
+            - '@pim_serializer'
 
     pimee_workflow.denormalizer.flat_product_value:
         public: false
         class: %pimee_workflow.denormalizer.flat_product_value.class%
+        tags:
+            - { name: pim_serializer.normalizer }

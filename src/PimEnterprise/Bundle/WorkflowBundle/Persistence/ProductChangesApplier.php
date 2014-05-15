@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Serialization\FlatProductValueDenormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  * Applies product changes
@@ -13,24 +13,13 @@ use PimEnterprise\Bundle\WorkflowBundle\Serialization\FlatProductValueDenormaliz
  */
 class ProductChangesApplier
 {
-    /** @var FlatProductValueDenormalizer */
     protected $denormalizer;
 
-    /**
-     * @param FlatProductValueDenormalizer $denormalizer
-     */
-    public function __construct(FlatProductValueDenormalizer $denormalizer)
+    public function __construct(DenormalizerInterface $denormalizer)
     {
         $this->denormalizer = $denormalizer;
     }
 
-    /**
-     * @param AbstractProduct $product
-     * @param string          $key
-     * @param mixed           $data
-     *
-     * @return null
-     */
     public function apply(AbstractProduct $product, $key, $data)
     {
         $key = $this->parseKey($key);
@@ -38,14 +27,11 @@ class ProductChangesApplier
             return;
         }
 
-        $this->denormalizer->denormalize($data, get_class($value), 'csv', ['instance' => $value]);
+        $this->denormalizer->denormalize($data, get_class($value), 'csv', [
+            'instance' => $value
+        ]);
     }
 
-    /**
-     * @param string $key
-     *
-     * @return array
-     */
     protected function parseKey($key)
     {
         $parts = explode('-', $key);
