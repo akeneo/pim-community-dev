@@ -1122,7 +1122,9 @@ class WebUser extends RawMinkContext
     public function iBlurTheCategoryNode()
     {
         $elt = $this->getCurrentPage()->findInputNodeInTree();
-        $elt->blur();
+        if ($elt) {
+            $elt->blur();
+        }
         $this->wait();
     }
 
