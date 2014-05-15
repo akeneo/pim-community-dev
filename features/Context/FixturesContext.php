@@ -82,7 +82,8 @@ class FixturesContext extends RawMinkContext
     public function resetPlaceholderValues()
     {
         $this->placeholderValues = array(
-            '%tmp%' => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat' ,
+            '%tmp%'      => getenv('BEHAT_TMPDIR') ?: '/tmp/pim-behat',
+            '%fixtures%' => __DIR__ . '/fixtures'
         );
     }
 
@@ -269,10 +270,17 @@ class FixturesContext extends RawMinkContext
             ->get('pim_transform.transformer.product')
             ->reset();
 
+        // Reset product import validator
+        $this
+            ->getContainer()
+            ->get('pim_base_connector.validator.product_import')
+            ->reset();
+
         $product = $this->loadFixture('products', $data);
 
         $this->getProductBuilder()->addMissingProductValues($product);
-        $this->getProductManager()->save($product);
+        $this->getProductManager()->handleMedia($product);
+        $this->getProductManager()->save($product, false);
 
         return $product;
     }
@@ -393,84 +401,45 @@ class FixturesContext extends RawMinkContext
      *
      * @Given /^the following product values?:$/
      */
-    public function theFollowingProductValue(TableNode $table)
+    public function theFollowingProductValues(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $data['locale'] = empty($data['locale']) ? null : $this->getLocale($data['locale'])->getCode();
-            $data['scope']  = empty($data['scope']) ? null : $this->getChannel($data['scope'])->getCode();
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
 
-            $product = $this->getProduct($data['product']);
-            $value   = $product->getValue($data['attribute'], $data['locale'], $data['scope']);
-
-            if ($value && $value->getAttribute()->getBackendType() !== 'media') {
-                if ($data['scope']) {
-                    $value->setScope($data['scope']);
-                }
-                if ($data['locale']) {
-                    $value->setLocale($data['locale']);
-                }
-                if ($data['value']) {
-                    if ($value->getAttribute()->getAttributeType() === $this->attributeTypes['prices']) {
-                        $prices = $this->listToPrices($data['value']);
-                        foreach ($prices as $currency => $data) {
-                            $value->getPrice($currency)->setData($data);
-                        }
-                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['simpleselect']) {
-                        $options = $value->getAttribute()->getOptions();
-                        $optionValue = null;
-                        foreach ($options as $option) {
-                            if ((string) $option->getCode() === $data['value']) {
-                                $optionValue = $option;
-                            }
-                        }
-
-                        if ($optionValue === null) {
-                            throw new \InvalidArgumentException(sprintf('Unknown option value "%s"', $data['value']));
-                        }
-
-                        $value->setData($optionValue);
-                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['metric']) {
-                        $metric = $value->getData();
-
-                        if (false === strpos($data['value'], ' ')) {
-                            throw new \InvalidArgumentException(
-                                sprintf(
-                                    'Metric value does not match expected format "<data> <unit>": %s',
-                                    $data['value']
-                                )
-                            );
-                        }
-                        list($data, $unit) = explode(' ', $data['value']);
-
-                        if (!$metric) {
-                            $metric = new Metric();
-                            $metric->setFamily($value->getAttribute()->getMetricFamily());
-                        }
-
-                        $metric->setData($data);
-                        $metric->setUnit($unit);
-
-                        $value->setMetric($metric);
-                    } elseif ($value->getAttribute()->getAttributeType() === $this->attributeTypes['date']) {
-                        if ("" === $data['value']) {
-                            $data = null;
-                        } elseif (!$data instanceof \DateTime) {
-                            $data = new \DateTime($data['value'], new \DateTimeZone('UTC'));
-                        }
-
-                        $value->setData($data);
-                    } else {
-                        $value->setData($data['value']);
-                    }
-                }
-            } else {
-                $attribute = $this->getAttribute($data['attribute']);
-                $value = $this->createValue($attribute, $data['value'], $data['locale'], $data['scope']);
-                $product->addValue($value);
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
             }
-            $this->getProductBuilder()->addMissingProductValues($product);
-            $this->getProductManager()->save($product);
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+
+            $data = [
+                'sku'          => $row['product'],
+                $attributeCode => $this->replacePlaceholders($row['value'])
+            ];
+
+            $this->createProduct($data);
         }
+
+        $this->flush();
+    }
+
+    /**
+     * @param string $sku
+     * @param string $attributeCodes
+     *
+     * @Given /^the "([^"]*)" product has the "([^"]*)" attributes?$/
+     */
+    public function theProductHasTheAttributes($sku, $attributeCodes)
+    {
+        $product = $this->getProduct($sku);
+
+        foreach ($this->listToArray($attributeCodes) as $code) {
+            $this->getProductBuilder()->addAttributeToProduct($product, $this->getAttribute($code));
+        }
+
+        $this->getProductManager()->save($product);
 
         $this->flush();
     }
@@ -1088,7 +1057,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param $username
+     * @param string $username
      */
     public function setUsername($username)
     {
@@ -1347,99 +1316,6 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param Attribute $attribute
-     * @param mixed     $data
-     * @param string    $locale
-     * @param string    $scope
-     *
-     * @return ProductValue
-     */
-    private function createValue(Attribute $attribute, $data = null, $locale = null, $scope = null)
-    {
-        $manager = $this->getProductManager();
-
-        $value = $manager->createProductValue();
-        $value->setAttribute($attribute);
-
-        switch ($attribute->getAttributeType()) {
-            case $this->attributeTypes['prices']:
-                $prices = $this->listToPrices($data);
-                foreach ($prices as $currency => $data) {
-                    $value->addPrice($this->createPrice($data, $currency));
-                }
-                break;
-
-            case $this->attributeTypes['image']:
-            case $this->attributeTypes['file']:
-                $media = $this->createMedia($data);
-                $value->setMedia($media);
-                break;
-
-            case $this->attributeTypes['simpleselect']:
-            case $this->attributeTypes['multiselect']:
-                $options = $attribute->getOptions()->filter(
-                    function ($option) use ($data) {
-                        return $option->getCode() == $data;
-                    }
-                );
-
-                if (empty($options)) {
-                    throw new \InvalidArgumentException(
-                        sprintf(
-                            'Could not find option "%s" for attribute "%s"',
-                            $data,
-                            (string) $attribute
-                        )
-                    );
-                }
-                $option = $options->first();
-
-                if ($option) {
-                    if ($attribute->getAttributeType() === $this->attributeTypes['simpleselect']) {
-                        $value->setOption($option);
-                    } else {
-                        $value->addOption($option);
-                    }
-                }
-                break;
-
-            case $this->attributeTypes['metric']:
-                $metric = new Metric();
-                $metric->setFamily($attribute->getMetricFamily());
-                if ($data !== "") {
-                    list($data, $unit) = explode(' ', $data);
-                } else {
-                    $data = null;
-                    $unit = null;
-                }
-                $metric->setData($data);
-                $metric->setUnit($unit);
-                $value->setData($metric);
-                break;
-
-            case $this->attributeTypes['date']:
-                if ("" === $data) {
-                    $data = null;
-                } elseif (!$data instanceof \DateTime) {
-                    $data = new \DateTime($data, new \DateTimeZone('UTC'));
-                }
-
-                $value->setData($data);
-                break;
-
-            default:
-                if ("" === $data) {
-                    $data = null;
-                }
-                $value->setData($data);
-        }
-        $value->setLocale($locale);
-        $value->setScope($scope);
-
-        return $value;
-    }
-
-    /**
      * @param string $code
      *
      * @return Category
@@ -1581,75 +1457,6 @@ class FixturesContext extends RawMinkContext
         $this->persist($role);
 
         return $role;
-    }
-
-    /**
-     * @param string $prices
-     *
-     * @return array
-     */
-    private function listToPrices($prices)
-    {
-        if ($prices === "") {
-            $data['EUR'] = null;
-        }
-        $prices = explode(',', $prices);
-        $data = array();
-
-        foreach ($prices as $price) {
-            $price = explode(' ', trim($price));
-            $amount = array_filter(
-                $price,
-                function ($item) {
-                    return preg_match('/^[0-9]+(\.[0-9]+)?$/', $item);
-                }
-            );
-            $amount = reset($amount);
-            if (!$amount) {
-                continue;
-            }
-            $currency = array_filter(
-                $price,
-                function ($item) {
-                    return preg_match('/^[a-zA-Z]+(.+)$/', $item);
-                }
-            );
-            $currency = !empty($currency) ? reset($currency) : 'EUR';
-            $data[$currency] = $amount;
-        }
-
-        return $data;
-    }
-
-    /**
-     * @param string $file
-     *
-     * @return Media
-     */
-    private function createMedia($file)
-    {
-        $media = new Media();
-        if ($file) {
-            $media->setFile(new File(__DIR__ . '/fixtures/' . $file));
-            $this->getMediaManager()->handle($media, 'behat');
-        }
-
-        return $media;
-    }
-
-    /**
-     * @param string $data
-     * @param string $currency
-     *
-     * @return ProductPrice
-     */
-    private function createPrice($data, $currency = 'EUR')
-    {
-        $price = new ProductPrice();
-        $price->setData($data);
-        $price->setCurrency($currency);
-
-        return $price;
     }
 
     /**

@@ -14,16 +14,12 @@ Feature: Filter products by text field
       | name        | text     | no          | no       | yes                    |
       | description | textarea | no          | no       | yes                    |
     And the following products:
-      | sku    |
-      | postit |
-      | book   |
-      | mug    |
-    And the following product values:
-      | product | attribute   | value            |
-      | postit  | name        | MyPostit         |
-      | postit  | description |                  |
-      | book    | name        |                  |
-      | mug     | description | MyMugDescription |
+      | sku    | name     | description      |
+      | postit | MyPostit |                  |
+      | book   |          |                  |
+      | mug    |          | MyMugDescription |
+    And the "postit" product has the "description" attribute
+    And the "book" product has the "name" attribute
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
@@ -38,16 +34,10 @@ Feature: Filter products by text field
       | label | type | localizable | scopable | useable as grid filter |
       | name  | text | yes         | no       | yes                    |
     And the following products:
-      | sku    |
-      | postit |
-      | book   |
-      | mug    |
-    And the following product values:
-      | product | attribute | value     | locale |
-      | postit  | name      | MyPostit  | en_US  |
-      | postit  | name      | MonPostit | fr_FR  |
-      | book    | name      |           | en_US  |
-      | book    | name      | MonLivre  | fr_FR  |
+      | sku    | name-en_US | name-fr_FR |
+      | postit | MyPostit   | MonPostit  |
+      | book   |            | MonLivre   |
+      | mug    |            |            |
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
@@ -61,16 +51,10 @@ Feature: Filter products by text field
       | label | type | localizable | scopable | useable as grid filter |
       | name  | text | no          | yes      | yes                    |
     And the following products:
-      | sku    |
-      | postit |
-      | book   |
-      | mug    |
-    And the following product values:
-      | product | attribute | value    | scope     |
-      | postit  | name      | MyPostit | ecommerce |
-      | postit  | name      | MyPostit | mobile    |
-      | book    | name      |          | ecommerce |
-      | book    | name      | MyBook   | mobile    |
+      | sku    | name-ecommerce | name-mobile |
+      | postit | MyPostit       | MyPostit    |
+      | book   |                | MyBook      |
+      | mug    |                |             |
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
@@ -84,20 +68,10 @@ Feature: Filter products by text field
       | label | type | localizable | scopable | useable as grid filter |
       | name  | text | yes         | yes      | yes                    |
     And the following products:
-      | sku    |
-      | postit |
-      | book   |
-      | mug    |
-    And the following product values:
-      | product | attribute | value     | scope     | locale |
-      | postit  | name      | MyPostit  | ecommerce | en_US  |
-      | postit  | name      | MonPostit | ecommerce | fr_FR  |
-      | postit  | name      | MyPostit  | mobile    | en_US  |
-      | postit  | name      | MonPostit | mobile    | fr_FR  |
-      | book    | name      |           | ecommerce | en_US  |
-      | book    | name      | MonLivre  | ecommerce | fr_FR  |
-      | book    | name      | MyBook    | mobile    | en_US  |
-      | book    | name      | MonLivre  | mobile    | fr_FR  |
+      | sku    | name-en_US-ecommerce | name-en_US-mobile | name-fr_FR-ecommerce | name-fr_FR-mobile |
+      | postit | MyPostit             | MyPostit          | MonPostit            | MonPostit         |
+      | book   |                      | MyBook            | MonLivre             | MonLivre          |
+      | mug    |                      |                   |                      |                   |
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug

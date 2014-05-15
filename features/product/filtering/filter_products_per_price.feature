@@ -17,14 +17,8 @@ Feature: Filter products per price
       | sku    | family    | enabled | price-mobile | price-ecommerce |
       | postit | furniture | yes     | 10.5 EUR     | 12.5 EUR        |
       | book   | library   | no      | 20 EUR       | 22.5 EUR        |
-    And the following product:
-      | sku |
-      | mug |
-      | pen |
-    And the following product values:
-      | product | attribute | value    | scope     |
-      | mug     | Price     |          | ecommerce |
-      | mug     | Price     | 10.5 EUR | mobile    |
+      | mug    |           | yes     | 10.5 EUR     |                 |
+      | pen    |           | yes     |              |                 |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by price

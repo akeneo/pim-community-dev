@@ -9,9 +9,7 @@ Feature: Join an image to a product
     And the following attribute:
       | label  | type  | allowed extensions |
       | Visual | image | jpg                |
-    And the following product value:
-      | product | attribute | value |
-      | Car     | visual    |       |
+    And the "Car" product has the "visual" attribute
     And I am logged in as "admin"
     And I am on the "Car" product page
 

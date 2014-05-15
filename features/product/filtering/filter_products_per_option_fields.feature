@@ -13,26 +13,21 @@ Feature: Filter products per option
     And the following "color" attribute options: Black and White
     And the following "size" attribute options: S, M and L
     And the following products:
-      | sku   |
-      | Shirt |
-      | Sweat |
-      | Shoes |
-    And the following product values:
-      | product | attribute | value |
-      | Shirt   | color     |       |
-      | Shirt   | size      |       |
-      | Shoes   | color     | Black |
-      | Sweat   | size      | M     |
+      | sku   | color | size |
+      | Shirt |       |      |
+      | Sweat |       | M    |
+      | Shoes | Black |      |
+    And the "Shirt" product has the "color and size" attributes
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by a simple option
     Given I am on the products page
     And the grid should contain 3 elements
     Then I should be able to use the following filters:
-      | filter | value          | result                 |
-      | size   | M              | Sweat                  |
-      | size   | M,is empty     | Sweat, Shoes and Shirt |
-      | size   | is empty       | Shirt and Shoes        |
+      | filter | value      | result                 |
+      | size   | M          | Sweat                  |
+      | size   | M,is empty | Sweat, Shoes and Shirt |
+      | size   | is empty   | Shirt and Shoes        |
 
   Scenario: Successfully filter products by a multi option
     Given I am on the products page

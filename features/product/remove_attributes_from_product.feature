@@ -17,8 +17,8 @@ Feature: Remove an attribute from a product
   @javascript
   Scenario: Successfully remove an attribute from a product
     Given the following product values:
-      | product | attribute  | value |
-      | nike    | lace_color | black |
+      | product | attribute  | value       |
+      | nike    | lace_color | laces_black |
     And I am on the "nike" product page
     And I visit the "Colors" group
     When I remove the "Lace color" attribute
@@ -30,10 +30,7 @@ Feature: Remove an attribute from a product
     Given the following attribute:
       | code            | label           | scopable | group |
       | scopable_length | Scopable length | yes      | sizes |
-    And the following product values:
-      | product | attribute       | scope  | value |
-      | nike    | scopable_length | tablet |       |
-      | nike    | scopable_length | mobile |       |
+    And the "nike" product has the "scopable_length" attribute
     And I am on the "nike" product page
     When I visit the "Sizes" group
     And I remove the "Scopable length" attribute

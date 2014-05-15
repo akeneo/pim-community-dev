@@ -14,17 +14,11 @@ Feature: Filter products per metric
       | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
       | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
     And the following products:
-      | sku    | family    | enabled | weight-ecommerce |
-      | postit | furniture | yes     | 120 GRAM         |
-      | book   | library   | no      | 0.2 KILOGRAM     |
-    And the following product:
-      | sku |
-      | mug |
-      | pen |
-    And the following product values:
-      | product | attribute | value    | scope     |
-      | mug     | Weight    |          | ecommerce |
-      | mug     | Weight    | 120 GRAM | mobile    |
+      | sku    | family    | enabled | weight-ecommerce | weight-mobile |
+      | postit | furniture | yes     | 120 GRAM         |               |
+      | book   | library   | no      | 0.2 KILOGRAM     |               |
+      | mug    |           | yes     |                  | 120 GRAM      |
+      | pen    |           | yes     |                  |               |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by metric
