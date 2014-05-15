@@ -133,12 +133,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @return array $completenesses
      */
-    protected function getCompletenesses(array $normalizedData, array $normalizedReqs)
+    public function getCompletenesses(array $normalizedData, array $normalizedReqs)
     {
         $completenesses = array();
         $allCompletenesses = false;
 
-        if ((null === $normalizedData['completenesses'])||(0 === count($normalizedData['completenesses']))) {
+        if ((!isset($normalizedData['completenesses'])) ||
+            (null === $normalizedData['completenesses'])||
+            (0 === count($normalizedData['completenesses']))
+        ) {
             $missingComps = array_keys($normalizedReqs);
             $allCompletenesses = true;
         } else {
@@ -148,7 +151,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $normalizedData = array_filter(
             $normalizedData,
             function ($value) {
-                return ('null' != $value);
+                return (null !== $value);
             }
         );
 
@@ -175,7 +178,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
             $compObject = array(
-                '_id'           => new \MongoId(),
                 'missingCount'  => $missingCount,
                 'requiredCount' => $requiredCount,
                 'ratio'         => $ratio,
@@ -213,7 +215,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $normalizedComps = array();
 
             foreach ($completenesses as $key => $value) {
-                $compObjects[] = $value['object'];
+                $compObject = $value['object'];
+                $compObject['_id'] = new \MongoId();
+                $compObjects[] = $compObject;
                 $normalizedComps[$key] = $value['ratio'];
             }
             $normalizedComps = array('normalizedData.completenesses' => $normalizedComps);
