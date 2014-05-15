@@ -11,6 +11,8 @@ parameters:
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
 
+    pim_catalog.doctrine.repository.registry.class: Pim\Bundle\CatalogBundle\Doctrine\RepositoryRegistry
+
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
     doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
 
@@ -106,3 +108,6 @@ services:
     pim_catalog.doctrine.product_query_builder:
         class: %pim_catalog.doctrine.product_query_builder.class%
         arguments: ['@pim_catalog.context.catalog']
+
+    pim_catalog.doctrine.repository.registry:
+        class: %pim_catalog.doctrine.repository.registry.class%
