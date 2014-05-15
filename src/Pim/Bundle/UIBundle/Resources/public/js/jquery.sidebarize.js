@@ -195,8 +195,8 @@
     };
 
     $.fn.sidebarize.defaults = {
-        sidebarWidth: 250,
-        minSidebarWidth: 200,
+        sidebarWidth: 255,
+        minSidebarWidth: 255,
         maxSidebarWidth: null,
         widthStorageKey: 'sidebar_width',
         stateStorageKey: 'sidebar_state',
