@@ -18,9 +18,9 @@ Feature: Filter products by date field
       | book   |
       | mug    |
     And the following product values:
-      | product| attribute | value      |
-      | book   | release   |            |
-      | postit | release   | 2014-05-01 |
+      | product | attribute | value      |
+      | postit  | release   | 2014-05-01 |
+    And the "book" product has the "release" attribute
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
@@ -40,12 +40,12 @@ Feature: Filter products by date field
       | tshirt |
       | pen    |
     And the following product values:
-      | product | attribute  | value      |
-      | postit  | release    | 2014-05-01 |
-      | book    | release    | 2014-05-02 |
-      | mug     | release    | 2014-05-03 |
-      | tshirt  | release    | 2014-05-03 |
-      | pen     | release    | 2014-05-06 |
+      | product | attribute | value      |
+      | postit  | release   | 2014-05-01 |
+      | book    | release   | 2014-05-02 |
+      | mug     | release   | 2014-05-03 |
+      | tshirt  | release   | 2014-05-03 |
+      | pen     | release   | 2014-05-06 |
     And I am on the products page
     Then the grid should contain 5 elements
     And I should see products postit, book, mug, tshirt and pen

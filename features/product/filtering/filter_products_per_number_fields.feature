@@ -14,16 +14,12 @@ Feature: Filter products by number field
       | count | number | no          | no       | yes                    | no               |
       | rate  | number | no          | no       | yes                    | yes              |
     And the following products:
-      | sku    |
-      | postit |
-      | book   |
-      | mug    |
-    And the following product values:
-      | product| attribute | value |
-      | book   | count     |       |
-      | book   | rate      | 9.5   |
-      | postit | count     | 200   |
-      | mug    | rate      |       |
+      | sku    | count | rate |
+      | postit | 200   |      |
+      | book   |       | 9.5  |
+      | mug    |       |      |
+    And the "book" product has the "count" attribute
+    And the "mug" product has the "rate" attribute
     And I am on the products page
     Then the grid should contain 3 elements
     And I should see products postit, book and mug
