@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
 use Symfony\Component\Validator\ValidatorInterface;
@@ -59,11 +58,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * Constructor
      *
-     * @param DocumentManager     $documentManager
-     * @param ValidatorInterface  $validator
-     * @param string              $productClass
-     * @param ChannelManager      $channelManager
-     * @param FamilyRepository    $familyRepository
+     * @param DocumentManager    $documentManager
+     * @param ValidatorInterface $validator
+     * @param string             $productClass
+     * @param ChannelManager     $channelManager
+     * @param FamilyRepository   $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
@@ -181,7 +180,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             }
 
             $missingCount = count($missingAttributes) + $missingPricesCount;
-    
+
             $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
 
             $compObject = array(
@@ -206,7 +205,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Save the completenesses data for the product directly to MongoDB.
      *
      * @param string $productId
-     * @param array $compData
+     * @param array  $compData
      */
     protected function saveCompletenesses($productId, array $compData)
     {
@@ -247,7 +246,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * Generate family requirements information to be used to 
+     * Generate family requirements information to be used to
      * calculate completenesses.
      *
      * @param ProductInterface $product
@@ -325,7 +324,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
         return $fields;
     }
-
 
     /**
      * Get the name of a normalized data field
