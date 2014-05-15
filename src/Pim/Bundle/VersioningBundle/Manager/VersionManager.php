@@ -134,9 +134,11 @@ class VersionManager
                 $previousVersion = $this->getNewestLogEntry($versionable);
             }
 
-            $createdVersions[] = $this->versionBuilder->buildVersion($versionable, $this->username, $previousVersion, $this->context);
+            $createdVersions[] = $this->versionBuilder
+                ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $createdVersions[] = $this->versionBuilder->createPendingVersion($versionable, $this->username, $changeset, $this->context);
+            $createdVersions[] = $this ->versionBuilder
+                ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
 
         return $createdVersions;
