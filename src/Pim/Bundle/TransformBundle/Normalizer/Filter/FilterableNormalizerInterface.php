@@ -14,7 +14,7 @@ interface FilterableNormalizerInterface
     /**
      * @param array $filters
      *
-     * @return $this
+     * @return FilterableNormalizerInterface
      */
     public function setFilters(array $filters);
-} 
+}

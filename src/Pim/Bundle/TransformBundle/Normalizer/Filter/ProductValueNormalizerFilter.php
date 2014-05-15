@@ -5,7 +5,6 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Filter;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
-
 /**
  * Filter for ProductValue objects.
  *
@@ -42,4 +41,4 @@ class ProductValueNormalizerFilter implements NormalizerFilterInterface
 
         return $objects;
     }
-} 
+}
