@@ -25,7 +25,7 @@ class DateTransformer implements PropertyTransformerInterface
         }
 
         try {
-            return new \DateTime($value);
+            return new \DateTime($value, new \DateTimeZone('UTC'));
         } catch (\Exception $ex) {
             throw new PropertyTransformerException('Invalid date');
         }
