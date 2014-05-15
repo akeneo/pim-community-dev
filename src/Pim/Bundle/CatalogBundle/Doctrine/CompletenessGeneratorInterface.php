@@ -17,7 +17,8 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 interface CompletenessGeneratorInterface
 {
     /**
-     * Generate completeness for a product
+     * Generate completeness for a product. CAUTION: in current
+     * implementations, the product must already be flushed to the DBs
      *
      * @param ProductInterface $product
      */

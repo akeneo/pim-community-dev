@@ -146,8 +146,8 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
         }
 
         if (null !== $family) {
-            $qb->andWhere('f.family = :family')
-                ->setParameter('family', $family);
+            $qb->andWhere('f.id = :familyId')
+                ->setParameter('familyId', $family->getId());
         }
 
         return $qb->getQuery()->getResult();

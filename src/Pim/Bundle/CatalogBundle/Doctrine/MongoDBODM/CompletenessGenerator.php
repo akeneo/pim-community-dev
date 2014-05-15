@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
@@ -38,11 +37,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $documentManager;
 
     /**
-     * @var CompletenessFactory
-     */
-    protected $completenessFactory;
-
-    /**
      * @var ValidatorInterface
      */
     protected $validator;
@@ -66,7 +60,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * Constructor
      *
      * @param DocumentManager     $documentManager
-     * @param CompletenessFactory $completenessFactory
      * @param ValidatorInterface  $validator
      * @param string              $productClass
      * @param ChannelManager      $channelManager
@@ -74,14 +67,12 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function __construct(
         DocumentManager $documentManager,
-        CompletenessFactory $completenessFactory,
         ValidatorInterface $validator,
         $productClass,
         ChannelManager $channelManager,
         FamilyRepository $familyRepository
     ) {
         $this->documentManager     = $documentManager;
-        $this->completenessFactory = $completenessFactory;
         $this->validator           = $validator;
         $this->productClass        = $productClass;
         $this->channelManager      = $channelManager;
@@ -93,19 +84,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForProduct(ProductInterface $product, $flush = true)
     {
-        if (null === $product->getFamily()) {
-            return;
-        }
-
-        foreach ($product->getCompletenesses() as $completeness) {
-            $product->getCompletenesses()->removeElement($completeness);
-        }
-
-        $completenesses = $this->buildProductCompletenesses($product);
-
-        foreach ($completenesses as $completeness) {
-            $product->getCompletenesses()->add($completeness);
-        }
+        $this->generate($product);
 
         if ($flush) {
             $this->documentManager->flush($product);
@@ -121,111 +100,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * Build the completeness for the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    public function buildProductCompletenesses(ProductInterface $product)
-    {
-        $completenesses = array();
-
-        $stats = $this->collectStats($product);
-
-        foreach ($stats as $channelStats) {
-            $channel = $channelStats['object'];
-            $channelData = $channelStats['data'];
-            $channelRequiredCount = $channelData['required_count'];
-
-            foreach ($channelData['locales'] as $localeStats) {
-                $completeness = $this->completenessFactory->build(
-                    $channel,
-                    $localeStats['object'],
-                    $localeStats['missing_count'],
-                    $channelRequiredCount
-                );
-
-                $completenesses[] = $completeness;
-            }
-        }
-
-        return $completenesses;
-    }
-
-    /**
-     * Generate statistics on the product completeness
-     *
-     * @param ProductInterface $product
-     *
-     * @return array $stats
-     */
-    protected function collectStats(ProductInterface $product)
-    {
-        $stats = array();
-        $family = $product->getFamily();
-
-        if (null === $family) {
-            return $stats;
-        }
-
-        $channels = $this->channelManager->getFullChannels();
-
-        foreach ($channels as $channel) {
-            $channelCode = $channel->getCode();
-
-            $stats[$channelCode]['object'] = $channel;
-            $stats[$channelCode]['data'] = $this->collectChannelStats($channel, $product);
-        }
-
-        return $stats;
-    }
-
-    /**
-     * Generate stats on product completeness for a channel
-     *
-     * @param Channel          $channel
-     * @param ProductInterface $product
-     *
-     * @return array $stats
-     */
-    protected function collectChannelStats(Channel $channel, ProductInterface $product)
-    {
-        $stats = array();
-        $locales = $channel->getLocales();
-        $completeConstraint = new ProductValueComplete(array('channel' => $channel));
-        $stats['required_count'] = 0;
-        $stats['locales'] = array();
-        $requirements = $product->getFamily()->getAttributeRequirements();
-
-        foreach ($requirements as $req) {
-            if (!$req->isRequired() || $req->getChannel() != $channel) {
-                continue;
-            }
-            $stats['required_count']++;
-
-            foreach ($locales as $locale) {
-                $localeCode = $locale->getCode();
-
-                if (!isset($stats['locales'][$localeCode])) {
-                    $stats['locales'][$localeCode] = array();
-                    $stats['locales'][$localeCode]['object'] = $locale;
-                    $stats['locales'][$localeCode]['missing_count'] = 0;
-                }
-
-                $attribute = $req->getAttribute();
-                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
-
-                if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
-                    $stats['locales'][$localeCode]['missing_count'] ++;
-                }
-            }
-        }
-
-        return $stats;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function generateMissing()
@@ -235,7 +109,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * Generate missing completenesses for a channel if provided or a product
-     * if provided.
+     * if provided. CAUTION: the product must be already flushed to the DB
      *
      * @param ProductInterface $product
      * @param Channel          $channel
@@ -301,7 +175,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
             foreach ($pricesReqs as $priceField => $currencies) {
                 if (isset($normalizedData[$priceField]) &&
-                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) == 0) {
+                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
                     $missingPricesCount --;
                 }
             }
