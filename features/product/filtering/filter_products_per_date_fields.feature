@@ -25,7 +25,7 @@ Feature: Filter products by date field
       | filter  | value | result       |
       | release | empty | book and mug |
 
-  @skip Broken because timezone is mot well managed yet (except for UTC)
+  @skip @info Broken because timezone is mot well managed yet (except for UTC)
   Scenario: Successfully filter products by date attributes
     Given the following attributes:
       | label   | code    | type | localizable | scopable | useable as grid filter | useable as grid column |
