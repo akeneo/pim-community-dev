@@ -40,7 +40,7 @@ class ProductValueNormalizer extends SerializerAwareNormalizer implements Normal
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        // TODO (2014-05-15 15:07 by Gildas): data must be an instance of AbstractProductValue
+        // TODO (2014-05-15 15:07 by Gildas): object must be an instance of AbstractProductValue
         $data = $object->getData();
 
         if (!is_scalar($data)) {

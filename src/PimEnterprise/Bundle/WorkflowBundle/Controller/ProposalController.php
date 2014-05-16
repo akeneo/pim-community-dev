@@ -88,11 +88,10 @@ class ProposalController extends AbstractController
     }
 
     /**
-     * Refuse a product proposal
+     * @param integer|string $id
      *
-     * @param integer $id The proposal id
-     *
-     * return \Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse
+     * @throws NotFoundHttpException
      */
     public function refuseAction($id)
     {

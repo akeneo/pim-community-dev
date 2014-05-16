@@ -41,6 +41,7 @@ class ProposalManager
 
         $proposal->setStatus(Proposal::APPROVED);
 
+        // Proposal and product manager is the same
         $this->registry->getManagerForClass(get_class($product))->flush();
     }
 
