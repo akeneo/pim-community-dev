@@ -38,13 +38,23 @@ class MediaNormalizer implements NormalizerInterface, DenormalizerInterface
         // TODO (2014-05-15 15:05 by Gildas): $context['instance'] must be null (?) or a Media instance
         $media = $context['instance'] ?: new Media();
 
-        return $media
-            ->setFilename(isset($data['filename']) ? $data['filename'] : $data['filename'])
-            ->setFilePath(isset($data['filePath']) ? $data['filePath'] : $data['filePath'])
-            ->setOriginalFilename(
-                isset($data['originalFilename']) ? $data['originalFilename'] : $data['originalFilename']
-            )
-            ->setMimeType(isset($data['mimeType']) ? $data['mimeType'] : $data['mimeType']);
+        if (isset($data['filename'])) {
+            $media->setFilename($data['filename']);
+        }
+
+        if (isset($data['filePath'])) {
+            $media->setFilePath($data['filePath']);
+        }
+
+        if (isset($data['originalFilename'])) {
+            $media->setOriginalFilename($data['originalFilename']);
+        }
+
+        if (isset($data['mimeType'])) {
+            $media->setMimeType($data['mimeType']);
+        }
+
+        return $media;
     }
 
     /**
