@@ -5,6 +5,23 @@ Feature: Review a product changes proposal
   I need to be able to review product changes proposal
 
   # TODO Change admin when contributor and owner roles have been introduced
+
+  Scenario: Succesfully accept an identifier attribute product changes proposal
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku        | family  |
+      | my-sandals | sandals |
+    And role "Administrator" has the right to edit the attribute group "info"
+    And "admin" has submitted the following proposal for "my-sandals":
+      | sku | your-sandals |
+    And I am logged in as "admin"
+    When I edit the "my-sandals" product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "your-sandals"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product SKU should be "your-sandals"
+
   Scenario: Succesfully accept a text attribute product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
