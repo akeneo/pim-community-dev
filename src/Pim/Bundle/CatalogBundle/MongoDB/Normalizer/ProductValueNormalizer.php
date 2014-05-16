@@ -50,7 +50,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         foreach ($collection as $item) {
             $data = $this->serializer->normalize($item, $format, $context);
             if ($data !== null) {
-                if ($item instanceOf ProductPrice) {
+                if ($item instanceof ProductPrice) {
                     $normalized[$item->getCurrency()] = $data;
                 } else {
                     $normalized[] = $data;
