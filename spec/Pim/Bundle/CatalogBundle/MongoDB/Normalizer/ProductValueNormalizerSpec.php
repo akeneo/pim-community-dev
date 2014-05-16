@@ -67,7 +67,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $serializer->normalize($price, 'mongodb_json', [])->willReturn(['data' => 42, 'currency' => 'EUR']);
 
-        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => [['data' => 42, 'currency' => 'EUR']]]);
+        $this->normalize($value, 'mongodb_json', [])->shouldReturn(['code' => ['EUR' => ['data' => 42, 'currency' => 'EUR']]]);
     }
 
     function it_normalizes_value_with_empty_collection_data(
