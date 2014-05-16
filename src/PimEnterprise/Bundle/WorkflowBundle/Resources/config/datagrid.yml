@@ -25,9 +25,19 @@ datagrid:
                 route: pimee_workflow_proposal_approve
                 params:
                     - id
+            refuse_link:
+                type: url
+                route: pimee_workflow_proposal_refuse
+                params:
+                    - id
         actions:
             approve:
                 type: navigate
                 label: Approve
                 icon: ok
                 link: approve_link
+            refuse:
+                type: navigate
+                label: Refuse
+                icon: remove
+                link: refuse_link

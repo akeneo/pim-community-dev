@@ -35,4 +35,17 @@ class ProposalManagerSpec extends ObjectBehavior
 
         $this->approve($proposal);
     }
+
+    function it_closes_proposal_when_refusing_it(
+        $registry,
+        Proposal $proposal,
+        ObjectManager $manager
+    ) {
+        $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
+
+        $proposal->setStatus(Proposal::REFUSED)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $this->refuse($proposal);
+    }
 }

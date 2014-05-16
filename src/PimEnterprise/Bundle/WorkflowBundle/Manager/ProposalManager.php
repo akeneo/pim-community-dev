@@ -42,6 +42,12 @@ class ProposalManager
         $proposal->setStatus(Proposal::APPROVED);
 
         $this->registry->getManagerForClass(get_class($product))->flush();
+    }
+
+    public function refuse(Proposal $proposal)
+    {
+        $proposal->setStatus(Proposal::REFUSED);
+
         $this->registry->getManagerForClass(get_class($proposal))->flush();
     }
 }

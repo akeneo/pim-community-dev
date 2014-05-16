@@ -86,4 +86,29 @@ class ProposalController extends AbstractController
             )
         );
     }
+
+    /**
+     * Refuse a product proposal
+     *
+     * @param integer $id The proposal id
+     *
+     * return \Symfony\Component\HttpFoundation\Response
+     */
+    public function refuseAction($id)
+    {
+        if (null === $proposal = $this->proposalRepository->findOpen($id)) {
+            throw new NotFoundHttpException(sprintf('Proposal "%s" not found', $id));
+        }
+
+        $this->proposalManager->refuse($proposal);
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_product_edit',
+                [
+                    'id' => $proposal->getProduct()->getId()
+                ]
+            )
+        );
+    }
 }
