@@ -26,7 +26,6 @@ class ProposalManagerSpec extends ObjectBehavior
     ) {
         $proposal->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $proposal->getProduct()->willReturn($product);
-        $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
         $registry->getManagerForClass(get_class($product->getWrappedObject()))->willReturn($manager);
 
         $applier->apply($product, ['foo' => 'bar', 'b' => 'c'])->shouldBeCalled();
