@@ -46,47 +46,70 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $this->supportsDenormalization([], 'value', 'proposal')->shouldBe(true);
     }
 
-    function it_denormalizes_data_directly_into_identifier_attribute_value(Model\AbstractProductValue $value)
-    {
+    function it_denormalizes_data_directly_into_identifier_attribute_value(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->setData('foo')->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_identifier');
         $value->setData('foo')->willReturn($value);
 
-        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'pim_catalog_identifier'])->shouldReturn($value);
+        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value])->shouldReturn($value);
     }
 
-    function it_denormalizes_data_directly_into_text_attribute_value(Model\AbstractProductValue $value)
-    {
+    function it_denormalizes_data_directly_into_text_attribute_value(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->setData('foo')->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_text');
         $value->setData('foo')->willReturn($value);
 
-        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'pim_catalog_text'])->shouldReturn($value);
+        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value])->shouldReturn($value);
     }
 
-    function it_denormalizes_data_directly_into_textarea_attribute_value(Model\AbstractProductValue $value)
-    {
+    function it_denormalizes_data_directly_into_textarea_attribute_value(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->setData('foo')->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_textarea');
         $value->setData('foo')->willReturn($value);
 
-        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'pim_catalog_textarea'])->shouldReturn($value);
+        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value])->shouldReturn($value);
     }
 
-    function it_denormalizes_data_directly_into_number_attribute_value(Model\AbstractProductValue $value)
-    {
+    function it_denormalizes_data_directly_into_number_attribute_value(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
         $value->setData('foo')->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_catalog_number');
 
-        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'pim_catalog_number'])->shouldReturn($value);
+        $this->denormalize('foo', 'value', 'proposal', ['instance' => $value])->shouldReturn($value);
     }
 
     function it_delegates_denormalization_of_non_scalar_attribute_value(
         Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute,
         Foo $data,
         SerializerInterface $serializer
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
 
         $value->getData()->willReturn($data);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('pim_complex_type');
+
         $serializer->denormalize(['a' => 'b'], 'pim_complex_type', 'proposal', ['instance' => $data])->willReturn($data);
         $value->setData($data)->willReturn($value);
 
         $this->setSerializer($serializer);
-        $this->denormalize(['a' => 'b'], 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'pim_complex_type'])->shouldReturn($value);
+        $this->denormalize(['a' => 'b'], 'value', 'proposal', ['instance' => $value])->shouldReturn($value);
     }
 }
 

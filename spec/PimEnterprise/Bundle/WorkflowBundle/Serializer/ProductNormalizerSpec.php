@@ -70,7 +70,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('custom_type');
 
-        $serializer->denormalize('bar', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'custom_type'])->shouldBeCalled();
+        $serializer->denormalize('bar', 'value', 'proposal', ['instance' => $value])->shouldBeCalled();
 
         $this->setSerializer($serializer);
         $this->denormalize(['foo' => 'bar'], 'product', 'proposal', ['instance' => $product]);
