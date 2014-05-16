@@ -61,8 +61,8 @@ class RepositoryFactory extends DefaultRepositoryFactory
         }
 
         $repository = new $repositoryClassName($entityManager, $metadata);
-        if (isset($this->serviceIds[$entityName])) {
-            $this->callDependencyInjection($entityName, $repository);
+        if (isset($this->repositoryCalls[$entityName])) {
+            $this->resolveDependencyInjection($entityName, $repository);
         }
 
         return $repository;
@@ -78,7 +78,7 @@ class RepositoryFactory extends DefaultRepositoryFactory
      */
     public function addServiceId($entityName, $methodCalls)
     {
-        $this->serviceIds[$entityName] = $methodCalls;
+        $this->repositoryCalls[$entityName] = $methodCalls;
     }
 
     /**
@@ -95,11 +95,16 @@ class RepositoryFactory extends DefaultRepositoryFactory
         return $this;
     }
 
-    protected function callDependencyInjection($entityName, ObjectRepository $repository)
+    /**
+     * Resolve DI calling methods needed
+     *
+     * @param string           $entityName
+     * @param ObjectRepository $repository
+     */
+    protected function resolveDependencyInjection($entityName, ObjectRepository $repository)
     {
-        if (isset($this->serviceIds[$entityName])) {
-
-            $methodCalls = $this->serviceIds[$entityName];
+        if (isset($this->repositoryCalls[$entityName])) {
+            $methodCalls = $this->repositoryCalls[$entityName];
             foreach ($methodCalls as $methodCall) {
                 $method = $methodCall[0];
                 $params = isset($methodCall[1]) ? $methodCall[1] : array();
