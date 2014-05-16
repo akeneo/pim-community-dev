@@ -2,13 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-use Doctrine\ORM\Repository\DefaultRepositoryFactory;
-
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 
 /**
  * Override of repository factory
@@ -20,12 +18,11 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class RepositoryFactory extends DefaultRepositoryFactory
 {
-    /**
-     * @var unknown_type
-     */
+    /** @var ObjectRepository[] */
     protected $repositoryList = array();
 
-    protected $serviceIds = array();
+    /** @var array[] */
+    protected $repositoryCalls = array();
 
     /**
      * {@inheritdoc}
@@ -95,6 +92,13 @@ class RepositoryFactory extends DefaultRepositoryFactory
         }
     }
 
+    /**
+     * Resolve parameter calling the DI
+     *
+     * @param array $params
+     *
+     * @return array
+     */
     protected function resolveParameters(array $params = array())
     {
         foreach ($params as $key => $param) {
