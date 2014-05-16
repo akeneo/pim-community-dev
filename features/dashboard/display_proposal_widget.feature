@@ -1,3 +1,4 @@
+@javascript
 Feature: Display proposal widget
   In order to easily see which products have pending proposals
   As Julia
@@ -9,3 +10,19 @@ Feature: Display proposal widget
     When I am on the dashboard page
     Then I should see "Proposals to review"
     And I should see "No proposals to review"
+
+  Scenario: Succesfully display all opened proposals
+    Given the "footwear" catalog configuration
+    And the following product:
+      | sku        | family  |
+      | my-sandals | sandals |
+    And the following proposals:
+      | product    | status   | author |
+      | my-sandals | open     | admin  |
+      | my-sandals | approved | admin  |
+    And I am logged in as "Julia"
+    When I am on the dashboard page
+    Then I should see "Proposals to review"
+    And I should the following proposal:
+      | product    | author |
+      | my-sandals | admin  |

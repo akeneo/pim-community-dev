@@ -43,7 +43,7 @@ class ProposalWidget implements WidgetInterface
     {
         $proposals = $this->registry
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')
-            ->findBy([], ['createdAt' => 'DESC'], 10);
+            ->findBy(['status' => null], ['createdAt' => 'DESC'], 10);
 
         return [
             'params' => $proposals

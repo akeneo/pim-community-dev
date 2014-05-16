@@ -5,6 +5,7 @@ namespace Context;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 class EnterpriseContext extends RawMinkContext
 {
@@ -67,6 +68,68 @@ class EnterpriseContext extends RawMinkContext
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposal));
         $manager->persist($proposal);
         $manager->flush();
+    }
+
+    /**
+     * @Given /^the following proposals:$/
+     */
+    public function theFollowingProposals(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $proposal = $this->getProposalFactory()->createProposal(
+                $this->getProduct($data['product']),
+                $data['author'],
+                []
+            );
+            $proposal->setStatus($data['status'] === 'open' ? null : Proposal::APPROVED);
+            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposal));
+            $manager->persist($proposal);
+        }
+        $manager->flush();
+    }
+
+    /**
+     * @Given /^I should the following proposal:$/
+     */
+    public function iShouldTheFollowingProposal(TableNode $table)
+    {
+        $expectedProposals = $table->getHash();
+        $actualProposals = $this->getSession()->getPage()->findAll('css', '#proposals-widget tbody tr');
+
+        if (count($expectedProposals) !== count($actualProposals)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting %d proposals, actually saw %d',
+                    $expectedCount,
+                    $actualCount
+                )
+            );
+        }
+
+        foreach ($expectedProposals as $key => $proposal) {
+            $cells = $actualProposals[$key]->findAll('css', 'td');
+            if ($cells[1]->getText() !== $proposal['author']) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Proposal #%d author is expected to be "%s", actually is "%s"',
+                        $key + 1,
+                        $proposal['author'],
+                        $cells[1]->getText()
+                    )
+                );
+            }
+
+            if ($cells[2]->getText() !== $proposal['product']) {
+                throw $this->createExpectationException(
+                    sprintf(
+                        'Proposal #%d product is expected to be "%s", actually is "%s"',
+                        $key + 1,
+                        $proposal['product'],
+                        $cells[2]->getText()
+                    )
+                );
+            }
+        }
     }
 
     protected function getAttributeGroupAccessManager()
