@@ -4,11 +4,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -18,13 +15,17 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager;
 
 /**
+ * Proposal controller
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProposalController extends AbstractController
 {
+    /** @var ObjectRepository */
     protected $proposalRepository;
 
+    /** @var ProposalManager */
     protected $proposalManager;
 
     /**
@@ -62,6 +63,12 @@ class ProposalController extends AbstractController
         $this->proposalManager = $proposalManager;
     }
 
+    /**
+     * @param integer|string $id
+     *
+     * @return RedirectResponse
+     * @throws NotFoundHttpException
+     */
     public function approveAction($id)
     {
         if (null === $proposal = $this->proposalRepository->findOpen($id)) {

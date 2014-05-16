@@ -27,9 +27,7 @@ class ProductChangesApplier
             return;
         }
 
-        $this->denormalizer->denormalize($data, get_class($value), 'csv', [
-            'instance' => $value
-        ]);
+        $this->denormalizer->denormalize($data, get_class($value), 'csv', ['instance' => $value]);
     }
 
     protected function parseKey($key)

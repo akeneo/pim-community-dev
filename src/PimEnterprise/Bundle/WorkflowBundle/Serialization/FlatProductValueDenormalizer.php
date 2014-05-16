@@ -18,13 +18,8 @@ class FlatProductValueDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        if (
-            !isset($context['instance']) ||
-            !$context['instance'] instanceof AbstractProductValue
-        ) {
-            throw new \InvalidArgumentException(
-                'A product value instance must be provided inside the context'
-            );
+        if (!isset($context['instance']) || !$context['instance'] instanceof AbstractProductValue) {
+            throw new \InvalidArgumentException('A product value instance must be provided inside the context');
         }
 
         $instance = $context['instance'];
