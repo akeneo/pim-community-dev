@@ -481,7 +481,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $operator = $operators[$operator];
         }
 
-        $this->datagrid->filterBy($filterName, $value, $operator);
+        $this->datagrid->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
         $this->wait();
     }
 

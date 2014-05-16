@@ -17,6 +17,6 @@ Feature: Browse imports
       | filter    | value                | result                                                                                                     |
       | Code      | at                   | association_type_import, attribute_import and category_import                                              |
       | Label     | Product              | product_import                                                                                             |
-      | Job       | group_import         | group_import                                                                                               |
+      | Job       | csv_group_import     | group_import                                                                                               |
       | Connector | Akeneo CSV Connector | product_import, category_import, association_type_import, group_import, attribute_import and option_import |
       | Status    | Ready                | product_import, category_import, association_type_import, group_import, attribute_import and option_import |
