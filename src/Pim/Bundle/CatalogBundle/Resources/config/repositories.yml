@@ -110,10 +110,7 @@ services:
         class: %pim_catalog.doctrine.product_query_builder.class%
         arguments: ['@pim_catalog.context.catalog']
 
-    pim_catalog.doctrine.repository.registry:
-        class: %pim_catalog.doctrine.repository.registry.class%
-
     pim_catalog.doctrine.repository.factory:
         class: %pim_catalog.doctrine.repository.factory.class%
-        arguments:
-            - '@pim_catalog.doctrine.repository.registry'
+        calls:
+            - [ setContainer, [ '@service_container'] ]

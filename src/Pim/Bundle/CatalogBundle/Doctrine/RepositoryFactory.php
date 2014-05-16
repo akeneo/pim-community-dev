@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
+use Doctrine\Common\Persistence\ObjectRepository;
+
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
 use Doctrine\ORM\Repository\DefaultRepositoryFactory;
 
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,29 +21,74 @@ use Doctrine\ORM\EntityManagerInterface;
 class RepositoryFactory extends DefaultRepositoryFactory
 {
     /**
-     * @var RepositoryRegistry
+     * @var unknown_type
      */
-    protected $repositoryRegistry;
+    protected $repositoryList = array();
+
+    protected $serviceIds = array();
 
     /**
-     * Construct
-     *
-     * @param RepositoryRegistry $repositoryRegistry
+     * {@inheritdoc}
      */
-    public function __construct(RepositoryRegistry $repositoryRegistry)
+    public function getRepository(EntityManagerInterface $entityManager, $entityName)
     {
-        $this->repositoryRegistry = $repositoryRegistry;
+        $entityName = ltrim($entityName, '\\');
+
+        if (isset($this->repositoryList[$entityName])) {
+            return $this->repositoryList[$entityName];
+        }
+
+        $repository = $this->createRepository($entityManager, $entityName);
+
+        $this->repositoryList[$entityName] = $repository;
+
+        return $repository;
     }
 
     /**
+     * Create a new repository instance for an entity class.
      *
-     * @param EntityManagerInterface $entityManager
-     * @param string $entityName
+     * @param \Doctrine\ORM\EntityManagerInterface $entityManager The EntityManager instance.
+     * @param string                               $entityName    The name of the entity.
      *
-     * @return Doctrine\Common\Persistence\ObjectRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
-    public function createRepository(EntityManagerInterface $entityManager, $entityName)
+    protected function createRepository(EntityManagerInterface $entityManager, $entityName)
     {
-        return $this->repositoryRegistry->getRepository($entityName);
+        $metadata            = $entityManager->getClassMetadata($entityName);
+        $repositoryClassName = $metadata->customRepositoryClassName;
+
+        if ($repositoryClassName === null) {
+            $configuration       = $entityManager->getConfiguration();
+            $repositoryClassName = $configuration->getDefaultRepositoryClassName();
+        }
+
+        $repository = new $repositoryClassName($entityManager, $metadata);
+        $this->callDependencyInjection($entityName, $repository);
+
+        return $repository;
+    }
+
+    public function addServiceId($entityName, $methodCalls)
+    {
+        $this->serviceIds[$entityName] = $methodCalls;
+    }
+
+    public function setContainer(ContainerInterface $container)
+    {
+        $this->container = $container;
+    }
+
+    protected function callDependencyInjection($entityName, ObjectRepository $repository)
+    {
+        if (isset($this->serviceIds[$entityName])) {
+            $methodCalls = $this->serviceIds[$entityName];
+            foreach ($methodCalls as $methodCall) {
+                $method = $methodCall[0];
+                $params = isset($methodCall[1]) ? $methodCall[1] : array();
+                // TODO: Resolve service or parameter injection here
+                call_user_func_array(array($repository, $method), $params);
+            }
+        }
     }
 }

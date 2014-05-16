@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class AddRepositoryPass implements CompilerPassInterface
 {
-    const REPOSITORY_REGISTRY_SERVICE = 'pim_catalog.doctrine.repository.registry';
+    const REPOSITORY_REGISTRY_SERVICE = 'pim_catalog.doctrine.repository.factory';
 
     const REPOSITORY_TAG = 'pim_catalog.repository';
 
@@ -29,10 +29,11 @@ class AddRepositoryPass implements CompilerPassInterface
         $repositoryServices = $container->findTaggedServiceIds(self::REPOSITORY_TAG);
 
         foreach (array_keys($repositoryServices) as $serviceId) {
-            $repositoryDef = $container->findDefinition($serviceId);
+            $repositoryDef = $container->getDefinition($serviceId);
             $entityClass   = $this->resolveParameter($container, current($repositoryDef->getArguments()));
+            $methodCalls   = $repositoryDef->getMethodCalls();
 
-            $repositoryRegistry->addMethodCall('addRepository', array($entityClass, new Reference($serviceId)));
+            $repositoryRegistry->addMethodCall('addServiceId', array($entityClass, $methodCalls));
         }
     }
 
