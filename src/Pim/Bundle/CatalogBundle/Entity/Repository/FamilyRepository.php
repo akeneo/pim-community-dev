@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Repository
@@ -125,9 +126,10 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
      * Returns all families code with their required attributes code
      * Requirements can be restricted to a channel.
      *
+     * @param Family  $family
      * @param Channel $channel
      *
-     * return array
+     * @return array
      */
     public function getFullFamilies(Family $family = null, Channel $channel = null)
     {
