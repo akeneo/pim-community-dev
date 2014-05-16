@@ -218,7 +218,15 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         );
 
         $values         = new ArrayCollection($rawValues);
-        $filteredValues = new ArrayCollection(array($rawValues[1], $rawValues[3], $rawValues[5]));
+        $filteredValues = new ArrayCollection(
+            array(
+                $rawValues[1],
+                $rawValues[3],
+                $rawValues[5],
+                $rawValues[6],
+                $rawValues[7]
+            )
+        );
 
         $identifier = $this->getValueMock(
             $this->getAttributeMock('sku', false, false, 'pim_catalog_identifier'),
@@ -226,7 +234,7 @@ class FlatProductNormalizerTest extends \PHPUnit_Framework_TestCase
         );
 
         $family  = $this->getFamilyMock('garden-tool');
-        $product        = $this->getProductMock($identifier, $filteredValues, $family, 'cat1, cat2, cat3');
+        $product        = $this->getProductMock($identifier, $values, $family, 'cat1, cat2, cat3');
 
         $context = array(
             'identifier'  => $identifier,
