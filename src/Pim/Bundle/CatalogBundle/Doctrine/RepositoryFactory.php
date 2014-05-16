@@ -68,14 +68,31 @@ class RepositoryFactory extends DefaultRepositoryFactory
         return $repository;
     }
 
+    /**
+     * Add methods to call for each repository
+     *
+     * @param string $entityName
+     * @param array  $methodCalls
+     *
+     * @return RepositoryFactory
+     */
     public function addServiceId($entityName, $methodCalls)
     {
         $this->serviceIds[$entityName] = $methodCalls;
     }
 
+    /**
+     * Set container
+     *
+     * @param ContainerInterface $container
+     *
+     * @return RepositoryFactory
+     */
     public function setContainer(ContainerInterface $container)
     {
         $this->container = $container;
+
+        return $this;
     }
 
     protected function callDependencyInjection($entityName, ObjectRepository $repository)
