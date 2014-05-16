@@ -26,7 +26,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @var \Context\Page\Base\Grid
      */
-    protected $datagrid;
+    public $datagrid;
 
     /**
      * @param PageFactory $pageFactory
@@ -280,6 +280,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $action = ucfirst(strtolower($actionName));
         $this->datagrid->clickOnAction($element, $action);
+        $this->wait();
     }
 
     /**
