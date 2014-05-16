@@ -11,7 +11,6 @@ parameters:
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
 
-    pim_catalog.doctrine.repository.registry.class: Pim\Bundle\CatalogBundle\Doctrine\RepositoryRegistry
     pim_catalog.doctrine.repository.factory.class:  Pim\Bundle\CatalogBundle\Doctrine\RepositoryFactory
 
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
