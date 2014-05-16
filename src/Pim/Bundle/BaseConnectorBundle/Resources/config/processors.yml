@@ -29,6 +29,7 @@ services:
         parent: pim_base_connector.processor.csv_serializer
         arguments:
             - '@pim_catalog.manager.channel'
+            - '@security.context'
 
     pim_base_connector.processor.dummy:
         class: %pim_base_connector.processor.dummy.class%
