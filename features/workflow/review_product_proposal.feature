@@ -5,7 +5,7 @@ Feature: Review a product changes proposal
   I need to be able to review product changes proposal
 
   # TODO Change admin when contributor and owner roles have been introduced
-  Scenario: Succesfully accept a product changes proposal
+  Scenario: Succesfully accept a text attribute product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
       | sku        | family  | name-en_US |

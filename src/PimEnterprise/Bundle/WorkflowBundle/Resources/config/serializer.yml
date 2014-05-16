@@ -2,6 +2,8 @@ parameters:
     pimee_workflow.normalizer.product.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\ProductNormalizer
     pimee_workflow.normalizer.product_value.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\ProductValueNormalizer
     pimee_workflow.normalizer.media.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\MediaNormalizer
+    pimee_workflow.normalizer.prices_collection.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\PricesCollectionNormalizer
+
 
 services:
     pimee_workflow.normalizer.product:
@@ -19,6 +21,12 @@ services:
     pimee_workflow.normalizer.media:
         public: false
         class: %pimee_workflow.normalizer.media.class%
+        tags:
+            - { name: pim_serializer.normalizer }
+
+    pimee_workflow.normalizer.prices_collection:
+        public: false
+        class: %pimee_workflow.normalizer.prices_collection.class%
         tags:
             - { name: pim_serializer.normalizer }
 
