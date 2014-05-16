@@ -54,11 +54,13 @@ class ProductValueNormalizer extends SerializerAwareNormalizer implements Normal
     {
         // TODO (2014-05-15 15:08 by Gildas): $context['instance'] must be an instance of AbstractProductValue
         $instance = $context['instance'];
+        // TODO (2014-05-16 11:52 by Gildas): ensure attribute_type key presence
+        $attributeType = $context['attribute_type'];
 
-        if (!in_array($class, $this->scalarAttributeTypes)) {
+        if (!in_array($attributeType, $this->scalarAttributeTypes)) {
             $data = $this->serializer->denormalize(
                 $data,
-                $instance->getAttribute()->getAttributeType(),
+                $attributeType,
                 $format,
                 ['instance' => $instance->getData()]
             );

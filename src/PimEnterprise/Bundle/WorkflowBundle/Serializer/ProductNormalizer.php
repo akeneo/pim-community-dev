@@ -56,7 +56,15 @@ class ProductNormalizer extends SerializerAwareNormalizer
                 throw new \Exception(sprintf('Cannot find value for "%s"', $key));
             }
 
-            $this->serializer->denormalize($proposal, 'value', $format, ['instance' => $value]);
+            $this->serializer->denormalize(
+                $proposal,
+                'value',
+                $format,
+                [
+                    'instance' => $value,
+                    'attribute_type' => $value->getAttribute()->getAttributeType(),
+                ]
+            );
         }
 
         return $context['instance'];

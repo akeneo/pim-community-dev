@@ -59,15 +59,18 @@ class ProductNormalizerSpec extends ObjectBehavior
         $keyGen,
         SerializerInterface $serializer,
         Model\AbstractProduct $product,
-        Model\AbstractProductValue $value
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
     ) {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
         $keyGen->getPart('foo', ProductValueKeyGenerator::CODE)->willReturn('foo');
         $keyGen->getPart('foo', ProductValueKeyGenerator::LOCALE)->willReturn(null);
         $keyGen->getPart('foo', ProductValueKeyGenerator::SCOPE)->willReturn(null);
         $product->getValue('foo', null, null)->willReturn($value);
+        $value->getAttribute()->willReturn($attribute);
+        $attribute->getAttributeType()->willReturn('custom_type');
 
-        $serializer->denormalize('bar', 'value', 'proposal', ['instance' => $value])->shouldBeCalled();
+        $serializer->denormalize('bar', 'value', 'proposal', ['instance' => $value, 'attribute_type' => 'custom_type'])->shouldBeCalled();
 
         $this->setSerializer($serializer);
         $this->denormalize(['foo' => 'bar'], 'product', 'proposal', ['instance' => $product]);
