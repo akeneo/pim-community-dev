@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Util;
 
-use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
  * Generate and parse product value key
@@ -25,7 +25,7 @@ class ProductValueKeyGenerator
      *
      * @return string
      */
-    public function generate(Model\AbstractProductValue $value)
+    public function generate(AbstractProductValue $value)
     {
         $attribute = $value->getAttribute();
         $key = $attribute->getCode();
@@ -47,8 +47,8 @@ class ProductValueKeyGenerator
     /**
      * Get a specific part of a key
      *
-     * @param string $key
-     * @param int    $part one of self::CODE, self::LOCALE or self::SCOPE
+     * @param string  $key
+     * @param integer $part one of self::CODE, self::LOCALE or self::SCOPE
      *
      * @return null|string
      */

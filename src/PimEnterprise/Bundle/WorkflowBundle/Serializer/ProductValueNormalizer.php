@@ -21,6 +21,9 @@ class ProductValueNormalizer extends SerializerAwareNormalizer implements Normal
     /** @var array */
     protected $scalarAttributeTypes;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         // TODO (2014-05-15 15:07 by Gildas): Is it interesting to configure scalar attribute types?

@@ -86,6 +86,13 @@ class ProductNormalizer extends SerializerAwareNormalizer
         return self::FORMAT === $format && 'product' === $type;
     }
 
+    /**
+     * Get the product value corresponding to the key
+     *
+     * @param Model\AbstractProduct $product
+     *
+     * @return Model\AbstractProductValue
+     */
     protected function getValue(Model\AbstractProduct $product, $key)
     {
         return $product->getValue(
