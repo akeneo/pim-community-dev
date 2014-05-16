@@ -75,7 +75,7 @@ class AttributeGroupAccess
     /**
      * Set role
      *
-     * @param Role $roleId
+     * @param Role $role
      *
      * @return AttributeGroupAccess
      */

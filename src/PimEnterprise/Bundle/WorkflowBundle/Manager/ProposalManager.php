@@ -14,16 +14,25 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
  */
 class ProposalManager
 {
+    /** @var ManagerRegistry */
     protected $registry;
 
+    /** @var ProductChangesApplier */
     protected $applier;
 
+    /**
+     * @param ManagerRegistry       $registry
+     * @param ProductChangesApplier $applier
+     */
     public function __construct(ManagerRegistry $registry, ProductChangesApplier $applier)
     {
         $this->registry = $registry;
         $this->applier = $applier;
     }
 
+    /**
+     * @param Proposal $proposal
+     */
     public function approve(Proposal $proposal)
     {
         $product = $proposal->getProduct();
