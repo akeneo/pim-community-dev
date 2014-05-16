@@ -49,13 +49,16 @@ table.grid {
   a.action {
     display: table-cell;
     i {
-      padding: 4px 10px;
+      opacity: 0;
+      margin: 0 2px;
+      padding: 0px 5px;
       border: 1px solid #ccc;
       .border-radius(3px);
     }
   }
 }
 tr:hover>.action-cell a.action>i {
+  opacity: 1;
   background-color: @backgroundColor-white;
   &:hover {
     background-color: @color-light_grey;
