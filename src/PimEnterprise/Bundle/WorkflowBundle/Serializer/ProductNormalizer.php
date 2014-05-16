@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model;
+use PimEnterprise\Bundle\WorkflowBundle\Util\ProductValueKeyGenerator;
 
 /**
  * Product proposal normalizer
@@ -19,6 +20,17 @@ class ProductNormalizer extends SerializerAwareNormalizer
     /** @staticvar string */
     const FORMAT = 'proposal';
 
+    /** @var ProductValueKeyGenerator */
+    protected $keyGen;
+
+    /**
+     * @param ProductValueKeyGenerator|null $keyGen
+     */
+    public function __construct(ProductValueKeyGenerator $keyGen = null)
+    {
+        $this->keyGen = $keyGen ?: new ProductValueKeyGenerator();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -26,7 +38,7 @@ class ProductNormalizer extends SerializerAwareNormalizer
     {
         $data = [];
         foreach ($object->getValues() as $value) {
-            $data[$this->createValueKey($value)] = $this->serializer->normalize($value, $format, $context);
+            $data[$this->keyGen->generate($value)] = $this->serializer->normalize($value, $format, $context);
         }
 
         return $data;
@@ -37,8 +49,10 @@ class ProductNormalizer extends SerializerAwareNormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        // TODO (2014-05-16 00:10 by Gildas): $context['instance'] must be an AbstractProduct instance
         foreach ($data as $key => $proposal) {
             if (null === $value = $this->getValue($context['instance'], $key)) {
+                // TODO (2014-05-16 00:17 by Gildas): Is it a real use case, or should we create value OTF?
                 throw new \Exception(sprintf('Cannot find value for "%s"', $key));
             }
 
@@ -67,45 +81,9 @@ class ProductNormalizer extends SerializerAwareNormalizer
     protected function getValue(Model\AbstractProduct $product, $key)
     {
         return $product->getValue(
-            $this->getKeyPart($key, 'code'),
-            $this->getKeyPart($key, 'locale'),
-            $this->getKeyPart($key, 'scope')
+            $this->keyGen->getPart($key, ProductValueKeyGenerator::CODE),
+            $this->keyGen->getPart($key, ProductValueKeyGenerator::LOCALE),
+            $this->keyGen->getPart($key, ProductValueKeyGenerator::SCOPE)
         );
-    }
-
-    protected function createValueKey(Model\AbstractProductValue $value)
-    {
-        $attribute = $value->getAttribute();
-        $key = $attribute->getCode();
-
-        if ($attribute->isLocalizable()) {
-            $key .= '-' . $value->getLocale();
-        }
-
-        if ($attribute->isScopable()) {
-            $key .= '-' . $value->getScope();
-        }
-
-        return $key;
-    }
-
-    protected function getKeyPart($key, $part)
-    {
-        $parts = explode('-', $key);
-        switch ($part) {
-            case 'code':
-                return $parts[0];
-
-            case 'locale':
-                return isset($parts[1]) ? $parts[1] : null;
-
-            case 'scope':
-                return isset($parts[2]) ? $parts[2] : null;
-
-            default:
-                throw new \InvalidArgumentException(
-                    sprintf('Unknown key part "%s"', $part)
-                );
-        }
     }
 }
