@@ -64,7 +64,9 @@ class RepositoryFactory extends DefaultRepositoryFactory
         }
 
         $repository = new $repositoryClassName($entityManager, $metadata);
-        $this->callDependencyInjection($entityName, $repository);
+        if (isset($this->serviceIds[$entityName])) {
+            $this->callDependencyInjection($entityName, $repository);
+        }
 
         return $repository;
     }
@@ -82,13 +84,27 @@ class RepositoryFactory extends DefaultRepositoryFactory
     protected function callDependencyInjection($entityName, ObjectRepository $repository)
     {
         if (isset($this->serviceIds[$entityName])) {
+
             $methodCalls = $this->serviceIds[$entityName];
             foreach ($methodCalls as $methodCall) {
                 $method = $methodCall[0];
                 $params = isset($methodCall[1]) ? $methodCall[1] : array();
-                // TODO: Resolve service or parameter injection here
+                $params = $this->resolveParameters($params);
                 call_user_func_array(array($repository, $method), $params);
             }
         }
+    }
+
+    protected function resolveParameters(array $params = array())
+    {
+        foreach ($params as $key => $param) {
+            if ($this->container->hasParameter($param)) {
+                $params[$key] = $this->container->getParameter($param);
+            } elseif ($this->container->has($param)) {
+                $params[$key] = $this->container->get($param);
+            }
+        }
+
+        return $params;
     }
 }
