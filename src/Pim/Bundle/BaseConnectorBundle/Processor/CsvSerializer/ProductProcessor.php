@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
@@ -32,18 +33,26 @@ class ProductProcessor extends HeterogeneousProcessor
     protected $channelManager;
 
     /**
-     * @param SerializerInterface $serializer
-     * @param LocaleManager       $localeManager
-     * @param ChannelManager      $channelManager
+     * @var SecurityContextInterface
+     */
+    protected $securityContext;
+
+    /**
+     * @param SerializerInterface      $serializer
+     * @param LocaleManager            $localeManager
+     * @param ChannelManager           $channelManager
+     * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         SerializerInterface $serializer,
         LocaleManager $localeManager,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        SecurityContextInterface $securityContext
     ) {
         parent::__construct($serializer, $localeManager);
 
         $this->channelManager = $channelManager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -76,12 +85,13 @@ class ProductProcessor extends HeterogeneousProcessor
             $products,
             'csv',
             array(
-                'delimiter'     => $this->delimiter,
-                'enclosure'     => $this->enclosure,
-                'withHeader'    => $this->withHeader,
-                'heterogeneous' => true,
-                'scopeCode'     => $this->channel,
-                'localeCodes'   => $this->getLocaleCodes($this->channel)
+                'delimiter'       => $this->delimiter,
+                'enclosure'       => $this->enclosure,
+                'withHeader'      => $this->withHeader,
+                'heterogeneous'   => true,
+                'scopeCode'       => $this->channel,
+                'localeCodes'     => $this->getLocaleCodes($this->channel),
+                'securityContext' => $this->securityContext,
             )
         );
 

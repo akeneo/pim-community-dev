@@ -20,7 +20,7 @@ class FlatProductValueNormalizerFilter implements NormalizerFilterInterface
     public function filter(Collection $objects, array $context = [])
     {
         if (!isset($context['identifier'])) {
-            throw new \Exception('"identifier" is required in the context.');
+            throw new \LogicException('"identifier" is required in the context.');
         }
 
         $identifier  = $context['identifier'];
@@ -31,7 +31,7 @@ class FlatProductValueNormalizerFilter implements NormalizerFilterInterface
             function ($value) use ($identifier, $scopeCode, $localeCodes) {
 
                 if (!$value instanceof ProductValueInterface) {
-                    throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+                    throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
                 }
 
                 return (
