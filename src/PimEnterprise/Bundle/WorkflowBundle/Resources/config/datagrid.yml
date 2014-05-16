@@ -12,7 +12,7 @@ datagrid:
             changes:
                 label: Changes
                 type: twig
-                template: PimEnterpriseEnrichBundle:Datagrid:Property/changes.html.twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
                 frontend_type: html
             createdAt:
                 label: Proposed at

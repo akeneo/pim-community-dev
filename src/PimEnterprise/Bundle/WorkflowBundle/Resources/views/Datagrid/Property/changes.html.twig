@@ -1,0 +1,19 @@
+<table>
+    {% for attribute, changes in value  %}
+        <tr>
+            <td>{{ attribute }}</td>
+            <td>
+                <dl>
+                {% if changes is iterable %}
+                    {% for property, change in changes %}
+                        <dt>{{ property }}</dt>
+                            <dd>{{ change }}</dd>
+                    {% endfor %}
+                {% else %}
+                    <dd>{{ changes }}</dd>
+                {% endif %}
+                </dl>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
