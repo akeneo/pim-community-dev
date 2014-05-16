@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
+use Doctrine\ORM\Repository\DefaultRepositoryFactory;
+
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
