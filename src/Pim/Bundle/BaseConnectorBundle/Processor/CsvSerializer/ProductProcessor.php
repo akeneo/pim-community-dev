@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Processor\CsvSerializer;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
