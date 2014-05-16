@@ -72,36 +72,26 @@ class FlatProductNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = array())
+    public function normalize($product, $format = null, array $context = array())
     {
-        $scopeCode = null;
-        if (isset($context['scopeCode'])) {
-            $scopeCode = $context['scopeCode'];
-        }
-
-        $localeCodes = array();
-        if (isset($context['localeCodes'])) {
-            $localeCodes = $context['localeCodes'];
-        }
-
         if (isset($context['fields']) && !empty($context['fields'])) {
             $this->fields  = array_fill_keys($context['fields'], '');
             $this->results = $this->fields;
         } else {
-            $this->results = $this->normalizeValue($object->getIdentifier());
+            $this->results = $this->normalizeValue($product->getIdentifier());
         }
 
-        $this->normalizeFamily($object->getFamily());
+        $this->normalizeFamily($product->getFamily());
 
-        $this->normalizeGroups($object->getGroupCodes());
+        $this->normalizeGroups($product->getGroupCodes());
 
-        $this->normalizeCategories($object->getCategoryCodes());
+        $this->normalizeCategories($product->getCategoryCodes());
 
-        $this->normalizeAssociations($object->getAssociations());
+        $this->normalizeAssociations($product->getAssociations());
 
-        $this->normalizeValues($object, $scopeCode, $localeCodes);
+        $this->normalizeValues($product, $context);
 
-        $this->normalizeProperties($object);
+        $this->normalizeProperties($product);
 
         return $this->results;
     }
@@ -128,12 +118,11 @@ class FlatProductNormalizer implements NormalizerInterface
      * Normalize values
      *
      * @param ProductInterface $product
-     * @param string           $scopeCode
-     * @param array            $localeCodes
+     * @param array            $context
      *
      * @return null
      */
-    protected function normalizeValues(ProductInterface $product, $scopeCode, $localeCodes)
+    protected function normalizeValues(ProductInterface $product, array $context)
     {
         if (empty($this->fields)) {
 
@@ -143,11 +132,7 @@ class FlatProductNormalizer implements NormalizerInterface
             foreach ($this->valuesFilters as $filter) {
                 $filteredValues = $filter->filter(
                     $product->getValues(),
-                    array(
-                        'identifier'  => $product->getIdentifier(),
-                        'scopeCode'   => $scopeCode,
-                        'localeCodes' => $localeCodes,
-                    )
+                    array('identifier'  => $product->getIdentifier()) + $context
                 );
             }
 

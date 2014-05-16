@@ -26,7 +26,7 @@ class ProductValueNormalizerFilter implements NormalizerFilterInterface
             function ($value) use ($channels) {
 
                 if (!$value instanceof ProductValueInterface) {
-                    throw new \Exception('This filter only handles objects of type "ProductValueInterface"');
+                    throw new \LogicException('This filter only handles objects of type "ProductValueInterface"');
                 }
 
                 return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
