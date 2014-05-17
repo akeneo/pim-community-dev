@@ -129,7 +129,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      * its family requirements. Only missing completenesses are generated.
      *
      * @param array $normalizedData
-     * @parma array $normalizedReqs
+     * @param array $normalizedReqs
      *
      * @return array $completenesses
      */
@@ -246,6 +246,8 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param ProductInterface $product
      * @param Channel          $channel
+     *
+     * @return array
      */
     protected function getFamilyRequirements(ProductInterface $product = null, Channel $channel = null)
     {
@@ -325,7 +327,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      *
      * @param AbstractAttribute $attribute
      * @param Channel           $channel
-     * @parma Locale            $locale
+     * @param Locale            $locale
      *
      * @return string
      */

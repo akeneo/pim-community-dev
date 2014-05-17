@@ -134,8 +134,6 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
             ->getMock();
     }
 
-
-
     /**
      * @param array $media
      *
