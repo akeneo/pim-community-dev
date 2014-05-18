@@ -34,7 +34,7 @@ interface JobRepositoryInterface
      *
      * @return JobExecution
      */
-    public function updateJobExecution(JobExecution $job);
+    public function updateJobExecution(JobExecution $jobExecution);
 
     /**
      * Update a StepExecution
@@ -43,5 +43,5 @@ interface JobRepositoryInterface
      *
      * @return StepExecution
      */
-    public function updateStepExecution(StepExecution $job);
+    public function updateStepExecution(StepExecution $stepExecution);
 }
