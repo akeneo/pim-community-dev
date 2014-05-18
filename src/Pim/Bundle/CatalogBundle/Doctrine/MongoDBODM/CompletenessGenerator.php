@@ -436,12 +436,15 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     {
         $productQb = $this->documentManager->createQueryBuilder($this->productClass);
 
+        $pullExpr = $productQb->expr()
+                ->addAnd($productQb->expr()->field('channel')->equals($channel->getId()))
+                ->addAnd($productQb->expr()->field('locale')->equals($locale->getId()));
+
         $productQb
             ->update()
-            ->field('completenesses.channel')->equals($channel->getId())
-            ->field('completenesses.locale')->equals($locale->getId())
-            ->field('completenesses.$')->unsetField()
+            ->multiple(true)
             ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))->unsetField()
+            ->field('completenesses')->pull($pullExpr)
             ->getQuery()
             ->execute()
         ;
