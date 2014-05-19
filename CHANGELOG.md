@@ -15,10 +15,11 @@
 - MongoDB completeness calculation performances
 
 ## Bug fixes
-- replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
-- add missing translation keys for "manage filters", "all", "records", etc
-- images import from fixtures now works
+- Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Add missing translation keys for "manage filters", "all", "records", etc
+- Images import from fixtures now works
 - Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
+- Deleting completeness when a locale of a channel is deleted
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -36,6 +37,11 @@
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
 - InstallerBundle/LoaderInterface has been changed to pass a ProdutManager to manage media (loading images from fixtures)
 - Refactor VersioningBundle - a lot of API changes.
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` and use only the family repository
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator` and use only the entity manager
+- Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
+- Add a dependency to the completeness manager on `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler`
+- Add a dependency to the channel repository on `Pim\Bundle\CatalogBundle\Manager\CompletenessManager`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

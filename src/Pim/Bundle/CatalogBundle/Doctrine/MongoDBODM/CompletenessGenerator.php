@@ -428,4 +428,25 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             ->getQuery()
             ->execute();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    {
+        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+
+        $pullExpr = $productQb->expr()
+                ->addAnd($productQb->expr()->field('channel')->equals($channel->getId()))
+                ->addAnd($productQb->expr()->field('locale')->equals($locale->getId()));
+
+        $productQb
+            ->update()
+            ->multiple(true)
+            ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))->unsetField()
+            ->field('completenesses')->pull($pullExpr)
+            ->getQuery()
+            ->execute()
+        ;
+    }
 }
