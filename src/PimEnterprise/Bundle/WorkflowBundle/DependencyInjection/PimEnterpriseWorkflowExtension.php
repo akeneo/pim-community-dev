@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\CatalogBundle\DependencyInjection;
+namespace PimEnterprise\Bundle\WorkflowBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 /**
- * PimEnterprise\Bundle\CatalogBundle\DependencyInjection
+ * PimEnterprise\Bundle\WorkflowBundle\DependencyInjection
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
