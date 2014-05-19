@@ -25,6 +25,7 @@ class AddRepositoryPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
+        //@todo: change for factory
         $repositoryRegistry = $container->getDefinition(self::REPOSITORY_REGISTRY_SERVICE);
         $repositoryServices = $container->findTaggedServiceIds(self::REPOSITORY_TAG);
 
