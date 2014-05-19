@@ -19,12 +19,8 @@ class ProposalRepository extends EntityRepository
     {
         return $this
             ->createQueryBuilder('p')
-            ->select('p.id')
-            ->addSelect('p.createdBy')
-            ->addSelect('p.createdAt')
-            ->addSelect('p.changes')
             ->where('p.product = :product')
-            ->andWhere('p.status IS NULL');
+            ->orderBy('p.createdAt', 'desc');
     }
 
     /**

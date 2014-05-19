@@ -1,0 +1,13 @@
+pimee_workflow:
+    proposal:
+        author:  Author
+        created: Proposed at
+        changes: Changes
+        status:
+            label:    Status
+            approved: Approved
+            refused:  Refused
+            pending:  Pending
+        action:
+            approve: Approve
+            refuse: Refuse

@@ -6,18 +6,23 @@ datagrid:
             repository_method: createDatagridQueryBuilder
         columns:
             createdBy:
-                label: Proposed by
+                label: pimee_workflow.proposal.author
                 type: field
                 frontend_type: string
             changes:
-                label: Changes
+                label: pimee_workflow.proposal.changes
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
                 frontend_type: html
             createdAt:
-                label: Proposed at
+                label: pimee_workflow.proposal.created
                 type: field
                 frontend_type: datetime
+            status:
+                label: pimee_workflow.proposal.status.label
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposal_status.html.twig
+                frontend_type: html
         properties:
             id: ~
             approve_link:
@@ -33,11 +38,12 @@ datagrid:
         actions:
             approve:
                 type: navigate
-                label: Approve
+                label: pimee_workflow.proposal.action.approve
                 icon: ok
                 link: approve_link
             refuse:
                 type: navigate
-                label: Refuse
+                label: pimee_workflow.proposal.action.refuse
                 icon: remove
                 link: refuse_link
+        action_configuration: @pimee_workflow.datagrid.proposal_grid_helper->getActionConfigurationClosure

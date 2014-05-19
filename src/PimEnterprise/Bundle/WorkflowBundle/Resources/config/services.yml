@@ -6,6 +6,7 @@ parameters:
     pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
     pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
+    pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
 
 services:
     pimee_workflow.event_listener.proposals_grid_listener:
@@ -60,3 +61,6 @@ services:
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
             - '@pim_serializer'
+
+    pimee_workflow.datagrid.proposal_grid_helper:
+        class: %pimee_workflow.datagrid.proposal_grid_helper.class%
