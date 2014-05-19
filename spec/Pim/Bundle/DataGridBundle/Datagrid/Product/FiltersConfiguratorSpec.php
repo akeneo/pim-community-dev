@@ -12,7 +12,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 {
     function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
     {
-        $this->beConstructedWith($configuration, $registry, 'Pim/Catalog/Product');
+        $this->beConstructedWith($registry, 'Pim/Catalog/Product');
     }
 
     function it_is_a_configurator()
@@ -71,7 +71,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         ];
         $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
     function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
@@ -102,6 +102,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
         $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
-        $this->shouldThrow('\LogicException')->duringConfigure();
+        $this->shouldThrow('\LogicException')->duringconfigure($configuration);
     }
 }
