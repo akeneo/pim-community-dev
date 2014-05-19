@@ -27,22 +27,19 @@ class SortersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the conf registry
+     * @param ConfigurationRegistry $registry the conf registry
      */
-    public function __construct(
-        DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry
-    ) {
-        $this->configuration   = $configuration;
+    public function __construct(ConfigurationRegistry $registry)
+    {
         $this->registry        = $registry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->addAttributeSorters();
         $this->removeExtraSorters();
     }

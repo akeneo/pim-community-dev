@@ -26,22 +26,19 @@ class FiltersConfigurator implements ConfiguratorInterface
     protected $registry;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the conf registry
+     * @param ConfigurationRegistry $registry the conf registry
      */
-    public function __construct(
-        DatagridConfiguration $configuration,
-        ConfigurationRegistry $registry
-    ) {
-        $this->configuration  = $configuration;
-        $this->registry       = $registry;
+    public function __construct(ConfigurationRegistry $registry)
+    {
+        $this->registry = $registry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
 
