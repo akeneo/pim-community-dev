@@ -55,7 +55,7 @@ class ResolveDoctrineTargetRepositoriesPass implements CompilerPassInterface
      */
     protected function getParametersMapping(ContainerBuilder $container)
     {
-        $repositoryIds = $container->findTaggedServiceIds('pim_catalog.repository');
+        $repositoryIds = $container->findTaggedServiceIds('pim_repository');
 
         $mapping = array();
         foreach (array_keys($repositoryIds) as $repositoryId) {
