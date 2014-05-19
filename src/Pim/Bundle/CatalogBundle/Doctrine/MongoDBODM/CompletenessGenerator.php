@@ -443,7 +443,9 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
         $productQb
             ->update()
             ->multiple(true)
-            ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))->unsetField()
+            ->field(
+                sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode())
+            )->unsetField()
             ->field('completenesses')->pull($pullExpr)
             ->getQuery()
             ->execute();
