@@ -1,0 +1,2 @@
+parameters:
+    pimee_catalog.entity.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess

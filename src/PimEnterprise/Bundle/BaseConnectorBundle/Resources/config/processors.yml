@@ -1,0 +1,6 @@
+services:
+
+    pimee_base_connector.processor.attribute_group_access:
+        parent: pim_base_connector.processor.transformer
+        arguments:
+            - %pimee_catalog.entity.attribute_group_access.class%
