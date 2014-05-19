@@ -350,12 +350,6 @@ pim_catalog_metric: Meeteenheid
 Activated: Geactiveerd
 Disable: Uitschakelen
 pim_enrich.mass_edit_action:
-  page_title: Producten
-  page_subtitle: 'Massaal bewerken (1 product)|Massaal bewerken (%count% producten)'
-  title: Kies bewerking
-  subtitle: 'Kies de bewerking die u wilt uitvoeren op het geselecteerde product|Kies de bewerking die u wilt uitvoeren op de geselecteerde %count% producten'
-  confirm: 'U staat op het punt een product bij te werken met de volgende informatie. Alstublieft bevestigen. |U staat op het punt %count% producten bij te werken met de volgende informatie. Alstublieft bevestigen.'
-  limit_exceeded: 'Kies minder dan %limit% producten om te bewerken'
   change-status:
     label: Status wijzigen (inschakelen / uitschakelen)
     description: De geselecteerde producten zullen worden ingeschakeld of uitgeschakeld.
@@ -377,10 +371,6 @@ pim_enrich.mass_edit_action:
     label: Toevoegen aan groepen
     description: Selecteer de groepen waarin u de geselecteerde producten wilt toevoegen
     success_flash: Producten werden met succes toegevoegd aan de geselecteerde groepen
-Choose products: Kies producten
-Choose operation: Kies bewerking
-Configure: Configureer
-Confirm: Bevestigen
 To enable: Om in te schakelen
 Select attributes: Selecteer attributen
 Select: Selecteer
