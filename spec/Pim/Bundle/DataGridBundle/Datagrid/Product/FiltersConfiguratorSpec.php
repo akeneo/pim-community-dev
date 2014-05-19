@@ -102,6 +102,6 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $registry->getConfiguration('pim_catalog_identifier')->willReturn(['filter' => ['identifier_config']]);
         $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
-        $this->shouldThrow('\LogicException')->duringconfigure($configuration);
+        $this->shouldThrow('\LogicException')->duringConfigure($configuration);
     }
 }
