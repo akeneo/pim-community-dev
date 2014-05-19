@@ -60,6 +60,8 @@ datagrid:
             columns:
                 author:
                     data_name: p.author
+                status:
+                    data_name: p.status
                 createdAt:
                     data_name: p.createdAt
             default:
