@@ -1,0 +1,21 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
+    type: document
+    collection: pimee_workflow_proposal
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM\ProposalRepository
+    fields:
+        id:
+            id: true
+            generator: { strategy: AUTO }
+        createdAt:
+            type: date
+            column: created_at
+        changes:
+            type: hash
+        product:
+            reference: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
+        createdBy:
+            type: string
+        status:
+            type: integer

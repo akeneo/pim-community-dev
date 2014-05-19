@@ -42,8 +42,8 @@ class ProposalWidget implements WidgetInterface
     public function getParameters()
     {
         $proposals = $this->registry
-            ->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')
-            ->findBy([], ['createdAt' => 'DESC'], 10);
+            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')
+            ->findBy(['status' => null], ['createdAt' => 'DESC'], 10);
 
         return [
             'params' => $proposals

@@ -2,7 +2,7 @@ default:
     paths:
         features: features
     context:
-        class:  Context\FeatureContext
+        class:  Context\EnterpriseContext
         parameters:
             base_url: http://akeneo-pim-enterprise-behat.local/
             window_width: 1280

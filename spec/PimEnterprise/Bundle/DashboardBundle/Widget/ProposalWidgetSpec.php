@@ -11,7 +11,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, EntityRepository $repository)
     {
-        $registry->getRepository('PimEnterprise\Bundle\CatalogBundle\Model\Proposal')->willReturn($repository);
+        $registry->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')->willReturn($repository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 
         $this->beConstructedWith($registry);
@@ -34,7 +34,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
     function it_passes_proposals_from_the_repository_to_the_template($repository)
     {
-        $repository->findBy([], ['createdAt' => 'DESC'], 10)->willReturn(['proposal one', 'proposal two']);
+        $repository->findBy(['status' => null], ['createdAt' => 'DESC'], 10)->willReturn(['proposal one', 'proposal two']);
         $this->getParameters()->shouldReturn(['params' => ['proposal one', 'proposal two']]);
     }
 }

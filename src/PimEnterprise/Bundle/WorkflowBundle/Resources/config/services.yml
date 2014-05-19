@@ -1,0 +1,62 @@
+parameters:
+    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister
+    pimee_workflow.factory.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory
+    pimee_workflow.persister.product_changes_provider.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesProvider
+    pimee_workflow.entity.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
+    pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
+    pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
+    pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
+
+services:
+    pimee_workflow.event_listener.proposals_grid_listener:
+        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
+        arguments:
+          - [ product ]
+          - '@oro_datagrid.datagrid.request_params'
+        tags:
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposals-grid, method: onBuildAfter }
+
+    pimee_workflow.controller.proposal:
+        class: %pimee_workflow.controller.proposal.class%
+        parent: pim_enrich.controller.abstract
+        scope: request
+        arguments:
+            - '@pim_catalog.repository.proposal'
+            - '@pimee_workflow.manager.proposal'
+
+    pim_catalog.repository.proposal:
+        class: %doctrine.entity_repository.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pimee_workflow.entity.proposal.class%]
+
+    pim_catalog.persister.product:
+        class: %pim_catalog.persister.product.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.completeness'
+            - '@security.context'
+            - '@pimee_workflow.factory.proposal'
+            - '@pimee_workflow.persister.product_changes_provider'
+
+    pimee_workflow.factory.proposal:
+        class: %pimee_workflow.factory.proposal.class%
+
+    pimee_workflow.persister.product_changes_provider:
+        public: false
+        class: %pimee_workflow.persister.product_changes_provider.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_serializer'
+
+    pimee_workflow.manager.proposal:
+        class: %pimee_workflow.manager.proposal.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pimee_workflow.persister.product_changes_applier'
+
+    pimee_workflow.persister.product_changes_applier:
+        public: false
+        class: %pimee_workflow.persister.product_changes_applier.class%
+        arguments:
+            - '@pim_serializer'
