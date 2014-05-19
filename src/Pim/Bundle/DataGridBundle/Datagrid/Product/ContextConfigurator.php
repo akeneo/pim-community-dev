@@ -116,25 +116,19 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $gridViewRepository;
 
     /**
-     * @param DatagridConfiguration    $configuration
      * @param ProductManager           $productManager
      * @param RequestParameters        $requestParams
-     * @param Request                  $request
      * @param SecurityContextInterface $securityContext
      * @param EntityRepository         $gridViewRepository
      */
     public function __construct(
-        DatagridConfiguration $configuration,
         ProductManager $productManager,
         RequestParameters $requestParams,
-        Request $request,
         SecurityContextInterface $securityContext,
         EntityRepository $gridViewRepository
     ) {
-        $this->configuration      = $configuration;
         $this->productManager     = $productManager;
         $this->requestParams      = $requestParams;
-        $this->request            = $request;
         $this->securityContext    = $securityContext;
         $this->gridViewRepository = $gridViewRepository;
     }
@@ -142,8 +136,9 @@ class ContextConfigurator implements ConfiguratorInterface
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->addProductStorage();
         $this->addLocaleCode();
         $this->addScopeCode();
@@ -154,6 +149,14 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -345,7 +348,7 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $repository     = $this->productManager->getAttributeRepository();
+        $repository    = $this->productManager->getAttributeRepository();
         $attributeIds  = $repository->getAttributeIdsUseableInGrid();
         $currentLocale = $this->getCurrentLocaleCode();
         $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
@@ -361,7 +364,6 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getUserGridColumns()
     {
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
         }
