@@ -88,6 +88,23 @@ Feature: Review a product changes proposal
     Then the product Price in $ should be "90.00"
     Then the product Price in € should be "150.00"
 
+  # This scenario is bugged because the date retrieval create DateTime with H-2
+  @skip
+  Scenario: Succesfully accept a date attribute product changes proposal
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku       | family  | release_date-ecommerce |
+      | my-tshirt | tshirts | 2014-05-14             |
+    And role "Administrator" has the right to edit the attribute group "sales"
+    And "admin" has submitted the following proposal for "my-tshirt":
+      | release_date--ecommerce | 2014-05-20 |
+    And I am logged in as "admin"
+    When I edit the "my-tshirt" product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "release_date"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product ecommerce Release date should be "2014-05-20"
 
   Scenario: Succesfully refuse a product changes proposal
     Given a "footwear" catalog configuration
