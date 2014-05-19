@@ -49,8 +49,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     {
         $cm = $args->getClassMetadata();
         $className = $cm->getName();
-        if (isset($this->resolveTargetRepositories[ltrim($className)])
-            && ($cm->getType() === 'entity' || $cm->getType() === 'document')) {
+        if (isset($this->resolveTargetRepositories[ltrim($className)])) {
             $cm->customRepositoryClassName = $this->resolveTargetRepositories[ltrim($className)];
         }
     }
