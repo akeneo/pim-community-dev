@@ -60,22 +60,21 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $displayedColumns;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the config registry
+     * @param ConfigurationRegistry $registry the config registry
      *
      * @throws \LogicException
      */
-    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    public function __construct(ConfigurationRegistry $registry)
     {
-        $this->configuration = $configuration;
         $this->registry      = $registry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
         $this->sortColumns();
