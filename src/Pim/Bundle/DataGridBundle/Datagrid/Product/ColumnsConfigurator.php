@@ -66,7 +66,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
      */
     public function __construct(ConfigurationRegistry $registry)
     {
-        $this->registry      = $registry;
+        $this->registry = $registry;
     }
 
     /**

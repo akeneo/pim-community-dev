@@ -33,7 +33,6 @@ services:
             - '@pim_datagrid.datagrid.product.group_columns_configurator'
             - '@pim_datagrid.datagrid.product.filters_configurator'
             - '@pim_datagrid.datagrid.product.sorters_configurator'
-            - '@pim_catalog.repository.group'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-group-grid, method: buildBefore }
 
@@ -49,13 +48,12 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.product_variant_group_grid_before_listener:
-        class: %pim_datagrid.event_listener.configure_product_group_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
         arguments:
             - '@pim_datagrid.datagrid.product.context_configurator'
             - '@pim_datagrid.datagrid.product.group_columns_configurator'
             - '@pim_datagrid.datagrid.product.filters_configurator'
             - '@pim_datagrid.datagrid.product.sorters_configurator'
-            - '@pim_catalog.repository.group'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-variant-group-grid, method: buildBefore }
 
@@ -91,7 +89,7 @@ services:
         class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
         arguments:
             - '@pim_datagrid.datagrid.product.context_configurator'
-            - '@pim_datagrid.datagrid.product.group_columns_configurator'
+            - '@pim_datagrid.datagrid.product.columns_configurator'
             - '@pim_datagrid.datagrid.product.filters_configurator'
             - '@pim_datagrid.datagrid.product.sorters_configurator'
         tags:

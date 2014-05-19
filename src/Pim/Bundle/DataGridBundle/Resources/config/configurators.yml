@@ -36,4 +36,7 @@ services:
         class: %pim_datagrid.datagrid.product.group_columns_configurator.class%
         arguments:
             - '@pim_datagrid.datagrid.product.configuration_registry'
-
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.repository.group'
+        calls:
+            - [setRequest, ['@?request=']]
