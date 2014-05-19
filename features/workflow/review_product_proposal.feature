@@ -54,6 +54,22 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product mobile Description should be "Some awesome baskets"
 
+  Scenario: Succesfully accept a number attribute product changes proposal
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku       | family  | number_in_stock-ecommerce |
+      | my-tshirt | tshirts | 12                         |
+    And role "Administrator" has the right to edit the attribute group "internal"
+    And "admin" has submitted the following proposal for "my-tshirt":
+      | number_in_stock-ecommerce | 7 |
+    And I am logged in as "admin"
+    When I edit the "my-tshirt" product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "number_in_stock"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product ecommerce Number in stock should be "7"
+
   Scenario: Succesfully refuse a product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
