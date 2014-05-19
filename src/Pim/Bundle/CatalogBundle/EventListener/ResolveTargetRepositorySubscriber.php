@@ -17,7 +17,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     /**
      * @var array
      */
-    protected $resolveTargetRepositories = array();
+    protected $resolveTargetRepo = array();
 
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
      */
     public function addResolveTargetRepository($object, $newRepository)
     {
-        $this->resolveTargetRepositories[ltrim($object)] = $newRepository;
+        $this->resolveTargetRepo[ltrim($object)] = $newRepository;
     }
 
     /**
@@ -47,10 +47,10 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
      */
     public function loadClassMetadata(LoadClassMetadataEventArgs $args)
     {
-        $cm = $args->getClassMetadata();
-        $className = $cm->getName();
-        if (isset($this->resolveTargetRepositories[ltrim($className)])) {
-            $cm->customRepositoryClassName = $this->resolveTargetRepositories[ltrim($className)];
+        $classMetadata = $args->getClassMetadata();
+        $className = $classMetadata->getName();
+        if (isset($this->resolveTargetRepo[ltrim($className)])) {
+            $classMetadata->customRepositoryClassName = $this->resolveTargetRepo[ltrim($className)];
         }
     }
 }
