@@ -31,6 +31,7 @@ class PimCatalogExtension extends Extension
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('parameters.yml');
+        $loader->load('doctrine.yml');
         $loader->load('context.yml');
         $loader->load('services.yml');
         $loader->load('event_listeners.yml');
@@ -43,6 +44,10 @@ class PimCatalogExtension extends Extension
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);
+
+        // TODO: Define as subscriber?
+        $def = $container->findDefinition('doctrine.orm.listeners.resolve_target_repository');
+        $def->addTag('doctrine.event_listener', array('event' => 'loadClassMetadata'));
     }
 
     /**
