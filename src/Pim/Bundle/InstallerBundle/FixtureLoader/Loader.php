@@ -104,11 +104,11 @@ class Loader implements LoaderInterface
         if ($this->multiple) {
             $items = $this->reader->read();
             foreach ($this->processor->process($items) as $object) {
-                $this->persistObject($object);
+                $this->persistObjects($object);
             }
         } else {
             while ($item = $this->reader->read()) {
-                $this->persistObject($this->processor->process($item));
+                $this->persistObjects($this->processor->process($item));
             }
         }
 
@@ -117,6 +117,23 @@ class Loader implements LoaderInterface
         $this->doctrineCache->clear();
 
         $this->eventDispatcher->dispatch(static::EVENT_COMPLETED, new FixtureLoaderEvent($file));
+    }
+
+    /**
+     * Persists objects
+     *
+     * @param object|array $objects
+     */
+    protected function persistObjects($objects)
+    {
+        if (is_array($objects)) {
+            foreach ($objects as $object) {
+                $this->persistObject($object);
+            }
+        }
+        else {
+            $this->persistObject($objects);
+        }
     }
 
     /**
