@@ -355,12 +355,6 @@ pim_catalog_metric: メトリック
 Activated: アクティベート
 Disable: 無効
 pim_enrich.mass_edit_action:
-  page_title: 製品
-  page_subtitle: '一括編集(1製品)|一括編集(%count%製品)'
-  title: 操作を選択
-  subtitle: '選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください'
-  confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
-  limit_exceeded: '%limit% 件以下の編集する商品を選択してください'
   change-status:
     label: ステータスの変更 (有効/無効)
     description: 選択した製品は有効または無効になります。
@@ -382,10 +376,6 @@ pim_enrich.mass_edit_action:
     label: グループに追加
     description: 選択した製品を追加するグループを選択します
     success_flash: 製品を選択したグループに追加しました
-Choose products: 製品を選択してください
-Choose operation: 操作を選択してください
-Configure: 構成
-Confirm: 確認
 To enable: 有効にするには
 Select attributes: 属性の選択
 Select: 選択
