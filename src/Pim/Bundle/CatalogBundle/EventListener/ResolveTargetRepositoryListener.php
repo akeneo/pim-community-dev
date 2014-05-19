@@ -1,8 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine;
+namespace Pim\Bundle\CatalogBundle\EventListener;
 
-use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
+use Doctrine\Common\EventSubscriber;
+use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 
 /**
  * Mechanism to overwrite repository class without redefine class mapping
@@ -11,12 +12,22 @@ use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ResolveTargetRepositoryListener
+class ResolveTargetRepositorySubscriber implements EventSubscriber
 {
     /**
      * @var array
      */
     protected $resolveTargetRepositories = array();
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getSubscribedEvents()
+    {
+        return [
+            'loadClassMetadata'
+        ];
+    }
 
     /**
      * Adds repository class for a class name
@@ -38,7 +49,8 @@ class ResolveTargetRepositoryListener
     {
         $cm = $args->getClassMetadata();
         $className = $cm->getName();
-        if (isset($this->resolveTargetRepositories[ltrim($className)])) {
+        if (isset($this->resolveTargetRepositories[ltrim($className)])
+            && ($cm->getType() === 'entity' || $cm->getType() === 'document')) {
             $cm->customRepositoryClassName = $this->resolveTargetRepositories[ltrim($className)];
         }
     }

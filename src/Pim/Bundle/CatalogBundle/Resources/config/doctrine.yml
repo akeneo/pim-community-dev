@@ -1,7 +1,9 @@
 parameters:
-    doctrine.orm.listeners.resolve_target_repository.class: Pim\Bundle\CatalogBundle\Doctrine\ResolveTargetRepositoryListener
+    pim_catalog.event_listener.resolve_target_repository.class: Pim\Bundle\CatalogBundle\EventListener\ResolveTargetRepositorySubscriber
 
 services:
-    doctrine.orm.listeners.resolve_target_repository:
-        class: %doctrine.orm.listeners.resolve_target_repository.class%
+    pim_catalog.event_listener.resolve_target_repository:
+        class: %pim_catalog.event_listener.resolve_target_repository.class%
         public: false
+        tags:
+            - { name: doctrine.event_subscriber }

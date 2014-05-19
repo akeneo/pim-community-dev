@@ -20,8 +20,6 @@ class ResolveDoctrineTargetRepositoriesPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $this->resolveTargetRepositories($container);
-
-//         $this->resolveTargetDocuments($container);
     }
 
     /**
@@ -31,12 +29,12 @@ class ResolveDoctrineTargetRepositoriesPass implements CompilerPassInterface
      */
     protected function resolveTargetRepositories(ContainerBuilder $container)
     {
-        $definition = $container->findDefinition('doctrine.orm.listeners.resolve_target_repository');
-        foreach ($this->getParametersMapping($container) as $repositoryClass => $entityClass) {
+        $definition = $container->findDefinition('pim_catalog.event_listener.resolve_target_repository');
+        foreach ($this->getParametersMapping($container) as $repositoryClass => $objectClass) {
             $definition->addMethodCall(
                 'addResolveTargetRepository',
                 array(
-                    $entityClass,
+                    $objectClass,
                     $repositoryClass
                 )
             );

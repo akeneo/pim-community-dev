@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.repository.association.class:                      Pim\Bundle\CatalogBundle\Entity\Repository\AssociationRepository
+    pim_catalog.repository.association.class:                      Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
     pim_catalog.repository.product.class:                          Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
     pim_catalog.repository.completeness.class:                     Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessRepository
     pim_catalog.repository.product_mass_action.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository

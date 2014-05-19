@@ -44,10 +44,6 @@ class PimCatalogExtension extends Extension
 
         $this->loadStorageDriver($config, $container);
         $this->loadValidationFiles($container);
-
-        // TODO: Define as subscriber?
-        $def = $container->findDefinition('doctrine.orm.listeners.resolve_target_repository');
-        $def->addTag('doctrine.event_listener', array('event' => 'loadClassMetadata'));
     }
 
     /**
