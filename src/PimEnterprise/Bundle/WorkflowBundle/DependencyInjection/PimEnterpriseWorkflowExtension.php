@@ -13,7 +13,7 @@ use Symfony\Component\Config\FileLocator;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PimEnterpriseCatalogExtension extends Extension
+class PimEnterpriseWorkflowExtension extends Extension
 {
     /**
      * {@inheritdoc}
