@@ -446,7 +446,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             ->field(sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode()))->unsetField()
             ->field('completenesses')->pull($pullExpr)
             ->getQuery()
-            ->execute()
-        ;
+            ->execute();
     }
 }

@@ -108,8 +108,7 @@ DQL;
             ->getEntityManager()
             ->createQuery($dql)
             ->setParameter(':channel_id', $channel->getId())
-            ->setParameter(':current_locale_ids', implode(',', $currentLocaleIds))
-        ;
+            ->setParameter(':current_locale_ids', implode(',', $currentLocaleIds));
 
         return $query->getResult();
     }

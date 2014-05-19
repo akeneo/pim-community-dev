@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\DBAL\Connection;
-use Doctrine\ORM\Query;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 

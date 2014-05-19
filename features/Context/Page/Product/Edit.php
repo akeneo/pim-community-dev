@@ -369,7 +369,7 @@ class Edit extends Form
                     sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
                 );
             }
-        } elseif($ratio !== 'none') {
+        } elseif ($ratio !== 'none') {
             $title = $completenessCell
                 ->find('css', 'div.progress')
                 ->getAttribute('data-original-title');

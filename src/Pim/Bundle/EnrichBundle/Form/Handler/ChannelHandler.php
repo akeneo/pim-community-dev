@@ -44,8 +44,12 @@ class ChannelHandler
      * @param ObjectManager       $manager             Storage manager
      * @param CompletenessManager $completenessManager Completeness manager
      */
-    public function __construct(FormInterface $form, Request $request, ObjectManager $manager, CompletenessManager $completenessManager)
-    {
+    public function __construct(
+        FormInterface $form,
+        Request $request,
+        ObjectManager $manager,
+        CompletenessManager $completenessManager
+    ) {
         $this->form                = $form;
         $this->request             = $request;
         $this->manager             = $manager;
