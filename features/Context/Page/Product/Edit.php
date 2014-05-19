@@ -144,7 +144,7 @@ class Edit extends Form
     public function findField($name)
     {
         $currency = null;
-        if (false !== strpos($name, ' in ')) {
+        if (1 === preg_match('/in [A-Z]{3}$/', $name)) {
             // Price in EUR
             list($name, $currency) = explode(' in ', $name);
 
