@@ -18,7 +18,7 @@ class AddRepositoryPass implements CompilerPassInterface
 {
     const REPOSITORY_REGISTRY_SERVICE = 'pim_catalog.doctrine.repository.factory';
 
-    const REPOSITORY_TAG = 'pim_catalog.repository';
+    const REPOSITORY_TAG = 'pim_repository';
 
     /**
      * {@inheritdoc}
