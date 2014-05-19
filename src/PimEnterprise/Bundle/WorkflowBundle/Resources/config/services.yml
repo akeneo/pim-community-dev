@@ -48,7 +48,7 @@ services:
         class: %pimee_workflow.persister.product_changes_provider.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_serializer'
+            - '@pimee_workflow.serializer'
 
     pimee_workflow.manager.proposal:
         class: %pimee_workflow.manager.proposal.class%
@@ -60,7 +60,7 @@ services:
         public: false
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
-            - '@pim_serializer'
+            - '@pimee_workflow.serializer'
 
     pimee_workflow.datagrid.proposal_grid_helper:
         class: %pimee_workflow.datagrid.proposal_grid_helper.class%

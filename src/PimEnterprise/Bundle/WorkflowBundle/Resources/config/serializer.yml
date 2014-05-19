@@ -4,41 +4,53 @@ parameters:
     pimee_workflow.normalizer.media.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\MediaNormalizer
     pimee_workflow.normalizer.prices_collection.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\PricesCollectionNormalizer
     pimee_workflow.normalizer.date.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\DateTimeNormalizer
+    pimee_workflow.normalizer.simple_select.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\OptionNormalizer
 
 
 services:
+    pimee_workflow.serializer:
+        class: Symfony\Component\Serializer\Serializer
+
     pimee_workflow.normalizer.product:
         public: false
         class: %pimee_workflow.normalizer.product.class%
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
 
     pimee_workflow.normalizer.product_value:
         public: false
         class: %pimee_workflow.normalizer.product_value.class%
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
 
     pimee_workflow.normalizer.media:
         public: false
         class: %pimee_workflow.normalizer.media.class%
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
 
     pimee_workflow.normalizer.prices_collection:
         public: false
         class: %pimee_workflow.normalizer.prices_collection.class%
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
 
     pimee_workflow.normalizer.date:
         public: false
         class: %pimee_workflow.normalizer.date.class%
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
+
+    pimee_workflow.normalizer.simple_select:
+        public: false
+        class: %pimee_workflow.normalizer.simple_select.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.serializer.normalizer }
 
     pimee_workflow.normalizer.dummy:
         public: false
         class: PimEnterprise\Bundle\WorkflowBundle\Serializer\DummyNormalizer
         tags:
-            - { name: pim_serializer.normalizer }
+            - { name: pimee_workflow.serializer.normalizer }
