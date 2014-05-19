@@ -70,6 +70,25 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product ecommerce Number in stock should be "7"
 
+  Scenario: Succesfully accept a prices attribute product changes proposal
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku        | family  | price-USD |
+      | my-sandals | sandals | 45        |
+    And role "Administrator" has the right to edit the attribute group "marketing"
+    And I am logged in as "admin"
+    And I edit the "my-sandals" product
+    And I change the "$ Price" to "90"
+    And I change the "€ Price" to "150"
+    And I save the product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "price"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product Price in $ should be "90.00"
+    Then the product Price in € should be "150.00"
+
+
   Scenario: Succesfully refuse a product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
