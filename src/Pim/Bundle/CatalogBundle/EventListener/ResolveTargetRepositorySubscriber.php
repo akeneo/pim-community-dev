@@ -32,12 +32,12 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     /**
      * Adds repository class for a class name
      *
-     * @param string $entity
+     * @param string $object
      * @param string $newRepository
      */
-    public function addResolveTargetRepository($entity, $newRepository)
+    public function addResolveTargetRepository($object, $newRepository)
     {
-        $this->resolveTargetRepositories[ltrim($entity)] = $newRepository;
+        $this->resolveTargetRepositories[ltrim($object)] = $newRepository;
     }
 
     /**
