@@ -5,7 +5,7 @@ datagrid:
             entity: %pimee_workflow.entity.proposal.class%
             repository_method: createDatagridQueryBuilder
         columns:
-            createdBy:
+            author:
                 label: pimee_workflow.proposal.author
                 type: field
                 frontend_type: string
@@ -46,4 +46,21 @@ datagrid:
                 label: pimee_workflow.proposal.action.refuse
                 icon: remove
                 link: refuse_link
-        action_configuration: @pimee_workflow.datagrid.proposal_grid_helper->getActionConfigurationClosure
+        action_configuration: '@pimee_workflow.datagrid.proposal_grid_helper->getActionConfigurationClosure'
+        filters:
+            columns:
+                status:
+                    type:      choice
+                    data_name: p.status
+                    label: pimee_workflow.proposal.status.label
+                    options:
+                        field_options:
+                            choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'
+        sorters:
+            columns:
+                author:
+                    data_name: p.author
+                createdAt:
+                    data_name: p.createdAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

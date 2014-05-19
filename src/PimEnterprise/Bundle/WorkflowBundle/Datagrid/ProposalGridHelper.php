@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid;
 
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
  * Helper for proposal datagrid
@@ -21,9 +22,23 @@ class ProposalGridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (null !== $record->getValue('status')) {
+            if (Proposal::WAITING !== $record->getValue('status')) {
                 return ['approve' => false, 'refuse' => false];
             }
         };
+    }
+
+    /**
+     * Returns available proposal status choices
+     *
+     * @return array
+     */
+    public function getStatusChoices()
+    {
+        return [
+            Proposal::WAITING  => 'pimee_workflow.proposal.status.waiting',
+            Proposal::APPROVED => 'pimee_workflow.proposal.status.approved',
+            Proposal::REFUSED  => 'pimee_workflow.proposal.status.refused'
+        ];
     }
 }

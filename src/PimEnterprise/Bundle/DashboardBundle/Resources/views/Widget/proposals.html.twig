@@ -19,7 +19,7 @@
                         {% set timeFormat = 'now'|date('Y-m-d') == proposal.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
                         {{ proposal.createdAt|date(timeFormat) }}
                     </td>
-                    <td>{{ proposal.createdBy }}</td>
+                    <td>{{ proposal.author }}</td>
                     <td>
                         <a href="{{ path('pim_enrich_product_edit', { id: proposal.product.id }) }}">
                             {{ proposal.product }}

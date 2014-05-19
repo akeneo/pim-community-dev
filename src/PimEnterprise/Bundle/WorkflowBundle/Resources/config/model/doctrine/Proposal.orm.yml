@@ -14,12 +14,12 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
         changes:
             type: array
             nullalble: false
-        createdBy:
+        author:
             type: string
             nullalble: false
         status:
             type: integer
-            nullable: true
+            nullable: false
     manyToOne:
         product:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface

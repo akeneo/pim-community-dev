@@ -15,7 +15,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
             reference: true
             type: one
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
-        createdBy:
+        author:
             type: string
         status:
             type: integer

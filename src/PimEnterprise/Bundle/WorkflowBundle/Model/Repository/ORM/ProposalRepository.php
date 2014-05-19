@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM;
 
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
  * Proposal ORM repository
@@ -19,8 +20,7 @@ class ProposalRepository extends EntityRepository
     {
         return $this
             ->createQueryBuilder('p')
-            ->where('p.product = :product')
-            ->orderBy('p.createdAt', 'desc');
+            ->where('p.product = :product');
     }
 
     /**
@@ -34,8 +34,8 @@ class ProposalRepository extends EntityRepository
     {
         return $this->findOneBy(
             [
-                'id' => $id,
-                'status' => null
+                'id'     => $id,
+                'status' => Proposal::WAITING
             ]
         );
     }

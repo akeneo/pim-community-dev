@@ -12,32 +12,35 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class Proposal
 {
-    /** @staticvar int */
-    const REFUSED = 0;
+    /** @staticvar integer */
+    const WAITING = 0;
 
-    /** @staticvar int */
+    /** @staticvar integer */
     const APPROVED = 1;
 
-    /** @var int */
+    /** @staticvar integer */
+    const REFUSED = 2;
+
+    /** @var integer */
     protected $id;
 
     /** @var ProductInterface */
     protected $product;
 
     /** @var string */
-    protected $createdBy;
+    protected $author;
 
     /** @var DateTime */
     protected $createdAt;
 
     /** @var array */
-    protected $changes;
+    protected $changes = [];
 
-    /** @var int */
-    protected $status;
+    /** @var integer */
+    protected $status = self::WAITING;
 
     /**
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -46,10 +49,14 @@ class Proposal
 
     /**
      * @param ProductInterface $product
+     *
+     * @return Proposal
      */
     public function setProduct(ProductInterface $product)
     {
         $this->product = $product;
+
+        return $this;
     }
 
     /**
@@ -61,27 +68,35 @@ class Proposal
     }
 
     /**
-     * @param string $createdBy
+     * @param string $author
+     *
+     * @return Proposal
      */
-    public function setCreatedBy($createdBy)
+    public function setAuthor($author)
     {
-        $this->createdBy = $createdBy;
+        $this->author = $author;
+
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getCreatedBy()
+    public function getAuthor()
     {
-        return $this->createdBy;
+        return $this->author;
     }
 
     /**
      * @param DateTime $createdAt
+     *
+     * @return Proposal
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
         $this->createdAt = $createdAt;
+
+        return $this;
     }
 
     /**
@@ -94,10 +109,14 @@ class Proposal
 
     /**
      * @param array $changes
+     *
+     * @return Proposal
      */
     public function setChanges(array $changes)
     {
         $this->changes = $changes;
+
+        return $this;
     }
 
     /**
@@ -109,15 +128,19 @@ class Proposal
     }
 
     /**
-     * @param int $status
+     * @param integer $status
+     *
+     * @return Proposal
      */
     public function setStatus($status)
     {
         $this->status = $status;
+
+        return $this;
     }
 
     /**
-     * @return int
+     * @return integer
      */
     public function getStatus()
     {

@@ -1,3 +1,3 @@
-{% set class = value is null ? 'warning' : (value ? 'success' : 'important') %}
-{% set status = value is null ? 'pending' : (value ? 'approved' : 'refused') %}
+{% set class = value ? (value == 1 ? 'success' : 'important') : 'warning' %}
+{% set status = value ? (value == 1 ? 'approved' : 'refused') : 'waiting' %}
 <span class="label label-{{ class }}">{{ ('pimee_workflow.proposal.status.' ~ status)|trans }}</span>

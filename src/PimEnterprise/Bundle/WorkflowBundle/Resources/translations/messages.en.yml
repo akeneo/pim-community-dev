@@ -7,7 +7,7 @@ pimee_workflow:
             label:    Status
             approved: Approved
             refused:  Refused
-            pending:  Pending
+            waiting:  Waiting
         action:
             approve: Approve
-            refuse: Refuse
+            refuse:  Refuse

@@ -25,10 +25,11 @@ class ProposalFactory
     public function createProposal(ProductInterface $product, $username, array $changes)
     {
         $proposal = new Proposal();
-        $proposal->setProduct($product);
-        $proposal->setCreatedBy($username);
-        $proposal->setCreatedAt(new \DateTime());
-        $proposal->setChanges($changes);
+        $proposal
+            ->setProduct($product)
+            ->setAuthor($username)
+            ->setCreatedAt(new \DateTime())
+            ->setChanges($changes);
 
         return $proposal;
     }
