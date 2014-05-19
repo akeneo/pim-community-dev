@@ -36,7 +36,7 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     protected $requestParams;
 
     /**
-     * @param ConfigurationRegistry $registry the config registry
+     * @param ConfigurationRegistry $registry        the config registry
      * @param RequestParameters     $requestParams
      * @param GroupRepository       $groupRepository
      */
