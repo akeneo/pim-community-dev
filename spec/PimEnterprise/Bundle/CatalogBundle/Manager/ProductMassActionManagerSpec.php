@@ -1,8 +1,6 @@
 <?php
 
-
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
-
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
