@@ -119,14 +119,14 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function moveNodeAction(Request $request)
     {
-        $segmentId     = $request->get('id');
+        $categoryId    = $request->get('id');
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
         if ($request->get('copy') == 1) {
-            $this->categoryManager->copy($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->copy($categoryId, $parentId, $prevSiblingId);
         } else {
-            $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
         }
         $this->categoryManager->getObjectManager()->flush();
 
@@ -203,7 +203,7 @@ class CategoryTreeController extends AbstractDoctrineController
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
-            $category = $this->categoryManager->getSegmentInstance();
+            $category = $this->categoryManager->getCategoryInstance();
             $category->setParent($parent);
         } else {
             $category = $this->categoryManager->getTreeInstance();
