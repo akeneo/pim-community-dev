@@ -2,16 +2,11 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle;
 
-
-use Oro\Bundle\UserBundle\Entity\User;
-
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-
-use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
-
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-
 use PhpSpec\ObjectBehavior;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
 class SecurityContextSpec extends ObjectBehavior
 {
