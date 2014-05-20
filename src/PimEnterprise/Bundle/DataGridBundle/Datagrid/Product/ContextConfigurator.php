@@ -26,7 +26,7 @@ class ContextConfigurator extends PimContextConfigurator
     /**
      * @param integer[]
      */
-    protected $allowedGroupIds = null;
+    protected $grantedGroupIds = null;
 
     /**
      * @param ProductManager           $productManager
@@ -56,7 +56,7 @@ class ContextConfigurator extends PimContextConfigurator
     protected function getAttributeIds($attributeCodes = null)
     {
         $repository   = $this->productManager->getAttributeRepository();
-        $groupIds     = $this->getAllowedGroupIds();
+        $groupIds     = $this->getGrantedGroupIds();
         $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes, $groupIds);
 
         return $attributeIds;
@@ -67,19 +67,19 @@ class ContextConfigurator extends PimContextConfigurator
      *
      * @return integer[]
      */
-    protected function getAllowedGroupIds()
+    protected function getGrantedGroupIds()
     {
-        if (!$this->allowedGroupIds) {
+        if (!$this->grantedGroupIds) {
             // TODO : use getGrantedAttributeGroupQB, wait for the merge of PR 20
             $groups = $this->groupRepository->findAll();
-            $this->allowedGroupIds = [];
+            $this->grantedGroupIds = [];
             foreach ($groups as $group) {
                 if ($this->securityContext->isGranted(AttributeGroupVoter::VIEW_ATTRIBUTES, $group)) {
-                    $this->allowedGroupIds[]= $group->getId();
+                    $this->grantedGroupIds[]= $group->getId();
                 }
             }
         }
 
-        return $this->allowedGroupIds;
+        return $this->grantedGroupIds;
     }
 }
