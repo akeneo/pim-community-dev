@@ -235,6 +235,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
                 $children = $this->buildTreeNode($nodes);
             }
         }
+
         return $children;
     }
 
