@@ -22,7 +22,9 @@ class ArrayDiff
     public function diff(array $a, array $b, array $diffs = array())
     {
         if (empty($a)) {
-            return $diffs + $b;
+            return $diffs + array_filter($b, function ($elt) {
+                return null !== $elt;
+            });
         }
 
         ksort($a);
@@ -39,8 +41,8 @@ class ArrayDiff
         }
 
         return $this->diff(
-            $this->tail($a),
-            $this->tail($b),
+            $this->tail($a, $head),
+            $this->tail($b, $head),
             $diffs
         );
     }
@@ -66,9 +68,9 @@ class ArrayDiff
      *
      * @return array
      */
-    private function tail(array $a)
+    private function tail(array $a, $key)
     {
-        unset($a[$this->head($a)]);
+        unset($a[$key]);
 
         return $a;
     }

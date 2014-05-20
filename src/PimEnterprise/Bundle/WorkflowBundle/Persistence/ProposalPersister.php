@@ -59,9 +59,11 @@ class ProposalPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
+        $options = array_merge(['bypass_proposal' => false], $options);
+
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        if (!$manager->contains($product)) {
+        if ($options['bypass_proposal'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
             $this->persistProposal($manager, $product);

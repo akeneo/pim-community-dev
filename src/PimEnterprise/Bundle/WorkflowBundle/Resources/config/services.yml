@@ -54,6 +54,7 @@ services:
         class: %pimee_workflow.manager.proposal.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.persister.product'
             - '@pimee_workflow.persister.product_changes_applier'
 
     pimee_workflow.persister.product_changes_applier:

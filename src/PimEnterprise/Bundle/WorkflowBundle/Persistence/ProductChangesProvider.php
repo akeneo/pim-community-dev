@@ -46,24 +46,14 @@ class ProductChangesProvider
      *
      * @return array
      */
-    public function computeChanges(ProductInterface $product)
+    public function computeChanges(ProductInterface &$product)
     {
         $manager = $this->registry->getManagerForClass(get_class($product));
 
         $current = $this->normalizer->normalize($product, 'proposal');
 
-        foreach ($product->getValues() as $value) {
-            if ($manager->contains($value)) {
-                $manager->refresh($value);
-            }
-            if ($value->getData() instanceof \Doctrine\Common\Collections\Collection) {
-                foreach ($value->getData() as $data) {
-                    if ($manager->contains($data)) {
-                        $manager->refresh($data);
-                    }
-                }
-            }
-        }
+        $manager->clear();
+        $product = $manager->getRepository(get_class($product))->find($product->getId());
 
         $previous = $this->normalizer->normalize($product, 'proposal');
 

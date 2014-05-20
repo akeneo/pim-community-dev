@@ -4,10 +4,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Serializer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 
 /**
- * Normalize/Denormalize media product value
+ * Normalize/Denormalize unsupported product value
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -39,7 +39,7 @@ class DummyNormalizer implements NormalizerInterface, DenormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return self::FORMAT === $format;
+        return $data instanceof Metric && self::FORMAT === $format;
     }
 
     /**

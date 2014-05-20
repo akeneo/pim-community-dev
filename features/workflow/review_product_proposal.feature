@@ -104,6 +104,22 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "TimberLand"
 
+  Scenario: Succesfully accept a multiselect attribute product changes proposal
+    Given a "footwear" catalog configuration
+    And the following product:
+      | sku        | family  | weather_conditions |
+      | my-sandals | sandals | dry, wet           |
+    And role "Administrator" has the right to edit the attribute group "info"
+    And I am logged in as "admin"
+    And I edit the "my-sandals" product
+    And I change the "Weather conditions" to "Hot, Cold"
+    And I save the product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "weather_conditions"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
+
   # This scenario is bugged because the date retrieval create DateTime with H-2
   @skip
   Scenario: Succesfully accept a date attribute product changes proposal

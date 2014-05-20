@@ -6,6 +6,8 @@ use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use PimEnterprise\Bundle\WorkflowBundle\Util\ProductValueKeyGenerator;
 
 /**
@@ -19,14 +21,23 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /** @staticvar string */
     const FORMAT = 'proposal';
 
+    protected $builder;
+
+    protected $repository;
+
     /** @var ProductValueKeyGenerator */
     protected $keyGen;
 
     /**
      * @param ProductValueKeyGenerator|null $keyGen
      */
-    public function __construct(ProductValueKeyGenerator $keyGen = null)
-    {
+    public function __construct(
+        ProductBuilder $builder,
+        AttributeRepository $repository,
+        ProductValueKeyGenerator $keyGen = null
+    ) {
+        $this->builder = $builder;
+        $this->repository = $repository;
         $this->keyGen = $keyGen ?: new ProductValueKeyGenerator();
     }
 
@@ -51,8 +62,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         // TODO (2014-05-16 00:10 by Gildas): $context['instance'] must be an AbstractProduct instance
         foreach ($data as $key => $proposal) {
             if (null === $value = $this->getValue($context['instance'], $key)) {
-                // TODO (2014-05-16 00:17 by Gildas): Is it a real use case, or should we create value OTF?
-                throw new \Exception(sprintf('Cannot find value for "%s"', $key));
+                $value = $this->createValue($context['instance'], $key);
             }
 
             $this->serializer->denormalize($proposal, 'value', $format, ['instance' => $value]);
@@ -91,5 +101,17 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             $this->keyGen->getPart($key, ProductValueKeyGenerator::LOCALE),
             $this->keyGen->getPart($key, ProductValueKeyGenerator::SCOPE)
         );
+    }
+
+    protected function createValue(Model\AbstractProduct $product, $key)
+    {
+        return $this
+            ->builder
+            ->addProductValue(
+                $product,
+                $this->repository->findOneBy(['code' => $this->keyGen->getPart($key, ProductValueKeyGenerator::CODE)]),
+                $this->keyGen->getPart($key, ProductValueKeyGenerator::LOCALE),
+                $this->keyGen->getPart($key, ProductValueKeyGenerator::SCOPE)
+            );
     }
 }

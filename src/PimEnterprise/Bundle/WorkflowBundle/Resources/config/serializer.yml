@@ -5,6 +5,7 @@ parameters:
     pimee_workflow.normalizer.prices_collection.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\PricesCollectionNormalizer
     pimee_workflow.normalizer.date.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\DateTimeNormalizer
     pimee_workflow.normalizer.simple_select.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\OptionNormalizer
+    pimee_workflow.normalizer.multi_select.class: PimEnterprise\Bundle\WorkflowBundle\Serializer\OptionsNormalizer
 
 
 services:
@@ -14,6 +15,9 @@ services:
     pimee_workflow.normalizer.product:
         public: false
         class: %pimee_workflow.normalizer.product.class%
+        arguments:
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.repository.attribute'
         tags:
             - { name: pimee_workflow.serializer.normalizer }
 
@@ -46,6 +50,12 @@ services:
         class: %pimee_workflow.normalizer.simple_select.class%
         arguments:
             - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.serializer.normalizer }
+
+    pimee_workflow.normalizer.multi_select:
+        public: false
+        class: %pimee_workflow.normalizer.multi_select.class%
         tags:
             - { name: pimee_workflow.serializer.normalizer }
 

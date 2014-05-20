@@ -9,16 +9,18 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister;
 
 class ProposalManagerSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, ProductChangesApplier $applier)
+    function let(ManagerRegistry $registry, ProposalPersister $persister, ProductChangesApplier $applier)
     {
-        $this->beConstructedWith($registry, $applier);
+        $this->beConstructedWith($registry, $persister, $applier);
     }
 
     function it_applies_changes_to_the_product_when_approving_a_proposal(
         $registry,
+        $persister,
         $applier,
         Proposal $proposal,
         AbstractProduct $product,
@@ -26,9 +28,10 @@ class ProposalManagerSpec extends ObjectBehavior
     ) {
         $proposal->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
         $proposal->getProduct()->willReturn($product);
-        $registry->getManagerForClass(get_class($product->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
 
         $applier->apply($product, ['foo' => 'bar', 'b' => 'c'])->shouldBeCalled();
+        $persister->persist($product, ['bypass_proposal' => true])->shouldBeCalled();
         $proposal->setStatus(Proposal::APPROVED)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

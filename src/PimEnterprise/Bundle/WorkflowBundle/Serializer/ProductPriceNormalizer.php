@@ -12,19 +12,14 @@ use Pim\Bundle\CatalogBundle\Model\ProductPrice;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PricesCollectionNormalizer implements NormalizerInterface, DenormalizerInterface
+class ProductPriceNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /**
      * {@inheritdoc}
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $prices = [];
-        foreach ($object as $price) {
-            $prices[$price->getCurrency()] = $price->getData();
-        }
-
-        return $prices;
+        return $object->getData();
     }
 
     /**
@@ -32,17 +27,7 @@ class PricesCollectionNormalizer implements NormalizerInterface, DenormalizerInt
      */
     public function supportsNormalization($data, $format = null)
     {
-        if (!$data instanceof Collection) {
-            return false;
-        }
-
-        $filtered = $data->filter(
-            function ($element) {
-                return $element instanceof ProductPrice;
-            }
-        );
-
-        return $data->count() === $filtered->count();
+        return $data instanceof ProductPrice && 'proposal' === $format;
     }
 
     /**

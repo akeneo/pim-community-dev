@@ -4,15 +4,20 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Serializer;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Util\ProductValueKeyGenerator;
 use Symfony\Component\Serializer\SerializerInterface;
+use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use PimEnterprise\Bundle\WorkflowBundle\Util\ProductValueKeyGenerator;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(ProductValueKeyGenerator $keyGen)
+    function let(
+        ProductBuilder $builder,
+        AttributeRepository $repository,
+        ProductValueKeyGenerator $keyGen)
     {
-        $this->beConstructedWith($keyGen);
+        $this->beConstructedWith($builder, $repository, $keyGen);
     }
 
     function it_is_a_serializer_aware_normalizer_and_denormalizer()
@@ -76,16 +81,26 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->denormalize(['foo' => 'bar'], 'product', 'proposal', ['instance' => $product]);
     }
 
-    function it_throws_exception_when_product_value_cannot_be_resolved_during_denormalization(
+    function it_creates_value_on_the_fly_when_it_cannot_be_resolved(
         $keyGen,
+        $builder,
+        $repository,
+        SerializerInterface $serializer,
         Model\AbstractProduct $product,
-        Model\AbstractProductValue $value
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $granularity
     ) {
-        $keyGen->getPart('foo', ProductValueKeyGenerator::CODE)->willReturn('foo');
-        $keyGen->getPart('foo', ProductValueKeyGenerator::LOCALE)->willReturn(null);
-        $keyGen->getPart('foo', ProductValueKeyGenerator::SCOPE)->willReturn(null);
-        $product->getValue('foo', null, null)->willReturn(null);
+        $serializer->implement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
+        $keyGen->getPart('granularity', ProductValueKeyGenerator::CODE)->willReturn('granularity');
+        $keyGen->getPart('granularity', ProductValueKeyGenerator::LOCALE)->willReturn('en_US');
+        $keyGen->getPart('granularity', ProductValueKeyGenerator::SCOPE)->willReturn(null);
+        $product->getValue('granularity', 'en_US', null)->willReturn(null);
+        $repository->findOneBy(['code' => 'granularity'])->willReturn($granularity);
+        $builder->addProductValue($product, $granularity, 'en_US', null)->willReturn($value);
 
-        $this->shouldThrow(new \Exception('Cannot find value for "foo"'))->duringDenormalize(['foo' => 'bar'], 'product', 'proposal', ['instance' => $product]);
+        $serializer->denormalize(80, 'value', 'proposal', ['instance' => $value])->shouldBeCalled();
+
+        $this->setSerializer($serializer);
+        $this->denormalize(['granularity' => 80], 'product', 'proposal', ['instance' => $product]);
     }
 }
