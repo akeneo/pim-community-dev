@@ -29,18 +29,4 @@ class SecurityContext extends BaseSecurityContext
 
         return $user;
     }
-
-    /**
-     * Get different roles of a user
-     *
-     * @return Role|null
-     */
-    public function getRoles()
-    {
-        if (null === $user = $this->getUser()) {
-            return null;
-        }
-
-        return $user->getRoles();
-    }
 }
