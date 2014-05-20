@@ -37,7 +37,8 @@ class AppKernel extends OroKernel
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
             'Oro\Bundle\CronBundle\OroCronBundle',
-            'Oro\Bundle\SegmentationTreeBundle\OroSegmentationTreeBundle'
+            'Oro\Bundle\SearchBundle\OroSearchBundle',
+            'Oro\Bundle\TagBundle\OroTagBundle'
         );
         foreach ($oroBundles as $bundleIndex => $bundle) {
             if (in_array(get_class($bundle), $exclude)) {
