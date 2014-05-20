@@ -41,6 +41,7 @@ class FiltersConfigurator implements ConfiguratorInterface
         $this->configuration = $configuration;
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
+        $attributes = ($attributes === null) ? [] : $attributes;
 
         $displayedFilters = [];
         foreach ($attributes as $attributeCode => $attribute) {

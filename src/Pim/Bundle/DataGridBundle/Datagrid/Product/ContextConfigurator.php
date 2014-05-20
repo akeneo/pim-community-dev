@@ -175,15 +175,25 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesIds()
     {
         $attributeCodes = $this->getUserGridColumns();
-        $repository     = $this->productManager->getAttributeRepository();
-        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($attributeCodes) : null;
-
-        if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableInGrid();
-        }
+        $attributeIds = $this->getAttributeIds($attributeCodes);
 
         $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
         $this->configuration->offsetSetByPath($path, $attributeIds);
+    }
+
+    /**
+     * Return useable attribute ids
+     *
+     * @param string[] $attributeCodes
+     *
+     * @return integer[]
+     */
+    protected function getAttributeIds($attributeCodes = null)
+    {
+        $repository   = $this->productManager->getAttributeRepository();
+        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+
+        return $attributeIds;
     }
 
     /**
@@ -348,9 +358,14 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $repository    = $this->productManager->getAttributeRepository();
-        $attributeIds  = $repository->getAttributeIdsUseableInGrid();
+        $attributeIds  = $this->getAttributeIds();
+        if (empty($attributeIds)) {
+
+            return [];
+        }
+
         $currentLocale = $this->getCurrentLocaleCode();
+        $repository    = $this->productManager->getAttributeRepository();
         $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;

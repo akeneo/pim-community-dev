@@ -114,6 +114,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     {
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
+        $attributes = ($attributes === null) ? [] : $attributes;
         $this->identifierColumn  = array();
         $this->attributesColumns = array();
 
