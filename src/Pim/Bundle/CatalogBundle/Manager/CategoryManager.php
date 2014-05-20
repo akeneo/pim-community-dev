@@ -212,16 +212,70 @@ class CategoryManager
     }
 
     /**
-     * {@inheritdoc}
+     * Remove a category
+     *
+     * @param CategoryInterface $category
      */
     public function remove(CategoryInterface $category)
     {
-        if ($category instanceof CategoryInterface) {
-            foreach ($category->getProducts() as $product) {
-                $product->removeCategory($category);
-            }
+        foreach ($category->getProducts() as $product) {
+            $product->removeCategory($category);
         }
 
-        parent::remove($category);
+        $this->getObjectManager()->remove($category);
+    }
+
+    /**
+     * Move a category to another parent
+     * If $prevSiblingId is provided, the category will be positioned after this
+     * category, otherwise if will be the first child of the parent categpry
+     *
+     * @param integer $categoryId
+     * @param integer $parentId
+     * @param integer $prevSiblingId
+     */
+    public function move($categoryId, $parentId, $prevSiblingId)
+    {
+        $repo     = $this->getEntityRepository();
+        $category = $repo->find($categoryId);
+        $parent   = $repo->find($parentId);
+        $prevSibling = null;
+
+        $category->setParent($parent);
+
+        if (!empty($prevSiblingId)) {
+            $prevSibling = $repo->find($prevSiblingId);
+        }
+
+        if (is_object($prevSibling)) {
+            $repo->persistAsNextSiblingOf($category, $prevSibling);
+        } else {
+            $repo->persistAsFirstChildOf($category, $parent);
+        }
+    }
+
+    /**
+     * Check if a parent node is an ancestor of a child node
+     *
+     * @param CategoryInterface $parentNode
+     * @param CategoryInterface $childNode
+     *
+     * @return boolean
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $childPath = $this->getEntityRepository()->getPath($childNode);
+        //Removing last part of the path as it's the node itself
+        //which cannot be is own ancestor
+        array_pop($childPath);
+        $i = 0;
+        $parentFound = false;
+
+        while ($i < count($childPath) && (!$parentFound)) {
+            $parentFound = ($childPath[$i]->getId() === $parentNode->getId());
+            $i++;
+        }
+
+        return $parentFound;
     }
 }
