@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Normalize a product value to store it as mongodb_json
@@ -49,7 +50,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         foreach ($collection as $item) {
             $data = $this->serializer->normalize($item, $format, $context);
             if ($data !== null) {
-                $normalized[] = $data;
+                if ($item instanceof ProductPrice) {
+                    $normalized[$item->getCurrency()] = $data;
+                } else {
+                    $normalized[] = $data;
+                }
             }
         }
 

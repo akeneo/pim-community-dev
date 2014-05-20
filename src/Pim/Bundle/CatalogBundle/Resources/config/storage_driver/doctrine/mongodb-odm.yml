@@ -35,11 +35,9 @@ services:
         class: %pim_catalog.doctrine.completeness_generator.class%
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
-            - '@pim_catalog.factory.completeness'
-            - '@validator'
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.manager.channel'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.family'
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%

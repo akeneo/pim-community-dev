@@ -22,10 +22,8 @@ class ProductPriceNormalizer implements NormalizerInterface
         $data = null;
         if ($object->getData() !== null) {
             $data = [
-                $object->getCurrency() => [
-                    'data'     => $object->getData(),
-                    'currency' => $object->getCurrency()
-                ]
+                'data'     => $object->getData(),
+                'currency' => $object->getCurrency()
             ];
         }
 
