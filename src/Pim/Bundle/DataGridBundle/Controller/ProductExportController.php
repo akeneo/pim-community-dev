@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder;
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
@@ -36,12 +35,12 @@ class ProductExportController extends ExportController
     /**
      * Constructor
      *
-     * @param Request                $request
-     * @param MassActionDispatcher   $massActionDispatcher
-     * @param SerializerInterface    $serializer
-     * @param ProductManager         $productManager
-     * @param LocaleManager          $localeManager
-     * @param CatalogContext         $catalogContext
+     * @param Request              $request
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface  $serializer
+     * @param ProductManager       $productManager
+     * @param LocaleManager        $localeManager
+     * @param CatalogContext       $catalogContext
      */
     public function __construct(
         Request $request,
