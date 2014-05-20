@@ -59,10 +59,22 @@ class ProductFieldsBuilder extends PimProductFieldsBuilder
     {
         parent::prepareAvailableAttributeIds($productIds);
 
-/*        $this->attributeIds = $this->accessRepository->filterGrantedAttributeIds(
-            $this->securityContext->getUser(),
-            AttributeGroupVoter::VIEW_ATTRIBUTES,
-            $this->attributeIds
-        );*/
+        // TODO : dirty code to rewrite to avoid to hydrate attributes
+        $subQB = $this->accessRepository
+            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES);
+        $attributes = $this
+            ->productManager
+            ->getAttributeRepository()
+            ->findWithGroups(
+                array_unique($this->attributeIds),
+                array(
+                    'filters' => ['g.id' => $subQB]
+                )
+            );
+        $attIds = [];
+        foreach ($attributes as $attribute) {
+            $attIds[] = $attribute->getId();
+        }
+        $this->attributeIds = $attIds;
     }
 }
