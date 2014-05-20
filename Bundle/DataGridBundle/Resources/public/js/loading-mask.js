@@ -1,6 +1,6 @@
 /* global define */
-define(['jquery', 'underscore', 'backbone'],
-function($, _, Backbone) {
+define(['jquery', 'underscore', 'backbone', 'oro/translator'],
+function($, _, Backbone, __) {
     'use strict';
 
     /**
@@ -22,7 +22,7 @@ function($, _, Backbone) {
         className: 'loading-mask',
 
         /** @property {String} */
-        loadingHint: 'Loading...',
+        loadingHint: __('Loading...'),
 
         /** @property */
         template:_.template(
