@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
  * Widget to display product proposals
@@ -43,7 +44,7 @@ class ProposalWidget implements WidgetInterface
     {
         $proposals = $this->registry
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')
-            ->findBy(['status' => null], ['createdAt' => 'DESC'], 10);
+            ->findBy(['status' => Proposal::WAITING], ['createdAt' => 'desc'], 10);
 
         return [
             'params' => $proposals
