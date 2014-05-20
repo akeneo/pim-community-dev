@@ -56,7 +56,7 @@ class ProductMassActionManager extends PimProductMassActionManager
 
         $subQB = $this
             ->attGroupAccessRepo
-            ->getAuthorizedAttributeGroupQB($this->securityContext->getUser(), 'EDIT');
+            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), 'EDIT');
 
         return $this
             ->attributeRepository

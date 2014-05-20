@@ -64,14 +64,14 @@ class AttributeGroupAccessRepository extends EntityRepository
     }
 
     /**
-     * Get authorized attribute group query builder
+     * Get granted attribute group query builder
      *
      * @param User $user
      * @param string $accessLevel
      *
      * @return QueryBuilder
      */
-    public function getAuthorizedAttributeGroupQB(User $user, $accessLevel)
+    public function getGrantedAttributeGroupQB(User $user, $accessLevel)
     {
         $accessField = ($accessLevel === 'EDIT') ? 'aga.editAttributes' : 'aga.viewAttributes';
 
