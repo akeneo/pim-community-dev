@@ -89,6 +89,24 @@ class EnterpriseContext extends RawMinkContext
     }
 
     /**
+     * @Given /^the following attribute group accesses:$/
+     */
+    public function theFollowingAttributeGroupAccesses(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $group = $this->getAttributeGroup($data['group']);
+            $role  = $this->getRole($data['role']);
+            $accessLevel = strtoupper($data['access']);
+
+            $this->getAttributeGroupAccessManager()->grantAccess($group, $role, $accessLevel);
+        }
+
+        $registry = $this->getSmartRegistry()
+            ->getManagerForClass('PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess');
+        $registry->flush();
+    }
+
+    /**
      * @Given /^I should the following proposal:$/
      */
     public function iShouldTheFollowingProposal(TableNode $table)
