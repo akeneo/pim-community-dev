@@ -1,5 +1,6 @@
 parameters:
     pimee_security.form.type.roles.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\RolesType
+    security.context.class: PimEnterprise\Bundle\SecurityBundle\SecurityContext
 
 services:
     pimee_security.form.type.roles:
