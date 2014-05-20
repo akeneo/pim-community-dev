@@ -20,11 +20,14 @@ class AttributeRepository extends PimAttributeRepository
         $qb = parent::findWithGroupsQB($attributeIds, $criterias);
 
         if (isset($criterias['filters'])) {
-            foreach ($criterias['filter'] as $criteria => $value) {
-                $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+            foreach ($criterias['filters'] as $field => $subQB) {
+                $qb->andWhere(
+                    $qb->expr()->in($field, $subQB->getDQL())
+                );
+                $qb->setParameters($subQB->getParameters());
             }
         }
 
-        return $qb->getQuery()->execute();
+        return $qb;
     }
 }
