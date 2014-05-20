@@ -12,4 +12,3 @@ services:
             - '@pim_catalog.repository.attribute_group'
         calls:
             - [setRequest, ['@?request=']]
-

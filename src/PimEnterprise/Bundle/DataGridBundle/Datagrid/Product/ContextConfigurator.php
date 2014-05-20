@@ -3,18 +3,15 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
- * Override context configurator to apply rights on attribute groups 
+ * Override context configurator to apply rights on attribute groups
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
