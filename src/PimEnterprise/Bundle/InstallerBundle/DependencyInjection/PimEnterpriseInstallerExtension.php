@@ -14,6 +14,9 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $entities = array(
         'channels',
         'locales',
@@ -30,12 +33,4 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
         'users',
         'attribute_groups_accesses'
     );
-
-    /**
-     * {@inheritdoc}
-     */
-    public function load(array $configs, ContainerBuilder $container)
-    {
-        parent::load($configs, $container);
-    }
 }

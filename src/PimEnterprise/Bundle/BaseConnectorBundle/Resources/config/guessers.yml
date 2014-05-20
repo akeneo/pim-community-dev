@@ -1,5 +1,4 @@
 services:
-
     pimee_transform.transformer.guesser.attribute_group_access_role:
         class: %pim_transform.transformer.guesser.regexp.class%
         public: false

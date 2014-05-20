@@ -2,7 +2,6 @@ parameters:
     pimee_base_connector.processor.attribute_group_access.class: PimEnterprise\Bundle\BaseConnectorBundle\Processor\AttributeGroupAccessProcessor
 
 services:
-
     pimee_base_connector.processor.attribute_group_access:
         parent: pim_base_connector.processor.transformer
         class: %pimee_base_connector.processor.attribute_group_access.class%
