@@ -1,0 +1,15 @@
+parameters:
+    pim_datagrid.datagrid.product.context_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator
+
+services:
+    pim_datagrid.datagrid.product.context_configurator:
+        class: %pim_datagrid.datagrid.product.context_configurator.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
+            - '@pim_datagrid.repository.datagrid_view'
+            - '@pim_catalog.repository.attribute_group'
+        calls:
+            - [setRequest, ['@?request=']]
+
