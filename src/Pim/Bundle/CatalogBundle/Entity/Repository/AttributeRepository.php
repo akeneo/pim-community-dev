@@ -334,19 +334,31 @@ class AttributeRepository extends EntityRepository implements
     /**
      * Get ids of attributes useable in grid
      *
+     * @param array $codes
+     * @param array $groupIds
+     *
      * @return array
      */
-    public function getAttributeIdsUseableInGrid()
+    public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id');
 
-        $qb->andWhere(
-            "att.useableAsGridColumn = 1 ".
-            "OR att.useableAsGridFilter = 1 ".
-            "OR att.attributeType = 'pim_catalog_simpleselect'"
-        );
+        $qb->andWhere("att.useableAsGridColumn = 1 OR att.useableAsGridFilter = 1");
+
+        if (is_array($codes) && !empty($codes)) {
+            $qb->andWhere("att.code IN (:codes)");
+            $qb->setParameter('codes', $codes);
+        }
+
+        if (is_array($groupIds) && !empty($groupIds)) {
+            $qb->andWhere("att.group IN (:groupIds)");
+            $qb->setParameter('groupIds', $groupIds);
+        } elseif (is_array($groupIds)) {
+            return [];
+        }
+
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);

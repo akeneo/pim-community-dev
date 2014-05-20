@@ -17,11 +17,10 @@ class ContextConfiguratorSpec extends ObjectBehavior
         DatagridConfiguration $configuration,
         ProductManager $manager,
         RequestParameters $requestParams,
-        Request $request,
         SecurityContextInterface $securityContext,
         EntityRepository $repository
     ) {
-        $this->beConstructedWith($configuration, $manager, $requestParams, $request, $securityContext, $repository);
+        $this->beConstructedWith($manager, $requestParams, $securityContext, $repository);
     }
 
     function it_is_a_configurator()

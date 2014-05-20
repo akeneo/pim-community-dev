@@ -33,3 +33,8 @@ MongoDB implementation
 ----------------------
 
 We removed null values from normalizedData field to avoid storing useless values
+
+DataGridBundle
+--------------
+
+Change of ConfiguratorInterface and configurators are now services to make them easier to customize
