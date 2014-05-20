@@ -1,0 +1,11 @@
+parameters:
+    pim_catalog.manager.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductMassActionManager
+
+services:
+    pim_catalog.manager.product_mass_action:
+        class: %pim_catalog.manager.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.repository.product_mass_action'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@security.context'
