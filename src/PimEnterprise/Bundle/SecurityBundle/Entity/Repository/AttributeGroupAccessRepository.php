@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
+use Oro\Bundle\UserBundle\Entity\User;
+
 use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
@@ -60,5 +62,29 @@ class AttributeGroupAccessRepository extends EntityRepository
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get authorized attribute group query builder
+     *
+     * @param User $user
+     * @param string $accessLevel
+     *
+     * @return QueryBuilder
+     */
+    public function getAuthorizedAttributeGroupQB(User $user, $accessLevel)
+    {
+        $accessField = ($accessLevel === 'EDIT') ? 'aga.editAttributes' : 'aga.viewAttributes';
+
+        $qb = $this->createQueryBuilder('aga');
+        $qb
+            ->andWhere($qb->expr()->in('aga.role', ':roles'))
+            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->eq($accessField, true))
+            ->resetDQLParts(['select'])
+            ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
+            ->select('ag.id');
+
+        return $qb;
     }
 }
