@@ -1,0 +1,9 @@
+channels:
+    ecommerce:
+        label: Default
+        locales:
+            - en_US
+        currencies:
+            - USD
+        tree: master
+        color: orange
