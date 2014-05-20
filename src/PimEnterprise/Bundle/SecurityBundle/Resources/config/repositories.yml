@@ -1,0 +1,11 @@
+parameters:
+    pimee_security.repository.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
+
+services:
+    pimee_security.repository.attribute_group_access:
+        class: %pimee_security.repository.attribute_group_access.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pimee_security.entity.attribute_group_access.class%]
+        tags:
+            - { name: 'pim_repository' }

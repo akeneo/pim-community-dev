@@ -22,6 +22,8 @@ class PimEnterpriseSecurityExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('managers.yml');
+        $loader->load('entities.yml');
+        $loader->load('repositories.yml');
         $loader->load('services.yml');
         $loader->load('voters.yml');
         $loader->load('subscribers.yml');
