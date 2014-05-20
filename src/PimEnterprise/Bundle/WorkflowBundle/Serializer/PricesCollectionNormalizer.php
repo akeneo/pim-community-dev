@@ -37,7 +37,7 @@ class PricesCollectionNormalizer implements NormalizerInterface, DenormalizerInt
         }
 
         $filtered = $data->filter(
-            function($element) {
+            function ($element) {
                 return $element instanceof ProductPrice;
             }
         );
