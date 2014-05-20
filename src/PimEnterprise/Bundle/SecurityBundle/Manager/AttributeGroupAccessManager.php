@@ -85,7 +85,7 @@ class AttributeGroupAccessManager
      * @param Role           $role
      * @param string         $accessLevel
      */
-    protected function grantAccess(AttributeGroup $group, Role $role, $accessLevel)
+    public function grantAccess(AttributeGroup $group, Role $role, $accessLevel)
     {
         $access = $this->getAttributeGroupAccess($group, $role);
         $access
