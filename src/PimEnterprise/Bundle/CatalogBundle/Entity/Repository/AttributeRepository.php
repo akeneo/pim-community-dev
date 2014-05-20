@@ -12,4 +12,22 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as PimAttribu
  */
 class AttributeRepository extends PimAttributeRepository
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    {
+        $qb = parent::findWithGroupsQB($attributeIds, $criterias);
+
+        if (isset($criterias['filters'])) {
+            foreach ($criterias['filters'] as $field => $subQB) {
+                $qb->andWhere(
+                    $qb->expr()->in($field, $subQB->getDQL())
+                );
+                $qb->setParameters($subQB->getParameters());
+            }
+        }
+
+        return $qb;
+    }
 }
