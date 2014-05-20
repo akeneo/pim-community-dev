@@ -72,8 +72,8 @@ class AttributeRepository extends EntityRepository implements
             $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
         }
 
-        if (isset($criterias['condition'])) {
-            foreach ($criterias['condition'] as $criteria => $value) {
+        if (isset($criterias['conditions'])) {
+            foreach ($criterias['conditions'] as $criteria => $value) {
                 $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
             }
         }
