@@ -50,9 +50,6 @@ class ProductFieldsBuilder extends PimProductFieldsBuilder
         parent::__construct($productManager, $localeManager, $currencyManager, $assocTypeManager, $catalogContext);
         $this->accessRepository = $accessRepository;
         $this->securityContext = $securityContext;
-
-//        var_dump($this->securityContext->getUser());
-//        die('eee');
     }
 
     /**
