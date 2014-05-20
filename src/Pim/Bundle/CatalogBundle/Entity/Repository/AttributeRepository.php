@@ -46,7 +46,23 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findWithGroups(array $attributeIds = array(), array $criterias = array())
     {
-        $qb = $this->createQueryBuilder('a')
+        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Find attributes with related attribute groups QB
+     *
+     * @param array $attributeIds
+     * @param array $criterias
+     *
+     * @return QueryBuilder
+     */
+    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
             ->addSelect('atrans', 'g', 'gtrans')
             ->leftJoin('a.translations', 'atrans')
             ->leftJoin('a.group', 'g')
@@ -56,11 +72,13 @@ class AttributeRepository extends EntityRepository implements
             $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
         }
 
-        foreach ($criterias as $criteria => $value) {
-            $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+        if (isset($criterias['condition'])) {
+            foreach ($criterias['condition'] as $criteria => $value) {
+                $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+            }
         }
 
-        return $qb->getQuery()->execute();
+        return $qb;
     }
 
     /**
