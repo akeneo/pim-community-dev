@@ -130,8 +130,7 @@ class Loader implements LoaderInterface
             foreach ($objects as $object) {
                 $this->persistObject($object);
             }
-        }
-        else {
+        } else {
             $this->persistObject($objects);
         }
     }
