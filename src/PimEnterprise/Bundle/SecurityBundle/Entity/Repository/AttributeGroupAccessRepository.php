@@ -2,9 +2,8 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Oro\Bundle\UserBundle\Entity\User;
-
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
