@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 class ProposalWidgetSpec extends ObjectBehavior
 {
@@ -34,7 +35,7 @@ class ProposalWidgetSpec extends ObjectBehavior
 
     function it_passes_proposals_from_the_repository_to_the_template($repository)
     {
-        $repository->findBy(['status' => null], ['createdAt' => 'DESC'], 10)->willReturn(['proposal one', 'proposal two']);
+        $repository->findBy(['status' => Proposal::WAITING], ['createdAt' => 'desc'], 10)->willReturn(['proposal one', 'proposal two']);
         $this->getParameters()->shouldReturn(['params' => ['proposal one', 'proposal two']]);
     }
 }

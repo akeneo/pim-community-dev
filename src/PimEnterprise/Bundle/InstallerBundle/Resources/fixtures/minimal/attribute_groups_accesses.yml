@@ -1,0 +1,5 @@
+attribute_groups_accesses:
+    general:
+        view: [administrator, user]
+        edit: [administrator]
+

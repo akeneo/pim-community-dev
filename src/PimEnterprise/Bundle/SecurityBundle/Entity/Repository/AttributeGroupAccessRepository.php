@@ -66,7 +66,7 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Get granted attribute group query builder
      *
-     * @param User $user
+     * @param User   $user
      * @param string $accessLevel
      *
      * @return QueryBuilder
