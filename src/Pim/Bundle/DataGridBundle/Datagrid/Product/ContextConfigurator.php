@@ -360,7 +360,6 @@ class ContextConfigurator implements ConfiguratorInterface
     {
         $attributeIds  = $this->getAttributeIds();
         if (empty($attributeIds)) {
-
             return [];
         }
 
