@@ -1,20 +1,20 @@
 parameters:
-    pim_enrich.controller.attribute_group.class:      Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
-    pim_enrich.controller.category_tree.class:        Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
-    pim_enrich.controller.channel.class:              Pim\Bundle\EnrichBundle\Controller\ChannelController
-    pim_enrich.controller.currency.class:             Pim\Bundle\EnrichBundle\Controller\CurrencyController
-    pim_enrich.controller.family.class:               Pim\Bundle\EnrichBundle\Controller\FamilyController
-    pim_enrich.controller.locale.class:               Pim\Bundle\EnrichBundle\Controller\LocaleController
-    pim_enrich.controller.mass_edit_action.class:     Pim\Bundle\EnrichBundle\Controller\MassEditActionController
-    pim_enrich.controller.attribute.class:            Pim\Bundle\EnrichBundle\Controller\AttributeController
-    pim_enrich.controller.product.class:              Pim\Bundle\EnrichBundle\Controller\ProductController
-    pim_enrich.controller.association.class:          Pim\Bundle\EnrichBundle\Controller\AssociationController
-    pim_enrich.controller.group.class:                Pim\Bundle\EnrichBundle\Controller\GroupController
-    pim_enrich.controller.association_type.class:     Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
-    pim_enrich.controller.media.class:                Pim\Bundle\EnrichBundle\Controller\MediaController
-    pim_enrich.controller.variant_group.class:        Pim\Bundle\EnrichBundle\Controller\VariantGroupController
-    pim_enrich.controller.group_type.class:           Pim\Bundle\EnrichBundle\Controller\GroupTypeController
-    pim_enrich.controller.completeness.class:         Pim\Bundle\EnrichBundle\Controller\CompletenessController
+    pim_enrich.controller.attribute_group.class: Pim\Bundle\EnrichBundle\Controller\AttributeGroupController
+    pim_enrich.controller.category_tree.class: Pim\Bundle\EnrichBundle\Controller\CategoryTreeController
+    pim_enrich.controller.channel.class: Pim\Bundle\EnrichBundle\Controller\ChannelController
+    pim_enrich.controller.currency.class: Pim\Bundle\EnrichBundle\Controller\CurrencyController
+    pim_enrich.controller.family.class: Pim\Bundle\EnrichBundle\Controller\FamilyController
+    pim_enrich.controller.locale.class: Pim\Bundle\EnrichBundle\Controller\LocaleController
+    pim_enrich.controller.mass_edit_action.class: Pim\Bundle\EnrichBundle\Controller\MassEditActionController
+    pim_enrich.controller.attribute.class: Pim\Bundle\EnrichBundle\Controller\AttributeController
+    pim_enrich.controller.product.class: Pim\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.association.class: Pim\Bundle\EnrichBundle\Controller\AssociationController
+    pim_enrich.controller.group.class: Pim\Bundle\EnrichBundle\Controller\GroupController
+    pim_enrich.controller.association_type.class: Pim\Bundle\EnrichBundle\Controller\AssociationTypeController
+    pim_enrich.controller.media.class: Pim\Bundle\EnrichBundle\Controller\MediaController
+    pim_enrich.controller.variant_group.class: Pim\Bundle\EnrichBundle\Controller\VariantGroupController
+    pim_enrich.controller.group_type.class: Pim\Bundle\EnrichBundle\Controller\GroupTypeController
+    pim_enrich.controller.completeness.class: Pim\Bundle\EnrichBundle\Controller\CompletenessController
 
 services:
     pim_enrich.controller.abstract:
@@ -79,7 +79,6 @@ services:
     pim_enrich.controller.locale:
         scope: request
         class: %pim_enrich.controller.locale.class%
-        parent: pim_enrich.controller.abstract_doctrine
 
     pim_enrich.controller.attribute:
         scope: request
@@ -118,7 +117,7 @@ services:
         class: %pim_enrich.controller.mass_edit_action.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pim_enrich.mass_edit_action.operator'
+            - '@pim_enrich.mass_edit_action.operator.registry'
             - '@oro_datagrid.mass_action.parameters_parser'
             - '@pim_datagrid.extension.mass_action.dispatcher'
             - %mass_edit_limit%
@@ -145,7 +144,6 @@ services:
     pim_enrich.controller.media:
         scope: request
         class: %pim_enrich.controller.media.class%
-        parent: pim_enrich.controller.abstract_doctrine
         arguments:
             - '@liip_imagine'
             - '@liip_imagine.filter.manager'

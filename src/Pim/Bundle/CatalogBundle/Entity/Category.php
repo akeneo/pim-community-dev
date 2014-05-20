@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Category class allowing to organize a flexible product class into trees
@@ -26,7 +27,8 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Category implements CategoryInterface, TranslatableInterface, ReferableInterface
+class Category implements CategoryInterface, TranslatableInterface, ReferableInterface,
+ VersionableInterface
 {
     /**
      * @var integer $id

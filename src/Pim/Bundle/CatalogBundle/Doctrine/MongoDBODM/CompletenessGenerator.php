@@ -7,13 +7,11 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
-use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Query\Builder;
 use Doctrine\MongoDB\Query\Expr;
@@ -37,16 +35,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $documentManager;
 
     /**
-     * @var CompletenessFactory
-     */
-    protected $completenessFactory;
-
-    /**
-     * @var ValidatorInterface
-     */
-    protected $validator;
-
-    /**
      * @var string
      */
     protected $productClass;
@@ -57,26 +45,28 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     protected $channelManager;
 
     /**
+     * @var FamilyRepository
+     */
+    protected $familyRepository;
+
+    /**
      * Constructor
      *
-     * @param DocumentManager     $documentManager
-     * @param CompletenessFactory $completenessFactory
-     * @param ValidatorInterface  $validator
-     * @param string              $productClass
-     * @param ChannelManager      $channelManager
+     * @param DocumentManager  $documentManager
+     * @param string           $productClass
+     * @param ChannelManager   $channelManager
+     * @param FamilyRepository $familyRepository
      */
     public function __construct(
         DocumentManager $documentManager,
-        CompletenessFactory $completenessFactory,
-        ValidatorInterface $validator,
         $productClass,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        FamilyRepository $familyRepository
     ) {
         $this->documentManager     = $documentManager;
-        $this->completenessFactory = $completenessFactory;
-        $this->validator           = $validator;
         $this->productClass        = $productClass;
         $this->channelManager      = $channelManager;
+        $this->familyRepository    = $familyRepository;
     }
 
     /**
@@ -84,13 +74,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function generateMissingForProduct(ProductInterface $product, $flush = true)
     {
-        if (null === $product->getFamily()) {
-            return;
-        }
-
-        $completenesses = $this->buildProductCompletenesses($product);
-
-        $product->setCompletenesses(new ArrayCollection($completenesses));
+        $this->generate($product);
 
         if ($flush) {
             $this->documentManager->flush($product);
@@ -106,111 +90,6 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     }
 
     /**
-     * Build the completeness for the product
-     *
-     * @param ProductInterface $product
-     *
-     * @return array
-     */
-    public function buildProductCompletenesses(ProductInterface $product)
-    {
-        $completenesses = array();
-
-        $stats = $this->collectStats($product);
-
-        foreach ($stats as $channelStats) {
-            $channel = $channelStats['object'];
-            $channelData = $channelStats['data'];
-            $channelRequiredCount = $channelData['required_count'];
-
-            foreach ($channelData['locales'] as $localeStats) {
-                $completeness = $this->completenessFactory->build(
-                    $channel,
-                    $localeStats['object'],
-                    $localeStats['missing_count'],
-                    $channelRequiredCount
-                );
-
-                $completenesses[] = $completeness;
-            }
-        }
-
-        return $completenesses;
-    }
-
-    /**
-     * Generate statistics on the product completeness
-     *
-     * @param ProductInterface $product
-     *
-     * @return array $stats
-     */
-    protected function collectStats(ProductInterface $product)
-    {
-        $stats = array();
-        $family = $product->getFamily();
-
-        if (null === $family) {
-            return $stats;
-        }
-
-        $channels = $this->channelManager->getFullChannels();
-
-        foreach ($channels as $channel) {
-            $channelCode = $channel->getCode();
-
-            $stats[$channelCode]['object'] = $channel;
-            $stats[$channelCode]['data'] = $this->collectChannelStats($channel, $product);
-        }
-
-        return $stats;
-    }
-
-    /**
-     * Generate stats on product completeness for a channel
-     *
-     * @param Channel          $channel
-     * @param ProductInterface $product
-     *
-     * @return array $stats
-     */
-    protected function collectChannelStats(Channel $channel, ProductInterface $product)
-    {
-        $stats = array();
-        $locales = $channel->getLocales();
-        $completeConstraint = new ProductValueComplete(array('channel' => $channel));
-        $stats['required_count'] = 0;
-        $stats['locales'] = array();
-        $requirements = $product->getFamily()->getAttributeRequirements();
-
-        foreach ($requirements as $req) {
-            if (!$req->isRequired() || $req->getChannel() != $channel) {
-                continue;
-            }
-            $stats['required_count']++;
-
-            foreach ($locales as $locale) {
-                $localeCode = $locale->getCode();
-
-                if (!isset($stats['locales'][$localeCode])) {
-                    $stats['locales'][$localeCode] = array();
-                    $stats['locales'][$localeCode]['object'] = $locale;
-                    $stats['locales'][$localeCode]['missing_count'] = 0;
-                }
-
-                $attribute = $req->getAttribute();
-                $value = $product->getValue($attribute->getCode(), $localeCode, $channel->getCode());
-
-                if (!$value || $this->validator->validateValue($value, $completeConstraint)->count() > 0) {
-                    $stats['locales'][$localeCode]['missing_count'] ++;
-                }
-            }
-        }
-
-        return $stats;
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function generateMissing()
@@ -220,25 +99,250 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
 
     /**
      * Generate missing completenesses for a channel if provided or a product
-     * if provided.
+     * if provided. CAUTION: the product must be already flushed to the DB
      *
-     * @param Product $product
-     * @param Channel $channel
+     * @param ProductInterface $product
+     * @param Channel          $channel
      */
     protected function generate(ProductInterface $product = null, Channel $channel = null)
     {
         $productsQb = $this->documentManager->createQueryBuilder($this->productClass);
 
+        $familyReqs = $this->getFamilyRequirements($product, $channel);
+
         $this->applyFindMissingQuery($productsQb, $product, $channel);
 
-        $products = $productsQb->getQuery()->execute();
+        $products = $productsQb->select('family', 'normalizedData')
+            ->hydrate(false)
+            ->getQuery()
+            ->execute();
 
         foreach ($products as $product) {
-            // Flushing at each iteration has a big impact on perf
-            $this->generateMissingForProduct($product, false);
+            $familyId = $product['family'];
+            $completenesses = $this->getCompletenesses($product['normalizedData'], $familyReqs[$familyId]);
+            $this->saveCompletenesses($product['_id'], $completenesses);
+        }
+    }
+
+    /**
+     * Generate completenesses data from normalized data from product and
+     * its family requirements. Only missing completenesses are generated.
+     *
+     * @param array $normalizedData
+     * @param array $normalizedReqs
+     *
+     * @return array $completenesses
+     */
+    public function getCompletenesses(array $normalizedData, array $normalizedReqs)
+    {
+        $completenesses = array();
+        $allCompletenesses = false;
+
+        if ((!isset($normalizedData['completenesses'])) ||
+            (null === $normalizedData['completenesses'])||
+            (0 === count($normalizedData['completenesses']))
+        ) {
+            $missingComps = array_keys($normalizedReqs);
+            $allCompletenesses = true;
+        } else {
+            $missingComps = array_diff(array_keys($normalizedReqs), array_keys($normalizedData['completenesses']));
         }
 
-        $this->documentManager->flush();
+        $normalizedData = array_filter(
+            $normalizedData,
+            function ($value) {
+                return (null !== $value);
+            }
+        );
+
+        $dataFields = array_keys($normalizedData);
+
+        foreach ($missingComps as $missingComp) {
+            $attributesReqs = $normalizedReqs[$missingComp]['reqs']['attributes'];
+            $pricesReqs = $normalizedReqs[$missingComp]['reqs']['prices'];
+            $requiredCount = count($attributesReqs) + count($pricesReqs);
+
+            $missingAttributes = array_diff($attributesReqs, $dataFields);
+
+            $missingPricesCount = count($pricesReqs);
+
+            foreach ($pricesReqs as $priceField => $currencies) {
+                if (isset($normalizedData[$priceField]) &&
+                    count(array_diff($currencies, array_keys($normalizedData[$priceField]))) === 0) {
+                    $missingPricesCount --;
+                }
+            }
+
+            $missingCount = count($missingAttributes) + $missingPricesCount;
+
+            $ratio = round(($requiredCount - $missingCount) / $requiredCount * 100);
+
+            $compObject = array(
+                'missingCount'  => $missingCount,
+                'requiredCount' => $requiredCount,
+                'ratio'         => $ratio,
+                'channel'       => $normalizedReqs[$missingComp]['channel'],
+                'locale'        => $normalizedReqs[$missingComp]['locale']
+            );
+
+            $completenesses[$missingComp] = array(
+                'object' => $compObject,
+                'ratio'  => $ratio
+            );
+        }
+
+        return array('completenesses' => $completenesses, 'all' => $allCompletenesses);
+    }
+
+    /**
+     * Save the completenesses data for the product directly to MongoDB.
+     *
+     * @param string $productId
+     * @param array  $compData
+     */
+    protected function saveCompletenesses($productId, array $compData)
+    {
+        $completenesses = $compData['completenesses'];
+        $all = $compData['all'];
+
+        $collection = $this->documentManager->getDocumentCollection($this->productClass);
+
+        $query = array('_id' => $productId);
+        $options = array('multiple' => false);
+
+        if ($all) {
+            $compObjects = array();
+            $normalizedComps = array();
+
+            foreach ($completenesses as $key => $value) {
+                $compObject = $value['object'];
+                $compObject['_id'] = new \MongoId();
+                $compObjects[] = $compObject;
+                $normalizedComps[$key] = $value['ratio'];
+            }
+            $normalizedComps = array('normalizedData.completenesses' => $normalizedComps);
+
+            $compObject = array('$set' => array('completenesses' => $compObjects));
+            $collection->update($query, $compObject, $options);
+
+            $normalizedComp = array('$set' => $normalizedComps);
+            $collection->update($query, $normalizedComp, $options);
+        } else {
+            foreach ($completenesses as $key => $value) {
+
+                $compObject = array('$push' => array('completenesses' => $value['object']));
+
+                $collection->update($query, $compObject, $options);
+
+                $normalizedComp = array('$set' => array('normalizedData.completenesses.'.$key => $value['ratio']));
+                $collection->update($query, $normalizedComp, $options);
+            }
+        }
+    }
+
+    /**
+     * Generate family requirements information to be used to
+     * calculate completenesses.
+     *
+     * @param ProductInterface $product
+     * @param Channel          $channel
+     *
+     * @return array
+     */
+    protected function getFamilyRequirements(ProductInterface $product = null, Channel $channel = null)
+    {
+        $selectFamily = null;
+
+        if (null !== $product) {
+            $selectFamily = $product->getFamily();
+        }
+        $families = $this->familyRepository->getFullFamilies($selectFamily, $channel);
+        $familyRequirements = array();
+
+        foreach ($families as $family) {
+            $reqsByChannels = array();
+            $channels = array();
+
+            foreach ($family->getAttributeRequirements() as $attributeReq) {
+                $channel = $attributeReq->getChannel();
+
+                $channels[$channel->getCode()] = $channel;
+
+                if (!isset($reqsByChannels[$channel->getCode()])) {
+                    $reqsByChannels[$channel->getCode()] = array();
+                }
+
+                $reqsByChannels[$channel->getCode()][] = $attributeReq;
+            }
+
+            $familyRequirements[$family->getId()] = $this->getFieldsNames($channels, $reqsByChannels);
+        }
+
+        return $familyRequirements;
+    }
+
+    /**
+     * Generate fields name that should be present and not null for the product
+     * to be defined as complete for channels and family
+     * Familyreqs must be indexed by channel code
+     *
+     * @param array $channels
+     * @param array $familyReqs
+     *
+     * @return array
+     */
+    protected function getFieldsNames(array $channels, array $familyReqs)
+    {
+        $fields = array();
+        foreach ($channels as $channel) {
+            foreach ($channel->getLocales() as $locale) {
+                $expectedCompleteness = $channel->getCode().'-'.$locale->getCode();
+                $fields[$expectedCompleteness] = array();
+                $fields[$expectedCompleteness]['channel'] = $channel->getId();
+                $fields[$expectedCompleteness]['locale'] = $locale->getId();
+                $fields[$expectedCompleteness]['reqs'] = array();
+                $fields[$expectedCompleteness]['reqs']['attributes'] = array();
+                $fields[$expectedCompleteness]['reqs']['prices'] = array();
+
+                foreach ($familyReqs[$channel->getCode()] as $requirement) {
+                    $fieldName = $this->getNormalizedFieldName($requirement->getAttribute(), $channel, $locale);
+
+                    if ('prices' === $requirement->getAttribute()->getBackendType()) {
+                        $fields[$expectedCompleteness]['reqs']['prices'][$fieldName] = array();
+                        foreach ($channel->getCurrencies() as $currency) {
+                            $fields[$expectedCompleteness]['reqs']['prices'][$fieldName][] = $currency->getCode();
+                        }
+                    } else {
+                        $fields[$expectedCompleteness]['reqs']['attributes'][] = $fieldName;
+                    }
+                }
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * Get the name of a normalized data field
+     *
+     * @param AbstractAttribute $attribute
+     * @param Channel           $channel
+     * @param Locale            $locale
+     *
+     * @return string
+     */
+    protected function getNormalizedFieldName(AbstractAttribute $attribute, Channel $channel, Locale $locale)
+    {
+        $suffix = '';
+
+        if ($attribute->isLocalizable()) {
+            $suffix = sprintf('-%s', $locale->getCode());
+        }
+        if ($attribute->isScopable()) {
+            $suffix .= sprintf('-%s', $channel->getCode());
+        }
+
+        return $attribute->getCode() . $suffix;
     }
 
     /**
@@ -260,11 +364,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             $combinations = $this->getChannelLocaleCombinations($channel);
 
             if (!empty($combinations)) {
-                $orItems = new Expr();
                 foreach ($combinations as $combination) {
-                    $orItems->field('normalizedData.completenesses.'.$combination)->exists(false);
+                    $expr = new Expr();
+                    $expr->field('normalizedData.completenesses.'.$combination)->exists(false);
+                    $productsQb->addOr($expr);
                 }
-                $productsQb->addOr($orItems);
             }
         }
 
@@ -305,9 +409,7 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
      */
     public function schedule(ProductInterface $product)
     {
-        $product->setCompletenesses(new ArrayCollection());
-
-        $this->documentManager->flush($product);
+        $product->getCompletenesses()->clear();
     }
 
     /**
@@ -323,6 +425,28 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
             ->field('family')->equals($family->getId())
             ->field('completenesses')->unsetField()
             ->field('normalizedData.completenesses')->unsetField()
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function scheduleForChannelAndLocale(Channel $channel, Locale $locale)
+    {
+        $productQb = $this->documentManager->createQueryBuilder($this->productClass);
+
+        $pullExpr = $productQb->expr()
+                ->addAnd($productQb->expr()->field('channel')->equals($channel->getId()))
+                ->addAnd($productQb->expr()->field('locale')->equals($locale->getId()));
+
+        $productQb
+            ->update()
+            ->multiple(true)
+            ->field(
+                sprintf('normalizedData.completenesses.%s-%s', $channel->getCode(), $locale->getCode())
+            )->unsetField()
+            ->field('completenesses')->pull($pullExpr)
             ->getQuery()
             ->execute();
     }

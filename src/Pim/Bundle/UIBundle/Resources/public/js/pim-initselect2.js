@@ -37,8 +37,10 @@ define(
                 if ($select.attr('data-multiple')) {
                     options.multiple = true;
                 }
-                if (!options.multiple && !$select.attr('data-required')) {
-                    options.allowClear = true;
+                if (!options.multiple) {
+                    if (!$select.attr('data-required')) {
+                        options.allowClear = true;
+                    }
                     options.placeholder = " ";
                 }
                 if ("0" === $select.attr('data-min-input-length')) {

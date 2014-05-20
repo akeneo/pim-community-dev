@@ -1,3 +1,11 @@
 ---
 An identifier attribute already exists.: Ein identifizierendes Attribut existiert bereits.
 Attribute code may contain only letters, numbers and underscore: Ein Attributcode darf sich nur aus Buchstaben, Nummern und Unterstrichen zusammensetzen
+This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Tabellenfilter verwendet werden
+This code is not available: Dieser Code ist nicht verfügbar
+This attribute type can't have unique value: Dieser Attributtyp kann keine einmaligen Werte haben
+No default value may be specified for this attribute type: Für diesen Attributtyp kann kein Standardwert angegeben werden
+This value should be Yes or No: Dieser Wert sollte Ja oder Nein sein
+This value should not be blank: Dieser Wert darf nicht leer sein
+Option code may contain only letters, numbers and underscores: Der Optionscode kann nur Buchstaben, Zahlen und Unterstriche enthalten
+This color is already used by another channel: Diese Farbe wird bereits von einem anderen Ausgabekanal verwendet

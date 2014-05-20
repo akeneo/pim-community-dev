@@ -19,7 +19,7 @@
                         {% endfor %}
                         {% if products|length < productCount %}
                             <tr>
-                                <td colspan="2">{{ "%count% more products..."|trans({'%count%': productCount - products|length}) }}</td>
+                                <td colspan="2">{{ 'info.group.more products'|trans({'%count%': productCount - products|length}) }}</td>
                             </tr>
                         {% endif %}
                     </tbody>

@@ -28,6 +28,6 @@ Feature: Display available field options
     Then I should see the <fields> fields
 
     Examples:
-      | type          | fields |
-      | Multi select  | Code   |
-      | Simple select | Code   |
+      | type          | fields                         |
+      | Multi select  | Code, Automatic option sorting |
+      | Simple select | Code, Automatic option sorting |

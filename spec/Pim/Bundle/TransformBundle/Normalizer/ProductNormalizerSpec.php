@@ -3,20 +3,22 @@
 namespace spec\Pim\Bundle\TransformBundle\Normalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class ProductNormalizerSpec extends ObjectBehavior
 {
-    function let(SerializerInterface $serializer)
+    function let(SerializerInterface $serializer, NormalizerFilterInterface $filter)
     {
         $serializer->implement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
         $this->setSerializer($serializer);
+        $this->setFilters(array($filter));
     }
 
     function it_is_a_normalizer()
@@ -43,14 +45,22 @@ class ProductNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization(new \stdClass(), 'json')->shouldReturn(false);
     }
 
-    function it_normalizes_the_properties_of_product(Product $product)
-    {
+    function it_normalizes_the_properties_of_product(
+        Product $product,
+        ArrayCollection $values,
+        \ArrayIterator $iterator,
+        $filter
+    ) {
+        $values->getIterator()->willReturn($iterator);
+
         $product->getAssociations()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
         $product->getCategoryCodes()->willReturn([]);
         $product->isEnabled()->willReturn(true);
-        $product->getValues()->willReturn(new ArrayCollection());
+        $product->getValues()->willReturn($values);
+
+        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
 
         $this->normalize($product, 'csv')->shouldReturn([
             'family' => null,
@@ -62,8 +72,17 @@ class ProductNormalizerSpec extends ObjectBehavior
         ]);
     }
 
-    function it_normalizes_the_values_of_product(Product $product, AbstractAttribute $attribute, ProductValue $value, ArrayCollection $collection, \ArrayIterator $iterator, $serializer)
-    {
+    function it_normalizes_the_values_of_product(
+        Product $product,
+        AbstractAttribute $attribute,
+        ProductValueInterface $value,
+        ArrayCollection $values,
+        \ArrayIterator $iterator,
+        $filter,
+        $serializer
+    ) {
+        $values->getIterator()->willReturn($iterator);
+
         $product->getAssociations()->willReturn([]);
         $product->getFamily()->willReturn(null);
         $product->getGroupCodes()->willReturn([]);
@@ -73,10 +92,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $attribute->getCode()->willReturn('name');
 
-        $product->getValues()->willReturn($collection);
+        $product->getValues()->willReturn($values);
 
-        $collection->filter(Argument::cetera())->willReturn($collection);
-        $collection->getIterator()->willReturn($iterator);
+        $filter->filter($values, Argument::any())->shouldBeCalled()->willReturn($values);
 
         $iterator->rewind()->willReturn(null);
         $valueCount = 1;

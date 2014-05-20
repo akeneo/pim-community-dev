@@ -14,16 +14,18 @@ Feature: Filter products per metric
       | label  | scopable | type   | useable as grid filter | metric family | default metric unit | decimals allowed |
       | Weight | yes      | metric | yes                    | Weight        | GRAM                | yes              |
     And the following products:
-      | sku    | family    | enabled | weight-ecommerce |
-      | postit | furniture | yes     | 120 GRAM         |
-      | book   | library   | no      | 0.2 KILOGRAM     |
+      | sku    | family    | enabled | weight-ecommerce | weight-mobile |
+      | postit | furniture | yes     | 120 GRAM         |               |
+      | book   | library   | no      | 0.2 KILOGRAM     |               |
+      | mug    |           | yes     |                  | 120 GRAM      |
+      | pen    |           | yes     |                  |               |
     And I am logged in as "admin"
 
   Scenario: Successfully filter products by metric
     Given I am on the products page
     Then I should see the filter SKU
     And I should not see the filter Weight
-    And the grid should contain 2 elements
+    And the grid should contain 4 elements
     And I should see products postit and book
     And I should be able to use the following filters:
       | filter | value            | result          |
@@ -34,3 +36,4 @@ Feature: Filter products per metric
       | Weight | <= 120 Gram      | postit          |
       | Weight | <= 0.25 Kilogram | postit and book |
       | Weight | > 4 Kilogram     |                 |
+      | Weight | empty            | mug and pen     |

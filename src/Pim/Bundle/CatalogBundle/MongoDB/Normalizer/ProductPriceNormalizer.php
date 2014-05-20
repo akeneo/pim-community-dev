@@ -19,12 +19,13 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $data = [
-            $object->getCurrency() => [
+        $data = null;
+        if ($object->getData() !== null) {
+            $data = [
                 'data'     => $object->getData(),
                 'currency' => $object->getCurrency()
-            ]
-        ];
+            ];
+        }
 
         return $data;
     }

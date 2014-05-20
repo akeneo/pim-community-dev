@@ -35,7 +35,7 @@ class ProductRepository extends EntityRepository implements
     protected $attributeRepository;
 
     /**
-     * Set flexible query builder
+     * Set product query builder
      *
      * @param ProductQueryBuilder $productQB
      *
@@ -355,12 +355,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Returns true if a ProductValue with the provided value alread exists,
-     * false otherwise.
-     *
-     * @param ProductValueInterface $value
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function valueExists(ProductValueInterface $value)
     {
@@ -431,15 +426,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Finds entities and attributes values by a set of criteria, same coverage than findBy
-     *
-     * @param array      $attributes attribute codes
-     * @param array      $criteria   criterias
-     * @param array|null $orderBy    order by
-     * @param int|null   $limit      limit
-     * @param int|null   $offset     offset
-     *
-     * @return array The objects.
+     * {@inheritdoc}
      */
     public function findAllByAttributes(
         array $attributes = array(),
@@ -484,12 +471,7 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
-     * Load a flexible entity with its attribute values
-     *
-     * @param integer $id
-     *
-     * @return Product|null
-     * @throws NonUniqueResultException
+     * {@inheritdoc}
      */
     public function findOneByWithValues($id)
     {
@@ -511,6 +493,8 @@ class ProductRepository extends EntityRepository implements
     }
 
     /**
+     * {@inheritdoc}
+     *
      * @param QueryBuilder $qb
      *
      * @return ProductQueryBuilder

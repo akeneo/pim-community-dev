@@ -19,10 +19,16 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->serializer     = $this->getSerializerMock();
-        $this->channelManager = $this->getChannelManagerMock();
-        $this->localeManager  = $this->getLocaleManagerMock();
-        $this->processor      = new ProductProcessor($this->serializer, $this->localeManager, $this->channelManager);
+        $this->serializer      = $this->getSerializerMock();
+        $this->channelManager  = $this->getChannelManagerMock();
+        $this->localeManager   = $this->getLocaleManagerMock();
+        $this->securityContext = $this->getSecurityContextMock();
+        $this->processor       = new ProductProcessor(
+            $this->serializer,
+            $this->localeManager,
+            $this->channelManager,
+            $this->securityContext
+        );
     }
 
     /**
@@ -117,6 +123,13 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
     public function getLocaleManagerMock()
     {
         return $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\LocaleManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    public function getSecurityContextMock()
+    {
+        return $this->getMockBuilder('Symfony\Component\Security\Core\SecurityContext')
             ->disableOriginalConstructor()
             ->getMock();
     }

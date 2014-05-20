@@ -29,7 +29,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create a mock of flexible product entity
+     * Create a mock of product entity
      *
      * @return \Pim\Bundle\CatalogBundle\Model\Product
      */

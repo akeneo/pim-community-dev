@@ -8,26 +8,38 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as OrmSorterConfiguration;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
-use Pim\Bundle\FlexibleEntityBundle\Manager\FlexibleManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 class SortersConfiguratorSpec extends ObjectBehavior
 {
-    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, FlexibleManager $manager)
+    function let(DatagridConfiguration $configuration, ConfigurationRegistry $registry, ProductManager $manager)
     {
         $attributes = [
             'sku' => [
-                'code'  => 'sku',
+                'code'          => 'sku',
                 'attributeType' => 'pim_catalog_identifier'
             ],
             'name' => [
-                'code'  => 'name',
+                'code'          => 'name',
                 'attributeType' => 'pim_catalog_text'
             ]
         ];
-        $this->beConstructedWith($configuration, $registry, $manager);
+
+        $configuration
+            ->offsetGetByPath(sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY))
+            ->willReturn($attributes);
+
+        $configuration
+            ->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY))
+            ->willReturn(['family' => ['family_config'], 'sku' => [], 'name' => []]);
+
+        $registry
+            ->getConfiguration('pim_catalog_identifier')
+            ->willReturn(['column' => ['identifier_config'], 'sorter' => 'flexible_field']);
+
+        $this->beConstructedWith($registry, $manager);
     }
 
     function it_is_a_configurator()
@@ -35,26 +47,11 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
-    function it_configures_datagrid_sorters(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    function it_configures_datagrid_sorters($configuration, $registry)
     {
-        $attributes = [
-            'sku' => [
-                'code'  => 'sku',
-                'attributeType' => 'pim_catalog_identifier'
-            ],
-            'name' => [
-                'code'  => 'name',
-                'attributeType' => 'pim_catalog_text'
-            ]
-        ];
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $configuration->offsetGetByPath($path)->willReturn($attributes);
-
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array('column' => array('text_config'), 'sorter' => 'flexible_field'));
-
-        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config'), 'sku' => array(), 'name' => array()));
+        $registry
+            ->getConfiguration('pim_catalog_text')
+            ->willReturn(['column' => ['text_config'], 'sorter' => 'flexible_field']);
 
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
@@ -65,33 +62,16 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH);
         $configuration->offsetGetByPath($columnConfPath)->shouldBeCalled();
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
-    function it_cannot_handle_misconfigured_attribute_type(DatagridConfiguration $configuration, ConfigurationRegistry $registry, AbstractAttribute $sku, AbstractAttribute $name)
+    function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
     {
-        $attributes = [
-            'sku' => [
-                'code'  => 'sku',
-                'attributeType' => 'pim_catalog_identifier'
-            ],
-            'name' => [
-                'code'  => 'name',
-                'attributeType' => 'pim_catalog_text'
-            ]
-        ];
-        $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
-        $configuration->offsetGetByPath($path)->willReturn($attributes);
-
-        $registry->getConfiguration('pim_catalog_identifier')->willReturn(array('column' => array('identifier_config'), 'sorter' => 'flexible_field'));
-        $registry->getConfiguration('pim_catalog_text')->willReturn(array());
-
-        $columnConfPath = sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY);
-        $configuration->offsetGetByPath($columnConfPath)->willReturn(array('family' => array('family_config'), 'sku' => array(), 'name' => array()));
+        $registry->getConfiguration('pim_catalog_text')->willReturn([]);
 
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
 
-        $this->shouldThrow('\LogicException')->duringConfigure();
+        $this->shouldThrow('\LogicException')->duringConfigure($configuration);
     }
 }

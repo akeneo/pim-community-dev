@@ -70,7 +70,9 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = (arguments.length > 0) ? this._getDisplayValue(arguments[0]) : this._getDisplayValue();
-
+                if (value.type === 'empty') {
+                    return this._getChoiceOption(value.type).label;
+                }
                 if (!value.value) {
                     return this.placeholder;
                 } else {
@@ -151,7 +153,8 @@ define(
              */
             _isValueValid: function(value) {
                 return (value.unit && value.type && value.value) ||
-                       (!value.unit && !value.type && !value.value);
+                       (!value.unit && !value.type && !value.value) ||
+                       value.type === 'empty';
             },
 
             /**
@@ -183,6 +186,11 @@ define(
                         item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
                     }
                 });
+                if (newValue.type === 'empty') {
+                    this.$(this.criteriaValueSelectors.value).hide().siblings('.btn-group:eq(1)').hide();
+                } else {
+                    this.$(this.criteriaValueSelectors.value).show().siblings('.btn-group:eq(1)').show();
+                }
 
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
@@ -202,6 +210,19 @@ define(
                     }
                 }
                 return this;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _onClickChoiceValue: function(e) {
+                NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
+                var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                if ($(e.currentTarget).attr('data-value') === 'empty') {
+                    parentDiv.find('input[name="value"], .btn-group:eq(1)').hide();
+                } else {
+                    parentDiv.find('input[name="value"], .btn-group:eq(1)').show();
+                }
             }
         });
     }

@@ -24,10 +24,12 @@ class FamilyFilter extends ChoiceFilter
             return false;
         }
 
-        $qb = $ds->getQueryBuilder();
         $ids = $data['value'];
+
+        $qb = $ds->getQueryBuilder();
         $repository = $this->util->getProductRepository();
         $pqb = $repository->getProductQueryBuilder($qb);
+
         $pqb->addFieldFilter('family', 'IN', $ids);
 
         return true;

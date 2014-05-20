@@ -299,6 +299,7 @@ datagrid:
                 type: delete
                 label: pim.grid.mass_action.delete
                 entity_name: product
+                acl_resource: pim_enrich_product_remove
                 messages:
                     confirm_title: Delete confirmation
                     confirm_content: Are you sure you want to delete selected products?
@@ -325,7 +326,9 @@ datagrid:
 
             mass_edit:
                 type: edit
+                acl_resource: pim_enrich_product_edit
                 label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
         sorters:
@@ -355,6 +358,8 @@ datagrid:
                     data_name: family
                     options:
                         field_options:
+                            attr:
+                                empty_choice: true
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 groups:
@@ -724,6 +729,12 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:  '@pim_catalog.repository.attribute->getAvailableAttributesAsLabelChoice'
+        mass_actions:
+            mass_edit:
+                type: edit
+                label: pim.grid.mass_action.mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                icon: edit
 
     currency-grid:
         options:
@@ -1157,12 +1168,23 @@ datagrid:
                     - v.version
                     - >
                       CONCAT(
+                        CASE WHEN u IS NOT NULL THEN
+                            CONCAT(
+                                CONCAT(u.firstName, ' '),
+                                CONCAT(u.lastName, ' ')
+                            )
+                        ELSE
+                            v.author
+                        END,
                         CONCAT(
-                            CONCAT(u.firstName, ' '),
-                            CONCAT(u.lastName, ' ')
-                        ),
-                        CONCAT(
-                            CONCAT(' - ', u.email),
+                            CONCAT(
+                                ' - ',
+                                CASE WHEN u IS NOT NULL THEN
+                                    u.email
+                                ELSE
+                                    'Removed user'
+                                END
+                            ),
                             CASE WHEN v.context IS NOT NULL THEN
                                 CONCAT(
                                     CONCAT(' (', v.context),
@@ -1178,11 +1200,13 @@ datagrid:
                 join:
                     left:
                         user:
-                            join: v.user
+                            join: %oro_user.entity.class%
                             alias: u
+                            conditionType: WITH
+                            condition: u.username = v.author
                 where:
                     and:
-                        - v.resourceName = :objectClass AND v.resourceId = :objectId
+                        - v.resourceName = :objectClass AND v.resourceId = :objectId AND v.pending = false
         columns:
             version:
                 label: Version

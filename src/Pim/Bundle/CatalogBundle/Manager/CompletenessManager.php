@@ -3,13 +3,15 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 
@@ -23,9 +25,19 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\ProductValueComplete;
 class CompletenessManager
 {
     /**
-     * @var RegistryInterface
+     * @var FamilyRepository
      */
-    protected $doctrine;
+    protected $familyRepository;
+
+    /**
+     * @var ChannelRepository
+     */
+    protected $channelRepository;
+
+    /**
+     * @var LocaleRepository
+     */
+    protected $localeRepository;
 
     /**
      * @var CompletenessGeneratorInterface
@@ -45,21 +57,27 @@ class CompletenessManager
     /**
      * Constructor
      *
-     * @param RegistryInterface              $doctrine
+     * @param FamilyRepository               $familyRepository
+     * @param ChannelRepository              $channelRepository
+     * @param LocaleRepository               $localeRepository
      * @param CompletenessGeneratorInterface $generator
      * @param ValidatorInterface             $validator
      * @param string                         $class
      */
     public function __construct(
-        RegistryInterface $doctrine,
+        FamilyRepository $familyRepository,
+        ChannelRepository $channelRepository,
+        LocaleRepository $localeRepository,
         CompletenessGeneratorInterface $generator,
         ValidatorInterface $validator,
         $class
     ) {
-        $this->doctrine  = $doctrine;
-        $this->generator = $generator;
-        $this->validator = $validator;
-        $this->class     = $class;
+        $this->familyRepository  = $familyRepository;
+        $this->channelRepository = $channelRepository;
+        $this->localeRepository  = $localeRepository;
+        $this->generator         = $generator;
+        $this->validator         = $validator;
+        $this->class             = $class;
     }
 
     /**
@@ -116,6 +134,23 @@ class CompletenessManager
     }
 
     /**
+     * Schedule recalculation of completenesses for all products
+     * of a channel
+     *
+     * @param Channel $channel
+     */
+    public function scheduleForChannel(Channel $channel)
+    {
+        if ($channel->getId()) {
+            $deletedLocaleIds = $this->channelRepository->getDeletedLocaleIdsForChannel($channel);
+            foreach ($deletedLocaleIds as $deletedLocaleId) {
+                $deletedLocale = $this->localeRepository->find($deletedLocaleId);
+                $this->generator->scheduleForChannelAndLocale($channel, $deletedLocale);
+            }
+        }
+    }
+
+    /**
      * Returns an array containing all completeness info and missing attributes for a product
      *
      * @param ProductInterface $product
@@ -151,8 +186,7 @@ class CompletenessManager
             $channel = $completeness->getChannel();
             $completenesses[$locale->getCode()][$channel->getCode()]['completeness'] = $completeness;
         }
-        $requirements = $this->doctrine
-            ->getRepository(get_class($family))
+        $requirements = $this->familyRepository
             ->getFullRequirementsQB($family, $localeCode)
             ->getQuery()
             ->getResult();

@@ -38,6 +38,7 @@ Feature: Add attribute options
     And I fill in the following information:
       | Code | color |
     And I visit the "Values" tab
+    And I check the "Automatic option sorting" switch
     And I create the following attribute options:
       | Code  | Selected by default |
       | red   | no                  |

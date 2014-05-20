@@ -26,7 +26,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @var \Context\Page\Base\Grid
      */
-    protected $datagrid;
+    public $datagrid;
 
     /**
      * @param PageFactory $pageFactory
@@ -87,6 +87,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterByMetric($filterName, $action, $value, $unit)
     {
         $this->datagrid->filterPerMetric($filterName, $action, $value, $unit);
+        $this->wait();
+    }
+
+    /**
+     * @param string $filterName
+     * @param string $currency
+     *
+     * @Then /^I filter by price "([^"]*)" with empty value on "([^"]*)" currency$/
+     */
+    public function iFilterByPriceWithEmptyValue($filterName, $currency)
+    {
+        $this->datagrid->filterPerPrice($filterName, 'is empty', null, $currency);
         $this->wait();
     }
 
@@ -268,6 +280,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $action = ucfirst(strtolower($actionName));
         $this->datagrid->clickOnAction($element, $action);
+        $this->wait();
     }
 
     /**
@@ -308,6 +321,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         foreach ($table->getHash() as $item) {
             $count = count($this->getMainContext()->listToArray($item['result']));
             $filter = $item['filter'];
+
             $steps[] = new Step\Then(sprintf('I show the filter "%s"', $filter));
             $steps[] = new Step\Then(sprintf('I filter by "%s" with value "%s"', $filter, $item['value']));
             $steps[] = new Step\Then(sprintf('the grid should contain %d elements', $count));
@@ -428,26 +442,47 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
-        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with) ([^">=<]*)$/';
+        $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
+        $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator = false;
 
         $matches = array();
-        if (preg_match($operatorPattern, $value, $matches)) {
+        if (preg_match($datePattern, $value, $matches)) {
             $operator = $matches[1];
-            $value    = $matches[2];
+            $date     = $matches[2];
+            if (5 === count($matches)) {
+                $date = array($date);
+                $date[] = $matches[4];
+            }
+            $this->filterByDate($filterName, $date, $operator);
+            $this->wait();
+
+            return;
+        }
+
+        if (preg_match($operatorPattern, $value, $matches)) {
+            if (count($matches) === 1) {
+                $operator = $matches[0];
+                $value    = false;
+            } else {
+                $operator = $matches[1];
+                $value    = $matches[2];
+            }
 
             $operators = array(
                 'contains'         => Grid::FILTER_CONTAINS,
                 'does not contain' => Grid::FILTER_DOES_NOT_CONTAIN,
                 'is equal to'      => Grid::FILTER_IS_EQUAL_TO,
                 'starts with'      => Grid::FILTER_STARTS_WITH,
-                'ends with'        => Grid::FILTER_ENDS_WITH
+                'ends with'        => Grid::FILTER_ENDS_WITH,
+                'empty'            => Grid::FILTER_IS_EMPTY,
+                'in list'          => Grid::FILTER_IN_LIST,
             );
 
             $operator = $operators[$operator];
         }
 
-        $this->datagrid->filterBy($filterName, $value, $operator);
+        $this->datagrid->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
         $this->wait();
     }
 
@@ -571,9 +606,9 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return Then[]
      *
-     * @When /^I mass-edit products? (.*)$/
+     * @When /^I mass-edit (?:products?|families) (.*)$/
      */
-    public function iMassEdit($entities)
+    public function iMassEditEntities($entities)
     {
         return [
             new Step\Then('I change the page size to 100'),
@@ -697,5 +732,41 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
+    }
+
+    /**
+     * @param $filterName
+     * @param $values
+     * @param $operator
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function filterByDate($filterName, $values, $operator)
+    {
+        if (!is_array($values)) {
+            $values = array($values, $values);
+        }
+
+        $filter = $this->datagrid->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->datagrid->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
+
+        $script = <<<'JS'
+        require(['jquery', 'jquery-ui'], function($) {
+            $inputs = $('input.hasDatepicker:visible');
+            $inputs.first().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
+            $inputs.last().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
+        });
+JS;
+
+        $this->getSession()->getDriver()->executeScript(vsprintf($script, $values));
+
+        $filter->find('css', 'button.filter-update')->click();
     }
 }

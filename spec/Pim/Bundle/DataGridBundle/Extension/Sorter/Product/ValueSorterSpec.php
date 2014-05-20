@@ -5,9 +5,8 @@ namespace spec\Pim\Bundle\DataGridBundle\Extension\Sorter\Product;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
@@ -19,18 +18,18 @@ class ValueSorterSpec extends ObjectBehavior
         $this->beConstructedWith($repository, $attributeRepository);
     }
 
-    function it_should_be_a_sorter()
+    function it_is_a_sorter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface');
     }
 
     function it_applies_a_sort_on_product_sku(
         ProductDatasource $datasource,
-        ProductRepositoryInterface $repository,
+        $repository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
         CustomAttributeRepository $attributeRepository,
-        Attribute $sku
+        AbstractAttribute $sku
     ) {
         // TODO : how to mock the following magic method ?
         $attributeRepository->findOneByCode('sku')->willReturn($sku);

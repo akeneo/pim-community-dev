@@ -8,9 +8,10 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
- * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config,
+ * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
  * attributes config, current locale
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -110,31 +111,34 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $request;
 
     /**
-     * @param DatagridConfiguration    $configuration   the grid config
-     * @param ProductManager           $productManager  product manager
-     * @param RequestParameters        $requestParams   request parameters
-     * @param Request                  $request         request
-     * @param SecurityContextInterface $securityContext the security context
+     * @var EntityRepository
+     */
+    protected $gridViewRepository;
+
+    /**
+     * @param ProductManager           $productManager
+     * @param RequestParameters        $requestParams
+     * @param SecurityContextInterface $securityContext
+     * @param EntityRepository         $gridViewRepository
      */
     public function __construct(
-        DatagridConfiguration $configuration,
         ProductManager $productManager,
         RequestParameters $requestParams,
-        Request $request,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        EntityRepository $gridViewRepository
     ) {
-        $this->configuration   = $configuration;
-        $this->productManager  = $productManager;
-        $this->requestParams   = $requestParams;
-        $this->request         = $request;
-        $this->securityContext = $securityContext;
+        $this->productManager     = $productManager;
+        $this->requestParams      = $requestParams;
+        $this->securityContext    = $securityContext;
+        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->addProductStorage();
         $this->addLocaleCode();
         $this->addScopeCode();
@@ -145,6 +149,14 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -163,15 +175,25 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesIds()
     {
         $attributeCodes = $this->getUserGridColumns();
-        $repository     = $this->productManager->getAttributeRepository();
-        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($attributeCodes) : null;
-
-        if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableInGrid();
-        }
+        $attributeIds = $this->getAttributeIds($attributeCodes);
 
         $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
         $this->configuration->offsetSetByPath($path, $attributeIds);
+    }
+
+    /**
+     * Return useable attribute ids
+     *
+     * @param string[] $attributeCodes
+     *
+     * @return integer[]
+     */
+    protected function getAttributeIds($attributeCodes = null)
+    {
+        $repository   = $this->productManager->getAttributeRepository();
+        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+
+        return $attributeIds;
     }
 
     /**
@@ -336,9 +358,13 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $repository     = $this->productManager->getAttributeRepository();
-        $attributeIds  = $repository->getAttributeIdsUseableInGrid();
+        $attributeIds  = $this->getAttributeIds();
+        if (empty($attributeIds)) {
+            return [];
+        }
+
         $currentLocale = $this->getCurrentLocaleCode();
+        $repository    = $this->productManager->getAttributeRepository();
         $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
@@ -352,7 +378,6 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getUserGridColumns()
     {
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
         }
@@ -363,9 +388,8 @@ class ContextConfigurator implements ConfiguratorInterface
             $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
         }
 
-        $view = $this->productManager
-            ->getEntityManager()
-            ->getRepository('PimDataGridBundle:DatagridView')
+        $view = $this
+            ->gridViewRepository
             ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
 
         if ($view) {

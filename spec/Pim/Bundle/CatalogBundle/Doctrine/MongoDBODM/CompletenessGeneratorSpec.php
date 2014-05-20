@@ -3,165 +3,329 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
-use Pim\Bundle\CatalogBundle\Factory\CompletenessFactory;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\AttributeRequirement;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Validator\ConstraintViolationListInterface;
+use Doctrine\ODM\MongoDB\PersistentCollection;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
  */
 class CompletenessGeneratorSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         DocumentManager $manager,
-        CompletenessFactory $completenessFactory,
-        ValidatorInterface $validator,
-        ProductInterface $product,
-        ProductValue $value,
-        AbstractAttribute $varchar,
-        Family $family,
-        AttributeRequirement $requireVarcharEcommerce,
-        AttributeRequirement $requireVarcharMobile,
-        AttributeRequirement $requirePrice,
-        Channel $ecommerce,
-        Channel $mobile,
-        Locale $enUs,
-        Locale $frFr,
-        Locale $nlNl,
-        ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations,
-        ChannelManager $channelManager
+        ChannelManager $channelManager,
+        FamilyRepository $familyRepository
     ) {
-        $varchar->getCode()->willReturn('attr_varchar');
-        $varchar->isLocalizable()->willReturn(true);
-        $varchar->isScopable()->willReturn(true);
-
-        $product->getFamily()->willReturn($family);
-
-        $enUs->getCode()->willReturn('en_US');
-        $frFr->getCode()->willReturn('fr_FR');
-        $nlNl->getCode()->willReturn('nl_NL');
-
-        $ecommerce->getCode()->willReturn('ecommerce');
-        $ecommerce->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
-
-        $mobile->getCode()->willReturn('mobile');
-        $mobile->getLocales()->willReturn(array($enUs, $frFr, $nlNl));
-
-        $requireVarcharEcommerce->getChannel()->willReturn($ecommerce);
-        $requireVarcharEcommerce->getAttribute()->willReturn($varchar);
-        $requireVarcharEcommerce->isRequired()->willReturn(true);
-
-        $requireVarcharMobile->getChannel()->willReturn($mobile);
-        $requireVarcharMobile->getAttribute()->willReturn($varchar);
-        $requireVarcharMobile->isRequired()->willReturn(true);
-
-        $noViolation->count()->willReturn(0);
-        $withViolations->count()->willReturn(1);
-
-        $product->getValue(Argument::cetera())->willReturn($value);
-        $channelManager->getFullChannels()->willReturn(array($ecommerce, $mobile));
-
-        $this->beConstructedWith($manager, $completenessFactory, $validator, 'pim_product_class', $channelManager);
+        $this->beConstructedWith($manager, 'pim_product_class', $channelManager, $familyRepository);
     }
 
-    public function it_is_a_completeness_generator()
+    function it_is_a_completeness_generator()
     {
         $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface');
     }
 
-    public function it_schedules_product_completeness(ProductInterface $product, DocumentManager $manager)
-    {
-        $manager->flush($product)->shouldBeCalled();
-        $product->setCompletenesses(Argument::type('Doctrine\Common\Collections\ArrayCollection'))->shouldBeCalled();
+    function it_schedules_product_completeness(
+        $manager,
+        ProductInterface $product,
+        PersistentCollection $completenesses
+    ) {
+        $manager->flush($product)->shouldNotBeCalled();
+        $product->getCompletenesses()->willReturn($completenesses);
+        $completenesses->clear()->shouldBeCalled();
 
         $this->schedule($product);
     }
 
-    public function it_builds_product_completenesses_with_one_channel_and_three_locales (
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        CompletenessFactory $completenessFactory,
-        Family $family,
-        AttributeRequirement $requireVarcharEcommerce,
-        Channel $ecommerce,
-        Locale $frFr,
-        Locale $enUs,
-        Locale $nlNl,
-        ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations
-    ) {
-        $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce));
+    function it_generates_all_product_completenesses()
+    {
+        $normalizedReqs = [
+            'ecommerce-en_US' => [
+                'channel' => 1,
+                'locale'  => 58,
+                'reqs' => [
+                    'attributes' => [
+                        'sku','name','description'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ]
+        ];
+        $normalizedData = [
+            'sku' => 'sku001',
+            'name' => 'My product',
+        ];
+        $expectedResult = [
+            'completenesses' => [
+                'ecommerce-en_US' => [
+                    'object' => [
+                        'missingCount' => 1,
+                        'requiredCount' => 3,
+                        'ratio' => (float) 67,
+                        'channel' => 1,
+                        'locale' => 58
+                    ],
+                    'ratio' => (float) 67
+                ]
+            ],
+            'all' => true
+        ];
 
-        $violationsList = array($noViolation, $withViolations, $withViolations);
-
-        $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
-            return array_shift($violationsList);
-        });
-
-        $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
-        $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
-        $completenessFactory->build($ecommerce, $nlNl, 1, 1)->shouldBeCalled();
-
-        $this->buildProductCompletenesses($product);
+        $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
     }
 
-    public function it_doesnt_build_product_completenesses_without_family (
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        DocumentManager $manager
-    ) {
-        $product->getFamily()->willReturn(null);
+    function it_generates_all_multiple_product_completenesses()
+    {
+        $normalizedReqs = [
+            'ecommerce-en_US' => [
+                'channel' => 1,
+                'locale'  => 58,
+                'reqs' => [
+                    'attributes' => [
+                        'sku','name','description'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ],
+            'mobile-en_US' => [
+                'channel' => 2,
+                'locale'  => 58,
+                'reqs' => [
+                    'attributes' => [
+                        'sku','description'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ],
+            'mobile-fr_FR' => [
+                'channel' => 2,
+                'locale'  => 62,
+                'reqs' => [
+                    'attributes' => [
+                        'sku'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ]
+        ];
+        $normalizedData = [
+            'sku' => 'sku001',
+            'name' => 'My product'
+        ];
+        $expectedResult = [
+            'completenesses' => [
+                'ecommerce-en_US' => [
+                    'object' => [
+                        'missingCount' => 1,
+                        'requiredCount' => 3,
+                        'ratio' => (float) 67,
+                        'channel' => 1,
+                        'locale' => 58
+                    ],
+                    'ratio' => (float) 67
+                ],
+                'mobile-en_US' => [
+                    'object' => [
+                        'missingCount' => 1,
+                        'requiredCount' => 2,
+                        'ratio' => (float) 50,
+                        'channel' => 2,
+                        'locale' => 58
+                    ],
+                    'ratio' => (float) 50
+                ],
+                'mobile-fr_FR' => [
+                    'object' => [
+                        'missingCount' => 0,
+                        'requiredCount' => 1,
+                        'ratio' => (float) 100,
+                        'channel' => 2,
+                        'locale' => 62
+                    ],
+                    'ratio' => (float) 100
+                ]
+            ],
+            'all' => true
+        ];
 
-        $manager->flush($product)->shouldNotBeCalled();
-        $product->setCompletenesses(new ArrayCollection())->shouldNotBeCalled();
-
-        $this->generateMissingForProduct($product);
+        $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
     }
-    public function it_builds_product_completenesses_with_two_channels_and_three_locales (
-        ProductInterface $product,
-        ValidatorInterface $validator,
-        CompletenessFactory $completenessFactory,
-        Family $family,
-        AttributeRequirement $requireVarcharEcommerce,
-        AttributeRequirement $requireVarcharMobile,
-        Channel $ecommerce,
-        Channel $mobile,
-        Locale $frFr,
-        Locale $enUs,
-        Locale $nlNl,
-        ConstraintViolationListInterface $noViolation,
-        ConstraintViolationListInterface $withViolations
-    ) {
-        $family->getAttributeRequirements()->willReturn(array($requireVarcharEcommerce, $requireVarcharMobile));
 
-        $violationsList = array($noViolation, $withViolations, $noViolation, $noViolation, $noViolation, $withViolations);
+    function it_generates_missing_completenesses_only()
+    {
+        $normalizedReqs = [
+            'ecommerce-en_US' => [
+                'channel' => 1,
+                'locale'  => 58,
+                'reqs' => [
+                    'attributes' => [
+                        'sku','name','description'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ],
+            'mobile-en_US' => [
+                'channel' => 2,
+                'locale'  => 58,
+                'reqs' => [
+                    'attributes' => [
+                        'sku','description'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ],
+            'mobile-fr_FR' => [
+                'channel' => 2,
+                'locale'  => 62,
+                'reqs' => [
+                    'attributes' => [
+                        'sku'
+                    ],
+                    'prices' => [
+                    ]
+                ]
+            ]
+        ];
 
-        $validator->validateValue(Argument::cetera())->will(function () use (&$violationsList) {
-            return array_shift($violationsList);
-        });
+        $normalizedData = [
+            'sku' => 'sku001',
+            'name' => 'My product',
+            'completenesses' => [
+                'ecommerce-en_US' => 50,
+                'mobile-fr_FR' => 50,
+            ]
+        ];
 
-        $completenessFactory->build($ecommerce, $enUs, 0, 1)->shouldBeCalled();
-        $completenessFactory->build($ecommerce, $frFr, 1, 1)->shouldBeCalled();
-        $completenessFactory->build($ecommerce, $nlNl, 0, 1)->shouldBeCalled();
-        $completenessFactory->build($mobile, $enUs, 0, 1)->shouldBeCalled();
-        $completenessFactory->build($mobile, $frFr, 0, 1)->shouldBeCalled();
-        $completenessFactory->build($mobile, $nlNl, 1, 1)->shouldBeCalled();
+        $expectedResult = [
+            'completenesses' => [
+                'mobile-en_US' => [
+                    'object' => [
+                        'missingCount' => 1,
+                        'requiredCount' => 2,
+                        'ratio' => (float) 50,
+                        'channel' => 2,
+                        'locale' => 58
+                    ],
+                    'ratio' => (float) 50
+                ]
+            ],
+            'all' => false
+        ];
 
-        $this->buildProductCompletenesses($product);
+        $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
+    }
+
+    function it_generates_completenesse_with_prices()
+    {
+        $normalizedReqs = [
+            'mobile-fr_FR' => [
+                'channel' => 2,
+                'locale'  => 62,
+                'reqs' => [
+                    'attributes' => [
+                        'sku'
+                    ],
+                    'prices' => [
+                        'price-fr_FR' => [
+                            'EUR','USD'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $normalizedData = [
+            'sku' => 'sku001',
+            'name' => 'My product',
+            'price-fr_FR' => [
+                'EUR' => [
+                    'data' => 13.24,
+                    'currency' => 'EUR'
+                ],
+                'USD' => [
+                    'data' => 15.67,
+                    'currency' => 'USD'
+                ]
+            ]
+        ];
+
+        $expectedResult = [
+            'completenesses' => [
+                'mobile-fr_FR' => [
+                    'object' => [
+                        'missingCount' => 0,
+                        'requiredCount' => 2,
+                        'ratio' => (float) 100,
+                        'channel' => 2,
+                        'locale' => 62
+                    ],
+                    'ratio' => (float) 100
+                ]
+            ],
+            'all' => true
+        ];
+
+        $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
+    }
+
+    function it_generates_completenesse_with_incomplete_prices()
+    {
+        $normalizedReqs = [
+            'mobile-fr_FR' => [
+                'channel' => 2,
+                'locale'  => 62,
+                'reqs' => [
+                    'attributes' => [
+                        'sku'
+                    ],
+                    'prices' => [
+                        'price-fr_FR' => [
+                            'EUR','USD'
+                        ]
+                    ]
+                ]
+            ]
+        ];
+
+        $normalizedData = [
+            'sku' => 'sku001',
+            'name' => 'My product',
+            'price-fr_FR' => [
+                'EUR' => [
+                    'data' => 13.24,
+                    'currency' => 'EUR'
+                ]
+            ]
+        ];
+
+        $expectedResult = [
+            'completenesses' => [
+                'mobile-fr_FR' => [
+                    'object' => [
+                        'missingCount' => 1,
+                        'requiredCount' => 2,
+                        'ratio' => (float) 50,
+                        'channel' => 2,
+                        'locale' => 62
+                    ],
+                    'ratio' => (float) 50
+                ]
+            ],
+            'all' => true
+        ];
+
+        $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
     }
 }

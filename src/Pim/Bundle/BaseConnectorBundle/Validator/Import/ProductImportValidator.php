@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
+use Pim\Bundle\BaseConnectorBundle\Exception\DuplicateProductValueException;
 
 /**
  * Validates an imported product
@@ -31,6 +32,11 @@ class ProductImportValidator extends ImportValidator
     protected $constraints = array();
 
     /**
+     * @var array
+     */
+    protected $uniqueValues = array();
+
+    /**
      * Constructor
      *
      * @param ValidatorInterface         $validator
@@ -50,6 +56,7 @@ class ProductImportValidator extends ImportValidator
     public function validate($entity, array $columnsInfo, array $data, array $errors = array())
     {
         $this->checkIdentifier($entity, $columnsInfo, $data);
+        $this->checkUniqueValues($entity, $columnsInfo, $data);
 
         foreach ($columnsInfo as $columnInfo) {
             if ($columnInfo->getAttribute()) {
@@ -67,6 +74,50 @@ class ProductImportValidator extends ImportValidator
     }
 
     /**
+     * Reset the stete of the validator
+     */
+    public function reset()
+    {
+        $this->identifiers  = [];
+        $this->uniqueValues = [];
+    }
+
+    /**
+     * Checks the uniqueness of product values that should be unique
+     * As the uniqueness check is normally executed against the database
+     * and imported products have not been persisted yet, this effectively
+     * checks that the items in the current batch don't contain duplicate values
+     * for unique attributes.
+     *
+     * @param object $entity
+     * @param array  $columnsInfo
+     * @param array  $data
+     *
+     * @throws DuplicateProductValueException When duplicate values are encountered
+     */
+    protected function checkUniqueValues($entity, array $columnsInfo, array $data)
+    {
+        foreach ($columnsInfo as $columnInfo) {
+            if ($columnInfo->getAttribute()) {
+                $value = $this->getProductValue($entity, $columnInfo);
+                if ($value->getAttribute()->isUnique()) {
+                    $code      = $value->getAttribute()->getCode();
+                    $valueData = (string) $value->getData();
+                    if ($valueData !== '') {
+                        $this->uniqueValues[$code] =
+                            isset($this->uniqueValues[$code]) ? $this->uniqueValues[$code] : [];
+                        if (in_array($valueData, $this->uniqueValues[$code])) {
+                            throw new DuplicateProductValueException($code, $valueData, $data);
+                        } else {
+                            $this->uniqueValues[$code][] = $valueData;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * Validates a ProductValue
      *
      * @param ProductInterface    $product
@@ -78,7 +129,7 @@ class ProductImportValidator extends ImportValidator
     {
         $value = $this->getProductValue($product, $columnInfo);
         if (!$value) {
-            return new \Symfony\Component\Validator\ConstraintViolationList;
+            return new \Symfony\Component\Validator\ConstraintViolationList();
         }
 
         return $this->validator->validateValue(

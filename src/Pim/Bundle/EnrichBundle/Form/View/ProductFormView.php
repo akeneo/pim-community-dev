@@ -83,7 +83,7 @@ class ProductFormView
     {
         $this->view[$group->getId()] = array(
             'label'      => $group->getLabel(),
-            'attributes' => array(),
+            'attributes' => array()
         );
     }
 
@@ -116,9 +116,24 @@ class ProductFormView
      */
     protected function addValue(ProductValueInterface $value, FormView $view)
     {
-        $attribute = $value->getAttribute();
-        $group     = $attribute->getVirtualGroup();
+        $attribute     = $value->getAttribute();
+        $attributeView = $this->prepareAttributeView($attribute, $value, $view);
+        $group         = $attribute->getVirtualGroup();
 
+        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
+    }
+
+    /**
+     * Prepare attribute view
+     *
+     * @param AbstractAttribute     $attribute
+     * @param ProductValueInterface $value
+     * @param FormView              $view
+     *
+     * @return array
+     */
+    protected function prepareAttributeView(AbstractAttribute $attribute, ProductValueInterface $value, FormView $view)
+    {
         $attributeView = array(
             'id'                 => $attribute->getId(),
             'isRemovable'        => $value->isRemovable(),
@@ -144,7 +159,7 @@ class ProductFormView
             $attributeView['classes'] = $classes;
         }
 
-        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
+        return $attributeView;
     }
 
     /**

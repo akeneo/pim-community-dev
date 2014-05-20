@@ -14,11 +14,10 @@ Feature: Export products with media
       | SNKRS-1R | sneakers | summer_collection | 50 EUR, 70 USD | 45   | red      | Model 1    |
       | SNKRS-1C | sneakers | summer_collection | 55 EUR, 75 USD | 45   | charcoal | Model 1    |
     And the following product values:
-      | product  | attribute | value          |
-      | SNKRS-1B | side_view |                |
-      | SNKRS-1R | side_view | SNKRS-1R.png   |
-      | SNKRS-1C | side_view | SNKRS-1C-s.png |
-      | SNKRS-1C | top_view  | SNKRS-1C-t.png |
+      | product  | attribute | value                     |
+      | SNKRS-1R | side_view | %fixtures%/SNKRS-1R.png   |
+      | SNKRS-1C | side_view | %fixtures%/SNKRS-1C-s.png |
+      | SNKRS-1C | top_view  | %fixtures%/SNKRS-1C-t.png |
     And I launched the completeness calculator
     And I am logged in as "Julia"
     And I am on the "footwear_product_export" export job page

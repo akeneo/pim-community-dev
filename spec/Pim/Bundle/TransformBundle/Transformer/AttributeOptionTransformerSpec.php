@@ -14,7 +14,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\TransformBundle\Transformer\EntityTransformerInterface;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo;
 use Doctrine\ORM\Mapping\ClassMetadata;
@@ -22,13 +22,12 @@ use Pim\Bundle\TransformBundle\Transformer\Property\DefaultTransformer;
 
 class AttributeOptionTransformerSpec extends ObjectBehavior
 {
-    public function let(
+    function let(
         ManagerRegistry $doctrine,
         PropertyAccessorInterface $propertyAccessor,
         GuesserInterface $guesser,
         ColumnInfoTransformerInterface $columnInfoTransformer
-    )
-    {
+    ) {
         $this->beConstructedWith($doctrine, $propertyAccessor, $guesser, $columnInfoTransformer);
     }
 
@@ -37,8 +36,18 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\TransformBundle\Transformer\EntityTransformer');
     }
 
-    function it_transforms_array_to_attribute_option(ManagerRegistry $doctrine, EntityManager $em, ReferableEntityRepositoryInterface $repository, AttributeOption $option, ColumnInfoTransformerInterface $columnInfoTransformer, ColumnInfo $columnInfo, ClassMetadata $metadata, GuesserInterface $guesser, DefaultTransformer $defaultTransformer, Attribute $attribute)
-    {
+    function it_transforms_array_to_attribute_option(
+        ManagerRegistry $doctrine,
+        EntityManager $em,
+        ReferableEntityRepositoryInterface $repository,
+        AttributeOption $option,
+        ColumnInfoTransformerInterface $columnInfoTransformer,
+        ColumnInfo $columnInfo,
+        ClassMetadata $metadata,
+        GuesserInterface $guesser,
+        DefaultTransformer $defaultTransformer,
+        AbstractAttribute $attribute
+    ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
         $data = ['code' => 'blue', 'attribute' => 'color'];
 
@@ -58,8 +67,17 @@ class AttributeOptionTransformerSpec extends ObjectBehavior
         $this->transform($class, $data, []);
     }
 
-    function it_throws_exception_when_attribute_is_unknown(ManagerRegistry $doctrine, EntityManager $em, ReferableEntityRepositoryInterface $repository, AttributeOption $option, ColumnInfoTransformerInterface $columnInfoTransformer, ColumnInfo $columnInfo, ClassMetadata $metadata, GuesserInterface $guesser, DefaultTransformer $defaultTransformer)
-    {
+    function it_throws_exception_when_attribute_is_unknown(
+        ManagerRegistry $doctrine,
+        EntityManager $em,
+        ReferableEntityRepositoryInterface $repository,
+        AttributeOption $option,
+        ColumnInfoTransformerInterface $columnInfoTransformer,
+        ColumnInfo $columnInfo,
+        ClassMetadata $metadata,
+        GuesserInterface $guesser,
+        DefaultTransformer $defaultTransformer
+    ) {
         $class = 'Pim\Bundle\CatalogBundle\Entity\AttributeOption';
         $data = ['code' => 'blue', 'attribute' => 'color'];
 

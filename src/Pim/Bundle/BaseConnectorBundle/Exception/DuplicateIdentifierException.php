@@ -18,8 +18,7 @@ class DuplicateIdentifierException extends InvalidItemException implements Param
     /**
      * @var string
      */
-    protected $messageTemplate =
-        'The unique code "%identifier%" was already read in this file';
+    protected $messageTemplate = 'The unique code "%identifier%" was already read in this file';
 
     /**
      * @var array

@@ -1,52 +1,65 @@
 ---
 attribute:
+  title: Attribut
   overview: Attribute Übersicht
   create: Attribut anlegen
   edit: Attribut bearbeiten
 attribute group:
+  title: Attributgruppe
   overview: Attributgruppen Übersicht
   create: Attributgruppe anlegen
   edit: Attributgruppe bearbeiten
 category:
+  title: Kategorie
   overview: Kategorieübersicht
   create: Kategorie anlegen
   edit: Kategorie bearbeiten
 tree:
+  title: Struktur
   create: Strukturbaum anlegen
   edit: Strukturbaum bearbeiten
 channel:
+  title: Ausgabekanal
   overview: Ausgabekanäle Übersicht
   create: Ausgabekanal anlegen
   edit: Ausgabekanal bearbeiten
 currency:
+  title: Währung
   overview: Währungsübersicht
   create: Währung anlegen
   edit: Währung bearbeiten
 family:
+  title: Produktfamilie
   overview: Produktfamilien-Übersicht
   create: Produktfamilie anlegen
   edit: Produktfamilie bearbeiten
 locale:
+  title: Gebietsschema
   overview: Gebietsschema-Übersicht
   create: Gebietsschema anlegen
   edit: Gebietsschema bearbeiten
 product:
+  title: Produkt
   overview: Produktübersicht
   create: Produkt anlegen
   edit: Produkt bearbeiten
 group:
+  title: Gruppe
   overview: Gruppenübersicht
   create: Gruppe anlegen
   edit: Gruppe bearbeiten
 group type:
+  title: Gruppentyp
   overview: Gruppentypen-Übersicht
   create: Gruppentyp anlegen
   edit: Gruppentyp bearbeiten
 variant group:
+  title: Variantengruppe
   overview: Variantengruppen-Übersicht
   create: Variantengruppe anlegen
   edit: Variantengruppe bearbeiten
 association type:
+  title: Verbindungstyp
   overview: Verbindungstypen-Übersicht
   create: Verbindungstyp anlegen
   edit: Verbindungstyp bearbeiten
@@ -178,6 +191,7 @@ info:
     keep products: Produkte in diesen Kategorien werden nicht gelöscht.
   product:
     no available attributes: Es können keine weiteren Attribute hinzugefügt werden
+    no family defined: Keine Produktfamilie definiert
     change family: Produktfamilie ändern
     change family to: Produktfamilie ändern zu
     merge attributes: Die aktuellen Attribute werden mit denen der neuen Produktfamilie zusammengeführt.
@@ -192,13 +206,19 @@ info:
     select products: Bitte wählen Sie die Produkte aus, die zu dieser Gruppe gehören.
     selectable products: Die folgenden wählbaren Produkte haben einen definierten Wert für jede Achse.
     no group types: Es sind keine Gruppentypen vorhanden. Klicken Sie hier, um einen anzulegen
+    more products: '%count% mehr Produkte...'
   association type:
     show products: Produkte anzeigen
     show groups: Gruppen anzeigen
     remove from products: 'Das Löschen dieses Verbindungstyps entfernt ihn von %count% Produkten.'
     none exist: Es gibt keine Verbindungstypen.
     create one: Klicken Sie hier, um einen anzulegen
+  attribute:
+    auto option sorting: Wenn aktiviert, werden Optionen automatisch nach ihren lokalisierten Bezeichnungen sortiert
+  completeness:
+    not calculated: Noch nicht berechnet
 color:
+  title: Farbe
   gray: Grau
   white: Weiß
   yellow: Gelb
@@ -261,6 +281,11 @@ Translate from: Übersetzen von
 "No": false
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
+Search: Suche
+Choose the attribute type: Wählen Sie den Attributtyp aus
+Drop a file or click here: Datei hierhin ziehen oder klicken
+Drop an image or click here: Bild hierhin ziehen oder klicken
+Automatic option sorting: Option automatisch sortieren
 Create: Anlegen
 Cancel: Abbrechen
 Choose a family: Wählen Sie eine Produktfamilie
@@ -271,6 +296,8 @@ Completeness: Vollständigkeit
 Attribute used as label: Attribut als Label verwendet
 Global: Global
 Channel: Ausgabekanal
+Expand all channels: Alle Ausgabekanäle erweitern
+Collapse all channels: Alle Ausgabekanäle reduzieren
 Always override: Immer überschreiben
 Ask: Fragen
 General Properties: Allgemeine Eigenschaften
@@ -355,12 +382,6 @@ pim_catalog_metric: Maßeinheit
 Activated: Aktiviert
 Disable: Deaktivieren
 pim_enrich.mass_edit_action:
-  page_title: Produkte
-  page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
-  title: Aktion auswählen
-  subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
-  confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|'
-  limit_exceeded: 'Bitte wählen Sie weniger als %limit% Produkte für die Bearbeitung aus'
   change-status:
     label: Status ändern (aktivieren / deaktivieren)
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
@@ -382,10 +403,6 @@ pim_enrich.mass_edit_action:
     label: Zu Gruppen hinzufügen
     description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
     success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
-Choose products: Produkte auswählen
-Choose operation: Aktion auswählen
-Configure: Konfigurieren
-Confirm: Bestätigen
 To enable: Um zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
@@ -414,6 +431,9 @@ View group: Gruppe ansehen
 Products: Produkte
 pim_enrich:
   acl:
+    locale:
+      index: Gebietsschemata auflisten
+      access: Auf Gebietsschemata zugreifen
     currency:
       index: Währungen auflisten
       toggle: Währungen umschalten
@@ -444,6 +464,7 @@ pim_enrich:
       edit: Einen Ausgabekanal bearbeiten
       remove: Einen Ausgabekanal löschen
     family:
+      index: Produktfamilien auflisten
       create: Eine Produktfamilie anlegen
       edit: Eine Produktfamilie bearbeiten
       remove: Eine Produktfamilie löschen
@@ -568,3 +589,4 @@ oro.locale:
       language: Wählen Sie die Systemsprache die Sie verwenden möchten
       timezone: Wählen Sie die Zeitzone für die Anzeige von Datum und Uhrzeit
       currency: Wählen Sie die Standardwährung
+Selected products successfully deleted: Ausgewählte Produkte erfolgreich gelöscht

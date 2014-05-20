@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
  * Normalize a product value to store it as mongodb_json
@@ -26,17 +27,38 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     public function normalize($object, $format = null, array $context = array())
     {
         $valueKey = $this->getFieldValue($object);
+        $normalized = null;
         if ($object->getData() instanceof Collection) {
-            $data[$valueKey] = [];
-            foreach ($object->getData() as $item) {
-                $data[$valueKey][] = $this->serializer->normalize($item, $format, $context);
-            }
-
-        } else {
-            $data[$valueKey] = $this->serializer->normalize($object->getData(), $format, $context);
+            $normalized = $this->normalizeCollection($object->getData(), $format, $context);
+        } elseif ($object->getData() !== null) {
+            $normalized = $this->serializer->normalize($object->getData(), $format, $context);
         }
 
-        return $data;
+        return ($normalized === null) ? $normalized : [$valueKey => $normalized];
+    }
+
+    /**
+     * @param Collection $collection
+     * @param string     $format
+     * @param array      $context
+     *
+     * @return array|null
+     */
+    protected function normalizeCollection(Collection $collection, $format, $context)
+    {
+        $normalized = [];
+        foreach ($collection as $item) {
+            $data = $this->serializer->normalize($item, $format, $context);
+            if ($data !== null) {
+                if ($item instanceof ProductPrice) {
+                    $normalized[$item->getCurrency()] = $data;
+                } else {
+                    $normalized[] = $data;
+                }
+            }
+        }
+
+        return (count($normalized) > 0) ? $normalized : null;
     }
 
     /**

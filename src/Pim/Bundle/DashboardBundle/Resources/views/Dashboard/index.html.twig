@@ -30,7 +30,7 @@
         </div>
 
         <div class="version-container muted">
-            <strong>{{ 'pim_dashboard.version'|trans }}:</strong> {{ version() }}
+            {% embed 'PimDashboardBundle:Dashboard:version.html.twig' %}{% endembed %}
         </div>
     </div>
 {% endblock %}

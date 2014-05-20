@@ -9,9 +9,17 @@ class CatalogContextSpec extends ObjectBehavior
 {
     function it_throws_a_logic_exception_when_a_configuration_is_missing()
     {
-        $exception = new \LogicException(sprintf('"%s" expects to be configured with "%s"', 'Pim\Bundle\CatalogBundle\Context\CatalogContext', 'localeCode'));
-
-        $this->shouldThrow($exception)->duringGetLocaleCode();
+        $this
+            ->shouldThrow(
+                new \LogicException(
+                    sprintf(
+                        '"%s" expects to be configured with "%s"',
+                        'Pim\Bundle\CatalogBundle\Context\CatalogContext',
+                        'localeCode'
+                    )
+                )
+            )
+            ->duringGetLocaleCode();
     }
 
     function it_configures_the_locale_code()
@@ -26,4 +34,3 @@ class CatalogContextSpec extends ObjectBehavior
         $this->getScopeCode()->shouldReturn('ecommerce');
     }
 }
-

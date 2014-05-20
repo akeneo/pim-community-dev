@@ -5,8 +5,8 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
- * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a flexible
- * entity values
+ * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
+ * values
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)

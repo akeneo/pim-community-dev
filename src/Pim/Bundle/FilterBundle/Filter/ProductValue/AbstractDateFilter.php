@@ -3,6 +3,7 @@
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use Oro\Bundle\FilterBundle\Filter\AbstractDateFilter as OroAbstractDateFilter;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\DateRangeFilterType;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
@@ -46,6 +47,19 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
     /**
      * {@inheritdoc}
      */
+    protected function isValidData($data)
+    {
+        // Empty operator does not need any value
+        if (is_array($data) && isset($data['type']) && FilterType::TYPE_EMPTY === $data['type']) {
+            return true;
+        }
+
+        return parent::isValidData($data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function applyFilterDependingOnType($type, $ds, $dateStartValue, $dateEndValue, $fieldName)
     {
         switch ($type) {
@@ -57,6 +71,14 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
                 break;
             case DateRangeFilterType::TYPE_NOT_BETWEEN:
                 $this->applyFilterByAttributeNotBetween($ds, $dateStartValue, $dateEndValue, $fieldName);
+                break;
+            case FilterType::TYPE_EMPTY:
+                $this->util->applyFilterByAttribute(
+                    $ds,
+                    $this->get(ProductFilterUtility::DATA_NAME_KEY),
+                    null,
+                    'EMPTY'
+                );
                 break;
             default:
             case DateRangeFilterType::TYPE_BETWEEN:
@@ -109,5 +131,25 @@ abstract class AbstractDateFilter extends OroAbstractDateFilter
         if ($values && $operators) {
             $this->util->applyFilterByAttribute($ds, $fieldName, $values, $operators);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        if (!$this->isValidData($data)) {
+            return false;
+        }
+
+        if ($data['type'] === FilterType::TYPE_EMPTY) {
+            return [
+                'date_start' => null,
+                'date_end'   => null,
+                'type'       => $data['type']
+            ];
+        }
+
+        return parent::parseData($data);
     }
 }

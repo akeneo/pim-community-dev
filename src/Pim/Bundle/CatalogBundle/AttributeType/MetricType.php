@@ -43,7 +43,7 @@ class MetricType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = array_merge(
             parent::prepareValueFormOptions($value),

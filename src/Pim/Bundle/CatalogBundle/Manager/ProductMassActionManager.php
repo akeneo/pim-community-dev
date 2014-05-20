@@ -55,6 +55,11 @@ class ProductMassActionManager
 
         return $this
             ->attributeRepository
-            ->findWithGroups(array_unique($attributeIds), array('unique' => 0));
+            ->findWithGroups(
+                array_unique($attributeIds),
+                array(
+                    'conditions' => ['unique' => 0]
+                )
+            );
     }
 }

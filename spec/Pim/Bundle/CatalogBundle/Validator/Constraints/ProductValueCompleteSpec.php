@@ -22,8 +22,16 @@ class ProductValueCompleteSpec extends ObjectBehavior
     {
         $this->beConstructedWith(['channel' => 'ecommerce']);
 
-        $exception = new \LogicException('Expecting $channel to be an instance of "\Pim\Bundle\CatalogBundle\Entity\Channel", got "ecommerce"');
-        $this->shouldThrow($exception)->duringGetChannel();
+        $this
+            ->shouldThrow(
+                new \LogicException(
+                    sprintf(
+                        'Expecting $channel to be an instance of "\Pim\Bundle\CatalogBundle\Entity\Channel", got "%s"',
+                        'ecommerce'
+                    )
+                )
+            )
+            ->duringGetChannel();
     }
 
     function it_has_a_channel(Channel $channel)

@@ -6,7 +6,7 @@
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,pre-launch-debug,phpunit-coverage"/>
+    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,phpunit-coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -37,6 +37,7 @@
         <mkdir dir="${basedir}/app/build/logs/phpunit"/>
         <mkdir dir="${basedir}/app/build/logs/phpspec"/>
         <mkdir dir="${basedir}/app/build/logs/behat"/>
+        <mkdir dir="${basedir}/app/build/logs/phpdoc"/>
         <mkdir dir="${basedir}/app/build/pdepend"/>
         <mkdir dir="${basedir}/app/build/phpdox"/>
 
@@ -136,7 +137,7 @@
     </target>
 
     <target name="phpcs" description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-        <exec executable="phpcs">
+        <exec executable="${basedir}/bin/phpcs">
             <arg value="--standard=PSR2" />
             <arg value="--extensions=php" />
             <arg path="${basedir}/src/Pim" />
@@ -170,7 +171,6 @@
             <arg value="--log-pmd" />
             <arg value="${basedir}/app/build/logs/pmd-cpd.xml" />
             <arg path="${basedir}/src/Pim" />
-            <arg path="${basedir}/features" />
         </exec>
     </target>
 
@@ -188,23 +188,15 @@
         </exec>
         <exec executable="php">
             <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
-            <arg value="/usr/bin/phpunit" />
+            <arg value="${basedir}/bin/phpunit" />
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
         </exec>
     </target>
 
-    <target name="pre-launch-debug" description="Run a functional test to build cache avoiding errors">
-        <exec executable="phpunit" failonerror="false">
-            <arg value="-c" />
-            <arg path="${basedir}/app/phpunit.jenkins.xml" />
-            <arg value="--filter=LocaleManagerTest" />
-        </exec>
-    </target>
-
     <target name="phpunit" description="Run unit tests with PHPUnit">
-        <exec executable="phpunit">
+        <exec executable="${basedir}/bin/phpunit">
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />

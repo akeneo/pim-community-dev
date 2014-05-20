@@ -8,17 +8,16 @@ use Oro\Bundle\DataGridBundle\Extension\Action\ActionConfiguration;
 
 class DeleteMassActionSpec extends ObjectBehavior
 {
-    function it_should_have_required_entity_name()
+    function it_requires_the_entity_name()
     {
-        $params = array();
-        $options = ActionConfiguration::createNamed('delete', $params);
+        $options = ActionConfiguration::createNamed('delete', []);
 
         $this->shouldThrow(
             new \LogicException('There is no option "entity_name" for action "delete".')
         )->duringSetOptions($options);
     }
 
-    function it_should_define_default_values()
+    function it_defines_default_values()
     {
         $params = array('entity_name' => 'foo');
         $options = ActionConfiguration::createNamed('delete', $params);
@@ -33,7 +32,7 @@ class DeleteMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('confirmation')->shouldReturn(true);
     }
 
-    function it_should_overwrite_default_values()
+    function it_overwrites_default_values()
     {
         $routeParams = array('foo' => 'bar');
         $params = array(
@@ -54,7 +53,7 @@ class DeleteMassActionSpec extends ObjectBehavior
         $this->getOptions()->offsetGet('confirmation')->shouldReturn(false);
     }
 
-    function it_should_be_impossible_to_override_frontend()
+    function it_doesnt_allow_overriding_frontend_type()
     {
         $params = array('entity_name' => 'foo', 'frontend_type' => 'bar');
         $options = ActionConfiguration::createNamed('edit', $params);

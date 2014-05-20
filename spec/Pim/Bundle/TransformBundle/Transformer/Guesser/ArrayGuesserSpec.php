@@ -25,19 +25,14 @@ class ArrayGuesserSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\TransformBundle\Transformer\Guesser\ArrayGuesser');
     }
 
-    function it_should_skip_columns_without_suffixes(
-        ColumnInfoInterface $columnInfo,
-        ClassMetadataInfo $metadata
-    ) {
+    function it_skips_columns_without_suffixes($columnInfo, $metadata)
+    {
         $columnInfo->getSuffixes()->willReturn(array());
         $this->getTransformerInfo($columnInfo, $metadata)->shouldReturn(null);
     }
 
-    function it_should_return_a_transformer_for_column_with_suffixes(
-        PropertyTransformerInterface $transformer,
-        ColumnInfoInterface $columnInfo,
-        ClassMetadataInfo $metadata
-    ) {
+    function it_returns_a_transformer_for_column_with_suffixes($transformer, $columnInfo, $metadata)
+    {
         $columnInfo->getSuffixes()->willReturn(array('suffix'));
         $this->getTransformerInfo($columnInfo, $metadata)->shouldReturn(array($transformer, array()));
     }

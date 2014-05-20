@@ -144,14 +144,16 @@ class Edit extends Form
     public function findField($name)
     {
         $currency = null;
-        if (false !== strpos($name, ' in ')) {
+        if (1 === preg_match('/in [A-Z]{3}$/', $name)) {
             // Price in EUR
             list($name, $currency) = explode(' in ', $name);
 
             return $this->findPriceField($name, $currency);
-        } elseif (2 === str_word_count($name)) {
+        } elseif (1 < str_word_count($name)) {
             // mobile Description
-            list($scope, $name) = str_word_count($name, 1);
+            $words = explode(' ', $name);
+            $scope = array_shift($words);
+            $name = implode(' ', $words);
 
             // Check that it is really a scoped field, not a field with a two word label
             if (strtolower($scope) === $scope) {
@@ -335,7 +337,7 @@ class Edit extends Form
                     sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif ($info !== "none") {
             $infoPassed = ($info === 'Complete')
                 ? ($completenessCell->getText() === $info)
                 : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
@@ -367,7 +369,7 @@ class Edit extends Form
                     sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif ($ratio !== 'none') {
             $title = $completenessCell
                 ->find('css', 'div.progress')
                 ->getAttribute('data-original-title');
