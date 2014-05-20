@@ -14,8 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Util\ProductValueKeyGenerator;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductNormalizer extends SerializerAwareNormalizer
-    implements NormalizerInterface, DenormalizerInterface
+class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerInterface, DenormalizerInterface
 {
     /** @staticvar string */
     const FORMAT = 'proposal';

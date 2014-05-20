@@ -32,8 +32,9 @@ class ProductMassActionManager extends PimProductMassActionManager
      * Construct
      *
      * @param ProductMassActionRepositoryInterface $massActionRepository
-     * @param AttributeRepository $attributeRepository
-     * @param SecurityContext $securityContext
+     * @param AttributeRepository                  $attributeRepository
+     * @param AttributeGroupAccessRepository       $attGroupAccessRepo
+     * @param SecurityContext                      $securityContext
      */
     public function __construct(
         ProductMassActionRepositoryInterface $massActionRepository,
