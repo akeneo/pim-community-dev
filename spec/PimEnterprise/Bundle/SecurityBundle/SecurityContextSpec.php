@@ -15,7 +15,7 @@ class SecurityContextSpec extends ObjectBehavior
         $this->beConstructedWith($authManager, $adm, false);
     }
 
-    function it_should_not_return_user_when_i_do_not_have_token()
+    function it_should_not_return_user_when_there_is_no_token()
     {
         $this->getUser()->shouldReturn(null);
     }
