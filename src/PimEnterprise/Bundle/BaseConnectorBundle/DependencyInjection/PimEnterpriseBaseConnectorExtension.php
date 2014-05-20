@@ -21,5 +21,6 @@ class PimEnterpriseBaseConnectorExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('processors.yml');
+        $loader->load('guessers.yml');
     }
 }
