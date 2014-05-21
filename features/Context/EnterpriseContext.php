@@ -81,7 +81,7 @@ class EnterpriseContext extends RawMinkContext
                 $data['author'],
                 []
             );
-            $proposal->setStatus($data['status'] === 'open' ? null : Proposal::APPROVED);
+            $proposal->setStatus($data['status'] === 'open' ? Proposal::WAITING : Proposal::APPROVED);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposal));
             $manager->persist($proposal);
         }
