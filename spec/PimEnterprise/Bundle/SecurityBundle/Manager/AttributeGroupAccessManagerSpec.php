@@ -8,6 +8,7 @@ use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
@@ -20,8 +21,8 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
 
     function it_provides_roles_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
     {
-        $repository->getGrantedRoles($group, 'VIEW')->willReturn(['foo', 'baz']);
-        $repository->getGrantedRoles($group, 'EDIT')->willReturn(['baz']);
+        $repository->getGrantedRoles($group, AttributeGroupVoter::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
+        $repository->getGrantedRoles($group, AttributeGroupVoter::EDIT_ATTRIBUTES)->willReturn(['baz']);
 
         $this->getViewRoles($group)->shouldReturn(['foo', 'baz']);
         $this->getEditRoles($group)->shouldReturn(['baz']);

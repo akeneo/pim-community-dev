@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager as PimProductMassActionManager;
 
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
  * Override product mass action manager
@@ -57,7 +58,7 @@ class ProductMassActionManager extends PimProductMassActionManager
 
         $subQB = $this
             ->attGroupAccessRepo
-            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), 'EDIT');
+            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), AttributeGroupVoter::EDIT_ATTRIBUTES);
 
         return $this
             ->attributeRepository

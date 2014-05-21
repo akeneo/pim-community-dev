@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
  * Attribute group access repository
@@ -24,14 +25,14 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(AttributeGroup $group, $accessLevel)
     {
-        $accessField = ($accessLevel === 'EDIT') ? 'a.editAttributes' : 'a.viewAttributes';
+        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('r')
             ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
             ->where('a.attributeGroup = :group')
-            ->andWhere($qb->expr()->eq($accessField, true))
+            ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('group', $group);
 
         return $qb->getQuery()->getResult();
@@ -73,13 +74,13 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedAttributeGroupQB(User $user, $accessLevel)
     {
-        $accessField = ($accessLevel === 'EDIT') ? 'aga.editAttributes' : 'aga.viewAttributes';
+        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('aga');
         $qb
             ->andWhere($qb->expr()->in('aga.role', ':roles'))
             ->setParameter('roles', $user->getRoles())
-            ->andWhere($qb->expr()->eq($accessField, true))
+            ->andWhere($qb->expr()->eq(sprintf('aga.%s', $accessField), true))
             ->resetDQLParts(['select'])
             ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
             ->select('ag.id');
