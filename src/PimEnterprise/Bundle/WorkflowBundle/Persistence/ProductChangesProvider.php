@@ -48,12 +48,16 @@ class ProductChangesProvider
      */
     public function computeChanges(ProductInterface &$product)
     {
-        $manager = $this->registry->getManagerForClass(get_class($product));
-
         $current = $this->normalizer->normalize($product, 'proposal');
 
-        $manager->clear();
-        $product = $manager->getRepository(get_class($product))->find($product->getId());
+        $manager = $this->registry->getManagerForClass(get_class($product));
+        foreach ($product->getValues() as $value) {
+            if ($manager->contains($value)) {
+                $manager->refresh($value);
+            } else {
+                $product->removeValue($value);
+            }
+        }
 
         $previous = $this->normalizer->normalize($product, 'proposal');
 
