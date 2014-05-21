@@ -3,11 +3,11 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeGroupRepository;
-use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
@@ -19,9 +19,9 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 class ContextConfigurator extends PimContextConfigurator
 {
     /**
-     * @var AttributeGroupRepository
+     * @var AttributeGroupAccessRepository
      */
-    protected $groupRepository;
+    protected $accessRepository;
 
     /**
      * @param integer[]
@@ -29,21 +29,21 @@ class ContextConfigurator extends PimContextConfigurator
     protected $grantedGroupIds = null;
 
     /**
-     * @param ProductManager           $productManager
-     * @param RequestParameters        $requestParams
-     * @param SecurityContextInterface $securityContext
-     * @param EntityRepository         $gridViewRepository
-     * @param AttributeGroupRepository $groupRepository
+     * @param ProductManager                 $productManager
+     * @param RequestParameters              $requestParams
+     * @param SecurityContextInterface       $securityContext
+     * @param EntityRepository               $gridViewRepository
+     * @param AttributeGroupAccessRepository $accessRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
         SecurityContextInterface $securityContext,
         EntityRepository $gridViewRepository,
-        AttributeGroupRepository $groupRepository
+        AttributeGroupAccessRepository $accessRepository
     ) {
         parent::__construct($productManager, $requestParams, $securityContext, $gridViewRepository);
-        $this->groupRepository = $groupRepository;
+        $this->accessRepository = $accessRepository;
     }
 
     /**
@@ -70,14 +70,17 @@ class ContextConfigurator extends PimContextConfigurator
     protected function getGrantedGroupIds()
     {
         if (!$this->grantedGroupIds) {
-            // TODO : use getGrantedAttributeGroupQB, wait for the merge of PR 20
-            $groups = $this->groupRepository->findAll();
-            $this->grantedGroupIds = [];
-            foreach ($groups as $group) {
-                if ($this->securityContext->isGranted(AttributeGroupVoter::VIEW_ATTRIBUTES, $group)) {
-                    $this->grantedGroupIds[]= $group->getId();
-                }
-            }
+            $result = $this->accessRepository
+                ->getGrantedAttributeGroupQB($this->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES)
+                ->getQuery()
+                ->getArrayResult();
+
+            $this->grantedGroupIds = array_map(
+                function ($row) {
+                    return $row['id'];
+                },
+                $result
+            );
         }
 
         return $this->grantedGroupIds;

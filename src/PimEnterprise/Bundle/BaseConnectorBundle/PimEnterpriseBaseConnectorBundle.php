@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\BaseConnectorBundle;
 
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Akeneo\Bundle\BatchBundle\Connector\Connector;
 
 /**

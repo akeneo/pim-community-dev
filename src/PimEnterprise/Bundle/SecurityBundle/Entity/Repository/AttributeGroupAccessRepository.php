@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
  * Attribute group access repository
@@ -25,14 +26,14 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(AttributeGroup $group, $accessLevel)
     {
-        $accessField = ($accessLevel === 'EDIT') ? 'a.editAttributes' : 'a.viewAttributes';
+        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('r')
             ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
             ->where('a.attributeGroup = :group')
-            ->andWhere($qb->expr()->eq($accessField, true))
+            ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('group', $group);
 
         return $qb->getQuery()->getResult();
@@ -74,16 +75,16 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedAttributeGroupQB(User $user, $accessLevel)
     {
-        $accessField = ($accessLevel === 'EDIT') ? 'aga.editAttributes' : 'aga.viewAttributes';
+        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('aga');
         $qb
-            ->resetDQLParts(['select'])
-            ->select('ag.id')
-            ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
             ->andWhere($qb->expr()->in('aga.role', ':roles'))
-            ->andWhere($qb->expr()->eq($accessField, true))
-            ->setParameter('roles', $user->getRoles());
+            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->eq(sprintf('aga.%s', $accessField), true))
+            ->resetDQLParts(['select'])
+            ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
+            ->select('ag.id');
 
         return $qb;
     }
@@ -160,6 +161,45 @@ class AttributeGroupAccessRepository extends EntityRepository
             ->innerJoin('ag.attributes', 'a');
 
         return $this->hydrateAsIds($qb);
+    }
+
+    /**
+     * Get granted attribute ids for a user
+     * If $filterableIds is provided, the returned ids will consist of these ids
+     * filtered by the given access level
+     *
+     * @param User      $user
+     * @param string    $accessLevel
+     * @param integer[] $filterableIds
+     *
+     * @return integer[]
+     */
+    public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
+    {
+        $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
+
+        $qb
+            ->resetDQLPart('select')
+            ->select('a.id')
+            ->leftJoin('ag.attributes', 'a')
+            ->groupBy('a.id');
+
+        if (null !== $filterableIds) {
+            $qb->andWhere(
+                $qb->expr()->in('a.id', $filterableIds)
+            );
+        }
+
+        $result = $qb
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($row) {
+                return $row['id'];
+            },
+            $result
+        );
     }
 
     /**
