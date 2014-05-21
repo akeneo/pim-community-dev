@@ -288,4 +288,18 @@ class UserContext
 
         return null;
     }
+
+    /**
+     * Get authenticated user
+     *
+     * @return UserInterface|null
+     */
+    public function getUser()
+    {
+        $token = $this->securityContext->getToken();
+
+        if ($token !== null) {
+            return $token->getUser();
+        }
+    }
 }
