@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\InstallerBundle\DependencyInjection;
 
 use Pim\Bundle\InstallerBundle\DependencyInjection\PimInstallerExtension as BasePimInstallerExtension;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * This is the class that loads and manages your bundle configuration

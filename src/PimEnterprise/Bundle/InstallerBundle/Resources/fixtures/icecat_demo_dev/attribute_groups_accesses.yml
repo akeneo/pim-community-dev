@@ -18,4 +18,3 @@ attribute_groups_accesses:
     media:
         view: [user]
         edit: [user]
-

@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as PimProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
