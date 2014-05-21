@@ -18,6 +18,7 @@ Feature: Review a product changes proposal
     When I edit the "my-sandals" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "your-sandals"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product SKU should be "your-sandals"
@@ -34,6 +35,7 @@ Feature: Review a product changes proposal
     When I edit the "my-sandals" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Tong"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Tong"
@@ -50,6 +52,7 @@ Feature: Review a product changes proposal
     When I edit the "my-sandals" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "awesome"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product mobile Description should be "Some awesome baskets"
@@ -66,6 +69,7 @@ Feature: Review a product changes proposal
     When I edit the "my-tshirt" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "number_in_stock"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product ecommerce Number in stock should be "7"
@@ -83,6 +87,7 @@ Feature: Review a product changes proposal
     And I save the product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "price"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Price in $ should be "90.00"
@@ -100,6 +105,7 @@ Feature: Review a product changes proposal
     And I save the product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "manufacturer"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "TimberLand"
@@ -116,6 +122,7 @@ Feature: Review a product changes proposal
     And I save the product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "weather_conditions"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
@@ -134,6 +141,7 @@ Feature: Review a product changes proposal
     When I edit the "my-tshirt" product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "release_date"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product ecommerce Release date should be "2014-05-20"
@@ -150,6 +158,7 @@ Feature: Review a product changes proposal
     When I edit the "my-sandals" product
     When I visit the "Proposals" tab
     And I click on the "refuse" action of the row which contains "Tong"
+    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Sandals"
