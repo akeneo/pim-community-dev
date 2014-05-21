@@ -53,27 +53,19 @@ class ProductFieldsBuilder extends PimProductFieldsBuilder
 
     /**
      * Override to filter only granted attributes
+     *
+     * {@inheritdoc}
      */
     protected function prepareAvailableAttributeIds($productIds)
     {
         parent::prepareAvailableAttributeIds($productIds);
 
-        // TODO : dirty code to rewrite to avoid to hydrate attributes
-        $subQB = $this->accessRepository
-            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES);
-        $attributes = $this
-            ->productManager
-            ->getAttributeRepository()
-            ->findWithGroups(
-                array_unique($this->attributeIds),
-                array(
-                    'filters' => ['g.id' => $subQB]
-                )
+        $this->attributeIds = $this
+            ->accessRepository
+            ->getGrantedAttributeIds(
+                $this->securityContext->getUser(),
+                AttributeGroupVoter::VIEW_ATTRIBUTES,
+                $this->attributeIds
             );
-        $attIds = [];
-        foreach ($attributes as $attribute) {
-            $attIds[] = $attribute->getId();
-        }
-        $this->attributeIds = $attIds;
     }
 }

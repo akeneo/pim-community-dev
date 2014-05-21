@@ -87,4 +87,43 @@ class AttributeGroupAccessRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * Get granted attribute ids for a user
+     * If $filterableIds is provided, the returned ids will consist of these ids
+     * filtered by the given access level
+     *
+     * @param User      $user
+     * @param string    $accessLevel
+     * @param integer[] $filterableIds
+     *
+     * @return integer[]
+     */
+    public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
+    {
+        $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
+
+        $qb
+            ->resetDQLPart('select')
+            ->select('a.id')
+            ->leftJoin('ag.attributes', 'a')
+            ->groupBy('a.id');
+
+        if (null !== $filterableIds) {
+            $qb->andWhere(
+                $qb->expr()->in('a.id', $filterableIds)
+            );
+        }
+
+        $result = $qb
+            ->getQuery()
+            ->getArrayResult();
+
+        return array_map(
+            function ($row) {
+                return $row['id'];
+            },
+            $result
+        );
+    }
 }
