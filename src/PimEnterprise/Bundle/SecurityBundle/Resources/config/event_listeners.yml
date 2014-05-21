@@ -1,5 +1,6 @@
 parameters:
     pimee_security.event_listener.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventListener\DisableProductValueFieldListener
+    pimee_security.form.subscriber.remove_revoked_attribute.class:  PimEnterprise\Bundle\SecurityBundle\EventListener\RemoveRevokedAttributeSubscriber
 
 services:
     pimee_security.event_listener.disable_product_value_form:
@@ -7,4 +8,11 @@ services:
         arguments:
             - '@security.context'
         tags:
-            - { name: kernel.event_subscriber}
+            - { name: kernel.event_subscriber }
+
+    pimee_security.form.subscriber.remove_revoked_attribute:
+        class: %pimee_security.form.subscriber.remove_revoked_attribute.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: kernel.event_subscriber }
