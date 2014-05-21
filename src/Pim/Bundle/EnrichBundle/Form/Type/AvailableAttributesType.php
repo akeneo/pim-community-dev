@@ -2,14 +2,13 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Symfony\Component\OptionsResolver\Options;
-use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
+use Symfony\Component\OptionsResolver\Options;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
  * Type for available attributes
@@ -31,9 +30,6 @@ class AvailableAttributesType extends AbstractType
 
     /** @var TranslatorInterface */
     protected $translator;
-
-    /** @var EventSubscriberInterface[] */
-    protected $subscribers = [];
 
     /**
      * Constructor
@@ -79,10 +75,6 @@ class AvailableAttributesType extends AbstractType
                 'expanded' => false,
             ]
         );
-
-        foreach ($this->subscribers as $subscriber) {
-            $builder->addEventSubscriber($subscriber);
-        }
     }
 
     /**
@@ -117,16 +109,6 @@ class AvailableAttributesType extends AbstractType
                 }
             ]
         );
-    }
-
-    /**
-     * Add an event subscriber
-     *
-     * @param EventSubscriberInterface $subscriber
-     */
-    public function addEventSubscriber(EventSubscriberInterface $subscriber)
-    {
-        $this->subscribers[] = $subscriber;
     }
 
     /**
