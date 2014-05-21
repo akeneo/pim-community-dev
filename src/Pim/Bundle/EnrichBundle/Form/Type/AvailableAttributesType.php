@@ -23,7 +23,7 @@ class AvailableAttributesType extends AbstractType
     protected $attributeClass;
 
     /** @var AttributeRepository */
-    protected $repository;
+    protected $attributeRepository;
 
     /** @var UserContext */
     protected $userContext;
@@ -35,20 +35,20 @@ class AvailableAttributesType extends AbstractType
      * Constructor
      *
      * @param string              $attributeClass
-     * @param AttributeRepository $repository
+     * @param AttributeRepository $attributeRepository
      * @param UserContext         $userContext
      * @param TranslatorInterface $translator
      */
     public function __construct(
         $attributeClass,
-        AttributeRepository $repository,
+        AttributeRepository $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator
     ) {
-        $this->attributeClass = $attributeClass;
-        $this->repository     = $repository;
-        $this->userContext    = $userContext;
-        $this->translator     = $translator;
+        $this->attributeClass      = $attributeClass;
+        $this->attributeRepository = $attributeRepository;
+        $this->userContext         = $userContext;
+        $this->translator          = $translator;
     }
 
     /**
@@ -60,7 +60,7 @@ class AvailableAttributesType extends AbstractType
             'attributes',
             'light_entity',
             [
-                'repository' => $this->repository,
+                'repository' => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
