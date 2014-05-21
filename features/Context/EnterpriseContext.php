@@ -2,6 +2,8 @@
 
 namespace Context;
 
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
@@ -96,7 +98,8 @@ class EnterpriseContext extends RawMinkContext
         foreach ($table->getHash() as $data) {
             $group = $this->getAttributeGroup($data['group']);
             $role  = $this->getRole($data['role']);
-            $accessLevel = strtoupper($data['access']);
+            $accessLevel = ($data['access'] === 'edit')
+                ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
 
             $this->getAttributeGroupAccessManager()->grantAccess($group, $role, $accessLevel);
         }
