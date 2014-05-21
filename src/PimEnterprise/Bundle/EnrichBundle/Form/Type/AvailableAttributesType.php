@@ -8,6 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as PimAvailableAtt
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
  * Override available attributes type to remove attributes where rights are revoked
@@ -31,12 +32,12 @@ class AvailableAttributesType extends PimAvailableAttributesType
      */
     public function __construct(
         $attributeClass,
-        AttributeRepository $repository,
+        AttributeRepository $attributeRepository,
         UserContext $userContext,
         TranslatorInterface $translator,
         AttributeGroupAccessRepository $attGroupAccessRepo
     ) {
-        parent::__construct($attributeClass, $repository, $userContext, $translator);
+        parent::__construct($attributeClass, $attributeRepository, $userContext, $translator);
 
         $this->attGroupAccessRepo = $attGroupAccessRepo;
     }
@@ -53,7 +54,7 @@ class AvailableAttributesType extends PimAvailableAttributesType
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes']
-                        + $this->attGroupAccessRepo->getRevokedAttributeIds($this->userContext->getUser(), 'EDIT'),
+                        + $this->attGroupAccessRepo->getRevokedAttributeIds($this->userContext->getUser(), AttributeGroupVoter::EDIT_ATTRIBUTES),
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
