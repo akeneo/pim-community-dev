@@ -59,7 +59,7 @@ class EnterpriseContext extends RawMinkContext
     /**
      * @Given /^"([^"]*)" has submitted the following proposal for "([^"]*)":$/
      */
-    public function hasSubmittedTheFollowingProposalForMySandals($username, $product, TableNode $table)
+    public function hasSubmittedTheFollowingProposal($username, $product, TableNode $table)
     {
         $proposal = $this->getProposalFactory()->createProposal(
             $this->getProduct($product),
