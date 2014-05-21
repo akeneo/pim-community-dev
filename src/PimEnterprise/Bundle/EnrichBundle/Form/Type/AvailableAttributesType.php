@@ -40,4 +40,31 @@ class AvailableAttributesType extends PimAvailableAttributesType
 
         $this->attGroupAccessRepo = $attGroupAccessRepo;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder->add(
+            'attributes',
+            'light_entity',
+            [
+                'repository' => $this->attributeRepository,
+                'repository_options' => [
+                    'excluded_attribute_ids' => $options['attributes']
+                        + $this->attGroupAccessRepo->getRevokedAttributeIds($this->userContext->getUser(), 'EDIT'),
+                    'locale_code'            => $this->userContext->getCurrentLocaleCode(),
+                    'default_group_label'    => $this->translator->trans(
+                        'Other',
+                        array(),
+                        null,
+                        $this->userContext->getCurrentLocaleCode()
+                    ),
+                ],
+                'multiple' => true,
+                'expanded' => false,
+            ]
+        );
+    }
 }
