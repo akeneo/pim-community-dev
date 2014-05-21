@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
@@ -74,18 +75,89 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedAttributeGroupQB(User $user, $accessLevel)
     {
-        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
-
         $qb = $this->createQueryBuilder('aga');
         $qb
             ->andWhere($qb->expr()->in('aga.role', ':roles'))
             ->setParameter('roles', $user->getRoles())
-            ->andWhere($qb->expr()->eq(sprintf('aga.%s', $accessField), true))
+            ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
             ->select('ag.id');
 
         return $qb;
+    }
+
+    /**
+     * Get revoked attribute group query builder
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return QueryBuilder
+     */
+    public function getRevokedAttributeGroupQB(User $user, $accessLevel)
+    {
+        $qb = $this->createQueryBuilder('aga');
+        $qb
+            ->resetDQLParts(['select'])
+            ->select('ag.id')
+            ->leftJoin('aga.attributeGroup', 'ag', 'ag.id')
+            ->andWhere($qb->expr()->in('aga.role', ':roles'))
+            ->andWhere(
+                $qb->expr()->neq($this->getAccessField($accessLevel), true)
+            )
+            ->setParameter('roles', $user->getRoles());
+
+        return $qb;
+    }
+
+    /**
+     * Returns granted attribute groups ids
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return integer[]
+     */
+    public function getGrantedAttributeGroupIds(User $user, $accessLevel)
+    {
+        $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
+
+        return $this->hydrateAsIds($qb);
+    }
+
+    /**
+     * Returns revoked attribute group ids
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return integer[]
+     */
+    public function getRevokedAttributeGroupIds(User $user, $accessLevel)
+    {
+        $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
+
+        return $this->hydrateAsIds($qb);
+    }
+
+    /**
+     * Returns revoked attribute ids
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return integer[]
+     */
+    public function getRevokedAttributeIds(User $user, $accessLevel)
+    {
+        $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
+        $qb
+            ->select('a.id')
+            ->innerJoin('ag.attributes', 'a')
+            ->groupBy('a.id');
+
+        return $this->hydrateAsIds($qb);
     }
 
     /**
@@ -102,11 +174,9 @@ class AttributeGroupAccessRepository extends EntityRepository
     public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
     {
         $qb = $this->getGrantedAttributeGroupQB($user, $accessLevel);
-
         $qb
-            ->resetDQLPart('select')
             ->select('a.id')
-            ->leftJoin('ag.attributes', 'a')
+            ->innerJoin('ag.attributes', 'a')
             ->groupBy('a.id');
 
         if (null !== $filterableIds) {
@@ -115,15 +185,37 @@ class AttributeGroupAccessRepository extends EntityRepository
             );
         }
 
-        $result = $qb
-            ->getQuery()
-            ->getArrayResult();
+        return $this->hydrateAsIds($qb);
+    }
 
+    /**
+     * Get the access field depending of access level sent
+     *
+     * @param string $accessLevel
+     *
+     * @return string
+     */
+    protected function getAccessField($accessLevel)
+    {
+        return $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
+            ? 'aga.editAttributes'
+            : 'aga.viewAttributes';
+    }
+
+    /**
+     * Execute a query builder and hydrate it as an array of database identifiers
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return integer[]
+     */
+    protected function hydrateAsIds(QueryBuilder $qb)
+    {
         return array_map(
             function ($row) {
                 return $row['id'];
             },
-            $result
+            $qb->getQuery()->getArrayResult()
         );
     }
 }
