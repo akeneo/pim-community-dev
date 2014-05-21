@@ -13,6 +13,18 @@ services:
         calls:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.remove_product_value_subscriber']]
 
+    pim_enrich.form.type.available_attributes:
+        class: %pim_enrich.form.type.available_attributes.class%
+        arguments:
+            - %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.repository.attribute'
+            - '@pim_user.context.user'
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_available_attributes }
+        calls:
+            - [ addEventSubscriber, ['@pimee_security.form.subscriber.remove_revoked_attribute'] ]
+
     pim_enrich.form.type.attribute_group:
         class: %pim_enrich.form.type.attribute_group.class%
         tags:
