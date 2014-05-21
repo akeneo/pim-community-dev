@@ -1,0 +1,14 @@
+parameters:
+    pim_datagrid.extension.mass_action.util.product_fields_builder.class: PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
+
+services:
+    pim_datagrid.extension.mass_action.util.product_fields_builder:
+        class: %pim_datagrid.extension.mass_action.util.product_fields_builder.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.manager.association_type'
+            - '@pim_catalog.context.catalog'
+            - '@pimee_security.repository.attribute_group_access'
+            - '@security.context'
