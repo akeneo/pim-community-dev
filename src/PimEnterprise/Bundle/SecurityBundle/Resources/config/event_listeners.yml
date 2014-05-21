@@ -7,4 +7,4 @@ services:
         arguments:
             - '@security.context'
         tags:
-            - { name: kernel.event_subscriber}
+            - { name: kernel.event_subscriber }
