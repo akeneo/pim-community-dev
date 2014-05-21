@@ -19,7 +19,7 @@
     "require": {
         "php": ">=5.4.4",
         "akeneo/pim-community-dev": "1.2.*",
-        "oro/platform": "dev-pim-1.2#4a997c649876585d51d42e9a10a0f5e080dd207f",
+        "oro/platform": "dev-pim-1.2#e3108c2975df02357b788c10506f761bea9dfed2",
         "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
         "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
         "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3"
