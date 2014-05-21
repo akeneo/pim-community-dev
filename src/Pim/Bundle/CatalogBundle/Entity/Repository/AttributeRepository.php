@@ -86,36 +86,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getChoices(array $options)
     {
-        if (!isset($options['excluded_attribute_ids'])) {
-            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
-        }
-
-        if (!isset($options['locale_code'])) {
-            throw new \InvalidArgumentException('Option "locale_code" is required');
-        }
-
-        if (!isset($options['default_group_label'])) {
-            throw new \InvalidArgumentException('Option "default_group_label" is required');
-        }
-
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :defaultGroupLabel) as group_label')
-            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['locale_code'])
-            ->setParameter('defaultGroupLabel', $options['default_group_label']);
-
-        if (!empty($options['excluded_attribute_ids'])) {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
-            );
-        }
-
+        $qb = $this->getChoicesQB($options);
         $result = $qb->getQuery()->getArrayResult();
 
         // Build choices list
@@ -133,6 +104,50 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $attributes;
+    }
+
+    /**
+     * Create query builder for choices
+     *
+     * @param array $options
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getChoicesQB(array $options)
+    {
+        if (!isset($options['excluded_attribute_ids'])) {
+            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
+        }
+
+        if (!isset($options['locale_code'])) {
+            throw new \InvalidArgumentException('Option "locale_code" is required');
+        }
+
+        if (!isset($options['default_group_label'])) {
+            throw new \InvalidArgumentException('Option "default_group_label" is required');
+        }
+
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.id')
+            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :defaultGroupLabel) as group_label')
+            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
+            ->orderBy('g.sortOrder, a.sortOrder')
+            ->setParameter('localeCode', $options['locale_code'])
+            ->setParameter('defaultGroupLabel', $options['default_group_label']);
+
+        if (!empty($options['excluded_attribute_ids'])) {
+            $qb->andWhere(
+                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
+            );
+        }
+
+        return $qb;
     }
 
     /**
