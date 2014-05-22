@@ -4,8 +4,7 @@ Feature: Review a product changes proposal
   As an owner
   I need to be able to review product changes proposal
 
-  # TODO Change admin when contributor and owner roles have been introduced
-
+  # TODO Change admin when contributor and owner roles have been introduced 
   Scenario: Succesfully accept an identifier attribute product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
@@ -165,7 +164,22 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product ecommerce Release date should be "2014-05-20"
 
-  # Scenario: Succesfully accept a metric attribute product changes proposal
+  Scenario: Succesfully accept a metric attribute product changes proposal
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku       | family  | washing_temperature |
+      | my-tshirt | tshirts | 60 CELSIUS          |
+    And role "Administrator" has the right to edit the attribute group "additional"
+    And I am logged in as "admin"
+    And I edit the "my-tshirt" product
+    And I change the "Washing temperature" to "40"
+    And I save the product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "washing_temperature"
+    And I filter by "Status" with value "Waiting"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then the product Washing temperature should be "40"
 
   Scenario: Succesfully refuse a product changes proposal
     Given a "footwear" catalog configuration
