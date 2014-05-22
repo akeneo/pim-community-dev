@@ -112,12 +112,15 @@ class AttributeGroupAccessRepository extends EntityRepository
             $user->getRoles()
         );
 
+        $groupTable = $this->getTableName('pim_catalog.entity.attribute_group.class');
+        $groupAccessTable = $this->getTableName('pimee_security.entity.attribute_group_access.class');
+
         $conn = $this->_em->getConnection();
         $qb = $conn->createQueryBuilder();
         $qb
             ->select('*')
-            ->from('pim_catalog_attribute_group', 'g')
-            ->leftJoin('g', 'pimee_security_attribute_group_access', 'aga', 'aga.attribute_group_id = g.id')
+            ->from($groupTable, 'g')
+            ->leftJoin('g', $groupAccessTable, 'aga', 'aga.attribute_group_id = g.id')
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(
@@ -178,10 +181,12 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getRevokedAttributeIds(User $user, $accessLevel)
     {
+        $attTable = $this->getTableName('pim_catalog.entity.attribute.class');
+
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
         $qb
             ->select('a.id')
-            ->innerJoin('g', 'pim_catalog_attribute', 'a', 'a.group_id = g.id')
+            ->innerJoin('g', $attTable, 'a', 'a.group_id = g.id')
             ->groupBy('a.id');
 
         return array_map(
