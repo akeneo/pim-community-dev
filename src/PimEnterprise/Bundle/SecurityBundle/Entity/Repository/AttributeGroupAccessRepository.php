@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
@@ -248,5 +249,32 @@ class AttributeGroupAccessRepository extends EntityRepository
             },
             $qb->getQuery()->getArrayResult()
         );
+    }
+
+    /**
+     * Set table name builder
+     *
+     * @param TableNameBuilder $tableNameBuilder
+     *
+     * @return AttributeGroupAccessRepository
+     */
+    public function setTableNameBuilder(TableNameBuilder $tableNameBuilder)
+    {
+        $this->tableNameBuilder = $tableNameBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Get table name of entity defined
+     *
+     * @param string      $entityParameter
+     * @param string|null $targetEntity
+     *
+     * @return string
+     */
+    protected function getTableName($classParam, $targetEntity = null)
+    {
+        return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
     }
 }
