@@ -10,4 +10,4 @@ services:
         tags:
             - { name: 'pim_repository' }
         calls:
-            - [ setTableNameBuilder, [ '@pim_catalog.doctrine.table_name_builder' ] ]
+            - [setTableNameBuilder, ['@pim_catalog.doctrine.table_name_builder']]
