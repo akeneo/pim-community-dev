@@ -2,6 +2,7 @@ parameters:
     pim_installer.fixture_loader.configuration_registry.class: Pim\Bundle\InstallerBundle\FixtureLoader\ConfigurationRegistry
     pim_installer.fixture_loader.loader_factory.class:         Pim\Bundle\InstallerBundle\FixtureLoader\LoaderFactory
     pim_installer.fixture_loader.multiple_loader.class:        Pim\Bundle\InstallerBundle\FixtureLoader\MultipleLoader
+    pim_installer.fixture_loader.job_loader.class:             Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader
 
 services:
     pim_installer.fixture_loader.configuration_registry:
@@ -26,3 +27,10 @@ services:
         arguments:
             - '@pim_installer.fixture_loader.configuration_registry'
             - '@pim_installer.fixture_loader.loader_factory'
+
+    pim_installer.fixture_loader.job_loader:
+        class: %pim_installer.fixture_loader.job_loader.class%
+        arguments:
+            - '@service_container'
+            # TODO: use the configuration registry instead of this hard coded path
+            - %kernel.root_dir%/../src/Pim/Bundle/InstallerBundle/Resources/config/fixtures_jobs.yml
