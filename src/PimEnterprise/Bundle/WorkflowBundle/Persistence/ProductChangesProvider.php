@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\Engine\ArrayDiff;
+use PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\IgnoreProductValuesSubscriber;
 
 /**
  * Provide changes that happened on a product values

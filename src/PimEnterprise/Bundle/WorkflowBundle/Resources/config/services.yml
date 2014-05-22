@@ -38,7 +38,7 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@security.context'
             - '@pimee_workflow.factory.proposal'
-            - '@pimee_workflow.persister.product_changes_provider'
+            - '@pimee_workflow.form.subscriber.collect_product_value_changes'
 
     pimee_workflow.factory.proposal:
         class: %pimee_workflow.factory.proposal.class%
@@ -61,7 +61,7 @@ services:
         public: false
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
-            - '@pimee_workflow.serializer'
+            - '@form.factory'
 
     pimee_workflow.datagrid.proposal_grid_helper:
         class: %pimee_workflow.datagrid.proposal_grid_helper.class%

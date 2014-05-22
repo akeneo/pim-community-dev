@@ -2,9 +2,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Serializer\ProductNormalizer;
+use Symfony\Component\Form\FormFactoryInterface;
 
 /**
  * Applies product changes
@@ -14,15 +13,32 @@ use PimEnterprise\Bundle\WorkflowBundle\Serializer\ProductNormalizer;
  */
 class ProductChangesApplier
 {
-    protected $denormalizer;
+    protected $formFactory;
 
-    public function __construct(DenormalizerInterface $denormalizer)
+    public function __construct(FormFactoryInterface $formFactory)
     {
-        $this->denormalizer = $denormalizer;
+        $this->formFactory = $formFactory;
     }
 
     public function apply(AbstractProduct $product, array $changes)
     {
-        $this->denormalizer->denormalize($changes, 'product', ProductNormalizer::FORMAT, ['instance' => $product]);
+        $this
+            ->formFactory
+            ->createBuilder('form', $product)
+            ->add(
+                'values',
+                'pim_enrich_localized_collection',
+                array(
+                    'type'               => 'pim_product_value',
+                    'allow_add'          => false,
+                    'allow_delete'       => false,
+                    'by_reference'       => false,
+                    'cascade_validation' => true,
+                    'currentLocale'      => null,
+                    'comparisonLocale'   => null,
+                )
+            )
+            ->getForm()
+            ->submit($changes);
     }
 }
