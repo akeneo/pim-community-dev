@@ -6,7 +6,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
- * Get the table name from a constant
+ * Get the table name from the entity parameter name
+ * Ease overriding entities managing with DBAL support avoiding hard-coded table names
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -39,28 +40,16 @@ class TableNameBuilder
      *
      * @return string
      */
-    public function getTableName($entityParameter)
+    public function getTableName($entityParameter, $targetEntity = null)
     {
         $classMetadata = $this->getClassMetadata($entityParameter);
+
+        if (null !== $targetEntity) {
+            $assocMapping  = $classMetadata->getAssociationMapping($targetEntity);
+            $classMetadata = $assocMapping['targetEntity'];
+        }
 
         return $classMetadata->getTableName();
-    }
-
-    /**
-     * Get association table name from an entity parameter and its targetted entity
-     *
-     * @param string $baseEntity
-     * @param string $targetEntity
-     *
-     * @return string
-     */
-    public function getAssociationTableName($baseEntity, $targetEntity)
-    {
-        $classMetadata = $this->getClassMetadata($entityParameter);
-        $assocMapping  = $classMetadata->getAssociationMapping($targetEntity);
-        $targetClassMetadata = $assocMapping['targetEntity'];
-
-        return $targetClassMetadata->getTableName();
     }
 
     /**
