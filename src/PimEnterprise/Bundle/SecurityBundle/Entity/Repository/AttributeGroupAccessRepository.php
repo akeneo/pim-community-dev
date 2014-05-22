@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
+use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -71,7 +72,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      * @param User   $user
      * @param string $accessLevel
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getGrantedAttributeGroupQB(User $user, $accessLevel)
     {
@@ -93,20 +94,39 @@ class AttributeGroupAccessRepository extends EntityRepository
      * @param User   $user
      * @param string $accessLevel
      *
-     * @return QueryBuilder
+     * @return \Doctrine\DBAL\Query\QueryBuilder
      */
     public function getRevokedAttributeGroupQB(User $user, $accessLevel)
     {
-        $qb = $this->createQueryBuilder('aga');
+        // prepare access field depending on access level
+        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
+            ? 'aga.edit_attributes'
+            : 'aga.view_attributes';
+
+        // get role ids
+        $roleIds = array_map(
+            function (RoleInterface $role) {
+                return $role->getId();
+            },
+            $user->getRoles()
+        );
+
+        $conn = $this->_em->getConnection();
+        $qb = $conn->createQueryBuilder();
         $qb
-            ->resetDQLParts(['select'])
-            ->select('ag.id')
-            ->leftJoin('aga.attributeGroup', 'ag', 'ag.id')
-            ->andWhere($qb->expr()->in('aga.role', ':roles'))
+            ->select('*')
+            ->from('pim_catalog_attribute_group', 'g')
+            ->leftJoin('g', 'pimee_security_attribute_group_access', 'aga', 'aga.attribute_group_id = g.id')
             ->andWhere(
-                $qb->expr()->neq($this->getAccessField($accessLevel), true)
+                $qb->expr()->orX(
+                    $qb->expr()->andX(
+                        $qb->expr()->neq($accessField, true),
+                        $qb->expr()->in('aga.role_id', $roleIds)
+                    ),
+                    $qb->expr()->isNull($accessField)
+                )
             )
-            ->setParameter('roles', $user->getRoles());
+            ->groupBy('g.id');
 
         return $qb;
     }
@@ -137,8 +157,14 @@ class AttributeGroupAccessRepository extends EntityRepository
     public function getRevokedAttributeGroupIds(User $user, $accessLevel)
     {
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
+        $qb->select('g.id');
 
-        return $this->hydrateAsIds($qb);
+        return array_map(
+            function ($row) {
+                return $row['id'];
+            },
+            $qb->execute()->fetchAll()
+        );
     }
 
     /**
@@ -154,10 +180,15 @@ class AttributeGroupAccessRepository extends EntityRepository
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
         $qb
             ->select('a.id')
-            ->innerJoin('ag.attributes', 'a')
+            ->innerJoin('g', 'pim_catalog_attribute', 'a', 'a.group_id = g.id')
             ->groupBy('a.id');
 
-        return $this->hydrateAsIds($qb);
+        return array_map(
+            function ($row) {
+                return $row['id'];
+            },
+            $qb->execute()->fetchAll()
+        );
     }
 
     /**
