@@ -197,7 +197,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     protected function getAccessField($accessLevel)
     {
-        return $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
+        return ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
             ? 'aga.editAttributes'
             : 'aga.viewAttributes';
     }
