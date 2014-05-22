@@ -22,7 +22,7 @@ class MetricComparator implements ComparatorInterface
         $metric = $value->getMetric() ?: new Metric();
         if (
             $metric->getData() != $submittedData['metric']['data'] ||
-            $metric->getUnit() != $submittedData['metric']['unit'] 
+            $metric->getUnit() != $submittedData['metric']['unit']
         ) {
             if (null === $metric->getData() && empty($submittedData['metric']['data'])) {
                 return;

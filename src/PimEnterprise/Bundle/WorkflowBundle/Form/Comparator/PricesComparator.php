@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 
-use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\PropertyAccess\PropertyAccess;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**

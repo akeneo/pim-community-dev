@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
@@ -18,24 +18,24 @@ class ProposalManager
     /** @var ManagerRegistry */
     protected $registry;
 
-    /** @var ProposalPersister */
-    protected $persister;
+    /** @var ProductManager */
+    protected $manager;
 
     /** @var ProductChangesApplier */
     protected $applier;
 
     /**
      * @param ManagerRegistry       $registry
-     * @param ProposalPersister     $persister
+     * @param ProductManager        $manager
      * @param ProductChangesApplier $applier
      */
     public function __construct(
         ManagerRegistry $registry,
-        ProposalPersister $persister,
+        ProductManager $manager,
         ProductChangesApplier $applier
     ) {
         $this->registry = $registry;
-        $this->persister = $persister;
+        $this->manager = $manager;
         $this->applier = $applier;
     }
 
@@ -52,8 +52,8 @@ class ProposalManager
 
         $proposal->setStatus(Proposal::APPROVED);
 
-        // Proposal and product doctrine persister is the same
-        $this->persister->persist($product, ['bypass_proposal' => true]);
+        $this->manager->handleMedia($product);
+        $this->manager->saveProduct($product, ['bypass_proposal' => true]);
         $this->registry->getManagerForClass(get_class($proposal))->flush();
     }
 

@@ -5,7 +5,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 
 /**

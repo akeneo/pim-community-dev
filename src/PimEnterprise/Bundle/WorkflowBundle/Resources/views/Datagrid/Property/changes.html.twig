@@ -1,11 +1,5 @@
 <dl>
     {% for attribute, changes in value['values']  %}
         <dt>{{ attribute }}</dt>
-        {% if changes is iterable %}
-            <dd>{{ changes|first }}</dd>
-        {% else %}
-            <dd>{{ changes }}</dd>
-        {% endif %}
-        </dl>
     {% endfor %}
 </dl>

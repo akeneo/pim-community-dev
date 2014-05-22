@@ -16,7 +16,7 @@ Feature: Review a product changes proposal
     And I change the "SKU" to "your-sandals"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "your-sandals"
+    And I click on the "approve" action of the row which contains "sku"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -33,7 +33,7 @@ Feature: Review a product changes proposal
     And I change the "Name" to "Tong"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "Tong"
+    And I click on the "approve" action of the row which contains "name"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -50,7 +50,7 @@ Feature: Review a product changes proposal
     And I change the "mobile Description" to "Some awesome baskets"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "awesome"
+    And I click on the "approve" action of the row which contains "description"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -127,6 +127,40 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
 
+  Scenario: Succesfully accept a file attribute product changes proposal
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku       | family  |
+      | my-tshirt | tshirts |
+    And role "Administrator" has the right to edit the attribute group "internal"
+    And I am logged in as "admin"
+    And I edit the "my-tshirt" product
+    And I attach file "akeneo.txt" to "Datasheet"
+    And I save the product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "datasheet"
+    And I filter by "Status" with value "Waiting"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then I should see "akeneo.txt"
+
+  Scenario: Succesfully accept a image attribute product changes proposal
+    Given an "apparel" catalog configuration
+    And the following product:
+      | sku       | family  |
+      | my-tshirt | tshirts |
+    And role "Administrator" has the right to edit the attribute group "media"
+    And I am logged in as "admin"
+    And I edit the "my-tshirt" product
+    And I attach file "akeneo.jpg" to "Thumbnail"
+    And I save the product
+    When I visit the "Proposals" tab
+    And I click on the "approve" action of the row which contains "thumbnail"
+    And I filter by "Status" with value "Waiting"
+    Then the grid should contain 0 element
+    When I visit the "Attributes" tab
+    Then I should see "akeneo.jpg"
+
   Scenario: Succesfully accept a boolean attribute product changes proposal
     Given an "apparel" catalog configuration
     And the following product:
@@ -192,7 +226,7 @@ Feature: Review a product changes proposal
     And I change the "Name" to "Tong"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "refuse" action of the row which contains "Tong"
+    And I click on the "refuse" action of the row which contains "name"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
