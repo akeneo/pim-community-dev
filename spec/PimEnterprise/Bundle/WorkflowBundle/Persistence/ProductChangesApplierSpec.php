@@ -34,7 +34,7 @@ class ProductChangesApplierSpec extends ObjectBehavior
         ];
         $formBuilder->add('values', 'pim_enrich_localized_collection', $valuesFieldOptions)->willReturn($formBuilder);
         $formBuilder->getForm()->willReturn($form);
-        $form->submit(['foo' => 'bar'])->shouldBeCalled();
+        $form->submit(['foo' => 'bar'], false)->shouldBeCalled();
 
         $this->apply($product, ['foo' => 'bar']);
     }

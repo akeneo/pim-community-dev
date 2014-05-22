@@ -39,6 +39,6 @@ class ProductChangesApplier
                 ]
             )
             ->getForm()
-            ->submit($changes);
+            ->submit($changes, false);
     }
 }
