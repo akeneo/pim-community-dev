@@ -68,6 +68,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
+            fetch: EAGER
         option:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
             cascade:
@@ -77,6 +78,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 option_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
+            fetch: EAGER
         entity:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
             inversedBy: values
@@ -84,6 +86,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 entity_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+            fetch: EAGER
     manyToMany:
         options:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
@@ -101,6 +104,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                         referencedColumnName: id
                         nullable: true
                         onDelete: CASCADE
+            fetch: EAGER
     oneToOne:
         media:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Media
@@ -113,6 +117,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 media_id:
                     referencedColumnName: id
                     onDelete: CASCADE
+            fetch: EAGER
         metric:
             targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
             cascade:
@@ -123,6 +128,7 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 metric_id:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
+            fetch: EAGER
     oneToMany:
         prices:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPrice
@@ -134,3 +140,4 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             indexBy: currency
             orderBy:
                 currency: ASC
+            fetch: EAGER

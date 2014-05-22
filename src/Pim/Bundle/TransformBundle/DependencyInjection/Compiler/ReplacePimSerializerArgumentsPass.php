@@ -15,21 +15,25 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
  */
 class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
-    /**
-     * @staticvar integer The default priority for services
-     */
+    /** @staticvar integer The default priority for services */
     const DEFAULT_PRIORITY = 100;
 
-    /**
-     * @var ReferenceFactory
-     */
+    /** @staticvar string */
+    const SYMFONY_SERIALIZER_CLASS = 'Symfony\Component\Serializer\Serializer';
+
+    /** @var ReferenceFactory */
     protected $factory;
+
+    /** @var string */
+    protected $serializer;
 
     /**
      * @param ReferenceFactory|null $factory
+     * @param string|null           $serializer
      */
-    public function __construct(ReferenceFactory $factory = null)
+    public function __construct($serializer = 'pim_serializer', ReferenceFactory $factory = null)
     {
+        $this->serializer = $serializer;
         $this->factory = $factory ?: new ReferenceFactory();
     }
 
@@ -38,15 +42,32 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_serializer')) {
+        if (!$container->hasDefinition($this->serializer)) {
             return;
         }
 
-        $container->getDefinition('pim_serializer')->setArguments(
-            array(
-                $this->getDependencyReferences($container, 'pim_serializer.normalizer'),
-                $this->getDependencyReferences($container, 'pim_serializer.encoder')
-            )
+        $definition = $container->getDefinition($this->serializer);
+
+        $class = $container->getParameterBag()->resolveValue($definition->getClass());
+        if (self::SYMFONY_SERIALIZER_CLASS !== $class) {
+            $refClass = new \ReflectionClass($class);
+            if (!$refClass->isSubclassOf(self::SYMFONY_SERIALIZER_CLASS)) {
+                throw new \LogicException(
+                    sprintf(
+                        'Service "%s" must be an instance of "Symfony\Component\Serializer\Serializer", ' .
+                        'got "%s"',
+                        $this->serializer,
+                        $class
+                    )
+                );
+            }
+        }
+
+        $definition->setArguments(
+            [
+                $this->getDependencyReferences($container, sprintf('%s.normalizer', $this->serializer)),
+                $this->getDependencyReferences($container, sprintf('%s.encoder', $this->serializer))
+            ]
         );
     }
 
