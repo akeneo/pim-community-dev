@@ -28,7 +28,7 @@ class ProductChangesApplier
             ->add(
                 'values',
                 'pim_enrich_localized_collection',
-                array(
+                [
                     'type'               => 'pim_product_value',
                     'allow_add'          => false,
                     'allow_delete'       => false,
@@ -36,7 +36,7 @@ class ProductChangesApplier
                     'cascade_validation' => true,
                     'currentLocale'      => null,
                     'comparisonLocale'   => null,
-                )
+                ]
             )
             ->getForm()
             ->submit($changes);
