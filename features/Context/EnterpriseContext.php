@@ -57,22 +57,6 @@ class EnterpriseContext extends RawMinkContext
     }
 
     /**
-     * @Given /^"([^"]*)" has submitted the following proposal for "([^"]*)":$/
-     */
-    public function hasSubmittedTheFollowingProposal($username, $product, TableNode $table)
-    {
-        $proposal = $this->getProposalFactory()->createProposal(
-            $this->getProduct($product),
-            $username,
-            $table->getRowsHash()
-        );
-
-        $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposal));
-        $manager->persist($proposal);
-        $manager->flush();
-    }
-
-    /**
      * @Given /^the following proposals:$/
      */
     public function theFollowingProposals(TableNode $table)

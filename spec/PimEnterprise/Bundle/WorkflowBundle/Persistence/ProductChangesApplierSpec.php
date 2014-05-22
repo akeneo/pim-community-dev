@@ -16,7 +16,7 @@ class ProductChangesApplierSpec extends ObjectBehavior
         $this->beConstructedWith($formFactory);
     }
 
-    function it_uses_denormlizer_to_apply_data_to_a_product_value(
+    function it_uses_form_factory_to_apply_data_to_a_product_value(
         $formFactory,
         FormBuilderInterface $formBuilder,
         FormInterface $form,
