@@ -18,4 +18,4 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
         author:
             type: string
         status:
-            type: integer
+            type: int
