@@ -115,7 +115,7 @@ class ProposalPersister implements ProductPersister
         $changes = $this->collector->getChanges();
 
         if (empty($changes)) {
-            return;
+            return $manager->flush();
         }
 
         $proposal = $this->factory->createProposal($product, $this->getUser()->getUsername(), $changes);
