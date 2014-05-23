@@ -178,19 +178,16 @@ Feature: Review a product changes proposal
     When I visit the "Attributes" tab
     Then the product Handmade should be "1"
 
-
-  # This scenario is bugged because the date retrieval create DateTime with H-2
-  @skip
   Scenario: Succesfully accept a date attribute product changes proposal
     Given an "apparel" catalog configuration
     And the following product:
       | sku       | family  | release_date-ecommerce |
       | my-tshirt | tshirts | 2014-05-14             |
     And role "Administrator" has the right to edit the attribute group "sales"
-    And "admin" has submitted the following proposal for "my-tshirt":
-      | release_date--ecommerce | 2014-05-20 |
     And I am logged in as "admin"
-    When I edit the "my-tshirt" product
+    And I edit the "my-tshirt" product
+    And I change the "ecommerce Release date" to "2014-05-20"
+    And I save the product
     When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "release_date"
     And I filter by "Status" with value "Waiting"
