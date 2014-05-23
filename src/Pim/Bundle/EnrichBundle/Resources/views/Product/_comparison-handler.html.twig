@@ -115,10 +115,9 @@
                 mediator.on('scopablefield:rendered', addCheckboxes);
 
                 // Remove checkboxes for disabled fields
-                $('.comparison .attribute-field.localizable').each(function() {
-                    var $container = $(this).find('[id]').eq(0);
-                    var targetId = $container.attr('id').replace('{{ comparisonLocale }}', '{{ dataLocale }}');
-                    var $fields = $container.find('textarea, input[type=text], input[type=checkbox], input[type=file], select').filter('[id^="' + targetId + '"]').filter('[disabled]');
+                $('.comparison .no-label .attribute-field.localizable').each(function() {
+                    var $target = $('#' + $(this).find('[id]').eq(0).attr('id').replace('{{ comparisonLocale }}', '{{ dataLocale }}'));
+                    var $fields = $target.find('textarea, input[type=text], input[type=checkbox], input[type=file], select').filter('[disabled]');
 
                     if ($fields.length) {
                         $(this).find('input.comparisonSelection').remove();
