@@ -9,3 +9,5 @@ services:
         arguments: [%pimee_security.entity.attribute_group_access.class%]
         tags:
             - { name: 'pim_repository' }
+        calls:
+            - [setTableNameBuilder, ['@pim_catalog.doctrine.table_name_builder']]
