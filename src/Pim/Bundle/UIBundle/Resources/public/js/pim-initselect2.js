@@ -56,7 +56,7 @@ define(
                                 }
                             );
                         } else {
-                            query.callback(values);
+                            query.callback(self.matchLocalResults(values, query.term));
                         }
                     };
                 } else {
@@ -91,6 +91,13 @@ define(
             },
             hasCachableResults: function($select) {
                 return true;
+            },
+            matchLocalResults: function(data, term) {
+                var matchingResults = _.filter(data.results, function(result) {
+                    return $.fn.select2.defaults.matcher(term, result.text);
+                });
+
+                return _.extend({}, data, { results: matchingResults });
             }
         };
     }
