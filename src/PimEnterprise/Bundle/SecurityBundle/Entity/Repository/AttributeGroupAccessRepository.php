@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
@@ -111,12 +112,15 @@ class AttributeGroupAccessRepository extends EntityRepository
             $user->getRoles()
         );
 
+        $groupTable = $this->getTableName('pim_catalog.entity.attribute_group.class');
+        $groupAccessTable = $this->getTableName('pimee_security.entity.attribute_group_access.class');
+
         $conn = $this->_em->getConnection();
         $qb = $conn->createQueryBuilder();
         $qb
             ->select('*')
-            ->from('pim_catalog_attribute_group', 'g')
-            ->leftJoin('g', 'pimee_security_attribute_group_access', 'aga', 'aga.attribute_group_id = g.id')
+            ->from($groupTable, 'g')
+            ->leftJoin('g', $groupAccessTable, 'aga', 'aga.attribute_group_id = g.id')
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(
@@ -177,10 +181,12 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getRevokedAttributeIds(User $user, $accessLevel)
     {
+        $attTable = $this->getTableName('pim_catalog.entity.attribute.class');
+
         $qb = $this->getRevokedAttributeGroupQB($user, $accessLevel);
         $qb
             ->select('a.id')
-            ->innerJoin('g', 'pim_catalog_attribute', 'a', 'a.group_id = g.id')
+            ->innerJoin('g', $attTable, 'a', 'a.group_id = g.id')
             ->groupBy('a.id');
 
         return array_map(
@@ -248,5 +254,32 @@ class AttributeGroupAccessRepository extends EntityRepository
             },
             $qb->getQuery()->getArrayResult()
         );
+    }
+
+    /**
+     * Set table name builder
+     *
+     * @param TableNameBuilder $tableNameBuilder
+     *
+     * @return AttributeGroupAccessRepository
+     */
+    public function setTableNameBuilder(TableNameBuilder $tableNameBuilder)
+    {
+        $this->tableNameBuilder = $tableNameBuilder;
+
+        return $this;
+    }
+
+    /**
+     * Get table name of entity defined
+     *
+     * @param string      $entityParameter
+     * @param string|null $targetEntity
+     *
+     * @return string
+     */
+    protected function getTableName($classParam, $targetEntity = null)
+    {
+        return $this->tableNameBuilder->getTableName($classParam, $targetEntity);
     }
 }

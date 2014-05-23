@@ -47,14 +47,18 @@ class AvailableAttributesType extends PimAvailableAttributesType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $revokedAttributeIds = $this->attGroupAccessRepo->getRevokedAttributeIds(
+            $this->userContext->getUser(),
+            AttributeGroupVoter::EDIT_ATTRIBUTES
+        );
+
         $builder->add(
             'attributes',
             'light_entity',
             [
                 'repository' => $this->attributeRepository,
                 'repository_options' => [
-                    'excluded_attribute_ids' => $options['attributes']
-                        + $this->attGroupAccessRepo->getRevokedAttributeIds($this->userContext->getUser(), AttributeGroupVoter::EDIT_ATTRIBUTES),
+                    'excluded_attribute_ids' => array_unique(array_merge($options['attributes'], $revokedAttributeIds)),
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
                     'default_group_label'    => $this->translator->trans(
                         'Other',
