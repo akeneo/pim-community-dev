@@ -25,7 +25,7 @@ class TableNameBuilder
      * Construct
      *
      * @param ContainerInterface $container
-     * @param SmartManagerRegistry $managerRegistry
+     * @param ManagerRegistry    $managerRegistry
      */
     public function __construct(ContainerInterface $container, ManagerRegistry $managerRegistry)
     {
@@ -37,6 +37,7 @@ class TableNameBuilder
      * Get table name from container parameter defined
      *
      * @param string $entityParameter
+     * @param mixed  $targetEntity
      *
      * @return string
      */

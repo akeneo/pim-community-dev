@@ -41,6 +41,7 @@ class ProductExportController extends ExportController
      * @param ProductManager       $productManager
      * @param LocaleManager        $localeManager
      * @param CatalogContext       $catalogContext
+     * @param ProductFieldsBuilder $fieldsBuilder
      */
     public function __construct(
         Request $request,

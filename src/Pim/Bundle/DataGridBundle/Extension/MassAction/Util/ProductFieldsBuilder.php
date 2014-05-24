@@ -62,7 +62,7 @@ class ProductFieldsBuilder
     /**
      * Get fields for products
      *
-     * @param $productIds
+     * @param array $productIds
      *
      * @return array
      */
@@ -88,6 +88,8 @@ class ProductFieldsBuilder
 
     /**
      * Prepare available attribute ids
+     *
+     * @param array $productIds
      */
     protected function prepareAvailableAttributeIds($productIds)
     {

@@ -3,7 +3,6 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
@@ -85,8 +84,6 @@ class ConfigureProductGridListener
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
     protected function getColumnsConfigurator()
