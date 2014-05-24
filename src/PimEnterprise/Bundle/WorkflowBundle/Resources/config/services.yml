@@ -8,6 +8,9 @@ parameters:
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
     pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
 
+    pimee_workflow.factory.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Factory\SnapshotFactory
+    pimee_workflow.controller.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Controller\SnapshotController
+
 services:
     pimee_workflow.event_listener.proposals_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
@@ -64,3 +67,14 @@ services:
 
     pimee_workflow.datagrid.proposal_grid_helper:
         class: %pimee_workflow.datagrid.proposal_grid_helper.class%
+
+    pimee_workflow.factory.snapshot:
+        class: %pimee_workflow.factory.snapshot.class%
+
+    pimee_workflow.controller.snapshot:
+        class: %pimee_workflow.controller.snapshot.class%
+        parent: pim_enrich.controller.abstract
+        scope: request
+        arguments:
+            - '@pimee_workflow.factory.snapshot'
+            - '@pim_catalog.manager.product'
