@@ -26,7 +26,7 @@ Feature: Create a category
     Then I should be on the category "flipflap" edit page
     And I should see "Category successfully created"
 
-  @javascript
+  @javascript @skip
   Scenario: Go to category creation page from the category tree right click menu
     Given the following category:
       | code | label-en_US | parent  |
