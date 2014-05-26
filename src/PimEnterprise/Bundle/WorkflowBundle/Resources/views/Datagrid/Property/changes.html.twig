@@ -1,11 +1,63 @@
+{% macro format(changes) %}
+    {% if "text" in changes|keys %}
+
+        {{ changes.text|raw }}
+
+    {% elseif "media" in changes|keys %}
+
+        {# Waiting for https://github.com/KnpLabs/Gaufrette/pull/292 to be merged #}
+
+    {% elseif "varchar" in changes|keys %}
+
+        {{ changes.varchar }}
+
+    {% elseif "integer" in changes|keys %}
+
+        {{ changes.integer }}
+
+    {% elseif "decimal" in changes|keys %}
+
+        {{ changes.decimal }}
+
+    {% elseif "boolean" in changes|keys %}
+
+        {{ changes.boolean == 1 ? 'Yes'|trans : 'No'|trans }}
+
+    {% elseif "date" in changes|keys %}
+
+        {{ changes.date }}
+
+    {% elseif "datetime" in changes|keys %}
+
+        {{ changes.datetime }}
+
+    {% elseif "options" in changes|keys %}
+
+        <ul>
+            {% for option in changes.options|split(",")  %}
+                <li>{{ presentOption(option) }}</li>
+            {% endfor %}
+        </ul>
+
+    {% elseif "option" in changes|keys %}
+
+        {{ presentOption(changes.option) }}
+
+    {% elseif "media" in changes|keys %}
+    {% elseif "metric" in changes|keys %}
+
+        {{ changes.metric.data ~ " " ~ changes.metric.unit }}
+
+    {% elseif "prices" in changes|keys %}
+
+    {% endif %}
+{% endmacro %}
+
+{% import _self as __ %}
+
 <dl>
-    {% for attribute, changes in value  %}
+    {% for attribute, changes in value['values']  %}
         <dt>{{ attribute }}</dt>
-        {% if changes is iterable %}
-            <dd>{{ changes|first }}</dd>
-        {% else %}
-            <dd>{{ changes }}</dd>
-        {% endif %}
-        </dl>
+            <dl>{{ __.format(changes) }}</dl>
     {% endfor %}
 </dl>

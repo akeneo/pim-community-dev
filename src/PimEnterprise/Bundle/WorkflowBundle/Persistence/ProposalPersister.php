@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
 
 /**
  * Store product through proposals
@@ -30,8 +31,8 @@ class ProposalPersister implements ProductPersister
     /** @var ProposalFactory */
     protected $factory;
 
-    /** @var ProductChangesProvider */
-    protected $changesProvider;
+    /** @var CollectProductValuesSubscriber */
+    protected $collector;
 
     /**
      * @param ManagerRegistry          $registry
@@ -45,13 +46,13 @@ class ProposalPersister implements ProductPersister
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         ProposalFactory $factory,
-        ProductChangesProvider $changesProvider
+        CollectProductValuesSubscriber $collector
     ) {
-        $this->registry            = $registry;
+        $this->registry = $registry;
         $this->completenessManager = $completenessManager;
-        $this->securityContext     = $securityContext;
-        $this->factory             = $factory;
-        $this->changesProvider     = $changesProvider;
+        $this->securityContext = $securityContext;
+        $this->factory = $factory;
+        $this->collector = $collector;
     }
 
     /**
@@ -59,9 +60,11 @@ class ProposalPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
+        $options = array_merge(['bypass_proposal' => false], $options);
+
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        if (!$manager->contains($product)) {
+        if ($options['bypass_proposal'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
             $this->persistProposal($manager, $product);
@@ -109,10 +112,10 @@ class ProposalPersister implements ProductPersister
      */
     private function persistProposal(ObjectManager $manager, ProductInterface $product)
     {
-        $changes = $this->changesProvider->computeChanges($product);
+        $changes = $this->collector->getChanges();
 
         if (empty($changes)) {
-            return;
+            return $manager->flush();
         }
 
         $proposal = $this->factory->createProposal($product, $this->getUser()->getUsername(), $changes);
