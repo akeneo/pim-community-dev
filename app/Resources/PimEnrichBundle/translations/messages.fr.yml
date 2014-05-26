@@ -382,6 +382,30 @@ pim_catalog_metric: Unité de mesure
 Activated: Activé
 Disable: Désactivé
 pim_enrich.mass_edit_action:
+  product:
+    page_title: Produits
+    page_subtitle: 'Edition de masse (1 produit)|Edition de masse (%count% produits)'
+    title: Choisir une opération
+    subtitle: "Choisissez l'opération que vous souhaitez effectuer sur le produit sélectionné| Choisissez l'opération que vous souhaitez effectuer sur les %count% produits sélectionnés"
+    confirm: 'Vous êtes sur le point de mettre à jour un produit avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% produits avec les renseignements suivants, merci de confirmer.'
+    limit_exceeded: 'Merci de sélectionner moins de %limit% produits à éditer'
+    steps:
+      first: Choisissez des produits
+      second: Choisir une opération
+      third: Configurer
+      fourth: Confirmer
+  family:
+    page_title: Familles
+    page_subtitle: 'Edition de masse (1 famille)|Edition de masse (%count% familles)'
+    title: Choisir une opération
+    subtitle: "Choisissez l'opération que vous souhaitez effectuer sur la famille sélectionnée| Choisissez l'opération que vous souhaitez effectuer sur les %count% familles sélectionnées"
+    confirm: 'Vous êtes sur le point de mettre à jour une famille avec les renseignements suivants, merci de confirmer. |Vous êtes sur le point de mettre à jour  %count% familles avec les renseignements suivants, merci de confirmer.'
+    limit_exceeded: 'Merci de sélectionner moins de %limit% familles à éditer'
+    steps:
+      first: Choisissez des familles
+      second: Choisir une opération
+      third: Configurer
+      fourth: Confirmer
   change-status:
     label: Changer de statut (activé / désactivé)
     description: Les produits sélectionnés vont être activés ou désactivés.
@@ -403,6 +427,10 @@ pim_enrich.mass_edit_action:
     label: Ajouter aux groupes
     description: Sélectionnez les groupes dans lesquels ajouter les produits sélectionnés
     success_flash: Les produits ont été ajoutés aux groupes sélectionnés
+  set-attribute-requirements:
+    label: Choisir les attributs requis
+    description: "Les exigences d'attributs suivants s'appliqueront aux familles sélectionnées"
+    success_flash: "Les exigences d'attributs ont été appliqués aux familles sélectionnées"
 To enable: Pour activer
 Select attributes: Sélectionnez les attributs
 Select: Sélectionner
