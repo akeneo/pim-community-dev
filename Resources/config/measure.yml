@@ -158,6 +158,34 @@ measures_config:
             WATT:
                 convert: [{'mul': 1}]
                 symbol: W
+    Resistence:
+        standard: OHM
+        units:
+            MILLIOHM:
+                convert: [{'mul': 0.001}]
+                symbol: mΩ
+            CENTIOHM:
+                convert: [{'mul': 0.01}]
+                symbol: cΩ
+            DECIMOHM:
+                convert: [{'mul': 0.1}]
+                symbol: dΩ
+            OHM:
+                convert: [{'mul': 1}]
+                symbol: Ω
+            DEKAOHM:
+                convert: [{'mul': 10}]
+                symbol: daΩ
+            HECTOHM:
+                convert: [{'mul': 100}]
+                symbol: hΩ
+            KILOHM:
+                convert: [{'mul': 1000}]
+                symbol: kΩ
+                symbol: mil
+            MEGOHM:
+                convert: [{'mul': 1000000}]
+                symbol: MΩ
     Speed:
         standard: METER_PER_SECOND
         units:

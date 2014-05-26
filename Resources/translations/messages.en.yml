@@ -56,6 +56,14 @@ MEGAWATT: Megawatt
 TERAWATT: Terawatt
 WATT:     Watt
 
+Resistence: Resistence
+MILLIOHM:   Milliohm
+CENTIOHM:   Centiohm
+DEKAOHM:    Dekaohm
+OHM:        Ohm
+KILOHM:     Kilohm
+MEGOHM:     Megohm
+
 Speed:              Speed
 FOOT_PER_SECOND:    Foot per second
 FOOT_PER_HOUR:      Foot per hour
