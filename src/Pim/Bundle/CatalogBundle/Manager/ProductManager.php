@@ -209,6 +209,8 @@ class ProductManager
     /**
      * Save a product
      *
+     * @deprecated use saveProduct() instead. Will be removed in 1.3
+     *
      * @param ProductInterface $product     The product to save
      * @param boolean          $recalculate Whether or not to directly recalculate the completeness
      * @param boolean          $flush       Whether or not to flush the entity manager
@@ -223,6 +225,28 @@ class ProductManager
             'flush' => $flush,
             'schedule' => $schedule,
         ];
+
+        return $this->saveProduct($product, $options);
+    }
+
+    /**
+     * Save a product
+     *
+     * @param ProductInterface $product The product to save
+     * @param array            $options Saving options
+     *
+     * @return null
+     */
+    public function saveProduct(ProductInterface $product, array $options)
+    {
+        $options = array_merge(
+            [
+                'recalculate' => true,
+                'flush' => true,
+                'schedule' => true,
+            ],
+            $options
+        );
 
         return $this->persister->persist($product, $options);
     }
