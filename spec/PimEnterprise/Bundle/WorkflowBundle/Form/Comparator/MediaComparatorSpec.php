@@ -49,4 +49,16 @@ class MediaComparatorSpec extends ObjectBehavior
             ]
         ]);
     }
+
+    function it_does_not_detect_changes_when_no_file_is_uploaded(
+        AbstractProductValue $value
+    ) {
+        $this->getChanges($value, ['media' => null])->shouldReturn(null);
+    }
+
+    function it_does_not_detect_changes_if_no_uploaded_file_is_present_and_current_value_is_empty(
+        AbstractProductValue $value
+    ) {
+        $this->getChanges($value, ['media' => ['file' => '']])->shouldReturn(null);
+    }
 }
