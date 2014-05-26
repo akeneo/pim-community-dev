@@ -59,10 +59,13 @@ WATT:     Watt
 Resistence: Resistence
 MILLIOHM:   Milliohm
 CENTIOHM:   Centiohm
-DEKAOHM:    Dekaohm
+DECIOHM:    Deciohm
 OHM:        Ohm
+DEKAOHM:    Dekaohm
+HECTOHM:    Hectohm
 KILOHM:     Kilohm
 MEGOHM:     Megohm
+
 
 Speed:              Speed
 FOOT_PER_SECOND:    Foot per second

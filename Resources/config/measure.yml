@@ -167,7 +167,7 @@ measures_config:
             CENTIOHM:
                 convert: [{'mul': 0.01}]
                 symbol: cΩ
-            DECIMOHM:
+            DECIOHM:
                 convert: [{'mul': 0.1}]
                 symbol: dΩ
             OHM:
