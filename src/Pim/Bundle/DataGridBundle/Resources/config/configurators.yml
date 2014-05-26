@@ -26,6 +26,10 @@ services:
         class: %pim_datagrid.datagrid.product.filters_configurator.class%
         arguments:
             - '@pim_datagrid.datagrid.product.configuration_registry'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@router'
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_datagrid.datagrid.product.sorters_configurator:
         class: %pim_datagrid.datagrid.product.sorters_configurator.class%

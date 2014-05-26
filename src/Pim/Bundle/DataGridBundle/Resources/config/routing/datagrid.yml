@@ -5,11 +5,9 @@ pim_datagrid_load:
         _method: GET
         _format: json
 
-datagrid_loadmetadata:
+pim_datagrid_loadmetadata:
     path: /{alias}/loadmetadata
     defaults: { _controller: pim_datagrid.controller.datagrid:loadMetaDataAction }
-    options:
-        expose: true
     requirements:
         _method: GET
         _format: json
