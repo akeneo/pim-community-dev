@@ -37,6 +37,7 @@ class MeasureManager
     {
         $familyConfig = $this->getFamilyConfig($family);
         $unitsConfig =  $familyConfig['units'];
+
         return array_map(
             function ($unit) {
                 return $unit['symbol'];
@@ -55,6 +56,7 @@ class MeasureManager
     public function getStandardUnitForFamily($family)
     {
         $familyConfig = $this->getFamilyConfig($family);
+
         return $familyConfig['standard'];
     }
 
