@@ -182,7 +182,6 @@ measures_config:
             KILOHM:
                 convert: [{'mul': 1000}]
                 symbol: kΩ
-                symbol: mil
             MEGOHM:
                 convert: [{'mul': 1000000}]
                 symbol: MΩ
