@@ -164,7 +164,7 @@ measures_config:
             TERAWATT:
                 convert: [{'mul': 1000000000000}]
                 symbol: TW
-    Resistence:
+    Resistance:
         standard: OHM
         units:
             MILLIOHM:
@@ -212,12 +212,12 @@ measures_config:
             FOOT_PER_HOUR:
                 convert: [{'mul': 0.3048}, {'div': 3600}]
                 symbol: ftdivh
-            MILE_PER_HOUR:
-                convert: [{'mul': 1609.344}, {'div': 3600}]
-                symbol: midivh
             YARD_PER_HOUR:
                 convert: [{'mul': 0.9144'}, {'div': 3600}]
                 symbol: yddivh
+            MILE_PER_HOUR:
+                convert: [{'mul': 1609.344}, {'div': 3600}]
+                symbol: midivh
     Temperature:
         standard: KELVIN
         units:
