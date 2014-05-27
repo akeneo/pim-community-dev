@@ -1,7 +1,7 @@
 datagrid:
     proposals-grid:
         source:
-            type: pim_orm
+            type: pim_proposal
             entity: %pimee_workflow.entity.proposal.class%
             repository_method: createDatagridQueryBuilder
         columns:
