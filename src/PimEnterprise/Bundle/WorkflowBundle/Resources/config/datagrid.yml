@@ -60,9 +60,7 @@ datagrid:
             columns:
                 author:
                     data_name: p.author
+                    sorter: proposal_field
                 status:
                     data_name: p.status
-                createdAt:
-                    data_name: p.createdAt
-            default:
-                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+                    sorter: proposal_field
