@@ -68,7 +68,11 @@
                 <tr class="warning">
                     <td colspan="5">
                         <span class="title"><%= warning.label.toUpperCase() %></span>&nbsp;
-                        <%= warning.reason %><br />
+                        <ul>
+                            <% _.each(warning.reason.split("\n"), function(warningItem) { %>
+                                <li><%= warningItem %></li>
+                            <% }) %>
+                        </ul>
                         <a class="data" href="#"
                             data-display-label="<%= showLabel %>"
                             data-hide-label="<%= hideLabel %>">
