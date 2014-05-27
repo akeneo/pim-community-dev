@@ -112,20 +112,26 @@ class PublishedProductController extends AbstractController
      * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
      * @return array
      */
-    public function publishAction(Request $request, $id)
+    public function publishAction(Request $request, $id, $locale)
     {
         $product = $this->manager->find($id);
 
         $published = $this->factory->createPublishedProduct($product);
 
-        var_dump(get_class($published));
-
         $this->manager->getObjectManager()->persist($published);
         $this->manager->getObjectManager()->flush();
 
-        var_dump($published->getId());
+        // var_dump($published->getId());
+        $this->addFlash('success', 'flash.product.published', ['%locale%' => $locale]);
 
-        die();
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_product_edit',
+                [
+                    'id' => $product->getId()
+                ]
+            )
+        );
     }
 
     /**

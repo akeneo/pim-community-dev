@@ -1,0 +1,19 @@
+{{ elements.backLink(path('pim_enrich_product_index')) }}
+{{ elements.enabledSwitch(form) }}
+{% if resource_granted("pim_enrich_product_remove") %}
+     {{ elements.deleteLink(
+        path('pim_enrich_product_remove', { id: form.vars.value.id }),
+        'pim_enrich_product_remove',
+        path('pim_enrich_product_index'),
+        'confirmation.remove.product'|trans({ '%name%': product.label }),
+        'flash.product.removed'|trans
+    ) }}
+{% endif %}
+{{ elements.link('btn.publish', path('pimee_workflow_publishedproduct_publish', {id: form.vars.value.id, locale: dataLocale}), {icon: 'check'}) }}
+{{ elements.submitDropdownBtn(
+    'btn.save',
+    {
+        'Create': { 'text': 'btn.save and create' },
+        'BackGrid': { 'text': 'btn.save and back' }
+    }
+) }}
