@@ -79,37 +79,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 8
-        options:
-            210_x_1219_mm:
-                code: 210_x_1219_mm
-                labels: { fr_FR: '210 x 1219 mm', en_US: '210 x 1219 mm', de_DE: '210 x 1219 mm' }
-            215_x_355_mm:
-                code: 215_x_355_mm
-                labels: { fr_FR: '215 x 355 mm', en_US: '215 x 355 mm', de_DE: '215 x 355 mm' }
-            216_x_406_4_mm:
-                code: 216_x_406_4_mm
-                labels: { fr_FR: '216 x 406.4 mm', en_US: '216 x 406.4 mm', de_DE: '216 x 406.4 mm' }
-            216_x_432_mm:
-                code: 216_x_432_mm
-                labels: { fr_FR: '216 x 432 mm', en_US: '216 x 432 mm', de_DE: '216 x 432 mm' }
-            297_x_432_mm:
-                code: 297_x_432_mm
-                labels: { fr_FR: '297 x 432 mm', en_US: '297 x 432 mm', de_DE: '297 x 432 mm' }
-            a3_297_x_420_mm_:
-                code: a3_297_x_420_mm_
-                labels: { fr_FR: 'A3 (297 x 420 mm)', en_US: 'A3 (297 x 420 mm)', de_DE: 'A3 (297 x 420 mm)' }
-            a4_210_x_297_mm_:
-                code: a4_210_x_297_mm_
-                labels: { fr_FR: 'A4 (210 x 297 mm)', en_US: 'A4 (210 x 297 mm)', de_DE: 'A4 (210 x 297 mm)' }
-            a4_letter_216_x_297_mm_:
-                code: a4_letter_216_x_297_mm_
-                labels: { fr_FR: 'A4 / Letter (216 x 297 mm)', en_US: 'A4 / Letter (216 x 297 mm)', de_DE: 'A4 / Letter (216 x 297 mm)' }
-            din_a3_310_x_437_mm_:
-                code: din_a3_310_x_437_mm_
-                labels: { fr_FR: 'DIN A3 (310 x 437 mm)', en_US: 'DIN A3 (310 x 437 mm)', de_DE: 'DIN A3 (310 x 437 mm)' }
-            legal_216_x_356_mm_:
-                code: legal_216_x_356_mm_
-                labels: { fr_FR: 'Legal (216 x 356 mm)', en_US: 'Legal (216 x 356 mm)', de_DE: 'Legal (216 x 356 mm)' }
     sensor_type:
         labels:
             en_US: 'Sensor type'
@@ -119,13 +88,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 9
-        options:
-            ccd:
-                code: ccd
-                labels: { fr_FR: CCD, en_US: CCD, de_DE: CCD }
-            cmos:
-                code: cmos
-                labels: { fr_FR: CMOS, en_US: CMOS, de_DE: CMOS }
     total_megapixels:
         labels:
             en_US: 'Total megapixels'
@@ -166,25 +128,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 13
-        options:
-            bridge:
-                code: bridge
-                labels: { fr_FR: Bridge, en_US: Bridge, de_DE: Bridge }
-            compact:
-                code: compact
-                labels: { fr_FR: Compact, en_US: Compact, de_DE: Compact }
-            milc:
-                code: milc
-                labels: { fr_FR: MILC, en_US: MILC, de_DE: MILC }
-            milc_body:
-                code: milc_body
-                labels: { fr_FR: 'MILC Body', en_US: 'MILC Body', de_DE: 'MILC Body' }
-            slr_body:
-                code: slr_body
-                labels: { fr_FR: 'SLR Body', en_US: 'SLR Body', de_DE: 'SLR Body' }
-            slr_kit:
-                code: slr_kit
-                labels: { fr_FR: 'SLR Kit', en_US: 'SLR Kit', de_DE: 'SLR Kit' }
     thd:
         labels:
             en_US: 'Total Harmonic Distortion (THD)'
@@ -216,10 +159,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 16
-        options:
-            6_3mm:
-                code: 6_3mm
-                labels: { fr_FR: 6.3mm, en_US: 6.3mm, de_DE: 6.3mm }
     maximum_video_resolution:
         labels:
             en_US: 'Maximum video resolution'
@@ -229,37 +168,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 17
-        options:
-            1280_x_1024:
-                code: 1280_x_1024
-                labels: { fr_FR: '1280 x 1024', en_US: '1280 x 1024', de_DE: '1280 x 1024' }
-            1280_x_720:
-                code: 1280_x_720
-                labels: { fr_FR: '1280 x 720', en_US: '1280 x 720', de_DE: '1280 x 720' }
-            1280_x_960:
-                code: 1280_x_960
-                labels: { fr_FR: '1280 x 960', en_US: '1280 x 960', de_DE: '1280 x 960' }
-            1600_x_1200:
-                code: 1600_x_1200
-                labels: { fr_FR: '1600 x 1200', en_US: '1600 x 1200', de_DE: '1600 x 1200' }
-            1920_x_1080:
-                code: 1920_x_1080
-                labels: { fr_FR: '1920 x 1080', en_US: '1920 x 1080', de_DE: '1920 x 1080' }
-            2560_x_1920:
-                code: 2560_x_1920
-                labels: { fr_FR: '2560 x 1920', en_US: '2560 x 1920', de_DE: '2560 x 1920' }
-            2560_x_2048:
-                code: 2560_x_2048
-                labels: { fr_FR: '2560 x 2048', en_US: '2560 x 2048', de_DE: '2560 x 2048' }
-            320_x_240:
-                code: 320_x_240
-                labels: { fr_FR: '320 x 240', en_US: '320 x 240', de_DE: '320 x 240' }
-            640_x_480:
-                code: 640_x_480
-                labels: { fr_FR: '640 x 480', en_US: '640 x 480', de_DE: '640 x 480' }
-            800_x_600:
-                code: 800_x_600
-                labels: { fr_FR: '800 x 600', en_US: '800 x 600', de_DE: '800 x 600' }
     maximum_frame_rate:
         labels:
             en_US: 'Maximum frame rate'
@@ -280,22 +188,6 @@ attributes:
         group: technical
         useableAsGridFilter: true
         sortOrder: 19
-        options:
-            copy:
-                code: copy
-                labels: { fr_FR: copy, en_US: copy, de_DE: copy }
-            fax:
-                code: fax
-                labels: { fr_FR: fax, en_US: fax, de_DE: fax }
-            n:
-                code: n
-                labels: { fr_FR: N, en_US: N, de_DE: N }
-            print:
-                code: print
-                labels: { fr_FR: print, en_US: print, de_DE: print }
-            scan:
-                code: scan
-                labels: { fr_FR: scan, en_US: scan, de_DE: scan }
     response_time:
         labels:
             en_US: 'Response time (ms)'
@@ -398,16 +290,6 @@ attributes:
         group: manufacturing
         useableAsGridFilter: true
         sortOrder: 29
-        options:
-            earthenware:
-                code: earthenware
-                labels: { fr_FR: 'Faïence', en_US: 'Earthenware', de_DE: 'Tonwaren' }
-            porcelain:
-                code: porcelain
-                labels: { fr_FR: 'Porcelaine', en_US: 'Porcelain', de_DE: 'Porzellan' }
-            ceramic:
-                code: ceramic
-                labels: { fr_FR: 'Céramique', en_US: 'Ceramic', de_DE: 'Keramisch' }
     main_color:
         labels:
             en_US: 'Main color'
@@ -417,26 +299,6 @@ attributes:
         group: color
         useableAsGridFilter: true
         sortOrder: 30
-        options:
-            white:
-                code: white
-                labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
-                default: 1
-            black:
-                code: black
-                labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
-            grey:
-                code: grey
-                labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
-            blue:
-                code: blue
-                labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
-            purple:
-                code: purple
-                labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
-            orange:
-                code: orange
-                labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
     secondary_color:
         labels:
             en_US: 'Secondary color'
@@ -445,34 +307,6 @@ attributes:
         type: pim_catalog_simpleselect
         group: color
         sortOrder: 31
-        options:
-            white:
-                code: white
-                labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
-            black:
-                code: black
-                labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
-            grey:
-                code: grey
-                labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
-            yellow:
-                code: yellow
-                labels: { fr_FR: 'Jaune', en_US: 'Yellow', de_DE: 'Gelb' }
-            orange:
-                code: orange
-                labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
-            red:
-                code: red
-                labels: { fr_FR: 'Rouge', en_US: 'Red', de_DE: 'Rot' }
-            green:
-                code: green
-                labels: { fr_FR: 'Vert', en_US: 'Green', de_DE: 'Grün' }
-            blue:
-                code: blue
-                labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
-            purple:
-                code: purple
-                labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
     clothing_size:
         labels:
             en_US: 'Clothing size'
@@ -481,25 +315,6 @@ attributes:
         type: pim_catalog_simpleselect
         group: size
         sortOrder: 32
-        options:
-            xs:
-                code: xs
-                labels: { fr_FR: 'XS', en_US: 'XS', de_DE: 'XS' }
-            s:
-                code: s
-                labels: { fr_FR: 'S', en_US: 'S', de_DE: 'S' }
-            m:
-                code: m
-                labels: { fr_FR: 'M', en_US: 'M', de_DE: 'M' }
-            l:
-                code: l
-                labels: { fr_FR: 'L', en_US: 'L', de_DE: 'L' }
-            xl:
-                code: xl
-                labels: { fr_FR: 'XL', en_US: 'XL', de_DE: 'XL' }
-            xxl:
-                code: xxl
-                labels: { fr_FR: 'XXL', en_US: 'XXL', de_DE: 'XXL' }
     tshirt_materials:
         labels:
             en_US: 'T-Shirt material'
@@ -508,25 +323,6 @@ attributes:
         type: pim_catalog_simpleselect
         group: manufacturing
         sortOrder: 33
-        options:
-            cotton:
-                code: cotton
-                labels: { fr_FR: '100% Coton', en_US: '100% Cotton', de_DE: '100% Baumwolle' }
-            polyester:
-                code: polyester
-                labels: { fr_FR: 'Polyester', en_US: 'Polyester', de_DE: 'Polyester' }
-            polycotton:
-                code: polycotton
-                labels: { fr_FR: 'Poly/Coton', en_US: 'Poly/Cotton', de_DE: 'Poly/Bauwolle' }
-            wool:
-                code: wool
-                labels: { fr_FR: 'Laine', en_US: 'Wool', de_DE: 'Wolle' }
-            organic_cotton:
-                code: organic_cotton
-                labels: { fr_FR: 'Coton Bio', en_US: 'Organic Cotton', de_DE: 'Bio Baumwolle' }
-            recycled_materials:
-                code: recycled_materials
-                labels: { fr_FR: 'Matières recyclées', en_US: 'Recycled materials', de_DE: 'Recycling-Materialien' }
     tshirt_style:
         labels:
             en_US: 'T-Shirt style'
@@ -535,22 +331,3 @@ attributes:
         type: pim_catalog_multiselect
         group: design
         sortOrder: 34
-        options:
-            turtleneck:
-                code: turtleneck
-                labels: { fr_FR: 'Col roulé', en_US: 'Turtleneck', de_DE: 'Rollkragen' }
-            vneck:
-                code: vneck
-                labels: { fr_FR: 'Col en V', en_US: 'V neck', de_DE: 'V-Ausschnitt' }
-            sportwear:
-                code: sportwear
-                labels: { fr_FR: 'Sportif', en_US: 'Sport wear', de_DE: 'Sport Verschleiß' }
-            crewneck:
-                code: crewneck
-                labels: { fr_FR: 'Col ras du cou', en_US: 'Crewneck', de_DE: 'Rundhalsausschnitt' }
-            long_sleeve:
-                code: long_sleeve
-                labels: { fr_FR: 'Manches longues', en_US: 'Long sleeve', de_DE: 'Lange Ärmel ' }
-            short_sleeve:
-                code: short_sleeve
-                labels: { fr_FR: 'Manches courtes', en_US: 'Short sleeve', de_DE: 'Kurze Ärmel' }
