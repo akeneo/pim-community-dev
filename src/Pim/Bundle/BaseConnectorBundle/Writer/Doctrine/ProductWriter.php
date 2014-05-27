@@ -97,6 +97,17 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
+     * Set the list of non clearable entities class.
+     * Allow override of the default list.
+     *
+     * @param array $classesList
+     */
+    public function setNonClearableEntities($classesList)
+    {
+        $this->nonClearableEntities = $classesList;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
