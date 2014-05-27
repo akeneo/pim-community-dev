@@ -187,6 +187,13 @@
             <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
         </exec>
 
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
+            <arg value="henrikbjorn/phpspec-code-coverage" />
+            <arg value="1.0.*@dev" />
+        </exec>
+
         <!--
             As long as composer does not provide an option to ignore platform dependency,
             it must be executed with the xdebug extension activated
