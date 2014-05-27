@@ -26,6 +26,9 @@ MEGABYTE: Megabyte
 GIGABYTE: Gigabyte
 TERABYTE: Terabyte
 
+Decibel: Decibel
+DECIBEL: Decibel
+
 Frequency: Frequency
 GIGAHERTZ: Gigahertz
 KILOHERTZ: Kilohertz
@@ -56,7 +59,7 @@ MEGAWATT: Megawatt
 TERAWATT: Terawatt
 WATT:     Watt
 
-Resistence: Resistence
+Resistance: Resistence
 MILLIOHM:   Milliohm
 CENTIOHM:   Centiohm
 DECIOHM:    Deciohm
@@ -65,7 +68,6 @@ DEKAOHM:    Dekaohm
 HECTOHM:    Hectohm
 KILOHM:     Kilohm
 MEGOHM:     Megohm
-
 
 Speed:              Speed
 FOOT_PER_SECOND:    Foot per second
