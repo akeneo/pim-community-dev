@@ -36,11 +36,11 @@ class NumberTypeTest extends AttributeTypeTestCase
         return array(
             'decimals_allowed'     => array(
                 array('is_decimals_allowed' => true),
-                array('precision' => 4)
+                array('decimals_allowed' => true)
             ),
             'decimals_now_allowed' => array(
                 array('is_decimals_allowed' => false),
-                array('precision' => 0)
+                array('decimals_allowed' => false)
             )
         );
     }
