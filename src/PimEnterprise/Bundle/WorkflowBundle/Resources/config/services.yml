@@ -1,13 +1,12 @@
 parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister
     pimee_workflow.factory.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory
-    pimee_workflow.persister.product_changes_provider.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesProvider
     pimee_workflow.entity.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
     pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
     pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
     pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
-
+    pimee_workflow.twig.extension.option.class: PimEnterprise\Bundle\WorkflowBundle\Twig\OptionExtension
     pimee_workflow.factory.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Factory\SnapshotFactory
     pimee_workflow.controller.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Controller\SnapshotController
 
@@ -41,32 +40,33 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@security.context'
             - '@pimee_workflow.factory.proposal'
-            - '@pimee_workflow.persister.product_changes_provider'
+            - '@pimee_workflow.form.subscriber.collect_product_value_changes'
 
     pimee_workflow.factory.proposal:
         class: %pimee_workflow.factory.proposal.class%
-
-    pimee_workflow.persister.product_changes_provider:
-        public: false
-        class: %pimee_workflow.persister.product_changes_provider.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_serializer'
 
     pimee_workflow.manager.proposal:
         class: %pimee_workflow.manager.proposal.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.product'
             - '@pimee_workflow.persister.product_changes_applier'
 
     pimee_workflow.persister.product_changes_applier:
         public: false
         class: %pimee_workflow.persister.product_changes_applier.class%
         arguments:
-            - '@pim_serializer'
+            - '@form.factory'
 
     pimee_workflow.datagrid.proposal_grid_helper:
         class: %pimee_workflow.datagrid.proposal_grid_helper.class%
+
+    pimee_workflow.twig.extension.option:
+        class: %pimee_workflow.twig.extension.option.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: twig.extension }
 
     pimee_workflow.factory.snapshot:
         class: %pimee_workflow.factory.snapshot.class%

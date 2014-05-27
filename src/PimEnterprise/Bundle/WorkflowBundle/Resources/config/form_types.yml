@@ -1,0 +1,47 @@
+parameters:
+    pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
+    pimee_workflow.form.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ChainedComparator
+    pimee_workflow.form.comparator.media.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\MediaComparator
+    pimee_workflow.form.comparator.date.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\DateComparator
+    pimee_workflow.form.comparator.prices.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\PricesComparator
+    pimee_workflow.form.comparator.metric.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\MetricComparator
+    pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
+
+services:
+    pimee_workflow.form.subscriber.collect_product_value_changes:
+        public: false
+        class: %pimee_workflow.form.subscriber.collect_product_value_changes.class%
+        arguments:
+            - '@pimee_workflow.form.comparator.chained'
+
+    pimee_workflow.form.comparator.chained:
+        public: false
+        class: %pimee_workflow.form.comparator.chained.class%
+        calls:
+            - [ addComparator, [ '@pimee_workflow.form.comparator.media' ] ]
+            - [ addComparator, [ '@pimee_workflow.form.comparator.date' ] ]
+            - [ addComparator, [ '@pimee_workflow.form.comparator.prices' ] ]
+            - [ addComparator, [ '@pimee_workflow.form.comparator.metric' ] ]
+            - [ addComparator, [ '@pimee_workflow.form.comparator.scalar' ] ]
+
+    pimee_workflow.form.comparator.media:
+        public: false
+        class: %pimee_workflow.form.comparator.media.class%
+        arguments:
+            - '@pim_catalog.manager.media'
+
+    pimee_workflow.form.comparator.date:
+        public: false
+        class: %pimee_workflow.form.comparator.date.class%
+
+    pimee_workflow.form.comparator.prices:
+        public: false
+        class: %pimee_workflow.form.comparator.prices.class%
+
+    pimee_workflow.form.comparator.metric:
+        public: false
+        class: %pimee_workflow.form.comparator.metric.class%
+
+    pimee_workflow.form.comparator.scalar:
+        public: false
+        class: %pimee_workflow.form.comparator.scalar.class%
