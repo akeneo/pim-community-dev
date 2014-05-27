@@ -19,6 +19,7 @@ oro_menu_config:
             aclResourceId: pim_enrich_product_index
             extras:
                 routes: ['/^pim_enrich_product_\w+$/', '/^pim_enrich_mass_edit_\w+$/']
+                position: 10
         pim_enrich_attribute:
             label: pim_menu.item.attribute
             route: pim_enrich_attribute_index
@@ -43,6 +44,7 @@ oro_menu_config:
             aclResourceId: pim_enrich_category_create
             extras:
                 routes: ['/^pim_enrich_category_\w+$/']
+                position: 20
         pim_configuration_tab:
             label: pim_menu.tab.settings
             uri: '#'
@@ -73,12 +75,14 @@ oro_menu_config:
             aclResourceId: pim_enrich_group_index
             extras:
                 routes: ['/^pim_enrich_variant_group_\w+$/']
+                position: 30
         pim_enrich_group:
             label: pim_menu.item.group
             route: pim_enrich_group_index
             aclResourceId: pim_enrich_group_index
             extras:
                 routes: ['/^pim_enrich_group_\w+$/']
+                position: 40
         pim_enrich_association_type:
             label: pim_menu.item.association_type
             route: pim_enrich_association_type_index
