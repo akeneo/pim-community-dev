@@ -71,7 +71,6 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
-                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
@@ -142,33 +141,6 @@ datagrid:
                 icon:  trash
                 link:  delete_link
         mass_actions:
-            delete:
-                type: delete
-                label: pim.grid.mass_action.delete
-                entity_name: product
-                acl_resource: pim_enrich_product_remove
-                messages:
-                    confirm_title: Delete confirmation
-                    confirm_content: Are you sure you want to delete selected products?
-                    confirm_ok: OK
-                    success: Selected products successfully deleted
-                    error: Error ocurred when trying to delete selected products, please try again
-                    empty_selection: No products selected
-                launcherOptions:
-                    icon: trash
-            quick_export_csv:
-                type: export
-                label: pim.grid.mass_action.quick_export.csv_all
-                icon: download
-                handler: product_quick_export
-                route: pim_datagrid_export_product_index
-                route_parameters:
-                    _format: csv
-                    _contentType: text/csv
-                context:
-                    withHeader: true
-                messages:
-                    empty_selection: No products selected
             mass_edit:
                 type: edit
                 acl_resource: pim_enrich_product_edit
