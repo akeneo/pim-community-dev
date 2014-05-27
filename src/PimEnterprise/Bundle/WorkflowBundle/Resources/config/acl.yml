@@ -1,0 +1,3 @@
+pimee_workflow_publishedproduct_index:
+    type: action
+    label: pimee_workflow.acl.publishedproduct.index

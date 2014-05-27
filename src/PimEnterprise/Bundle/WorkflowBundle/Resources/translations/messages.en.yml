@@ -11,5 +11,11 @@ pimee_workflow:
         action:
             approve: Approve
             refuse:  Refuse
-btn.publish: 'Publish'
-'flash.product.published': 'The product has been published in %locale%'
+    publishedproduct:
+        index: Published Products
+btn.publish: Publish
+flash.product.published: The product has been published in %locale%
+pim_menu:
+    item:
+        publishedproduct: Published products
+
