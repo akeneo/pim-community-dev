@@ -1058,6 +1058,7 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $username
+     * @param $username
      */
     public function setUsername($username)
     {
