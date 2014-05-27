@@ -16,11 +16,6 @@ use Pim\Bundle\FlexibleEntityBundle\Model\FlexibleValueInterface;
 class NumberType extends FlexNumberType
 {
     /**
-     * @staticvar integer
-     */
-    const DECIMAL_PLACES = 4;
-
-    /**
      * {@inheritdoc}
      */
     protected function defineCustomAttributeProperties(AbstractAttribute $attribute)
@@ -95,7 +90,7 @@ class NumberType extends FlexNumberType
     protected function prepareValueFormOptions(FlexibleValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['precision'] = $value->getAttribute()->isDecimalsAllowed() ? self::DECIMAL_PLACES : 0;
+        $options['decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         return $options;
     }

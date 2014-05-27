@@ -1,5 +1,7 @@
 parameters:
     pim_ui.form.type.ajax_entity.class:                Pim\Bundle\UIBundle\Form\Type\AjaxEntityType
+    pim_ui.form.type.number.class:                     Pim\Bundle\UIBundle\Form\Type\NumberType
+    pim_ui.form.type.switch.class:                     Pim\Bundle\UIBundle\Form\Type\SwitchType
     pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
     pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
     pim_ui.controller.ajax_option.class:               Pim\Bundle\UIBundle\Controller\AjaxOptionController
@@ -19,6 +21,11 @@ services:
         class: Pim\Bundle\UIBundle\Form\Type\SwitchType
         tags:
             - { name: form.type, alias: switch }
+
+    pim_ui.form.type.number:
+        class: Pim\Bundle\UIBundle\Form\Type\NumberType
+        tags:
+            - { name: form.type, alias: pim_number }
 
     pim_ui.form.type.ajax_entity:
         class: %pim_ui.form.type.ajax_entity.class%
