@@ -103,7 +103,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                         onDelete: CASCADE
     oneToOne:
         media:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Media
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia
             cascade:
                 - remove
                 - persist
@@ -125,7 +125,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                     onDelete: 'SET NULL'
     oneToMany:
         prices:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductPrice
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
             cascade:
                 - remove
                 - persist

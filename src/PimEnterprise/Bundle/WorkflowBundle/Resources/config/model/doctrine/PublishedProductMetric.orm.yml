@@ -1,0 +1,35 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
+    type: entity
+    table: pimee_workflow_published_product_metric
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        data:
+            type: decimal
+            precision: 14
+            scale: 4
+            nullable: true
+        unit:
+            type: string
+            length: 20
+            nullable: true
+            column: unit
+        baseData:
+            type: decimal
+            precision: 14
+            scale: 4
+            nullable: true
+            column: base_data
+        baseUnit:
+            type: string
+            length: 20
+            nullable: true
+            column: base_unit
+        family:
+            type: string
+            length: 20
+            nullable: true
+            column: family

@@ -1,0 +1,30 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
+    type: entity
+    table: pimee_workflow_published_product_value_price
+    uniqueConstraints:
+        value_currency_idx:
+            columns:
+                - value_id
+                - currency_code
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        data:
+            type: decimal
+            scale: 2
+            nullable: true
+        currency:
+            type: string
+            length: 3
+            column: currency_code
+    manyToOne:
+        value:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            inversedBy: prices
+            joinColumns:
+                value_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
