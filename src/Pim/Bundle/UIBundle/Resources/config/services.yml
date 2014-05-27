@@ -18,12 +18,12 @@ services:
             - { name: form.type_extension, alias: form }
 
     pim_ui.form.type.switch:
-        class: Pim\Bundle\UIBundle\Form\Type\SwitchType
+        class: %pim_ui.form.type.switch.class%
         tags:
             - { name: form.type, alias: switch }
 
     pim_ui.form.type.number:
-        class: Pim\Bundle\UIBundle\Form\Type\NumberType
+        class: %pim_ui.form.type.number.class%
         tags:
             - { name: form.type, alias: pim_number }
 
