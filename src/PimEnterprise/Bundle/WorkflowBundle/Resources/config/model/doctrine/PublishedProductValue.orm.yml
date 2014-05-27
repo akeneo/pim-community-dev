@@ -114,7 +114,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
                     referencedColumnName: id
                     onDelete: CASCADE
         metric:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Metric
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
             cascade:
                 - remove
                 - persist

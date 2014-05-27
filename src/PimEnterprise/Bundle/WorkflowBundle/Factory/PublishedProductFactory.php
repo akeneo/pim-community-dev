@@ -5,9 +5,13 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
 
 /**
  * Published product factory
@@ -30,6 +34,9 @@ class PublishedProductFactory
         $this->copyValues($product, $published);
 
         $published->setFamily($product->getFamily());
+        foreach ($product->getGroups() as $group) {
+            $published->addGroup($group);
+        }
 
 
 /*        $proposal
@@ -43,6 +50,8 @@ class PublishedProductFactory
     }
 
     /**
+     * TODO : ugly POC method, we'll use normalization + processing to deal with the copy
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -57,44 +66,33 @@ class PublishedProductFactory
             $originalData = $originalValue->getData();
             $copiedData = null;
 
-/*
-            echo $originalValue->getAttribute()->getCode().' : ';
-            if (is_object($originalData)) {
-                echo get_class($originalData);
-            } elseif ($originalData instanceof \Doctrine\Common\Collections\Collection) {
-                echo 'collection';
-            } else {
-                echo $originalData;
-            }
-
-            echo '<br/><br/>';
-            continue;
-*/
-
             if ($originalData instanceof \Doctrine\Common\Collections\Collection) {
+                if (count($originalData) > 0) {
+                    $copiedData = [];
+                    foreach ($originalData as $object) {
+                        if ($object instanceof ProductPrice) {
+                            $copiedObject = new PublishedProductPrice();
+                            $copiedObject->setData($object->getData());
+                            $copiedObject->setCurrency($object->getCurrency());
+                            $copiedData[]= $copiedObject;
+                        } elseif ($object instanceof AttributeOption) {
+                            $copiedData[]= $object;
+                        }
+                    }
+                }
 
-                // price = clone !
-                
-                // option = copy
-
-
-                echo 'collection';
-                echo get_class($originalData);
-
-//                $copiedData = $originalData;
-
-                // price ?
             } elseif (is_object($originalData) && $originalData instanceof Metric) {
 
-                // TODO : we have to copy the metric !
-                continue;
-
+                $copiedMetric = new PublishedProductMetric();
+                $copiedMetric->setData($originalData->getData());
+                $copiedMetric->setBaseData($originalData->getBaseData());
+                $copiedMetric->setUnit($originalData->getUnit());
+                $copiedMetric->setBaseUnit($originalData->getBaseUnit());
+                $copiedMetric->setFamily($originalData->getFamily());
+                $copiedData = $copiedMetric;
 
             } elseif (is_object($originalData) && $originalData instanceof Media) {
-
-                // TODO : we have to copy the media !
-                continue;
-
+                // TODO : we have to copy the media file not reference the same !
                 $copiedMedia = new PublishedProductMedia();
                 $copiedMedia->setFilename($originalData->getFilename());
                 $copiedMedia->setOriginalFilename($originalData->getOriginalFilename());
@@ -102,25 +100,13 @@ class PublishedProductFactory
                 $copiedMedia->setMimeType($originalData->getMimeType());
                 $copiedData = $copiedMedia;
 
-            } elseif (is_object($originalData)) {
-
-                echo 'object';
-                echo get_class($originalData);
-                // TODO not deal with object for now
-//                continue;
-
-                $copiedData = $originalData;
-
             } else {
-
-                echo 'rawdata';
-
                 $copiedData = $originalData;
             }
             if ($copiedData) {
                 $publishedValue->setData($copiedData);
                 $published->addValue($publishedValue);
-            } 
+            }
         }
     }
 }
