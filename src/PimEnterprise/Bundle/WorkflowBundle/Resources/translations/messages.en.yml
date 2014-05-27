@@ -18,4 +18,6 @@ flash.product.published: The product has been published in %locale%
 pim_menu:
     item:
         publishedproduct: Published products
-
+pim_title:
+    publishedproduct:
+        index:  Published products
