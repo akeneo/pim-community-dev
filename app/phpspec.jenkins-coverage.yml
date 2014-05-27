@@ -1,0 +1,7 @@
+formatter.name: progress
+extensions:
+    - Akeneo\SkipExampleExtension
+    - PhpSpec\Extension\CodeCoverageExtension
+code_coverage:
+    format: php
+    output: app/build/coverage-parts/phpspec.php

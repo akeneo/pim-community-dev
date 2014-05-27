@@ -6,7 +6,7 @@
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-phpunit-coverage" depends="prepare,composer,vendors,setupdb-test,phpunit-coverage"/>
+    <target name="build-coverage" depends="prepare,composer,vendors,setupdb-test,coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -181,7 +181,7 @@
         </exec>
     </target>
 
-    <target name="phpunit-coverage" description="Run unit tests with PHPUnit and generate coverage">
+    <target name="coverage" description="Run unit tests with PHPUnit and generate coverage">
         <exec executable="sh" outputproperty="xdebug_path">
             <arg value="-c" />
             <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
@@ -192,6 +192,21 @@
             <arg value="-c" />
             <arg path="${basedir}/app/phpunit.jenkins-coverage.xml" />
             <arg value="--testsuite=Jenkins_PIM_Test" />
+        </exec>
+
+        <exec executable="php">
+            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
+            <arg value="${basedir}/bin/phpspec" />
+            <arg value="run" />
+            <arg value="-c" />
+            <arg path="${basedir}/app/phpspec.jenkins-coverage.yml" />
+        </exec>
+
+        <exec executable="php">
+            <arg value="-d zend_extension=${xdebug_path}/xdebug.so" />
+            <arg value="${basedir}/bin/merge-coverage" />
+            <arg value="${basedir}/app/build/coverage-parts/phpunit.php" />
+            <arg value="${basedir}/app/build/coverage-parts/phpspec.php" />
         </exec>
     </target>
 
