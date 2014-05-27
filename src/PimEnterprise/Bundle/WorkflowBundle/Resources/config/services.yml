@@ -7,8 +7,8 @@ parameters:
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
     pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
     pimee_workflow.twig.extension.option.class: PimEnterprise\Bundle\WorkflowBundle\Twig\OptionExtension
-    pimee_workflow.factory.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Factory\SnapshotFactory
-    pimee_workflow.controller.snapshot.class: PimEnterprise\Bundle\WorkflowBundle\Controller\SnapshotController
+    pimee_workflow.factory.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory
+    pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
 
 services:
     pimee_workflow.event_listener.proposals_grid_listener:
@@ -68,13 +68,13 @@ services:
         tags:
             - { name: twig.extension }
 
-    pimee_workflow.factory.snapshot:
-        class: %pimee_workflow.factory.snapshot.class%
+    pimee_workflow.factory.published_product:
+        class: %pimee_workflow.factory.published_product.class%
 
-    pimee_workflow.controller.snapshot:
-        class: %pimee_workflow.controller.snapshot.class%
+    pimee_workflow.controller.published_product:
+        class: %pimee_workflow.controller.published_product.class%
         parent: pim_enrich.controller.abstract
         scope: request
         arguments:
-            - '@pimee_workflow.factory.snapshot'
+            - '@pimee_workflow.factory.published_product'
             - '@pim_catalog.manager.product'

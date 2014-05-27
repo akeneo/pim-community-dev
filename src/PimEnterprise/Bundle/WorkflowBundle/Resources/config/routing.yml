@@ -1,6 +1,6 @@
 proposal:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/proposal.yml'
     prefix: /proposal
-snapshot:
-    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/snapshot.yml'
-    prefix: /snapshot
+publishedproduct:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/publishedproduct.yml'
+    prefix: /workflow/published-product

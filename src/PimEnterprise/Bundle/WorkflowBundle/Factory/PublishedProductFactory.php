@@ -3,32 +3,32 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot;
-use PimEnterprise\Bundle\WorkflowBundle\Model\SnapshotValue;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 
 /**
- * Snapshot factory
+ * Published product factory
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class SnapshotFactory
+class PublishedProductFactory
 {
     /**
-     * Create and configure a snapshot instance
+     * Create/update a published product instance
      *
      * @param ProductInterface $product
      *
-     * @return Snapshot
+     * @return PublishedProduct
      */
-    public function createSnapshot(ProductInterface $product)
+    public function publish(ProductInterface $product)
     {
-        $snapshot = new Snapshot();
+        $published = new PublishedProduct();
         foreach ($product->getValues() as $originalValue) {
-            $snapshotValue = new SnapshotValue();
-            $snapshotValue->setAttribute($originalValue->getAttribute());
-            $snapshotValue->setLocale($originalValue->getLocale());
-            $snapshotValue->setScope($originalValue->getScope());
+            $publishedValue = new PublishedProductValue();
+            $publishedValue->setAttribute($originalValue->getAttribute());
+            $publishedValue->setLocale($originalValue->getLocale());
+            $publishedValue->setScope($originalValue->getScope());
 
             $originalData = $originalValue->getData();
             if (is_object($originalData)) {
@@ -39,9 +39,9 @@ class SnapshotFactory
             } else {
                 $copiedData = $originalData;
             }
-            $snapshotValue->setData($copiedData);
+            $publishedValue->setData($copiedData);
 
-            $snapshot->addValue($snapshotValue);
+            $published->addValue($publishedValue);
         }
 
 
@@ -52,6 +52,6 @@ class SnapshotFactory
             ->setChanges($changes);
 */
 
-        return $snapshot;
+        return $published;
     }
 }

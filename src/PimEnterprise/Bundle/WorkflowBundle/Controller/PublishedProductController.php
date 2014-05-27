@@ -13,18 +13,18 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\SnapshotFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
- * Snapshot controller
+ * Published product controller
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class SnapshotController extends AbstractController
+class PublishedProductController extends AbstractController
 {
-    /** @var SnapshotFactory */
+    /** @var PublishedProductFactory */
     protected $factory;
 
     /** @var ProductManager */
@@ -38,7 +38,7 @@ class SnapshotController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param SnapshotFactory          $factory
+     * @param PublishedProductFactory  $factory
      */
     public function __construct(
         Request $request,
@@ -48,7 +48,7 @@ class SnapshotController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        SnapshotFactory $factory,
+        PublishedProductFactory $factory,
         ProductManager $manager
     ) {
         parent::__construct(
@@ -75,17 +75,13 @@ class SnapshotController extends AbstractController
 
         $product = $this->manager->find(1);
 
-        $snapshot = $this->factory->createSnapshot($product);
+        $snapshot = $this->factory->publish($product);
 
         var_dump(get_class($snapshot));
-/*
-        foreach ($snapshot->getValues() as $value) {
-            var_dump($value->getData());
-        }
- */
+
         $this->manager->getObjectManager()->persist($snapshot);
         $this->manager->getObjectManager()->flush();
 
-        die('eeeee');
+        die();
     }
 }

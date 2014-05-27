@@ -1,3 +1,0 @@
-pimee_workflow_snapshot_index:
-    path: /
-    defaults: { _controller: pimee_workflow.controller.snapshot:indexAction }

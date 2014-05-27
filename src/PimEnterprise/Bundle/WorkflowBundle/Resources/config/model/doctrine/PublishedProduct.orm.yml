@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot:
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
     type: entity
-    table: pimee_workflow_snapshot
+    table: pimee_workflow_published_product
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository
     fields:
         id:
@@ -26,7 +26,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot:
         groups:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             joinTable:
-                name: pimee_workflow_group_snapshot
+                name: pimee_workflow_group_published_product
                 joinColumns:
                     product_id:
                         referencedColumnName: id
@@ -38,7 +38,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot:
         categories:
             targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
             joinTable:
-                name: pimee_workflow_category_snapshot
+                name: pimee_workflow_category_published_product
                 joinColumns:
                     product_id:
                         referencedColumnName: id
@@ -48,24 +48,24 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot:
                         referencedColumnName: id
                         onDelete: CASCADE
     oneToMany:
-        associations:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
-            mappedBy: owner
-            cascade:
-                - persist
-                - refresh
+#        associations:
+#            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
+#            mappedBy: owner
+#            cascade:
+#                - persist
+#                - refresh
         values:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\SnapshotValue
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
             orphanRemoval: true
             mappedBy: entity
             cascade:
                 - remove
                 - persist
                 - refresh
-        completenesses:
-            targetEntity: Pim\Bundle\CatalogBundle\Model\Completeness
-            mappedBy: product
-            cascade:
-                - remove
-                - persist
-                - refresh
+#        completenesses:
+#            targetEntity: Pim\Bundle\CatalogBundle\Model\Completeness
+#            mappedBy: product
+#            cascade:
+#                - remove
+#                - persist
+#                - refresh

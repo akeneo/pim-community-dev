@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\SnapshotValue:
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
     type: entity
-    table: pimee_workflow_snapshot_value
+    table: pimee_workflow_published_product_value
     indexes:
         value_idx:
             columns:
@@ -78,7 +78,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\SnapshotValue:
                     referencedColumnName: id
                     onDelete: 'SET NULL'
         entity:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\Snapshot
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
             inversedBy: values
             joinColumns:
                 entity_id:
@@ -90,7 +90,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\SnapshotValue:
             cascade:
                 - refresh
             joinTable:
-                name: pimee_workflow_snapshot_value_option
+                name: pimee_workflow_published_product_value_option
                 joinColumns:
                     value_id:
                         referencedColumnName: id
