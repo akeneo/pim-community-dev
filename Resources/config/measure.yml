@@ -77,6 +77,11 @@ measures_config:
             TERABYTE:
                 convert: [{'mul': 1099511627776}]
                 symbol: TB
+    Decibel:
+        standard: DECIBEL
+        units:
+            DECIBEL:
+                convert: [{'mul': 1}]
     Frequency:
         standard: HERTZ
         units:
