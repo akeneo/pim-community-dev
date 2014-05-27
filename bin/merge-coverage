@@ -2,8 +2,8 @@
 
 <?php
 /**
- * Deserializes PHP_CodeCoverage objects from the files passed on the command line,
- * combines them into a single coverage object and creates an HTML report of the
+ * Require PHP_CodeCoverage objects from the files passed on the command line,
+ * combines them into a single coverage object and creates Clover and HTML reports of the
  * combined coverage.
  */
 
