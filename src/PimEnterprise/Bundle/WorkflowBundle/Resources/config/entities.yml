@@ -1,0 +1,2 @@
+parameters:
+    pimee_workflow.entity.publishedproduct.class: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct

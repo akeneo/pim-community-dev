@@ -11,10 +11,17 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 /**
  * Published product controller
@@ -30,6 +37,12 @@ class PublishedProductController extends AbstractController
     /** @var ProductManager */
     protected $manager;
 
+    /** @var UserContext */
+    protected $userContext;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -38,7 +51,10 @@ class PublishedProductController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param UserContext              $userContext
+     * @param SecurityFacade           $securityFacade
      * @param PublishedProductFactory  $factory
+     * @param ProductManager           $productManager
      */
     public function __construct(
         Request $request,
@@ -48,6 +64,8 @@ class PublishedProductController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        UserContext $userContext,
+        SecurityFacade $securityFacade,
         PublishedProductFactory $factory,
         ProductManager $manager
     ) {
@@ -60,28 +78,65 @@ class PublishedProductController extends AbstractController
             $validator,
             $translator
         );
-        $this->factory = $factory;
-        $this->manager = $manager;
+        $this->userContext    = $userContext;
+        $this->securityFacade = $securityFacade;
+        $this->factory        = $factory;
+        $this->manager        = $manager;
     }
 
     /**
-     * @param integer|string $id
+     * List of published products
      *
-     * @return RedirectResponse
-     * @throws NotFoundHttpException
+     * @param Request $request the request
+     *
+     * @AclAncestor("pimee_workflow_publishedproduct_index")
+     * @Template
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        return array(
+            'locales'    => $this->userContext->getUserLocales(),
+            'dataLocale' => $this->getDataLocale(),
+        );
+    }
 
-        $product = $this->manager->find(1);
+    /**
+     * Publish a product
+     *
+     * @param Request $request
+     * @param integer $id
+     * @param string  $locale
+     *
+     * @Template
+     * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
+     * @return array
+     */
+    public function publishAction(Request $request, $id)
+    {
+        $product = $this->manager->find($id);
 
-        $snapshot = $this->factory->publish($product);
+        $published = $this->factory->createPublishedProduct($product);
 
-        var_dump(get_class($snapshot));
+        var_dump(get_class($published));
 
-        $this->manager->getObjectManager()->persist($snapshot);
+        $this->manager->getObjectManager()->persist($published);
         $this->manager->getObjectManager()->flush();
 
+        var_dump($published->getId());
+
         die();
+    }
+
+    /**
+     * Get data locale code
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocaleCode();
     }
 }

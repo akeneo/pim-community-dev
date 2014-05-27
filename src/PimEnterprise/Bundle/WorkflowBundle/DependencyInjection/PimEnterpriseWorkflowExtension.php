@@ -21,7 +21,9 @@ class PimEnterpriseWorkflowExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('entities.yml');
         $loader->load('services.yml');
         $loader->load('form_types.yml');
+        $loader->load('datagrid_listeners.yml');
     }
 }

@@ -1,3 +1,7 @@
 pimee_workflow_publishedproduct_index:
     path: /
     defaults: { _controller: pimee_workflow.controller.published_product:indexAction }
+pimee_workflow_publishedproduct_publish:
+    path: /{id}/publish
+    defaults: { _controller: pimee_workflow.controller.published_product:publishAction }
+
