@@ -2,7 +2,7 @@
 Feature: Datagrid views
   In order to easily manage different views in the datagrid
   As Julia
-  I need to be able to create, edit, apply and remove datagrid views
+  I need to be able to create, update, apply and remove datagrid views
 
   Background:
     Given a "footwear" catalog configuration
@@ -35,6 +35,27 @@ Feature: Datagrid views
     But I should not see products purple-sneakers and black-sneakers
     When I apply the "My default view" view
     Then I should see products black-boots, purple-sneakers and black-sneakers
+
+  Scenario: Successfully update a view
+    Given I filter by "Family" with value "Boots"
+    And I press the "Create a view with this search" button
+    And I fill in the following information in the popin:
+      | label | Some shoes |
+    And I press the "OK" button
+    Then I should be on the products page
+    And I should see "Datagrid view successfully created"
+    And I should see "Views Some shoes"
+    And I should see product black-boots
+    But I should not see products purple-sneakers and black-sneakers
+    When I hide the filter "Family"
+    And I show the filter "Family"
+    And I filter by "Family" with value "Sneakers"
+    And I press the "Update" button
+    And I apply the "Some shoes" view
+    Then I should be on the products page
+    And I should see "Views Some shoes"
+    And I should see products purple-sneakers and black-sneakers
+    But I should not see product black-boots
 
   Scenario: Successfully delete a view
     Given I filter by "Family" with value "Boots"
