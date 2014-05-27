@@ -6,7 +6,7 @@
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-coverage" depends="prepare,composer,coverage"/>
+    <target name="build-coverage" depends="prepare,composer,require-mongo,coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
