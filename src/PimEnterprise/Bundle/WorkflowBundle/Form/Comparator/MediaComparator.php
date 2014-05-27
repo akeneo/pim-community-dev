@@ -24,12 +24,12 @@ class MediaComparator implements ComparatorInterface
 
     public function supportsComparison(AbstractProductValue $value)
     {
-        return in_array($value->getAttribute()->getAttributeType(), [ 'pim_catalog_file', 'pim_catalog_image' ]);
+        return in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_file', 'pim_catalog_image']);
     }
 
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        if ($submittedData['media']['file'] instanceof UploadedFile) {
+        if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {
             $media = new Media();
             $media->setFile($submittedData['media']['file']);
             $this->mediaManager->handle($media, 'proposal-' . md5(time() . uniqid()));

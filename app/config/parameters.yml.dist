@@ -26,7 +26,7 @@ parameters:
 
     installed:            ~
 
-    installer_data:       PimInstallerBundle:icecat_demo_dev
+    installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
     # use PimInstallerBundle:minimal for minimal data set
 
     uservoice_key:        ~
