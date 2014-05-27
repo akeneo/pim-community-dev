@@ -79,6 +79,17 @@ connector:
                         processor: pim_base_connector.processor.attribute
                         writer:    pim_base_connector.writer.doctrine
 
+        fixtures_attribute_options_yml:
+            title: pim_installer.jobs.fixtures_attribute_options_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.attribute_option
+                        writer:    pim_base_connector.writer.doctrine
+
         fixtures_family_yml:
             title: pim_installer.jobs.fixtures_family_yml.title
             type:  fixtures
@@ -111,12 +122,6 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml_product
                         processor: pim_base_connector.processor.product
                         writer:    pim_base_connector.writer.doctrine.product
-                import_associations:
-                    title:     pim_installer.jobs.fixtures_product_yml.import_associations.title
-                    services:
-                        reader:    pim_base_connector.reader.cached_association
-                        processor: pim_base_connector.processor.association
-                        writer:    pim_base_connector.writer.doctrine.association
 
         fixtures_product_csv:
             title: pim_installer.jobs.fixtures_product_csv.title
@@ -128,12 +133,6 @@ connector:
                         reader:    pim_base_connector.reader.file.csv_product
                         processor: pim_base_connector.processor.product
                         writer:    pim_base_connector.writer.doctrine.product
-                import_associations:
-                    title:     pim_installer.jobs.fixtures_product_csv.import_associations.title
-                    services:
-                        reader:    pim_base_connector.reader.cached_association
-                        processor: pim_base_connector.processor.association
-                        writer:    pim_base_connector.writer.doctrine.association
 
         fixtures_association_yml:
             title: pim_installer.jobs.fixtures_association_yml.title
@@ -142,9 +141,9 @@ connector:
                 import:
                     title:     pim_installer.jobs.fixtures_association_yml.import.title
                     services:
-                        reader:    pim_base_connector.reader.file.yaml
+                        reader:    pim_base_connector.reader.file.yaml_associations
                         processor: pim_base_connector.processor.association
-                        writer:    pim_base_connector.writer.doctrine
+                        writer:    pim_base_connector.writer.doctrine.association
 
         fixtures_job_yml:
             title: pim_installer.jobs.fixtures_job_yml.title

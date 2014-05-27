@@ -22,6 +22,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: categories.yml
+            multiple: true
 
     fixtures_attribute_group_yml:
         order: 30
@@ -31,15 +32,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attribute_groups.yml
-
-    fixtures_channel_yml:
-        order: 30
-        connector: Data fixtures
-        alias:     fixtures_attribute_group_yml
-        label:     Channels data fixtures
-        type:      fixtures
-        configuration:
-            filePath: channels.yml
+            multiple: false
 
     fixtures_group_type_yml:
         order: 30
@@ -49,6 +42,17 @@ jobs:
         type:      fixtures
         configuration:
             filePath: group_types.yml
+            multiple: false
+
+    fixtures_channel_yml:
+        order: 40
+        connector: Data fixtures
+        alias:     fixtures_channel_yml
+        label:     Channels data fixtures
+        type:      fixtures
+        configuration:
+            filePath: channels.yml
+            multiple: false
 
     fixtures_association_type_yml:
         order: 40
@@ -57,7 +61,8 @@ jobs:
         label:     Associations data fixtures
         type:      fixtures
         configuration:
-            filePath: associations.yml
+            filePath: association_types.yml
+            multiple: false
 
     fixtures_attribute_yml:
         order: 40
@@ -67,6 +72,17 @@ jobs:
         type:      fixtures
         configuration:
             filePath: attributes.yml
+            multiple: false
+
+    fixtures_attribute_options_yml:
+        order: 50
+        connector: Data fixtures
+        alias:     fixtures_attribute_options_yml
+        label:     Attribute options data fixtures
+        type:      fixtures
+        configuration:
+            filePath: attribute_options.yml
+            multiple: false
 
     fixtures_family_yml:
         order: 60
@@ -76,6 +92,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: families.yml
+            multiple: false
 
     fixtures_group_yml:
         order: 70
@@ -85,6 +102,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: groups.yml
+            multiple: false
 
     fixtures_product_yml:
         order: 80
@@ -94,6 +112,26 @@ jobs:
         type:      fixtures
         configuration:
             filePath: products.yml
+            multiple: false
+            nonClearableEntities:
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobExecution'
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobInstance'
+                - 'Akeneo\Bundle\BatchBundle\Entity\StepExecution'
+                - 'Oro\Bundle\UserBundle\Entity\User'
+                - 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit'
+                - 'Oro\Bundle\UserBundle\Entity\UserApi'
+                - 'Pim\Bundle\CatalogBundle\Entity\Family'
+                - 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                - 'Pim\Bundle\CatalogBundle\Entity\Locale'
+                - 'Pim\Bundle\CatalogBundle\Entity\Currency'
+                - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement'
+                - 'Pim\Bundle\CatalogBundle\Entity\Attribute'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\Category'
+                - 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
 
     fixtures_product_csv:
         order: 80
@@ -111,6 +149,25 @@ jobs:
             familyColumn: family
             groupsColumn: groups
             realTimeVersioning: true
+            nonClearableEntities:
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobExecution'
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobInstance'
+                - 'Akeneo\Bundle\BatchBundle\Entity\StepExecution'
+                - 'Oro\Bundle\UserBundle\Entity\User'
+                - 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit'
+                - 'Oro\Bundle\UserBundle\Entity\UserApi'
+                - 'Pim\Bundle\CatalogBundle\Entity\Family'
+                - 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                - 'Pim\Bundle\CatalogBundle\Entity\Locale'
+                - 'Pim\Bundle\CatalogBundle\Entity\Currency'
+                - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement'
+                - 'Pim\Bundle\CatalogBundle\Entity\Attribute'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\Category'
+                - 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
 
     fixtures_association_yml:
         order: 90
@@ -120,6 +177,7 @@ jobs:
         type:      fixtures
         configuration:
             filePath: associations.yml
+            multiple: false
 
     fixtures_job_yml:
         order: 100
@@ -129,3 +187,4 @@ jobs:
         type:      fixtures
         configuration:
             filePath: jobs.yml
+            multiple: false

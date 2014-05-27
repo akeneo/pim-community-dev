@@ -129,6 +129,9 @@ class YamlReader extends FileReader implements ItemReaderInterface
      */
     public function getConfigurationFields()
     {
-        return array();
+        return array(
+            'filePath' => null,
+            'multiple' => null,
+        );
     }
 }
