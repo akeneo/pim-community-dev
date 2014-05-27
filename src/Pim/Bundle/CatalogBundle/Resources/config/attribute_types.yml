@@ -58,7 +58,7 @@ services:
         class: Pim\Bundle\CatalogBundle\AttributeType\NumberType
         arguments:
             - decimal
-            - number
+            - pim_number
             - '@pim_flexibleentity.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_flexibleentity.attributetype, alias: pim_catalog_number, entity: %pim_catalog.entity.product.class% }
