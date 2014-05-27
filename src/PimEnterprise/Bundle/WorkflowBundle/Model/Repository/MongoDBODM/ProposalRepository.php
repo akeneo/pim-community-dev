@@ -17,10 +17,11 @@ class ProposalRepository extends DocumentRepository
      *
      * @return QueryBuilder
      */
-    public function createDatagridQueryBuilder($productId)
+    public function createDatagridQueryBuilder()
     {
         return $this
             ->createQueryBuilder('p')
-            ->field('product')->equals($productId);
+//             ->field('product')->equals($productId);*
+        ;
     }
 }
