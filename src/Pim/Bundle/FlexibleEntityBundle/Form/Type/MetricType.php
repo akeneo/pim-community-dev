@@ -28,7 +28,7 @@ class MetricType extends AbstractType
 
         $builder
             ->add('id', 'hidden')
-            ->add('data', 'number')
+            ->add('data', 'pim_number')
             ->add('unit', 'choice', $unitOptions)
             ->add('family', 'hidden', array('data' => $options['family']));
     }
