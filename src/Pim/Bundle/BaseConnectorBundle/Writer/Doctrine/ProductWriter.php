@@ -97,6 +97,16 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     }
 
     /**
+     * Removes a non clearable entity
+     *
+     * @param string $class
+     */
+    public function removeNonClearableEntity($class)
+    {
+        unset($this->nonClearableEntities[$class]);
+    }
+
+    /**
      * Set the list of non clearable entities class.
      * Allow override of the default list.
      *
@@ -105,6 +115,14 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     public function setNonClearableEntities($classesList)
     {
         $this->nonClearableEntities = $classesList;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNonClearableEntities()
+    {
+        return $this->nonClearableEntities;
     }
 
     /**
