@@ -1,0 +1,3 @@
+services:
+    pimee_catalog.object_manager.proposal:
+        alias: doctrine.odm.mongodb.document_manager

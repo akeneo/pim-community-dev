@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM;
 
 use Doctrine\ORM\EntityRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
@@ -11,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalRepository extends EntityRepository
+class ProposalRepository extends EntityRepository implements ProposalRepositoryInterface
 {
     /**
      * @return QueryBuilder
