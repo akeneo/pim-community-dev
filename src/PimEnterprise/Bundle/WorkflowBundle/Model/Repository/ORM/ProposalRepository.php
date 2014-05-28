@@ -27,7 +27,7 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
     /**
      * Find one open proposal
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return null|Proposal
      */
