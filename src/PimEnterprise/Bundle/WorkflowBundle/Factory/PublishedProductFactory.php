@@ -38,13 +38,9 @@ class PublishedProductFactory
             $published->addGroup($group);
         }
 
-
-/*        $proposal
-            ->setProduct($product)
-            ->setAuthor($username)
-            ->setCreatedAt(new \DateTime())
-            ->setChanges($changes);
-*/
+        foreach ($product->getCategories() as $category) {
+            $published->addCategory($category);
+        }
 
         return $published;
     }
