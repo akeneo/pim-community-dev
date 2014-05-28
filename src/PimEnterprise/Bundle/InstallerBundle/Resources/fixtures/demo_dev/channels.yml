@@ -1,0 +1,25 @@
+channels:
+    ecommerce:
+        code:  ecommerce
+        label: E-Commerce
+        locales:
+            - en_US
+            - fr_FR
+        currencies:
+            - EUR
+            - USD
+        tree: master
+        conversionUnits:
+            weight: KILOGRAM
+        color: orange
+    mobile:
+        code:  mobile
+        label: Mobile
+        locales:
+            - en_US
+            - fr_FR
+        currencies:
+            - EUR
+        tree: master
+        conversionUnits-weight: KILOGRAM
+        color: blue

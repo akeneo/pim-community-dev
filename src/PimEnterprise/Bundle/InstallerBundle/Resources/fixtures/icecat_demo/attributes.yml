@@ -1,0 +1,333 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+            fr_FR: SKU
+            de_DE: SKU
+        type: pim_catalog_identifier
+        group: marketing
+        unique: true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder: 1
+    name:
+        labels:
+            en_US: Name
+            fr_FR: Nom
+            de_DE: Name
+        type: pim_catalog_text
+        group: marketing
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder: 2
+    description:
+        labels:
+            en_US: Description
+            fr_FR: Description
+            de_DE: Beschreibung
+        type: pim_catalog_textarea
+        group: marketing
+        localizable: true
+        scopable: true
+        sortOrder: 3
+        wysiwyg_enabled: true
+    weight:
+        labels:
+            en_US: Weight
+            fr_FR: Poids
+            de_DE: Gewicht
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 4
+        metricFamily: Weight
+        defaultMetricUnit: KILOGRAM
+        decimalsAllowed: true
+    maximum_scan_size:
+        labels:
+            en_US: 'Maximum scan size'
+            fr_FR: 'Surface maximal de numérisation'
+            de_DE: 'Maximale Scan-Abmessung'
+        type: pim_catalog_metric
+        group: technical
+        sortOrder: 5
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+    color_scanning:
+        labels:
+            en_US: 'Color scanning'
+            fr_FR: 'Numérisation couleur'
+            de_DE: Farbscannen
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 6
+    power_requirements:
+        labels:
+            en_US: 'Power requirements'
+            fr_FR: 'Exigences d''alimentation'
+            de_DE: Energiebedarf
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 7
+    maximum_print_size:
+        labels:
+            en_US: 'Maximum print size'
+            fr_FR: 'Format d’impression maximale'
+            de_DE: 'Maximale Druckgröße'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 8
+    sensor_type:
+        labels:
+            en_US: 'Sensor type'
+            fr_FR: 'Type de capteur'
+            de_DE: CCD-Bildsensor
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 9
+    total_megapixels:
+        labels:
+            en_US: 'Total megapixels'
+            fr_FR: 'Total des megapixels'
+            de_DE: 'Total megapixels'
+        type: pim_catalog_text
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 10
+        decimalsAllowed: true
+        negativeAllowed: false
+    optical_zoom:
+        labels:
+            en_US: 'Optical zoom'
+            fr_FR: 'Zoom optique'
+            de_DE: 'Optischer Zoom'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 11
+        decimalsAllowed: true
+        negativeAllowed: false
+    image_stabilizer:
+        labels:
+            en_US: 'Image stabilizer'
+            fr_FR: 'Stabilisateur d''image'
+            de_DE: Bildstabilisator
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 12
+    camera_type:
+        labels:
+            en_US: 'Camera type'
+            fr_FR: 'Type d''appareil photo'
+            de_DE: Kamera-Typ
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 13
+    thd:
+        labels:
+            en_US: 'Total Harmonic Distortion (THD)'
+            fr_FR: 'DHT, distorsion harmonique totale'
+            de_DE: 'THD, totalklirren'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 14
+        decimalsAllowed: false
+        negativeAllowed: false
+    snr:
+        labels:
+            en_US: 'Signal-to-Noise Ratio (SNR)'
+            fr_FR: 'Rapport de signal-à-bruit'
+            de_DE: 'Signal-zu-Geräusche Verhältnis (SNR)'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 21
+        decimalsAllowed: false
+        negativeAllowed: false
+    headphone_connectivity:
+        labels:
+            en_US: 'Headphone connectivity'
+            fr_FR: Casque
+            de_DE: Kopfhörerausgang
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 16
+    maximum_video_resolution:
+        labels:
+            en_US: 'Maximum video resolution'
+            fr_FR: 'Résolution vidéo maximale'
+            de_DE: 'Maximale Video-Auflösung'
+        type: pim_catalog_simpleselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 17
+    maximum_frame_rate:
+        labels:
+            en_US: 'Maximum frame rate'
+            fr_FR: 'Cadence maximale'
+            de_DE: 'Maximale Bildfrequenz'
+        type: pim_catalog_number
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 18
+        decimalsAllowed: false
+        negativeAllowed: false
+    multifunctional_functions:
+        labels:
+            en_US: 'All-in-one functions'
+            fr_FR: 'Fonctions tout-en-un'
+            de_DE: 'Functies all-in-one'
+        type: pim_catalog_multiselect
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 19
+    response_time:
+        labels:
+            en_US: 'Response time (ms)'
+            fr_FR: 'Temps de réponse (ms)'
+            de_DE: Erscheinungstermin
+        type: pim_catalog_number
+        group: marketing
+        useableAsGridFilter: true
+        sortOrder: 20
+    display_srgb:
+        labels:
+            en_US: 'Display sRGB'
+            fr_FR: sRGB
+            de_DE: sRGB
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 22
+    display_color:
+        labels:
+            en_US: Color
+            fr_FR: Couleur
+            de_DE: Farbe
+        type: pim_catalog_boolean
+        group: technical
+        useableAsGridFilter: true
+        sortOrder: 23
+        decimalsAllowed: true
+    display_diagonal:
+        labels:
+            en_US: 'Display diagonal'
+            fr_FR: 'Taille de l''écran'
+            de_DE: Bildschirmdiagonale
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: INCH
+    release_date:
+        labels:
+            en_US: 'Release date'
+            fr_FR: 'Date de sortie'
+            de_DE: Erscheinungstermin
+        type: pim_catalog_date
+        group: marketing
+        scopable: true
+        useableAsGridFilter: true
+        sortOrder: 25
+    viewing_area:
+        labels:
+            en_US: 'Effective viewing area'
+            fr_FR: 'Zone d''affichage active'
+            de_DE: 'Effektive Bildfläche'
+        type: pim_catalog_metric
+        group: technical
+        useableAsGridFilter: false
+        sortOrder: 24
+        metricFamily: Length
+        defaultMetricUnit: MILLIMETER
+    price:
+        labels:
+            en_US: Price
+            fr_FR: Prix
+            de_DE: Preis
+        type: pim_catalog_price_collection
+        group: marketing
+        useableAsGridFilter: true
+        useableAsGridColumn: true
+        sortOrder: 25
+        decimalsAllowed: true
+    picture:
+        labels:
+            en_US: Picture
+            fr_FR: Photographie
+            de_DE: Photography
+        type: pim_catalog_image
+        group: media
+        useableAsGridFilter: false
+        useableAsGridColumn: true
+        sortOrder: 27
+        allowedExtensions: 'jpg,jpeg,gif'
+    pdf_description:
+        labels:
+            en_US: PDF description
+            fr_FR: Description PDF
+            de_DE: PDF Bezeichnung
+        type: pim_catalog_file
+        group: media
+        useableAsGridFilter: false
+        useableAsGridColumn: false
+        sortOrder: 28
+        allowedExtensions: 'pdf'
+    container_material:
+        labels:
+            en_US: 'Container material'
+            fr_FR: 'Matériau du récipient'
+            de_DE: 'Behältermaterial'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        useableAsGridFilter: true
+        sortOrder: 29
+    main_color:
+        labels:
+            en_US: 'Main color'
+            fr_FR: 'Couleur principale'
+            de_DE: 'Hauptfarbe'
+        type: pim_catalog_simpleselect
+        group: color
+        useableAsGridFilter: true
+        sortOrder: 30
+    secondary_color:
+        labels:
+            en_US: 'Secondary color'
+            fr_FR: 'Couleur secondaire'
+            de_DE: 'Sekundärfarbe'
+        type: pim_catalog_simpleselect
+        group: color
+        sortOrder: 31
+    clothing_size:
+        labels:
+            en_US: 'Clothing size'
+            fr_FR: 'Taille du vêtement'
+            de_DE: 'Größe Kleidung'
+        type: pim_catalog_simpleselect
+        group: size
+        sortOrder: 32
+    tshirt_materials:
+        labels:
+            en_US: 'T-Shirt material'
+            fr_FR: 'Matière T-Shirt'
+            de_DE: 'T-Shirt gewebe'
+        type: pim_catalog_simpleselect
+        group: manufacturing
+        sortOrder: 33
+    tshirt_style:
+        labels:
+            en_US: 'T-Shirt style'
+            fr_FR: 'Style du T-Shirt'
+            de_DE: 'T-Shirt stil'
+        type: pim_catalog_multiselect
+        group: design
+        sortOrder: 34
