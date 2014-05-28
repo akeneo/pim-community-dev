@@ -12,10 +12,12 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation;
 
 /**
  * Published product factory
- * TODO : a POC class, naive implementation of publish
+ *
+ * TODO : POC class with a very simple and naive implementation of publication
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -78,9 +80,18 @@ class PublishedProductFactory
      */
     protected function copyAssociations(ProductInterface $product, PublishedProduct $published)
     {
-        // foreach ($product->getAssociations() as $association) {
-        // $published->addAssociation($copiedAssociation);
-        // }
+        foreach ($product->getAssociations() as $association) {
+            $copiedAssociation = new PublishedAssociation();
+            $copiedAssociation->setOwner($published);
+            $copiedAssociation->setAssociationType($association->getAssociationType());
+            foreach ($association->getProducts() as $product) {
+                $productIdentifier = $product->getIdentifier()->getData();
+            }
+            foreach ($association->getGroups() as $group) {
+                $copiedAssociation->addGroup($group);
+            }
+            $published->addAssociation($copiedAssociation);
+        }
     }
 
     /**
