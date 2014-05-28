@@ -3,18 +3,23 @@
 ## Features
 - Add an option to automatically sort the choices of simple and multi select attributes
 - Add a mass family edition operation to allow adding or changing attribute requirements on many families at once
-- Allow filtering by empty values for attribute of type text, number, datetime, simple and multiselect and for family property
+- Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
 - Add an option to filter products by a list of identifier values
 
 ## Improvements
 - Group datagrid filters by attribute groups
 - Ease the adding of new filters and sorters in ProductQueryBuilder
 - All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
-- Ease the adding of subscribers in product edit and attribute group types with addEventSubscriber methods
+- Ease the adding of subscribers in ProductEditType and AttributeGroupType with addEventSubscriber methods
+- Introduce a ProductValueFormFactory which dispatch a EnrichEvents::CREATE_PRODUCT_VALUE_FORM to ease the product value form customization
+- MongoDB completeness calculation performances
 
 ## Bug fixes
-- replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
-- add missing translation keys for "manage filters", "all", "records", etc
+- Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Add missing translation keys for "manage filters", "all", "records", etc
+- Images import from fixtures now works
+- Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
+- Deleting completeness when a locale of a channel is deleted
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -27,6 +32,19 @@
 - Changed the HydratorInterface::hydrate() method signature
 - Avoid to store null values in Product::normalizedData (MongoDB support)
 - Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
+- Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
+- Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
+- Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
+- InstallerBundle/LoaderInterface has been changed to pass a ProdutManager to manage media (loading images from fixtures)
+- Refactor VersioningBundle - a lot of API changes.
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` and use only the family repository
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator` and use only the entity manager
+- Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
+- Add a dependency to the completeness manager on `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler`
+- Add a dependency to the channel repository on `Pim\Bundle\CatalogBundle\Manager\CompletenessManager`
+- Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
+- Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
+- Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

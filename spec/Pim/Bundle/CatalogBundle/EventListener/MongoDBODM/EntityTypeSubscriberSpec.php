@@ -4,8 +4,8 @@ namespace spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
@@ -14,6 +14,7 @@ use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
 /**
  * @require Doctrine\ODM\MongoDB\Events
  * @require Doctrine\ODM\MongoDB\Event\LifecycleEventArgs
+ * @require Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs
  * @require Doctrine\ODM\MongoDB\DocumentManager
  * @require Doctrine\ODM\MongoDB\Mapping\ClassMetadata
  */

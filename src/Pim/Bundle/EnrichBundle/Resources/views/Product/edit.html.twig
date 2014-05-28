@@ -29,24 +29,7 @@
         {% set title = 'product.title'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_enrich_product_index')) }}
-            {{ elements.enabledSwitch(form) }}
-            {% if resource_granted("pim_enrich_product_remove") %}
-                {{ elements.deleteLink(
-                    path('pim_enrich_product_remove', { id: form.vars.value.id }),
-                    'pim_enrich_product_remove',
-                    path('pim_enrich_product_index'),
-                    'confirmation.remove.product'|trans({ '%name%': product.label }),
-                    'flash.product.removed'|trans
-                ) }}
-            {% endif %}
-            {{ elements.submitDropdownBtn(
-                'btn.save',
-                {
-                    'Create': { 'text': 'btn.save and create' },
-                    'BackGrid': { 'text': 'btn.save and back' }
-                }
-            ) }}
+            {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
         {% endset %}
 
         {% set subtitle %}
@@ -102,8 +85,8 @@
                 </li>
                 {% endif %}
 
-                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
-                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
            </ul>
         {% endset %}
 

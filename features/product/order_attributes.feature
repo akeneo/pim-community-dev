@@ -40,14 +40,7 @@ Feature: Order attributes
       | Color        | 10         | Shape   |
       | Weight       | 30         | Shape   |
       | Height       | 20         | Shape   |
-    And the following product values:
-      | product | attribute    | value |
-      | Car     | releaseDate  |       |
-      | Car     | manufacturer |       |
-      | Car     | fileUpload   |       |
-      | Car     | color        |       |
-      | Car     | weight       |       |
-      | Car     | height       |       |
+    And the "Car" product has the "releaseDate, manufacturer, fileUpload, color, weight and height" attributes
     When I am on the "Car" product page
     Then attributes in group "General" should be File upload, Release date and Manufacturer
     And attributes in group "Shape" should be Color, Height and Weight

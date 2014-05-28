@@ -17,6 +17,6 @@ Feature: Browse export profiles
       | filter    | value                | result                                                                                                                                                           |
       | Code      | at                   | footwear_association_type_export, footwear_attribute_export and footwear_category_export                                                                         |
       | Label     | Product              | footwear_product_export                                                                                                                                          |
-      | Job       | group_export         | footwear_group_export                                                                                                                                            |
+      | Job       | csv_group_export     | footwear_group_export                                                                                                                                            |
       | Connector | Akeneo CSV Connector | footwear_product_export, footwear_category_export, footwear_association_type_export, footwear_group_export, footwear_attribute_export and footwear_option_export |
       | Status    | Ready                | footwear_product_export, footwear_category_export, footwear_association_type_export, footwear_group_export, footwear_attribute_export and footwear_option_export |

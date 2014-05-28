@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 use Pim\Bundle\EnrichBundle\Form\DataTransformer\ChoicesProviderInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * Repository
@@ -104,7 +105,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
      * Returns a querybuilder to get full requirements
      *
      * @param Family $family
-     * @param type   $localeCode
+     * @param string $localeCode
      *
      * @return \Doctrine\ORM\QueryBuilder
      */

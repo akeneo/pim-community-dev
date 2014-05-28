@@ -387,6 +387,14 @@
 
 {% block oro_date_widget %}
     {% set attr = attr|merge({ 'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'datepicker', 'placeholder': placeholder|trans }) %}
+    {% if form.vars.disabled %}
+        {% set attr = attr|merge({'disabled': 'disabled'}) %}
+    {% endif %}
 
     {{ block('date_widget') }}
 {% endblock oro_date_widget %}
+
+{% block pim_number_widget %}
+    {{ block('number_widget') }}
+{% endblock %}
+

@@ -15,6 +15,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 class LoadUserData extends AbstractInstallerFixture
 {
     /**
+     * @var ObjectManager
+     */
+    protected $om;
+
+    /**
      * {@inheritdoc}
      */
     public function load(ObjectManager $manager)

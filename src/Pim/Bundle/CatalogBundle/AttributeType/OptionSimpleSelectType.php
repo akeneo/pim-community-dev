@@ -17,7 +17,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();

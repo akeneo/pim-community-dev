@@ -7,10 +7,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
-use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
@@ -28,26 +26,22 @@ class ProductExportController extends ExportController
     /** @var LocaleManager $localeManager */
     protected $localeManager;
 
-    /** @var CurrencyManager $currencyManager */
-    protected $currencyManager;
-
-    /** @var AssociationTypeManager $assocTypeManager */
-    protected $assocTypeManager;
-
     /** @var CatalogContext $catalogContext */
     protected $catalogContext;
+
+    /** @var ProductFieldsBuilder $fieldsBuilder */
+    protected $fieldsBuilder;
 
     /**
      * Constructor
      *
-     * @param Request                $request
-     * @param MassActionDispatcher   $massActionDispatcher
-     * @param SerializerInterface    $serializer
-     * @param ProductManager         $productManager
-     * @param LocaleManager          $localeManager
-     * @param CurrencyManager        $currencyManager
-     * @param AssociationTypeManager $assocTypeManager
-     * @param CatalogContext         $catalogContext
+     * @param Request              $request
+     * @param MassActionDispatcher $massActionDispatcher
+     * @param SerializerInterface  $serializer
+     * @param ProductManager       $productManager
+     * @param LocaleManager        $localeManager
+     * @param CatalogContext       $catalogContext
+     * @param ProductFieldsBuilder $fieldsBuilder
      */
     public function __construct(
         Request $request,
@@ -55,9 +49,8 @@ class ProductExportController extends ExportController
         SerializerInterface $serializer,
         ProductManager $productManager,
         LocaleManager $localeManager,
-        CurrencyManager $currencyManager,
-        AssociationTypeManager $assocTypeManager,
-        CatalogContext $catalogContext
+        CatalogContext $catalogContext,
+        ProductFieldsBuilder $fieldsBuilder
     ) {
         parent::__construct(
             $request,
@@ -67,9 +60,8 @@ class ProductExportController extends ExportController
 
         $this->productManager   = $productManager;
         $this->localeManager    = $localeManager;
-        $this->currencyManager  = $currencyManager;
-        $this->assocTypeManager = $assocTypeManager;
         $this->catalogContext   = $catalogContext;
+        $this->fieldsBuilder    = $fieldsBuilder;
     }
 
     /**
@@ -93,17 +85,11 @@ class ProductExportController extends ExportController
      */
     protected function quickExport()
     {
-        $productIds = $this->massActionDispatcher->dispatch($this->request);
-
-        // get attributes
-        $productRepo    = $this->productManager->getProductRepository();
-        $attributeRepo  = $this->productManager->getAttributeRepository();
-        $attributeIds   = $productRepo->getAvailableAttributeIdsToExport($productIds);
-        $attributesList = $attributeRepo->findBy(array('id' => $attributeIds));
-
-        // prepare context from attributes list
-        $fieldsList = $this->prepareFieldsList($attributesList);
-        $context    = $this->getContext() + ['fields' => $fieldsList];
+        $productIds   = $this->massActionDispatcher->dispatch($this->request);
+        $fieldsList   = $this->fieldsBuilder->getFieldsList($productIds);
+        $attributeIds = $this->fieldsBuilder->getAttributeIds();
+        $context      = $this->getContext() + ['fields' => $fieldsList];
+        $productRepo  = $this->productManager->getProductRepository();
 
         // batch output to avoid memory leak
         $offset = 0;
@@ -114,67 +100,5 @@ class ProductExportController extends ExportController
             $offset += $batchSize;
             flush();
         }
-    }
-
-    /**
-     * Prepare fields list for CSV headers
-     *
-     * @param array $attributesList
-     *
-     * @return array
-     */
-    protected function prepareFieldsList(array $attributesList = array())
-    {
-        $fieldsList = $this->prepareAttributesList($attributesList);
-        $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
-        $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
-        $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
-
-        $associationTypes = $this->assocTypeManager->getAssociationTypes();
-        foreach ($associationTypes as $associationType) {
-            $fieldsList[] = sprintf('%s-groups', $associationType->getCode());
-            $fieldsList[] = sprintf('%s-products', $associationType->getCode());
-        }
-
-        return $fieldsList;
-    }
-
-    /**
-     * Prepare attributes list for CSV headers
-     *
-     * @param array $attributesList
-     *
-     * @return array
-     */
-    protected function prepareAttributesList(array $attributesList)
-    {
-        $scopeCode   = $this->catalogContext->getScopeCode();
-        $localeCodes = $this->localeManager->getActiveCodes();
-        $fieldsList  = array();
-
-        foreach ($attributesList as $attribute) {
-            $attCode = $attribute->getCode();
-            if ($attribute->isLocalizable() && $attribute->isScopable()) {
-                foreach ($localeCodes as $localeCode) {
-                    $fieldsList[] = sprintf('%s-%s-%s', $attCode, $localeCode, $scopeCode);
-                }
-            } elseif ($attribute->isLocalizable()) {
-                foreach ($localeCodes as $localeCode) {
-                    $fieldsList[] = sprintf('%s-%s', $attCode, $localeCode);
-                }
-            } elseif ($attribute->isScopable()) {
-                $fieldsList[] = sprintf('%s-%s', $attCode, $scopeCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_identifier') {
-                array_unshift($fieldsList, $attCode);
-            } elseif ($attribute->getAttributeType() === 'pim_catalog_price_collection') {
-                foreach ($this->currencyManager->getActiveCodes() as $currencyCode) {
-                    $fieldsList[] = sprintf('%s-%s', $attCode, $currencyCode);
-                }
-            } else {
-                $fieldsList[] = $attCode;
-            }
-        }
-
-        return $fieldsList;
     }
 }

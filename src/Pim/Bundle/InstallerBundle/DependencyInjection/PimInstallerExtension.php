@@ -14,6 +14,22 @@ use Symfony\Component\Config\FileLocator;
  */
 class PimInstallerExtension extends Extension
 {
+    protected $entities = array(
+        'channels',
+        'locales',
+        'currencies',
+        'families',
+        'attribute_groups',
+        'attributes',
+        'categories',
+        'group_types',
+        'groups',
+        'associations',
+        'jobs',
+        'products',
+        'users'
+    );
+
     /**
      * {@inheritdoc}
      */
@@ -37,24 +53,9 @@ class PimInstallerExtension extends Extension
         $reflection = new \ReflectionClass($bundles[$matches['bundle']]);
         $dataPath   = dirname($reflection->getFilename()) . '/Resources/fixtures/' . $matches['directory'] . '/';
 
-        $entities = array(
-            'channels',
-            'locales',
-            'currencies',
-            'families',
-            'attribute_groups',
-            'attributes',
-            'categories',
-            'group_types',
-            'groups',
-            'associations',
-            'jobs',
-            'products',
-            'users'
-        );
         $installerFiles = array();
 
-        foreach ($entities as $entity) {
+        foreach ($this->entities as $entity) {
             $file = $dataPath.$entity;
             foreach (array('.yml', '.csv') as $extension) {
                 if (is_file($file . $extension)) {

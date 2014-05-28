@@ -205,7 +205,7 @@ class ProductTransformer extends EntityTransformer
         $associations = array();
         foreach ($this->assocColumnsInfo as $columnInfo) {
             $label = $columnInfo->getLabel();
-            if (!array_key_exists($label, $data)) {
+            if (!array_key_exists($label, $data) || empty($data[$label])) {
                 continue;
             }
             $key = $entity->getReference() . '.' . $columnInfo->getName();
@@ -217,7 +217,7 @@ class ProductTransformer extends EntityTransformer
                     'associationType' => $columnInfo->getName(),
                 );
             }
-            $associations[$key][$lastSuffix] =  $data[$label] ?: array();
+            $associations[$key][$lastSuffix] =  $data[$label];
         }
 
         foreach ($associations as $association) {

@@ -26,7 +26,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @var \Context\Page\Base\Grid
      */
-    protected $datagrid;
+    public $datagrid;
 
     /**
      * @param PageFactory $pageFactory
@@ -280,6 +280,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $action = ucfirst(strtolower($actionName));
         $this->datagrid->clickOnAction($element, $action);
+        $this->wait();
     }
 
     /**
@@ -442,9 +443,23 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iFilterBy($filterName, $value)
     {
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
+        $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator = false;
 
         $matches = array();
+        if (preg_match($datePattern, $value, $matches)) {
+            $operator = $matches[1];
+            $date     = $matches[2];
+            if (5 === count($matches)) {
+                $date = array($date);
+                $date[] = $matches[4];
+            }
+            $this->filterByDate($filterName, $date, $operator);
+            $this->wait();
+
+            return;
+        }
+
         if (preg_match($operatorPattern, $value, $matches)) {
             if (count($matches) === 1) {
                 $operator = $matches[0];
@@ -467,7 +482,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
             $operator = $operators[$operator];
         }
 
-        $this->datagrid->filterBy($filterName, $value, $operator);
+        $this->datagrid->filterBy($filterName, $value, $operator, $this->getSession()->getDriver());
         $this->wait();
     }
 
@@ -587,28 +602,18 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
-     * @When /^I mass-edit products? (.*)$/
-     */
-    public function iMassEditProducts($products)
-    {
-        return [
-            new Step\Then('I change the page size to 100'),
-            new Step\Then(sprintf('I select rows %s', $products)),
-            new Step\Then('I press mass-edit button')
-        ];
-    }
-
-    /**
-     * Usefull because it auto-redirects to the configuration step of the set attribute requirement wizard
+     * @param string $entities
      *
-     * @When /^I mass-edit families? (.*)$/
+     * @return Then[]
+     *
+     * @When /^I mass-edit (?:products?|families) (.*)$/
      */
-    public function iMassEditFamilies($families)
+    public function iMassEditEntities($entities)
     {
         return [
             new Step\Then('I change the page size to 100'),
-            new Step\Then(sprintf('I select rows %s', $families)),
-            new Step\Then('I press family grid mass-edit button')
+            new Step\Then(sprintf('I select rows %s', $entities)),
+            new Step\Then('I press mass-edit button')
         ];
     }
 
@@ -619,17 +624,6 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $this->getCurrentPage()->massEdit();
         $this->wait();
-    }
-
-    /**
-     * @When /^I press family grid mass-edit button$/
-     */
-    public function iPressFamilyGridMassEditButton()
-    {
-        $this->getCurrentPage()->massEdit();
-        $this->wait();
-        $this->getNavigationContext()->currentPage = 'Batch SetAttributeRequirements';
-
     }
 
     /**
@@ -694,6 +688,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $viewLabel
+     *
+     * @When /^I apply the "([^"]*)" view$/
+     */
+    public function iApplyTheView($viewLabel)
+    {
+        $this->datagrid->applyView($viewLabel);
+        $this->wait();
+    }
+
+    /**
+     * @When /^I delete the view$/
+     */
+    public function iDeleteTheView()
+    {
+        $this->getCurrentPage()->find('css', '#remove-view')->click();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message
@@ -738,5 +751,41 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
+    }
+
+    /**
+     * @param $filterName
+     * @param $values
+     * @param $operator
+     *
+     * @throws \InvalidArgumentException
+     */
+    protected function filterByDate($filterName, $values, $operator)
+    {
+        if (!is_array($values)) {
+            $values = array($values, $values);
+        }
+
+        $filter = $this->datagrid->getFilter($filterName);
+        if (!$filter) {
+            throw new \InvalidArgumentException("Could not find filter for $filterName.");
+        }
+
+        $this->datagrid->openFilter($filter);
+
+        $criteriaElt = $filter->find('css', 'div.filter-criteria');
+        $criteriaElt->find('css', 'select.filter-select-oro')->selectOption($operator);
+
+        $script = <<<'JS'
+        require(['jquery', 'jquery-ui'], function($) {
+            $inputs = $('input.hasDatepicker:visible');
+            $inputs.first().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
+            $inputs.last().datepicker('setDate', $.datepicker.parseDate('yy-mm-dd', '%s'));
+        });
+JS;
+
+        $this->getSession()->getDriver()->executeScript(vsprintf($script, $values));
+
+        $filter->find('css', 'button.filter-update')->click();
     }
 }

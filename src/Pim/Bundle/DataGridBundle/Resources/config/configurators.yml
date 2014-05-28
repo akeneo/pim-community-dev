@@ -1,0 +1,42 @@
+parameters:
+    pim_datagrid.datagrid.product.context_configurator.class: Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator
+    pim_datagrid.datagrid.product.columns_configurator.class: Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator
+    pim_datagrid.datagrid.product.filters_configurator.class: Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator
+    pim_datagrid.datagrid.product.sorters_configurator.class: Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator
+    pim_datagrid.datagrid.product.group_columns_configurator.class: Pim\Bundle\DataGridBundle\Datagrid\Product\GroupColumnsConfigurator
+
+services:
+
+    pim_datagrid.datagrid.product.context_configurator:
+        class: %pim_datagrid.datagrid.product.context_configurator.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@security.context'
+            - '@pim_datagrid.repository.datagrid_view'
+        calls:
+            - [setRequest, ['@?request=']]
+
+    pim_datagrid.datagrid.product.columns_configurator:
+        class: %pim_datagrid.datagrid.product.columns_configurator.class%
+        arguments:
+            - '@pim_datagrid.datagrid.product.configuration_registry'
+
+    pim_datagrid.datagrid.product.filters_configurator:
+        class: %pim_datagrid.datagrid.product.filters_configurator.class%
+        arguments:
+            - '@pim_datagrid.datagrid.product.configuration_registry'
+
+    pim_datagrid.datagrid.product.sorters_configurator:
+        class: %pim_datagrid.datagrid.product.sorters_configurator.class%
+        arguments:
+            - '@pim_datagrid.datagrid.product.configuration_registry'
+
+    pim_datagrid.datagrid.product.group_columns_configurator:
+        class: %pim_datagrid.datagrid.product.group_columns_configurator.class%
+        arguments:
+            - '@pim_datagrid.datagrid.product.configuration_registry'
+            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_catalog.repository.group'
+        calls:
+            - [setRequest, ['@?request=']]

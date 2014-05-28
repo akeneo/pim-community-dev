@@ -17,6 +17,7 @@ interface ProductPersister
      * Save a product in the database
      *
      * @param ProductInterface $product
+     * @param array            $options
      */
     public function persist(ProductInterface $product, array $options);
 }

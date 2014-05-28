@@ -355,12 +355,6 @@ pim_catalog_metric: Métrico
 Activated: Ativado
 Disable: Desabilitar
 pim_enrich.mass_edit_action:
-  page_title: Produtos
-  page_subtitle: 'Editar em massa (1 produto)|Editar em massa (%count% produtos)'
-  title: Escolha a operação
-  subtitle: 'Escolha a operação que deseja executar no produto selecionado | Escolha a operação que deseja executar nos %count% produtos selecionados'
-  confirm: 'Você está prestes a atualizar um produto com as seguintes informações, por favor confirme. |Você está prestes a atualizar os %count% produtos com as seguintes informações, por favor confirme.'
-  limit_exceeded: 'Por favor, escolha menos de %limit% produtos para edição'
   change-status:
     label: Mudar status (habilitar / desabilitar)
     description: Os produtos selecionados serão habilitados ou desabilitados.
@@ -382,10 +376,6 @@ pim_enrich.mass_edit_action:
     label: Adicionar aos grupos
     description: Selecione os grupos nos quais os produtos selecionados devem ser adicionados
     success_flash: Os produtos foram adicionados com êxito nos grupos selecionados
-Choose products: Escolha os produtos
-Choose operation: Escolha a operação
-Configure: Configurar
-Confirm: Confirmar
 To enable: Habilitar
 Select attributes: Selecione os atributos
 Select: Selecionar

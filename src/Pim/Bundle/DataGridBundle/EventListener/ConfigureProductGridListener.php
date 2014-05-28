@@ -2,19 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ColumnsConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Doctrine\ORM\EntityRepository;
 
 /**
  * Grid listener to configure columns, filters and sorters based on product attributes and business rules
@@ -26,62 +19,43 @@ use Doctrine\ORM\EntityRepository;
 class ConfigureProductGridListener
 {
     /**
-     * @var ProductManager
+     * @var ContextConfigurator
      */
-    protected $productManager;
+    protected $contextConfigurator;
 
     /**
-     * @var ConfigurationRegistry
+     * @var ColumnsConfigurator
      */
-    protected $confRegistry;
+    protected $columnsConfigurator;
 
     /**
-     * @var RequestParameters
+     * @var FiltersConfigurator
      */
-    protected $requestParams;
+    protected $filtersConfigurator;
 
     /**
-     * @var SecurityContextInterface
+     * @var SortersConfigurator
      */
-    protected $securityContext;
-
-    /** @var EntityRepository */
-    protected $gridViewRepository;
-
-    /**
-     * @var Request
-     */
-    protected $request;
+    protected $sortersConfigurator;
 
     /**
      * Constructor
      *
-     * @param ProductManager           $productManager     product manager
-     * @param ConfigurationRegistry    $confRegistry       attribute type configuration registry
-     * @param RequestParameters        $requestParams      request parameters
-     * @param SecurityContextInterface $securityContext    the security context
-     * @param EntityRepository         $gridViewRepository DatagridView repository
+     * @param ContextConfigurator $contextConfigurator
+     * @param ColumnsConfigurator $columnsConfigurator
+     * @param FiltersConfigurator $filtersConfigurator
+     * @param SortersConfigurator $sortersConfigurator
      */
     public function __construct(
-        ProductManager $productManager,
-        ConfigurationRegistry $confRegistry,
-        RequestParameters $requestParams,
-        SecurityContextInterface $securityContext,
-        EntityRepository $gridViewRepository
+        ContextConfigurator $contextConfigurator,
+        ColumnsConfigurator $columnsConfigurator,
+        FiltersConfigurator $filtersConfigurator,
+        SortersConfigurator $sortersConfigurator
     ) {
-        $this->productManager     = $productManager;
-        $this->confRegistry       = $confRegistry;
-        $this->requestParams      = $requestParams;
-        $this->securityContext    = $securityContext;
-        $this->gridViewRepository = $gridViewRepository;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
+        $this->contextConfigurator = $contextConfigurator;
+        $this->columnsConfigurator = $columnsConfigurator;
+        $this->filtersConfigurator = $filtersConfigurator;
+        $this->sortersConfigurator = $sortersConfigurator;
     }
 
     /**
@@ -95,56 +69,41 @@ class ConfigureProductGridListener
     {
         $datagridConfig = $event->getConfig();
 
-        $this->getContextConfigurator($datagridConfig)->configure();
-        $this->getColumnsConfigurator($datagridConfig)->configure();
-        $this->getSortersConfigurator($datagridConfig)->configure();
-        $this->getFiltersConfigurator($datagridConfig)->configure();
+        $this->getContextConfigurator()->configure($datagridConfig);
+        $this->getColumnsConfigurator()->configure($datagridConfig);
+        $this->getSortersConfigurator()->configure($datagridConfig);
+        $this->getFiltersConfigurator()->configure($datagridConfig);
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
-    protected function getContextConfigurator(DatagridConfiguration $datagridConfig)
+    protected function getContextConfigurator()
     {
-        return new ContextConfigurator(
-            $datagridConfig,
-            $this->productManager,
-            $this->requestParams,
-            $this->request,
-            $this->securityContext,
-            $this->gridViewRepository
-        );
+        return $this->contextConfigurator;
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
-    protected function getColumnsConfigurator(DatagridConfiguration $datagridConfig)
+    protected function getColumnsConfigurator()
     {
-        return new ColumnsConfigurator($datagridConfig, $this->confRegistry);
+        return $this->columnsConfigurator;
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
-    protected function getSortersConfigurator(DatagridConfiguration $datagridConfig)
+    protected function getSortersConfigurator()
     {
-        return new SortersConfigurator($datagridConfig, $this->confRegistry);
+        return $this->sortersConfigurator;
     }
 
     /**
-     * @param DatagridConfiguration $datagridConfig
-     *
      * @return ConfiguratorInterface
      */
-    protected function getFiltersConfigurator(DatagridConfiguration $datagridConfig)
+    protected function getFiltersConfigurator()
     {
-        return new FiltersConfigurator($datagridConfig, $this->confRegistry);
+        return $this->filtersConfigurator;
     }
 }

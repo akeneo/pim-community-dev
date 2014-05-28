@@ -20,7 +20,7 @@ Feature: Search in Akeneo PIM
   Scenario: Use the quick search form
     Given I am on the search page
     When I fill in the following information in the quick search popin:
-      | search | p |
+      | search | p       |
       | type   | Product |
     And I press the "Go" button
     Then I should see "product_test"
@@ -36,6 +36,6 @@ Feature: Search in Akeneo PIM
       | Product  |
       | User     |
     And I can not search by the following types:
-      | type     |
+      | type  |
       | Email |
       | Tag   |

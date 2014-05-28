@@ -47,7 +47,7 @@ class DateFilterSpec extends ObjectBehavior
         $date->getCode()->willReturn('release_date');
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
-        $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
+        $queryBuilder->gt(strtotime('2014-03-15 23:59:59'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, '>', '2014-03-15');
     }
@@ -58,7 +58,7 @@ class DateFilterSpec extends ObjectBehavior
         $date->isLocalizable()->willReturn(true);
         $date->isScopable()->willReturn(true);
         $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->lt(strtotime('2014-03-20'))->willReturn($queryBuilder);
+        $queryBuilder->lt(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, 'BETWEEN', ['2014-03-15', '2014-03-20']);
     }
@@ -73,7 +73,7 @@ class DateFilterSpec extends ObjectBehavior
         $queryBuilder->addOr($queryBuilder)->willReturn($queryBuilder);
         $queryBuilder->addOr($queryBuilder)->willReturn($queryBuilder);
         $queryBuilder->lt(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->gt(strtotime('2014-03-20'))->willReturn($queryBuilder);
+        $queryBuilder->gt(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
         $this->addAttributeFilter($date, ['from' => '<', 'to' => '>'], ['from' => '2014-03-15', 'to' => '2014-03-20']);
     }
@@ -81,7 +81,7 @@ class DateFilterSpec extends ObjectBehavior
     function it_adds_a_between_filter_on_a_field_in_the_query($queryBuilder)
     {
         $queryBuilder->gt(strtotime('2014-03-15'))->willReturn($queryBuilder);
-        $queryBuilder->lt(strtotime('2014-03-20'))->willReturn($queryBuilder);
+        $queryBuilder->lt(strtotime('2014-03-20 23:59:59'))->willReturn($queryBuilder);
 
         $this->addFieldFilter('created', 'BETWEEN', ['2014-03-15', '2014-03-20']);
     }

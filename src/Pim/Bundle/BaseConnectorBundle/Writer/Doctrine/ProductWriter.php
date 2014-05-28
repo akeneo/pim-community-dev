@@ -82,7 +82,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         VersionManager $versionManager
     ) {
         $this->productManager = $productManager;
-        $this->doctrineCache    = $doctrineCache;
+        $this->doctrineCache  = $doctrineCache;
         $this->versionManager = $versionManager;
     }
 

@@ -9,9 +9,7 @@ Feature: Join a document to a product
       | label       | type | allowed extensions |
       | Description | file | txt                |
     And a "Car" product
-    And the following product value:
-      | product | attribute   | value |
-      | Car     | description |       |
+    And the "Car" product has the "description" attribute
     And I am logged in as "admin"
     And I am on the "Car" product page
 

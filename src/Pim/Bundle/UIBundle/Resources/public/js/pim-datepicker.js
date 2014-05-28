@@ -28,7 +28,8 @@ define(
                 changeMonth: true,
                 changeYear: true,
                 yearRange: '-80:+1',
-                showButtonPanel: true
+                showButtonPanel: true,
+                disabled: $field.is(':disabled')
             });
 
             $picker.keyup(function () {

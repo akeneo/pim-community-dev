@@ -102,7 +102,9 @@ services:
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
         arguments:
-            - '@doctrine'
+            - '@pim_catalog.repository.family'
+            - '@pim_catalog.repository.channel'
+            - '@pim_catalog.repository.locale'
             - '@pim_catalog.doctrine.completeness_generator'
             - '@validator'
             - '@pim_catalog.manager.channel'

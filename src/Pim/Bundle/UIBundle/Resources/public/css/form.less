@@ -1363,17 +1363,6 @@ table#progress-table {
 }
 
 /** datagrid views ***************************************************************************************************/
-input.input-invisible {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  .box-shadow(inset 0 0 0 transparent);
-  &:focus,
-  &:focus:invalid:focus {
-    .box-shadow(none);
-  }
-}
-
 .highlight-hover li {
   &:hover {
     background-color: @color-purple_light;
@@ -1386,8 +1375,10 @@ input.input-invisible {
 
 button.view-button {
   margin-top: -6px;
-  display: none;
   font-size: 13px;
+  &.hide {
+    display: none;
+  }
 }
 #remove-view {
   cursor: pointer;

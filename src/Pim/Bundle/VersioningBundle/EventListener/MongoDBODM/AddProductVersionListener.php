@@ -2,14 +2,15 @@
 
 namespace Pim\Bundle\VersioningBundle\EventListener\MongoDBODM;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Aims to audit data updates on products stored in MongoDB
@@ -43,15 +44,25 @@ class AddProductVersionListener implements EventSubscriber
     protected $registry;
 
     /**
+     * @var NormalizerInterface
+     */
+    protected $normalizer;
+
+    /**
      * Constructor
      *
      * @param VersionManager       $versionManager
      * @param SmartManagerRegistry $registry
+     * @param NormalizerInterface  $normalizer
      */
-    public function __construct(VersionManager $versionManager, SmartManagerRegistry $registry)
-    {
+    public function __construct(
+        VersionManager $versionManager,
+        SmartManagerRegistry $registry,
+        NormalizerInterface $normalizer
+    ) {
         $this->versionManager = $versionManager;
         $this->registry       = $registry;
+        $this->normalizer     = $normalizer;
     }
 
     /**
@@ -119,8 +130,13 @@ class AddProductVersionListener implements EventSubscriber
      */
     public function createVersion($versionable)
     {
-        $version = $this->versionManager->buildVersion($versionable);
-        if ($version && ($version instanceof Pending || $version->getChangeset())) {
+        $changeset = [];
+        if (!$this->versionManager->isRealTimeVersioning()) {
+            $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
+        }
+        $versions = $this->versionManager->buildVersion($versionable, $changeset);
+
+        foreach ($versions as $version) {
             $this->computeChangeSet($version);
         }
     }
@@ -141,15 +157,19 @@ class AddProductVersionListener implements EventSubscriber
     }
 
     /**
-     * Compute change set
+     * Compute version change set
      *
-     * @param object $object
+     * @param Version $version
      */
-    protected function computeChangeSet($object)
+    protected function computeChangeSet(Version $version)
     {
-        $manager = $this->registry->getManagerForClass(get_class($object));
-        $class = $manager->getClassMetadata(get_class($object));
-        $manager->persist($object);
-        $manager->getUnitOfWork()->computeChangeSet($class, $object);
+        $manager = $this->registry->getManagerForClass(get_class($version));
+
+        if ($version->getChangeset()) {
+            $manager->persist($version);
+            $manager->getUnitOfWork()->computeChangeSet($manager->getClassMetadata(get_class($version)), $version);
+        } else {
+            $manager->remove($version);
+        }
     }
 }

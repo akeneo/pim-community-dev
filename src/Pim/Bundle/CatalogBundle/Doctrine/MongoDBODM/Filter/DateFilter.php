@@ -55,11 +55,11 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
         switch ($operator) {
             case 'BETWEEN':
                 $this->qb->field($field)->gt($this->getTimestamp($value[0]));
-                $this->qb->field($field)->lt($this->getTimestamp($value[1]));
+                $this->qb->field($field)->lt($this->getTimestamp($value[1], true));
                 break;
 
             case '>':
-                $this->qb->field($field)->gt($this->getTimestamp($value));
+                $this->qb->field($field)->gt($this->getTimestamp($value, true));
                 break;
 
             case '<':
@@ -67,7 +67,8 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
                 break;
 
             case '=':
-                $this->qb->field($field)->equals($this->getTimestamp($value));
+                $this->qb->field($field)->gt($this->getTimestamp($value));
+                $this->qb->field($field)->lt($this->getTimestamp($value, true));
                 break;
 
             case 'EMPTY':
@@ -78,7 +79,7 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
                 $this->qb->addAnd(
                     $this->qb->expr()
                         ->addOr($this->qb->expr()->field($field)->lt($this->getTimestamp($value['from'])))
-                        ->addOr($this->qb->expr()->field($field)->gt($this->getTimestamp($value['to'])))
+                        ->addOr($this->qb->expr()->field($field)->gt($this->getTimestamp($value['to'], true)))
                 );
         }
 
@@ -89,11 +90,18 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
      * Get timestamp from data
      *
      * @param \DateTime|string $data
+     * @param boolean          $endOfDay
      *
      * @return integer
      */
-    private function getTimestamp($data)
+    protected function getTimestamp($data, $endOfDay = false)
     {
+        if ($data instanceof \DateTime && true === $endOfDay) {
+            $data->setTime(23, 59, 59);
+        } elseif (!$data instanceof \DateTime && true === $endOfDay) {
+            $data = sprintf('%s 23:59:59', $data);
+        }
+
         return $data instanceof \DateTime ? $data->getTimestamp() : strtotime($data);
     }
 }
