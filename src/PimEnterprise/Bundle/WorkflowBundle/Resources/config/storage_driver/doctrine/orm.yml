@@ -2,5 +2,5 @@ parameters:
     pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM\ProposalRepository
 
 services:
-    pimee_catalog.object_manager.proposal:
+    pimee_workflow.object_manager.proposal:
         alias: doctrine.orm.entity_manager

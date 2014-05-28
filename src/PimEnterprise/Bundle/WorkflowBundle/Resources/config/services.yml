@@ -27,7 +27,7 @@ services:
 
     pimee_workflow.repository.proposal:
         class: %pimee_workflow.repository.proposal.class%
-        factory_service: pimee_catalog.object_manager.proposal
+        factory_service: pimee_workflow.object_manager.proposal
         factory_method: getRepository
         arguments: [%pimee_workflow.entity.proposal.class%]
 

@@ -2,10 +2,10 @@ parameters:
     pimee_datagrid.datasource.proposal.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ProposalDatasource
 
 services:
-    pimee_catalog.datasource.proposal:
+    pimee_datagrid.datasource.proposal:
         class: %pimee_datagrid.datasource.proposal.class%
         arguments:
-            - '@pimee_catalog.object_manager.proposal'
+            - '@pimee_workflow.object_manager.proposal'
             - '@oro_security.acl_helper'
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
