@@ -50,7 +50,10 @@ abstract class AbstractPresenter implements PresenterInterface
      *
      * @return array|string
      */
-    abstract protected function normalizeData($data);
+    protected function normalizeData($data)
+    {
+        return [];
+    }
 
     /**
      * Normalize change
@@ -59,5 +62,8 @@ abstract class AbstractPresenter implements PresenterInterface
      *
      * @return array|string
      */
-    abstract protected function normalizeChange(array $change);
+    protected function normalizeChange(array $change)
+    {
+        return [];
+    }
 }
