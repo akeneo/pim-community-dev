@@ -20,8 +20,8 @@ class FixtureJobLoader
     /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
-    /** @var string */
-    protected $jobsFilePath;
+    /** @var array */
+    protected $jobsFilePaths;
 
     /** @var string */
     protected $installerDataPath;
@@ -38,14 +38,14 @@ class FixtureJobLoader
     /** @var ContainerInterface  */
     protected $container;
 
-    public function __construct(ContainerInterface $container, $jobsFilePath)
+    public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
         $this->container = $container;
         $this->reader = $container->get('pim_base_connector.reader.file.yaml');
         $this->em = $container->get('doctrine.orm.entity_manager');
         $this->processor = $container->get('pim_base_connector.processor.job_instance');
         $this->installerDataPath = $this->getInstallerDataPath();
-        $this->jobsFilePath = $jobsFilePath;
+        $this->jobsFilePaths = $jobsFilePaths;
     }
 
     /**
@@ -54,22 +54,25 @@ class FixtureJobLoader
     public function load()
     {
         $rawJobs = array();
-        $this->reader->setFilePath($this->jobsFilePath);
 
-        // read the jobs list
-        while ($rawJob = $this->reader->read()) {
-            $rawJobs[] = $rawJob;
-        }
+        foreach ($this->jobsFilePaths as $jobsFilePath) {
+            $this->reader->setFilePath($jobsFilePath);
 
-        // sort the jobs by order
-        usort($rawJobs, function($item1, $item2) {
-            if ($item1['order'] === $item2['order']) {
-
-                return 0;
+            // read the jobs list
+            while ($rawJob = $this->reader->read()) {
+                $rawJobs[] = $rawJob;
             }
 
-            return ($item1['order'] < $item2['order']) ? -1 : 1;
-        });
+            // sort the jobs by order
+            usort($rawJobs, function($item1, $item2) {
+                if ($item1['order'] === $item2['order']) {
+
+                    return 0;
+                }
+
+                return ($item1['order'] < $item2['order']) ? -1 : 1;
+            });
+        }
 
         // store the jobs
         foreach ($rawJobs as $rawJob) {
