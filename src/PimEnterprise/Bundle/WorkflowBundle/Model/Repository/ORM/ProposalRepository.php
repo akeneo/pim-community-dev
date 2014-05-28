@@ -20,8 +20,8 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
     public function createDatagridQueryBuilder()
     {
         return $this
-            ->createQueryBuilder('p');
-//            ->where('p.product = :product');
+            ->createQueryBuilder('p')
+            ->where('p.product = :product');
     }
 
     /**

@@ -12,10 +12,4 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ProposalRepositoryInterface extends ObjectRepository
 {
-    /**
-     * Create datagrid query builder
-     *
-     * @return QueryBuilder
-     */
-    public function createDatagridQueryBuilder();
 }
