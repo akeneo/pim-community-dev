@@ -18,9 +18,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class FixtureJobLoader
 {
     /** @staticvar */
-    const JOB_INSTANCE_TABLE = 'akeneo_batch_job_instance';
-
-    /** @staticvar */
     const JOB_TYPE = 'fixtures';
 
     /** @var string */
@@ -38,9 +35,6 @@ class FixtureJobLoader
     /** @var EntityManagerInterface */
     protected $em;
 
-    /** @var Connection */
-    protected $connection;
-
     /** @var ContainerInterface  */
     protected $container;
 
@@ -49,7 +43,6 @@ class FixtureJobLoader
         $this->container = $container;
         $this->reader = $container->get('pim_base_connector.reader.file.yaml');
         $this->em = $container->get('doctrine.orm.entity_manager');
-        $this->connection = $container->get('database_connection');
         $this->processor = $container->get('pim_base_connector.processor.job_instance');
         $this->installerDataPath = $this->getInstallerDataPath();
         $this->jobsFilePath = $jobsFilePath;
@@ -97,8 +90,14 @@ class FixtureJobLoader
      */
     public function deleteJobs()
     {
-        //TODO: use repository with class name as parameters
-        $this->connection->delete(self::JOB_INSTANCE_TABLE, array('type' => self::JOB_TYPE));
+        $jobs = $this->em->getRepository($this->container->getParameter('pim_catalog.entity.job_instance.class'))
+                ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
+
+        foreach ($jobs as $job) {
+            $this->em->remove($job);
+        }
+
+        $this->em->flush();
     }
 
     /**
