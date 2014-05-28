@@ -7,6 +7,7 @@ parameters:
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
     pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
     pimee_workflow.twig.extension.proposal_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProposalChangesExtension
+    pimee_workflow.proposal_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
 
 services:
     pimee_workflow.event_listener.proposals_grid_listener:
@@ -65,3 +66,13 @@ services:
             - '@pim_catalog.repository.product_value'
         tags:
             - { name: twig.extension }
+        calls:
+            - [ 'addPresenter', [ '@pimee_workflow.presenter.text' ] ]
+
+    pimee_workflow.presenter.text:
+        class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
+        arguments:
+            - '@pimee_workflow.proposal_renderer'
+
+    pimee_workflow.proposal_renderer:
+        class: %pimee_workflow.proposal_renderer.class%
