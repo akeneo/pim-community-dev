@@ -20,14 +20,11 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterface*/
 {
-    /** @var string */
+    /** @staticvar string */
     const TYPE = 'pim_proposal';
 
     /** @var ObjectManager */
     protected $om;
-
-    /** @var AclHelper */
-    protected $aclHelper;
 
     /** @var HydratorInterface */
     protected $hydrator;
