@@ -1,0 +1,41 @@
+parameters:
+    pimee_workflow.twig.extension.proposal_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProposalChangesExtension
+    pimee_workflow.proposal_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
+    pimee_workflow.presenter.text.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
+    pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
+    pimee_workflow.presenter.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
+
+services:
+    pimee_workflow.twig.extension.proposal_changes:
+        class: %pimee_workflow.twig.extension.proposal_changes.class%
+        arguments:
+            - '@pim_catalog.repository.product_value'
+        tags:
+            - { name: twig.extension }
+        # TODO Use a compiler pass for that
+        calls:
+            - [ 'addPresenter', [ '@pimee_workflow.presenter.text' ] ]
+            - [ 'addPresenter', [ '@pimee_workflow.presenter.metric' ] ]
+            - [ 'addPresenter', [ '@pimee_workflow.presenter.date' ] ]
+
+    pimee_workflow.presenter:
+        abstract: true
+        public: false
+        arguments:
+            - '@pimee_workflow.proposal_renderer'
+
+    pimee_workflow.presenter.text:
+        parent: pimee_workflow.presenter
+        class: %pimee_workflow.presenter.text.class%
+
+    pimee_workflow.presenter.metric:
+        parent: pimee_workflow.presenter
+        class: %pimee_workflow.presenter.metric.class%
+
+    pimee_workflow.presenter.date:
+        parent: pimee_workflow.presenter
+        class: %pimee_workflow.presenter.date.class%
+
+    pimee_workflow.proposal_renderer:
+        public: false
+        class: %pimee_workflow.proposal_renderer.class%

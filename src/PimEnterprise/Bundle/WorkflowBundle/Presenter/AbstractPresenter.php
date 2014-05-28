@@ -28,4 +28,36 @@ abstract class AbstractPresenter implements PresenterInterface
         $this->renderer = $renderer;
         $this->factory = $factory ?: new DiffFactory();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function present($data, array $change)
+    {
+        return $this
+            ->factory
+            ->create(
+                $this->normalizeData($data),
+                $this->normalizeChange($change)
+            )
+            ->render($this->renderer);
+    }
+
+    /**
+     * Normalize data
+     *
+     * @param mixed $data
+     *
+     * @return array|string
+     */
+    abstract protected function normalizeData($data);
+
+    /**
+     * Normalize change
+     *
+     * @param array $change
+     *
+     * @return array|string
+     */
+    abstract protected function normalizeChange(array $change);
 }

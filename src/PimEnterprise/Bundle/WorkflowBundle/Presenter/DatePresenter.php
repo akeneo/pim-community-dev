@@ -3,19 +3,18 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 /**
- * Present metric data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MetricPresenter extends AbstractPresenter
+class DatePresenter extends AbstractPresenter
 {
     /**
      * {@inheritdoc}
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('metric', $change);
+        return array_key_exists('date', $change);
     }
 
     /**
@@ -23,7 +22,7 @@ class MetricPresenter extends AbstractPresenter
      */
     protected function normalizeData($data)
     {
-        return sprintf('%s %s', $data->getData(), $data->getUnit());
+        return $data->format('F, d Y');
     }
 
     /**
@@ -31,6 +30,6 @@ class MetricPresenter extends AbstractPresenter
      */
     protected function normalizeChange(array $change)
     {
-        return sprintf('%s %s', $change['metric']['data'], $change['metric']['unit']);
+        return (new \DateTime($change['date']))->format('F, d Y');
     }
 }

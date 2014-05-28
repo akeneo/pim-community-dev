@@ -23,17 +23,26 @@ class TextPresenter extends AbstractPresenter
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    protected function normalizeData($data)
     {
-        return $this
-            ->factory
-            ->create(
-                $this->explodeText($data),
-                $this->explodeText($change['text'])
-            )
-            ->render($this->renderer);
+        return $this->explodeText($data);
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    protected function normalizeChange(array $change)
+    {
+        return $this->explodeText($change['text']);
+    }
+
+    /**
+     * Explode text into separated paragraphs
+     *
+     * @param string $text
+     *
+     * @return array
+     */
     protected function explodeText($text)
     {
         preg_match_all('/<p>(.*?)<\/p>/', $text, $matches);
