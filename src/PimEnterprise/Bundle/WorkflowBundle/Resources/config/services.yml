@@ -6,7 +6,7 @@ parameters:
     pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
     pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
-    pimee_workflow.twig.extension.option.class: PimEnterprise\Bundle\WorkflowBundle\Twig\OptionExtension
+    pimee_workflow.twig.extension.proposal_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProposalChangesExtension
 
 services:
     pimee_workflow.event_listener.proposals_grid_listener:
@@ -59,9 +59,9 @@ services:
     pimee_workflow.datagrid.proposal_grid_helper:
         class: %pimee_workflow.datagrid.proposal_grid_helper.class%
 
-    pimee_workflow.twig.extension.option:
-        class: %pimee_workflow.twig.extension.option.class%
+    pimee_workflow.twig.extension.proposal_changes:
+        class: %pimee_workflow.twig.extension.proposal_changes.class%
         arguments:
-            - '@pim_catalog.repository.attribute_option'
+            - '@pim_catalog.repository.product_value'
         tags:
             - { name: twig.extension }
