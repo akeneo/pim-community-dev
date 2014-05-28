@@ -15,6 +15,8 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: datetime
         updated:
             type: datetime
+        originalProductId:
+            type: integer
     manyToOne:
         family:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family

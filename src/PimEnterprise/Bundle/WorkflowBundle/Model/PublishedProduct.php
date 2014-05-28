@@ -15,4 +15,26 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  */
 class PublishedProduct extends AbstractProduct implements ReferableInterface
 {
+    /** @var mixed */
+    protected $originalProductId;
+
+    /**
+     * @return mixed
+     */
+    public function getOriginalProductId()
+    {
+        return $this->originalProductId;
+    }
+
+    /**
+     * @param mixed $productId
+     *
+     * @return PublishedProduct
+     */
+    public function setOriginalProductId($productId)
+    {
+        $this->originalProductId = $productId;
+
+        return $this;
+    }
 }
