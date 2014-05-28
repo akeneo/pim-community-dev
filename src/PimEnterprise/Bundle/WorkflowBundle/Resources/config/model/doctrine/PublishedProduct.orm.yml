@@ -48,12 +48,12 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                         referencedColumnName: id
                         onDelete: CASCADE
     oneToMany:
-#        associations:
-#            targetEntity: Pim\Bundle\CatalogBundle\Model\Association
-#            mappedBy: owner
-#            cascade:
-#                - persist
-#                - refresh
+        associations:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
         values:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
             orphanRemoval: true

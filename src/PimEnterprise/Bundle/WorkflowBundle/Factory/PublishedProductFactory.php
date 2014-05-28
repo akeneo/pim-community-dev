@@ -15,6 +15,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
 
 /**
  * Published product factory
+ * TODO : a POC class, naive implementation of publish
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -32,17 +33,54 @@ class PublishedProductFactory
     {
         $published = new PublishedProduct();
         $this->copyValues($product, $published);
+        $this->copyFamily($product, $published);
+        $this->copyGroups($product, $published);
+        $this->copyCategories($product, $published);
+        $this->copyAssociations($product, $published);
 
+        return $published;
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param PublishedProduct $published
+     */
+    protected function copyFamily(ProductInterface $product, PublishedProduct $published)
+    {
         $published->setFamily($product->getFamily());
+    }
+
+    /**
+     * @param ProductInterface $product
+     * @param PublishedProduct $published
+     */
+    protected function copyGroups(ProductInterface $product, PublishedProduct $published)
+    {
         foreach ($product->getGroups() as $group) {
             $published->addGroup($group);
         }
+    }
 
+    /**
+     * @param ProductInterface $product
+     * @param PublishedProduct $published
+     */
+    protected function copyCategories(ProductInterface $product, PublishedProduct $published)
+    {
         foreach ($product->getCategories() as $category) {
             $published->addCategory($category);
         }
+    }
 
-        return $published;
+    /**
+     * @param ProductInterface $product
+     * @param PublishedProduct $published
+     */
+    protected function copyAssociations(ProductInterface $product, PublishedProduct $published)
+    {
+        // foreach ($product->getAssociations() as $association) {
+        // $published->addAssociation($copiedAssociation);
+        // }
     }
 
     /**
