@@ -21,7 +21,6 @@ class NumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->resetViewTransformers();
         if (false === $options['decimals_allowed']) {
             $builder->addViewTransformer(new IntegerTransformer());
         }
@@ -48,6 +47,6 @@ class NumberType extends AbstractType
      */
     public function getParent()
     {
-        return 'number';
+        return 'text';
     }
 }
