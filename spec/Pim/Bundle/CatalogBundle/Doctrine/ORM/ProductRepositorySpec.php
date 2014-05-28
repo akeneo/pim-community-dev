@@ -14,7 +14,7 @@ class ProductRepositorySpec extends ObjectBehavior
         $this->beConstructedWith($em, $class);
     }
 
-    function it_must_implements_product_repository_interface()
+    function it_is_a_product_repository()
     {
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
