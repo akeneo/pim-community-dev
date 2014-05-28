@@ -16,4 +16,3 @@ services:
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
-
