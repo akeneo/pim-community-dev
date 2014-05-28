@@ -46,15 +46,12 @@ class DatagridViewManager
      */
     public function findAllForUser($alias, User $user)
     {
-        $views = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findBy(
+        return $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findBy(
             [
                 'datagridAlias' => $alias,
                 'type'          => DatagridView::TYPE_PUBLIC
             ]
         );
-        array_unshift($views, $this->getDefaultDatagridView($alias, $user));
-
-        return $views;
     }
 
     /**
@@ -87,38 +84,5 @@ class DatagridViewManager
         }
 
         return $choices;
-    }
-
-    /**
-     * Get or create default datagrid view from datagrid alias and user
-     *
-     * @param string $alias
-     * @param User   $user
-     *
-     * @return DatagridView
-     */
-    protected function getDefaultDatagridView($alias, User $user)
-    {
-        $view = $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
-            [
-                'datagridAlias' => $alias,
-                'owner'         => $user,
-                'type'          => DatagridView::TYPE_DEFAULT
-            ]
-        );
-
-        if (!$view) {
-            $view = new DatagridView();
-            $view
-                ->setType(DatagridView::TYPE_DEFAULT)
-                ->setOwner($user)
-                ->setDatagridAlias($alias)
-                ->setColumns(array_keys($this->getColumnChoices($alias, true)));
-
-            $this->entityManager->persist($view);
-            $this->entityManager->flush();
-        }
-
-        return $view;
     }
 }

@@ -1,7 +1,10 @@
 <select id="view-selector" class="hide">
+    <option value="0" data-default="1">
+        {{- 'datagrid_view.default'|trans -}}
+    </option>
 {% for view in views %}
-    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}"{{ view.default ? ' data-default="1"' : '' }}{{ not view.default and view.owner.id == app.user.id ? ' data-removable="1"' : '' }}>
-        {{- view.default ? 'datagrid_view.default'|trans : view.label -}}
+    <option value="{{ view.id }}" data-filters="{{ view.filters }}" data-columns="{{ view.columns|join(',') }}"{{ view.owner.id == app.user.id ? ' data-removable="1"' : '' }}>
+        {{- view.label -}}
     </option>
 {% endfor %}
 </select>
@@ -35,9 +38,13 @@ require(
         var $selector = $('#view-selector');
 
         var activateView = function(viewId) {
-            var $viewItem = $selector.find('option[value="' + viewId + '"]');
-            if ($viewItem.length) {
-                DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+            if (0 === +viewId) {
+                DatagridState.remove('{{ alias }}', ['view', 'filters', 'columns']);
+            } else {
+                var $viewItem = $selector.find('option[value="' + viewId + '"]');
+                if ($viewItem.length) {
+                    DatagridState.set('{{ alias }}', { 'view': viewId, 'filters': $viewItem.data('filters'), 'columns': $viewItem.data('columns') });
+                }
             }
         };
 
@@ -201,7 +208,7 @@ require(
 
             } else {
                 setTitle(activeViewLabel, ' *');
-                if (!!$activeView.data('removable') || !!$activeView.data('default')) {
+                if (!!$activeView.data('removable') || !$activeView.data('default')) {
                     $updateButtton.show();
                 }
             }

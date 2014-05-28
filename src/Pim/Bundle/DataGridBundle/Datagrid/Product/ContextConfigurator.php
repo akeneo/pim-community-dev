@@ -6,7 +6,6 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -380,20 +379,6 @@ class ContextConfigurator implements ConfiguratorInterface
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
-        }
-
-        $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
-        $alias = $this->configuration->offsetGetByPath($path);
-        if (!$alias) {
-            $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
-        }
-
-        $view = $this
-            ->gridViewRepository
-            ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
-
-        if ($view) {
-            return $view->getColumns();
         }
     }
 

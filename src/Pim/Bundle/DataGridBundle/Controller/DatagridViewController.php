@@ -95,7 +95,13 @@ class DatagridViewController extends AbstractDoctrineController
                 $form->remove('label');
             }
             $form->submit($request);
-            $violations = $this->validator->validate($view, $creation ? ['Default', 'Creation'] : ['Default']);
+
+            // If the view was created based on the default view, set the default columns
+            if (empty($view->getColumns())) {
+                $view->setColumns(array_keys($this->datagridViewManager->getColumnChoices($alias, true)));
+            }
+
+            $violations = $this->validator->validate($view);
             if ($violations->count()) {
                 $messages = [];
                 foreach ($violations as $violation) {
@@ -150,7 +156,7 @@ class DatagridViewController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, DatagridView $view)
     {
-        if ($view->getOwner() !== $this->getUser() || $view->isDefault()) {
+        if ($view->getOwner() !== $this->getUser()) {
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 
