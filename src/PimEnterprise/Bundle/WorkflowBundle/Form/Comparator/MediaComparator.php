@@ -8,25 +8,39 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Form\Comparator
+ * Comparator which calculate change set for medias
+ *
+ * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class MediaComparator implements ComparatorInterface
 {
+    /** @var MediaManager */
     protected $mediaManager;
 
+    /**
+     * Construct
+     *
+     * @param MediaManager $mediaManager
+     */
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsComparison(AbstractProductValue $value)
     {
         return in_array($value->getAttribute()->getAttributeType(), ['pim_catalog_file', 'pim_catalog_image']);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
         if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {

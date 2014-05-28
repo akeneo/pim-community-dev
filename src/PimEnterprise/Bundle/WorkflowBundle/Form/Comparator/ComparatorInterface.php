@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Form\Comparator
+ * PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
