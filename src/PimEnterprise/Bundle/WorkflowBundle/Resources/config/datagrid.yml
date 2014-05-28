@@ -113,36 +113,19 @@ datagrid:
                 selector:      product_groups
         properties:
             id: ~
-            edit_link:
+            view_link:
                 type: url
-                route: pim_enrich_product_edit
+                route: pimee_workflow_publishedproduct_view
                 params:
                     - id
                     - dataLocale
-            delete_link:
-                type: url
-                route: pim_enrich_product_remove
-                params:
-                    - id
         actions:
-            edit:
-                type:      tab-redirect
-                label:     Edit attributes of the product
-                tab:       attributes
-                icon:      edit
-                link:      edit_link
+            view:
+                type:      navigate
+                label:     View the details of the product
+                icon:      eye-open
+                link:      view_link
                 rowAction: true
-            edit_categories:
-                type:  tab-redirect
-                label: Classify the product
-                tab:   categories
-                icon:  folder-close
-                link:  edit_link
-            delete:
-                type:  delete
-                label: Delete the product
-                icon:  trash
-                link:  delete_link
         mass_actions:
             mass_edit:
                 type: edit

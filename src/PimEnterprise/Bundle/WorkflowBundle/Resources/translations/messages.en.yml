@@ -21,3 +21,4 @@ pim_menu:
 pim_title:
     publishedproduct:
         index:  Published products
+        view: Published product

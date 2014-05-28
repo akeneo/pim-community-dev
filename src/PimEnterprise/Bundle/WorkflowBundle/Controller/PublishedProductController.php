@@ -107,15 +107,15 @@ class PublishedProductController extends AbstractController
      *
      * @param Request $request
      * @param integer $id
-     * @param string  $locale
      *
      * @Template
      * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
      * @return array
      */
-    public function publishAction(Request $request, $id, $locale)
+    public function publishAction(Request $request, $id)
     {
         $product = $this->manager->find($id);
+        $locale = $this->getDataLocale();
 
         $published = $this->repository->findOneByOriginalProductId($id);
         if ($published) {
@@ -136,6 +136,28 @@ class PublishedProductController extends AbstractController
                 ]
             )
         );
+    }
+
+    /**
+     * View a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @Template
+     * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
+     * @return array
+     */
+    public function viewAction(Request $request, $id)
+    {
+        $published = $this->repository->findOneById($id);
+        $locale = $this->getDataLocale();
+
+        return [
+            'published'  => $published,
+            'dataLocale' => $locale,
+            'locales'    => $this->userContext->getUserLocales()
+        ];
     }
 
     /**
