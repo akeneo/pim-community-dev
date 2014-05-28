@@ -42,7 +42,8 @@ class PricesComparatorSpec extends ObjectBehavior
                     'data' => '20',
                     'currency' => 'USD',
                 ],
-            ]
+            ],
+            'id' => '123',
         ]);
     }
 
@@ -76,7 +77,8 @@ class PricesComparatorSpec extends ObjectBehavior
                     'data' => '10',
                     'currency' => 'EUR',
                 ],
-            ]
+            ],
+            'id' => '123',
         ]);
     }
 
@@ -86,13 +88,13 @@ class PricesComparatorSpec extends ObjectBehavior
         ProductPrice $eur
     ) {
         $submittedData = [
-            'id' => '123',
             'prices' => [
                 'EUR' => [
                     'data' => '10',
                     'currency' => 'EUR',
                 ],
             ],
+            'id' => '123',
         ];
 
         $value->getPrices()->willReturn($prices);

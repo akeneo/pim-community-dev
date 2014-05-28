@@ -38,6 +38,10 @@ class PricesComparator implements ComparatorInterface
             }
         }
 
-        return !empty($changes) ? $changes : null;
+        if (!empty($changes)) {
+            $changes['id'] = $submittedData['id'];
+
+            return $changes;
+        }
     }
 }
