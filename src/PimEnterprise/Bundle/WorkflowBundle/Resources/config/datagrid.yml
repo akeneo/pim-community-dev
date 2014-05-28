@@ -64,3 +64,8 @@ datagrid:
                 status:
                     data_name: p.status
                     sorter: proposal_field
+                createdAt:
+                    data_name: p.createdAt
+                    sorter: proposal_field
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
