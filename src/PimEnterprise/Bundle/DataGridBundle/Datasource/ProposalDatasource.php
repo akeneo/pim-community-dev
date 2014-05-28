@@ -89,24 +89,24 @@ class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterf
         return $this->qb;
     }
 
-    //     /**
-    //      * {@inheritdoc}
-    //      */
-    //     public function getParameters()
-    //     {
-    //         return $this->parameters;
-    //     }
+    /**
+     * {@inheritdoc}
+     */
+    public function getParameters()
+    {
+        return $this->parameters;
+    }
 
-    //     /**
-    //      * {@inheritdoc}
-    //      */
-    //     public function setParameters($parameters)
-    //     {
-    //         $this->parameters = $parameters;
-    //         $this->qb->setParameters($parameters);
+    /**
+     * {@inheritdoc}
+     */
+    public function setParameters($parameters)
+    {
+        $this->parameters = $parameters;
+        $this->qb->setParameters($parameters);
 
-    //         return $this;
-    //     }
+        return $this;
+    }
 
     /**
      * {@inheritdoc}
