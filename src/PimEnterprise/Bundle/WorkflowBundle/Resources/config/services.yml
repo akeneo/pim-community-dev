@@ -24,12 +24,12 @@ services:
         parent: pim_enrich.controller.abstract
         scope: request
         arguments:
-            - '@pim_catalog.repository.proposal'
+            - '@pimee_workflow.repository.proposal'
             - '@pimee_workflow.manager.proposal'
 
-    pim_catalog.repository.proposal:
-        class: %doctrine.entity_repository.class%
-        factory_service: doctrine.orm.entity_manager
+    pimee_workflow.repository.proposal:
+        class: %pimee_workflow.repository.proposal.class%
+        factory_service: pimee_workflow.object_manager.proposal
         factory_method: getRepository
         arguments: [%pimee_workflow.entity.proposal.class%]
 

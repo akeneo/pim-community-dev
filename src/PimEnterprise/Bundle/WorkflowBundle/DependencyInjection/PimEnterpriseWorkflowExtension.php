@@ -25,5 +25,9 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('services.yml');
         $loader->load('form_types.yml');
         $loader->load('datagrid_listeners.yml');
+
+        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
     }
 }

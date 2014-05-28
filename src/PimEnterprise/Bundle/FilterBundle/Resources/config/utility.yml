@@ -1,0 +1,8 @@
+parameters:
+    pimee_filter.proposal_utility.class: PimEnterprise\Bundle\FilterBundle\Filter\ProposalFilterUtility
+
+services:
+    pimee_filter.proposal_utility:
+        class: %pimee_filter.proposal_utility.class%
+        arguments:
+            - '@pimee_workflow.repository.proposal'

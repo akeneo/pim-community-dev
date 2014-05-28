@@ -1,0 +1,29 @@
+parameters:
+    pimee_datagrid.extension.filter.proposal_filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\ProposalFilterExtension
+    pimee_datagrid.extension.sorter.proposal_sorter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\ProposalSorterExtension
+    pimee_datagrid.extension.pager.proposal_pager.class:   PimEnterprise\Bundle\DataGridBundle\Extension\Pager\ProposalPagerExtension
+
+services:
+    pimee_datagrid.extension.filter.proposal_filter:
+        class: %pimee_datagrid.extension.filter.proposal_filter.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - %pimee_filter.datasource.proposal_adapter.class%
+        tags:
+             - { name: oro_datagrid.extension }
+
+    pimee_datagrid.extension.sorter.proposal_sorter:
+        class: %pimee_datagrid.extension.sorter.proposal_sorter.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pimee_datagrid.extension.pager.proposal_pager:
+        class: %pimee_datagrid.extension.pager.proposal_pager.class%
+        arguments:
+            - '@pimee_datagrid.extension.pager.proposal.pager'
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
