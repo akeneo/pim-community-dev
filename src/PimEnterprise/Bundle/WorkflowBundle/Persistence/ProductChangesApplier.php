@@ -52,13 +52,12 @@ class ProductChangesApplier
 
         foreach ($changes['values'] as $key => $change) {
             if (isset($change['media'])) {
-    //public function __construct($path, $originalName, $mimeType = null, $size = null, $error = null, $test = false)
                 $changes['values'][$key]['media'] = [
                     'file' => new UploadedFile(
-                            $change['media']['filePath'],
-                            $change['media']['originalFilename'],
-                            $change['media']['mimeType'],
-                            $change['media']['size']
+                        $change['media']['filePath'],
+                        $change['media']['originalFilename'],
+                        $change['media']['mimeType'],
+                        $change['media']['size']
                     )
                 ];
             }
