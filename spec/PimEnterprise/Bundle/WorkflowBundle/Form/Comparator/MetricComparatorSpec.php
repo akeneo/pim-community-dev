@@ -44,6 +44,7 @@ class MetricComparatorSpec extends ObjectBehavior
         $metric->getUnit()->willReturn('KILOGRAM');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => '1',
             'metric' => [
                 'data' => '100',
                 'unit' => 'KILOGRAM',
@@ -69,6 +70,7 @@ class MetricComparatorSpec extends ObjectBehavior
         $metric->getUnit()->willReturn('KILOGRAM');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => '1',
             'metric' => [
                 'data' => '100',
                 'unit' => 'GRAM',
@@ -114,6 +116,7 @@ class MetricComparatorSpec extends ObjectBehavior
         $metric->getUnit()->willReturn('KILOGRAM');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => '1',
             'metric' => [
                 'data' => '',
                 'unit' => 'KILOGRAM',

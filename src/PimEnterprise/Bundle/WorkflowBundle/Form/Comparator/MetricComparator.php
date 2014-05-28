@@ -37,6 +37,7 @@ class MetricComparator implements ComparatorInterface
             }
 
             return [
+                'id' => $submittedData['id'],
                 'metric' => [
                     'data' => $submittedData['metric']['data'],
                     'unit' => $submittedData['metric']['unit'],

@@ -37,6 +37,7 @@ class DateComparatorSpec extends ObjectBehavior
         $date->format('Y-m-d')->willReturn('2014-05-18');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 123,
             'date' => '1987-05-14'
         ]);
     }
@@ -46,6 +47,7 @@ class DateComparatorSpec extends ObjectBehavior
         \DateTime $date
     ) {
         $submittedData = [
+            'id' => 123,
             'date' => '1987-05-14',
         ];
         $value->getDate()->willReturn($date);
@@ -64,6 +66,7 @@ class DateComparatorSpec extends ObjectBehavior
         $value->getDate()->willReturn(null);
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 123,
             'date' => '1987-05-14'
         ]);
     }

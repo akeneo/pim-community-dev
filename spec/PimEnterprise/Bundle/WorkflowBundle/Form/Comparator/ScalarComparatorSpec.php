@@ -26,6 +26,7 @@ class ScalarComparatorSpec extends ObjectBehavior
         $accessor->getValue($value, 'varchar')->willReturn('bar');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 1,
             'varchar' => 'foo'
         ]);
     }

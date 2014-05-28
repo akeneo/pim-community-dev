@@ -31,7 +31,10 @@ class DateComparator implements ComparatorInterface
         if (($date instanceof \DateTime && $date->format('Y-m-d') !== $submittedData['date'])
             || (!$date instanceof \DateTime && '' !== $submittedData['date'])
         ) {
-            return ['date' => $submittedData['date']];
+            return [
+                'id' => $submittedData['id'],
+                'date' => $submittedData['date'],
+            ];
         }
     }
 }

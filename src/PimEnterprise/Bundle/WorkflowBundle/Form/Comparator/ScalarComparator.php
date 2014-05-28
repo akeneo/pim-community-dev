@@ -45,7 +45,10 @@ class ScalarComparator implements ComparatorInterface
                 continue;
             }
             if ($this->accessor->getValue($value, $key) != $submittedValue) {
-                return [$key => $submittedValue];
+                return [
+                    'id' => $submittedData['id'],
+                    $key => $submittedValue
+                ];
             }
         }
     }
