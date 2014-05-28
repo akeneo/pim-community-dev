@@ -14,15 +14,11 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInter
 class ProposalRepository extends DocumentRepository implements ProposalRepositoryInterface
 {
     /**
-     * @param string $productId
-     *
-     * @return QueryBuilder
+     * {@inheritdoc}
      */
     public function createDatagridQueryBuilder()
     {
         return $this
-            ->createQueryBuilder('p')
-//             ->field('product')->equals($productId);*
-        ;
+            ->createQueryBuilder('p');
     }
 }
