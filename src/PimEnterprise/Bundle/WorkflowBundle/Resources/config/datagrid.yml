@@ -1,7 +1,7 @@
 datagrid:
     proposals-grid:
         source:
-            type: pim_orm
+            type: pim_proposal
             entity: %pimee_workflow.entity.proposal.class%
             repository_method: createDatagridQueryBuilder
         columns:
@@ -60,9 +60,12 @@ datagrid:
             columns:
                 author:
                     data_name: p.author
+                    sorter: proposal_field
                 status:
                     data_name: p.status
+                    sorter: proposal_field
                 createdAt:
                     data_name: p.createdAt
+                    sorter: proposal_field
             default:
                 createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
