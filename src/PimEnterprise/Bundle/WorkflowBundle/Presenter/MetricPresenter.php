@@ -2,22 +2,20 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
-
 /**
- * Present text data
+ * Present metric data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class TextPresenter extends AbstractPresenter
+class MetricPresenter extends AbstractPresenter
 {
     /**
      * {@inheritdoc}
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('text', $change);
+        return array_key_exists('metric', $change);
     }
 
     /**
@@ -28,16 +26,9 @@ class TextPresenter extends AbstractPresenter
         return $this
             ->factory
             ->create(
-                $this->explodeText($data),
-                $this->explodeText($change['text'])
+                sprintf('%s %s', $data->getData(), $data->getUnit()),
+                sprintf('%s %s', $change['metric']['data'], $change['metric']['unit'])
             )
             ->render($this->renderer);
-    }
-
-    protected function explodeText($text)
-    {
-        preg_match_all('/<p>(.*?)<\/p>/', $text, $matches);
-
-        return !empty($matches[0]) ? $matches[0] : [$text];
     }
 }

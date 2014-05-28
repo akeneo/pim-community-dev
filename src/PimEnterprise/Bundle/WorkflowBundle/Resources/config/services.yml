@@ -68,9 +68,15 @@ services:
             - { name: twig.extension }
         calls:
             - [ 'addPresenter', [ '@pimee_workflow.presenter.text' ] ]
+            - [ 'addPresenter', [ '@pimee_workflow.presenter.metric' ] ]
 
     pimee_workflow.presenter.text:
         class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
+        arguments:
+            - '@pimee_workflow.proposal_renderer'
+
+    pimee_workflow.presenter.metric:
+        class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
         arguments:
             - '@pimee_workflow.proposal_renderer'
 

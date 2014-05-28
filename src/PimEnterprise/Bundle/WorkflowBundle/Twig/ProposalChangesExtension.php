@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Doctrine\Common\Persistence\ObjectRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 
 /**
