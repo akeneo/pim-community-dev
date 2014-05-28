@@ -14,14 +14,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddFilterTypesPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const FILTER_PROPOSAL_EXTENSION_ID = 'pimee_datagrid.extension.filter.proposal_filter';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
     /**
