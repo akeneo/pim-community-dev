@@ -42,13 +42,11 @@ class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterf
      * Constructor
      *
      * @param ObjectManager     $om
-     * @param AclHelper         $aclHelper
      * @param HydratorInterface $hydrator
      */
-    public function __construct(ObjectManager $om, AclHelper $aclHelper, HydratorInterface $hydrator)
+    public function __construct(ObjectManager $om, HydratorInterface $hydrator)
     {
         $this->om        = $om;
-        $this->aclHelper = $aclHelper; //TODO: Remove
         $this->hydrator  = $hydrator;
     }
 
