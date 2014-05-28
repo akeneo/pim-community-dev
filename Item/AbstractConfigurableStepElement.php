@@ -3,6 +3,7 @@
 namespace Akeneo\Bundle\BatchBundle\Item;
 
 use Doctrine\Common\Util\Inflector;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * Define a configurable step element
@@ -58,9 +59,11 @@ abstract class AbstractConfigurableStepElement
      */
     public function setConfiguration(array $config)
     {
+        $accessor = PropertyAccess::createPropertyAccessor();
+
         foreach ($config as $key => $value) {
             if (array_key_exists($key, $this->getConfigurationFields())) {
-                $this->$key = $value;
+                $accessor->setValue($this, $key, $value);
             }
         }
     }
