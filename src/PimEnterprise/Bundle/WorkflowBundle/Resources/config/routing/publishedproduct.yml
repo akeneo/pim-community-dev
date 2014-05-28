@@ -4,4 +4,3 @@ pimee_workflow_publishedproduct_index:
 pimee_workflow_publishedproduct_publish:
     path: /{id}/{locale}/publish
     defaults: { _controller: pimee_workflow.controller.published_product:publishAction }
-

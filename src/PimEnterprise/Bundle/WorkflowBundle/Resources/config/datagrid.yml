@@ -222,4 +222,3 @@ datagrid:
                     parent_type: date
                     data_name:   updated
                     label:       Updated At
-
