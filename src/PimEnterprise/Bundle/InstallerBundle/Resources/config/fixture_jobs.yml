@@ -1,0 +1,11 @@
+jobs:
+
+    fixtures_attribute_group_access_yml:
+        order: 150
+        connector: Data fixtures
+        alias:     fixtures_attribute_group_access_yml
+        label:     Categories data fixtures
+        type:      fixtures
+        configuration:
+            filePath: attribute_groups_accesses.yml
+            multiple: false
