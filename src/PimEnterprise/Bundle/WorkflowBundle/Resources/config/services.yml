@@ -70,6 +70,8 @@ services:
 
     pimee_workflow.factory.published_product:
         class: %pimee_workflow.factory.published_product.class%
+        arguments:
+            - '@pimee_workflow.repository.published_product'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
@@ -80,3 +82,4 @@ services:
             - '@oro_security.security_facade'
             - '@pimee_workflow.factory.published_product'
             - '@pim_catalog.manager.product'
+            - '@pimee_workflow.repository.published_product'

@@ -19,6 +19,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
  * Published product controller
@@ -41,17 +42,18 @@ class PublishedProductController extends AbstractController
     protected $securityFacade;
 
     /**
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param UserContext              $userContext
-     * @param SecurityFacade           $securityFacade
-     * @param PublishedProductFactory  $factory
-     * @param ProductManager           $productManager
+     * @param Request                             $request
+     * @param EngineInterface                     $templating
+     * @param RouterInterface                     $router
+     * @param SecurityContextInterface            $securityContext
+     * @param FormFactoryInterface                $formFactory
+     * @param ValidatorInterface                  $validator
+     * @param TranslatorInterface                 $translator
+     * @param UserContext                         $userContext
+     * @param SecurityFacade                      $securityFacade
+     * @param PublishedProductFactory             $factory
+     * @param ProductManager                      $productManager
+     * @param PublishedProductRepositoryInterface $repository
      */
     public function __construct(
         Request $request,
@@ -64,7 +66,8 @@ class PublishedProductController extends AbstractController
         UserContext $userContext,
         SecurityFacade $securityFacade,
         PublishedProductFactory $factory,
-        ProductManager $manager
+        ProductManager $manager,
+        PublishedProductRepositoryInterface $repository
     ) {
         parent::__construct(
             $request,
@@ -79,6 +82,7 @@ class PublishedProductController extends AbstractController
         $this->securityFacade = $securityFacade;
         $this->factory        = $factory;
         $this->manager        = $manager;
+        $this->repository     = $repository;
     }
 
     /**
@@ -113,12 +117,15 @@ class PublishedProductController extends AbstractController
     {
         $product = $this->manager->find($id);
 
-        $published = $this->factory->createPublishedProduct($product);
+        $published = $this->repository->findOneByOriginalProductId($id);
+        if ($published) {
+            $this->manager->getObjectManager()->remove($published);
+        }
 
+        $published = $this->factory->createPublishedProduct($product);
         $this->manager->getObjectManager()->persist($published);
         $this->manager->getObjectManager()->flush();
 
-        // var_dump($published->getId());
         $this->addFlash('success', 'flash.product.published', ['%locale%' => $locale]);
 
         return $this->redirect(

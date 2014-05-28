@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
@@ -24,6 +25,17 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation;
  */
 class PublishedProductFactory
 {
+    /** @var PublishedProductRepositoryInterface*/
+    protected $repository;
+
+    /**
+     * @param PublishedProductRepositoryInterface $repository
+     */
+    public function __construct(PublishedProductRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * Create/update a published product instance
      *
@@ -34,6 +46,7 @@ class PublishedProductFactory
     public function createPublishedProduct(ProductInterface $product)
     {
         $published = new PublishedProduct();
+        $published->setOriginalProductId($product->getId());
         $this->copyValues($product, $published);
         $this->copyFamily($product, $published);
         $this->copyGroups($product, $published);
@@ -84,13 +97,20 @@ class PublishedProductFactory
             $copiedAssociation = new PublishedAssociation();
             $copiedAssociation->setOwner($published);
             $copiedAssociation->setAssociationType($association->getAssociationType());
+            $productIds = [];
             foreach ($association->getProducts() as $product) {
-                $productIdentifier = $product->getIdentifier()->getData();
+                $productIds[]= $product->getId();
+            }
+            $publishedProducts = $this->repository->findBy(['originalProductId' => $productIds]);
+            if (count($publishedProducts) > 0) {
+                $copiedAssociation->setProducts($publishedProducts);
             }
             foreach ($association->getGroups() as $group) {
                 $copiedAssociation->addGroup($group);
             }
-            $published->addAssociation($copiedAssociation);
+            if (count($copiedAssociation->getGroups()) > 0 || count($copiedAssociation->getProducts())) {
+                $published->addAssociation($copiedAssociation);
+            }
         }
     }
 
