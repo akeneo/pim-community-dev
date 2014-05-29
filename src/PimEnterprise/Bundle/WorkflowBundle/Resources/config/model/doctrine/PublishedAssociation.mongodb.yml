@@ -1,0 +1,22 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
+    type: embeddedDocument
+    fields:
+        id:
+            id: true
+        associationType:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AssociationType
+        groups:
+            notSaved: true
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            idsField: groupIds
+        groupIds:
+            type: collection
+    referenceOne:
+        owner:
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+    referenceMany:
+        products:
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+
