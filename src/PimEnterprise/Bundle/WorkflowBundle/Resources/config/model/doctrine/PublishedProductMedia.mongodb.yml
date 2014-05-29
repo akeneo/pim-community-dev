@@ -1,0 +1,19 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
+    type: document
+    collection: pim_catalog_media
+    fields:
+        id:
+            id: true
+        filename:
+            type: string
+        filePath:
+            type: string
+        originalFilename:
+            type: string
+        mimeType:
+            type: string
+        value:
+            reference: true
+            type: one
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+
