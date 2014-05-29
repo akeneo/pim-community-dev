@@ -13,6 +13,8 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: date
         updated:
             type: date
+        originalProductId:
+            type: string
         family:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family

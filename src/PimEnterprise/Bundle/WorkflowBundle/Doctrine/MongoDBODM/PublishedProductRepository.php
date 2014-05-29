@@ -18,6 +18,11 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function findOneByOriginalProductId($originalId)
     {
-        return parent::findOneBy(['originalProductId' => $originalId]);
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('originalProductId')->equals($originalId);
+        $result = $qb->getQuery()->execute();
+        $product = $result->getNext();
+
+        return $product;
     }
 }
