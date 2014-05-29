@@ -1,0 +1,15 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric:
+    type: embeddedDocument
+    fields:
+        id:
+            id: true
+        data:
+            type: float
+        unit:
+            type: string
+        baseData:
+            type: float
+        baseUnit:
+            type: string
+        family:
+            type: string
