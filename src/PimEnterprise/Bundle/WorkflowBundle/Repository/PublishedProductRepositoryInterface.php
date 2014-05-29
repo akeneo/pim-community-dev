@@ -12,4 +12,10 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
  */
 interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
 {
+    /**
+     * @param mixed $originalId
+     *
+     * @return PublishedProduct
+     */
+    public function findOneByOriginalProductId($originalId);
 }

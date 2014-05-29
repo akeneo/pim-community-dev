@@ -13,4 +13,11 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function findOneByOriginalProductId($originalId)
+    {
+        return parent::findOneByOriginalProductId($originalId);
+    }
 }
