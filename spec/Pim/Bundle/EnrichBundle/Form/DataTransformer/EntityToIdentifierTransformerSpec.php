@@ -15,7 +15,7 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         PropertyAccessorInterface $propertyAccessor
     ) {
         $this->beConstructedWith($repository, false, $propertyAccessor);
-        $this->shouldBeAnInstanceOf('Symfony\Component\Form\DataTransformerInterface');
+        $this->shouldImplement('Symfony\Component\Form\DataTransformerInterface');
     }
 
     function it_transforms_value_into_its_id(

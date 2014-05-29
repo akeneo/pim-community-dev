@@ -13,7 +13,7 @@ class ChangeFamilySpec extends ObjectBehavior
 {
     function it_is_a_mass_edit_action()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
+        $this->shouldImplement('Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface');
     }
 
     function it_stores_the_family_to_add_the_products_to(Family $mugs)

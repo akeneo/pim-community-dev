@@ -13,7 +13,7 @@ class AddSelectedOperationSubscriberSpec extends ObjectBehavior
 {
     function it_is_an_event_subscriber_interface()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
     function it_subscribes_to_the_form_post_set_data_event()

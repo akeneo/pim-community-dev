@@ -19,7 +19,7 @@ class ProductDatasourceSpec extends ObjectBehavior
 
     function it_is_a_datasource()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface');
     }
 
     function it_processes_a_datasource_with_repository_configuration(

@@ -16,6 +16,6 @@ class ProductRepositorySpec extends ObjectBehavior
 
     function it_is_a_product_repository()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface');
     }
 }

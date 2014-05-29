@@ -22,7 +22,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
