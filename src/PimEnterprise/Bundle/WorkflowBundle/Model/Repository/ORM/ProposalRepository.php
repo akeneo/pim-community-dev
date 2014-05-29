@@ -21,7 +21,7 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
     {
         return $this
             ->createQueryBuilder('p');
-//            ->where('p.product = :product');
+        // ->where('p.product = :product');
     }
 
     /**
