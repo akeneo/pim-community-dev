@@ -21,6 +21,7 @@ class AddParametersToGridListener
     /**
      * Included/excluded param names
      * populated by oro/datagrid/column-form-listener on frontend
+     * @staticvar string
      */
     const GRID_PARAM_DATA_IN     = 'data_in';
     const GRID_PARAM_DATA_NOT_IN = 'data_not_in';

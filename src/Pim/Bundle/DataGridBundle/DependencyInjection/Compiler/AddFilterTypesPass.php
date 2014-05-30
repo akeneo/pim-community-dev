@@ -15,19 +15,13 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddFilterTypesPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const FILTER_ORM_EXTENSION_ID = 'pim_datagrid.extension.filter.orm_filter';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const FILTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.filter.product_filter';
 
-    /**
-     * @®ar string
-     */
+    /** @staticvar string */
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
     /**

@@ -1,4 +1,4 @@
-formatter.name: progress
+formatter.name: dot
 extensions:
     - Akeneo\SkipExampleExtension
     - PhpSpec\Extension\CodeCoverageExtension

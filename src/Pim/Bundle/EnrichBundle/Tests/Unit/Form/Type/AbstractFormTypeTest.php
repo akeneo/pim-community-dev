@@ -80,6 +80,7 @@ abstract class AbstractFormTypeTest extends TypeTestCase
 
         // redefine form factory and builder to add translatable field
         $this->builder->add('pim_translatable_field');
+        $this->builder->add('pim_number');
         $this->builder->add('entity');
         $this->builder->add('switch');
 
@@ -97,6 +98,9 @@ abstract class AbstractFormTypeTest extends TypeTestCase
                     $this->getUserContextMock(),
                     $this->getLocaleHelperMock()
                 )
+            )
+            ->addType(
+                new \Pim\Bundle\UIBundle\Form\Type\NumberType()
             )
             ->addType($this->createEntityType())
             ->addType(new SwitchType())

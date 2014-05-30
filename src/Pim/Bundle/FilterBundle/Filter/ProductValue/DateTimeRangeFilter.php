@@ -15,6 +15,7 @@ class DateTimeRangeFilter extends AbstractDateFilter
 {
     /**
      * DateTime object as string format
+     * @staticvar string
      */
     const DATETIME_FORMAT = 'Y-m-d H:i:s';
 

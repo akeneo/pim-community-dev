@@ -6,7 +6,7 @@
 
     <target name="build-phpunit" depends="prepare,composer,require-mongo,vendors-no-scripts,phpunit,phpspec,phpspec-junit"/>
 
-    <target name="build-coverage" depends="prepare,composer,coverage"/>
+    <target name="build-coverage" depends="prepare,composer,require-mongo,coverage"/>
 
     <target name="build-behat" depends="prepare,composer,vendors,install-all-behat,behat"/>
 
@@ -185,6 +185,13 @@
         <exec executable="sh" outputproperty="xdebug_path">
             <arg value="-c" />
             <arg value="php -i | grep extension_dir | cut -d ' ' -f3"/>
+        </exec>
+
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
+            <arg value="henrikbjorn/phpspec-code-coverage" />
+            <arg value="1.0.*@dev" />
         </exec>
 
         <!--
