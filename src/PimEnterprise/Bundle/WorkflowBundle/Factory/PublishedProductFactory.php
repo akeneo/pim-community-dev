@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
@@ -133,13 +134,13 @@ class PublishedProductFactory
 
             if ($originalData instanceof \Doctrine\Common\Collections\Collection) {
                 if (count($originalData) > 0) {
-                    $copiedData = [];
+                    $copiedData = new ArrayCollection();
                     foreach ($originalData as $object) {
                         if ($object instanceof ProductPrice) {
                             $copiedObject = new PublishedProductPrice();
                             $copiedObject->setData($object->getData());
                             $copiedObject->setCurrency($object->getCurrency());
-                            $copiedData[]= $copiedObject;
+                            $copiedData->add($copiedObject);
                         } elseif ($object instanceof AttributeOption) {
                             $copiedData[]= $object;
                         }

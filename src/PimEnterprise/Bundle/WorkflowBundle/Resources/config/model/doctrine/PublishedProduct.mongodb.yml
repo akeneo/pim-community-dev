@@ -35,7 +35,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         associations:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Association
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation
         completenesses:
             embedded: true
             type: many
@@ -43,7 +43,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         values:
             embedded: true
             type: many
-            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductValue
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
             mappedBy: entity
         normalizedData:
             type: hash
