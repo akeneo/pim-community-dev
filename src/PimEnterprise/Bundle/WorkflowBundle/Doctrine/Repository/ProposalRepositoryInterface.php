@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
@@ -13,9 +13,19 @@ use Doctrine\Common\Persistence\ObjectRepository;
 interface ProposalRepositoryInterface extends ObjectRepository
 {
     /**
-     * Create datagrid query builder
+     * Create the datagrid query builder
      *
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder();
+
+    /**
+     * Apply the context of the datagrid to the query
+     *
+     * @param QueryBuilder $qb
+     * @param integer      $product
+     *
+     * @return ProposalRepositoryInterface
+     */
+    public function applyDatagridContext($qb, $productId);
 }

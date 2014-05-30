@@ -1,9 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 /**
@@ -15,19 +15,32 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 class ProposalRepository extends EntityRepository implements ProposalRepositoryInterface
 {
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder()
     {
         return $this
             ->createQueryBuilder('p');
-        // ->where('p.product = :product');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder
+     */
+    public function applyDatagridContext($qb, $productId)
+    {
+        $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
+
+        return $this;
     }
 
     /**
      * Find one open proposal
      *
-     * @param int $id
+     * @param integer $id
      *
      * @return null|Proposal
      */
