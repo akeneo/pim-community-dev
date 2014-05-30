@@ -1,0 +1,11 @@
+parameters:
+    pimee_filter.proposal_choice.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposal\ChoiceFilter
+
+services:
+    pimee_filter.proposal_choice_filter:
+        class: %pimee_filter.proposal_choice.class%
+        arguments:
+            - '@form.factory'
+            - '@pimee_filter.proposal_utility'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: proposal_choice }

@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;
 
@@ -27,5 +29,19 @@ class ProposalFilterUtility extends BaseFilterUtility
     public function __construct(ProposalRepositoryInterface $proposalRepository)
     {
         $this->proposalRepository = $proposalRepository;
+    }
+
+    /**
+     * Apply filter
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param string $field
+     * @param string $operator
+     * @param mixed $value
+     */
+    public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
+    {
+        $qb = $ds->getQueryBuilder();
+        $this->proposalRepository->applyFilter($qb, $field, $operator, $value);
     }
 }
