@@ -26,7 +26,7 @@ class AddFilterTypesPass implements CompilerPassInterface
     const FILTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.filter.product_filter';
 
     /**
-     * @®ar string
+     * @var string
      */
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
 
