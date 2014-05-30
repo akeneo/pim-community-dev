@@ -63,6 +63,11 @@ class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterf
             $this->qb = $this->getRepository()->createQueryBuilder('p');
         }
 
+        $product = $this->getConfiguration('product');
+        if (!empty($product)) {
+            $this->getRepository()->applyDatagridContext($this->qb, $product);
+        }
+
         $grid->setDatasource(clone $this);
     }
 
