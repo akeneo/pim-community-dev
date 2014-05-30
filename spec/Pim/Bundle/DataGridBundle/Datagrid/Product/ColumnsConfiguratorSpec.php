@@ -20,7 +20,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
             ->offsetGetByPath(sprintf('[%s]', FormatterConfiguration::COLUMNS_KEY))
             ->willReturn(['family' => ['family_config']]);
 
-        $this->beConstructedWith($configuration, $registry);
+        $this->beConstructedWith($registry);
     }
 
     function it_is_a_configurator()
@@ -79,7 +79,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
         $configuration->offsetSetByPath($availableColumnPath, $availableColumns)->shouldBeCalled();
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
     function it_doesnt_add_column_for_not_useable_as_column_attribute($configuration, $registry)
@@ -116,7 +116,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
         $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
     function it_displays_only_columns_configured_by_the_user($configuration, $registry)
@@ -179,7 +179,7 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $availableColumnPath = sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::AVAILABLE_COLUMNS_KEY);
         $configuration->offsetSetByPath($availableColumnPath, $columns)->shouldBeCalled();
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
     function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
@@ -205,6 +205,6 @@ class ColumnsConfiguratorSpec extends ObjectBehavior
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $configuration->offsetGetByPath($path)->willReturn($attributes);
 
-        $this->shouldThrow('\LogicException')->duringConfigure();
+        $this->shouldThrow('\LogicException')->duringConfigure($configuration);
     }
 }

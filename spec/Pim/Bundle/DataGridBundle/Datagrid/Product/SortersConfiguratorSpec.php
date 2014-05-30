@@ -39,7 +39,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
             ->getConfiguration('pim_catalog_identifier')
             ->willReturn(['column' => ['identifier_config'], 'sorter' => 'flexible_field']);
 
-        $this->beConstructedWith($configuration, $registry, $manager);
+        $this->beConstructedWith($registry, $manager);
     }
 
     function it_is_a_configurator()
@@ -62,7 +62,7 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s', OrmSorterConfiguration::COLUMNS_PATH);
         $configuration->offsetGetByPath($columnConfPath)->shouldBeCalled();
 
-        $this->configure();
+        $this->configure($configuration);
     }
 
     function it_cannot_handle_misconfigured_attribute_type($configuration, $registry)
@@ -72,6 +72,6 @@ class SortersConfiguratorSpec extends ObjectBehavior
         $columnConfPath = sprintf('%s[%s]', OrmSorterConfiguration::COLUMNS_PATH, 'sku');
         $configuration->offsetSetByPath($columnConfPath, Argument::any())->shouldBeCalled();
 
-        $this->shouldThrow('\LogicException')->duringConfigure();
+        $this->shouldThrow('\LogicException')->duringConfigure($configuration);
     }
 }

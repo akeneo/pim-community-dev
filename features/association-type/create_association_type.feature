@@ -10,6 +10,7 @@ Feature: Association type creation
     And I am on the association types page
     And I create a new association type
 
+  @skip
   Scenario: Successfully create an association type
     Then I should see the Code field
     When I fill in the following information in the popin:

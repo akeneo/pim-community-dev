@@ -42,9 +42,9 @@ Feature: Execute a job
       | family column     | families   |
       | groups column     | groups     |
     And the following association types:
-      | code    | label-en_US | label-fr_FR      |
-      | X_SELL  | Cross Sell  | Vente croisée    |
-      | UPSELL  | Upsell      | Vente incitative |
+      | code   | label-en_US | label-fr_FR      |
+      | X_SELL | Cross Sell  | Vente croisée    |
+      | UPSELL | Upsell      | Vente incitative |
     And I am logged in as "Julia"
 
   Scenario: Successfully import a csv file of products

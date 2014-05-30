@@ -22,7 +22,7 @@ class PriceType extends AbstractType
     {
         $builder->add('id', 'hidden');
         $builder->add('currency', 'hidden');
-        $builder->add('data', 'number', array('precision' => 2));
+        $builder->add('data', 'pim_number');
     }
 
     /**

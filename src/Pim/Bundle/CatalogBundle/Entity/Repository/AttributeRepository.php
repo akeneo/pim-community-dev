@@ -46,7 +46,23 @@ class AttributeRepository extends EntityRepository implements
      */
     public function findWithGroups(array $attributeIds = array(), array $criterias = array())
     {
-        $qb = $this->createQueryBuilder('a')
+        $qb = $this->findWithGroupsQB($attributeIds, $criterias);
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Find attributes with related attribute groups QB
+     *
+     * @param array $attributeIds
+     * @param array $criterias
+     *
+     * @return QueryBuilder
+     */
+    protected function findWithGroupsQB(array $attributeIds = array(), array $criterias = array())
+    {
+        $qb = $this->createQueryBuilder('a');
+        $qb
             ->addSelect('atrans', 'g', 'gtrans')
             ->leftJoin('a.translations', 'atrans')
             ->leftJoin('a.group', 'g')
@@ -56,11 +72,13 @@ class AttributeRepository extends EntityRepository implements
             $qb->andWhere($qb->expr()->in('a.id', $attributeIds));
         }
 
-        foreach ($criterias as $criteria => $value) {
-            $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+        if (isset($criterias['conditions'])) {
+            foreach ($criterias['conditions'] as $criteria => $value) {
+                $qb->andWhere($qb->expr()->eq(sprintf('a.%s', $criteria), $value));
+            }
         }
 
-        return $qb->getQuery()->execute();
+        return $qb;
     }
 
     /**
@@ -68,36 +86,7 @@ class AttributeRepository extends EntityRepository implements
      */
     public function getChoices(array $options)
     {
-        if (!isset($options['excluded_attribute_ids'])) {
-            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
-        }
-
-        if (!isset($options['locale_code'])) {
-            throw new \InvalidArgumentException('Option "locale_code" is required');
-        }
-
-        if (!isset($options['default_group_label'])) {
-            throw new \InvalidArgumentException('Option "default_group_label" is required');
-        }
-
-        $qb = $this
-            ->createQueryBuilder('a')
-            ->select('a.id')
-            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
-            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :defaultGroupLabel) as group_label')
-            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
-            ->leftJoin('a.group', 'g')
-            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
-            ->orderBy('g.sortOrder, a.sortOrder')
-            ->setParameter('localeCode', $options['locale_code'])
-            ->setParameter('defaultGroupLabel', $options['default_group_label']);
-
-        if (!empty($options['excluded_attribute_ids'])) {
-            $qb->andWhere(
-                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
-            );
-        }
-
+        $qb = $this->getChoicesQB($options);
         $result = $qb->getQuery()->getArrayResult();
 
         // Build choices list
@@ -115,6 +104,50 @@ class AttributeRepository extends EntityRepository implements
         }
 
         return $attributes;
+    }
+
+    /**
+     * Create query builder for choices
+     *
+     * @param array $options
+     *
+     * @throws \InvalidArgumentException
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    protected function getChoicesQB(array $options)
+    {
+        if (!isset($options['excluded_attribute_ids'])) {
+            throw new \InvalidArgumentException('Option "excluded_attribute_ids" is required');
+        }
+
+        if (!isset($options['locale_code'])) {
+            throw new \InvalidArgumentException('Option "locale_code" is required');
+        }
+
+        if (!isset($options['default_group_label'])) {
+            throw new \InvalidArgumentException('Option "default_group_label" is required');
+        }
+
+        $qb = $this->createQueryBuilder('a');
+        $qb
+            ->select('a.id')
+            ->addSelect('COALESCE(at.label, CONCAT(\'[\', a.code, \']\')) as attribute_label')
+            ->addSelect('COALESCE(gt.label, CONCAT(\'[\', g.code, \']\'), :defaultGroupLabel) as group_label')
+            ->leftJoin('a.translations', 'at', 'WITH', 'at.locale = :localeCode')
+            ->leftJoin('a.group', 'g')
+            ->leftJoin('g.translations', 'gt', 'WITH', 'gt.locale = :localeCode')
+            ->orderBy('g.sortOrder, a.sortOrder')
+            ->setParameter('localeCode', $options['locale_code'])
+            ->setParameter('defaultGroupLabel', $options['default_group_label']);
+
+        if (!empty($options['excluded_attribute_ids'])) {
+            $qb->andWhere(
+                $qb->expr()->notIn('a.id', $options['excluded_attribute_ids'])
+            );
+        }
+
+        return $qb;
     }
 
     /**
@@ -316,19 +349,31 @@ class AttributeRepository extends EntityRepository implements
     /**
      * Get ids of attributes useable in grid
      *
+     * @param array $codes
+     * @param array $groupIds
+     *
      * @return array
      */
-    public function getAttributeIdsUseableInGrid()
+    public function getAttributeIdsUseableInGrid($codes = null, $groupIds = null)
     {
         $qb = $this->_em->createQueryBuilder()
             ->select('att.id')
             ->from($this->_entityName, 'att', 'att.id');
 
-        $qb->andWhere(
-            "att.useableAsGridColumn = 1 ".
-            "OR att.useableAsGridFilter = 1 ".
-            "OR att.attributeType = 'pim_catalog_simpleselect'"
-        );
+        $qb->andWhere("att.useableAsGridColumn = 1 OR att.useableAsGridFilter = 1");
+
+        if (is_array($codes) && !empty($codes)) {
+            $qb->andWhere("att.code IN (:codes)");
+            $qb->setParameter('codes', $codes);
+        }
+
+        if (is_array($groupIds) && !empty($groupIds)) {
+            $qb->andWhere("att.group IN (:groupIds)");
+            $qb->setParameter('groupIds', $groupIds);
+        } elseif (is_array($groupIds)) {
+            return [];
+        }
+
         $result = $qb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY);
 
         return array_keys($result);

@@ -33,3 +33,14 @@ MongoDB implementation
 ----------------------
 
 We removed null values from normalizedData field to avoid storing useless values
+
+DataGridBundle
+--------------
+
+Change of ConfiguratorInterface and configurators are now services to make them easier to customize
+
+OroSegmentationTreeBundle
+--------------
+
+The bundle has been removed from Oro Platform, entities extending AbstractSegment should implement the desired
+methods themselves and repositories extending SegmentRepository should extend Gedmo\Tree\Entity\Repository\NestedTreeRepository

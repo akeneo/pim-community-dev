@@ -123,14 +123,14 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     }
 
     /**
-     * Returns all families code with their required attributes code
-     * Requirements can be restricted to a channel.
-     *
-     * @param Family  $family
-     * @param Channel $channel
-     *
-     * @return array
-     */
+    * Returns all families code with their required attributes code
+    * Requirements can be restricted to a channel.
+    *
+    * @param Family $family
+    * @param Channel $channel
+    *
+    * @return array
+    */
     public function getFullFamilies(Family $family = null, Channel $channel = null)
     {
         $qb = $this->createQueryBuilder('f')

@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
-use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -14,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
- * Segment class allowing to organize a products into trees
+ * Category class allowing to organize a flexible product class into trees
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -28,9 +27,39 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  *
  * @ExclusionPolicy("all")
  */
-class Category extends AbstractSegment implements CategoryInterface, TranslatableInterface, ReferableInterface,
+class Category implements CategoryInterface, TranslatableInterface, ReferableInterface,
  VersionableInterface
 {
+    /**
+     * @var integer $id
+     */
+    protected $id;
+
+    /**
+     * @var string $code
+     */
+    protected $code;
+
+    /**
+     * @var integer $left
+     */
+    protected $left;
+
+    /**
+     * @var integer $level
+     */
+    protected $level;
+
+    /**
+     * @var integer $right
+     */
+    protected $right;
+
+    /**
+     * @var integer $root
+     */
+    protected $root;
+
     /**
      * @var CategoryInterface $parent
      */
@@ -45,11 +74,6 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      * @var ArrayCollection $products
      */
     protected $products;
-
-    /**
-     * @var string $code
-     */
-    protected $code;
 
     /**
      * @var datetime
@@ -79,11 +103,196 @@ class Category extends AbstractSegment implements CategoryInterface, Translatabl
      */
     public function __construct()
     {
-        parent::__construct();
-
         $this->products     = new ArrayCollection();
         $this->translations = new ArrayCollection();
         $this->channels     = new ArrayCollection();
+        $this->children     = new ArrayCollection();
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set code
+     *
+     * @param string $code
+     *
+     * @return CategoryInterface
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set left
+     * @param integer $left
+     *
+     * @return CategoryInterface
+     */
+    public function setLeft($left)
+    {
+        $this->left = $left;
+
+        return $this;
+    }
+
+    /**
+     * Get left
+     *
+     * @return integer
+     */
+    public function getLeft()
+    {
+        return $this->left;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLevel($level)
+    {
+        $this->level = $level;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLevel()
+    {
+        return $this->level;
+    }
+
+    /**
+     * Set right
+     * @param integer $right
+     *
+     * @return CategoryInterface
+     */
+    public function setRight($right)
+    {
+        $this->right = $right;
+
+        return $this;
+    }
+
+    /**
+     * Get right
+     *
+     * @return integer
+     */
+    public function getRight()
+    {
+        return $this->right;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRoot($root)
+    {
+        $this->root = $root;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoot()
+    {
+        return $this->root;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setParent(CategoryInterface $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addChild(CategoryInterface $child)
+    {
+        $child->setParent($this);
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove children
+     *
+     * @param CategoryInterface $children
+     */
+    public function removeChild(CategoryInterface $children)
+    {
+        $this->children->removeElement($children);
+    }
+
+    /**
+     * Has children
+     *
+     * @return boolean
+     */
+    public function hasChildren()
+    {
+        return count($this->getChildren()) > 0;
+    }
+
+    /**
+     * Get children
+     *
+     * @return Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * If a node is a tree root, it's the tree starting point and therefore
+     * defines the tree itself.
+     *
+     * @return boolean
+     */
+    public function isRoot()
+    {
+        return ($this->getParent() === null);
     }
 
     /**
