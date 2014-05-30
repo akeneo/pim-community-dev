@@ -16,6 +16,7 @@ use Symfony\Component\Form\FormInterface;
  */
 class CategoryType extends AbstractType
 {
+    /** @staticvar string */
     const NAME = 'pim_type_category';
 
     /**

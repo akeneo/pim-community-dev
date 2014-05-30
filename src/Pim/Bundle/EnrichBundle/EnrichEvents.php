@@ -17,7 +17,7 @@ final class EnrichEvents
      * The event listener receives an
      * Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent instance.
      *
-     * @var string
+     * @staticvar string
      */
     const CREATE_PRODUCT_VALUE_FORM = 'pim_enrich.build_product_value_form';
 }

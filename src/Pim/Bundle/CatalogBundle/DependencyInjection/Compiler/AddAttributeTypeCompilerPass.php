@@ -14,18 +14,14 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddAttributeTypeCompilerPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ATTRIBUTE_TYPE_TAG         = 'pim_catalog.attribute_type';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const FACTORY_ATTRIBUTE_TYPE_KEY = 'pim_catalog.factory.attribute_type';
 
     /**
-     * @param ContainerBuilder $container
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
