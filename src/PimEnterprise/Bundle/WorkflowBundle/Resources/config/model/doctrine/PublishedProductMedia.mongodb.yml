@@ -16,4 +16,3 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
             reference: true
             type: one
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
-

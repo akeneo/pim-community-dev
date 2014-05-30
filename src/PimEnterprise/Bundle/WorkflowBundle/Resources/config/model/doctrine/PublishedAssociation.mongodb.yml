@@ -19,4 +19,3 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
     referenceMany:
         products:
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
-
