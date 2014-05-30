@@ -3,12 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
-
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-
-use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Inject the product id for proposal datagrid
