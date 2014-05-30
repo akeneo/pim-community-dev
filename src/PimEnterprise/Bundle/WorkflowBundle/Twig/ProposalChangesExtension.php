@@ -64,7 +64,7 @@ class ProposalChangesExtension extends \Twig_Extension
     public function presentAttribute(array $change, $default)
     {
         if (isset($change['id']) && null !== $value = $this->repository->find($change['id'])) {
-            return $this->present($value->getAttribute());
+            return $this->present($value->getAttribute(), ['scope' => $value->getScope()]);
         }
 
         return $default;

@@ -49,9 +49,10 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
     ) {
         $repository->find(123)->willReturn($value);
         $value->getAttribute()->willReturn($attribute);
+        $value->getScope()->willReturn('ecommerce');
 
-        $attributePresenter->supports($attribute, [])->willReturn(true);
-        $attributePresenter->present($attribute, [])->willReturn('Name');
+        $attributePresenter->supports($attribute, ['scope' => 'ecommerce'])->willReturn(true);
+        $attributePresenter->present($attribute, ['scope' => 'ecommerce'])->willReturn('Name');
 
         $this->presentAttribute(['id' => '123'], 'foo')->shouldReturn('Name');
     }
