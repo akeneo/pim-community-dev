@@ -15,13 +15,26 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 class ProposalRepository extends EntityRepository implements ProposalRepositoryInterface
 {
     /**
-     * @return QueryBuilder
+     * {@inheritdoc}
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder()
     {
         return $this
-            ->createQueryBuilder('p')
-            ->where('p.product = :product');
+            ->createQueryBuilder('p');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder
+     */
+    public function applyDatagridContext($qb, $productId)
+    {
+        $qb->where('p.product = :product');
+
+        return $this;
     }
 
     /**

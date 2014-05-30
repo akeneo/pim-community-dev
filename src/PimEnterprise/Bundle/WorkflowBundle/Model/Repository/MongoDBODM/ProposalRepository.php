@@ -14,21 +14,27 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInter
 class ProposalRepository extends DocumentRepository implements ProposalRepositoryInterface
 {
     /**
-     * Create datagrid query builder
-     *
-     * @param array $params
+     * {@inheritdoc}
      *
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
-    public function createDatagridQueryBuilder(array $params = array())
+    public function createDatagridQueryBuilder()
     {
         $qb = $this->createQueryBuilder('p');
 
-        if (isset($params['product'])) {
-            $qb->field('product')->equals($params['product']);
-        }
-
         return $this
             ->createQueryBuilder('p');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
+     */
+    public function applyDatagridContext($qb, $productId)
+    {
+        $qb->field('product.$id')->equals(new \MongoId($productId));
+
+        return $this;
     }
 }

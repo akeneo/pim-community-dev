@@ -12,4 +12,20 @@ use Doctrine\Common\Persistence\ObjectRepository;
  */
 interface ProposalRepositoryInterface extends ObjectRepository
 {
+    /**
+     * Create the datagrid query builder
+     *
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder();
+
+    /**
+     * Apply the context of the datagrid to the query
+     *
+     * @param QueryBuilder $qb
+     * @param integer      $product
+     *
+     * @return ProposalRepositoryInterface
+     */
+    public function applyDatagridContext($qb, $productId);
 }
