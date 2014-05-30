@@ -77,7 +77,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
      */
     public function getLinks($nbLinks = null)
     {
-        if ($nbLinks == null) {
+        if (null === $nbLinks) {
             $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
@@ -234,16 +234,16 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
     {
         if ($max > 0) {
             $this->maxPerPage = $max;
-            if ($this->page == 0) {
+            if ($this->page === 0) {
                 $this->page = 1;
             }
         } else {
-            if ($max == 0) {
+            if ($max === 0) {
                 $this->maxPerPage = 0;
                 $this->page       = 0;
             } else {
                 $this->maxPerPage = 1;
-                if ($this->page == 0) {
+                if ($this->page === 0) {
                     $this->page = 1;
                 }
             }
@@ -277,7 +277,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
      */
     public function isFirstPage()
     {
-        return 1 == $this->page;
+        return 1 === $this->page;
     }
 
     /**
@@ -287,7 +287,7 @@ abstract class AbstractPager implements \Countable, \Serializable, PagerInterfac
      */
     public function isLastPage()
     {
-        return $this->page == $this->lastPage;
+        return $this->page === $this->lastPage;
     }
 
     /**

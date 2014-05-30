@@ -24,6 +24,6 @@ class OrmPagerExtension extends AbstractPagerExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return ($datasourceType == PimOrmDatasource::TYPE);
+        return PimOrmDatasource::TYPE === $datasourceType;
     }
 }

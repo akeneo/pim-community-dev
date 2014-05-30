@@ -72,7 +72,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         if (isset($queryParameters['dataLocale'])) {
             $dataLocale = $queryParameters['dataLocale'];
         }
-        if ($dataLocale == null) {
+        if (null === $dataLocale) {
             $dataLocale = $this->userContext->getCurrentLocaleCode();
         }
 
