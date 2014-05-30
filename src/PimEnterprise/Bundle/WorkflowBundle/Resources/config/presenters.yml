@@ -9,6 +9,7 @@ parameters:
     pimee_workflow.presenter.prices.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter
     pimee_workflow.presenter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
     pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
+    pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
 
 services:
     ##
@@ -67,5 +68,12 @@ services:
 
     pimee_workflow.presenter.boolean:
         class: %pimee_workflow.presenter.boolean.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.option:
+        class: %pimee_workflow.presenter.option.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
