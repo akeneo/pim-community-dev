@@ -16,9 +16,7 @@ use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 class OrmSorterExtension extends AbstractSorterExtension
 {
     /**
-     * @param DatagridConfiguration $config
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     protected function matchDatasource(DatagridConfiguration $config)
     {
