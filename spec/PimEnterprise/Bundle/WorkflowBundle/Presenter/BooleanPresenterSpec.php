@@ -6,15 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class BooleanPresenterSpec extends ObjectBehavior
 {
-    function let(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
-    {
-        $this->beConstructedWith($renderer, $factory);
-    }
-
     function it_is_a_translator_aware_presenter()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
@@ -30,10 +25,8 @@ class BooleanPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_boolean_change_using_the_injected_renderer(
-        $renderer,
-        $factory,
+        RendererInterface $renderer,
         TranslatorInterface $translator,
-        \Diff $diff,
         Model\AbstractProductValue $value
     ) {
         $translator->trans('Yes')->willReturn('Yes');
@@ -41,9 +34,9 @@ class BooleanPresenterSpec extends ObjectBehavior
 
         $value->getData()->willReturn(false);
 
-        $factory->create('No', 'Yes')->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between two booleans');
+        $renderer->renderDiff('No', 'Yes')->willReturn('diff between two booleans');
 
+        $this->setRenderer($renderer);
         $this->setTranslator($translator);
         $this->present($value, ['boolean' => '1'])->shouldReturn('diff between two booleans');
     }

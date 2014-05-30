@@ -5,15 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class MetricPresenterSpec extends ObjectBehavior
 {
-    function let(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
-    {
-        $this->beConstructedWith($renderer, $factory);
-    }
-
     function it_is_a_presenter()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
@@ -26,9 +21,7 @@ class MetricPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_metric_change_using_the_injected_renderer(
-        $renderer,
-        $factory,
-        \Diff $diff,
+        RendererInterface $renderer,
         Model\AbstractProductValue $value,
         Model\Metric $metric
     ) {
@@ -36,9 +29,9 @@ class MetricPresenterSpec extends ObjectBehavior
         $metric->getData()->willReturn(50);
         $metric->getUnit()->willReturn('kilogram');
 
-        $factory->create('50 kilogram', '123 millimeter')->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between two metrics');
+        $renderer->renderDiff('50 kilogram', '123 millimeter')->willReturn('diff between two metrics');
 
+        $this->setRenderer($renderer);
         $this->present($value, ['metric' => ['unit' => 'millimeter', 'data' => '123']])->shouldReturn('diff between two metrics');
     }
 }

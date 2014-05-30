@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-
 /**
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
@@ -31,10 +29,7 @@ class PricesPresenter extends AbstractProductValuePresenter
             }
         }
 
-        return $this
-            ->factory
-            ->create(array_values($data), array_values($change))
-            ->render($this->renderer);
+        return $this->renderer->renderDiff(array_values($data), array_values($change));
     }
 
     /**

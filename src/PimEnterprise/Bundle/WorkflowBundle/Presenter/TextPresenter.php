@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
-
 /**
  * Present text data
  *

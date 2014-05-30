@@ -3,32 +3,16 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
 
 /**
  * PimEnterprise\Bundle\WorkflowBundle\Presenter
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractProductValuePresenter implements PresenterInterface
 {
-    /** @var \Diff_Renderer_Html_Array */
-    protected $renderer;
-
-    /** @var DiffFactory */
-    protected $factory;
-
-    /**
-     * @param \Diff_Renderer_Html_Array $renderer
-     * @param DiffFactory               $factory
-     */
-    public function __construct(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory = null)
-    {
-        $this->renderer = $renderer;
-        $this->factory = $factory ?: new DiffFactory();
-    }
+    use RendererAware;
 
     /**
      * {@inheritdoc}
@@ -43,13 +27,10 @@ abstract class AbstractProductValuePresenter implements PresenterInterface
      */
     public function present($value, array $change)
     {
-        return $this
-            ->factory
-            ->create(
-                $this->normalizeData($value->getData()),
-                $this->normalizeChange($change)
-            )
-            ->render($this->renderer);
+        return $this->renderer->renderDiff(
+            $this->normalizeData($value->getData()),
+            $this->normalizeChange($change)
+        );
     }
 
     /**

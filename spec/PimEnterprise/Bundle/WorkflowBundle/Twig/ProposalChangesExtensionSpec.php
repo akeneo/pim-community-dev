@@ -8,19 +8,22 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 class ProposalChangesExtensionSpec extends ObjectBehavior
 {
     function let(
         ObjectRepository $repository,
+        RendererInterface $renderer,
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
         PresenterInterface $valuePresenter
     ) {
-        $this->beConstructedWith($repository, $translator);
+        $this->beConstructedWith($repository, $renderer, $translator);
 
-        $this->addPresenter($attributePresenter);
-        $this->addPresenter($valuePresenter);
+        $this->addPresenter($attributePresenter, 0);
+        $this->addPresenter($valuePresenter, 1);
     }
 
     function it_is_a_twig_extension()
@@ -37,7 +40,7 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter
     ) {
-        $this->getPresenters()->shouldReturn([$attributePresenter, $valuePresenter]);
+        $this->getPresenters()->shouldReturn([$valuePresenter, $attributePresenter]);
     }
 
     function it_presents_proposal_change_attribute_using_a_supporting_presenter(
@@ -72,8 +75,8 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
 
     function it_presents_proposal_using_a_supporting_presenter(
         $repository,
-        PresenterInterface $attributePresenter,
-        PresenterInterface $valuePresenter,
+        $attributePresenter,
+        $valuePresenter,
         Model\AbstractProductValue $value
     ) {
         $repository->find('123')->willReturn($value);
@@ -94,4 +97,64 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('No presenter supports the provided change with key(s) "id, foo"'))->duringPresentChange(['id' => 123, 'foo' => 'bar']);
     }
+
+    function it_injects_translator_in_translator_aware_presenter(
+        $repository,
+        $translator,
+        $attributePresenter,
+        $valuePresenter,
+        Model\AbstractProductValue $value,
+        TranslatorAwarePresenter $presenter
+    ){
+        $repository->find('123')->willReturn($value);
+
+        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
+        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
+        $presenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
+        $presenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
+
+        $presenter->setTranslator($translator)->shouldBeCalled();
+
+        $this->addPresenter($presenter, 0);
+        $this->presentChange(['id' => '123', 'foo' => 'bar']);
+    }
+
+    function it_injects_renderer_in_renderer_aware_presenter(
+        $repository,
+        $renderer,
+        $attributePresenter,
+        $valuePresenter,
+        Model\AbstractProductValue $value,
+        RendererAwarePresenter $presenter
+    ){
+        $repository->find('123')->willReturn($value);
+
+        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
+        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
+        $presenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
+        $presenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
+
+        $presenter->setRenderer($renderer)->shouldBeCalled();
+
+        $this->addPresenter($presenter, 0);
+        $this->presentChange(['id' => '123', 'foo' => 'bar']);
+    }
+}
+
+class TranslatorAwarePresenter implements PresenterInterface
+{
+    use Presenter\TranslatorAware;
+
+    public function supports($object, array $change) { }
+
+    public function present($data, array $change) { }
+}
+
+class RendererAwarePresenter implements PresenterInterface
+{
+    use Presenter\RendererAware;
+
+    public function supports($object, array $change) { }
+
+    public function present($data, array $change) { }
 }

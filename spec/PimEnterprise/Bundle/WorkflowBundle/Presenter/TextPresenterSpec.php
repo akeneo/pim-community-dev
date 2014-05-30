@@ -5,15 +5,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class TextPresenterSpec extends ObjectBehavior
 {
-    function let(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
-    {
-        $this->beConstructedWith($renderer, $factory);
-    }
-
     function it_is_a_presenter()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
@@ -26,41 +21,35 @@ class TextPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_text_change_using_the_injected_renderer(
-        $renderer,
-        $factory,
-        \Diff $diff,
+        RendererInterface $renderer,
         Model\AbstractProductValue $value
     ) {
         $value->getData()->willReturn('bar');
-        $factory->create(['bar'], ['foo'])->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between bar and foo');
+        $renderer->renderDiff(['bar'], ['foo'])->willReturn('diff between bar and foo');
 
+        $this->setRenderer($renderer);
         $this->present($value, ['text' => 'foo'])->shouldReturn('diff between bar and foo');
     }
 
     function it_explodes_text_paragraph_before_rendering_diff(
-        $renderer,
-        $factory,
-        \Diff $diff,
+        RendererInterface $renderer,
         Model\AbstractProductValue $value
     ) {
         $value->getData()->willReturn('<p>foo</p> <p>bar</p>');
-        $factory->create(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between bar and foo');
+        $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
 
+        $this->setRenderer($renderer);
         $this->present($value, ['text' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
     }
 
     function it_explodes_text_paragraph_without_space_before_rendering_diff(
-        $renderer,
-        $factory,
-        \Diff $diff,
+        RendererInterface $renderer,
         Model\AbstractProductValue $value
     ) {
         $value->getData()->willReturn('<p>foo</p><p>bar</p>');
-        $factory->create(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between bar and foo');
+        $renderer->renderDiff(['<p>foo</p>', '<p>bar</p>'], ['<p>foo</p>'])->willReturn('diff between bar and foo');
 
+        $this->setRenderer($renderer);
         $this->present($value, ['text' => '<p>foo</p>'])->shouldReturn('diff between bar and foo');
     }
 }

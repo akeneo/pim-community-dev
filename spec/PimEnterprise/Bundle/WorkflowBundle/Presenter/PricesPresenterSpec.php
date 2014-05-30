@@ -6,15 +6,10 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class PricesPresenterSpec extends ObjectBehavior
 {
-    function let(\Diff_Renderer_Html_Array $renderer, DiffFactory $factory)
-    {
-        $this->beConstructedWith($renderer, $factory);
-    }
-
     function it_is_a_presenter()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
@@ -27,9 +22,7 @@ class PricesPresenterSpec extends ObjectBehavior
     }
 
     function it_presents_prices_change_using_the_injected_renderer(
-        $renderer,
-        $factory,
-        \Diff $diff,
+        RendererInterface $renderer,
         Model\AbstractProductValue $value,
         Collection $collection,
         Model\ProductPrice $eur,
@@ -66,9 +59,9 @@ class PricesPresenterSpec extends ObjectBehavior
             ]
         ];
 
-        $factory->create(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])->willReturn($diff);
-        $diff->render($renderer)->willReturn('diff between two price collections');
+        $renderer->renderDiff(['15 EUR', '22 USD'], ['12 EUR', '25 GBP', '20 USD'])->willReturn('diff between two price collections');
 
+        $this->setRenderer($renderer);
         $this->present($value, $change)->shouldReturn('diff between two price collections');
     }
 }

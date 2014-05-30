@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
-use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Doctrine\Common\Persistence\ObjectRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 
 /**
  * Twig extension to present proposal changes
@@ -18,19 +18,26 @@ class ProposalChangesExtension extends \Twig_Extension
     /** @var ObjectRepository */
     protected $repository;
 
-    /** @var PresenterInterface[] */
-    protected $presenters = [];
+    /** @var \Diff_Renderer_Html_Array */
+    protected $renderer;
 
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var PresenterInterface[] */
+    protected $presenters = [];
+
     /**
-     * @param ObjectRepository $repository
+     * @param ObjectRepository    $repository
      * @param TranslatorInterface $translator
      */
-    public function __construct(ObjectRepository $repository, TranslatorInterface $translator)
-    {
+    public function __construct(
+        ObjectRepository $repository,
+        RendererInterface $renderer,
+        TranslatorInterface $translator
+    ) {
         $this->repository = $repository;
+        $this->renderer = $renderer;
         $this->translator = $translator;
     }
 
@@ -102,9 +109,9 @@ class ProposalChangesExtension extends \Twig_Extension
      *
      * @param PresenterInterface $presenter
      */
-    public function addPresenter(PresenterInterface $presenter)
+    public function addPresenter(PresenterInterface $presenter, $priority)
     {
-        $this->presenters[] = $presenter;
+        $this->presenters[$priority][] = $presenter;
     }
 
     /**
@@ -114,40 +121,63 @@ class ProposalChangesExtension extends \Twig_Extension
      */
     public function getPresenters()
     {
-        return $this->presenters;
-    }
+        krsort($this->presenters);
 
-    /**
-     * Wether or not the presenter uses the translator aware trait
-     *
-     * @param PresenterInterface $presenter
-     *
-     * @return boolean
-     */
-    protected function isTranslatorAware(PresenterInterface $presenter)
-    {
-        return in_array('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware', class_uses($presenter));
+        $presenters = [];
+        foreach ($this->presenters as $groupedPresenters) {
+            $presenters = array_merge($presenters, $groupedPresenters);
+        }
+
+        return $presenters;
     }
 
     /**
      * Present an object
      *
      * @param object $object
-     * @param array $change
+     * @param array  $change
      *
      * @return null|string
      */
     protected function present($object, array $change = [])
     {
-        foreach ($this->presenters as $presenter) {
+        foreach ($this->getPresenters() as $presenter) {
             if ($presenter->supports($object, $change)) {
+                $reflClass = new \ReflectionClass($presenter);
 
-                if ($this->isTranslatorAware($presenter)) {
+                if ($this->useTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware')) {
                     $presenter->setTranslator($this->translator);
+                }
+
+                if ($this->useTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAware')) {
+                    $presenter->setRenderer($this->renderer);
                 }
 
                 return $presenter->present($object, $change);
             }
         }
+    }
+
+    /**
+     * Wether or not the class uses the trait
+     *
+     * @param PresenterInterface $presenter
+     * @param string             $traitName
+     *
+     * @return boolean
+     */
+    protected function useTrait(\ReflectionClass $class, $traitName)
+    {
+        if (in_array($traitName, $class->getTraitNames())) {
+            return true;
+        }
+
+        $parentClass = $class->getParentClass();
+
+        if (false === $parentClass) {
+            return false;
+        }
+
+        return $this->useTrait($parentClass, $traitName);
     }
 }
