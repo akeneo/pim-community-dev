@@ -64,7 +64,9 @@ class ProductReader extends Reader
     {
         if (!$this->query) {
             $code = $this->channel;
-            $this->channel = current($this->channelManager->getChannels(array('code' => $this->channel)));
+            if (!is_object($this->channel)) {
+                $this->channel = $this->channelManager->getChannelByCode($this->channel);
+            }
             if (!$this->channel) {
                 throw new \InvalidArgumentException(
                     sprintf('Could not find the channel "%s"', $code)
@@ -122,5 +124,14 @@ class ProductReader extends Reader
                 )
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        parent::initialize();
+        $this->query = false;
     }
 }

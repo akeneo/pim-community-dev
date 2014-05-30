@@ -60,7 +60,6 @@ services:
             - decimal
             - pim_number
             - '@pim_catalog.validator.attribute_constraint_guesser'
-            - '@pim_catalog.validator.attribute_constraint_guesser'
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_number, entity: %pim_catalog.entity.product.class% }
 
