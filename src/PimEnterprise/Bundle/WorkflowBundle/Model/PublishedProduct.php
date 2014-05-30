@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @ExclusionPolicy("all")
  */
-class PublishedProduct extends AbstractProduct implements ReferableInterface
+class PublishedProduct extends AbstractProduct implements ReferableInterface, PublishedProductInterface
 {
     /** @var mixed */
     protected $originalProductId;
