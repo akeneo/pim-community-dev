@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 
 /**
  * Proposal ODM repository
