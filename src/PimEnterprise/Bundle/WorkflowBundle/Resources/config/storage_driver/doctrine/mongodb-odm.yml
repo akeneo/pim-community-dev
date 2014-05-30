@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM\ProposalRepository
+    pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\ProposalRepository
 
 services:
     pimee_workflow.object_manager.proposal:

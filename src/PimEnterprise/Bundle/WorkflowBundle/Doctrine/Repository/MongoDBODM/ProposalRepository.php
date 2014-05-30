@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;

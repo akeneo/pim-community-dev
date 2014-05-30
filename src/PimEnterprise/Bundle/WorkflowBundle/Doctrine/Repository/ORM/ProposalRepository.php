@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;

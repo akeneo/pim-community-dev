@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
     type: document
     collection: pimee_workflow_proposal
-    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM\ProposalRepository
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\ProposalRepository
     fields:
         id:
             id: true

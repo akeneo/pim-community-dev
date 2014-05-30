@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 
