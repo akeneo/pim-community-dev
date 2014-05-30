@@ -1,0 +1,10 @@
+parameters:
+    pimee_workflow.datagrid.event_listener.inject_product_for_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProposal
+
+services:
+    pimee_workflow.datagrid.event_listener.inject_product_for_proposal:
+        class: %pimee_workflow.datagrid.event_listener.inject_product_for_proposal.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.proposals-grid, method: buildBefore }
