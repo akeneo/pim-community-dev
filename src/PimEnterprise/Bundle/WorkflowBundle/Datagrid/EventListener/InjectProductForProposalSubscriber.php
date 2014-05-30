@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class InjectProductForProposal
+class InjectProductForProposalSubscriber
 {
     /** @var RequestParameters $requestParams */
     protected $requestParams;

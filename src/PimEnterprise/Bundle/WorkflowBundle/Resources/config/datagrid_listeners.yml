@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.datagrid.event_listener.inject_product_for_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProposal
+    pimee_workflow.datagrid.event_listener.inject_product_for_proposal.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProposalSubscriber
 
 services:
     pimee_workflow.datagrid.event_listener.inject_product_for_proposal:
