@@ -18,4 +18,13 @@ interface ProposalRepositoryInterface extends ObjectRepository
      * @return QueryBuilder
      */
     public function createDatagridQueryBuilder();
+
+    /**
+     *
+     * @param QueryBuilder $qb
+     * @param unknown_type $field
+     * @param unknown_type $operator
+     * @param unknown_type $value
+     */
+    public function applyFilter($qb, $field, $operator, $value);
 }

@@ -40,4 +40,18 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
             ]
         );
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder
+     */
+    public function applyFilter($qb, $field, $operator, $value)
+    {
+        if ('IN' === $operator) {
+            if (!empty($value)) {
+                $qb->expr()->in($field, $value);
+            }
+        }
+    }
 }
