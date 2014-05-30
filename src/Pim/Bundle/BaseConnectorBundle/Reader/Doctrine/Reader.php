@@ -107,4 +107,12 @@ class Reader extends AbstractConfigurableStepElement implements
     {
         $this->stepExecution = $stepExecution;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->executed = false;
+    }
 }
