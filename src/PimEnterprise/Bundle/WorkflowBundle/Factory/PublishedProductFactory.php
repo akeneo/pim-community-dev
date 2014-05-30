@@ -102,7 +102,7 @@ class PublishedProductFactory
             foreach ($association->getProducts() as $product) {
                 $productIds[]= $product->getId();
             }
-            $publishedProducts = $this->repository->findBy(['originalProductId' => $productIds]);
+            $publishedProducts = $this->repository->findAllByOriginalProductId($productIds);
             if (count($publishedProducts) > 0) {
                 $copiedAssociation->setProducts($publishedProducts);
             }

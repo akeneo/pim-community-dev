@@ -25,4 +25,16 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         return $product;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllByOriginalProductId(array $originalIds)
+    {
+        $qb = $this->createQueryBuilder('p');
+        $qb->field('originalProductId')->in($originalIds);
+        $products = $qb->getQuery()->execute();
+
+        return $products->toArray();
+    }
 }

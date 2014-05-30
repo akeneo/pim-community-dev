@@ -18,4 +18,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * @return PublishedProduct
      */
     public function findOneByOriginalProductId($originalId);
+
+    /**
+     * @param array $originalIds
+     *
+     * @return PublishedProduct[]
+     */
+    public function findAllByOriginalProductId(array $originalIds);
 }
