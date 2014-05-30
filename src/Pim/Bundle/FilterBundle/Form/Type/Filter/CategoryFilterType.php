@@ -15,19 +15,13 @@ use Pim\Bundle\FilterBundle\Form\Type\CategoryType;
  */
 class CategoryFilterType extends NumberFilterType
 {
-    /**
-     * @staticvar boolean
-     */
+    /** @staticvar integer */
     const EXCLUDE_SUB = 0;
 
-    /**
-     * @staticvar boolean
-     */
+    /** @staticvar integer */
     const INCLUDE_SUB = 1;
 
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_category_filter';
 
     /**

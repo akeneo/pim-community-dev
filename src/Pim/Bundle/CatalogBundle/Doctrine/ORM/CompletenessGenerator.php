@@ -20,32 +20,25 @@ use Doctrine\ORM\Mapping\ClassMetadataInfo;
  */
 class CompletenessGenerator implements CompletenessGeneratorInterface
 {
+    /** @staticvar string */
     const COMPLETE_PRICES_TABLE = 'complete_price';
+
+    /** @staticvar string */
     const MISSING_TABLE = 'missing_completeness';
 
-    /**
-     * @var Connection
-     */
+    /** @var Connection */
     protected $connection;
 
-    /**
-     * @var EntityManagerInterface
-     */
+    /** @var EntityManagerInterface */
     protected $manager;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productValueClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /**

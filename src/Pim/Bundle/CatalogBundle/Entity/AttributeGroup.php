@@ -21,9 +21,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  */
 class AttributeGroup implements TranslatableInterface, ReferableInterface, VersionableInterface
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const DEFAULT_GROUP_CODE = 'Other';
 
     /**

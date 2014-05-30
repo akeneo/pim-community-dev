@@ -16,19 +16,13 @@ use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
  */
 abstract class AbstractSorterExtension extends AbstractExtension
 {
-    /**
-     * Query param
-     */
+    /** @staticvar string Query param */
     const SORTERS_ROOT_PARAM = '_sort_by';
 
-    /**
-     * Ascending sorting direction
-     */
+    /** @staticvar string Ascending sorting direction */
     const DIRECTION_ASC = "ASC";
 
-    /**
-     * Descending sorting direction
-     */
+    /** @staticvar string Descending sorting direction */
     const DIRECTION_DESC = "DESC";
 
     /**

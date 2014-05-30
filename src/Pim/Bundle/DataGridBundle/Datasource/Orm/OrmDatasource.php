@@ -20,10 +20,10 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
  */
 class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    /** @var string */
+    /** @staticvar string */
     const TYPE = 'pim_orm';
 
-    /** @var string */
+    /** @staticvar string */
     const ENTITY_PATH = '[source][entity]';
 
     /** @var HydratorInterface */

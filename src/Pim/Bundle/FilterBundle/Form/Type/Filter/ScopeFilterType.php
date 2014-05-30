@@ -16,14 +16,10 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class ScopeFilterType extends ChoiceFilterType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_scope_filter';
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
     /**

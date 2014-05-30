@@ -14,9 +14,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class NumberType extends AbstractAttributeType
 {
-    /**
-     * @staticvar integer
-     */
+    /** @staticvar integer */
     const DECIMAL_PLACES = 4;
 
     /**

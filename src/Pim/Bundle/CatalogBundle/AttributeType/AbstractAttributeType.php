@@ -20,14 +20,14 @@ abstract class AbstractAttributeType implements AttributeTypeInterface
     /**
      * Available backend storage, the product doctrine mapped field
      *
-     * @var string
+     * @staticvar string
      */
     const BACKEND_STORAGE_ATTRIBUTE_VALUE = 'values';
 
     /**
      * Available backend types, the doctrine mapped field in value class
      *
-     * @var string
+     * @staticvar string
      */
     const BACKEND_TYPE_DATE       = 'date';
     const BACKEND_TYPE_DATETIME   = 'datetime';

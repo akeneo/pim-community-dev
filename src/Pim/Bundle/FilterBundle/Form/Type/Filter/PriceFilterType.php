@@ -19,9 +19,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
  */
 class PriceFilterType extends AbstractType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_price_filter';
 
     /**

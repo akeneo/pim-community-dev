@@ -18,19 +18,13 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
  */
 class CategoryFilter extends NumberFilter
 {
-    /**
-     * @staticvar integer
-     */
+    /** @staticvar integer */
     const UNCLASSIFIED_CATEGORY = -1;
 
-    /**
-     * @staticvar integer
-     */
+    /** @staticvar integer */
     const ALL_CATEGORY = -2;
 
-    /**
-     * @var ProductCategoryManager $manager
-     */
+    /** @var ProductCategoryManager $manager */
     protected $manager;
 
     /**

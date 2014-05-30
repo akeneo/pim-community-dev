@@ -15,19 +15,13 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddSortersPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const SORTER_EXTENSION_ID = 'pim_datagrid.extension.sorter.orm_sorter';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const SORTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.sorter.product_sorter';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TAG_NAME = 'pim_datagrid.extension.sorter';
 
     /**
