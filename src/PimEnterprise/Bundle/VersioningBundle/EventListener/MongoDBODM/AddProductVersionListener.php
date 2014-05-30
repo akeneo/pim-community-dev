@@ -14,9 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 class AddProductVersionListener extends PimAddProductVersionListener
 {
     /**
-     * Mark object as to be versioned
-     *
-     * @param object $versionable
+     * {@inheritdoc}
      */
     protected function addPendingVersioning($versionable)
     {
