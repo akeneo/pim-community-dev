@@ -32,7 +32,7 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
      */
     public function applyDatagridContext($qb, $productId)
     {
-        $qb->where('p.product = :product');
+        $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
 
         return $this;
     }
