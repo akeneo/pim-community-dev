@@ -1,9 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 
 /**
  * Proposal ODM repository
@@ -15,11 +15,27 @@ class ProposalRepository extends DocumentRepository implements ProposalRepositor
 {
     /**
      * {@inheritdoc}
+     *
+     * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
     public function createDatagridQueryBuilder()
     {
+        $qb = $this->createQueryBuilder('p');
+
         return $this
             ->createQueryBuilder('p');
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ODM\MongoDB\Query\Builder $qb
+     */
+    public function applyDatagridContext($qb, $productId)
+    {
+        $qb->field('product.$id')->equals(new \MongoId($productId));
+
+        return $this;
     }
 
     /**
