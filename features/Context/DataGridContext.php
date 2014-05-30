@@ -688,6 +688,25 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @param string $viewLabel
+     *
+     * @When /^I apply the "([^"]*)" view$/
+     */
+    public function iApplyTheView($viewLabel)
+    {
+        $this->datagrid->applyView($viewLabel);
+        $this->wait();
+    }
+
+    /**
+     * @When /^I delete the view$/
+     */
+    public function iDeleteTheView()
+    {
+        $this->getCurrentPage()->find('css', '#remove-view')->click();
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message

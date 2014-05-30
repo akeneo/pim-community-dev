@@ -14,9 +14,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  */
 class NumberType extends AbstractAttributeType
 {
-    /** @staticvar integer */
-    const DECIMAL_PLACES = 4;
-
     /**
      * {@inheritdoc}
      */
@@ -63,7 +60,7 @@ class NumberType extends AbstractAttributeType
     public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
-        $options['precision'] = $value->getAttribute()->isDecimalsAllowed() ? self::DECIMAL_PLACES : 0;
+        $options['decimals_allowed'] = $value->getAttribute()->isDecimalsAllowed();
 
         return $options;
     }

@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.doctrine.smart_manager_registry.class:             Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
+    pim_catalog.doctrine.smart_manager_registry.class: Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
+    pim_catalog.doctrine.table_name_builder.class:     Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder
 
 services:
     # Validators
@@ -49,3 +50,9 @@ services:
         class: %pim_catalog.doctrine.smart_manager_registry.class%
         calls:
             - [addRegistry, ['@doctrine']]
+
+    pim_catalog.doctrine.table_name_builder:
+        class: %pim_catalog.doctrine.table_name_builder.class%
+        arguments:
+            - '@service_container'
+            - '@pim_catalog.doctrine.smart_manager_registry'

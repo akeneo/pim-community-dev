@@ -18,11 +18,10 @@ oro.grid.mass_action.delete.success_message: "{0} No entities were removed|{1} O
 datagrid_view:
     views:         Views
     default:       My default view
-    create:        Add
+    create:        Create a view with this search
     placeholder:   Name of new view
     remove:        Delete this view
     save_changes:  Update
-    save_view:     Save
     choose_label:  Choose a label for the view
     columns:
         min_message: You must select at least one datagrid column to display

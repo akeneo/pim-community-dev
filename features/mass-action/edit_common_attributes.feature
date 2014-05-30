@@ -49,10 +49,10 @@ Feature: Edit common attributes of many products at once
   @jira https://akeneo.atlassian.net/browse/PIM-2182
   Scenario: Allow edition only common attribute to product values
     Given the following attributes:
-      | code          | label         | unique    |
-      | sole_color    | Sole          | no        |
-      | fur           | Fur           | no        |
-      | serial_number | Serial number | yes       |
+      | code          | label         | unique |
+      | sole_color    | Sole          | no     |
+      | fur           | Fur           | no     |
+      | serial_number | Serial number | yes    |
     And the following product values:
       | product   | attribute     | value                 |
       | boots     | comment       | Comment on boots      |
@@ -72,8 +72,8 @@ Feature: Edit common attributes of many products at once
       | code       | label | families   |
       | sole_color | Sole  | high_heels |
     And the following product values:
-      | product   | attribute  | value |
-      | boots     | sole_color | Blue  |
+      | product | attribute  | value |
+      | boots   | sole_color | Blue  |
     When I mass-edit products boots and high_heels
     And I choose the "Edit attributes" operation
     Then I should see available attribute Sole in group "Other"

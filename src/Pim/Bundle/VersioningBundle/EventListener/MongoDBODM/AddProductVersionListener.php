@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
@@ -117,7 +118,9 @@ class AddProductVersionListener implements EventSubscriber
 
         if ($versionedCount) {
             foreach ($this->registry->getManagers() as $manager) {
-                $manager->flush();
+                if ($manager instanceof EntityManager) {
+                    $manager->flush();
+                }
             }
         }
     }

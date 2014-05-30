@@ -11,10 +11,10 @@ Feature: Filter products
       | furniture |
       | library   |
     And the following attributes:
-      | label  | localizable | scopable | useable as grid filter |
-      | Name   | yes         | no       | yes                    |
-      | Image  | no          | yes      | yes                    |
-      | Info   | yes         | yes      | yes                    |
+      | label | localizable | scopable | useable as grid filter |
+      | Name  | yes         | no       | yes                    |
+      | Image | no          | yes      | yes                    |
+      | Info  | yes         | yes      | yes                    |
     And the following products:
       | sku    | family    | enabled | name-en_US  | name-fr_FR   | info-en_US-ecommerce    | info-en_US-mobile    | info-fr_FR-ecommerce     | info-fr_FR-mobile     | image-ecommerce  | image-mobile     |
       | postit | furniture | yes     | Post it     | Etiquette    | My ecommerce info       | My mobile info       | Ma info ecommerce        | Ma info mobile        | large.jpeg       | small.jpeg       |
@@ -29,20 +29,20 @@ Feature: Filter products
     Then the grid should contain 5 elements
     And I should see products postit and book and book2 and ebook and chair
     And I should be able to use the following filters:
-      | filter  | value                 | result                         |
-      | SKU     | book                  | book, ebook and book2          |
-      | Name    | post                  | postit                         |
-      | Info    | book                  | book, ebook and book2          |
-      | Status  | Enabled               | postit, ebook, book2 and chair |
-      | Status  | Disabled              | book                           |
-      | SKU     | contains book         | book, book2 and ebook          |
-      | SKU     | does not contain book | postit and chair               |
-      | SKU     | starts with boo       | book and book2                 |
-      | SKU     | is equal to book      | book                           |
-      | SKU     | ends with book        | book and ebook                 |
-      | SKU     | in list book          | book                           |
-      | SKU     | in list postit, book2 | postit and book2               |
-      | Name    | empty                 |                                |
+      | filter | value                 | result                         |
+      | SKU    | book                  | book, ebook and book2          |
+      | Name   | post                  | postit                         |
+      | Info   | book                  | book, ebook and book2          |
+      | Status | Enabled               | postit, ebook, book2 and chair |
+      | Status | Disabled              | book                           |
+      | SKU    | contains book         | book, book2 and ebook          |
+      | SKU    | does not contain book | postit and chair               |
+      | SKU    | starts with boo       | book and book2                 |
+      | SKU    | is equal to book      | book                           |
+      | SKU    | ends with book        | book and ebook                 |
+      | SKU    | in list book          | book                           |
+      | SKU    | in list postit, book2 | postit and book2               |
+      | Name   | empty                 |                                |
 
 #      | Name    | contains chair/       | chair                          |
 #      | Name    | contains /            | chair                          |

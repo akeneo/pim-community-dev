@@ -42,6 +42,9 @@
 - Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
 - Add a dependency to the completeness manager on `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler`
 - Add a dependency to the channel repository on `Pim\Bundle\CatalogBundle\Manager\CompletenessManager`
+- Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
+- Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
+- Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

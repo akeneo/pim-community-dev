@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
+use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
 /**
  * Columns configurator for products grid (used to associate products to groups)
@@ -14,10 +17,8 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class GroupColumnsConfigurator extends ColumnsConfigurator
 {
-    /**
-     * @var Group
-     */
-    protected $group;
+    /** @var GroupRepository */
+    protected $groupRepository;
 
     /**
      * @param array
@@ -25,25 +26,36 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     protected $axisColumns;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the conf registry
-     * @param Group                 $group         the current group
+     * @var Request
+     */
+    protected $request;
+
+    /**
+     * @var RequestParameters
+     */
+    protected $requestParams;
+
+    /**
+     * @param ConfigurationRegistry $registry
+     * @param RequestParameters     $requestParams
+     * @param GroupRepository       $groupRepository
      */
     public function __construct(
-        DatagridConfiguration $configuration,
         ConfigurationRegistry $registry,
-        Group $group
+        RequestParameters $requestParams,
+        GroupRepository $groupRepository
     ) {
-        parent::__construct($configuration, $registry);
-
-        $this->group = $group;
+        parent::__construct($registry);
+        $this->requestParams   = $requestParams;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
         $this->prepareAxisColumns();
@@ -52,17 +64,41 @@ class GroupColumnsConfigurator extends ColumnsConfigurator
     }
 
     /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * @return Group
+     */
+    protected function getGroup()
+    {
+        $groupId = $this->request->get('id', null);
+        if (!$groupId) {
+            $groupId = $this->requestParams->get('currentGroup', null);
+        }
+
+        $group = $this->groupRepository->findOne($groupId);
+
+        return $group;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function prepareAxisColumns()
     {
+
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
         $axisCodes = array_map(
             function ($attribute) {
                 return $attribute->getCode();
             },
-            $this->group->getAttributes()->toArray()
+            $this->getGroup()->getAttributes()->toArray()
         );
         $this->axisColumns = array();
 

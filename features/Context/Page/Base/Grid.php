@@ -38,6 +38,8 @@ class Grid extends Index
                 'Grid toolbar'      => ['css' => 'div.grid-toolbar'],
                 'Manage filters'    => ['css' => 'div.filter-list'],
                 'Configure columns' => ['css' => 'a:contains("Columns")'],
+                'View selector'     => ['css' => '#view-selector'],
+                'Views list'        => ['css' => 'div.ui-multiselect-menu.highlight-hover'],
             ],
             $this->elements
         );
@@ -470,6 +472,32 @@ class Grid extends Index
         }
 
         $refreshBtn->click();
+    }
+
+    /**
+     * Click on view in the view select
+     * @param string $viewLabel
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function applyView($viewLabel)
+    {
+        $this
+            ->getElement('View selector')
+            ->getParent()
+            ->find('css', 'button.pimmultiselect')
+            ->click();
+
+        try {
+            $this
+                ->getElement('Views list')
+                ->find('css', sprintf('label:contains("%s")', $viewLabel))
+                ->click();
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to apply view "%s"', $viewLabel)
+            );
+        }
     }
 
     /**
