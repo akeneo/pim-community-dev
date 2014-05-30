@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
 
 class MetricPresenterSpec extends ObjectBehavior
@@ -19,23 +19,26 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface');
     }
 
-    function it_supports_change_if_it_has_a_metric_key()
-    {
-        $this->supportsChange(['metric' => 'foo'])->shouldBe(true);
+    function it_supports_change_if_it_has_a_metric_key(
+        Model\AbstractProductValue $value
+    ) {
+        $this->supports($value, ['metric' => 'foo'])->shouldBe(true);
     }
 
     function it_presents_metric_change_using_the_injected_renderer(
         $renderer,
         $factory,
         \Diff $diff,
-        Metric $metric
+        Model\AbstractProductValue $value,
+        Model\Metric $metric
     ) {
+        $value->getData()->willReturn($metric);
         $metric->getData()->willReturn(50);
         $metric->getUnit()->willReturn('kilogram');
 
         $factory->create('50 kilogram', '123 millimeter')->willReturn($diff);
         $diff->render($renderer)->willReturn('diff between two metrics');
 
-        $this->present($metric, ['metric' => ['unit' => 'millimeter', 'data' => '123']])->shouldReturn('diff between two metrics');
+        $this->present($value, ['metric' => ['unit' => 'millimeter', 'data' => '123']])->shouldReturn('diff between two metrics');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
 
 /**
@@ -11,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractPresenter implements PresenterInterface
+abstract class AbstractProductValuePresenter implements PresenterInterface
 {
     /** @var \Diff_Renderer_Html_Array */
     protected $renderer;
@@ -32,16 +33,33 @@ abstract class AbstractPresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function present($data, array $change)
+    public function supports($object, array $change)
+    {
+        return $object instanceof AbstractProductValue && $this->supportsChange($change);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function present($value, array $change)
     {
         return $this
             ->factory
             ->create(
-                $this->normalizeData($data),
+                $this->normalizeData($value->getData()),
                 $this->normalizeChange($change)
             )
             ->render($this->renderer);
     }
+
+    /**
+     * Wether or not this class can present the provided change
+     *
+     * @param array $change
+     *
+     * @return boolean
+     */
+    abstract protected function supportsChange(array $change);
 
     /**
      * Normalize data

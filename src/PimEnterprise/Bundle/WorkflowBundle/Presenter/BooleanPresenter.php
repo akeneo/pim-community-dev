@@ -3,19 +3,27 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 /**
- * Present changes on date data
+ * Present changes on boolean data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class DatePresenter extends AbstractProductValuePresenter
+class BooleanPresenter extends AbstractProductValuePresenter
 {
+    use TranslatorAware;
+
+    /** @staticvar boolean */
+    const YES = 'Yes';
+
+    /** @staticvar boolean */
+    const NO = 'No';
+
     /**
      * {@inheritdoc}
      */
     public function supportsChange(array $change)
     {
-        return array_key_exists('date', $change);
+        return array_key_exists('boolean', $change);
     }
 
     /**
@@ -23,7 +31,7 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $data->format('F, d Y');
+        return $this->translator->trans($data ? self::YES : self::NO);
     }
 
     /**
@@ -31,6 +39,6 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return (new \DateTime($change['date']))->format('F, d Y');
+        return $this->translator->trans($change['boolean'] ? self::YES : self::NO);
     }
 }

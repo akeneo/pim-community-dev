@@ -2,12 +2,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+
 /**
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PricesPresenter extends AbstractPresenter
+class PricesPresenter extends AbstractProductValuePresenter
 {
     /**
      * {@inheritdoc}
@@ -17,9 +19,9 @@ class PricesPresenter extends AbstractPresenter
         return array_key_exists('prices', $change);
     }
 
-    public function present($data, array $change)
+    public function present($object, array $change)
     {
-        $data = $this->normalizeData($data);
+        $data = $this->normalizeData($object->getData());
         $change = $this->normalizeChange($change);
 
         foreach ($data as $currency => $price) {

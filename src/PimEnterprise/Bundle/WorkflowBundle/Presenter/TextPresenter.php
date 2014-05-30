@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Diff\Factory\DiffFactory;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class TextPresenter extends AbstractPresenter
+class TextPresenter extends AbstractProductValuePresenter
 {
     /**
      * {@inheritdoc}

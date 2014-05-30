@@ -17,7 +17,7 @@ interface PresenterInterface
      *
      * @return boolean
      */
-    public function supportsChange(array $change);
+    public function supports($object, array $change);
 
     /**
      * Present the provided change into html

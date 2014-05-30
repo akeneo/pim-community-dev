@@ -7,12 +7,20 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 class ProposalChangesExtensionSpec extends ObjectBehavior
 {
-    function let(ObjectRepository $repository)
-    {
-        $this->beConstructedWith($repository);
+    function let(
+        ObjectRepository $repository,
+        TranslatorInterface $translator,
+        PresenterInterface $attributePresenter,
+        PresenterInterface $valuePresenter
+    ) {
+        $this->beConstructedWith($repository, $translator);
+
+        $this->addPresenter($attributePresenter);
+        $this->addPresenter($valuePresenter);
     }
 
     function it_is_a_twig_extension()
@@ -25,14 +33,25 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $this->getName()->shouldReturn('pimee_workflow_proposal_changes_extension');
     }
 
-    function it_presents_proposal_change_attribute_using_the_value_id(
+    function it_has_presenters(
+        $attributePresenter,
+        $valuePresenter
+    ) {
+        $this->getPresenters()->shouldReturn([$attributePresenter, $valuePresenter]);
+    }
+
+    function it_presents_proposal_change_attribute_using_a_supporting_presenter(
         $repository,
+        $attributePresenter,
+        $valuePresenter,
         Model\AbstractAttribute $attribute,
         Model\AbstractProductValue $value
     ) {
         $repository->find(123)->willReturn($value);
         $value->getAttribute()->willReturn($attribute);
-        $attribute->__toString()->willReturn('Name');
+
+        $attributePresenter->supports($attribute, [])->willReturn(true);
+        $attributePresenter->present($attribute, [])->willReturn('Name');
 
         $this->presentAttribute(['id' => '123'], 'foo')->shouldReturn('Name');
     }
@@ -50,29 +69,28 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $this->presentAttribute(['id' => '123'], 'foo')->shouldReturn('foo');
     }
 
-    function it_has_presenters(
-        PresenterInterface $presenter
-    ) {
-        $this->addPresenter($presenter);
-        $this->getPresenters()->shouldReturn([$presenter]);
-    }
-
     function it_presents_proposal_using_a_supporting_presenter(
-        PresenterInterface $presenter1,
-        PresenterInterface $presenter2
+        $repository,
+        PresenterInterface $attributePresenter,
+        PresenterInterface $valuePresenter,
+        Model\AbstractProductValue $value
     ) {
-        $this->addPresenter($presenter1);
-        $this->addPresenter($presenter2);
+        $repository->find('123')->willReturn($value);
 
-        $presenter1->supportsChange(['changes'])->willReturn(false);
-        $presenter2->supportsChange(['changes'])->willReturn(true);
-        $presenter2->present(['changes'])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
+        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
+        $valuePresenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
 
-        $this->presentChange(['changes'])->shouldReturn('<b>changes</b>');
+        $this->presentChange(['id' => '123', 'foo' => 'bar'])->shouldReturn('<b>changes</b>');
     }
 
-    function its_presentChange_method_throws_exception_if_no_presenter_support_the_change()
-    {
-        $this->shouldThrow(new \LogicException('No presenter supports the provided change'))->duringPresentChange([]);
+    function its_presentChange_method_throws_exception_if_no_presenter_support_the_change(
+        $repository,
+        Model\AbstractProductValue $value
+    ) {
+        $repository->find('123')->willReturn($value);
+        $value->getData()->willReturn('foo');
+
+        $this->shouldThrow(new \LogicException('No presenter supports the provided change with key(s) "id, foo"'))->duringPresentChange(['id' => 123, 'foo' => 'bar']);
     }
 }

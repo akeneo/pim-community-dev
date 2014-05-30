@@ -5,9 +5,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use Symfony\Component\Translation\TranslatorInterface;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Twig
+ * Twig extension to present proposal changes
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -20,16 +21,25 @@ class ProposalChangesExtension extends \Twig_Extension
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
-    protected $renderer;
+    /** @var TranslatorInterface */
+    protected $translator;
 
-    #public function __construct(\Diff_Renderer_Html_Array $renderer)
-    #{
-    #    $this->renderer = $renderer;
-    #}
-
-    public function __construct(ObjectRepository $repository)
+    /**
+     * @param ObjectRepository $repository
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(ObjectRepository $repository, TranslatorInterface $translator)
     {
         $this->repository = $repository;
+        $this->translator = $translator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'pimee_workflow_proposal_changes_extension';
     }
 
     /**
@@ -43,41 +53,101 @@ class ProposalChangesExtension extends \Twig_Extension
         ];
     }
 
+    /**
+     * Present an attribute (showing its label, scope and localizability)
+     *
+     * @param array  $change
+     * @param string $default
+     *
+     * @return string
+     */
     public function presentAttribute(array $change, $default)
     {
         if (isset($change['id']) && null !== $value = $this->repository->find($change['id'])) {
-            return (string) $value->getAttribute();
+            return $this->present($value->getAttribute());
         }
 
         return $default;
     }
 
+    /**
+     * Present an attribute change
+     *
+     * @param array $change
+     *
+     * @return string
+     *
+     * @throws \LogicException
+     */
     public function presentChange(array $change)
     {
-        foreach ($this->presenters as $presenter) {
-            if ($presenter->supportsChange($change)) {
-                if (isset($change['id']) && null !== $value = $this->repository->find($change['id'])) {
-                    return $presenter->present($value->getData(), $change);
-                }
-            }
+        if (!isset($change['id']) || null === $value = $this->repository->find($change['id'])) {
+            throw new \InvalidArgumentException('Could not retrieve the product value from the provided change');
         }
 
-        throw new \LogicException('No presenter supports the provided change');
+        if (null !== $result = $this->present($value, $change)) {
+            return $result;
+        }
+
+        throw new \LogicException(
+            sprintf(
+                'No presenter supports the provided change with key(s) "%s"',
+                implode(', ', array_keys($change))
+            )
+        );
     }
 
-    public function getName()
-    {
-        return 'pimee_workflow_proposal_changes_extension';
-    }
-
-
+    /**
+     * Add a presenter
+     *
+     * @param PresenterInterface $presenter
+     */
     public function addPresenter(PresenterInterface $presenter)
     {
         $this->presenters[] = $presenter;
     }
 
+    /**
+     * Get the registered presenters
+     *
+     * @return PresenterInterface[]
+     */
     public function getPresenters()
     {
         return $this->presenters;
+    }
+
+    /**
+     * Wether or not the presenter uses the translator aware trait
+     *
+     * @param PresenterInterface $presenter
+     *
+     * @return boolean
+     */
+    protected function isTranslatorAware(PresenterInterface $presenter)
+    {
+        return in_array('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware', class_uses($presenter));
+    }
+
+    /**
+     * Present an object
+     *
+     * @param object $object
+     * @param array $change
+     *
+     * @return null|string
+     */
+    protected function present($object, array $change = [])
+    {
+        foreach ($this->presenters as $presenter) {
+            if ($presenter->supports($object, $change)) {
+
+                if ($this->isTranslatorAware($presenter)) {
+                    $presenter->setTranslator($this->translator);
+                }
+
+                return $presenter->present($object, $change);
+            }
+        }
     }
 }

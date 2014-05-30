@@ -3,12 +3,12 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 /**
- * Present metric data
+ * Present change on metric data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MetricPresenter extends AbstractPresenter
+class MetricPresenter extends AbstractProductValuePresenter
 {
     /**
      * {@inheritdoc}

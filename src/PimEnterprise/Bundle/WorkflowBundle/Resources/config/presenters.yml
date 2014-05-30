@@ -11,6 +11,7 @@ services:
         class: %pimee_workflow.twig.extension.proposal_changes.class%
         arguments:
             - '@pim_catalog.repository.product_value'
+            - '@translator'
         tags:
             - { name: twig.extension }
         # TODO Use a compiler pass for that
