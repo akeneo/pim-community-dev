@@ -6,6 +6,7 @@ parameters:
     pimee_workflow.form.comparator.prices.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\PricesComparator
     pimee_workflow.form.comparator.metric.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\MetricComparator
     pimee_workflow.form.comparator.option.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionComparator
+    pimee_workflow.form.comparator.options.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionsComparator
     pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
 
 services:
@@ -24,6 +25,7 @@ services:
             - [ addComparator, [ '@pimee_workflow.form.comparator.prices' ] ]
             - [ addComparator, [ '@pimee_workflow.form.comparator.metric' ] ]
             - [ addComparator, [ '@pimee_workflow.form.comparator.option' ] ]
+            - [ addComparator, [ '@pimee_workflow.form.comparator.options' ] ]
             - [ addComparator, [ '@pimee_workflow.form.comparator.scalar' ] ]
 
     pimee_workflow.form.comparator.media:
@@ -47,6 +49,10 @@ services:
     pimee_workflow.form.comparator.option:
         public: false
         class: %pimee_workflow.form.comparator.option.class%
+
+    pimee_workflow.form.comparator.options:
+        public: false
+        class: %pimee_workflow.form.comparator.options.class%
 
     pimee_workflow.form.comparator.scalar:
         public: false

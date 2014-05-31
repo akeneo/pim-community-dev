@@ -10,6 +10,7 @@ parameters:
     pimee_workflow.presenter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
     pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
     pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
+    pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
 
 services:
     ##
