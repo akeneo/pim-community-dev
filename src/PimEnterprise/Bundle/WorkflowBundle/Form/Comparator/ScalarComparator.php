@@ -32,7 +32,9 @@ class ScalarComparator implements ComparatorInterface
      */
     public function supportsComparison(AbstractProductValue $value)
     {
-        return true;
+        $data = $value->getData();
+
+        return is_null($data) || is_scalar($data);
     }
 
     /**
