@@ -25,8 +25,11 @@ class OptionsComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        $options = $value->getOptions();
+        if (!isset($submittedData['options'])) {
+            return;
+        }
 
+        $options = $value->getOptions();
         $getIds = function($option) {
             return $option->getId();
         };
