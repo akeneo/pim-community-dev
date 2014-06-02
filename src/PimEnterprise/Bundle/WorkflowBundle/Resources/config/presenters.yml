@@ -78,3 +78,10 @@ services:
             - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.options:
+        class: %pimee_workflow.presenter.options.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.presenter }
