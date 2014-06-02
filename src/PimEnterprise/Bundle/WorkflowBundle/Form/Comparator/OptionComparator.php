@@ -26,6 +26,10 @@ class OptionComparator implements ComparatorInterface
     {
         $option = $value->getOption();
 
+        if (null === $option && empty($submittedData['option'])) {
+            return;
+        }
+
         if (!$option || $option->getId() != $submittedData['option']) {
             return [
                 'id' => $submittedData['id'],
