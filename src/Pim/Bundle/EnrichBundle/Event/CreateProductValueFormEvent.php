@@ -35,19 +35,26 @@ class CreateProductValueFormEvent extends Event
     protected $formOptions;
 
     /**
+     * @var array
+     */
+    protected $context;
+
+    /**
      * Constructor
      *
      * @param ProductValueInterface $value
      * @param string                $formType
      * @param mixed                 $formData
      * @param array                 $formOptions
+     * @param array                 $context
      */
-    public function __construct(ProductValueInterface $value, $formType, $formData, $formOptions)
+    public function __construct(ProductValueInterface $value, $formType, $formData, $formOptions, $context)
     {
         $this->productValue = $value;
         $this->formType     = $formType;
         $this->formData     = $formData;
         $this->formOptions  = $formOptions;
+        $this->context      = $context;
     }
 
     /**
@@ -80,6 +87,14 @@ class CreateProductValueFormEvent extends Event
     public function getFormOptions()
     {
         return $this->formOptions;
+    }
+
+    /**
+     * @return array
+     */
+    public function getContext()
+    {
+        return $this->context;
     }
 
     /**
