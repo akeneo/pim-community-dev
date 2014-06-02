@@ -15,8 +15,13 @@ use Pim\Bundle\CatalogBundle\Validator\Constraints\File;
  */
 class FileGuesser implements ConstraintGuesserInterface
 {
+    /** @staticvar string */
     const MEGABYTE_UNIT       = 'M';
+
+    /** @staticvar string */
     const KILOBYTE_UNIT       = 'k';
+
+    /** @staticvar string */
     const KILOBYTE_MULTIPLIER = 1024;
 
     /**

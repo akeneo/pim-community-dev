@@ -209,14 +209,14 @@ class ProductManager
     /**
      * Save a product
      *
-     * @deprecated use saveProduct() instead. Will be removed in 1.3
-     *
      * @param ProductInterface $product     The product to save
      * @param boolean          $recalculate Whether or not to directly recalculate the completeness
      * @param boolean          $flush       Whether or not to flush the entity manager
      * @param boolean          $schedule    Whether or not to schedule the product for completeness recalculation
      *
      * @return null
+     *
+     * @deprecated use saveProduct() instead. Will be removed in 1.3
      */
     public function save(ProductInterface $product, $recalculate = true, $flush = true, $schedule = true)
     {

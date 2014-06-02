@@ -14,14 +14,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddAttributeTypesPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const REGISTRY_ID = 'pim_datagrid.datagrid.product.configuration_registry';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const PARAM_PREFIX = 'pim_datagrid.product.attribute_type.';
 
     /**

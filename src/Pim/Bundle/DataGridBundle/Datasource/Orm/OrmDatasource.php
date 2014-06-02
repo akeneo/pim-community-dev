@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
@@ -20,10 +19,10 @@ use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
  */
 class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    /** @var string */
+    /** @staticvar string */
     const TYPE = 'pim_orm';
 
-    /** @var string */
+    /** @staticvar string */
     const ENTITY_PATH = '[source][entity]';
 
     /** @var HydratorInterface */

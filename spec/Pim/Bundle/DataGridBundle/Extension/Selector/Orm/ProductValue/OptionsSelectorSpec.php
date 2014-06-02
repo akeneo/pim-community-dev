@@ -18,7 +18,7 @@ class OptionsSelectorSpec extends ObjectBehavior
 
     function it_is_a_selector()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Extension\Selector\SelectorInterface');
     }
 
     function it_applies_join_on_datasource_query(

@@ -15,10 +15,10 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class ProductQueryUtility
 {
-    /** @var string */
+    /** @staticvar string */
     const FIELD_TOKEN_SEPARATOR = '-';
 
-    /** @var string */
+    /** @staticvar string */
     const NORMALIZED_FIELD = 'normalizedData';
 
     /**
@@ -62,6 +62,8 @@ class ProductQueryUtility
      * @param string  $scope
      *
      * @return string
+     *
+     * @throws \LogicException
      */
     public static function getNormalizedValueField($attributeCode, $localizable, $scopable, $locale, $scope)
     {

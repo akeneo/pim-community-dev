@@ -9,7 +9,7 @@ class LinksWidgetSpec extends ObjectBehavior
 {
     function it_is_a_widget()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
+        $this->shouldImplement('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
     function it_exposes_the_links_widget_template()

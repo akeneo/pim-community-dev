@@ -19,69 +19,43 @@ use Doctrine\ORM\EntityRepository;
  */
 class ContextConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const SOURCE_PATH = '[source][%s]';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const PRODUCT_STORAGE_KEY = 'product_storage';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_LOCALE_KEY = 'locale_code';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_SCOPE_KEY = 'scope_code';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ASSOCIATION_TYPE_ID_KEY = 'association_type_id';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const CURRENT_PRODUCT_KEY = 'current_product';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
 
     /**

@@ -43,7 +43,7 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn(array($sku1, $sku2));
@@ -64,7 +64,7 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn(array($sku1, $sku2));
@@ -87,7 +87,7 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn(array($sku1, $sku2));
@@ -111,7 +111,7 @@ class ProductReaderSpec extends ObjectBehavior
         ProductInterface $sku1,
         ProductInterface $sku2
     ) {
-        $channelManager->getChannels(array('code' => 'foobar'))->willReturn(array($channel));
+        $channelManager->getChannelByCode('foobar')->willReturn($channel);
         $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
         $queryBuilder->getQuery()->willReturn($query);
         $query->execute()->willReturn(array($sku1, $sku2));
@@ -126,7 +126,7 @@ class ProductReaderSpec extends ObjectBehavior
 
     function its_read_method_throws_exception_if_channel_cannot_be_found($channelManager)
     {
-        $channelManager->getChannels(array('code' => 'mobile'))->willReturn(array());
+        $channelManager->getChannelByCode('mobile')->willReturn(null);
 
         $this->setChannel('mobile');
         $this->shouldThrow(new \InvalidArgumentException('Could not find the channel "mobile"'))->duringRead();

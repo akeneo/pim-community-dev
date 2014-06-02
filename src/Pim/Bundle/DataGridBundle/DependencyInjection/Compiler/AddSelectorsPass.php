@@ -15,14 +15,10 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
  */
 class AddSelectorsPass implements CompilerPassInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const SELECTOR_EXTENSION_ID = 'pim_datagrid.extension.selector.orm_selector';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TAG_NAME = 'pim_datagrid.extension.selector';
 
     /**

@@ -17,9 +17,9 @@ Feature: Validate number attributes of a product
       | code | label-en_US | attributes                                    |
       | baz  | Baz         | sku, ref, sold, available, rating, popularity |
     And the following products:
-      | sku | family |
-      | foo | baz    |
-      | bar | baz    |
+      | sku | family | popularity-mobile | popularity-ecommerce | rating |
+      | foo | baz    | 4                 | 4                    | 1      |
+      | bar | baz    | 4                 | 4                    | 2      |
     And I am logged in as "Julia"
     And I am on the "foo" product page
 

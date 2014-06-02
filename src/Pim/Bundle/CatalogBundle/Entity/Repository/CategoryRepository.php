@@ -324,8 +324,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
      * Search is done on a "%value%" LIKE expression.
      * Criterias are joined with a AND operator
      *
-     * @param int   $treeRootId Tree segment root id
-     * @param array $criterias  Criterias to apply
+     * @param integer $treeRootId Tree segment root id
+     * @param array   $criterias  Criterias to apply
      *
      * @return ArrayCollection
      */

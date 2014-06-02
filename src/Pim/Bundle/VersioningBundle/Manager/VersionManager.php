@@ -24,7 +24,7 @@ class VersionManager
     const DEFAULT_SYSTEM_USER = 'admin';
 
     /**
-     * @var integer
+     * @var boolean
      */
     protected $realTimeVersioning = true;
 

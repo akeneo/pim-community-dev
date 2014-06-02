@@ -17,7 +17,7 @@ class FiltersConfiguratorSpec extends ObjectBehavior
 
     function it_is_a_configurator()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
+        $this->shouldImplement('Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface');
     }
 
     function it_configures_datagrid_filters($configuration, $registry)

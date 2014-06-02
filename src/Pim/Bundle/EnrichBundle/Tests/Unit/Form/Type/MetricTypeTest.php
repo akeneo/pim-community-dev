@@ -31,7 +31,7 @@ class MetricTypeTest extends AbstractFormTypeTest
     public function testFormCreate()
     {
         $this->assertField('id', 'hidden');
-        $this->assertField('data', 'number');
+        $this->assertField('data', 'pim_number');
         $this->assertField('unit', 'choice');
 
         $this->assertEquals(

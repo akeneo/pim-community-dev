@@ -16,9 +16,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
  */
 class MetricFilterType extends AbstractType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_metric_filter';
 
     /**
