@@ -32,6 +32,14 @@ class ProposalFilterUtility extends BaseFilterUtility
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getParamMap()
+    {
+        return [self::PARENT_TYPE_KEY => self::TYPE_KEY];
+    }
+
+    /**
      * Apply filter
      *
      * @param FilterDatasourceAdapterInterface $ds
