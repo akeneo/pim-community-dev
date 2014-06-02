@@ -1,9 +1,9 @@
 parameters:
-    pimee_filter.proposal_choice.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposal\ChoiceFilter
+    pimee_filter.proposal_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposal\ChoiceFilter
 
 services:
     pimee_filter.proposal_choice_filter:
-        class: %pimee_filter.proposal_choice.class%
+        class: %pimee_filter.proposal_choice_filter.class%
         arguments:
             - '@form.factory'
             - '@pimee_filter.proposal_utility'

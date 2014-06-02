@@ -3,25 +3,39 @@
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Proposal;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-
+use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use PimEnterprise\Bundle\FilterBundle\Filter\ProposalFilterUtility;
 
-use Symfony\Component\Form\FormFactoryInterface;
-
-use Pim\Bundle\FilterBundle\Filter\AjaxChoiceFilter;
-
-class ChoiceFilter extends AjaxChoiceFilter
+/**
+ * Choice filter for proposal
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ */
+class ChoiceFilter extends OroChoiceFilter
 {
+    /**
+     * {@inheritdoc}
+     */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $data = $this->parseData($data);
+
         if (!$data) {
             return false;
         }
 
-        $operator  = $this->getOperator($data['type']);
-        $field     = $this->get(ProposalFilterUtility::DATA_NAME_KEY);
+        $field    = $this->get(ProposalFilterUtility::DATA_NAME_KEY);
+        $operator = $this->getOperator($data['type']);
+        $value    = current($data['value']);
 
-        $this->util->applyFilter($ds, $field, $operator, $data['value']);
+        $this->util->applyFilter($ds, $field, $operator, $value);
+
+        return true;
+    }
+
+    protected function getFormType()
+    {
+        return 'oro_type_choice_filter';
     }
 }

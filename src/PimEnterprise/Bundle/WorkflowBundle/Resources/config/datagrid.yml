@@ -1,5 +1,7 @@
 datagrid:
     proposals-grid:
+        options:
+            entityHint: proposal
         source:
             type: pim_proposal
             entity: %pimee_workflow.entity.proposal.class%
@@ -50,9 +52,10 @@ datagrid:
         filters:
             columns:
                 status:
-                    type:      proposal_choice
-                    data_name: p.status
-                    label: pimee_workflow.proposal.status.label
+                    type:        proposal_choice
+                    parent_type: choice
+                    label:       Status
+                    data_name:   p.status
                     options:
                         field_options:
                             choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'

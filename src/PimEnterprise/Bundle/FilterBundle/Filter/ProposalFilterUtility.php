@@ -37,7 +37,7 @@ class ProposalFilterUtility extends BaseFilterUtility
      * @param FilterDatasourceAdapterInterface $ds
      * @param string $field
      * @param string $operator
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
