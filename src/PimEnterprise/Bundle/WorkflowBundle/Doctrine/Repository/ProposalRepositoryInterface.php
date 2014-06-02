@@ -38,4 +38,13 @@ interface ProposalRepositoryInterface extends ObjectRepository
      * @param mixed        $value
      */
     public function applyFilter($qb, $field, $operator, $value);
+
+    /**
+     * Apply filter for datagrid
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param string       $direction
+     */
+    public function applySorter($qb, $field, $direction);
 }

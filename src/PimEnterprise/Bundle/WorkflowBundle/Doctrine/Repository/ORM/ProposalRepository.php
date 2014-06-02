@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;

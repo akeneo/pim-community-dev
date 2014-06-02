@@ -51,4 +51,14 @@ class ProposalRepository extends DocumentRepository implements ProposalRepositor
             }
         }
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function applySorter($qb, $field, $direction)
+    {
+        $qb->sort($field, $direction);
+    }
 }
