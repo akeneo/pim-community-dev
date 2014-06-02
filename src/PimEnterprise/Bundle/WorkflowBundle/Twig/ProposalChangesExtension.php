@@ -89,7 +89,12 @@ class ProposalChangesExtension extends \Twig_Extension
     public function presentChange(array $change)
     {
         if (!isset($change['id']) || null === $value = $this->repository->find($change['id'])) {
-            throw new \InvalidArgumentException('Could not retrieve the product value from the provided change');
+            throw new \InvalidArgumentException(
+                sprintf(
+                    'Could not retrieve the product value from the provided change (missing key "id" in "%s")',
+                    join(', ', array_keys($change))
+                )
+            );
         }
 
         if (null !== $result = $this->present($value, $change)) {
@@ -145,11 +150,11 @@ class ProposalChangesExtension extends \Twig_Extension
             if ($presenter->supports($object, $change)) {
                 $reflClass = new \ReflectionClass($presenter);
 
-                if ($this->useTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware')) {
+                if ($this->usesTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware')) {
                     $presenter->setTranslator($this->translator);
                 }
 
-                if ($this->useTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAware')) {
+                if ($this->usesTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAware')) {
                     $presenter->setRenderer($this->renderer);
                 }
 
@@ -166,7 +171,7 @@ class ProposalChangesExtension extends \Twig_Extension
      *
      * @return boolean
      */
-    protected function useTrait(\ReflectionClass $class, $traitName)
+    protected function usesTrait(\ReflectionClass $class, $traitName)
     {
         if (in_array($traitName, $class->getTraitNames())) {
             return true;
@@ -178,6 +183,6 @@ class ProposalChangesExtension extends \Twig_Extension
             return false;
         }
 
-        return $this->useTrait($parentClass, $traitName);
+        return $this->usesTrait($parentClass, $traitName);
     }
 }

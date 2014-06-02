@@ -4,7 +4,7 @@ Feature: Review a product changes proposal
   As an owner
   I need to be able to review product changes proposal
 
-  # TODO Change admin when contributor and owner roles have been introduced 
+  # TODO Change admin when contributor and owner roles have been introduce
   Scenario: Succesfully accept an identifier attribute product changes proposal
     Given a "footwear" catalog configuration
     And the following product:
@@ -16,7 +16,7 @@ Feature: Review a product changes proposal
     And I change the "SKU" to "your-sandals"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "sku"
+    And I click on the "approve" action of the row which contains "SKU"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -33,7 +33,7 @@ Feature: Review a product changes proposal
     And I change the "Name" to "Tong"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "name"
+    And I click on the "approve" action of the row which contains "Name"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -50,7 +50,7 @@ Feature: Review a product changes proposal
     And I change the "mobile Description" to "Some awesome baskets"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "description"
+    And I click on the "approve" action of the row which contains "mobile - Description"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -64,15 +64,19 @@ Feature: Review a product changes proposal
     And role "Administrator" has the right to edit the attribute group "internal"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
-    And I change the "ecommerce Number in stock" to "7"
+    And I expand the "Number in stock" attribute
+    And I change the "ecommerce Number in stock" to "4"
+    And I change the "print Number in stock" to "8"
+    And I change the "tablet Number in stock" to "15"
     And I save the product
-    When I edit the "my-tshirt" product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "number_in_stock"
+    And I click on the "approve" action of the row which contains "Number in stock"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product ecommerce Number in stock should be "7"
+    Then the product ecommerce Number in stock should be "4"
+    Then the product print Number in stock should be "8"
+    Then the product tablet Number in stock should be "15"
 
   Scenario: Succesfully accept a prices attribute product changes proposal
     Given a "footwear" catalog configuration
@@ -86,7 +90,7 @@ Feature: Review a product changes proposal
     And I change the "€ Price" to "150"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "price"
+    And I click on the "approve" action of the row which contains "Price"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -104,7 +108,7 @@ Feature: Review a product changes proposal
     And I change the "Manufacturer" to "TimberLand"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "manufacturer"
+    And I click on the "approve" action of the row which contains "Manufacturer"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -121,7 +125,7 @@ Feature: Review a product changes proposal
     And I change the "Weather conditions" to "Hot, Cold"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "weather_conditions"
+    And I click on the "approve" action of the row which contains "Weather conditions"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -135,16 +139,20 @@ Feature: Review a product changes proposal
     And role "Administrator" has the right to edit the attribute group "internal"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
+    And I expand the "Number in stock" attribute
+    And I change the "ecommerce Number in stock" to "1"
+    And I change the "print Number in stock" to "1"
+    And I change the "tablet Number in stock" to "1"
     And I attach file "akeneo.txt" to "Datasheet"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "datasheet"
+    And I click on the "approve" action of the row which contains "Datasheet"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then I should see "akeneo.txt"
 
-  Scenario: Succesfully accept a image attribute product changes proposal
+  Scenario: Succesfully accept an image attribute product changes proposal
     Given an "apparel" catalog configuration
     And the following product:
       | sku       | family  |
@@ -155,7 +163,7 @@ Feature: Review a product changes proposal
     And I attach file "akeneo.jpg" to "Thumbnail"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "thumbnail"
+    And I click on the "approve" action of the row which contains "Thumbnail"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -172,7 +180,7 @@ Feature: Review a product changes proposal
     And I check the "Handmade" switch
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "handmade"
+    And I click on the "approve" action of the row which contains "Handmade"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -189,7 +197,7 @@ Feature: Review a product changes proposal
     And I change the "ecommerce Release date" to "2014-05-20"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "release_date"
+    And I click on the "approve" action of the row which contains "ecommerce - Release date"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -206,7 +214,7 @@ Feature: Review a product changes proposal
     And I change the "Washing temperature" to "40"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "approve" action of the row which contains "washing_temperature"
+    And I click on the "approve" action of the row which contains "Washing temperature"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -223,7 +231,7 @@ Feature: Review a product changes proposal
     And I change the "Name" to "Tong"
     And I save the product
     When I visit the "Proposals" tab
-    And I click on the "refuse" action of the row which contains "name"
+    And I click on the "refuse" action of the row which contains "Name"
     And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
