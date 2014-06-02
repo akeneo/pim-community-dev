@@ -1,0 +1,2 @@
+parameters:
+    pim_user.context.user.class: PimEnterprise\Bundle\UserBundle\Context\UserContext
