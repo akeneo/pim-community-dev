@@ -59,7 +59,8 @@ class AddProductValueFieldSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $valueForm = $this->factory->buildProductValueForm($value);
+        $context = ['root_form_name' => $form->getRoot()->getName()];
+        $valueForm = $this->factory->buildProductValueForm($value, $context);
 
         $form->add($valueForm);
     }
