@@ -25,8 +25,8 @@ interface ComparatorInterface
      * Get the changes between a product value instance and the submitted data
      * If no changes detected, then the method returns null
      *
-     * N.B.: Submitted data are casted into string, be carefull not to use similarity operators (===, !==, ...)
-     * when comparing them to value data. Instead use equality operators (==, !=, ...)
+     * N.B.: Submitted data are casted into string, be carefull not to use type-checking operators (===, !==, ...)
+     * when comparing them to value data. Instead use simple equality operators (==, !=, ...)
      *
      * @param AbstractProductValue $value
      * @param array                $submittedData
