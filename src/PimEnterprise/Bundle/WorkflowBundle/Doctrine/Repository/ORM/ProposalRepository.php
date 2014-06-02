@@ -59,27 +59,39 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
     /**
      * {@inheritdoc}
      *
-     * @param \Doctrine\ORM\QueryBuilder
+     * @param \Doctrine\ORM\QueryBuilder $qb
      */
     public function applyFilter($qb, $field, $operator, $value)
     {
         if ('IN' === $operator) {
             if (!empty($value)) {
-                $fieldName = sprintf("%s.%s", $this->getRootAlias($qb), $field);
+                $fieldName = $this->getRootFieldName($qb, $field);
                 $qb->andWhere($qb->expr()->in($fieldName, $value));
             }
         }
     }
 
     /**
-     * Get the root alias
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     */
+    public function applySorter($qb, $field, $direction)
+    {
+        $fieldName = $this->getRootFieldName($qb, $field);
+        $qb->orderBy($fieldName, $direction);
+    }
+
+    /**
+     * Build field name with root alias
      *
      * @param QueryBuilder $qb
+     * @param string       $field
      *
      * @return string
      */
-    protected function getRootAlias(QueryBuilder $qb)
+    protected function getRootFieldName(QueryBuilder $qb, $field)
     {
-        return current($qb->getRootAliases());
+        return sprintf("%s.%s", current($qb->getRootAliases()), $field);
     }
 }
