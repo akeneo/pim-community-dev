@@ -61,4 +61,14 @@ class ScalarComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
+
+    function it_detects_no_change_when_there_nothing_else_than_the_id_in_the_changes(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => 1,
+        ];
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
 }
