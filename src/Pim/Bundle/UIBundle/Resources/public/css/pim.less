@@ -353,3 +353,22 @@ span.link-label {
 .btn-mini {
   padding: 0 6px;
 }
+
+.diff {
+  list-style-type: none;
+  .base {
+    background-color: @color-base_diff;
+    del {
+      background-color: darken(@color-base_diff, 10%);
+    }
+  }
+  .changed {
+    background-color: @color-changed_diff;
+    ins {
+      background-color: darken(@color-changed_diff, 10%);
+    }
+  }
+  ins {
+    text-decoration: none;
+  }
+}
