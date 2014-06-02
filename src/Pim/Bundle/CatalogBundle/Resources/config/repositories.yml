@@ -10,6 +10,7 @@ parameters:
     pim_catalog.repository.group.class:            Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
     pim_catalog.repository.group_type.class:       Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
+    pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
 
     doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
     doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
@@ -110,7 +111,7 @@ services:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.product_value:
-        class: %doctrine.entity_repository.class%
+        class: %pim_catalog.repository.product_value.class%
         factory_service: pim_catalog.doctrine.smart_manager_registry
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product_value.class%]
