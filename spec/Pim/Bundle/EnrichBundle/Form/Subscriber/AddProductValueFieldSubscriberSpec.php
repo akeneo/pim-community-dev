@@ -33,13 +33,16 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
         FormEvent $event,
         FormInterface $form,
         FormInterface $field,
+        FormInterface $rootForm,
         $factory,
         ProductValueInterface $value
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn($value);
 
-        $factory->buildProductValueForm($value)->willReturn($field);
+        $form->getRoot()->willReturn($rootForm);
+        $rootForm->getName()->willReturn('pim_catalog_edit');
+        $factory->buildProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
         $form->add($field)->shouldBeCalled();
 
         $this->preSetData($event);
