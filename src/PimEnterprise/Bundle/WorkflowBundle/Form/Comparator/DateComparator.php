@@ -27,14 +27,22 @@ class DateComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        $date = $value->getDate();
-        if (($date instanceof \DateTime && $date->format('Y-m-d') !== $submittedData['date'])
-            || (!$date instanceof \DateTime && '' !== $submittedData['date'])
-        ) {
-            return [
-                'id' => $submittedData['id'],
-                'date' => $submittedData['date'],
-            ];
+        if (!isset($submittedData['date'])) {
+            return;
         }
+
+        $date = $value->getDate();
+        if ($date instanceof \DateTime && $date->format('Y-m-d') === $submittedData['date']) {
+            return;
+        }
+
+        if (!$date instanceof \DateTime && '' === $submittedData['date']) {
+            return;
+        }
+
+        return [
+            'id' => $submittedData['id'],
+            'date' => $submittedData['date'],
+        ];
     }
 }

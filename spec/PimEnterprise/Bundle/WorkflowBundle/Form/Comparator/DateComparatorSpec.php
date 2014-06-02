@@ -82,4 +82,15 @@ class DateComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
+
+    function it_does_not_detect_changes_when_the_new_date_is_not_defined(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => 123,
+        ];
+        $value->getDate()->willReturn(null);
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
 }
