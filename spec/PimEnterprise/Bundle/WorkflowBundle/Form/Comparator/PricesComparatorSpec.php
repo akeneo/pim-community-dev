@@ -103,4 +103,14 @@ class PricesComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
+
+    function it_detects_no_change_when_the_new_prices_are_not_defined(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => '1',
+        ];
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
 }
