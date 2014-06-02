@@ -47,9 +47,11 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
         $value = $event->getProductValue();
         $attributeGroup = $value->getAttribute()->getVirtualGroup();
         $eventContext   = $event->getContext();
-        $isCreateForm   = isset($eventContext['root_form_name']) && $eventContext['root_name'] === 'pim_product_create';
+        $isCreateForm   = isset($eventContext['root_form_name'])
+            && $eventContext['root_form_name'] === 'pim_product_create';
 
-        if (!$isCreateForm && false === $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attributeGroup)) {
+        if (!$isCreateForm
+            && false === $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attributeGroup)) {
             $formOptions = $event->getFormOptions();
             $formOptions['disabled']  = true;
             $formOptions['read_only'] = true;
