@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
+ * Present value options data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
