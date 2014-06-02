@@ -2,8 +2,8 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Proposal;
 
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\ProposalFilterUtility;
 
 /**
@@ -27,7 +27,7 @@ class ChoiceFilter extends OroChoiceFilter
 
         $field    = $this->get(ProposalFilterUtility::DATA_NAME_KEY);
         $operator = $this->getOperator($data['type']);
-        $value    = current($data['value']);
+        $value    = $data['value'];
 
         $this->util->applyFilter($ds, $field, $operator, $value);
 

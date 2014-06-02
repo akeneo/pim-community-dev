@@ -54,7 +54,7 @@ datagrid:
                 status:
                     type:        proposal_choice
                     parent_type: choice
-                    data_name:   p.status
+                    data_name:   status
                     label:       pimee_workflow.proposal.status.label
                     options:
                         field_options:
