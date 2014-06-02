@@ -86,4 +86,14 @@ class OptionComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
+
+    function it_detects_no_change_when_the_option_is_not_defined(
+        Model\AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => '1',
+        ];
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
 }

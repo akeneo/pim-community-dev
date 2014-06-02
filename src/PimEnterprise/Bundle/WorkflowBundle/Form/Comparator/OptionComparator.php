@@ -24,8 +24,11 @@ class OptionComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        $option = $value->getOption();
+        if (!isset($submittedData['option'])) {
+            return;
+        }
 
+        $option = $value->getOption();
         if (null === $option && empty($submittedData['option'])) {
             return;
         }
