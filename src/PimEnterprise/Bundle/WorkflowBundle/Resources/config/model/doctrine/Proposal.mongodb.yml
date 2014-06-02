@@ -19,3 +19,5 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
             type: string
         status:
             type: int
+        locale:
+            type: string
