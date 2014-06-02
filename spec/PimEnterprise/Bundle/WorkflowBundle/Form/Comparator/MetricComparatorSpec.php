@@ -7,7 +7,6 @@ use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-
 class MetricComparatorSpec extends ObjectBehavior
 {
     function it_is_a_comparator()
@@ -135,6 +134,45 @@ class MetricComparatorSpec extends ObjectBehavior
                 'unit' => 'KILOGRAM',
                 'family' => 'Weight',
             ],
+        ];
+
+        $value->getMetric()->willReturn($metric);
+        $metric->getData()->willReturn(100);
+        $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
+
+    function it_always_detect_changes_when_there_is_no_current_metric(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => '1',
+            'metric' => [
+                'data' => '100',
+                'unit' => 'KILOGRAM',
+                'family' => 'Weight',
+            ],
+        ];
+
+        $value->getMetric()->willReturn(null);
+
+        $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => '1',
+            'metric' => [
+                'data' => '100',
+                'unit' => 'KILOGRAM',
+            ],
+        ]);
+    }
+
+    function it_detects_no_changes_when_the_new_data_is_not_available(
+        AbstractProductValue $value,
+        Metric $metric
+    ) {
+        $submittedData = [
+            'id' => '1',
+            'metric' => [],
         ];
 
         $value->getMetric()->willReturn($metric);
