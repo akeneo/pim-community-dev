@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
+use Doctrine\ORM\QueryBuilder;
+
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
@@ -63,8 +65,21 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
     {
         if ('IN' === $operator) {
             if (!empty($value)) {
-                $qb->expr()->in($field, $value);
+                $fieldName = sprintf("%s.%s", $this->getRootAlias($qb), $field);
+                $qb->andWhere($qb->expr()->in($fieldName, $value));
             }
         }
+    }
+
+    /**
+     * Get the root alias
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return string
+     */
+    protected function getRootAlias(QueryBuilder $qb)
+    {
+        return current($qb->getRootAliases());
     }
 }
