@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Presenter
+ * Present data without pre-transformation
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
