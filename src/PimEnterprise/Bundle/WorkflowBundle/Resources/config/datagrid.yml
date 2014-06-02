@@ -58,6 +58,7 @@ datagrid:
                     data_name:   p.status
                     options:
                         field_options:
+                            multiple: true
                             choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'
         sorters:
             columns:
