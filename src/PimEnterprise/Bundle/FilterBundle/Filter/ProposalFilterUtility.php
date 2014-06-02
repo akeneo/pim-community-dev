@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 
@@ -49,7 +48,6 @@ class ProposalFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $qb = $ds->getQueryBuilder();
-        $this->proposalRepository->applyFilter($qb, $field, $operator, $value);
+        $this->proposalRepository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
     }
 }

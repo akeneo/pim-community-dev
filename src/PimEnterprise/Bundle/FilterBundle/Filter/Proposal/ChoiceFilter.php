@@ -33,9 +33,4 @@ class ChoiceFilter extends OroChoiceFilter
 
         return true;
     }
-
-    protected function getFormType()
-    {
-        return 'oro_type_choice_filter';
-    }
 }
