@@ -126,7 +126,7 @@ class AttributeGroupAccessManager
 
     /**
      * Revoke access to an attribute group
-     * If excludedIds are provided, access will not be revoked for roles with these ids
+     * If $excludedRoles are provided, access will not be revoked for roles with them
      *
      * @param AttributeGroup $group
      * @param Role[]         $excludedRoles
