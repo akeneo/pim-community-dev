@@ -53,10 +53,19 @@ abstract class AbstractMedia
      */
     protected $mimeType;
 
+    /**
+     * @var AbstractProductValue
+     */
     protected $value;
 
+    /**
+     * @var boolean
+     */
     protected $removed = false;
 
+    /**
+     * @var integer
+     */
     protected $copyFrom;
 
     /**
