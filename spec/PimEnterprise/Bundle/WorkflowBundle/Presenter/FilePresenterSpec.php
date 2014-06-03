@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model;
 
-class FilesPresenterSpec extends ObjectBehavior
+class FilePresenterSpec extends ObjectBehavior
 {
     function let(UrlGeneratorInterface $generator)
     {

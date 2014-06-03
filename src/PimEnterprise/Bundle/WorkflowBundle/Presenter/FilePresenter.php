@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class FilesPresenter implements PresenterInterface
+class FilePresenter implements PresenterInterface
 {
     /** @var UrlGeneratorInterface */
     protected $generator;
