@@ -63,7 +63,7 @@ abstract class AbstractProductPrice
      *
      * @param integer $id
      *
-     * @return Price
+     * @return AbstractProductPrice
      */
     public function setId($id)
     {
@@ -87,7 +87,7 @@ abstract class AbstractProductPrice
      *
      * @param double $data
      *
-     * @return Price
+     * @return AbstractProductPrice
      */
     public function setData($data)
     {
@@ -111,7 +111,7 @@ abstract class AbstractProductPrice
      *
      * @param string $currency
      *
-     * @return Price
+     * @return AbstractProductPrice
      */
     public function setCurrency($currency)
     {
@@ -135,7 +135,7 @@ abstract class AbstractProductPrice
      *
      * @param ProductValueInterface $value
      *
-     * @return ProductPrice
+     * @return AbstractProductPrice
      */
     public function setValue(ProductValueInterface $value)
     {
