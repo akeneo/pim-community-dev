@@ -195,7 +195,7 @@ class UserContext
     /**
      * Get user category tree
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function getUserTree()
     {
