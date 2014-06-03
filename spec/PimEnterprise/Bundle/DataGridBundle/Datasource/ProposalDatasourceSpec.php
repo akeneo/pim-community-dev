@@ -73,10 +73,49 @@ class ProposalDatasourceSpec extends ObjectBehavior
 
         $this->process($datagrid, $config);
     }
-//     function it_should_hydrates_object($hydrator)
-//     {
-//         $hydrator->hydrate('foo')->willReturn('bar');
 
-//         $this->getResults()->shouldReturn('bar');
-//     }
+    function it_throws_exception_when_process_with_missing_configuration(
+        $om,
+        DatagridInterface $datagrid
+    ) {
+        $this->shouldThrow(
+            new \Exception(
+                'Datasource is not yet built. You need to call process method before'
+            )
+        )
+        ->duringProcess($datagrid, []);
+
+        $config = ['repository_method' => 'createDatagridQueryBuilder'];
+        $this->shouldThrow(
+            new \Exception(
+                sprintf(
+                    '"%s" expects to be configured with "entity"',
+                    'PimEnterprise\Bundle\DataGridBundle\Datasource\ProposalDatasource'
+                )
+            )
+        )
+        ->duringProcess($datagrid, $config);
+    }
+
+    function it_should_hydrates_object(
+        $om,
+        $hydrator,
+        DatagridInterface $datagrid,
+        ProposalRepositoryInterface $proposalRepo
+    ) {
+        $config = [
+            'repository_method' => 'createDatagridQueryBuilder',
+            'entity'            => 'Proposal'
+        ];
+
+        $om->getRepository('Proposal')->willReturn($proposalRepo);
+        $proposalRepo->createDatagridQueryBuilder()->willReturn('foo');
+        $datagrid->setDatasource($this)->shouldBeCalled();
+
+        $this->process($datagrid, $config);
+
+        $hydrator->hydrate('foo')->willReturn('bar');
+
+        $this->getResults()->shouldReturn('bar');
+    }
 }
