@@ -51,6 +51,7 @@ class MediaComparator implements ComparatorInterface
             return [
                 'id' => $submittedData['id'],
                 'media' => [
+                    'filename' => $media->getFilename(),
                     'originalFilename' => $media->getOriginalFilename(),
                     'filePath' => $media->getFilePath(),
                     'mimeType' => $media->getMimeType(),

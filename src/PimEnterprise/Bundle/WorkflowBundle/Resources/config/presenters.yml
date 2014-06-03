@@ -11,6 +11,8 @@ parameters:
     pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
     pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
     pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
+    pimee_workflow.presenter.files.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilesPresenter
+    pimee_workflow.presenter.images.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagesPresenter
 
 services:
     ##
@@ -83,5 +85,19 @@ services:
         class: %pimee_workflow.presenter.options.class%
         arguments:
             - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.files:
+        class: %pimee_workflow.presenter.files.class%
+        arguments:
+            - '@router'
+        tags:
+            - { name: pimee_workflow.presenter, priority: -64 }
+
+    pimee_workflow.presenter.images:
+        class: %pimee_workflow.presenter.images.class%
+        arguments:
+            - '@router'
         tags:
             - { name: pimee_workflow.presenter }
