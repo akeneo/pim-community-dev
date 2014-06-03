@@ -24,6 +24,6 @@ class ProductFilterExtension extends AbstractFilterExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        return ($datasourceType == ProductDatasource::TYPE);
+        return ProductDatasource::TYPE === $datasourceType;
     }
 }

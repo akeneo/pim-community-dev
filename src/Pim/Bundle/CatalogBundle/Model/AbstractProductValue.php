@@ -112,14 +112,14 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store upload values
      *
-     * @var Media $media
+     * @var AbstractMedia $media
      */
     protected $media;
 
     /**
      * Store metric value
      *
-     * @var Metric $metric
+     * @var AbstractMetric $metric
      */
     protected $metric;
 
@@ -598,7 +598,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get media
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function getMedia()
     {
@@ -608,11 +608,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Set media
      *
-     * @param Media $media
+     * @param AbstractMedia $media
      *
      * @return ProductValue
      */
-    public function setMedia(Media $media)
+    public function setMedia(AbstractMedia $media)
     {
         $media->setValue($this);
         $this->media = $media;
@@ -623,7 +623,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get metric
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function getMetric()
     {
@@ -633,11 +633,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Set metric
      *
-     * @param Metric $metric
+     * @param AbstractMetric $metric
      *
      * @return ProductValue
      */
-    public function setMetric($metric)
+    public function setMetric(AbstractMetric $metric)
     {
         $this->metric = $metric;
 
@@ -659,7 +659,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param string $currency
      *
-     * @return null|ProductPrice
+     * @return null|AbstractProductPrice
      */
     public function getPrice($currency)
     {
@@ -691,11 +691,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Add price (removing the older one)
      *
-     * @param ProductPrice $price
+     * @param AbstractProductPrice $price
      *
      * @return ProductValue
      */
-    public function addPrice(ProductPrice $price)
+    public function addPrice(AbstractProductPrice $price)
     {
         if (null !== $actualPrice = $this->getPrice($price->getCurrency())) {
             $this->removePrice($actualPrice);
@@ -712,7 +712,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      *
      * @param string $currency
      *
-     * @return ProductPrice
+     * @return AbstractProductPrice
      *
      * @deprecated This method will be removed in 1.2, use ProductBuilder::addPriceForCurrency() instead
      */
@@ -729,11 +729,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Remove price
      *
-     * @param ProductPrice $price
+     * @param AbstractProductPrice $price
      *
      * @return ProductValue
      */
-    public function removePrice(ProductPrice $price)
+    public function removePrice(AbstractProductPrice $price)
     {
         $this->prices->removeElement($price);
 

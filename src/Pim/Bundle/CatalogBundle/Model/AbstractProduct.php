@@ -776,11 +776,11 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Add product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function addAssociation(Association $association)
+    public function addAssociation(AbstractAssociation $association)
     {
         if (!$this->associations->contains($association)) {
             $association->setOwner($this);
@@ -793,11 +793,11 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Remove product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function removeAssociation(Association $association)
+    public function removeAssociation(AbstractAssociation $association)
     {
         $this->associations->removeElement($association);
 
@@ -807,7 +807,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get the product associations
      *
-     * @return Association[]|null
+     * @return AbstractAssociation[]|null
      */
     public function getAssociations()
     {
@@ -819,7 +819,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param AssociationType $type
      *
-     * @return Association|null
+     * @return AbstractAssociation|null
      */
     public function getAssociationForType(AssociationType $type)
     {
@@ -833,7 +833,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Set product associations
      *
-     * @param Association[] $associations
+     * @param AbstractAssociation[] $associations
      *
      * @return Product
      */

@@ -94,10 +94,9 @@ class OrmSelectorExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        if ($datasourceType == PimOrmDatasource::TYPE) {
+        if (PimOrmDatasource::TYPE === $datasourceType) {
             return true;
-
-        } elseif ($datasourceType == ProductDatasource::TYPE) {
+        } elseif (ProductDatasource::TYPE === $datasourceType) {
             if ($config->offsetGetByPath('[source][product_storage]') == 'doctrine/orm') {
                 return true;
             }

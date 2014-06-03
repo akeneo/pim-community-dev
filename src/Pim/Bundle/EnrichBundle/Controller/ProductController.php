@@ -402,7 +402,7 @@ class ProductController extends AbstractDoctrineController
         $includeParent = $request->get('include_parent', false);
         $includeParent = ($includeParent === 'true');
 
-        if ($product != null) {
+        if ($product !== null) {
             $categories = $product->getCategories();
         }
         $trees = $this->categoryManager->getFilledTree($parent, $categories);

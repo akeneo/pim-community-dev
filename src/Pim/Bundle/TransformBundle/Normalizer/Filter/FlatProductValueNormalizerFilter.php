@@ -39,7 +39,7 @@ class FlatProductValueNormalizerFilter implements NormalizerFilterInterface
                     (
                         ($scopeCode === null) ||
                         (!$value->getAttribute()->isScopable()) ||
-                        ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
+                        ($value->getAttribute()->isScopable() && $value->getScope() === $scopeCode)
                     ) &&
                     (
                         (count($localeCodes) === 0) ||
