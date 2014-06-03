@@ -78,7 +78,7 @@ class MediaController
         $response = new Response($content = $this->filesystem->read($filename));
 
         $mime = $this->getMimeType($filename);
-        if ($filter = $request->query->get('filter') && null !== $mime && 0 === strpos($mime, 'image')) {
+        if (($filter = $request->query->get('filter')) && null !== $mime && 0 === strpos($mime, 'image')) {
             try {
                 $cachePath = $this->cacheManager->resolve($request, $filename, $filter);
 
