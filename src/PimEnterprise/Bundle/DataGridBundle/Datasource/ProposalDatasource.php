@@ -17,7 +17,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterface*/
+class ProposalDatasource implements DatasourceInterface
 {
     /** @staticvar string */
     const TYPE = 'pim_proposal';
@@ -62,9 +62,8 @@ class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterf
             $this->qb = $this->getRepository()->createQueryBuilder('p');
         }
 
-        $product = $this->getConfiguration('product');
-        if (!empty($product)) {
-            $this->getRepository()->applyDatagridContext($this->qb, $product);
+        if (isset($config['product']) && !empty($config['product'])) {
+            $this->getRepository()->applyDatagridContext($this->qb, $config['product']);
         }
 
         $grid->setDatasource(clone $this);
@@ -86,25 +85,6 @@ class ProposalDatasource implements DatasourceInterface/*, ParameterizableInterf
     public function getQueryBuilder()
     {
         return $this->qb;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParameters()
-    {
-        return $this->parameters;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setParameters($parameters)
-    {
-        $this->parameters = $parameters;
-        $this->qb->setParameters($parameters);
-
-        return $this;
     }
 
     /**

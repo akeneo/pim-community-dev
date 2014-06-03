@@ -39,6 +39,9 @@ class Proposal
     /** @var integer */
     protected $status = self::WAITING;
 
+    /** @var string */
+    protected $locale;
+
     /**
      * @return integer
      */
@@ -145,5 +148,29 @@ class Proposal
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set locale
+     *
+     * @param string $locale
+     *
+     * @return Proposal
+     */
+    public function setLocale($locale)
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }
