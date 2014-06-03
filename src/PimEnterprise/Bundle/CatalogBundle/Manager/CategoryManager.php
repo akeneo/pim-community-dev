@@ -22,9 +22,9 @@ class CategoryManager extends BaseCategoryManager
     /**
      * Constructor
      *
-     * @param SecurityContextInterface  $securityContext
-     * @param ObjectManager             $om
-     * @param string                    $categoryClass
+     * @param SecurityContextInterface $securityContext
+     * @param ObjectManager            $om
+     * @param string                   $categoryClass
      */
     public function __construct(SecurityContextInterface $securityContext, ObjectManager $om, $categoryClass)
     {
@@ -50,4 +50,4 @@ class CategoryManager extends BaseCategoryManager
 
         return $trees;
     }
-} 
+}

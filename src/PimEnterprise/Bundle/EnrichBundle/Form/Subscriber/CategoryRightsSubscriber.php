@@ -7,7 +7,6 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 
 /**
  * Subscriber to manage rights on categories

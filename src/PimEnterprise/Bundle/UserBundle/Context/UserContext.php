@@ -30,17 +30,15 @@ class UserContext extends BaseUserContext
         $defaultTree = $this->getUserOption('defaultTree');
 
         if ($defaultTree && $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $defaultTree)) {
-
             return $defaultTree;
         }
 
         $trees = $this->categoryManager->getAccessibleTrees();
 
         if (count($trees)) {
-
             return current($trees);
         }
 
         throw new \LogicException('User should have a default tree');
     }
-} 
+}

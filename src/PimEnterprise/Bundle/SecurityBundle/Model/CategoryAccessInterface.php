@@ -41,4 +41,4 @@ interface CategoryAccessInterface extends AccessInterface
      * @return boolean
      */
     public function getViewProducts();
-} 
+}

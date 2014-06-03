@@ -73,4 +73,4 @@ class CategoryTreeController extends BaseCategoryTreeController
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
         );
     }
-} 
+}

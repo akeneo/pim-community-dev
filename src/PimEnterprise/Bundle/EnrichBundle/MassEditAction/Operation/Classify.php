@@ -22,4 +22,4 @@ class Classify extends BaseClassify
         $this->trees           = $categoryManager->getAccessibleTrees();
         $this->categories      = [];
     }
-} 
+}

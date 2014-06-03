@@ -25,9 +25,9 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /**
      * Constructor
      *
-     * @param SecurityContextInterface           $securityContext   Security context
-     * @param ProductCategoryRepositoryInterface $productRepo       Product repository
-     * @param CategoryRepository                 $categoryRepo      Category repository
+     * @param SecurityContextInterface           $securityContext Security context
+     * @param ProductCategoryRepositoryInterface $productRepo     Product repository
+     * @param CategoryRepository                 $categoryRepo    Category repository
      */
     public function __construct(
         SecurityContextInterface $securityContext,
@@ -54,4 +54,4 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
         return $trees;
     }
-} 
+}
