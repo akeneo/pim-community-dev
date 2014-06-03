@@ -6,15 +6,16 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Intl;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 class LocaleHelperSpec extends ObjectBehavior
 {
-    function let(UserContext $userContext, Locale $en)
+    function let(UserContext $userContext, LocaleManager $localeManager, Locale $en)
     {
         $en->getCode()->willReturn('en_US');
         $userContext->getCurrentLocale()->willReturn($en);
 
-        $this->beConstructedWith($userContext);
+        $this->beConstructedWith($userContext, $localeManager);
     }
 
     function it_provides_current_locale($en)
@@ -67,5 +68,16 @@ class LocaleHelperSpec extends ObjectBehavior
                     'English (United States)'
                 )
             );
+    }
+
+    function it_provides_translated_locales_as_choice($localeManager)
+    {
+        $localeManager->getActiveCodes()->willReturn(['fr_FR', 'en_US']);
+        $this->getActivatedLocaleChoices()->shouldReturn(
+            [
+                'fr_FR' => 'French (France)',
+                'en_US' => 'English (United States)'
+            ]
+        );
     }
 }
