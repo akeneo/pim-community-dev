@@ -25,6 +25,11 @@ datagrid:
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposal_status.html.twig
                 frontend_type: html
+            locale:
+                label: Locale context
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
+                frontend_type: html
         properties:
             id: ~
             approve_link:
