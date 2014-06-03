@@ -43,6 +43,9 @@ abstract class AbstractAssociation implements ReferableInterface
      */
     protected $groups;
 
+    /**
+     * @var array
+     */
     protected $groupIds = [];
 
     /**
@@ -69,7 +72,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param AssociationType $associationType
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function setAssociationType(AssociationType $associationType)
     {
@@ -93,7 +96,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param ProductInterface $owner
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function setOwner(ProductInterface $owner)
     {
@@ -120,7 +123,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param ProductInterface[] $products
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function setProducts($products)
     {
@@ -144,7 +147,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param ProductInterface $product
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function addProduct(ProductInterface $product)
     {
@@ -160,7 +163,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param ProductInterface $product
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -174,7 +177,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param Group[] $groups
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function setGroups($groups)
     {
@@ -186,7 +189,7 @@ abstract class AbstractAssociation implements ReferableInterface
     /**
      * Get groups
      *
-     * @return Group[]|null
+     * @return Group[]
      */
     public function getGroups()
     {
@@ -198,7 +201,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param Group $group
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function addGroup(Group $group)
     {
@@ -214,7 +217,7 @@ abstract class AbstractAssociation implements ReferableInterface
      *
      * @param Group $group
      *
-     * @return Association
+     * @return AbstractAssociation
      */
     public function removeGroup(Group $group)
     {
