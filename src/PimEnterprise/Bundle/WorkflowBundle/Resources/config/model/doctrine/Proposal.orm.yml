@@ -24,7 +24,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
             type: string
             length: 20
             nullable: false
-            column: locale_code
+            column: locale
     manyToOne:
         product:
             targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
