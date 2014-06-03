@@ -15,8 +15,6 @@ class ProposalDatasourceSpec extends ObjectBehavior
     function let(ObjectManager $om, HydratorInterface $hydrator)
     {
         $this->beConstructedWith($om, $hydrator);
-
-
     }
 
     function it_is_a_datasource()
