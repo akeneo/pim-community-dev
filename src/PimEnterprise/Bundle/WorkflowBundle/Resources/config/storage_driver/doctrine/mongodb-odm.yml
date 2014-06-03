@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Repository\MongoDBODM\ProposalRepository
+    pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\ProposalRepository
     pimee_workflow.repository.publishedproduct.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
 
 services:
