@@ -17,9 +17,9 @@ abstract class AbstractProductValuePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object, array $change)
+    public function supports($data, array $change)
     {
-        return $object instanceof AbstractProductValue && $this->supportsChange($change);
+        return $data instanceof AbstractProductValue && $this->supportsChange($change);
     }
 
     /**

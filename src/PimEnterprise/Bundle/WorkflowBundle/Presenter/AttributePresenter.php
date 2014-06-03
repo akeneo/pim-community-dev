@@ -15,9 +15,9 @@ class AttributePresenter implements PresenterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($object, array $change)
+    public function supports($data, array $change)
     {
-        return $object instanceof AbstractAttribute;
+        return $data instanceof AbstractAttribute;
     }
 
     /**

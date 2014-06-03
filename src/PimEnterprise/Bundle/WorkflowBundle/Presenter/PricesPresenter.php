@@ -17,9 +17,9 @@ class PricesPresenter extends AbstractProductValuePresenter
         return array_key_exists('prices', $change);
     }
 
-    public function present($object, array $change)
+    public function present($data, array $change)
     {
-        $data = $this->normalizeData($object->getData());
+        $data = $this->normalizeData($data->getData());
         $change = $this->normalizeChange($change);
 
         foreach ($data as $currency => $price) {
