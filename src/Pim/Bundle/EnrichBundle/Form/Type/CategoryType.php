@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Type;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -30,6 +31,9 @@ class CategoryType extends AbstractType
      */
     protected $translationClassName;
 
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
     /**
      * Constructor
      *
@@ -54,6 +58,10 @@ class CategoryType extends AbstractType
         $this->addLabelField($builder);
 
         $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -93,5 +101,15 @@ class CategoryType extends AbstractType
     public function getName()
     {
         return 'pim_category';
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 }
