@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-abstract class AbstractProductValuePresenter implements PresenterInterface
+abstract class AbstractProductValuePresenter implements PresenterInterface, RendererAwareInterface
 {
     use RendererAware;
 

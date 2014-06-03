@@ -6,6 +6,8 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 
 /**
  * Twig extension to present proposal changes
@@ -29,6 +31,7 @@ class ProposalChangesExtension extends \Twig_Extension
 
     /**
      * @param ObjectRepository    $repository
+     * @param RendererInterface   $renderer
      * @param TranslatorInterface $translator
      */
     public function __construct(
@@ -149,41 +152,16 @@ class ProposalChangesExtension extends \Twig_Extension
     {
         foreach ($this->getPresenters() as $presenter) {
             if ($presenter->supports($object, $change)) {
-                $reflClass = new \ReflectionClass($presenter);
-
-                if ($this->usesTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAware')) {
+                if ($presenter instanceof TranslatorAwareInterface) {
                     $presenter->setTranslator($this->translator);
                 }
 
-                if ($this->usesTrait($reflClass, 'PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAware')) {
+                if ($presenter instanceof RendererAwareInterface) {
                     $presenter->setRenderer($this->renderer);
                 }
 
                 return $presenter->present($object, $change);
             }
         }
-    }
-
-    /**
-     * Wether or not the class uses the trait
-     *
-     * @param PresenterInterface $presenter
-     * @param string             $traitName
-     *
-     * @return boolean
-     */
-    protected function usesTrait(\ReflectionClass $class, $traitName)
-    {
-        if (in_array($traitName, $class->getTraitNames())) {
-            return true;
-        }
-
-        $parentClass = $class->getParentClass();
-
-        if (false === $parentClass) {
-            return false;
-        }
-
-        return $this->usesTrait($parentClass, $traitName);
     }
 }

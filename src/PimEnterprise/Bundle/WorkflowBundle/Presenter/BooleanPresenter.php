@@ -8,7 +8,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class BooleanPresenter extends AbstractProductValuePresenter
+class BooleanPresenter extends AbstractProductValuePresenter implements TranslatorAwareInterface
 {
     use TranslatorAware;
 

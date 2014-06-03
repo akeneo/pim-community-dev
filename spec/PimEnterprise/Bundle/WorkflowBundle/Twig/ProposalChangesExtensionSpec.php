@@ -104,8 +104,9 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value,
-        TranslatorAwarePresenter $presenter
+        PresenterInterface $presenter
     ){
+        $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
         $repository->find('123')->willReturn($value);
 
         $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
@@ -125,8 +126,9 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value,
-        RendererAwarePresenter $presenter
+        PresenterInterface $presenter
     ){
+        $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
         $repository->find('123')->willReturn($value);
 
         $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
@@ -139,22 +141,4 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $this->addPresenter($presenter, 0);
         $this->presentChange(['id' => '123', 'foo' => 'bar']);
     }
-}
-
-class TranslatorAwarePresenter implements PresenterInterface
-{
-    use Presenter\TranslatorAware;
-
-    public function supports($object, array $change) { }
-
-    public function present($data, array $change) { }
-}
-
-class RendererAwarePresenter implements PresenterInterface
-{
-    use Presenter\RendererAware;
-
-    public function supports($object, array $change) { }
-
-    public function present($data, array $change) { }
 }
