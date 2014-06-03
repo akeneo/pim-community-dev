@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
 
 /**

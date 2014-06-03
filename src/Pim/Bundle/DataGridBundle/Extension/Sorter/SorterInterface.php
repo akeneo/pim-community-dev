@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * Sorter interface, allows to join extra data in the datasource before to sort on
