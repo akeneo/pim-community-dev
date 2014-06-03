@@ -28,4 +28,23 @@ interface ProposalRepositoryInterface extends ObjectRepository
      * @return ProposalRepositoryInterface
      */
     public function applyDatagridContext($qb, $productId);
+
+    /**
+     * Apply filter for datagrid
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param string       $operator
+     * @param mixed        $value
+     */
+    public function applyFilter($qb, $field, $operator, $value);
+
+    /**
+     * Apply filter for datagrid
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     * @param string       $direction
+     */
+    public function applySorter($qb, $field, $direction);
 }

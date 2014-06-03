@@ -1,5 +1,7 @@
 datagrid:
     proposals-grid:
+        options:
+            entityHint: proposal
         source:
             type: pim_proposal
             entity: %pimee_workflow.entity.proposal.class%
@@ -50,22 +52,24 @@ datagrid:
         filters:
             columns:
                 status:
-                    type:      choice
-                    data_name: p.status
-                    label: pimee_workflow.proposal.status.label
+                    type:        proposal_choice
+                    parent_type: choice
+                    data_name:   status
+                    label:       pimee_workflow.proposal.status.label
                     options:
                         field_options:
+                            multiple: true
                             choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'
         sorters:
             columns:
                 author:
-                    data_name: p.author
+                    data_name: author
                     sorter: proposal_field
                 status:
-                    data_name: p.status
+                    data_name: status
                     sorter: proposal_field
                 createdAt:
-                    data_name: p.createdAt
+                    data_name: createdAt
                     sorter: proposal_field
             default:
                 createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

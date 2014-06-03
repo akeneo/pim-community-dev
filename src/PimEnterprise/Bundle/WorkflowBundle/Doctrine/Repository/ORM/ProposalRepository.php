@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
@@ -52,5 +53,44 @@ class ProposalRepository extends EntityRepository implements ProposalRepositoryI
                 'status' => Proposal::WAITING
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     */
+    public function applyFilter($qb, $field, $operator, $value)
+    {
+        if ('IN' === $operator) {
+            if (!empty($value)) {
+                $fieldName = $this->getRootFieldName($qb, $field);
+                $qb->andWhere($qb->expr()->in($fieldName, $value));
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ORM\QueryBuilder $qb
+     */
+    public function applySorter($qb, $field, $direction)
+    {
+        $fieldName = $this->getRootFieldName($qb, $field);
+        $qb->orderBy($fieldName, $direction);
+    }
+
+    /**
+     * Build field name with root alias
+     *
+     * @param QueryBuilder $qb
+     * @param string       $field
+     *
+     * @return string
+     */
+    protected function getRootFieldName(QueryBuilder $qb, $field)
+    {
+        return sprintf("%s.%s", current($qb->getRootAliases()), $field);
     }
 }
