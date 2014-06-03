@@ -23,7 +23,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
         locale:
             type: string
             length: 20
-            nullable: true
+            nullable: false
             column: locale_code
     manyToOne:
         product:
