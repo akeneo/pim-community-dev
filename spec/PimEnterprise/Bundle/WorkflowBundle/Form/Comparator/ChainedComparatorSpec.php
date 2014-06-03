@@ -10,6 +10,13 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 
 class ChainedComparatorSpec extends ObjectBehavior
 {
+    public function let(
+        ComparatorInterface $comparator1,
+        ComparatorInterface $comparator2
+    ) {
+        $this->addComparator($comparator1, 0);
+        $this->addComparator($comparator2, 100);
+    }
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface');
@@ -20,17 +27,20 @@ class ChainedComparatorSpec extends ObjectBehavior
         $this->supportsComparison($value)->shouldBe(true);
     }
 
+    function it_has_comparators($comparator1, $comparator2)
+    {
+        $this->getComparators()->shouldReturn([$comparator2, $comparator1]);
+    }
+
     function it_delegates_comparison_resolution_to_embedded_comparators(
         AbstractProductValue $value,
-        ComparatorInterface $comparator1,
-        ComparatorInterface $comparator2
+        $comparator1,
+        $comparator2
     ) {
-        $comparator1->supportsComparison($value)->willReturn(false);
-        $comparator2->supportsComparison($value)->willReturn(true);
-        $comparator2->getChanges($value, ['foo' => 'bar'])->willReturn(['bar']);
+        $comparator2->supportsComparison($value)->willReturn(false);
+        $comparator1->supportsComparison($value)->willReturn(true);
+        $comparator1->getChanges($value, ['foo' => 'bar'])->willReturn(['bar']);
 
-        $this->addComparator($comparator1);
-        $this->addComparator($comparator2);
         $this->getChanges($value, ['foo' => 'bar'])->shouldReturn(['bar']);
     }
 

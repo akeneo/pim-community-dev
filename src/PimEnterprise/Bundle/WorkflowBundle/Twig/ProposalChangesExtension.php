@@ -113,6 +113,7 @@ class ProposalChangesExtension extends \Twig_Extension
      * Add a presenter
      *
      * @param PresenterInterface $presenter
+     * @param int                $priority
      */
     public function addPresenter(PresenterInterface $presenter, $priority)
     {

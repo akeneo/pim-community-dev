@@ -28,7 +28,7 @@ class ChainedComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        foreach ($this->comparators as $comparator) {
+        foreach ($this->getComparators() as $comparator) {
             if ($comparator->supportsComparison($value)) {
                 return $comparator->getChanges($value, $submittedData);
             }
@@ -47,9 +47,27 @@ class ChainedComparator implements ComparatorInterface
      * Add a comparator to the chain of comparators
      *
      * @param ComparatorInterface $comparator
+     * @param int                 $priority
      */
-    public function addComparator(ComparatorInterface $comparator)
+    public function addComparator(ComparatorInterface $comparator, $priority)
     {
-        $this->comparators[] = $comparator;
+        $this->comparators[$priority][] = $comparator;
+    }
+
+    /**
+     * Get the registered comparators
+     *
+     * @return PresenterInterface[]
+     */
+    public function getComparators()
+    {
+        krsort($this->comparators);
+
+        $comparators = [];
+        foreach ($this->comparators as $groupedComparators) {
+            $comparators = array_merge($comparators, $groupedComparators);
+        }
+
+        return $comparators;
     }
 }

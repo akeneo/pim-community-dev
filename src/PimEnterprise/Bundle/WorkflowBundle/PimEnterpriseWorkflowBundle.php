@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler\RegisterProposalPresenters;
+use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 
 /**
  * PIM Enterprise Workflow Bundle
@@ -46,6 +46,8 @@ class PimEnterpriseWorkflowBundle extends Bundle
             );
         }
 
-        $container->addCompilerPass(new RegisterProposalPresenters());
+        $container
+            ->addCompilerPass(new Compiler\RegisterProposalPresentersPass())
+            ->addCompilerPass(new Compiler\RegisterProductFormTypeComparatorsPass());
     }
 }

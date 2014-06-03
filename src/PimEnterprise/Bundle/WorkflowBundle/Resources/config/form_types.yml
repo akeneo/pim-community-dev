@@ -19,41 +19,40 @@ services:
     pimee_workflow.form.comparator.chained:
         public: false
         class: %pimee_workflow.form.comparator.chained.class%
-        calls:
-            - [ addComparator, [ '@pimee_workflow.form.comparator.media' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.date' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.prices' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.metric' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.option' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.options' ] ]
-            - [ addComparator, [ '@pimee_workflow.form.comparator.scalar' ] ]
 
     pimee_workflow.form.comparator.media:
-        public: false
         class: %pimee_workflow.form.comparator.media.class%
         arguments:
             - '@pim_catalog.manager.media'
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.date:
-        public: false
         class: %pimee_workflow.form.comparator.date.class%
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.prices:
-        public: false
         class: %pimee_workflow.form.comparator.prices.class%
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.metric:
-        public: false
         class: %pimee_workflow.form.comparator.metric.class%
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.option:
-        public: false
         class: %pimee_workflow.form.comparator.option.class%
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.options:
-        public: false
         class: %pimee_workflow.form.comparator.options.class%
+        tags:
+            - { name: pimee_workflow.form.comparator }
 
     pimee_workflow.form.comparator.scalar:
-        public: false
         class: %pimee_workflow.form.comparator.scalar.class%
+        tags:
+            - { name: pimee_workflow.form.comparator, priority: -128 }

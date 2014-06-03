@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class RegisterProposalPresentersSpec extends ObjectBehavior
+class RegisterProposalPresentersPassSpec extends ObjectBehavior
 {
     function it_is_a_compiler_pass()
     {
