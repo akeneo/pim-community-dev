@@ -19,7 +19,7 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
 
     function it_is_an_event_subscriber()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
+        $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
     function it_subscribes_to_pre_set_data_form_event()
@@ -33,13 +33,16 @@ class AddProductValueFieldSubscriberSpec extends ObjectBehavior
         FormEvent $event,
         FormInterface $form,
         FormInterface $field,
+        FormInterface $rootForm,
         $factory,
         ProductValueInterface $value
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn($value);
 
-        $factory->buildProductValueForm($value)->willReturn($field);
+        $form->getRoot()->willReturn($rootForm);
+        $rootForm->getName()->willReturn('pim_catalog_edit');
+        $factory->buildProductValueForm($value, ['root_form_name' => 'pim_catalog_edit'])->willReturn($field);
         $form->add($field)->shouldBeCalled();
 
         $this->preSetData($event);

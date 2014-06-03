@@ -23,12 +23,12 @@ class ProductNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
     function it_is_serializer_aware()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\SerializerAwareInterface');
+        $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
     function it_supports_normalization_of_products_in_json_and_xml(ProductInterface $product)

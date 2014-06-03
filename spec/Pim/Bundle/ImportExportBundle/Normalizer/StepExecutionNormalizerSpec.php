@@ -17,7 +17,7 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
 
     function it_is_a_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
     function it_supports_normalization_of_step_execution(StepExecution $stepExecution)

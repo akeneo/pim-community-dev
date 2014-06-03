@@ -126,7 +126,7 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
     * Returns all families code with their required attributes code
     * Requirements can be restricted to a channel.
     *
-    * @param Family $family
+    * @param Family  $family
     * @param Channel $channel
     *
     * @return array

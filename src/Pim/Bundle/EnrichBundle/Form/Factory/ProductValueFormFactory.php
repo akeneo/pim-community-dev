@@ -47,10 +47,11 @@ class ProductValueFormFactory
 
     /**
      * @param ProductValueInterface $value
+     * @param array                 $context
      *
      * @return FormInterface
      */
-    public function buildProductValueForm(ProductValueInterface $value)
+    public function buildProductValueForm(ProductValueInterface $value, array $context)
     {
         $attributeTypeAlias = $value->getAttribute()->getAttributeType();
         $attributeType = $this->attributeTypeFactory->get($attributeTypeAlias);
@@ -63,7 +64,7 @@ class ProductValueFormFactory
             $attributeType->prepareValueFormOptions($value)
         );
 
-        $event = new CreateProductValueFormEvent($value, $type, $data, $options);
+        $event = new CreateProductValueFormEvent($value, $type, $data, $options, $context);
         $this->eventDispatcher->dispatch(EnrichEvents::CREATE_PRODUCT_VALUE_FORM, $event);
 
         $valueForm = $this->formFactory->createNamed(

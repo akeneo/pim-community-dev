@@ -30,9 +30,7 @@ use Pim\Bundle\CatalogBundle\Manager\GroupManager;
  */
 class GroupController extends AbstractController
 {
-    /**
-     * @staticvar integer The maximum number of group products to be displayed
-     */
+    /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
 
     /**

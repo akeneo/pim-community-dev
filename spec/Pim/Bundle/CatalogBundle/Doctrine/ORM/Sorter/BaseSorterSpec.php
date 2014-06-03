@@ -20,7 +20,7 @@ class BaseSorterSpec extends ObjectBehavior
 
     function it_is_a_sorter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface');
     }
 
     function it_adds_a_sorter_in_the_query(QueryBuilder $queryBuilder, AbstractAttribute $sku)

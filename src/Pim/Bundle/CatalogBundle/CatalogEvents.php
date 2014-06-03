@@ -17,7 +17,7 @@ final class CatalogEvents
      * The event listener receives an
      * Pim\Bundle\CatalogBundle\Event\FilterProductEvent instance.
      *
-     * @var string
+     * @staticvar string
      */
     const CREATE_PRODUCT = 'pim_catalog.create_product';
 
@@ -27,7 +27,7 @@ final class CatalogEvents
      * The event listener receives an
      * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
      *
-     * @var string
+     * @staticvar string
      */
     const CREATE_PRODUCT_VALUE = 'pim_catalog.create_product_value';
 }

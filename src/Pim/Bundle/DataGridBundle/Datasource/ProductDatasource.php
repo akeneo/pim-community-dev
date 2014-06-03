@@ -22,14 +22,10 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class ProductDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TYPE = 'pim_product';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ENTITY_PATH = '[source][entity]';
 
     /**
