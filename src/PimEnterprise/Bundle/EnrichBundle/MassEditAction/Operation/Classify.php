@@ -20,6 +20,6 @@ class Classify extends BaseClassify
     {
         $this->categoryManager = $categoryManager;
         $this->trees           = $categoryManager->getAccessibleTrees();
-        $this->categories      = array();
+        $this->categories      = [];
     }
 } 

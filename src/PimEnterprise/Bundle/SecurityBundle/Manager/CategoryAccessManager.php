@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
@@ -63,7 +64,7 @@ class CategoryAccessManager
      */
     public function setAccess(CategoryInterface $category, $viewRoles, $editRoles)
     {
-        $grantedRoles = array();
+        $grantedRoles = [];
         foreach ($editRoles as $role) {
             $this->grantAccess($category, $role, CategoryVoter::EDIT_PRODUCTS);
             $grantedRoles[] = $role;

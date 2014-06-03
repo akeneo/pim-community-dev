@@ -33,9 +33,14 @@ class CategoryManager extends BaseCategoryManager
         $this->securityContext = $securityContext;
     }
 
+    /**
+     * Get the trees accessible by the current user.
+     *
+     * @return array
+     */
     public function getAccessibleTrees()
     {
-        $trees = array();
+        $trees = [];
 
         foreach ($this->getTrees() as $tree) {
             if ($this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $tree)) {

@@ -62,7 +62,7 @@ class AttributeGroupAccessManager
      */
     public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
     {
-        $grantedRoles = array();
+        $grantedRoles = [];
         foreach ($editRoles as $role) {
             $this->grantAccess($group, $role, AttributeGroupVoter::EDIT_ATTRIBUTES);
             $grantedRoles[] = $role;

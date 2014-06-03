@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\UserBundle\Context;
 
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
+use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 /**
@@ -14,7 +15,15 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 class UserContext extends BaseUserContext
 {
     /**
-     * {@inheritdoc}
+     * @var CategoryManager
+     */
+    protected $categoryManager;
+
+    /**
+     * Get user category tree
+     *
+     * @return CategoryInterface
+     * @throws \LogicException
      */
     public function getAccessibleUserTree()
     {
