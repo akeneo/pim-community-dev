@@ -47,6 +47,6 @@ class ProductValueFormFactorySpec extends ObjectBehavior
 
         $formFactory->createNamed(Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
 
-        $this->buildProductValueForm($value);
+        $this->buildProductValueForm($value, ['root_form_name' => 'pim_product_edit']);
     }
 }
