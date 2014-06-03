@@ -169,25 +169,25 @@ interface ProductInterface
     /**
      * Add product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function addAssociation(Association $association);
+    public function addAssociation(AbstractAssociation $association);
 
     /**
      * Remove product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function removeAssociation(Association $association);
+    public function removeAssociation(AbstractAssociation $association);
 
     /**
      * Get the product associations
      *
-     * @return Association[]|null
+     * @return AbstractAssociation[]|null
      */
     public function getAssociations();
 
@@ -196,14 +196,14 @@ interface ProductInterface
      *
      * @param AssociationType $association
      *
-     * @return Association|null
+     * @return AbstractAssociation|null
      */
     public function getAssociationForType(AssociationType $association);
 
     /**
      * Set product associations
      *
-     * @param Association[] $associations
+     * @param AbstractAssociation[] $associations
      *
      * @return Product
      */
