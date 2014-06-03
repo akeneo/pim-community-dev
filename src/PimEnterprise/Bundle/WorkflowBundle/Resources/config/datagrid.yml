@@ -60,6 +60,15 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'
+                locale_context:
+                    type:        proposal_choice
+                    parent_type: choice
+                    data_name:   locale
+                    label:       Locale context
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: '@pim_catalog.helper.locale->getActivatedLocaleChoices'
         sorters:
             columns:
                 author:
