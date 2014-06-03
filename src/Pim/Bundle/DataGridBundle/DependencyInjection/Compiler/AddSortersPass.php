@@ -32,21 +32,19 @@ class AddSortersPass implements CompilerPassInterface
         $ormExtension = $container->getDefinition(self::SORTER_EXTENSION_ID);
         $productExtension = $container->getDefinition(self::SORTER_PRODUCT_EXTENSION_ID);
 
-        if ($ormExtension) {
-            $filters = $container->findTaggedServiceIds(self::TAG_NAME);
-            foreach ($filters as $serviceId => $tags) {
-                $tagAttrs = reset($tags);
-                if (isset($tagAttrs['type']) === false) {
-                    throw new \InvalidArgumentException(
-                        sprintf('The service %s must be configured with a type attribute', $serviceId)
-                    );
-                }
-                if ($ormExtension) {
-                    $ormExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
-                }
-                if ($productExtension) {
-                    $productExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
-                }
+        $filters = $container->findTaggedServiceIds(self::TAG_NAME);
+        foreach ($filters as $serviceId => $tags) {
+            $tagAttrs = reset($tags);
+            if (isset($tagAttrs['type']) === false) {
+                throw new \InvalidArgumentException(
+                    sprintf('The service %s must be configured with a type attribute', $serviceId)
+                );
+            }
+            if ($ormExtension) {
+                $ormExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+            }
+            if ($productExtension) {
+                $productExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
             }
         }
     }
