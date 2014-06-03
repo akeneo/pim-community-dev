@@ -12,10 +12,10 @@ class BooleanPresenter extends AbstractProductValuePresenter
 {
     use TranslatorAware;
 
-    /** @staticvar boolean */
+    /** @staticvar string */
     const YES = 'Yes';
 
-    /** @staticvar boolean */
+    /** @staticvar string */
     const NO = 'No';
 
     /**

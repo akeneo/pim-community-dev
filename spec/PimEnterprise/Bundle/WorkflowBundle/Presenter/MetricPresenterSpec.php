@@ -34,4 +34,16 @@ class MetricPresenterSpec extends ObjectBehavior
         $this->setRenderer($renderer);
         $this->present($value, ['metric' => ['unit' => 'millimeter', 'data' => '123']])->shouldReturn('diff between two metrics');
     }
+
+    function it_presents_metric_new_value_even_if_metric_does_not_have_a_value_yet(
+        RendererInterface $renderer,
+        Model\AbstractProductValue $value
+    ) {
+        $value->getData()->willReturn(null);
+
+        $renderer->renderDiff('', '123 millimeter')->willReturn('a new metric');
+
+        $this->setRenderer($renderer);
+        $this->present($value, ['metric' => ['unit' => 'millimeter', 'data' => '123']])->shouldReturn('a new metric');
+    }
 }

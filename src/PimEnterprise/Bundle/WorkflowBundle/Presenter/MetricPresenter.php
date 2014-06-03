@@ -23,6 +23,10 @@ class MetricPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
+        if (null === $data) {
+            return '';
+        }
+
         return sprintf('%s %s', $data->getData(), $data->getUnit());
     }
 

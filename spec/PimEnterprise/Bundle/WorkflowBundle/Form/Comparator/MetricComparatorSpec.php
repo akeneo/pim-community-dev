@@ -166,7 +166,7 @@ class MetricComparatorSpec extends ObjectBehavior
         ]);
     }
 
-    function it_detects_no_changes_when_the_new_data_is_not_available(
+    function it_detects_no_changes_when_the_new_metric_data_is_not_available(
         AbstractProductValue $value,
         Metric $metric
     ) {
@@ -178,6 +178,23 @@ class MetricComparatorSpec extends ObjectBehavior
         $value->getMetric()->willReturn($metric);
         $metric->getData()->willReturn(100);
         $metric->getUnit()->willReturn('KILOGRAM');
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
+
+    function it_detects_no_changes_when_the_old_and_new_metric_data_are_not_available(
+        AbstractProductValue $value,
+        Metric $metric
+    ) {
+        $submittedData = [
+            'id' => '1',
+            'metric' => [
+                'data' => '',
+                'unit' => 'KILOGRAM',
+            ],
+        ];
+
+        $value->getMetric()->willReturn(null);
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }

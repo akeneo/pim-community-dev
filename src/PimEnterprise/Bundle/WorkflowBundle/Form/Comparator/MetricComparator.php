@@ -44,6 +44,10 @@ class MetricComparator implements ComparatorInterface
             return;
         }
 
+        if (!$metric instanceof Metric && empty($submittedData['metric']['data'])) {
+            return;
+        }
+
         return [
             'id' => $submittedData['id'],
             'metric' => [
