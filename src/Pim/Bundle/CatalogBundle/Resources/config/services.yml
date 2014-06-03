@@ -45,6 +45,7 @@ services:
         class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
         arguments:
             - '@pim_user.context.user'
+            - '@pim_catalog.manager.locale'
 
     pim_catalog.doctrine.smart_manager_registry:
         class: %pim_catalog.doctrine.smart_manager_registry.class%

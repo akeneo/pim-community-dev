@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Helper;
 
 use Symfony\Component\Intl;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 /**
  * LocaleHelper essentially allow to translate locale code to localized locale label
@@ -18,18 +19,20 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class LocaleHelper
 {
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
+
+    /** @var LocaleManager*/
+    protected $localeManager;
 
     /**
      * Constructor
      * @param UserContext $userContext
      */
-    public function __construct(UserContext $userContext)
+    public function __construct(UserContext $userContext, LocaleManager $localeManager)
     {
-        $this->userContext = $userContext;
+        $this->userContext   = $userContext;
+        $this->localeManager = $localeManager;
     }
 
     /**
@@ -122,5 +125,23 @@ class LocaleHelper
             strtolower(\Locale::getRegion($code)),
             $fullLabel ? $this->getLocaleLabel($code, $localeCode) : \Locale::getPrimaryLanguage($code)
         );
+    }
+
+    /**
+     * Get activated locales as choice
+     *
+     * @return string[]
+     */
+    public function getActivatedLocaleChoices()
+    {
+        $localeCode  = $this->getCurrentLocale()->getCode();
+        $activeCodes = $this->localeManager->getActiveCodes();
+
+        $results = [];
+        foreach ($activeCodes as $activeCode) {
+            $results[$activeCode] = $this->getLocaleLabel($activeCode, $localeCode);
+        }
+
+        return $results;
     }
 }
