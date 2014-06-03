@@ -29,7 +29,8 @@ class ProposalFactory
             ->setProduct($product)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime())
-            ->setChanges($changes);
+            ->setChanges($changes)
+            ->setLocale($product->getLocale());
 
         return $proposal;
     }
