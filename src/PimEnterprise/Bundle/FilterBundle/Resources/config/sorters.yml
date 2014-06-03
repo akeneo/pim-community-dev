@@ -1,0 +1,8 @@
+parameters:
+    pimee_datagrid.extension.sorter.field_sorter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposal\FieldSorter
+
+services:
+    pimee_datagrid.extension.sorter.proposal.field_sorter:
+        class: %pimee_datagrid.extension.sorter.field_sorter.class%
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: proposal_field }

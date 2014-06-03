@@ -37,4 +37,28 @@ class ProposalRepository extends DocumentRepository implements ProposalRepositor
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function applyFilter($qb, $field, $operator, $value)
+    {
+        if ('IN' === $operator) {
+            if (!empty($value)) {
+                $qb->field($field)->in($value);
+            }
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @param \Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function applySorter($qb, $field, $direction)
+    {
+        $qb->sort($field, $direction);
+    }
 }
