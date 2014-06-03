@@ -66,7 +66,7 @@ abstract class AbstractMetric
      *
      * @param integer $id
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setId($id)
     {
@@ -90,7 +90,7 @@ abstract class AbstractMetric
      *
      * @param double $data
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setData($data)
     {
@@ -114,7 +114,7 @@ abstract class AbstractMetric
      *
      * @param string $unit
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setUnit($unit)
     {
@@ -138,7 +138,7 @@ abstract class AbstractMetric
      *
      * @param double $baseData
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setBaseData($baseData)
     {
@@ -162,7 +162,7 @@ abstract class AbstractMetric
      *
      * @param string $baseUnit
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setBaseUnit($baseUnit)
     {
@@ -186,7 +186,7 @@ abstract class AbstractMetric
      *
      * @param string $family
      *
-     * @return Metric
+     * @return AbstractMetric
      */
     public function setFamily($family)
     {
