@@ -214,10 +214,14 @@ abstract class AbstractMedia
 
     /**
      * @param boolean $removed
+     *
+     * @return AbstractMedia
      */
     public function setRemoved($removed)
     {
         $this->removed = $removed;
+
+        return $this;
     }
 
     /**
