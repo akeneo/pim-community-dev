@@ -83,7 +83,7 @@ abstract class AbstractMedia
      *
      * @param integer $id
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setId($id)
     {
@@ -107,7 +107,7 @@ abstract class AbstractMedia
      *
      * @param \Symfony\Component\HttpFoundation\File\File $file
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setFile(File $file)
     {
@@ -131,7 +131,7 @@ abstract class AbstractMedia
      *
      * @param string $filename
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setFilename($filename)
     {
@@ -155,7 +155,7 @@ abstract class AbstractMedia
      *
      * @param string $filePath
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setFilePath($filePath)
     {
@@ -179,7 +179,7 @@ abstract class AbstractMedia
      *
      * @param string $originalFilename
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setOriginalFilename($originalFilename)
     {
@@ -203,7 +203,7 @@ abstract class AbstractMedia
      *
      * @param string $mimeType
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setMimeType($mimeType)
     {
@@ -233,7 +233,7 @@ abstract class AbstractMedia
      *
      * @param ProductValueInterface $value
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setValue(ProductValueInterface $value)
     {
@@ -267,7 +267,7 @@ abstract class AbstractMedia
      *
      * @param integer $copyFrom
      *
-     * @return Media
+     * @return AbstractMedia
      */
     public function setCopyFrom($copyFrom)
     {
