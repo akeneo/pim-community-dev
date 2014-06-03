@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Pim\Bundle\CatalogBundle\Model\Association;
+use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 
 /**
  * Subscriber that updates target entities inside the Association
@@ -60,14 +60,14 @@ class BindAssociationTargetsSubscriber implements EventSubscriberInterface
     /**
      * Bind target entities
      *
-     * @param Association        $association
-     * @param ProductInterface[] $appendProducts
-     * @param ProductInterface[] $removeProducts
-     * @param Group[]            $appendGroups
-     * @param Group[]            $removeGroups
+     * @param AbstractAssociation $association
+     * @param ProductInterface[]  $appendProducts
+     * @param ProductInterface[]  $removeProducts
+     * @param Group[]             $appendGroups
+     * @param Group[]             $removeGroups
      */
     protected function bindTargets(
-        Association $association,
+        AbstractAssociation $association,
         array $appendProducts,
         array $removeProducts,
         array $appendGroups,
