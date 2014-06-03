@@ -10,6 +10,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
  */
 class DatePresenter extends AbstractProductValuePresenter
 {
+    /** @staticvar string The format that'll be used to compare date in the html diff */
+    const DATE_FORMAT = 'F, d Y';
+
     /**
      * {@inheritdoc}
      */
@@ -23,7 +26,7 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $data->format('F, d Y');
+        return $data->format(self::DATE_FORMAT);
     }
 
     /**
@@ -31,6 +34,6 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return (new \DateTime($change['date']))->format('F, d Y');
+        return (new \DateTime($change['date']))->format(self::DATE_FORMAT);
     }
 }

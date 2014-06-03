@@ -87,6 +87,7 @@ class ProposalChangesExtension extends \Twig_Extension
      *
      * @return string
      *
+     * @throws \InvalidArgumentException
      * @throws \LogicException
      */
     public function presentChange(array $change)

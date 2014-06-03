@@ -2,8 +2,19 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html;
 
+/**
+ * HTML list-based diff renderer
+ *
+ * @author    Gildas Quemener <gildas@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ */
 class SimpleList extends \Diff_Renderer_Html_Array
 {
+    /**
+     * Render a diff in a HTML list (<ul>) element
+     *
+     * @return string
+     */
     public function render()
     {
         $changes = parent::render();

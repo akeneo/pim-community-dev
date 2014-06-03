@@ -10,6 +10,15 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
  */
 class DiffFactory
 {
+    /**
+     * Instanciate a configured Diff
+     *
+     * @param string|array $a
+     * @param string|array $b
+     * @param array        $options
+     *
+     * @return \Diff
+     */
     public function create($a, $b, array $options = [])
     {
         $a = is_array($a) ? $a : [$a];

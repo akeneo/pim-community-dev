@@ -3,6 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 
 /**
+ * Diff renderer based on the PHP-Diff library
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */

@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Rendering;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Rendering
+ * A value diff renderer
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

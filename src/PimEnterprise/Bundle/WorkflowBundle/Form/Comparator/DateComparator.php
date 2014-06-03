@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
- * Comparator which calculate change set for Dates
+ * Comparator which calculate change set for dates
  *
  * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  *

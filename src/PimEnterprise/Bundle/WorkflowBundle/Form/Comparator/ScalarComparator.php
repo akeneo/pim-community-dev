@@ -7,8 +7,10 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
+ * Comparator which calculate change set for scalars
  *
  * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */

@@ -5,7 +5,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
- * Present value options data
+ * Comparator which calculate change set for collections of options
+ *
+ * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

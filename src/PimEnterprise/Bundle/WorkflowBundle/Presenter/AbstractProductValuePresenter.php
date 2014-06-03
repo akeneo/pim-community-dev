@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Presenter
+ * A product value diff presenter
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
