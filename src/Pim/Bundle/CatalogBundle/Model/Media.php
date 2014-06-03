@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Model;
 
-use Symfony\Component\HttpFoundation\File\File;
-
 /**
  * Media
  *
