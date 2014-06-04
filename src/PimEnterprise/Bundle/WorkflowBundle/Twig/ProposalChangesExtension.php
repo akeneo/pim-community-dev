@@ -58,8 +58,16 @@ class ProposalChangesExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('present_proposal_attribute', [$this, 'presentAttribute'], ['is_safe' => ['html']]),
-            new \Twig_SimpleFunction('present_proposal_change', [$this, 'presentChange'], ['is_safe' => ['html']]),
+            new \Twig_SimpleFunction(
+                'present_proposal_attribute',
+                [$this, 'presentAttribute'],
+                ['is_safe' => ['html']]
+            ),
+            new \Twig_SimpleFunction(
+                'present_proposal_change',
+                [$this, 'presentChange'],
+                ['is_safe' => ['html']]
+            ),
         ];
     }
 
