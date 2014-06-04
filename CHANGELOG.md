@@ -15,6 +15,7 @@
 - Introduce a ProductValueFormFactory which dispatch a EnrichEvents::CREATE_PRODUCT_VALUE_FORM to ease the product value form customization
 - MongoDB completeness calculation performances
 - Introduce Abstract models for Association, Media, Metric, Price, to ease the overriding of theses classes
+- Allow to override of a repository avoiding to redefine the entity mapping
 
 ## Bug fixes
 - Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
