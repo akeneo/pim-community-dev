@@ -48,7 +48,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        if (!$this->isInvalidTree($event)) {
+        if (!$this->isValidTree($event)) {
             return;
         }
 
@@ -66,7 +66,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (!$this->isInvalidTree($event)) {
+        if (!$this->isValidTree($event)) {
             return;
         }
 
@@ -82,7 +82,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        if (!$this->isInvalidTree($event)) {
+        if (!$this->isValidTree($event)) {
             return;
         }
 
@@ -101,10 +101,10 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      *
      * @return boolean
      */
-    protected function isInvalidTree(FormEvent $event)
+    protected function isValidTree(FormEvent $event)
     {
-        return null === $event->getData()
-            || null === $event->getData()->getId()
-            || false === $event->getData()->isRoot();
+        return null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && false !== $event->getData()->isRoot();
     }
 }
