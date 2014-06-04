@@ -13,17 +13,17 @@ class DiffFactory
     /**
      * Instanciate a configured Diff
      *
-     * @param string|array $a
-     * @param string|array $b
+     * @param string|array $before
+     * @param string|array $after
      * @param array        $options
      *
      * @return \Diff
      */
-    public function create($a, $b, array $options = [])
+    public function create($before, $after, array $options = [])
     {
-        $a = is_array($a) ? $a : [$a];
-        $b = is_array($b) ? $b : [$b];
+        $before = is_array($before) ? $before : [$before];
+        $after = is_array($after) ? $after : [$after];
 
-        return new \Diff($a, $b, $options);
+        return new \Diff($before, $after, $options);
     }
 }

@@ -29,11 +29,11 @@ interface AttributeGroupAccessInterface extends AccessInterface
     public function setAttributeGroup(AttributeGroup $attributeGroup);
 
     /**
-     * Get view atttributes permission
+     * Predicate for view atttributes permission
      *
      * @return boolean
      */
-    public function getViewAttributes();
+    public function isViewAttributes();
 
     /**
      * Set view atttributes permission
@@ -45,11 +45,11 @@ interface AttributeGroupAccessInterface extends AccessInterface
     public function setViewAttributes($viewAttributes);
 
     /**
-     * Get edit atttributes permission
+     * Predicate for edit atttributes permission
      *
      * @return boolean
      */
-    public function getEditAttributes();
+    public function isEditAttributes();
 
     /**
      * Set edit atttributes permission

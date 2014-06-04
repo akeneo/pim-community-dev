@@ -28,23 +28,12 @@ class MetricComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        if (!isset($submittedData['metric']['data'])) {
+        // Submitted metric is invalid (data was read only for example)
+        if (!isset($submittedData['metric']['data']) || !isset($submittedData['metric']['unit'])) {
             return;
         }
 
-        $metric = $value->getMetric();
-        if ($metric instanceof Metric &&
-            $metric->getData() == $submittedData['metric']['data'] &&
-            $metric->getUnit() == $submittedData['metric']['unit']
-        ) {
-            return;
-        }
-
-        if ($metric instanceof Metric && null === $metric->getData() && empty($submittedData['metric']['data'])) {
-            return;
-        }
-
-        if (!$metric instanceof Metric && empty($submittedData['metric']['data'])) {
+        if ($this->hasNotChanged($value->getMetric(), $submittedData['metric'])) {
             return;
         }
 
@@ -55,5 +44,36 @@ class MetricComparator implements ComparatorInterface
                 'unit' => $submittedData['metric']['unit'],
             ]
         ];
+    }
+
+    /**
+     * Detects changes in a metric compared to submitted data
+     *
+     * @param mixed $metric
+     * @param array $submittedMetric
+     *
+     * @return boolean
+     */
+    protected function hasNotChanged($metric, $submittedMetric)
+    {
+        // Current value has a metric and submitted metric does not change it
+        if ($metric instanceof Metric &&
+            $metric->getData() == $submittedMetric['data'] &&
+            $metric->getUnit() == $submittedMetric['unit']
+        ) {
+            return true;
+        }
+
+        // Current value has a metric with empty data and submitted metric data does not change it
+        if ($metric instanceof Metric && null === $metric->getData() && empty($submittedMetric['data'])) {
+            return true;
+        }
+
+        // Current value has no metric and submitted metric data is empty
+        if (null === $metric && empty($submittedMetric['data'])) {
+            return true;
+        }
+
+        return false;
     }
 }
