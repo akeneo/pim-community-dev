@@ -268,12 +268,12 @@ class CategoryManager
         //Removing last part of the path as it's the node itself
         //which cannot be is own ancestor
         array_pop($childPath);
-        $i = 0;
+        $childCount = 0;
         $parentFound = false;
 
-        while ($i < count($childPath) && (!$parentFound)) {
-            $parentFound = ($childPath[$i]->getId() === $parentNode->getId());
-            $i++;
+        while ($childCount < count($childPath) && (!$parentFound)) {
+            $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
+            $childCount++;
         }
 
         return $parentFound;

@@ -290,13 +290,13 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
             // root was not part of the set. We try to find the lowest level nodes
             // or a node without item part, meaning that it's a referenced parent but without
             // the node present itself in the set
-            $i = 0;
+            $nodeIt = 0;
             $foundItemLess = false;
             $nodeIds= array_keys($vectorMap);
             $nodesByLevel = array();
 
-            while ($i < count($nodeIds) && !$foundItemLess) {
-                $nodeId = $nodeIds[$i];
+            while ($nodeIt < count($nodeIds) && !$foundItemLess) {
+                $nodeId = $nodeIds[$nodeIt];
                 $nodeEntry = $vectorMap[$nodeId];
 
                 if (isset($nodeEntry['item'])) {
@@ -304,7 +304,7 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
                 } else {
                     $tree =& $vectorMap[$nodeId][$childrenIndex];
                 }
-                $i++;
+                $nodeIt++;
             }
             // $tree still empty there, means we need to pick the lowest level nodes as tree roots
             if (empty($tree)) {
