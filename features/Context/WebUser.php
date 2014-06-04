@@ -484,7 +484,7 @@ class WebUser extends RawMinkContext
             $actual = $field->getValue();
         }
 
-        if ($expected !== $actual) {
+        if ($expected != $actual) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expected product %s to be "%s", but got "%s".',
