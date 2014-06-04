@@ -4,7 +4,7 @@ services:
         public: false
         arguments:
             - '@pim_transform.transformer.property.relation'
-            - %pimee_catalog.entity.attribute_group_access.class%
+            - %pimee_security.entity.attribute_group_access.class%
             - ['/^role/']
             - { class: %pim_user.entity.role.class% }
         tags:
