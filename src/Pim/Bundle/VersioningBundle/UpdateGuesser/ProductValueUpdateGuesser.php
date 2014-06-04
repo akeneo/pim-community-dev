@@ -4,7 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * Product value update guesser
@@ -34,7 +34,7 @@ class ProductValueUpdateGuesser implements UpdateGuesserInterface
                 $pendings[] = $product;
             }
 
-        } elseif ($entity instanceof ProductPrice) {
+        } elseif ($entity instanceof AbstractProductPrice) {
             $pendings[] = $entity->getValue()->getEntity();
         }
 

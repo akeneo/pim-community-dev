@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -265,7 +266,7 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
-            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
+            } elseif ($item instanceof AbstractProductPrice) {
                 if ($item->getData() !== null) {
                     $result[] = (string) $item;
                 }

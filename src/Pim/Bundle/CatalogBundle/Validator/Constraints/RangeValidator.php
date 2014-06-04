@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 use Symfony\Component\Validator\Constraints\RangeValidator as BaseRangeValidator;
 use Symfony\Component\Validator\Constraint;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * Validator for range constraint
@@ -43,7 +43,7 @@ class RangeValidator extends BaseRangeValidator
             return;
         }
 
-        if ($value instanceof AbstractMetric || $value instanceof ProductPrice) {
+        if ($value instanceof AbstractMetric || $value instanceof AbstractProductPrice) {
             $this->validateData($value->getData(), $constraint);
         } else {
             parent::validate($value, $constraint);
