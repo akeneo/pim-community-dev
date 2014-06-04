@@ -62,8 +62,12 @@ class EnterpriseContext extends RawMinkContext
     public function theFollowingProposals(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
+            $localeCode = isset($data['locale']) ? $data['locale'] : 'en_US';
+            $product = $this->getProduct($data['product']);
+            $product->setLocale($localeCode);
+
             $proposal = $this->getProposalFactory()->createProposal(
-                $this->getProduct($data['product']),
+                $product,
                 $data['author'],
                 []
             );
