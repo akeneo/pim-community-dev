@@ -1,5 +1,6 @@
 parameters:
     pimee_enrich.form.type.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupRightsType
+    pimee_enrich.form.type.category_rights.class:        PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryRightsType
     pim_enrich.form.type.available_attributes.class:     PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
 
 services:
@@ -43,3 +44,18 @@ services:
             - '@pimee_security.repository.attribute_group_access'
         tags:
             - { name: form.type, alias: pim_available_attributes }
+
+    pimee_enrich.form.type.category_rights:
+        class: %pimee_enrich.form.type.category_rights.class%
+        tags:
+            - { name: form.type, alias: pimee_enrich_category_rights }
+
+    pim_enrich.form.type.category:
+        class: %pim_enrich.form.type.category.class%
+        arguments:
+            - %pim_catalog.entity.category.class%
+            - %pim_catalog.entity.category_translation.class%
+        tags:
+            - { name: form.type, alias: pim_category }
+        calls:
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_rights']]

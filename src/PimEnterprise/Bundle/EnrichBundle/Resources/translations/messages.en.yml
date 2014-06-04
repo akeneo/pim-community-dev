@@ -4,3 +4,7 @@ pane.accordion.rights: Rights
 attribute group.rights:
     view.label: Rights to view attributes
     edit.label: Rights to edit attributes
+
+category.rights:
+    view.label: Rights to view products in the current category
+    edit.label: Rights to edit product in the current category

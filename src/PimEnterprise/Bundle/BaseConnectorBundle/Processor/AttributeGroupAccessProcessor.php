@@ -24,7 +24,7 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
      */
     public function process($data)
     {
-        $objects = array();
+        $objects = [];
 
         foreach ($this->transformDataToItems($data) as $item) {
             $objects[] = parent::process($item);
@@ -62,8 +62,8 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
      */
     protected function transformDataToItems($data)
     {
-        $tmp = array();
-        $items = array();
+        $tmp = [];
+        $items = [];
 
         if (isset($data[self::ACCESS_VIEW])) {
             foreach ($data[self::ACCESS_VIEW] as $role) {

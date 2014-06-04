@@ -2,10 +2,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
@@ -17,16 +19,25 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 class AttributeGroupAccessManager
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
-    protected $objectManager;
+    protected $registry;
 
     /**
-     * @param ObjectManager $objectManager
+     * @var string
      */
-    public function __construct(ObjectManager $objectManager)
+    protected $attributeGroupAccessClass;
+
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry $registry
+     * @param string          $attributeGroupAccessClass
+     */
+    public function __construct(ManagerRegistry $registry, $attributeGroupAccessClass)
     {
-        $this->objectManager = $objectManager;
+        $this->registry                  = $registry;
+        $this->attributeGroupAccessClass = $attributeGroupAccessClass;
     }
 
     /**
@@ -62,7 +73,7 @@ class AttributeGroupAccessManager
      */
     public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
     {
-        $grantedRoles = array();
+        $grantedRoles = [];
         foreach ($editRoles as $role) {
             $this->grantAccess($group, $role, AttributeGroupVoter::EDIT_ATTRIBUTES);
             $grantedRoles[] = $role;
@@ -76,7 +87,7 @@ class AttributeGroupAccessManager
         }
 
         $this->revokeAccess($group, $grantedRoles);
-        $this->objectManager->flush();
+        $this->getObjectManager()->flush();
     }
 
     /**
@@ -93,7 +104,7 @@ class AttributeGroupAccessManager
             ->setViewAttributes(true)
             ->setEditAttributes($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES);
 
-        $this->objectManager->persist($access);
+        $this->getObjectManager()->persist($access);
     }
 
     /**
@@ -115,7 +126,7 @@ class AttributeGroupAccessManager
             );
 
         if (!$access) {
-            $access = new AttributeGroupAccess();
+            $access = new $this->attributeGroupAccessClass();
             $access
                 ->setAttributeGroup($group)
                 ->setRole($role);
@@ -126,7 +137,7 @@ class AttributeGroupAccessManager
 
     /**
      * Revoke access to an attribute group
-     * If excludedIds are provided, access will not be revoked for roles with these ids
+     * If $excludedRoles are provided, access will not be revoked for roles with them
      *
      * @param AttributeGroup $group
      * @param Role[]         $excludedRoles
@@ -145,6 +156,16 @@ class AttributeGroupAccessManager
      */
     protected function getRepository()
     {
-        return $this->objectManager->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess');
+        return $this->registry->getRepository($this->attributeGroupAccessClass);
+    }
+
+    /**
+     * Get the object manager
+     *
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->registry->getManagerForClass($this->attributeGroupAccessClass);
     }
 }

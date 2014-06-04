@@ -2,35 +2,35 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 
 /**
- * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
+ * Category voter, allows to know if products of a category can be edited or consulted by a
  * user depending on his roles
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeGroupVoter implements VoterInterface
+class CategoryVoter implements VoterInterface
 {
     /** @staticvar string */
-    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
+    const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
 
     /** @staticvar string */
-    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+    const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
 
     /**
-     * @var AttributeGroupAccessManager
+     * @var CategoryAccessManager
      */
     protected $accessManager;
 
     /**
-     * @param AttributeGroupAccessManager $accessManager
+     * @param CategoryAccessManager $accessManager
      */
-    public function __construct(AttributeGroupAccessManager $accessManager)
+    public function __construct(CategoryAccessManager $accessManager)
     {
         $this->accessManager = $accessManager;
     }
@@ -40,7 +40,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(self::VIEW_ATTRIBUTES, self::EDIT_ATTRIBUTES));
+        return in_array($attribute, array(self::VIEW_PRODUCTS, self::EDIT_PRODUCTS));
     }
 
     /**
@@ -48,7 +48,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof AttributeGroup;
+        return $class instanceof CategoryInterface;
     }
 
     /**
@@ -79,14 +79,14 @@ class AttributeGroupVoter implements VoterInterface
     /**
      * Get roles for specific attribute and object
      *
-     * @param string         $attribute
-     * @param AttributeGroup $object
+     * @param string   $attribute
+     * @param Category $object
      *
      * @return Role[]
      */
     protected function extractRoles($attribute, $object)
     {
-        if ($attribute === self::EDIT_ATTRIBUTES) {
+        if ($attribute === self::EDIT_PRODUCTS) {
             $grantedRoles = $this->accessManager->getEditRoles($object);
         } else {
             $grantedRoles = $this->accessManager->getViewRoles($object);

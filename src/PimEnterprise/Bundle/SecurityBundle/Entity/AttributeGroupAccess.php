@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 
 /**
  * Attribute Group Access entity
@@ -11,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeGroupAccess
+class AttributeGroupAccess implements AttributeGroupAccessInterface
 {
     /**
      * @var integer $id
@@ -39,9 +40,15 @@ class AttributeGroupAccess
     protected $editAttributes;
 
     /**
-     * Get attribute group
-     *
-     * @return AttributeGroup
+     * {@inheritdoc}
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function getAttributeGroup()
     {
@@ -49,11 +56,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Set attribute group
-     *
-     * @param AttributeGroup $attributeGroup
-     *
-     * @return AttributeGroupAccess
+     * {@inheritdoc}
      */
     public function setAttributeGroup(AttributeGroup $attributeGroup)
     {
@@ -63,9 +66,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Get role
-     *
-     * @return Role
+     * {@inheritdoc}
      */
     public function getRole()
     {
@@ -73,11 +74,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Set role
-     *
-     * @param Role $role
-     *
-     * @return AttributeGroupAccess
+     * {@inheritdoc}
      */
     public function setRole(Role $role)
     {
@@ -87,9 +84,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Get view atttributes permission
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getViewAttributes()
     {
@@ -97,11 +92,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Set view atttributes permission
-     *
-     * @param boolean $viewAttributes
-     *
-     * @return AttributeGroupAccess
+     * {@inheritdoc}
      */
     public function setViewAttributes($viewAttributes)
     {
@@ -111,9 +102,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Get edit atttributes permission
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function getEditAttributes()
     {
@@ -121,11 +110,7 @@ class AttributeGroupAccess
     }
 
     /**
-     * Set edit atttributes permission
-     *
-     * @param boolean $editAttributes
-     *
-     * @return AttributeGroupAccess
+     * {@inheritdoc}
      */
     public function setEditAttributes($editAttributes)
     {

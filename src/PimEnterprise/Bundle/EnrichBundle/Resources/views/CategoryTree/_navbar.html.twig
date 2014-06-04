@@ -1,0 +1,9 @@
+{% if form.vars.value.id and form.vars.value.isRoot() %}
+    {% set tabs = ['Properties', 'Rights', 'History']%}
+{% elseif form.vars.value.id %}
+    {% set tabs = ['Properties', 'History']%}
+{% else %}
+    {% set tabs = 'Properties'%}
+{% endif %}
+
+{{ elements.form_navbar(tabs) }}

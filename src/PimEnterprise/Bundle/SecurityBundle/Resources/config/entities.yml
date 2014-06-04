@@ -1,2 +1,3 @@
 parameters:
     pimee_security.entity.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess
+    pimee_security.entity.category_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess

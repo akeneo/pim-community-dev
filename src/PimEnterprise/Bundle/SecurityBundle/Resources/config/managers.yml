@@ -1,8 +1,16 @@
 parameters:
-    pimee_security.manager.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager
+    pimee_security.manager.attribute_group_access.class:    PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager
+    pimee_security.manager.category_access.class:           PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager
 
 services:
     pimee_security.manager.attribute_group_access:
         class: %pimee_security.manager.attribute_group_access.class%
         arguments:
-            - '@doctrine.orm.entity_manager'
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pimee_security.entity.attribute_group_access.class%
+
+    pimee_security.manager.category_access:
+        class: %pimee_security.manager.category_access.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pimee_security.entity.category_access.class%
