@@ -23,7 +23,6 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * A context for creating entities
@@ -1058,42 +1057,10 @@ class FixturesContext extends RawMinkContext
 
     /**
      * @param string $username
-     * @param $username
      */
     public function setUsername($username)
     {
         $this->username = $username;
-    }
-
-    /**
-     * @param string $columns
-     *
-     * @Given /^I\'ve displayed the columns (.*)$/
-    */
-    public function iVeDisplayedTheColumns($columns)
-    {
-        $alias = 'product-grid';
-        $user  = $this->getUser($this->username);
-
-        $view = $this->getRepository('PimDataGridBundle:DatagridView')->findOneBy(
-            [
-                'datagridAlias' => $alias,
-                'owner'         => $user,
-                'type'          => DatagridView::TYPE_DEFAULT
-            ]
-        );
-
-        if (!$view) {
-            $view = new DatagridView();
-            $view
-                ->setType(DatagridView::TYPE_DEFAULT)
-                ->setOwner($user)
-                ->setDatagridAlias($alias);
-        }
-
-        $view->setColumns($this->listToArray($columns));
-
-        $this->persist($view);
     }
 
     /**

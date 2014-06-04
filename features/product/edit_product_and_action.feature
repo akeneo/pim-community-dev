@@ -7,7 +7,7 @@ Feature: Product edition clicking on another action
   Background:
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
-    And I've displayed the columns sku, name, image, description and family
+    And I display the columns sku, name, image, description and family
     And the following products:
       | sku    | family  |
       | sandal | sandals |

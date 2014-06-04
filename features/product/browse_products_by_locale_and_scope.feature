@@ -18,8 +18,8 @@ Feature: Browse products by locale and scope
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
     And I am logged in as "Julia"
-    And I've displayed the columns sku, name, image, description and family
     And I am on the products page
+    And I display the columns sku, name, image, description and family
 
   Scenario: Successfully display english data on products page
     Given I switch the locale to "English (United States)"

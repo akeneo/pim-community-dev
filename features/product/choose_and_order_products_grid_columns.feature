@@ -29,7 +29,7 @@ Feature: Choose and order product grids columns
     Then I should see the columns Sku, Family, Status, Complete, Created At, Updated At, Groups
 
   Scenario: Succesfully hide removed attribute column that was previously selected to be displayed
-    Given I've displayed the columns sku, family and name
+    Given I display the columns sku, family and name
     And I've removed the "name" attribute
     And I am on the products page
     Then I should see the columns Sku and Family
