@@ -20,8 +20,6 @@ class ProposalRepository extends DocumentRepository implements ProposalRepositor
      */
     public function createDatagridQueryBuilder()
     {
-        $qb = $this->createQueryBuilder('p');
-
         return $this
             ->createQueryBuilder('p');
     }
