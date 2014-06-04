@@ -21,7 +21,7 @@ use Gaufrette\Filesystem;
 class MediaController
 {
     /** @staticvar array */
-    private static $mimeTypes = [
+    protected static $mimeTypes = [
         'jpeg' => 'image/jpeg',
         'jpg' => 'image/jpeg',
         'gif' => 'image/gif',
@@ -54,7 +54,6 @@ class MediaController
         FilterManager $filterManager,
         CacheManager $cacheManager,
         Filesystem $filesystem
-
     ) {
         $this->imagine = $imagine;
         $this->filterManager = $filterManager;
@@ -116,10 +115,10 @@ class MediaController
      */
     protected function getMimeType($filename)
     {
-       $extension = substr($filename, strrpos($filename,'.') + 1);
+        $extension = substr($filename, strrpos($filename, '.') + 1);
 
-       if (isset(self::$mimeTypes[$extension])) {
-           return self::$mimeTypes[$extension];
-       }
+        if (isset(static::$mimeTypes[$extension])) {
+            return static::$mimeTypes[$extension];
+        }
     }
 }
