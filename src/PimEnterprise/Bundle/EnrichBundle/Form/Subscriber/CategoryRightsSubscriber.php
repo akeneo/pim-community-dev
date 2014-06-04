@@ -48,7 +48,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId() || false === $event->getData()->isRoot()) {
+        if (!$this->isInvalidTree($event)) {
             return;
         }
 
@@ -66,7 +66,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId() || false === $event->getData()->isRoot()) {
+        if (!$this->isInvalidTree($event)) {
             return;
         }
 
@@ -82,7 +82,7 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId() || false === $event->getData()->isRoot()) {
+        if (!$this->isInvalidTree($event)) {
             return;
         }
 
@@ -92,5 +92,12 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
             $editRoles = $form->get('rights')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
         }
+    }
+
+    protected function isInvalidTree(FormEvent $event)
+    {
+        return null === $event->getData()
+            || null === $event->getData()->getId()
+            || false === $event->getData()->isRoot();
     }
 }
