@@ -30,7 +30,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
     protected $factory;
 
     /** @var ArrayCollection */
-    protected $attributeRequirements;
+    protected $attRequirements;
 
     /**
      * @param ChannelRepository           $channelRepository
@@ -45,7 +45,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
         $this->channelRepository = $channelRepository;
         $this->attributeRepository = $attributeRepository;
         $this->factory = $factory;
-        $this->attributeRequirements = new ArrayCollection();
+        $this->attRequirements = new ArrayCollection();
     }
 
     /**
@@ -55,7 +55,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
      */
     public function getAttributeRequirements()
     {
-        return $this->attributeRequirements;
+        return $this->attRequirements;
     }
 
     /**
@@ -65,8 +65,8 @@ class SetAttributeRequirements extends FamilyMassEditOperation
      */
     public function addAttributeRequirement(AttributeRequirement $attributeRequirement)
     {
-        if (!$this->attributeRequirements->contains($attributeRequirement)) {
-            $this->attributeRequirements->set(
+        if (!$this->attRequirements->contains($attributeRequirement)) {
+            $this->attRequirements->set(
                 sprintf(
                     '%s_%s',
                     $attributeRequirement->getAttributeCode(),
@@ -84,7 +84,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
      */
     public function removeAttributeRequirement(AttributeRequirement $attributeRequirement)
     {
-        $this->attributeRequirements->removeElement($attributeRequirement);
+        $this->attRequirements->removeElement($attributeRequirement);
     }
 
     /**
@@ -118,7 +118,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
      */
     protected function doPerform(Family $family)
     {
-        foreach ($this->attributeRequirements as $attributeRequirement) {
+        foreach ($this->attRequirements as $attributeRequirement) {
             $family->addAttribute($attributeRequirement->getAttribute());
             $family->addAttributeRequirement(
                 $this->factory->createAttributeRequirement(
