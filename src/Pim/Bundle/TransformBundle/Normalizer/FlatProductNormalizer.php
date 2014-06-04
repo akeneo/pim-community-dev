@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -193,7 +193,7 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = $this->normalizeCollectionData($data);
         } elseif ($data instanceof AbstractMedia) {
             $data = $this->mediaManager->getExportPath($data);
-        } elseif ($data instanceof Metric) {
+        } elseif ($data instanceof AbstractMetric) {
             if (empty($this->fields)) {
                 $fieldName = $this->getFieldValue($value);
 

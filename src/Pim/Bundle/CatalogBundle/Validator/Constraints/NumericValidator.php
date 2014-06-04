@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Validator\Constraints;
 
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 
 /**
@@ -21,7 +21,7 @@ class NumericValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof Metric || $value instanceof ProductPrice) {
+        if ($value instanceof AbstractMetric || $value instanceof ProductPrice) {
             $propertyPath = 'data';
             $value = $value->getData();
         }
