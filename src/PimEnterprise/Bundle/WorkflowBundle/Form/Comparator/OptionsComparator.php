@@ -32,7 +32,7 @@ class OptionsComparator implements ComparatorInterface
         }
 
         $options = $value->getOptions();
-        $getIds = function($option) {
+        $getIds = function ($option) {
             return $option->getId();
         };
 
