@@ -72,7 +72,7 @@ cd -
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
 
-    FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
+    FEATURE_NAME=`echo "${FEATURE#$APP_ROOT/}"`
 
     while [ ! -z $FEATURE_NAME ]; do
 
