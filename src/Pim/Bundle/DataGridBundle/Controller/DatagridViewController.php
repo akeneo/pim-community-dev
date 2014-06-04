@@ -97,7 +97,7 @@ class DatagridViewController extends AbstractDoctrineController
             $form->submit($request);
 
             // If the view was created based on the default view, set the default columns
-            if (empty($view->getColumns())) {
+            if (!$view->getColumns()) {
                 $view->setColumns(array_keys($this->datagridViewManager->getColumnChoices($alias, true)));
             }
 
