@@ -26,7 +26,7 @@ datagrid:
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposal_status.html.twig
                 frontend_type: html
             locale:
-                label: Locale context
+                label: pimee_workflow.proposal.locale
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
                 frontend_type: html
@@ -69,7 +69,7 @@ datagrid:
                     type:        proposal_choice
                     parent_type: choice
                     data_name:   locale
-                    label:       Locale context
+                    label:       pimee_workflow.proposal.locale
                     options:
                         field_options:
                             multiple: true
