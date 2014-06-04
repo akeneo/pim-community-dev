@@ -6,10 +6,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Doctrine\Common\Persistence\ObjectRepository;
 use Imagine\Image\ImagineInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
+use Gaufrette\Filesystem;
 
 /**
  * Media controller
@@ -20,6 +20,15 @@ use Liip\ImagineBundle\Imagine\Filter\FilterManager;
  */
 class MediaController
 {
+    /** @staticvar array */
+    private static $mimeTypes = [
+        'jpeg' => 'image/jpeg',
+        'jpg' => 'image/jpeg',
+        'gif' => 'image/gif',
+        'png' => 'image/png',
+        'txt' => 'text/plain',
+    ];
+
     /** @var ImagineInterface */
     protected $imagine;
 
@@ -29,8 +38,8 @@ class MediaController
     /** @var CacheManager */
     protected $cacheManager;
 
-    /** @var ObjectRepository */
-    protected $mediaRepository;
+    /** @var Filesystem */
+    protected $filesystem;
 
     /**
      * Constructor
@@ -38,18 +47,19 @@ class MediaController
      * @param ImagineInterface $imagine
      * @param FilterManager    $filterManager
      * @param CacheManager     $cacheManager
-     * @param ObjectRepository $mediaRepository
+     * @param Filesystem       $filesystem
      */
     public function __construct(
         ImagineInterface $imagine,
         FilterManager $filterManager,
         CacheManager $cacheManager,
-        ObjectRepository $mediaRepository
+        Filesystem $filesystem
+
     ) {
-        $this->imagine         = $imagine;
-        $this->filterManager   = $filterManager;
-        $this->cacheManager    = $cacheManager;
-        $this->mediaRepository = $mediaRepository;
+        $this->imagine = $imagine;
+        $this->filterManager = $filterManager;
+        $this->cacheManager = $cacheManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -61,29 +71,22 @@ class MediaController
      */
     public function showAction(Request $request, $filename)
     {
-        $media = $this->mediaRepository->findOneBy(['filename' => $filename]);
-
-        if (!$media) {
+        if (!$this->filesystem->has($filename)) {
             throw new NotFoundHttpException(sprintf('Media "%s" not found', $filename));
         }
 
-        $path = $media->getFilePath();
+        $response = new Response($content = $this->filesystem->read($filename));
 
-        if (!file_exists($path)) {
-            return new Response('', 404);
-        }
-
-        $response = new Response(file_get_contents($path));
-
-        if (($filter = $request->query->get('filter')) && 0 === strpos($media->getMimeType(), 'image')) {
+        $mime = $this->getMimeType($filename);
+        if (($filter = $request->query->get('filter')) && null !== $mime && 0 === strpos($mime, 'image')) {
             try {
-                $cachePath = $this->cacheManager->resolve($request, $media->getFilename(), $filter);
+                $cachePath = $this->cacheManager->resolve($request, $filename, $filter);
 
                 if ($cachePath instanceof Response) {
                     $response = $cachePath;
                 } else {
-                    $image = $this->imagine->open($path);
-                    $response = $this->filterManager->get($request, $filter, $image, $path);
+                    $image = $this->imagine->load($content);
+                    $response = $this->filterManager->get($request, $filter, $image, $filename);
                     $response = $this->cacheManager->store($response, $cachePath, $filter);
                 }
             } catch (\RuntimeException $e) {
@@ -94,8 +97,29 @@ class MediaController
             }
         }
 
-        $response->headers->set('Content-Type', $media->getMimeType());
+        if ($mime) {
+            $response->headers->set('Content-Type', $mime);
+        }
 
         return $response;
+    }
+
+    /**
+     * Get the MIME type from a file extension
+     *
+     * TODO (2014-06-02 16:07 by Gildas): Get rid of this method when Gaufrette will provide a file MIME type
+     * by merging https://github.com/KnpLabs/Gaufrette/pull/292 for example.
+     *
+     * @param string $filename
+     *
+     * @return null|string
+     */
+    protected function getMimeType($filename)
+    {
+       $extension = substr($filename, strrpos($filename,'.') + 1);
+
+       if (isset(self::$mimeTypes[$extension])) {
+           return self::$mimeTypes[$extension];
+       }
     }
 }
