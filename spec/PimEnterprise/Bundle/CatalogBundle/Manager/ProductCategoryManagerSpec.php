@@ -37,19 +37,19 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
 
         $this->beConstructedWith(
-            $securityContext,
             $productRepo,
-            $categoryRepo
+            $categoryRepo,
+            $securityContext
         );
     }
 
     function it_get_product_count_for_accessible_trees(
+        $securityContext,
+        $productRepo,
         ProductInterface $product,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
-        CategoryInterface $thirdTree,
-        $securityContext,
-        $productRepo
+        CategoryInterface $thirdTree
     ) {
         $trees = [
             ['tree' => $firstTree, 'productCount' => 21],

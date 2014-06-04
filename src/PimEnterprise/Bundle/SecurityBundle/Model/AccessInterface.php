@@ -4,6 +4,12 @@ namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
 use Oro\Bundle\UserBundle\Entity\Role;
 
+/**
+ * Base interface for all access entities
+ *
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ */
 interface AccessInterface
 {
     /**

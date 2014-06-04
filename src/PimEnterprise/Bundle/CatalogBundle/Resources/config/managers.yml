@@ -15,13 +15,13 @@ services:
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
         arguments:
-            - '@security.context'
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
+            - '@security.context'
 
     pim_catalog.manager.product_category:
         class: %pim_catalog.manager.product_category.class%
         arguments:
-            - '@security.context'
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
+            - '@security.context'

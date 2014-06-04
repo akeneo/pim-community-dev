@@ -16,10 +16,10 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class CategoryVoter implements VoterInterface
 {
-    /** @var string */
+    /** @staticvar string */
     const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
 
-    /** @var string */
+    /** @staticvar string */
     const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
 
     /**

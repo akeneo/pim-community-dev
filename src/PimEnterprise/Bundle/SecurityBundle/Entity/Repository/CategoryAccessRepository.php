@@ -12,14 +12,13 @@ use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 /**
- * Categoryaccess repository
+ * Category access repository
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class CategoryAccessRepository extends EntityRepository
 {
-
     /**
      * @var TableNameBuilder
      */

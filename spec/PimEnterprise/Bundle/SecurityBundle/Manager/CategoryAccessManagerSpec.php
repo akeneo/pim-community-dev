@@ -4,19 +4,21 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use Prophecy\Argument;
-use Oro\Bundle\UserBundle\Entity\Role;
 
 class CategoryAccessManagerSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, CategoryAccessRepository $repository)
+    function let(SmartManagerRegistry $registry, ObjectManager $objectManager, CategoryAccessRepository $repository)
     {
-        $objectManager->getRepository('PimEnterpriseSecurityBundle:CategoryAccess')->willReturn($repository);
+        $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
+        $registry->getRepository(Argument::any())->willReturn($repository);
 
-        $this->beConstructedWith($objectManager);
+        $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess');
     }
 
     function it_provides_roles_that_have_access_to_a_category(Category $category, $repository)

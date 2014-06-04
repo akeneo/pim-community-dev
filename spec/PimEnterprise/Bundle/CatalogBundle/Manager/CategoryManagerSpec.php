@@ -30,7 +30,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $token->getUser()->willReturn($user);
 
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
-        $this->beConstructedWith($securityContext, $om, Argument::any());
+        $this->beConstructedWith($om, Argument::any(), $securityContext);
     }
 
     function it_gets_accessible_trees(
@@ -42,7 +42,6 @@ class CategoryManagerSpec extends ObjectBehavior
     ) {
         $categoryRepository
             ->getChildren(Argument::any(), Argument::any(), Argument::any(), Argument::any())
-            ->shouldBeCalled()
             ->willReturn([$firstTree, $secondTree, $thirdTree]);
 
         $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $firstTree)->willReturn(true);

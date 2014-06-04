@@ -9,6 +9,8 @@ use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 /**
+ * Category manager
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
@@ -22,11 +24,11 @@ class CategoryManager extends BaseCategoryManager
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
      * @param ObjectManager            $om
      * @param string                   $categoryClass
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(SecurityContextInterface $securityContext, ObjectManager $om, $categoryClass)
+    public function __construct(ObjectManager $om, $categoryClass, SecurityContextInterface $securityContext)
     {
         parent::__construct($om, $categoryClass);
 

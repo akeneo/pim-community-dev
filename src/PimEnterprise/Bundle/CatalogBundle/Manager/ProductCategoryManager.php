@@ -25,14 +25,14 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /**
      * Constructor
      *
-     * @param SecurityContextInterface           $securityContext Security context
      * @param ProductCategoryRepositoryInterface $productRepo     Product repository
      * @param CategoryRepository                 $categoryRepo    Category repository
+     * @param SecurityContextInterface           $securityContext Security context
      */
     public function __construct(
-        SecurityContextInterface $securityContext,
         ProductCategoryRepositoryInterface $productRepo,
-        CategoryRepository $categoryRepo
+        CategoryRepository $categoryRepo,
+        SecurityContextInterface $securityContext
     ) {
         parent::__construct($productRepo, $categoryRepo);
 

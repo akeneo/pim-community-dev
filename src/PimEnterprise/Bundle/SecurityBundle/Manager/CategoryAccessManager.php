@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
@@ -19,16 +19,25 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 class CategoryAccessManager
 {
     /**
-     * @var ObjectManager
+     * @var ManagerRegistry
      */
-    protected $objectManager;
+    protected $registry;
 
     /**
-     * @param ObjectManager $objectManager
+     * @var string
      */
-    public function __construct(ObjectManager $objectManager)
+    protected $categoryAccessClass;
+
+    /**
+     * Constructor
+     *
+     * @param ManagerRegistry   $registry
+     * @param string            $categoryAccessClass
+     */
+    public function __construct(ManagerRegistry $registry, $categoryAccessClass)
     {
-        $this->objectManager = $objectManager;
+        $this->registry            = $registry;
+        $this->categoryAccessClass = $categoryAccessClass;
     }
 
     /**
@@ -78,7 +87,7 @@ class CategoryAccessManager
         }
 
         $this->revokeAccess($category, $grantedRoles);
-        $this->objectManager->flush();
+        $this->getObjectManager()->flush();
     }
 
     /**
@@ -95,7 +104,7 @@ class CategoryAccessManager
             ->setViewProducts(true)
             ->setEditProducts($accessLevel === CategoryVoter::EDIT_PRODUCTS);
 
-        $this->objectManager->persist($access);
+        $this->getObjectManager()->persist($access);
     }
 
     /**
@@ -117,8 +126,7 @@ class CategoryAccessManager
             );
 
         if (!$access) {
-            //TODO: use a parameter to get the classname
-            $access = new CategoryAccess();
+            $access = new $this->categoryAccessClass();
             $access
                 ->setCategory($category)
                 ->setRole($role);
@@ -148,6 +156,16 @@ class CategoryAccessManager
      */
     protected function getRepository()
     {
-        return $this->objectManager->getRepository('PimEnterpriseSecurityBundle:CategoryAccess');
+        return $this->registry->getRepository($this->categoryAccessClass);
+    }
+
+    /**
+     * Get the object manager
+     *
+     * @return ObjectManager
+     */
+    protected function getObjectManager()
+    {
+        return $this->registry->getManagerForClass($this->categoryAccessClass);
     }
 }
