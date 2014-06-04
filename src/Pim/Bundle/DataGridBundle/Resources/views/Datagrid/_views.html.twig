@@ -54,7 +54,6 @@ require(
         if (!$activeView.length) {
             $activeView = $selector.find('option[data-default="1"]');
             activeViewId = $activeView.val();
-            activateView(activeViewId);
         }
 
         var activeViewLabel = $activeView.text();
@@ -202,7 +201,9 @@ require(
             var cleanState = { 'filters': $activeView.data('filters'), 'columns': $activeView.data('columns') };
             var currentState = DatagridState.get('{{ alias }}', ['filters', 'columns']);
 
-            if (_.isEqual(currentState, cleanState)) {
+            if ((!currentState.filters || currentState.filters == cleanState.filters)
+                && (!currentState.columns || currentState.columns == cleanState.columns)
+            ) {
                 setTitle(activeViewLabel);
                 $updateButtton.hide();
 
