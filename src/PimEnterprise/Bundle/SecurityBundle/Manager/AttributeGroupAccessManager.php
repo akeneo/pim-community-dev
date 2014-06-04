@@ -26,18 +26,18 @@ class AttributeGroupAccessManager
     /**
      * @var string
      */
-    protected $attributeGroupAccessClass;
+    protected $attGroupAccessClass;
 
     /**
      * Constructor
      *
      * @param ManagerRegistry $registry
-     * @param string          $attributeGroupAccessClass
+     * @param string          $attGroupAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $attributeGroupAccessClass)
+    public function __construct(ManagerRegistry $registry, $attGroupAccessClass)
     {
         $this->registry                  = $registry;
-        $this->attributeGroupAccessClass = $attributeGroupAccessClass;
+        $this->attGroupAccessClass = $attGroupAccessClass;
     }
 
     /**
@@ -126,7 +126,7 @@ class AttributeGroupAccessManager
             );
 
         if (!$access) {
-            $access = new $this->attributeGroupAccessClass();
+            $access = new $this->attGroupAccessClass();
             $access
                 ->setAttributeGroup($group)
                 ->setRole($role);
@@ -156,7 +156,7 @@ class AttributeGroupAccessManager
      */
     protected function getRepository()
     {
-        return $this->registry->getRepository($this->attributeGroupAccessClass);
+        return $this->registry->getRepository($this->attGroupAccessClass);
     }
 
     /**
@@ -166,6 +166,6 @@ class AttributeGroupAccessManager
      */
     protected function getObjectManager()
     {
-        return $this->registry->getManagerForClass($this->attributeGroupAccessClass);
+        return $this->registry->getManagerForClass($this->attGroupAccessClass);
     }
 }
