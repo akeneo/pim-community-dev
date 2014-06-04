@@ -21,6 +21,7 @@ class Operation extends Wizard
         'Change the family of products'    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
         'Set attribute requirements'       => 'Batch SetAttributeRequirements',
+        'Classify products in categories'  => 'Batch Classify',
     );
 
     /**

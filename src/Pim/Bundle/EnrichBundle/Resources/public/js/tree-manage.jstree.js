@@ -40,7 +40,7 @@ define(
                 },
                 tree_selector: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree })
+                        url: Routing.generate('pim_enrich_categorytree_managetree', { _format: 'json', select_node_id: selectedNodeOrTree })
                     },
                     auto_open_root: true,
                     node_label_field: 'label',
