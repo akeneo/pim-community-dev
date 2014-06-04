@@ -4,6 +4,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
@@ -12,11 +13,12 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
-    function let(ObjectManager $objectManager, AttributeGroupAccessRepository $repository)
+    function let(SmartManagerRegistry $registry, ObjectManager $objectManager, AttributeGroupAccessRepository $repository)
     {
-        $objectManager->getRepository('PimEnterpriseSecurityBundle:AttributeGroupAccess')->willReturn($repository);
+        $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
+        $registry->getRepository(Argument::any())->willReturn($repository);
 
-        $this->beConstructedWith($objectManager);
+        $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess');
     }
 
     function it_provides_roles_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
