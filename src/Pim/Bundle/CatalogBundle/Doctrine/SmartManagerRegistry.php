@@ -17,6 +17,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class SmartManagerRegistry implements ManagerRegistry
 {
+    /** @var ManagerRegistry[] */
     protected $registries = [];
 
     /**
