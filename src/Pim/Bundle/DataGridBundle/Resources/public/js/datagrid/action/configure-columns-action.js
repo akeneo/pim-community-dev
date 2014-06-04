@@ -105,14 +105,15 @@ define(
                     var displayedColumns = {};
                     var displayedCodes = DatagridState.get(this.gridName, 'columns');
 
-                    if (displayedCodes) {
-                        _.each(displayedCodes.split(','), function(code) {
-                            if (availableColumns[code]) {
-                                displayedColumns[code] = availableColumns[code];
-                                delete availableColumns[code];
-                            }
-                        });
+                    if (!displayedCodes) {
+                        displayedCodes = _.pluck(this.$gridContainer.data('metadata').columns, 'name').join(',');
                     }
+                    _.each(displayedCodes.split(','), function(code) {
+                        if (availableColumns[code]) {
+                            displayedColumns[code] = availableColumns[code];
+                            delete availableColumns[code];
+                        }
+                    });
 
                     var content = this.configureTemplate({
                         availableColumnsLabel: this.availableColumnsLabel,

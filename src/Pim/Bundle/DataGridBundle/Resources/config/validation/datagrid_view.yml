@@ -7,7 +7,6 @@ Pim\Bundle\DataGridBundle\Entity\DatagridView:
         label:
             - NotBlank:
                 message: datagrid_view.label.not_blank_message
-                groups: ['Creation']
             - Length:
                 max: 100
         columns:
