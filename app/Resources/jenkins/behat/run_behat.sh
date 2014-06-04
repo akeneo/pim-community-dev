@@ -41,7 +41,7 @@ ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
 
 APP_ROOT=`dirname $0`/../../../..
 
-FEATURES_DIR=$APP_ROOT/features
+FEATURES_DIR=$APP_ROOT/$FEATURES_DIRECTORY
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
