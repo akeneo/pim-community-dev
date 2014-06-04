@@ -94,6 +94,13 @@ class CategoryRightsSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * Predicate to know form event contains valid tree
+     *
+     * @param FormEvent $event
+     *
+     * @return boolean
+     */
     protected function isInvalidTree(FormEvent $event)
     {
         return null === $event->getData()
