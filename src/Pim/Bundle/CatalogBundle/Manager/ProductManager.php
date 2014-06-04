@@ -50,13 +50,13 @@ class ProductManager
     protected $productRepository;
 
     /** @var AssociationTypeRepository */
-    protected $associationTypeRepository;
+    protected $assocTypeRepository;
 
     /** @var AttributeRepository */
     protected $attributeRepository;
 
     /** @var AttributeOptionRepository */
-    protected $attributeOptionRepository;
+    protected $attOptionRepository;
 
     /**
      * Constructor
@@ -68,9 +68,9 @@ class ProductManager
      * @param MediaManager               $mediaManager
      * @param ProductBuilder             $builder
      * @param ProductRepositoryInterface $productRepository
-     * @param AssociationTypeRepository  $associationTypeRepository
+     * @param AssociationTypeRepository  $assocTypeRepository
      * @param AttributeRepository        $attributeRepository
-     * @param AttributeOptionRepository  $attributeOptionRepository
+     * @param AttributeOptionRepository  $attOptionRepository
      */
     public function __construct(
         $configuration,
@@ -80,9 +80,9 @@ class ProductManager
         MediaManager $mediaManager,
         ProductBuilder $builder,
         ProductRepositoryInterface $productRepository,
-        AssociationTypeRepository $associationTypeRepository,
+        AssociationTypeRepository $assocTypeRepository,
         AttributeRepository $attributeRepository,
-        AttributeOptionRepository $attributeOptionRepository
+        AttributeOptionRepository $attOptionRepository
     ) {
         $this->configuration = $configuration;
         $this->persister = $persister;
@@ -91,9 +91,9 @@ class ProductManager
         $this->mediaManager = $mediaManager;
         $this->builder = $builder;
         $this->productRepository = $productRepository;
-        $this->associationTypeRepository = $associationTypeRepository;
+        $this->assocTypeRepository = $assocTypeRepository;
         $this->attributeRepository = $attributeRepository;
-        $this->attributeOptionRepository = $attributeOptionRepository;
+        $this->attOptionRepository = $attOptionRepository;
     }
 
     /**
@@ -393,7 +393,7 @@ class ProductManager
      */
     public function ensureAllAssociationTypes(ProductInterface $product)
     {
-        $missingAssocTypes = $this->associationTypeRepository->findMissingAssociationTypes($product);
+        $missingAssocTypes = $this->assocTypeRepository->findMissingAssociationTypes($product);
 
         if (!empty($missingAssocTypes)) {
             foreach ($missingAssocTypes as $associationType) {
@@ -453,7 +453,7 @@ class ProductManager
      */
     public function getAttributeOptionRepository()
     {
-        return $this->attributeOptionRepository;
+        return $this->attOptionRepository;
     }
 
     /**
