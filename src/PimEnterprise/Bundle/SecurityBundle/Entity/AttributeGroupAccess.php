@@ -86,7 +86,7 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getViewAttributes()
+    public function isViewAttributes()
     {
         return $this->viewAttributes;
     }
@@ -104,7 +104,7 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getEditAttributes()
+    public function isEditAttributes()
     {
         return $this->editAttributes;
     }

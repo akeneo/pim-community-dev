@@ -96,7 +96,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getEditProducts()
+    public function isEditProducts()
     {
         return $this->editProducts;
     }
@@ -114,7 +114,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getViewProducts()
+    public function isViewProducts()
     {
         return $this->viewProducts;
     }

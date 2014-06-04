@@ -34,7 +34,7 @@ interface CategoryAccessInterface extends AccessInterface
     /**
      * @return boolean
      */
-    public function getEditProducts();
+    public function isEditProducts();
 
     /**
      * @param boolean $viewProducts
@@ -46,5 +46,5 @@ interface CategoryAccessInterface extends AccessInterface
     /**
      * @return boolean
      */
-    public function getViewProducts();
+    public function isViewProducts();
 }
