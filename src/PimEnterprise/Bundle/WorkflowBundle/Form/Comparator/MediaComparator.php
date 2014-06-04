@@ -49,7 +49,9 @@ class MediaComparator implements ComparatorInterface
             $this->mediaManager->handle($media, 'proposal-' . md5(time() . uniqid()));
 
             return [
+                'id' => $submittedData['id'],
                 'media' => [
+                    'filename' => $media->getFilename(),
                     'originalFilename' => $media->getOriginalFilename(),
                     'filePath' => $media->getFilePath(),
                     'mimeType' => $media->getMimeType(),

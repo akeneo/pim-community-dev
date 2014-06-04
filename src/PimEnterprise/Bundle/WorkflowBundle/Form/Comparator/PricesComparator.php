@@ -27,6 +27,10 @@ class PricesComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
+        if (!isset($submittedData['prices'])) {
+            return;
+        }
+
         $changes = [];
         $currentPrices = $value->getPrices();
         foreach ($submittedData['prices'] as $currency => $price) {
@@ -38,6 +42,10 @@ class PricesComparator implements ComparatorInterface
             }
         }
 
-        return !empty($changes) ? $changes : null;
+        if (!empty($changes)) {
+            $changes['id'] = $submittedData['id'];
+
+            return $changes;
+        }
     }
 }

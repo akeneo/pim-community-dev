@@ -28,20 +28,32 @@ class MetricComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        $metric = $value->getMetric() ?: new Metric();
-        if ($metric->getData() != $submittedData['metric']['data']
-            || $metric->getUnit() != $submittedData['metric']['unit']
-        ) {
-            if (null === $metric->getData() && empty($submittedData['metric']['data'])) {
-                return;
-            }
-
-            return [
-                'metric' => [
-                    'data' => $submittedData['metric']['data'],
-                    'unit' => $submittedData['metric']['unit'],
-                ]
-            ];
+        if (!isset($submittedData['metric']['data'])) {
+            return;
         }
+
+        $metric = $value->getMetric();
+        if ($metric instanceof Metric &&
+            $metric->getData() == $submittedData['metric']['data'] &&
+            $metric->getUnit() == $submittedData['metric']['unit']
+        ) {
+            return;
+        }
+
+        if ($metric instanceof Metric && null === $metric->getData() && empty($submittedData['metric']['data'])) {
+            return;
+        }
+
+        if (!$metric instanceof Metric && empty($submittedData['metric']['data'])) {
+            return;
+        }
+
+        return [
+            'id' => $submittedData['id'],
+            'metric' => [
+                'data' => $submittedData['metric']['data'],
+                'unit' => $submittedData['metric']['unit'],
+            ]
+        ];
     }
 }
