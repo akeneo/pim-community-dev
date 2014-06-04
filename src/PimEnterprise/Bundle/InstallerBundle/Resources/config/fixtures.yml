@@ -4,3 +4,10 @@ attribute_groups_accesses:
         processor:         pimee_base_connector.processor.attribute_group_access
     yml:
         processor:         pimee_base_connector.processor.attribute_group_access
+
+category_accesses:
+    order: 150
+    csv:
+        processor: pimee_base_connector.processor.category_access
+    yml:
+        processor: pimee_base_connector.processor.category_access

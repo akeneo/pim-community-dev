@@ -1,0 +1,4 @@
+category_accesses:
+    master:
+        view: [administrator, user]
+        edit: [administrator]
