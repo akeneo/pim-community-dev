@@ -42,7 +42,8 @@ class PricesComparatorSpec extends ObjectBehavior
                     'data' => '20',
                     'currency' => 'USD',
                 ],
-            ]
+            ],
+            'id' => '123',
         ]);
     }
 
@@ -76,7 +77,8 @@ class PricesComparatorSpec extends ObjectBehavior
                     'data' => '10',
                     'currency' => 'EUR',
                 ],
-            ]
+            ],
+            'id' => '123',
         ]);
     }
 
@@ -86,18 +88,28 @@ class PricesComparatorSpec extends ObjectBehavior
         ProductPrice $eur
     ) {
         $submittedData = [
-            'id' => '123',
             'prices' => [
                 'EUR' => [
                     'data' => '10',
                     'currency' => 'EUR',
                 ],
             ],
+            'id' => '123',
         ];
 
         $value->getPrices()->willReturn($prices);
         $prices->offsetGet('EUR')->willReturn($eur);
         $eur->getData()->willReturn(10);
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
+
+    function it_detects_no_change_when_the_new_prices_are_not_defined(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => '1',
+        ];
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }

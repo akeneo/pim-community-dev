@@ -37,6 +37,7 @@ class DateComparatorSpec extends ObjectBehavior
         $date->format('Y-m-d')->willReturn('2014-05-18');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 123,
             'date' => '1987-05-14'
         ]);
     }
@@ -46,6 +47,7 @@ class DateComparatorSpec extends ObjectBehavior
         \DateTime $date
     ) {
         $submittedData = [
+            'id' => 123,
             'date' => '1987-05-14',
         ];
         $value->getDate()->willReturn($date);
@@ -64,6 +66,7 @@ class DateComparatorSpec extends ObjectBehavior
         $value->getDate()->willReturn(null);
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 123,
             'date' => '1987-05-14'
         ]);
     }
@@ -74,6 +77,17 @@ class DateComparatorSpec extends ObjectBehavior
         $submittedData = [
             'id' => 123,
             'date' => '',
+        ];
+        $value->getDate()->willReturn(null);
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
+    }
+
+    function it_does_not_detect_changes_when_the_new_date_is_not_defined(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => 123,
         ];
         $value->getDate()->willReturn(null);
 

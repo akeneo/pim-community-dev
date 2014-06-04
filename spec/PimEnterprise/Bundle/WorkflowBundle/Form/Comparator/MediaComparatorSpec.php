@@ -40,7 +40,12 @@ class MediaComparatorSpec extends ObjectBehavior
             $args[0]->setMimeType('image/jpg');
         });
 
-        $this->getChanges($value, ['media' => ['file' => $file]])->shouldReturn([
+        $submittedData = [
+            'id' => 1,
+            'media' => ['file' => $file],
+        ];
+        $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 1,
             'media' => [
                 'originalFilename' => 'foo.jpg',
                 'filePath' => '/tmp/foo.jpg',

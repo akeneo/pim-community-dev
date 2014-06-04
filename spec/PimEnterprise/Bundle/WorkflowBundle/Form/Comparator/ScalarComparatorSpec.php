@@ -15,6 +15,24 @@ class ScalarComparatorSpec extends ObjectBehavior
         $this->beConstructedWith($accessor);
     }
 
+    function it_supports_comparison_of_null_value(AbstractProductValue $value)
+    {
+        $value->getData()->willReturn(null);
+        $this->supportsComparison($value)->shouldBe(true);
+    }
+
+    function it_supports_comparison_of_scalar_value(AbstractProductValue $value)
+    {
+        $value->getData()->willReturn('foo');
+        $this->supportsComparison($value)->shouldBe(true);
+    }
+
+    function it_does_not_support_comparison_of_non_scalar_value(AbstractProductValue $value, $object)
+    {
+        $value->getData()->willReturn($object);
+        $this->supportsComparison($value)->shouldBe(false);
+    }
+
     function it_detects_changes_on_scalar_value(
         $accessor,
         AbstractProductValue $value
@@ -26,6 +44,7 @@ class ScalarComparatorSpec extends ObjectBehavior
         $accessor->getValue($value, 'varchar')->willReturn('bar');
 
         $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 1,
             'varchar' => 'foo'
         ]);
     }
@@ -43,8 +62,13 @@ class ScalarComparatorSpec extends ObjectBehavior
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
 
-    function it_always_supports_comparison(AbstractProductValue $value)
-    {
-        $this->supportsComparison($value)->shouldBe(true);
+    function it_detects_no_change_when_there_nothing_else_than_the_id_in_the_changes(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => 1,
+        ];
+
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
 }
