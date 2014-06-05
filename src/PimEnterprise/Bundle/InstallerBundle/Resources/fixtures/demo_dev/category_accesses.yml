@@ -2,13 +2,13 @@ category_accesses:
     master:
         view: [administrator, manager, user]
         edit: [administrator, manager, user]
-    sales:
+    collections:
         view: [administrator, manager, user]
         edit: [administrator, manager]
-    brands:
+    books:
         view: [administrator, manager, user]
         edit: [administrator, manager]
-    home_appliances:
+    computers:
         view: [administrator, manager]
         edit: [administrator, manager]
 
