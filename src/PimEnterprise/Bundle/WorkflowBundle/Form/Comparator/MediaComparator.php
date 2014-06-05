@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Media;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaComparator implements ComparatorInterface
+class MediaComparator extends AbstractComparator
 {
     /** @var MediaManager */
     protected $mediaManager;
@@ -41,7 +41,7 @@ class MediaComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {
             $media = new Media();
@@ -49,7 +49,6 @@ class MediaComparator implements ComparatorInterface
             $this->mediaManager->handle($media, 'proposal-' . md5(time() . uniqid()));
 
             return [
-                'id' => $submittedData['id'],
                 'media' => [
                     'filename' => $media->getFilename(),
                     'originalFilename' => $media->getOriginalFilename(),

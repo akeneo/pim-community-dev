@@ -10,16 +10,25 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 class OptionsComparatorSpec extends ObjectBehavior
 {
+    function let(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->getAttribute()->willReturn($attribute);
+        $value->getId()->willReturn(713705);
+        $value->getScope()->willReturn('ecommerce');
+        $attribute->getId()->willReturn(1337);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface');
     }
 
     function it_supports_multiselect_type(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
-    )
-    {
+        $value,
+        $attribute
+    ) {
         $value->getAttribute()->willReturn($attribute);
         $attribute->getAttributeType()->willReturn('pim_catalog_multiselect');
 
@@ -27,14 +36,13 @@ class OptionsComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_changes_when_changing_options_data(
-        Model\AbstractProductValue $value,
+        $value,
         AttributeOption $red,
         AttributeOption $blue,
         AttributeOption $yellow,
         AttributeOption $green
     ){
         $submittedData = [
-            'id' => '1',
             'options' => '42,24,76',
         ];
 
@@ -52,20 +60,23 @@ class OptionsComparatorSpec extends ObjectBehavior
         $value->getOptions()->willReturn($options);
 
         $this->getChanges($value, $submittedData)->shouldReturn([
-            'id' => '1',
             'options' => '24,42,76',
+            '__context__' => [
+                'attribute_id' => 1337,
+                'value_id' => 713705,
+                'scope' => 'ecommerce',
+            ],
         ]);
     }
 
     function it_detects_no_changes_when_options_are_the_same(
-        Model\AbstractProductValue $value,
+        $value,
         AttributeOption $red,
         AttributeOption $blue,
         AttributeOption $yellow,
         AttributeOption $green
     ) {
         $submittedData = [
-            'id' => '1',
             'options' => '42,24,76,54',
         ];
 
@@ -86,11 +97,9 @@ class OptionsComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_no_change_when_the_options_is_not_defined(
-        Model\AbstractProductValue $value
+        $value
     ) {
-        $submittedData = [
-            'id' => '1',
-        ];
+        $submittedData = [];
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }

@@ -31,8 +31,8 @@ class AttributePresenter implements PresenterInterface
             $result .= ' <i class="icon-globe"></i>';
         }
 
-        if ($data->isScopable()) {
-            $result = $change['scope'] . ' - ' . $result;
+        if ($data->isScopable() && isset($change['__context__']['scope'])) {
+            $result = $change['__context__']['scope'] . ' - ' . $result;
         }
 
         return $result;

@@ -9,28 +9,32 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 class OptionComparatorSpec extends ObjectBehavior
 {
+    function let(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->getAttribute()->willReturn($attribute);
+        $value->getId()->willReturn(713705);
+        $value->getScope()->willReturn('ecommerce');
+        $attribute->getId()->willReturn(1337);
+    }
+
     function it_is_a_comparator()
     {
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface');
     }
 
-    function it_supports_simpleselect_type(
-        Model\AbstractProductValue $value,
-        Model\AbstractAttribute $attribute
-    )
-    {
-        $value->getAttribute()->willReturn($attribute);
+    function it_supports_simpleselect_type($value, $attribute) {
         $attribute->getAttributeType()->willReturn('pim_catalog_simpleselect');
 
         $this->supportsComparison($value)->shouldBe(true);
     }
 
     function it_detects_changes_when_changing_option_data(
-        Model\AbstractProductValue $value,
+        $value,
         AttributeOption $red
     ){
         $submittedData = [
-            'id' => '1',
             'option' => '42',
         ];
 
@@ -38,24 +42,31 @@ class OptionComparatorSpec extends ObjectBehavior
         $red->getId()->willReturn(21);
 
         $this->getChanges($value, $submittedData)->shouldReturn([
-            'id' => '1',
             'option' => '42',
+            '__context__' => [
+                'attribute_id' => 1337,
+                'value_id' => 713705,
+                'scope' => 'ecommerce',
+            ],
         ]);
     }
 
     function it_detects_changes_when_setting_for_the_first_time_a_value_option(
-        Model\AbstractProductValue $value
+        $value
     ){
         $submittedData = [
-            'id' => '1',
             'option' => '42',
         ];
 
         $value->getOption()->willReturn(null);
 
         $this->getChanges($value, $submittedData)->shouldReturn([
-            'id' => '1',
             'option' => '42',
+            '__context__' => [
+                'attribute_id' => 1337,
+                'value_id' => 713705,
+                'scope' => 'ecommerce',
+            ],
         ]);
     }
 
@@ -64,7 +75,6 @@ class OptionComparatorSpec extends ObjectBehavior
         AttributeOption $red
     ) {
         $submittedData = [
-            'id' => '1',
             'option' => '21',
         ];
 
@@ -78,7 +88,6 @@ class OptionComparatorSpec extends ObjectBehavior
         Model\AbstractProductValue $value
     ){
         $submittedData = [
-            'id' => '1',
             'option' => '',
         ];
 
@@ -90,9 +99,7 @@ class OptionComparatorSpec extends ObjectBehavior
     function it_detects_no_change_when_the_option_is_not_defined(
         Model\AbstractProductValue $value
     ) {
-        $submittedData = [
-            'id' => '1',
-        ];
+        $submittedData = [];
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }

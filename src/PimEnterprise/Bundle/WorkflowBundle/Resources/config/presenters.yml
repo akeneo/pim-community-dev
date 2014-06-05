@@ -22,6 +22,7 @@ services:
         class: %pimee_workflow.twig.extension.proposal_changes.class%
         arguments:
             - '@pim_catalog.repository.product_value'
+            - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.proposal_renderer'
             - '@translator'
         tags:

@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MetricComparator implements ComparatorInterface
+class MetricComparator extends AbstractComparator
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class MetricComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         // Submitted metric is invalid (data was read only for example)
         if (!isset($submittedData['metric']['data']) || !isset($submittedData['metric']['unit'])) {
@@ -38,7 +38,6 @@ class MetricComparator implements ComparatorInterface
         }
 
         return [
-            'id' => $submittedData['id'],
             'metric' => [
                 'data' => $submittedData['metric']['data'],
                 'unit' => $submittedData['metric']['unit'],
