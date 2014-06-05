@@ -25,7 +25,7 @@ Feature: Edit a family
     And I save the family
     Then I should see "NewBoots"
 
-  @javascript
+  @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "Boots" family page
     And I fill in the following information:
