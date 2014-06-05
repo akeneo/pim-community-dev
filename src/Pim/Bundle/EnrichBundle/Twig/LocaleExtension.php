@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Twig;
 
+use \Twig_Environment;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 
 /**
@@ -13,9 +14,7 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
  */
 class LocaleExtension extends \Twig_Extension
 {
-    /**
-     * @var LocaleHelper
-     */
+    /** @var LocaleHelper */
     protected $localeHelper;
 
     /**
@@ -33,12 +32,12 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFunctions()
     {
-        return array(
-            'locale_code'     => new \Twig_Function_Method($this, 'currentLocaleCode'),
-            'locale_label'    => new \Twig_Function_Method($this, 'localeLabel'),
-            'currency_symbol' => new \Twig_Function_Method($this, 'currencySymbol'),
-            'currency_label'  => new \Twig_Function_Method($this, 'currencyLabel')
-        );
+        return [
+            new \Twig_SimpleFunction('locale_code', [$this, 'currentLocaleCode']),
+            new \Twig_SimpleFunction('locale_label', [$this, 'localeLabel']),
+            new \Twig_SimpleFunction('currency_symbol', [$this, 'currencySymbol']),
+            new \Twig_SimpleFunction('currency_label', [$this, 'currencyLabel'])
+        ];
     }
 
     /**
@@ -46,9 +45,16 @@ class LocaleExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            'flag' => new \Twig_Filter_Method($this, 'flag', array('is_safe' => array('html'))),
-        );
+        return [
+            new \Twig_SimpleFilter(
+                'flag',
+                [$this, 'flag'],
+                [
+                    'is_safe' => ['html'],
+                    'needs_environment' => true,
+                ]
+            ),
+        ];
     }
 
     /**
@@ -58,59 +64,69 @@ class LocaleExtension extends \Twig_Extension
      */
     public function currentLocaleCode()
     {
-        return $this->localeHelper->getCurrentLocale()->getCode();
+        return $this->localeHelper->getCurrentLocaleCode();
     }
 
     /**
-     * Get displayed locale from locale code
+     * Get displayed locale from locale code translated in the specific language
      *
      * @param string $code
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function localeLabel($code, $localeCode = null)
+    public function localeLabel($code, $translateIn = null)
     {
-        return $this->localeHelper->getLocaleLabel($code, $localeCode);
+        return $this->localeHelper->getLocaleLabel($code, $translateIn);
     }
 
     /**
      * Returns the symbol for a currency
      *
      * @param string $code
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function currencySymbol($code, $localeCode = null)
+    public function currencySymbol($code, $translateIn = null)
     {
-        return $this->localeHelper->getCurrencySymbol($code, $localeCode);
+        return $this->localeHelper->getCurrencySymbol($code, $translateIn);
     }
 
     /**
      * Returns the currency label
      *
      * @param string $code
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function currencyLabel($code, $localeCode = null)
+    public function currencyLabel($code, $translateIn = null)
     {
-        return $this->localeHelper->getCurrencyLabel($code, $localeCode);
+        return $this->localeHelper->getCurrencyLabel($code, $translateIn);
     }
 
     /**
-     * Returns the flag icon for a locale
+     * Returns the flag icon for a locale with its country as long label or short code
      *
-     * @param string $code
-     * @param string $localeCode
+     * @param Twig_Environment $environment
+     * @param string           $code
+     * @param boolean          $short
+     * @param string           $translateIn
      *
      * @return string
      */
-    public function flag($code, $localeCode = null)
+    public function flag(Twig_Environment $environment, $code, $short = true, $translateIn = null)
     {
-        return $this->localeHelper->getFlag($code, $localeCode);
+        return $environment->render(
+            'PimEnrichBundle:Locale:_flag.html.twig',
+            [
+                'label' => $this->localeHelper->getLocaleLabel($code, $translateIn),
+                'region' => $this->localeHelper->getRegion($code),
+                'language' => $this->localeHelper->getLanguage($code),
+                'short' => $short,
+            ]
+        );
     }
 
     /**
