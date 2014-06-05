@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
-    function ($, _, Backbone, Routing, LoadingMask, OroError) {
+    ['jquery', 'underscore', 'backbone', 'routing', 'oro/loading-mask', 'oro/error', 'pim/ui', 'jquery.jstree', 'jstree/jquery.jstree.tree_selector'],
+    function ($, _, Backbone, Routing, LoadingMask, OroError, UI) {
         'use strict';
 
         return function (elementId) {
@@ -136,6 +136,7 @@ define(
                             if (data) {
                                 $('#category-form').html(data);
                                 Backbone.history.navigate('url=' + url, {trigger: false});
+                                UI($('#category-form'));
                                 loadingMask.hide();
                             }
                         },
