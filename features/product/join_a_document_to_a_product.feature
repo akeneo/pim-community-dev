@@ -1,6 +1,6 @@
 Feature: Join a document to a product
   In order to join a document to a product
-  As a user
+  As a regular user
   I need to be able to upload it and preview it
 
   Background:
@@ -10,7 +10,7 @@ Feature: Join a document to a product
       | Description | file | txt                |
     And a "Car" product
     And the "Car" product has the "description" attribute
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
     And I am on the "Car" product page
 
   Scenario: Succesfully leave the document empty

@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products by category
   In order to enrich my catalog
-  As a user
+  As a regular user
   I need to be able to manually filter products by category
 
   Background:
@@ -18,7 +18,7 @@ Feature: Filter products by category
       | tshirts  | catalog  | TShirts     | purple-tshirt,green-tshirt |
       | trousers | catalog  | Trousers    |                            |
       | jeans    | trousers | Jeans       | blue-jeans                 |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products by category
     Given I am on the products page

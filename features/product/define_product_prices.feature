@@ -1,7 +1,7 @@
 @javascript
 Feature: Define product prices
   In order to define a product prices
-  As Julia
+  As a regular user
   I need to be able to define prices in different currencies for each locale
 
   Background:
@@ -12,7 +12,7 @@ Feature: Define product prices
     And the following product:
       | sku  | publicPrice-en_US | publicPrice-fr_FR |
       | bike | 50 EUR, 100 USD   | 150 EUR, 200 USD  |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
 
   Scenario: Successfully display english and french public prices
     Given I am on the "bike" product page

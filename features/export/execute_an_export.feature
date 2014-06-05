@@ -1,12 +1,12 @@
 @javascript
 Feature: Execute a job
   In order to launch an export
-  As a user
+  As a product manager
   I need to be able to execute a valid export
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Fail to see the execute button of a job with validation errors
     Given the following job "footwear_product_export" configuration:
@@ -33,4 +33,4 @@ Feature: Execute a job
     And I wait for the "footwear_product_export" job to finish
     Then I should see "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
-    And an email to "admin@example.com" should have been sent
+    And an email to "julia@example.com" should have been sent

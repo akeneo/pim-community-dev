@@ -1,12 +1,12 @@
 @javascript
 Feature: Delete an association type
   In order to manage association types in the catalog
-  As a user
+  As a product manager
   I need to be able to delete association types
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully delete an association type from the grid
     Given I am on the association types page

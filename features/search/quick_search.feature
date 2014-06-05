@@ -1,12 +1,12 @@
 @javascript @skip
 Feature: Search in Akeneo PIM
   In order to search something in the catalog
-  As a user
+  As a regular user
   I need to be able to search what I want
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
     And a "product_test" product
 
   Scenario: Use the search form

@@ -1,7 +1,7 @@
 @javascript
 Feature: Change family of many products at once
   In order to easily organize products into families
-  As Julia
+  As a product manager
   I need to be able to change the family of many products at once
 
   Background:

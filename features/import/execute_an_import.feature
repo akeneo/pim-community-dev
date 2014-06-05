@@ -1,7 +1,7 @@
 @javascript
 Feature: Execute a job
   In order to launch an import
-  As Julia
+  As a product manager
   I need to be able to execute a valid export
 
   Background:

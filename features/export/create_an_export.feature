@@ -1,12 +1,12 @@
 @javascript
 Feature: Create an export
   In order to use my PIM data into my front applications
-  As a user
+  As an administrator
   I need to be able to create export jobs
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the exports page
 
   Scenario: Successfully create an export

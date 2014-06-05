@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products
   In order to filter products in the catalog
-  As a user
+  As a regular user
   I need to be able to filter products in the catalog
 
   Background:
@@ -22,7 +22,7 @@ Feature: Filter products
       | book2  |           | yes     | Book2       | Livre2       | My ecommerce book2 info | My mobile book2 info | Ma info livre2 ecommerce | Ma info livre2 mobile | book2_large.jpeg | book2_small.jpeg |
       | ebook  |           | yes     | eBook       | Ebook        | My ecommerce ebook info | My mobile ebook info | Ma info ebook ecommerce  | Ma info ebook mobile  |                  |                  |
       | chair  | furniture | yes     | Chair/Slash | Chaise/Slash | My ecommerce chair .    | My mobile chaise     | Ma info chaise ecommerce | Ma info chaise mobile |                  |                  |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products
     Given I am on the products page

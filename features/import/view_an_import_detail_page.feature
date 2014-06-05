@@ -1,11 +1,11 @@
 Feature: View an import detail page
   In order to know if an import is ready to be executed
-  As a user
+  As a product manager
   I need to have access to a show import page which will present me its status
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   @javascript
   Scenario: Successfully display the import information

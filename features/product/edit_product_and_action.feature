@@ -1,7 +1,7 @@
 @javascript
 Feature: Product edition clicking on another action
   In order to optimize time to create and enrich products
-  As a user
+  As a regular user
   I need to be able to save my product and be redirect where I want
 
   Background:
@@ -9,7 +9,7 @@ Feature: Product edition clicking on another action
     And the following products:
       | sku    | family  |
       | sandal | sandals |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the products page
     And I display the columns sku, name, image, description and family
 

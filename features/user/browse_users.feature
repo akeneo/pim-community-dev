@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse users
   In order to manage the users and rights
-  As Peter
+  As an administrator
   I need to be able to see users
 
   Background:

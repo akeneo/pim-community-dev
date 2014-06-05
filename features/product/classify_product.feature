@@ -1,7 +1,7 @@
 @javascript
 Feature: Classify a product
   In order to classify products
-  As Julia
+  As a product manager
   I need to associate a product to categories
 
   Background:

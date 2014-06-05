@@ -1,14 +1,14 @@
 @javascript
 Feature: Validate identifier attribute of a product
   In order to keep my data consistent
-  As Julia
+  As a regular user
   I need to be able to see validation errors for identifier attribute
 
   Background:
     Given the "default" catalog configuration
     And a "foo" product
     And a "bar" product
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
 
   Scenario: Validate the unique constraint of identifier attribute
     Given I am on the "foo" product page

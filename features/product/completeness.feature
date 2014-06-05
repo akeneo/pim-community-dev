@@ -1,7 +1,7 @@
 @javascript
 Feature: Display the completeness of a product
   In order to see the completeness of a product in the catalog
-  As a user
+  As a product manager
   I need to be able to display the completeness of a product
 
   Background:
@@ -19,7 +19,7 @@ Feature: Display the completeness of a product
       | sneakers | description | Grandes espadrilles   | fr_FR  | mobile |
       | sandals  | description | Super sandales        | fr_FR  | tablet |
       | sandals  | description | Super sandales        | fr_FR  | mobile |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I launched the completeness calculator
 
   Scenario: Successfully display the completeness of the products

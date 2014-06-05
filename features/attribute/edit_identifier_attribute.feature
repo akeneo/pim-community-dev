@@ -1,11 +1,11 @@
 Feature: Edit an identifier attribute
   In order to specify options for the identifier
-  As a user
+  As a product manager
   I need to edit an identifier attribute
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully display the identifier related fields
     Given I am on the "SKU" attribute page
