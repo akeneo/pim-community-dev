@@ -179,7 +179,7 @@ class EnterpriseContext extends RawMinkContext
      */
     protected function createAccesses(TableNode $table, $accessType)
     {
-        $accessClass = str_replace(' ','', ucwords($accessType));
+        $accessClass = str_replace(' ', '', ucwords($accessType));
         $getterAccessType = sprintf('get%s', $accessClass);
 
         foreach ($table->getHash() as $data) {
