@@ -26,7 +26,7 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeData($data)
     {
-        return $data->format(self::DATE_FORMAT);
+        return $data instanceof \DateTime ? $data->format(self::DATE_FORMAT) : '';
     }
 
     /**
@@ -34,6 +34,6 @@ class DatePresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return (new \DateTime($change['date']))->format(self::DATE_FORMAT);
+        return !empty($change['date']) ? (new \DateTime($change['date']))->format(self::DATE_FORMAT) : '';
     }
 }
