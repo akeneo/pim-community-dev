@@ -14,7 +14,7 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ScalarComparator implements ComparatorInterface
+class ScalarComparator extends AbstractComparator
 {
     /** @var PropertyAccessor */
     protected $accessor;
@@ -42,7 +42,7 @@ class ScalarComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         foreach ($submittedData as $key => $submittedValue) {
             if ($key === 'id') {
@@ -50,7 +50,6 @@ class ScalarComparator implements ComparatorInterface
             }
             if ($this->accessor->getValue($value, $key) != $submittedValue) {
                 return [
-                    'id' => $submittedData['id'],
                     $key => $submittedValue
                 ];
             }

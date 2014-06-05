@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class OptionComparator implements ComparatorInterface
+class OptionComparator extends AbstractComparator
 {
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class OptionComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         if (!isset($submittedData['option'])) {
             return;
@@ -38,7 +38,6 @@ class OptionComparator implements ComparatorInterface
 
         if (!$option || $option->getId() != $submittedData['option']) {
             return [
-                'id' => $submittedData['id'],
                 'option' => $submittedData['option'],
             ];
         }

@@ -53,7 +53,7 @@ class EnterpriseContext extends RawMinkContext
         $attributeGroup = $this->getAttributeGroup($attributeGroup);
 
         $this
-            ->getAttributeGroupAccessManager()
+            ->getAccessManager('attribute_group')
             ->setAccess($attributeGroup, [$role], $accessLevel === 'edit' ? [$role] : []);
     }
 

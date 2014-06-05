@@ -8,6 +8,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
  * Twig extension to present proposal changes
@@ -18,7 +20,10 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 class ProposalChangesExtension extends \Twig_Extension
 {
     /** @var ObjectRepository */
-    protected $repository;
+    protected $valueRepository;
+
+    /** @var ObjectRepository */
+    protected $attributeRepository;
 
     /** @var \Diff_Renderer_Html_Array */
     protected $renderer;
@@ -30,16 +35,18 @@ class ProposalChangesExtension extends \Twig_Extension
     protected $presenters = [];
 
     /**
-     * @param ObjectRepository    $repository
+     * @param ObjectRepository    $valueRepository
      * @param RendererInterface   $renderer
      * @param TranslatorInterface $translator
      */
     public function __construct(
-        ObjectRepository $repository,
+        ObjectRepository $valueRepository,
+        ObjectRepository $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator
     ) {
-        $this->repository = $repository;
+        $this->valueRepository = $valueRepository;
+        $this->attributeRepository = $attributeRepository;
         $this->renderer = $renderer;
         $this->translator = $translator;
     }
@@ -81,8 +88,9 @@ class ProposalChangesExtension extends \Twig_Extension
      */
     public function presentAttribute(array $change, $default)
     {
-        if (isset($change['id']) && null !== $value = $this->repository->find($change['id'])) {
-            return $this->present($value->getAttribute(), ['scope' => $value->getScope()]);
+        if (isset($change['__context__']['attribute_id'])
+            && null !== $attribute = $this->attributeRepository->find($change['__context__']['attribute_id'])) {
+            return $this->present($attribute, $change);
         }
 
         return $default;
@@ -100,13 +108,14 @@ class ProposalChangesExtension extends \Twig_Extension
      */
     public function presentChange(array $change)
     {
-        if (!isset($change['id']) || null === $value = $this->repository->find($change['id'])) {
+        if (!isset($change['__context__']['value_id'])) {
             throw new \InvalidArgumentException(
-                sprintf(
-                    'Could not retrieve the product value from the provided change (missing key "id" in "%s")',
-                    join(', ', array_keys($change))
-                )
+                'Could not retrieve the product value from the provided change'
             );
+        }
+
+        if (null === $value = $this->valueRepository->find($change['__context__']['value_id'])) {
+            $value = $this->createFakeValue();
         }
 
         if (null !== $result = $this->present($value, $change)) {
@@ -172,5 +181,20 @@ class ProposalChangesExtension extends \Twig_Extension
                 return $presenter->present($object, $change);
             }
         }
+    }
+
+    /**
+     * Create a fake value
+     *
+     * @return ProductValue
+     */
+    protected function createFakeValue()
+    {
+        $value = new ProductValue();
+        $attribute = new Attribute();
+        $attribute->setBackendType('varchar');
+        $value->setAttribute($attribute);
+
+        return $value;
     }
 }
