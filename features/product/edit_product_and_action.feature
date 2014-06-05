@@ -6,11 +6,12 @@ Feature: Product edition clicking on another action
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "Julia"
-    And I display the columns sku, name, image, description and family
     And the following products:
       | sku    | family  |
       | sandal | sandals |
+    And I am logged in as "Julia"
+    And I am on the products page
+    And I display the columns sku, name, image, description and family
 
   Scenario: Successfully edit a product and back to the grid
     Given I am on the "sandal" product page
