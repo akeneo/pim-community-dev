@@ -168,6 +168,9 @@ jobs:
                 - 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation'
                 - 'Pim\Bundle\CatalogBundle\Entity\Category'
                 - 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
+            mediaAttributes:
+                - 'pdf_description'
+                - 'picture'
 
     fixtures_association_yml:
         order: 90
