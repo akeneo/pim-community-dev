@@ -1,7 +1,7 @@
 @javascipt
 Feature: Browse products I have access to
   In order to enrich the products
-  As Julia
+  As a regular user
   I need to browse products I have access to
 
   Background:
@@ -18,11 +18,12 @@ Feature: Browse products I have access to
       | classy       | Classy        | shoes     |
       | boots        | Boots         |           |
       | slippers     | Slippers      |           |
+    #TODO:
     And the following category accesses:
-      | category | role          | access |
-      | shoes    | Administrator | view   |
-      | slippers | Administrator | view   |
-    And I am logged in as "Julia"
+      | category | role | access |
+      | shoes    | User | view   |
+      | slippers | User | view   |
+    And I am logged in as "Mary"
 
   @skip
   Scenario: Browse products

@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse propositions for a specific product
   In order to list the existing propositions for a specific product
-  As an owner
+  As a product manager
   I need to be able to see propositions
 
   Background:
@@ -12,14 +12,14 @@ Feature: Browse propositions for a specific product
       | white-boots | boots  |
     And the following propositions:
       | product     | status      | author | locale |
-      | black-boots | in progress | admin  | fr_FR  |
-      | black-boots | ready       | peter  | en_US  |
-      | white-boots | ready       | julia  | en_US  |
-    And I am logged in as "admin"
+      | black-boots | in progress | Julia  | fr_FR  |
+      | black-boots | ready       | Mary   | en_US  |
+      | white-boots | ready       | Sandra | en_US  |
+    And I am logged in as "Julia"
 
   Scenario: Successfully display propositions
     Given I edit the "black-boots" product
     When I visit the "Propositions" tab
     Then the grid should contain 2 elements
     And I should see the columns Author, Changes, Proposed at and Status
-    And I should see entities admin and peter
+    And I should see entities Julia and Mary

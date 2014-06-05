@@ -1,7 +1,7 @@
 @javascript
 Feature: Sort proposals
   In order to easily manage propositions for a specific product
-  As an admin
+  As a product manager
   I need to be able to sort propositions by several columns
 
   Background:
@@ -12,10 +12,10 @@ Feature: Sort proposals
       | white-boots | boots  |
     And the following propositions:
       | product     | status      | author | locale |
-      | black-boots | in progress | admin  | fr_FR  |
-      | black-boots | ready       | peter  | en_US  |
-      | white-boots | ready       | julia  | en_US  |
-    And I am logged in as "admin"
+      | black-boots | in progress | Julia  | fr_FR  |
+      | black-boots | ready       | Sandra | en_US  |
+      | white-boots | ready       | Mary   | en_US  |
+    And I am logged in as "Julia"
 
   Scenario: Successfully sort propositions in the grid
     Given I edit the "black-boots" product
