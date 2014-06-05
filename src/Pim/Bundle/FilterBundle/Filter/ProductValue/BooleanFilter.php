@@ -43,7 +43,7 @@ class BooleanFilter extends OroBooleanFilter
         $allowedValues = array(BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO);
         if (!is_array($data)
             || !array_key_exists('value', $data)
-            || !in_array($data['value'], $allowedValues)
+            || !in_array($data['value'], $allowedValues, true)
         ) {
             return false;
         }
