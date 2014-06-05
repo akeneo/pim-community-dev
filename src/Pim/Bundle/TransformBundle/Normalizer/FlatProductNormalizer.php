@@ -7,11 +7,12 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -191,9 +192,9 @@ class FlatProductNormalizer implements NormalizerInterface
             return $this->normalizePriceCollection($value);
         } elseif ($data instanceof Collection) {
             $data = $this->normalizeCollectionData($data);
-        } elseif ($data instanceof Media) {
+        } elseif ($data instanceof AbstractMedia) {
             $data = $this->mediaManager->getExportPath($data);
-        } elseif ($data instanceof Metric) {
+        } elseif ($data instanceof AbstractMetric) {
             if (empty($this->fields)) {
                 $fieldName = $this->getFieldValue($value);
 
@@ -265,7 +266,7 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
-            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
+            } elseif ($item instanceof AbstractProductPrice) {
                 if ($item->getData() !== null) {
                     $result[] = (string) $item;
                 }
