@@ -138,7 +138,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                     'help'  => 'pim_base_connector.import.realTimeVersioning.help'
                 )
             ),
-            'nonClearableEntities' => array(),
+            'nonClearableEntities' => array(
+                'system' => true
+            ),
         );
     }
 

@@ -68,7 +68,11 @@ class CsvProductReader extends CsvReader
     {
         return array_merge(
             parent::getConfigurationFields(),
-            array('mediaAttributes' => array())
+            [
+                'mediaAttributes' => [
+                    'system' => true
+                ]
+            ]
         );
     }
 
