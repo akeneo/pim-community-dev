@@ -85,8 +85,12 @@ class YamlReaderTest extends \PHPUnit_Framework_TestCase
         $reader = new YamlReader;
         $this->assertEquals(
             array(
-                'filePath' => null,
-                'multiple' => null
+                'filePath' => array(
+                    'system' => true
+                ),
+                'multiple' => array(
+                    'system' => true
+                )
             ),
             $reader->getConfigurationFields()
         );
