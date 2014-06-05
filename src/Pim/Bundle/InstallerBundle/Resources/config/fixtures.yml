@@ -100,4 +100,3 @@ jobs:
         processor:         pim_base_connector.processor.job_instance
     yml:
         processor:         pim_base_connector.processor.job_instance
-

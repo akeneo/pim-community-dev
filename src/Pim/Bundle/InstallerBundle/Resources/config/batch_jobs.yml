@@ -155,4 +155,3 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pim_base_connector.processor.job_instance
                         writer:    pim_base_connector.writer.doctrine
-

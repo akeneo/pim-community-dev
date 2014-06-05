@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 
-use Doctrine\DBAL\Connection;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
@@ -64,9 +63,8 @@ class FixtureJobLoader
             }
 
             // sort the jobs by order
-            usort($rawJobs, function($item1, $item2) {
+            usort($rawJobs, function ($item1, $item2) {
                 if ($item1['order'] === $item2['order']) {
-
                     return 0;
                 }
 

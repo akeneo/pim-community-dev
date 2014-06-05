@@ -60,7 +60,7 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
 
         // we use here our own Pim\Bundle\InstallerBundle\DataFixtures\Executor\ORMExecutor\ORMExecutor
         $executor = new ORMExecutor($em, $purger);
-        $executor->setLogger(function($message) use ($output) {
+        $executor->setLogger(function ($message) use ($output) {
             $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
         });
         $executor->execute($fixtures, $input->getOption('append'));
