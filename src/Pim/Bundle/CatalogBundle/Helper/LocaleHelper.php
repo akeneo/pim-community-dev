@@ -38,7 +38,9 @@ class LocaleHelper
     /**
      * Returns the current locale
      *
-     * @return string
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale
+     *
+     * @deprecated Locale object providing is not necessary. Use getCurrentLocaleCode instead. (will be removed in 1.3)
      */
     public function getCurrentLocale()
     {
@@ -46,32 +48,42 @@ class LocaleHelper
     }
 
     /**
-     * Returns the label of a locale in the specified language
-     *
-     * @param string $code       the code of the locale to translate
-     * @param string $localeCode the locale in which the label should be translated
+     * Returns the current locale code
      *
      * @return string
      */
-    public function getLocaleLabel($code, $localeCode = null)
+    public function getCurrentLocaleCode()
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        return $this->userContext->getCurrentLocale()->getCode();
+    }
 
-        return \Locale::getDisplayName($code, $localeCode);
+    /**
+     * Returns the label of a locale in the specified language
+     *
+     * @param string $code       the code of the locale to translate
+     * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
+     *
+     * @return string
+     */
+    public function getLocaleLabel($code, $translateIn = null)
+    {
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+
+        return \Locale::getDisplayName($code, $translateIn);
     }
 
     /**
      * Returns the symbol for a currency
      *
      * @param string $currency
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function getCurrencySymbol($currency, $localeCode = null)
+    public function getCurrencySymbol($currency, $translateIn = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
-        $language = \Locale::getPrimaryLanguage($localeCode);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $language = \Locale::getPrimaryLanguage($translateIn);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencySymbol($currency, $language);
     }
@@ -80,14 +92,14 @@ class LocaleHelper
      * Returns the label for a currency
      *
      * @param string $currency
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function getCurrencyLabel($currency, $localeCode = null)
+    public function getCurrencyLabel($currency, $translateIn = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
-        $language = \Locale::getPrimaryLanguage($localeCode);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $language = \Locale::getPrimaryLanguage($translateIn);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyName($currency, $language);
     }
@@ -95,14 +107,14 @@ class LocaleHelper
     /**
      * Returns an array of all known currency names, indexed by code
      *
-     * @param string $localeCode
+     * @param string $translateIn
      *
      * @return string
      */
-    public function getCurrencyLabels($localeCode = null)
+    public function getCurrencyLabels($translateIn = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
-        $language = \Locale::getPrimaryLanguage($localeCode);
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
+        $language = \Locale::getPrimaryLanguage($translateIn);
 
         return Intl\Intl::getCurrencyBundle()->getCurrencyNames($language);
     }
@@ -112,34 +124,60 @@ class LocaleHelper
      *
      * @param string  $code
      * @param boolean $fullLabel
-     * @param string  $localeCode
+     * @param string  $translateIn
      *
      * @return string
+     *
+     * @deprecated Use the flag twig filter. Will be removed in 1.3
      */
-    public function getFlag($code, $fullLabel = false, $localeCode = null)
+    public function getFlag($code, $fullLabel = false, $translateIn = null)
     {
-        $localeCode = $localeCode ?: $this->getCurrentLocale()->getCode();
+        $translateIn = $translateIn ?: $this->getCurrentLocaleCode();
 
         return sprintf(
             '<span class="flag-language"><i class="flag flag-%s"></i><span class="language">%s</span></span>',
             strtolower(\Locale::getRegion($code)),
-            $fullLabel ? $this->getLocaleLabel($code, $localeCode) : \Locale::getPrimaryLanguage($code)
+            $fullLabel ? $this->getLocaleLabel($code, $translateIn) : \Locale::getPrimaryLanguage($code)
         );
     }
 
     /**
-     * Get activated locales as choice
+     * Get the language from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getLanguage($code)
+    {
+        return \Locale::getPrimaryLanguage($code);
+    }
+
+    /**
+     * Get the region from a locale code
+     *
+     * @param string $code
+     *
+     * @return string
+     */
+    public function getRegion($code)
+    {
+        return \Locale::getRegion($code);
+    }
+
+    /**
+     * Get activated locales as choices
      *
      * @return string[]
      */
     public function getActivatedLocaleChoices()
     {
-        $localeCode  = $this->getCurrentLocale()->getCode();
+        $translateIn  = $this->getCurrentLocaleCode();
         $activeCodes = $this->localeManager->getActiveCodes();
 
         $results = [];
         foreach ($activeCodes as $activeCode) {
-            $results[$activeCode] = $this->getLocaleLabel($activeCode, $localeCode);
+            $results[$activeCode] = $this->getLocaleLabel($activeCode, $translateIn);
         }
 
         return $results;

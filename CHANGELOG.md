@@ -23,6 +23,7 @@
 - Images import from fixtures now works
 - Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
 - Deleting completeness when a locale of a channel is deleted
+- Display flags in the completenesses grid
 
 ## BC breaks
 - Remove FlexibleEntityBundle
