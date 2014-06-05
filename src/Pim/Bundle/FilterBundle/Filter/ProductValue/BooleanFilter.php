@@ -5,6 +5,7 @@ namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 use Oro\Bundle\FilterBundle\Filter\BooleanFilter as OroBooleanFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
+use Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 
 /**
  * Boolean filter
@@ -32,5 +33,29 @@ class BooleanFilter extends OroBooleanFilter
         );
 
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parseData($data)
+    {
+        $allowedValues = array(BooleanFilterType::TYPE_YES, BooleanFilterType::TYPE_NO);
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || !in_array($data['value'], $allowedValues)
+        ) {
+            return false;
+        }
+
+        return $data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getFormType()
+    {
+        return BooleanFilterType::NAME;
     }
 }
