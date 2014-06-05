@@ -52,6 +52,16 @@ class CsvProductReader extends CsvReader
     }
 
     /**
+     * Get the media attributes
+     *
+     * @return array
+     */
+    public function getMediaAttributes()
+    {
+        return $this->mediaAttributes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getConfigurationFields()
