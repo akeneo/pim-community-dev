@@ -89,7 +89,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * allow to send back the tree where the node belongs with a selected
      * attribute
      *
-     * @param Request $request
+     * @param  Request $request
      * @return array
      *
      * @Template
@@ -105,7 +105,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * allow to send back the tree where the node belongs with a selected
      * attribute
      *
-     * @param Request $request
+     * @param  Request $request
      * @return array
      *
      * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
