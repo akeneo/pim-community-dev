@@ -41,7 +41,7 @@ ORIGINAL_DB_NAME=`echo $DB_PREFIX | sed -e "s/_$//"`
 
 APP_ROOT=`dirname $0`/../../../..
 
-FEATURES_DIR=$APP_ROOT/features
+FEATURES_DIR=$APP_ROOT/$FEATURES_DIRECTORY
 
 if [ "$XDEBUG" = 'xdebug' ]; then
     PHP_EXTENSION_DIR=`php -i | grep extension_dir | cut -d ' ' -f3`
@@ -72,7 +72,7 @@ cd -
 FEATURES=`find $FEATURES_DIR/ -name *.feature`
 for FEATURE in $FEATURES; do
 
-    FEATURE_NAME=`echo $FEATURE | sed -e 's#^.*/features/\(.*\)$#features/\1#'`
+    FEATURE_NAME=`echo "${FEATURE#$APP_ROOT/}"`
 
     while [ ! -z $FEATURE_NAME ]; do
 
