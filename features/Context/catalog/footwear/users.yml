@@ -11,3 +11,11 @@ users:
         catalogLocale: en_US
         catalogScope:  mobile
         defaultTree:   2014_collection
+    Mary:
+        catalogLocale: en_US
+        catalogScope:  tablet
+        defaultTree:   2014_collection
+    Sandra:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
