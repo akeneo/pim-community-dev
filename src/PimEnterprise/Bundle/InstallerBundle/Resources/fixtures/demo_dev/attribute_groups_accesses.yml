@@ -1,0 +1,16 @@
+attribute_groups_accesses:
+    general:
+        view: [administrator, user]
+        edit: [administrator, user]
+    seo:
+        view: [administrator, user]
+        edit: [administrator]
+    marketing:
+        view: [administrator, user]
+        edit: [administrator]
+    sizes:
+        view: [user]
+        edit: [administrator]
+    colors:
+        view: [administrator]
+

@@ -1,0 +1,14 @@
+connector:
+    name: Data fixtures
+    jobs:
+
+        fixtures_attribute_group_access_yml:
+            title: pim_installer.jobs.fixtures_attribute_group_access_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_attribute_group_access_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pimee_base_connector.processor.attribute_group_access
+                        writer:    pim_base_connector.writer.doctrine
