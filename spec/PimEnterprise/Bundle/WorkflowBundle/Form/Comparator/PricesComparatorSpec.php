@@ -5,19 +5,38 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Collections\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model;
 
 class PricesComparatorSpec extends ObjectBehavior
 {
-    function it_get_changes_between_prices(
-        AbstractProductValue $value,
+    function let(
+        Model\AbstractProductValue $value,
+        Model\AbstractAttribute $attribute
+    ) {
+        $value->getAttribute()->willReturn($attribute);
+        $value->getId()->willReturn(713705);
+        $value->getScope()->willReturn('ecommerce');
+        $attribute->getId()->willReturn(1337);
+    }
+
+    function it_is_a_comparator()
+    {
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface');
+    }
+
+    function it_supports_prices_collection_type($value, $attribute) {
+        $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
+
+        $this->supportsComparison($value)->shouldBe(true);
+    }
+
+    function it_detects_changes_when_changing_prices_data(
+        $value,
         Collection $prices,
-        ProductPrice $eur,
-        ProductPrice $usd
+        Model\ProductPrice $eur,
+        Model\ProductPrice $usd
     ) {
         $submittedData = [
-            'id' => '123',
             'prices' => [
                 'EUR' => [
                     'data' => '10',
@@ -43,17 +62,20 @@ class PricesComparatorSpec extends ObjectBehavior
                     'currency' => 'USD',
                 ],
             ],
-            'id' => '123',
+            '__context__' => [
+                'attribute_id' => 1337,
+                'value_id' => 713705,
+                'scope' => 'ecommerce',
+            ],
         ]);
     }
 
     function it_ignores_changes_brought_on_unavailable_currencies(
-        AbstractProductValue $value,
+        $value,
         Collection $prices,
-        ProductPrice $eur
+        Model\ProductPrice $eur
     ) {
         $submittedData = [
-            'id' => '123',
             'prices' => [
                 'EUR' => [
                     'data' => '10',
@@ -78,14 +100,18 @@ class PricesComparatorSpec extends ObjectBehavior
                     'currency' => 'EUR',
                 ],
             ],
-            'id' => '123',
+            '__context__' => [
+                'attribute_id' => 1337,
+                'value_id' => 713705,
+                'scope' => 'ecommerce',
+            ],
         ]);
     }
 
     function it_detects_no_changes(
-        AbstractProductValue $value,
+        $value,
         Collection $prices,
-        ProductPrice $eur
+        Model\ProductPrice $eur
     ) {
         $submittedData = [
             'prices' => [
@@ -94,7 +120,6 @@ class PricesComparatorSpec extends ObjectBehavior
                     'currency' => 'EUR',
                 ],
             ],
-            'id' => '123',
         ];
 
         $value->getPrices()->willReturn($prices);
@@ -105,11 +130,9 @@ class PricesComparatorSpec extends ObjectBehavior
     }
 
     function it_detects_no_change_when_the_new_prices_are_not_defined(
-        AbstractProductValue $value
+        $value
     ) {
-        $submittedData = [
-            'id' => '1',
-        ];
+        $submittedData = [];
 
         $this->getChanges($value, $submittedData)->shouldReturn(null);
     }

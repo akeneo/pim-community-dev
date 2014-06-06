@@ -42,7 +42,7 @@ class AttributePresenterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->__toString()->willReturn('Name');
 
-        $this->present($attribute, ['scope' => 'ecommerce'])->shouldReturn('ecommerce - Name');
+        $this->present($attribute, ['__context__' => ['scope' => 'ecommerce']])->shouldReturn('ecommerce - Name');
     }
 
     function it_presents_localizable_and_scopable_attribute(Model\AbstractAttribute $attribute)
@@ -51,6 +51,6 @@ class AttributePresenterSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(true);
         $attribute->__toString()->willReturn('Name');
 
-        $this->present($attribute, ['scope' => 'ecommerce'])->shouldReturn('ecommerce - Name <i class="icon-globe"></i>');
+        $this->present($attribute, ['__context__' => ['scope' => 'ecommerce']])->shouldReturn('ecommerce - Name <i class="icon-globe"></i>');
     }
 }

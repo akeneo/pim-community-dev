@@ -14,13 +14,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 class ProposalChangesExtensionSpec extends ObjectBehavior
 {
     function let(
-        ObjectRepository $repository,
+        ObjectRepository $valueRepository,
+        ObjectRepository $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
         PresenterInterface $valuePresenter
     ) {
-        $this->beConstructedWith($repository, $renderer, $translator);
+        $this->beConstructedWith($valueRepository, $attributeRepository, $renderer, $translator);
 
         $this->addPresenter($attributePresenter, 0);
         $this->addPresenter($valuePresenter, 1);
@@ -44,20 +45,19 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
     }
 
     function it_presents_proposal_change_attribute_using_a_supporting_presenter(
-        $repository,
+        $valueRepository,
+        $attributeRepository,
         $attributePresenter,
         $valuePresenter,
         Model\AbstractAttribute $attribute,
         Model\AbstractProductValue $value
     ) {
-        $repository->find(123)->willReturn($value);
-        $value->getAttribute()->willReturn($attribute);
-        $value->getScope()->willReturn('ecommerce');
+        $attributeRepository->find(123)->willReturn($attribute);
 
-        $attributePresenter->supports($attribute, ['scope' => 'ecommerce'])->willReturn(true);
-        $attributePresenter->present($attribute, ['scope' => 'ecommerce'])->willReturn('Name');
+        $attributePresenter->supports($attribute, ['__context__' => ['attribute_id' => '123']])->willReturn(true);
+        $attributePresenter->present($attribute, ['__context__' => ['attribute_id' => '123']])->willReturn('Name');
 
-        $this->presentAttribute(['id' => '123'], 'foo')->shouldReturn('Name');
+        $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('Name');
     }
 
     function it_presents_proposal_change_attribute_using_the_default_value_if_id_is_unavailable()
@@ -66,40 +66,30 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
     }
 
     function it_presents_proposal_change_attribute_using_the_default_value_if_value_is_unavailable(
-        $repository
+        $valueRepository
     ) {
-        $repository->find(123)->willReturn(null);
+        $valueRepository->find(123)->willReturn(null);
 
-        $this->presentAttribute(['id' => '123'], 'foo')->shouldReturn('foo');
+        $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('foo');
     }
 
     function it_presents_proposal_using_a_supporting_presenter(
-        $repository,
+        $valueRepository,
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value
     ) {
-        $repository->find('123')->willReturn($value);
+        $valueRepository->find('123')->willReturn($value);
 
-        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
-        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
-        $valuePresenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
+        $valuePresenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
 
-        $this->presentChange(['id' => '123', 'foo' => 'bar'])->shouldReturn('<b>changes</b>');
-    }
-
-    function its_presentChange_method_throws_exception_if_no_presenter_support_the_change(
-        $repository,
-        Model\AbstractProductValue $value
-    ) {
-        $repository->find('123')->willReturn($value);
-        $value->getData()->willReturn('foo');
-
-        $this->shouldThrow(new \LogicException('No presenter supports the provided change with key(s) "id, foo"'))->duringPresentChange(['id' => 123, 'foo' => 'bar']);
+        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']])->shouldReturn('<b>changes</b>');
     }
 
     function it_injects_translator_in_translator_aware_presenter(
-        $repository,
+        $valueRepository,
         $translator,
         $attributePresenter,
         $valuePresenter,
@@ -107,21 +97,21 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         PresenterInterface $presenter
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
-        $repository->find('123')->willReturn($value);
+        $valueRepository->find('123')->willReturn($value);
 
-        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
-        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
-        $presenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
-        $presenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
+        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange(['id' => '123', 'foo' => 'bar']);
+        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
     }
 
     function it_injects_renderer_in_renderer_aware_presenter(
-        $repository,
+        $valueRepository,
         $renderer,
         $attributePresenter,
         $valuePresenter,
@@ -129,16 +119,16 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         PresenterInterface $presenter
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
-        $repository->find('123')->willReturn($value);
+        $valueRepository->find('123')->willReturn($value);
 
-        $attributePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
-        $valuePresenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(false);
-        $presenter->supports($value, ['id' => '123', 'foo' => 'bar'])->willReturn(true);
-        $presenter->present($value, ['id' => '123', 'foo' => 'bar'])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
+        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange(['id' => '123', 'foo' => 'bar']);
+        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
     }
 }

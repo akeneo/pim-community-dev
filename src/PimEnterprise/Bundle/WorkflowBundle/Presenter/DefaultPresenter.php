@@ -31,8 +31,8 @@ class DefaultPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        if (isset($change['id'])) {
-            unset($change['id']);
+        if (isset($change['__context__'])) {
+            unset($change['__context__']);
         }
 
         return array_pop($change);

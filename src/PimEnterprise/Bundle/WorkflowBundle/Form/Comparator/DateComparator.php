@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class DateComparator implements ComparatorInterface
+class DateComparator extends AbstractComparator
 {
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class DateComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         if (!isset($submittedData['date'])) {
             return;
@@ -41,7 +41,6 @@ class DateComparator implements ComparatorInterface
         }
 
         return [
-            'id' => $submittedData['id'],
             'date' => $submittedData['date'],
         ];
     }

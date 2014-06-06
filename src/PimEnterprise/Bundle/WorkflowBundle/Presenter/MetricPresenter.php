@@ -8,8 +8,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MetricPresenter extends AbstractProductValuePresenter
+class MetricPresenter extends AbstractProductValuePresenter implements TranslatorAwareInterface
 {
+    use TranslatorAware;
+
     /**
      * {@inheritdoc}
      */
@@ -27,7 +29,7 @@ class MetricPresenter extends AbstractProductValuePresenter
             return '';
         }
 
-        return sprintf('%s %s', $data->getData(), $data->getUnit());
+        return sprintf('%s %s', $data->getData(), $this->translator->trans($data->getUnit()));
     }
 
     /**
@@ -35,6 +37,6 @@ class MetricPresenter extends AbstractProductValuePresenter
      */
     protected function normalizeChange(array $change)
     {
-        return sprintf('%s %s', $change['metric']['data'], $change['metric']['unit']);
+        return sprintf('%s %s', $change['metric']['data'], $this->translator->trans($change['metric']['unit']));
     }
 }

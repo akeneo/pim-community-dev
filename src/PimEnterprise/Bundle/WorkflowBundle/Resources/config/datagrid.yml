@@ -11,6 +11,11 @@ datagrid:
                 label: pimee_workflow.proposal.author
                 type: field
                 frontend_type: string
+            locale:
+                label: pimee_workflow.proposal.locale
+                type: twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
+                frontend_type: html
             changes:
                 label: pimee_workflow.proposal.changes
                 type: twig
@@ -24,11 +29,6 @@ datagrid:
                 label: pimee_workflow.proposal.status.label
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposal_status.html.twig
-                frontend_type: html
-            locale:
-                label: pimee_workflow.proposal.locale
-                type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
                 frontend_type: html
         properties:
             id: ~

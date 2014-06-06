@@ -7,6 +7,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
 
 class EnterpriseContext extends RawMinkContext
@@ -52,7 +53,7 @@ class EnterpriseContext extends RawMinkContext
         $attributeGroup = $this->getAttributeGroup($attributeGroup);
 
         $this
-            ->getAttributeGroupAccessManager()
+            ->getAccessManager('attribute_group')
             ->setAccess($attributeGroup, [$role], $accessLevel === 'edit' ? [$role] : []);
     }
 
@@ -83,18 +84,15 @@ class EnterpriseContext extends RawMinkContext
      */
     public function theFollowingAttributeGroupAccesses(TableNode $table)
     {
-        foreach ($table->getHash() as $data) {
-            $group = $this->getAttributeGroup($data['group']);
-            $role  = $this->getRole($data['role']);
-            $accessLevel = ($data['access'] === 'edit')
-                ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
+        $this->createAccesses($table, 'attribute group');
+    }
 
-            $this->getAttributeGroupAccessManager()->grantAccess($group, $role, $accessLevel);
-        }
-
-        $registry = $this->getSmartRegistry()
-            ->getManagerForClass('PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess');
-        $registry->flush();
+    /**
+     * @Given /^the following category accesses:$/
+     */
+    public function theFollowingAccesses(TableNode $table)
+    {
+        $this->createAccesses($table, 'category');
     }
 
     /**
@@ -141,13 +139,59 @@ class EnterpriseContext extends RawMinkContext
         }
     }
 
-    protected function getAttributeGroupAccessManager()
+    protected function getAccessManager($type)
     {
-        return $this->getContainer()->get('pimee_security.manager.attribute_group_access');
+        return $this->getContainer()->get(sprintf('pimee_security.manager.%s_access', str_replace(' ', '_', $type)));
     }
 
     protected function getProposalFactory()
     {
         return $this->getContainer()->get('pimee_workflow.factory.proposal');
+    }
+
+    /**
+     * Get the access level according to the access type and action (view or edit)
+     *
+     * @param $type
+     * @param $action
+     *
+     * @return string
+     * @throws \Exception
+     */
+    protected function getAccessLevelByAccessTypeAndAction($type, $action)
+    {
+        if ('attribute group' === $type) {
+            return ($action === 'edit') ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
+        }
+
+        if ('category' === $type) {
+            return ($action === 'edit') ? CategoryVoter::EDIT_PRODUCTS : CategoryVoter::VIEW_PRODUCTS;
+        }
+
+        throw new \Exception('Undefined access type');
+    }
+
+    /**
+     * Create accesses
+     *
+     * @param TableNode $table
+     * @param string    $accessType
+     */
+    protected function createAccesses(TableNode $table, $accessType)
+    {
+        $accessClass = str_replace(' ', '', ucwords($accessType));
+        $getterAccessType = sprintf('get%s', $accessClass);
+
+        foreach ($table->getHash() as $data) {
+            $access = $this->$getterAccessType($data[$accessType]);
+            $role  = $this->getRole($data['role']);
+            $accessLevel = $this->getAccessLevelByAccessTypeAndAction($accessType, $data['access']);
+
+            $this->getAccessManager($accessType)->grantAccess($access, $role, $accessLevel);
+        }
+
+        $registry = $this->getSmartRegistry()
+            ->getManagerForClass(sprintf('PimEnterprise\Bundle\SecurityBundle\Entity\%sAccess', $accessClass));
+        $registry->flush();
     }
 }
