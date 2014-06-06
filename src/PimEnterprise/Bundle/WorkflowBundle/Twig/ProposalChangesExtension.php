@@ -108,13 +108,8 @@ class ProposalChangesExtension extends \Twig_Extension
      */
     public function presentChange(array $change)
     {
-        if (!isset($change['__context__']['value_id'])) {
-            throw new \InvalidArgumentException(
-                'Could not retrieve the product value from the provided change'
-            );
-        }
-
-        if (null === $value = $this->valueRepository->find($change['__context__']['value_id'])) {
+        if (!isset($change['__context__']['value_id'])
+            || null === $value = $this->valueRepository->find($change['__context__']['value_id'])) {
             $value = $this->createFakeValue();
         }
 

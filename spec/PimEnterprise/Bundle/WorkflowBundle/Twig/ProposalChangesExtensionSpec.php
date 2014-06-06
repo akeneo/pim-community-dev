@@ -88,18 +88,6 @@ class ProposalChangesExtensionSpec extends ObjectBehavior
         $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']])->shouldReturn('<b>changes</b>');
     }
 
-    function its_presentChange_method_throws_exception_if_no_presenter_support_the_change(
-        $valueRepository,
-        Model\AbstractProductValue $value
-    ) {
-        $valueRepository->find('123')->willReturn($value);
-        $value->getData()->willReturn('foo');
-
-        $this
-            ->shouldThrow(new \LogicException('Could not retrieve the product value from the provided change'))
-            ->duringPresentChange(['foo' => 'bar', '__context__' => []]);
-    }
-
     function it_injects_translator_in_translator_aware_presenter(
         $valueRepository,
         $translator,
