@@ -10,7 +10,7 @@ Feature: Browse users
 
   Scenario: Successfully display users
     Given I am on the users page
-    Then the grid should contain 3 elements
-    And I should see users "admin", "Peter" and "Julia"
+    Then the grid should contain 5 elements
+    And I should see users "admin", "Peter", "Julia", "Mary" and "Sandra"
     When I click on the "View" action of the row which contains "Peter"
-    Then I should see "Peter Doe"
+    Then I should see "Peter Williams"

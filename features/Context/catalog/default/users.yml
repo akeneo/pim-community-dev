@@ -3,19 +3,28 @@ users:
         catalogLocale: en_US
         catalogScope:  ecommerce
         defaultTree:   default
+        roles:         [ ROLE_ADMINISTRATOR ]
     Julia:
         catalogLocale: en_US
         catalogScope:  ecommerce
         defaultTree:   default
+        last_name:     Morgan
+        roles:         [ ROLE_MANAGER ]
     Peter:
         catalogLocale: en_US
         catalogScope:  ecommerce
         defaultTree:   default
+        last_name:     Williams
+        roles:         [ ROLE_ADMINISTRATOR ]
     Mary:
         catalogLocale: en_US
-        catalogScope:  tablet
-        defaultTree:   2014_collection
+        catalogScope:  ecommerce
+        defaultTree:   default
+        last_name:     Smith
+        roles:         [ ROLE_USER ]
     Sandra:
         catalogLocale: en_US
         catalogScope:  mobile
-        defaultTree:   2014_collection
+        defaultTree:   default
+        last_name:     Harvey
+        roles:         [ ROLE_USER ]

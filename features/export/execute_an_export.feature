@@ -33,4 +33,4 @@ Feature: Execute a job
     And I wait for the "footwear_product_export" job to finish
     Then I should see "Execution details"
     And file "%tmp%/product_export/product_export.csv" should exist
-    And an email to "julia@example.com" should have been sent
+    And an email to "Julia@example.com" should have been sent

@@ -14,7 +14,7 @@ Feature: Search in Akeneo PIM
     When I fill in the following information:
       | search | p |
     And I press the "Search" button
-    Then I should see "Peter Doe"
+    Then I should see "Peter Williams"
     And I should see "product_test"
 
   Scenario: Use the quick search form
@@ -24,7 +24,7 @@ Feature: Search in Akeneo PIM
       | type   | Product |
     And I press the "Go" button
     Then I should see "product_test"
-    And I should not see "Peter Doe"
+    And I should not see "Peter Williams"
 
   @jira https://akeneo.atlassian.net/browse/PIM-2011 @skip-doc
   Scenario: Only display Category, User and Product types for search
