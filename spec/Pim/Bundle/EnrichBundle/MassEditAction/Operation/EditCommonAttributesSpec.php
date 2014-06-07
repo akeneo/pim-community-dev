@@ -12,8 +12,8 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
@@ -27,7 +27,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         Locale $en,
         Locale $de,
         AttributeRepository $attributeRepository,
-        ProductValue $productValue,
+        AbstractProductValue $productValue,
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager
@@ -111,8 +111,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
 
     function it_initializes_the_operation_with_common_attributes_of_the_products(
         $productRepository,
-        Product $product1,
-        Product $product2,
+        AbstractProduct $product1,
+        AbstractProduct $product2,
         AbstractAttribute $name,
         $productManager,
         $massActionManager
@@ -140,8 +140,8 @@ class EditCommonAttributesSpec extends ObjectBehavior
     function it_updates_the_products_when_performimg_the_operation(
         $productRepository,
         $query,
-        Product $product1,
-        Product $product2,
+        AbstractProduct $product1,
+        AbstractProduct $product2,
         AbstractAttribute $attribute,
         $productManager,
         $productValue,
