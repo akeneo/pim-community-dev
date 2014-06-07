@@ -14,7 +14,6 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\AttributeType\TextType;
 
-
 class ProductValueFormFactorySpec extends ObjectBehavior
 {
     function let(FormFactoryInterface $formFactory, AttributeTypeFactory $attributeTypeFactory, EventDispatcherInterface $dispatcher)
@@ -39,9 +38,7 @@ class ProductValueFormFactorySpec extends ObjectBehavior
         $textType->prepareValueFormAlias($value)->shouldBeCalled();
         $textType->prepareValueFormData($value)->shouldBeCalled();
         $textType->prepareValueFormConstraints($value)->shouldBeCalled()->willReturn([]);
-        $textType->prepareValueFormOptions($value)->shouldBeCalled()
-->willReturn([]);
-
+        $textType->prepareValueFormOptions($value)->shouldBeCalled()->willReturn([]);
 
         $dispatcher->dispatch(Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
 

@@ -12,12 +12,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class IdentifierTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser) {
+    function let(AttributeConstraintGuesser $guesser)
+    {
         $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_VARCHAR, 'text', $guesser);
     }
 
-    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $sku) {
-
+    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $sku)
+    {
         $this->buildAttributeFormTypes($factory, $sku)->shouldHaveCount(8);
     }
 
@@ -28,11 +29,13 @@ class IdentifierTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_VARCHAR);
     }
 
-    function it_prepares_the_product_value_form_alias(AbstractProductValue $value){
+    function it_prepares_the_product_value_form_alias(AbstractProductValue $value)
+    {
         $this->prepareValueFormAlias($value)->shouldReturn('text');
     }
 
-    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $sku){
+    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $sku)
+    {
         $sku->getLabel()->willReturn('sku');
         $sku->isRequired()->willReturn(true);
         $value->getAttribute()->willReturn($sku);
@@ -40,7 +43,8 @@ class IdentifierTypeSpec extends ObjectBehavior
         $this->prepareValueFormOptions($value)->shouldHaveCount(4);
     }
 
-    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $sku, $guesser){
+    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $sku, $guesser)
+    {
         $value->getAttribute()->willReturn($sku);
         $guesser->supportAttribute($sku)->willReturn(true);
         $guesser->guessConstraints($sku)->willReturn([]);
@@ -48,7 +52,8 @@ class IdentifierTypeSpec extends ObjectBehavior
         $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
     }
 
-    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $sku){
+    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $sku)
+    {
         $value->getData()->willReturn('sku-001');
         $this->prepareValueFormData($value)->shouldReturn('sku-001');
     }
