@@ -77,8 +77,6 @@ class BulkProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read();
-        $this->read();
-        $this->read();
     }
 
     function it_converts_metric_values(
@@ -101,8 +99,6 @@ class BulkProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read();
-        $this->read();
-        $this->read();
     }
 
     function it_increments_read_count_each_time_it_reads(
@@ -123,8 +119,6 @@ class BulkProductReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 
         $this->setChannel('foobar');
-        $this->read();
-        $this->read();
         $this->read();
     }
 
