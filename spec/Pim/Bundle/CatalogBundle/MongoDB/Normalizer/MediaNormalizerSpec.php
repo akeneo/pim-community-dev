@@ -20,7 +20,7 @@ class MediaNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($media, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_price(AbstractMedia $media)
+    function it_normalizes_media(AbstractMedia $media)
     {
         $media->getFilename()->willReturn('myfile.pdf');
 

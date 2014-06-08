@@ -25,7 +25,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($entityManager);
     }
 
-    function it_is_an_event_subsriber()
+    function it_is_an_event_subscriber()
     {
         $this->shouldImplement('Doctrine\Common\EventSubscriber');
     }
@@ -136,7 +136,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
             ->duringPostLoad($args);
     }
 
-    function it_transformes_entities_into_ids_before_update(
+    function it_transforms_entities_into_ids_before_update(
         PreUpdateEventArgs $args,
         ValueStub $document,
         DocumentManager $dm,

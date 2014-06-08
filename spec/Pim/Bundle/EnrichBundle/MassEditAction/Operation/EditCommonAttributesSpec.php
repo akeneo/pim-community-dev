@@ -137,7 +137,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getValues()->shouldHaveCount(1);
     }
 
-    function it_updates_the_products_when_performimg_the_operation(
+    function it_updates_the_products_when_performing_the_operation(
         $productRepository,
         $query,
         AbstractProduct $product1,

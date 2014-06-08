@@ -31,7 +31,7 @@ class ChangeStatusSpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_enrich_mass_change_status');
     }
 
-    function it_changes_the_status_of_the_products_when_performimg_the_operation(
+    function it_changes_the_status_of_the_products_when_performing_the_operation(
         AbstractQuery $query,
         ProductInterface $product2,
         ProductInterface $product1

@@ -26,7 +26,7 @@ class SetNormalizedProductDataSubscriberSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(['prePersist', 'preUpdate']);
     }
 
-    function it_sets_product_normalize_data_before_inserting_document(
+    function it_sets_normalized_product_data_before_inserting_document(
         LifecycleEventArgs $args,
         AbstractProduct $product,
         NormalizerInterface $normalizer,
@@ -52,7 +52,7 @@ class SetNormalizedProductDataSubscriberSpec extends ObjectBehavior
         $this->prePersist($args);
     }
 
-    function it_sets_product_normalize_data_before_updating_document(
+    function it_sets_normalized_product_data_before_updating_document(
         LifecycleEventArgs $args,
         AbstractProduct $product,
         NormalizerInterface $normalizer,
