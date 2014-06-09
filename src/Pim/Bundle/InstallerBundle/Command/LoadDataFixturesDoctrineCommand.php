@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\InstallerBundle\Command;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader as DataFixturesLoader;
@@ -20,33 +21,70 @@ use Doctrine\Bundle\FixturesBundle\Command\LoadDataFixturesDoctrineCommand as Ba
  */
 class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineCommand
 {
+    /**
+     * @var EntityManagerInterface entity manager
+     */
+    protected $em;
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         /** @var $doctrine \Doctrine\Common\Persistence\ManagerRegistry */
         $doctrine = $this->getContainer()->get('doctrine');
-        $em = $doctrine->getManager($input->getOption('em'));
+        $this->em = $doctrine->getManager($input->getOption('em'));
 
         if ($input->isInteractive() && !$input->getOption('append')) {
             $dialog = $this->getHelperSet()->get('dialog');
             if (!$dialog->askConfirmation(
                 $output,
                 '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>',
-                false)
-            ) {
+                false
+            )) {
                 return;
             }
         }
 
-        $dirOrFile = $input->getOption('fixtures');
-        if ($dirOrFile) {
-            $paths = is_array($dirOrFile) ? $dirOrFile : array($dirOrFile);
+        $paths = $this->getFixturePaths($input->getOption('fixtures'));
+        $fixtures = $this->getFixtures($paths);
+
+        $this->purgeAndExecute(
+            $output,
+            $fixtures,
+            $input->getOption('purge-with-truncate'),
+            $input->getOption('append')
+        );
+    }
+
+    /**
+     * Get the paths of the fixtures
+     *
+     * @param $fixturesOption
+     *
+     * @return array
+     */
+    protected function getFixturePaths($fixturesOption)
+    {
+        if ($fixturesOption) {
+            $paths = is_array($fixturesOption) ? $fixturesOption : array($fixturesOption);
         } else {
-            $paths = array();
+            $paths = [];
             foreach ($this->getApplication()->getKernel()->getBundles() as $bundle) {
                 $paths[] = $bundle->getPath().'/DataFixtures/ORM';
             }
         }
 
+        return $paths;
+    }
+
+    /**
+     * Get the fixtures to load
+     *
+     * @param $paths
+     *
+     * @return array
+     * @throws \InvalidArgumentException
+     */
+    protected function getFixtures($paths)
+    {
         $loader = new DataFixturesLoader($this->getContainer());
         foreach ($paths as $path) {
             if (is_dir($path)) {
@@ -59,16 +97,28 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
                 sprintf('Could not find any fixtures to load in: %s', "\n\n- ".implode("\n- ", $paths))
             );
         }
-        $purger = new ORMPurger($em);
-        $purger->setPurgeMode(
-            $input->getOption('purge-with-truncate') ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
-        );
+
+        return $fixtures;
+    }
+
+    /**
+     * Purge database and execute fixtures loading
+     *
+     * @param OutputInterface $output
+     * @param array           $fixtures
+     * @param                 $purgeWithTruncate
+     * @param                 $appendFixtures
+     */
+    protected function purgeAndExecute(OutputInterface $output, array $fixtures, $purgeWithTruncate, $appendFixtures)
+    {
+        $purger = new ORMPurger($this->em);
+        $purger->setPurgeMode($purgeWithTruncate ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE);
 
         // we use here our own Pim\Bundle\InstallerBundle\DataFixtures\Executor\ORMExecutor\ORMExecutor
-        $executor = new ORMExecutor($em, $purger);
+        $executor = new ORMExecutor($this->em, $purger);
         $executor->setLogger(function ($message) use ($output) {
-            $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
-        });
-        $executor->execute($fixtures, $input->getOption('append'));
+                $output->writeln(sprintf('  <comment>></comment> <info>%s</info>', $message));
+            });
+        $executor->execute($fixtures, $appendFixtures);
     }
 }

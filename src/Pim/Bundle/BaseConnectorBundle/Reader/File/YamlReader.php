@@ -65,17 +65,23 @@ class YamlReader extends FileReader implements ItemReaderInterface
     }
 
     /**
+     * Set the multiple attribute
+     *
      * @param boolean $multiple
+     *
+     * @return YamlReader
      */
     public function setMultiple($multiple)
     {
         $this->multiple = $multiple;
+
+        return $this;
     }
 
     /**
      * @return boolean
      */
-    public function getMultiple()
+    public function isMultiple()
     {
         return $this->multiple;
     }
