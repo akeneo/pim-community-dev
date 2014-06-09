@@ -13,7 +13,7 @@ use Doctrine\Common\DataFixtures\Executor\ORMExecutor as BaseORMExecutor;
  */
 class ORMExecutor extends BaseORMExecutor
 {
-    /** @inheritDoc */
+    /** {@inheritdoc} */
     public function execute(array $fixtures, $append = false)
     {
         $executor = $this;
