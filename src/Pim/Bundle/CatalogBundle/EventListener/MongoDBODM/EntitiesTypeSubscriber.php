@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory;
 use Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollection;
 use Doctrine\ODM\MongoDB\Event\PreFlushEventArgs;
 use Doctrine\ODM\MongoDB\Mapping\ClassMetadata;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Convert identifiers collection into lazy entity collection
@@ -111,6 +112,10 @@ class EntitiesTypeSubscriber implements EventSubscriber
                 }
 
                 $entities = $metadata->reflFields[$field]->getValue($document);
+
+                if (is_array($entities)) {
+                    $entities = new ArrayCollection($entities);
+                }
                 $metadata->reflFields[$field]->setValue(
                     $document,
                     $this->factory->createFromCollection($mapping['targetEntity'], $document, $entities)
