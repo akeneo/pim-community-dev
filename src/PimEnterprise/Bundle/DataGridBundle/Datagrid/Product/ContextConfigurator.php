@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRe
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
- * Override context configurator to apply rights on attribute groups
+ * Override context configurator to apply permissions on attribute groups
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -47,7 +47,7 @@ class ContextConfigurator extends PimContextConfigurator
     }
 
     /**
-     * Override to filter per rights per groups too
+     * Override to filter per permissions per groups too
      *
      * @param string[] $attributeCodes
      *

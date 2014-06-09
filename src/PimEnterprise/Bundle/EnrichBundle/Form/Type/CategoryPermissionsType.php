@@ -7,20 +7,20 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Form\AbstractType;
 
 /**
- * Form type for Category rights
+ * Form type for Category permissions
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CategoryRightsType extends AbstractType
+class CategoryPermissionsType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('view', 'pimee_security_roles', ['label' => 'category.rights.view.label']);
-        $builder->add('edit', 'pimee_security_roles', ['label' => 'category.rights.edit.label']);
+        $builder->add('view', 'pimee_security_roles', ['label' => 'category.permissions.view.label']);
+        $builder->add('edit', 'pimee_security_roles', ['label' => 'category.permissions.edit.label']);
     }
 
     /**
@@ -36,6 +36,6 @@ class CategoryRightsType extends AbstractType
      */
     public function getName()
     {
-        return 'pimee_enrich_category_rights';
+        return 'pimee_enrich_category_permissions';
     }
 }

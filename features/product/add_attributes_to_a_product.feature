@@ -7,15 +7,15 @@ Feature: Add attributes to a product
   Background:
     Given a "footwear" catalog configuration
     And the following attribute group accesses:
-      | group     | role          | access |
-      | info      | Administrator | edit   |
-      | marketing | Administrator | view   |
+      | attribute group | role          | access |
+      | info            | Administrator | edit   |
+      | marketing       | Administrator | view   |
     And the following products:
       | sku     | family  |
       | sandals | sandals |
     And I am logged in as "Peter"
 
-  Scenario: Successfully display only attributes I have edit rights access
+  Scenario: Successfully display only attributes I have edit permissions access
     Given I am on the "sandals" product page
     Then I should see available attribute Weather conditions and Length in group "Product information"
     And I should not see available attribute Rating and Price in group "Marketing"

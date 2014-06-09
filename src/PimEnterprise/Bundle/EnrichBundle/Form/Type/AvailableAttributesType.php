@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRe
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
- * Override available attributes type to remove attributes where rights are revoked
+ * Override available attributes type to remove attributes where permissions are revoked
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

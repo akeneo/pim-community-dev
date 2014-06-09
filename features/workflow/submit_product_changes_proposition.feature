@@ -10,7 +10,7 @@ Feature: Submit a product changes proposition
     And the following product:
     | sku        | family  | name-en_US |
     | my-sandals | sandals | Sandals    |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     When I edit the "my-sandals" product
     And I change the Name to "Basket"
@@ -24,7 +24,7 @@ Feature: Submit a product changes proposition
     And the following product:
     | sku        | family  | name-en_US |
     | my-sandals | sandals | Sandals    |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     When I edit the "my-sandals" product
     And I save the product

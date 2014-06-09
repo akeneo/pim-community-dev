@@ -1,8 +1,8 @@
 @javascript
-Feature: Enforce no rights for a category
+Feature: Enforce no permissions for a category
   In order to be able to prevent some users from viewing some products
   As Peter
-  I need to be able to enforce no rights for categories
+  I need to be able to enforce no permissions for categories
 
   Background:
     Given a "footwear" catalog configuration
