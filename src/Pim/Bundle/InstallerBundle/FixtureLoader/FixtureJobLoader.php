@@ -63,13 +63,16 @@ class FixtureJobLoader
             }
 
             // sort the jobs by order
-            usort($rawJobs, function ($item1, $item2) {
-                if ($item1['order'] === $item2['order']) {
-                    return 0;
-                }
+            usort(
+                $rawJobs,
+                function ($item1, $item2) {
+                    if ($item1['order'] === $item2['order']) {
+                        return 0;
+                    }
 
-                return ($item1['order'] < $item2['order']) ? -1 : 1;
-            });
+                    return ($item1['order'] < $item2['order']) ? -1 : 1;
+                }
+            );
         }
 
         // store the jobs
