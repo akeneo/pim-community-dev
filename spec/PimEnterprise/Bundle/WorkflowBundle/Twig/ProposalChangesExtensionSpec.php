@@ -34,7 +34,7 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pimee_workflow_proposal_changes_extension');
+        $this->getName()->shouldReturn('pimee_workflow_proposition_changes_extension');
     }
 
     function it_has_presenters(
@@ -44,7 +44,7 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $this->getPresenters()->shouldReturn([$valuePresenter, $attributePresenter]);
     }
 
-    function it_presents_proposal_change_attribute_using_a_supporting_presenter(
+    function it_presents_proposition_change_attribute_using_a_supporting_presenter(
         $valueRepository,
         $attributeRepository,
         $attributePresenter,
@@ -60,12 +60,12 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('Name');
     }
 
-    function it_presents_proposal_change_attribute_using_the_default_value_if_id_is_unavailable()
+    function it_presents_proposition_change_attribute_using_the_default_value_if_id_is_unavailable()
     {
         $this->presentAttribute([], 'foo')->shouldReturn('foo');
     }
 
-    function it_presents_proposal_change_attribute_using_the_default_value_if_value_is_unavailable(
+    function it_presents_proposition_change_attribute_using_the_default_value_if_value_is_unavailable(
         $valueRepository
     ) {
         $valueRepository->find(123)->willReturn(null);
@@ -73,7 +73,7 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('foo');
     }
 
-    function it_presents_proposal_using_a_supporting_presenter(
+    function it_presents_proposition_using_a_supporting_presenter(
         $valueRepository,
         $attributePresenter,
         $valuePresenter,

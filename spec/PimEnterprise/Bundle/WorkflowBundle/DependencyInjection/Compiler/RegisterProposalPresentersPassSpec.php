@@ -14,15 +14,15 @@ class RegisterPropositionPresentersPassSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
-    function it_adds_tagged_presenter_to_the_proposal_twig_extension(
+    function it_adds_tagged_presenter_to_the_proposition_twig_extension(
         ContainerBuilder $container,
         Definition $twigExt,
         Definition $barDefinition,
         Definition $fooDefinition,
         Definition $bazDefinition
     ) {
-        $container->hasDefinition('pimee_workflow.twig.extension.proposal_changes')->willReturn(true);
-        $container->getDefinition('pimee_workflow.twig.extension.proposal_changes')->willReturn($twigExt);
+        $container->hasDefinition('pimee_workflow.twig.extension.proposition_changes')->willReturn(true);
+        $container->getDefinition('pimee_workflow.twig.extension.proposition_changes')->willReturn($twigExt);
         $container->findTaggedServiceIds('pimee_workflow.presenter')->willReturn([
             'presenter.bar' => [['priority' => -10]],
             'presenter.foo' => [['priority' => 10]],

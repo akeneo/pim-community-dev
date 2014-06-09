@@ -7,17 +7,17 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 class PropositionFactorySpec extends ObjectBehavior
 {
-    function it_should_creates_a_proposal(
+    function it_should_creates_a_proposition(
         AbstractProduct $product
     ) {
         $product->getLocale()->willReturn('foo');
 
-        $proposal = $this->createProposition($product, 'bar', []);
+        $proposition = $this->createProposition($product, 'bar', []);
 
-        $proposal->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition');
-        $proposal->getProduct()->shouldReturn($product);
-        $proposal->getLocale()->shouldReturn('foo');
-        $proposal->getAuthor()->shouldReturn('bar');
-        $proposal->getChanges()->shouldReturn([]);
+        $proposition->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition');
+        $proposition->getProduct()->shouldReturn($product);
+        $proposition->getLocale()->shouldReturn('foo');
+        $proposition->getAuthor()->shouldReturn('bar');
+        $proposition->getChanges()->shouldReturn([]);
     }
 }

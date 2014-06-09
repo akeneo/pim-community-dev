@@ -18,37 +18,37 @@ class PropositionManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $manager, $applier);
     }
 
-    function it_applies_changes_to_the_product_when_approving_a_proposal(
+    function it_applies_changes_to_the_product_when_approving_a_proposition(
         $registry,
         $manager,
         $applier,
-        Proposition $proposal,
+        Proposition $proposition,
         AbstractProduct $product,
         ObjectManager $manager
     ) {
-        $proposal->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
-        $proposal->getProduct()->willReturn($product);
-        $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
+        $proposition->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
+        $proposition->getProduct()->willReturn($product);
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
         $applier->apply($product, ['foo' => 'bar', 'b' => 'c'])->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
-        $manager->saveProduct($product, ['bypass_proposal' => true])->shouldBeCalled();
-        $proposal->setStatus(Proposition::APPROVED)->shouldBeCalled();
+        $manager->saveProduct($product, ['bypass_proposition' => true])->shouldBeCalled();
+        $proposition->setStatus(Proposition::APPROVED)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->approve($proposal);
+        $this->approve($proposition);
     }
 
-    function it_closes_proposal_when_refusing_it(
+    function it_closes_proposition_when_refusing_it(
         $registry,
-        Proposition $proposal,
+        Proposition $proposition,
         ObjectManager $manager
     ) {
-        $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
-        $proposal->setStatus(Proposition::REFUSED)->shouldBeCalled();
+        $proposition->setStatus(Proposition::REFUSED)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->refuse($proposal);
+        $this->refuse($proposition);
     }
 }

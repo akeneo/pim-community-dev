@@ -25,7 +25,7 @@ class PropositionDatasourceSpec extends ObjectBehavior
     function it_processes_a_datasource_with_product(
         $om,
         DatagridInterface $datagrid,
-        PropositionRepositoryInterface $proposalRepo
+        PropositionRepositoryInterface $propositionRepo
     ) {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
@@ -33,9 +33,9 @@ class PropositionDatasourceSpec extends ObjectBehavior
             'product'           => 'bar'
         ];
 
-        $om->getRepository('Proposition')->willReturn($proposalRepo);
-        $proposalRepo->createDatagridQueryBuilder()->willReturn('foo');
-        $proposalRepo->applyDatagridContext('foo', 'bar')->shouldBeCalled();
+        $om->getRepository('Proposition')->willReturn($propositionRepo);
+        $propositionRepo->createDatagridQueryBuilder()->willReturn('foo');
+        $propositionRepo->applyDatagridContext('foo', 'bar')->shouldBeCalled();
         $datagrid->setDatasource($this)->shouldBeCalled();
 
         $this->process($datagrid, $config);
@@ -44,15 +44,15 @@ class PropositionDatasourceSpec extends ObjectBehavior
     function it_processes_a_datasource_with_repository_configuration(
         $om,
         DatagridInterface $datagrid,
-        PropositionRepositoryInterface $proposalRepo
+        PropositionRepositoryInterface $propositionRepo
     ) {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
             'entity'            => 'Proposition'
         ];
 
-        $om->getRepository('Proposition')->willReturn($proposalRepo);
-        $proposalRepo->createDatagridQueryBuilder()->willReturn('foo');
+        $om->getRepository('Proposition')->willReturn($propositionRepo);
+        $propositionRepo->createDatagridQueryBuilder()->willReturn('foo');
         $datagrid->setDatasource($this)->shouldBeCalled();
 
         $this->process($datagrid, $config);
@@ -61,12 +61,12 @@ class PropositionDatasourceSpec extends ObjectBehavior
     function it_processes_a_datasource_with_default_query_builder(
         $om,
         DatagridInterface $datagrid,
-        PropositionRepository $proposalRepo
+        PropositionRepository $propositionRepo
     ) {
         $config = ['entity' => 'Proposition'];
 
-        $om->getRepository('Proposition')->willReturn($proposalRepo);
-        $proposalRepo->createQueryBuilder('p')->willReturn('foo');
+        $om->getRepository('Proposition')->willReturn($propositionRepo);
+        $propositionRepo->createQueryBuilder('p')->willReturn('foo');
         $datagrid->setDatasource($this)->shouldBeCalled();
 
         $this->process($datagrid, $config);
@@ -99,15 +99,15 @@ class PropositionDatasourceSpec extends ObjectBehavior
         $om,
         $hydrator,
         DatagridInterface $datagrid,
-        PropositionRepositoryInterface $proposalRepo
+        PropositionRepositoryInterface $propositionRepo
     ) {
         $config = [
             'repository_method' => 'createDatagridQueryBuilder',
             'entity'            => 'Proposition'
         ];
 
-        $om->getRepository('Proposition')->willReturn($proposalRepo);
-        $proposalRepo->createDatagridQueryBuilder()->willReturn('foo');
+        $om->getRepository('Proposition')->willReturn($propositionRepo);
+        $propositionRepo->createDatagridQueryBuilder()->willReturn('foo');
         $datagrid->setDatasource($this)->shouldBeCalled();
 
         $this->process($datagrid, $config);

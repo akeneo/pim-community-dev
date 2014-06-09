@@ -15,11 +15,11 @@ class FieldSorterSpec extends ObjectBehavior
 
     function it_applies_a_sort(
         PropositionDatasource $datasource,
-        PropositionRepositoryInterface $proposalRepo
+        PropositionRepositoryInterface $propositionRepo
     ) {
-        $datasource->getRepository()->willReturn($proposalRepo);
+        $datasource->getRepository()->willReturn($propositionRepo);
         $datasource->getQueryBuilder()->willReturn('qb');
-        $proposalRepo->applySorter('qb', 'foo', 'ASC');
+        $propositionRepo->applySorter('qb', 'foo', 'ASC');
 
         $this->apply($datasource, 'foo', 'ASC');
     }

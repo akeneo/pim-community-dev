@@ -33,7 +33,7 @@ class MediaComparatorSpec extends ObjectBehavior
                 Argument::type('Pim\Bundle\CatalogBundle\Model\Media'),
                 Argument::which('getFile', $file->getWrappedObject())
             ),
-            Argument::containingString('proposal-')
+            Argument::containingString('proposition-')
         )->will(function(array $args) {
             $args[0]->setOriginalFilename('foo.jpg');
             $args[0]->setFilePath('/tmp/foo.jpg');

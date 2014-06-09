@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddSortersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SORTER_PROPOSAL_EXTENSION_ID = 'pimee_datagrid.extension.sorter.proposition_sorter';
+    const SORTER_PROPOSITION_EXTENSION_ID = 'pimee_datagrid.extension.sorter.proposition_sorter';
 
     /** @staticvar string */
     const TAG_NAME = 'pim_datagrid.extension.sorter';
@@ -25,7 +25,7 @@ class AddSortersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $propositionExtension = $container->getDefinition(self::SORTER_PROPOSAL_EXTENSION_ID);
+        $propositionExtension = $container->getDefinition(self::SORTER_PROPOSITION_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {

@@ -8,7 +8,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class PropositionGridHelperSpec extends ObjectBehavior
 {
-    function it_hides_approve_and_refuse_actions_if_the_proposal_status_is_not_waiting(ResultRecordInterface $record)
+    function it_hides_approve_and_refuse_actions_if_the_proposition_status_is_not_waiting(ResultRecordInterface $record)
     {
         $closure = $this->getActionConfigurationClosure();
 
@@ -16,7 +16,7 @@ class PropositionGridHelperSpec extends ObjectBehavior
         $closure($record)->shouldReturn(['approve' => false, 'refuse' => false]);
     }
 
-    function it_does_nothing_if_the_proposal_status_is_waiting(ResultRecordInterface $record)
+    function it_does_nothing_if_the_proposition_status_is_waiting(ResultRecordInterface $record)
     {
         $closure = $this->getActionConfigurationClosure();
 
@@ -24,13 +24,13 @@ class PropositionGridHelperSpec extends ObjectBehavior
         $closure($record)->shouldReturn(null);
     }
 
-    function it_provides_proposal_status_choices()
+    function it_provides_proposition_status_choices()
     {
         $this->getStatusChoices()->shouldReturn(
             [
-                Proposition::WAITING  => 'pimee_workflow.proposal.status.waiting',
-                Proposition::APPROVED => 'pimee_workflow.proposal.status.approved',
-                Proposition::REFUSED  => 'pimee_workflow.proposal.status.refused'
+                Proposition::WAITING  => 'pimee_workflow.proposition.status.waiting',
+                Proposition::APPROVED => 'pimee_workflow.proposition.status.approved',
+                Proposition::REFUSED  => 'pimee_workflow.proposition.status.refused'
             ]
         );
     }

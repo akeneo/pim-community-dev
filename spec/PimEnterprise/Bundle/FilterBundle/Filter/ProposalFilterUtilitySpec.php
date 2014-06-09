@@ -9,9 +9,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositor
 
 class PropositionFilterUtilitySpec extends ObjectBehavior
 {
-    function let(PropositionRepositoryInterface $proposalRepository)
+    function let(PropositionRepositoryInterface $propositionRepository)
     {
-        $this->beConstructedWith($proposalRepository);
+        $this->beConstructedWith($propositionRepository);
     }
 
     function it_shoud_returns_parent_type_key_as_param_map()
@@ -20,13 +20,13 @@ class PropositionFilterUtilitySpec extends ObjectBehavior
     }
 
     function it_applies_a_filter_on_field(
-        $proposalRepository,
+        $propositionRepository,
         FilterDatasourceAdapterInterface $ds,
         QueryBuilder $qb
     ) {
         $ds->getQueryBuilder()->willReturn($qb);
 
-        $proposalRepository->applyFilter($qb, 'foo', 'bar', 'baz')->shouldBeCalled();
+        $propositionRepository->applyFilter($qb, 'foo', 'bar', 'baz')->shouldBeCalled();
 
         $this->applyFilter($ds, 'foo', 'bar', 'baz');
     }

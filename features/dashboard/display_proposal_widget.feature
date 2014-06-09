@@ -1,28 +1,28 @@
 @javascript
-Feature: Display proposal widget
-  In order to easily see which products have pending proposals
+Feature: Display proposition widget
+  In order to easily see which products have pending propositions
   As Julia
-  I need to be able to see a widget with pending proposals on the dashboard
+  I need to be able to see a widget with pending propositions on the dashboard
 
-  Scenario: Display proposal widget
+  Scenario: Display proposition widget
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     When I am on the dashboard page
-    Then I should see "Proposals to review"
-    And I should see "No proposals to review"
+    Then I should see "Propositions to review"
+    And I should see "No propositions to review"
 
-  Scenario: Succesfully display all opened proposals
+  Scenario: Succesfully display all opened propositions
     Given the "footwear" catalog configuration
     And the following product:
       | sku        | family  |
       | my-sandals | sandals |
-    And the following proposals:
+    And the following propositions:
       | product    | status   | author |
       | my-sandals | open     | admin  |
       | my-sandals | approved | admin  |
     And I am logged in as "Julia"
     When I am on the dashboard page
-    Then I should see "Proposals to review"
-    And I should the following proposal:
+    Then I should see "Propositions to review"
+    And I should the following proposition:
       | product    | author |
       | my-sandals | admin  |

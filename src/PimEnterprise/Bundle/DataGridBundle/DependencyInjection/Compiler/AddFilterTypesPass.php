@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddFilterTypesPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const FILTER_PROPOSAL_EXTENSION_ID = 'pimee_datagrid.extension.filter.proposition_filter';
+    const FILTER_PROPOSITION_EXTENSION_ID = 'pimee_datagrid.extension.filter.proposition_filter';
 
     /** @staticvar string */
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
@@ -25,7 +25,7 @@ class AddFilterTypesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $propositionExtension = $container->getDefinition(self::FILTER_PROPOSAL_EXTENSION_ID);
+        $propositionExtension = $container->getDefinition(self::FILTER_PROPOSITION_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
