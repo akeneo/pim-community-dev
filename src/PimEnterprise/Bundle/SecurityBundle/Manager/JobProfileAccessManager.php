@@ -2,15 +2,11 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
-use Oro\Bundle\UserBundle\Entity\Role;
-
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
-
-use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-
-use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
-
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
+use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
 /**
  * Job profile access manager

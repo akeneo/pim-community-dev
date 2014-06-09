@@ -2,10 +2,13 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 /**
- * TODO
+ * Job profile voter, allows to know if a job profile can be executed or edited by
+ * a user depending on his roles
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
