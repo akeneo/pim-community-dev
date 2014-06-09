@@ -77,6 +77,8 @@ class BulkProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read();
+        $this->read();
+        $this->read();
     }
 
     function it_converts_metric_values(
