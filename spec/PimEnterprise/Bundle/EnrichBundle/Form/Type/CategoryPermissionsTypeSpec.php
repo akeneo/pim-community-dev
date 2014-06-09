@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 
-class AttributeGroupRightsTypeSpec extends ObjectBehavior
+class CategoryRightsTypeSpec extends ObjectBehavior
 {
     function it_is_a_form_type()
     {
@@ -15,7 +15,7 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pimee_enrich_attribute_group_rights');
+        $this->getName()->shouldReturn('pimee_enrich_category_permissions');
     }
 
     function it_has_view_and_edit_permission_fields(FormBuilderInterface $builder)
@@ -23,11 +23,11 @@ class AttributeGroupRightsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('view', 'pimee_security_roles', ['label' => 'attribute group.rights.view.label'])
+            ->add('view', 'pimee_security_roles', ['label' => 'category.permissions.view.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('edit', 'pimee_security_roles', ['label' => 'attribute group.rights.edit.label'])
+            ->add('edit', 'pimee_security_roles', ['label' => 'category.permissions.edit.label'])
             ->shouldHaveBeenCalled();
     }
 

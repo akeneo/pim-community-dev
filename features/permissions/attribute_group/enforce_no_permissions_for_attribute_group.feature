@@ -1,8 +1,8 @@
 @javascript
-Feature: Enforce no rights for an attribute group
+Feature: Enforce no permissions for an attribute group
   In order to be able to prevent some users from viewing some product data
   As Peter
-  I need to be able to enforce no rights for attribute groups
+  I need to be able to enforce no permissions for attribute groups
 
   Background:
     Given a "footwear" catalog configuration
