@@ -63,11 +63,11 @@ class JobProfileVoter implements VoterInterface
                 if ($this->supportsAttribute($attribute)) {
                     $result = VoterInterface::ACCESS_DENIED;
                     $grantedRoles = $this->extractRoles($attribute, $object);
-                }
 
-                foreach ($grantedRoles as $role) {
-                    if ($token->getUser()->hasRole($role)) {
-                        return VoterInterface::ACCESS_GRANTED;
+                    foreach ($grantedRoles as $role) {
+                        if ($token->getUser()->hasRole($role)) {
+                            return VoterInterface::ACCESS_GRANTED;
+                        }
                     }
                 }
             }
