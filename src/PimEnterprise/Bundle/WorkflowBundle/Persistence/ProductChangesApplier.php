@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class ProductChangesApplier
 {
+    /** @var FormFactoryInterface */
     protected $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
@@ -51,7 +52,7 @@ class ProductChangesApplier
         }
 
         foreach ($changes['values'] as $key => $change) {
-            if (isset($change['media'])) {
+            if (isset($change['media']) && $this->isUploadingMedia($change['media'])) {
                 $changes['values'][$key]['media'] = [
                     'file' => new UploadedFile(
                         $change['media']['filePath'],
@@ -64,5 +65,23 @@ class ProductChangesApplier
         }
 
         return $changes;
+    }
+
+    /**
+     * Wether or not media data should be converted into uploaded file
+     *
+     * @param array $media
+     *
+     * @return boolean
+     */
+    protected function isUploadingMedia(array $media)
+    {
+        foreach (['filePath', 'originalFilename', 'mimeType', 'size'] as $mediaKey) {
+            if (!array_key_exists($mediaKey, $media)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

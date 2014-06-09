@@ -41,10 +41,12 @@ class FilePresenter implements PresenterInterface
     {
         $before = '';
         if ($media = $data->getMedia()) {
-            $before = sprintf(
-                '<li class="base file">%s</li>',
-                $this->createFileElement($media->getFilename(), $media->getOriginalFilename())
-            );
+            if (null !== $media->getFilename() && null !== $media->getOriginalFilename()) {
+                $before = sprintf(
+                    '<li class="base file">%s</li>',
+                    $this->createFileElement($media->getFilename(), $media->getOriginalFilename())
+                );
+            }
         }
 
         $after = '';
