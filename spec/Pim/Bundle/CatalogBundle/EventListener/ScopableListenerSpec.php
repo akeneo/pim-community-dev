@@ -38,7 +38,7 @@ class ScopableListenerSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    function it_doesnt_configures_scope_for_other_object(
+    function it_does_not_configure_scope_for_other_objects(
         CatalogContext $context,
         LifecycleEventArgs $args
     ) {
@@ -48,5 +48,4 @@ class ScopableListenerSpec extends ObjectBehavior
         $context->getScopeCode()->shouldNotBeCalled();
         $this->postLoad($args);
     }
-
 }

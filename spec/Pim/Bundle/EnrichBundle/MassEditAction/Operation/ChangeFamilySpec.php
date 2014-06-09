@@ -31,7 +31,7 @@ class ChangeFamilySpec extends ObjectBehavior
         $this->getFormType()->shouldReturn('pim_enrich_mass_change_family');
     }
 
-    function it_adds_products_to_the_selected_family_when_performimg_the_operation(
+    function it_adds_products_to_the_selected_family_when_performing_the_operation(
         AbstractQuery $query,
         Family $mugs,
         ProductInterface $product1,

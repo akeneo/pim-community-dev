@@ -70,10 +70,10 @@ class LocaleExtensionSpec extends ObjectBehavior
         $filterArgs = new \Twig_Node();
 
         return [
-            'haveTwigMethod' => function($subject, $name, $method) {
+            'haveTwigMethod' => function ($subject, $name, $method) {
                 $function = array_filter(
                     $subject,
-                    function($function) use ($name) {
+                    function ($function) use ($name) {
                         return $function instanceof \Twig_SimpleFunction &&
                             $function->getName() === $name;
                     }
@@ -87,10 +87,10 @@ class LocaleExtensionSpec extends ObjectBehavior
 
                 return $function->getCallable() === [$this->getWrappedObject(), $method];
             },
-            'haveTwigFilter' => function($subject, $name, $method, $isSafe, $needsEnvironment) use ($filterArgs) {
+            'haveTwigFilter' => function ($subject, $name, $method, $isSafe, $needsEnvironment) use ($filterArgs) {
                 $filter = array_filter(
                     $subject,
-                    function($filter) use ($name) {
+                    function ($filter) use ($name) {
                         return $filter instanceof \Twig_SimpleFilter &&
                             $filter->getName() === $name;
                     }

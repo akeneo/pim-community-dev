@@ -81,7 +81,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->createProductValue()->shouldReturnAnInstanceOf(self::VALUE_CLASS);
     }
 
-    function it_gets_identifier_attribute(AttributeRepository $attributeRepository, AbstractAttribute $sku)
+    function it_provides_the_identifier_attribute(AttributeRepository $attributeRepository, AbstractAttribute $sku)
     {
         $attributeRepository->findOneBy(['attributeType' => 'pim_catalog_identifier'])->willReturn($sku);
 
