@@ -1,7 +1,7 @@
 parameters:
     pimee_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
-    pimee_enrich.form.subscriber.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupRightsSubscriber
-    pimee_enrich.form.subscriber.category_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryRightsSubscriber
+    pimee_enrich.form.subscriber.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupPermissionsSubscriber
+    pimee_enrich.form.subscriber.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
 
 services:
     pimee_enrich.twig.version_extension:
@@ -9,13 +9,13 @@ services:
         tags:
             - { name: twig.extension }
 
-    pimee_enrich.form.subscriber.attribute_group_rights:
-        class: %pimee_enrich.form.subscriber.attribute_group_rights.class%
+    pimee_enrich.form.subscriber.attribute_group_permissions:
+        class: %pimee_enrich.form.subscriber.attribute_group_permissions.class%
         arguments:
             - '@pimee_security.manager.attribute_group_access'
 
-    pimee_enrich.form.subscriber.category_rights:
-        class: %pimee_enrich.form.subscriber.category_rights.class%
+    pimee_enrich.form.subscriber.category_permissions:
+        class: %pimee_enrich.form.subscriber.category_permissions.class%
         arguments:
             - '@pimee_security.manager.category_access'
 

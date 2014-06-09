@@ -1,5 +1,5 @@
 {% if form.vars.value.id and form.vars.value.isRoot() %}
-    {% set tabs = ['Properties', 'Rights', 'History']%}
+    {% set tabs = ['Properties', 'Permissions', 'History']%}
 {% elseif form.vars.value.id %}
     {% set tabs = ['Properties', 'History']%}
 {% else %}

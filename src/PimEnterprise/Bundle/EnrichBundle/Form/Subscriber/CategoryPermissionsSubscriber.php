@@ -2,29 +2,29 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 
 /**
- * Subscriber to manage rights on attribute groups
+ * Subscriber to manage permissions on categories
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeGroupRightsSubscriber implements EventSubscriberInterface
+class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var AttributeGroupAccessManager
+     * @var CategoryAccessManager
      */
     protected $accessManager;
 
     /**
-     * @param AttributeGroupAccessManager $accessManager
+     * @param CategoryAccessManager $accessManager
      */
-    public function __construct(AttributeGroupAccessManager $accessManager)
+    public function __construct(CategoryAccessManager $accessManager)
     {
         $this->accessManager = $accessManager;
     }
@@ -42,17 +42,23 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Add the rights subform to the form
+     * Add the permissions subform to the form
      *
      * @param FormEvent $event
      */
     public function preSetData(FormEvent $event)
     {
-        $event->getForm()->add('rights', 'pimee_enrich_attribute_group_rights');
+        if (!$this->isValidTree($event)) {
+            return;
+        }
+
+        if ($event->getData()->isRoot()) {
+            $event->getForm()->add('permissions', 'pimee_enrich_category_permissions');
+        }
     }
 
     /**
-     * Inject existing rights into the form
+     * Inject existing permissions into the form
      *
      * @param FormEvent $event
      *
@@ -60,27 +66,45 @@ class AttributeGroupRightsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
+        if (!$this->isValidTree($event)) {
             return;
         }
 
-        $form = $event->getForm()->get('rights');
+        $form = $event->getForm()->get('permissions');
         $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
         $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
     }
 
     /**
-     * Persist the rights defined in the form
+     * Persist the permissions defined in the form
      *
      * @param FormEvent $event
      */
     public function postSubmit(FormEvent $event)
     {
+        if (!$this->isValidTree($event)) {
+            return;
+        }
+
         $form = $event->getForm();
         if ($form->isValid()) {
-            $viewRoles = $form->get('rights')->get('view')->getData();
-            $editRoles = $form->get('rights')->get('edit')->getData();
+            $viewRoles = $form->get('permissions')->get('view')->getData();
+            $editRoles = $form->get('permissions')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
         }
+    }
+
+    /**
+     * Predicate to know form event contains valid tree
+     *
+     * @param FormEvent $event
+     *
+     * @return boolean
+     */
+    protected function isValidTree(FormEvent $event)
+    {
+        return null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && false !== $event->getData()->isRoot();
     }
 }
