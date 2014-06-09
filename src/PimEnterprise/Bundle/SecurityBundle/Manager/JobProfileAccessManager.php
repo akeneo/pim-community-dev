@@ -55,7 +55,7 @@ class JobProfileAccessManager
      */
     public function getEditRoles(JobInstance $jobProfile)
     {
-        return $this->getRepsoitory()->getGrantedRoles($jobProfile, JobProfileVoter::EDIT_JOB_PROFILE);
+        return $this->getRepository()->getGrantedRoles($jobProfile, JobProfileVoter::EDIT_JOB_PROFILE);
     }
 
     /**
