@@ -1,0 +1,40 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess:
+    type: entity
+    table: pimee_security_job_profile_access
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileRepository
+    uniqueConstraints:
+        job_profile_role_idx:
+            columns:
+                - job_profile_id
+                - role_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        executeJobProfile:
+            type: boolean
+            column: execute_job_profile
+            options:
+                default: false
+        editJobProfile:
+            type: boolean
+            column: edit_job_profile
+            options:
+                default: false
+    manyToOne:
+        jobProfile:
+            targetEntity: Akeneo\Bundle\BatchBundle\Entity\JobInstance
+            joinColumns:
+                job_profile_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        role:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
