@@ -1,9 +1,6 @@
 parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
-    pimee_workflow.factory.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory
     pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
-    pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
-    pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
     pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
     pimee_workflow.datagrid.proposition_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\PropositionGridHelper
 
@@ -38,22 +35,6 @@ services:
             - '@security.context'
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
-
-    pimee_workflow.factory.proposition:
-        class: %pimee_workflow.factory.proposition.class%
-
-    pimee_workflow.manager.proposition:
-        class: %pimee_workflow.manager.proposition.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.product'
-            - '@pimee_workflow.persister.product_changes_applier'
-
-    pimee_workflow.persister.product_changes_applier:
-        public: false
-        class: %pimee_workflow.persister.product_changes_applier.class%
-        arguments:
-            - '@form.factory'
 
     pimee_workflow.datagrid.proposition_grid_helper:
         class: %pimee_workflow.datagrid.proposition_grid_helper.class%

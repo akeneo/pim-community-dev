@@ -1,0 +1,31 @@
+parameters:
+    pimee_workflow.factory.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory
+    pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
+    pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
+    pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PrepareUploadingMedia
+
+services:
+    pimee_workflow.factory.proposition:
+        class: %pimee_workflow.factory.proposition.class%
+
+    pimee_workflow.manager.proposition:
+        class: %pimee_workflow.manager.proposition.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.product'
+            - '@pimee_workflow.persister.product_changes_applier'
+
+    pimee_workflow.persister.product_changes_applier:
+        public: false
+        class: %pimee_workflow.persister.product_changes_applier.class%
+        arguments:
+            - '@form.factory'
+            - '@event_dispatcher'
+
+    ##
+    # Preparators of product changes before applying
+    ##
+    pimee_workflow.product_changes_applier.prepare_uploading_media:
+        class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
+        tags:
+            - { name: kernel.event_subscriber }
