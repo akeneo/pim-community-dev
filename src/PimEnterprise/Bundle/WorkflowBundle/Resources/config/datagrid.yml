@@ -4,7 +4,7 @@ datagrid:
             entityHint: proposal
         source:
             type: pim_proposal
-            entity: %pimee_workflow.entity.proposal.class%
+            entity: %pimee_workflow.model.proposal.class%
             repository_method: createDatagridQueryBuilder
         columns:
             author:

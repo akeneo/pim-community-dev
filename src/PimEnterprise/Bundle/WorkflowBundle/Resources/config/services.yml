@@ -1,7 +1,7 @@
 parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister
     pimee_workflow.factory.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory
-    pimee_workflow.entity.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
+    pimee_workflow.model.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
     pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
     pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
     pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
@@ -28,7 +28,7 @@ services:
         class: %pimee_workflow.repository.proposal.class%
         factory_service: pimee_workflow.object_manager.proposal
         factory_method: getRepository
-        arguments: [%pimee_workflow.entity.proposal.class%]
+        arguments: [%pimee_workflow.model.proposal.class%]
 
     pim_catalog.persister.product:
         class: %pim_catalog.persister.product.class%
