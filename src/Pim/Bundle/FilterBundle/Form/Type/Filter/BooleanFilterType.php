@@ -5,14 +5,24 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\AbstractChoiceType;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\ChoiceFilterType;
 
+/**
+ * Boolean filter type
+ *
+ * @author    Romain Monceau <romain@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class BooleanFilterType extends AbstractChoiceType
 {
+    /** @staticvar integer */
     const TYPE_YES = 1;
     const TYPE_NO = 0;
+
+    /** @staticvar string */
     const NAME = 'pim_type_boolean_filter';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getName()
     {
@@ -20,7 +30,7 @@ class BooleanFilterType extends AbstractChoiceType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParent()
     {
@@ -28,7 +38,7 @@ class BooleanFilterType extends AbstractChoiceType
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
