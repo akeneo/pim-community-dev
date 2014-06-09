@@ -5,12 +5,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use Doctrine\Common\Persistence\ObjectRepository;
 
 /**
- * Proposal repository interface
+ * Proposition repository interface
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-interface ProposalRepositoryInterface extends ObjectRepository
+interface PropositionRepositoryInterface extends ObjectRepository
 {
     /**
      * Create the datagrid query builder
@@ -25,7 +25,7 @@ interface ProposalRepositoryInterface extends ObjectRepository
      * @param QueryBuilder $qb
      * @param integer      $product
      *
-     * @return ProposalRepositoryInterface
+     * @return PropositionRepositoryInterface
      */
     public function applyDatagridContext($qb, $productId);
 

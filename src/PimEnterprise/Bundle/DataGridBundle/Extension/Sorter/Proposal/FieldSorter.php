@@ -1,13 +1,13 @@
 <?php
 
-namespace PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposal;
+namespace PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposition;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
- * Field sorter for proposals
+ * Field sorter for propositions
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

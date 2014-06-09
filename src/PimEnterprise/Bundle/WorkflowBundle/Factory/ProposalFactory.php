@@ -3,35 +3,35 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Product proposal factory
+ * Product proposition factory
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalFactory
+class PropositionFactory
 {
     /**
-     * Create and configure a Proposal instance
+     * Create and configure a Proposition instance
      *
      * @param ProductInterface $product
      * @param string           $username
      * @param array            $changes
      *
-     * @return Proposal
+     * @return Proposition
      */
-    public function createProposal(ProductInterface $product, $username, array $changes)
+    public function createProposition(ProductInterface $product, $username, array $changes)
     {
-        $proposal = new Proposal();
-        $proposal
+        $proposition = new Proposition();
+        $proposition
             ->setProduct($product)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime())
             ->setChanges($changes)
             ->setLocale($product->getLocale());
 
-        return $proposal;
+        return $proposition;
     }
 }

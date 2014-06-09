@@ -11,16 +11,16 @@ use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
- * PIM datasource for proposals
+ * PIM datasource for propositions
  * Allow to prepare query builder from repository
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalDatasource implements DatasourceInterface
+class PropositionDatasource implements DatasourceInterface
 {
     /** @staticvar string */
-    const TYPE = 'pim_proposal';
+    const TYPE = 'pim_proposition';
 
     /** @var ObjectManager */
     protected $om;

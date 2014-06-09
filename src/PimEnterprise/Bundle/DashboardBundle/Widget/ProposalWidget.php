@@ -4,15 +4,15 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Widget to display product proposals
+ * Widget to display product propositions
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalWidget implements WidgetInterface
+class PropositionWidget implements WidgetInterface
 {
     /**
      * @var ManagerRegistry
@@ -34,7 +34,7 @@ class ProposalWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimEnterpriseDashboardBundle:Widget:proposals.html.twig';
+        return 'PimEnterpriseDashboardBundle:Widget:propositions.html.twig';
     }
 
     /**
@@ -42,12 +42,12 @@ class ProposalWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $proposals = $this->registry
-            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')
-            ->findBy(['status' => Proposal::WAITING], ['createdAt' => 'desc'], 10);
+        $propositions = $this->registry
+            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
+            ->findBy(['status' => Proposition::WAITING], ['createdAt' => 'desc'], 10);
 
         return [
-            'params' => $proposals
+            'params' => $propositions
         ];
     }
 }

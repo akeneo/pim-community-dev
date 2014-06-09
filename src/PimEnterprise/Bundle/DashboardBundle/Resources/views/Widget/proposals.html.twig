@@ -1,33 +1,33 @@
 <div class="widget-header">
-    {{ 'pimee_dashboard.widget.proposals.title'|trans }}
+    {{ 'pimee_dashboard.widget.propositions.title'|trans }}
 </div>
 
 {% if widget.params|length %}
-    <table id="proposals-widget" class="table table-condensed table-light groups unspaced">
+    <table id="propositions-widget" class="table table-condensed table-light groups unspaced">
         <thead>
             <tr>
-                <th class="center">{{ 'pimee_dashboard.widget.proposals.date'|trans }}</th>
-                <th class="center">{{ 'pimee_dashboard.widget.proposals.author'|trans }}</th>
-                <th class="center">{{ 'pimee_dashboard.widget.proposals.product'|trans }}</th>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.date'|trans }}</th>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.author'|trans }}</th>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.product'|trans }}</th>
                 <th class="center"></th>
             </tr>
         </thead>
         <tbody>
-            {% for proposal in widget.params %}
+            {% for proposition in widget.params %}
                 <tr>
                     <td>
-                        {% set timeFormat = 'now'|date('Y-m-d') == proposal.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
-                        {{ proposal.createdAt|date(timeFormat) }}
+                        {% set timeFormat = 'now'|date('Y-m-d') == proposition.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
+                        {{ proposition.createdAt|date(timeFormat) }}
                     </td>
-                    <td>{{ proposal.author }}</td>
+                    <td>{{ proposition.author }}</td>
                     <td>
-                        <a href="{{ path('pim_enrich_product_edit', { id: proposal.product.id }) }}">
-                            {{ proposal.product }}
+                        <a href="{{ path('pim_enrich_product_edit', { id: proposition.product.id }) }}">
+                            {{ proposition.product }}
                         </a>
                     </td>
                     <td>
-                        <a class="btn btn-mini" href="{{ path('pim_enrich_product_edit', { id: proposal.product.id }) }}" onclick="sessionStorage.setItem('redirectTab', '#proposals')">
-                            {{ 'pimee_dashboard.widget.proposals.review'|trans }}
+                        <a class="btn btn-mini" href="{{ path('pim_enrich_product_edit', { id: proposition.product.id }) }}" onclick="sessionStorage.setItem('redirectTab', '#propositions')">
+                            {{ 'pimee_dashboard.widget.propositions.review'|trans }}
                         </a>
                     </td>
                 </tr>
@@ -35,5 +35,5 @@
         </tbody>
     </table>
 {% else %}
-    <span class="label text-center buffer-small-top buffer-small-bottom fullwidth">{{ 'pimee_dashboard.widget.proposals.empty'|trans }}</span>
+    <span class="label text-center buffer-small-top buffer-small-bottom fullwidth">{{ 'pimee_dashboard.widget.propositions.empty'|trans }}</span>
 {% endif %}

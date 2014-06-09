@@ -1,9 +1,9 @@
 pimee_dashboard:
     widget:
-        proposals:
-            title:   Proposals to review
+        propositions:
+            title:   Propositions to review
             date:    Date
             author:  Author
             product: Product
             review:  Review
-            empty:   No proposals to review
+            empty:   No propositions to review

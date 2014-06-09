@@ -12,12 +12,12 @@ use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
 
 /**
- * Twig extension to present proposal changes
+ * Twig extension to present proposition changes
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalChangesExtension extends \Twig_Extension
+class PropositionChangesExtension extends \Twig_Extension
 {
     /** @var ObjectRepository */
     protected $valueRepository;
@@ -56,7 +56,7 @@ class ProposalChangesExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'pimee_workflow_proposal_changes_extension';
+        return 'pimee_workflow_proposition_changes_extension';
     }
 
     /**
@@ -66,12 +66,12 @@ class ProposalChangesExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction(
-                'present_proposal_attribute',
+                'present_proposition_attribute',
                 [$this, 'presentAttribute'],
                 ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFunction(
-                'present_proposal_change',
+                'present_proposition_change',
                 [$this, 'presentChange'],
                 ['is_safe' => ['html']]
             ),

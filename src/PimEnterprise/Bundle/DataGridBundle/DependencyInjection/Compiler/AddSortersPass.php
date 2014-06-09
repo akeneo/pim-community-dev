@@ -15,7 +15,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddSortersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SORTER_PROPOSAL_EXTENSION_ID = 'pimee_datagrid.extension.sorter.proposal_sorter';
+    const SORTER_PROPOSAL_EXTENSION_ID = 'pimee_datagrid.extension.sorter.proposition_sorter';
 
     /** @staticvar string */
     const TAG_NAME = 'pim_datagrid.extension.sorter';
@@ -25,7 +25,7 @@ class AddSortersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $proposalExtension = $container->getDefinition(self::SORTER_PROPOSAL_EXTENSION_ID);
+        $propositionExtension = $container->getDefinition(self::SORTER_PROPOSAL_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
@@ -35,8 +35,8 @@ class AddSortersPass implements CompilerPassInterface
                     sprintf('The service %s must be configured with a type attribute', $serviceId)
                 );
             }
-            if ($proposalExtension) {
-                $proposalExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
+            if ($propositionExtension) {
+                $propositionExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
             }
         }
     }

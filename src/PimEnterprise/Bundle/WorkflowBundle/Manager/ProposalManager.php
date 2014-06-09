@@ -5,15 +5,15 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Manage product proposals
+ * Manage product propositions
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalManager
+class PropositionManager
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -40,32 +40,32 @@ class ProposalManager
     }
 
     /**
-     * Approve a proposal
+     * Approve a proposition
      *
-     * @param Proposal $proposal
+     * @param Proposition $proposition
      */
-    public function approve(Proposal $proposal)
+    public function approve(Proposition $proposition)
     {
-        $product = $proposal->getProduct();
+        $product = $proposition->getProduct();
 
-        $this->applier->apply($product, $proposal->getChanges());
+        $this->applier->apply($product, $proposition->getChanges());
 
-        $proposal->setStatus(Proposal::APPROVED);
+        $proposition->setStatus(Proposition::APPROVED);
 
         $this->manager->handleMedia($product);
-        $this->manager->saveProduct($product, ['bypass_proposal' => true]);
-        $this->registry->getManagerForClass(get_class($proposal))->flush();
+        $this->manager->saveProduct($product, ['bypass_proposition' => true]);
+        $this->registry->getManagerForClass(get_class($proposition))->flush();
     }
 
     /**
-     * Refuse a proposal
+     * Refuse a proposition
      *
-     * @param Proposal $proposal
+     * @param Proposition $proposition
      */
-    public function refuse(Proposal $proposal)
+    public function refuse(Proposition $proposition)
     {
-        $proposal->setStatus(Proposal::REFUSED);
+        $proposition->setStatus(Proposition::REFUSED);
 
-        $this->registry->getManagerForClass(get_class($proposal))->flush();
+        $this->registry->getManagerForClass(get_class($proposition))->flush();
     }
 }

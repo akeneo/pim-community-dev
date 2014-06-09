@@ -6,12 +6,12 @@ use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 
 /**
- * Inject the product id for proposal datagrid
+ * Inject the product id for proposition datagrid
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class InjectProductForProposalSubscriber
+class InjectProductForPropositionSubscriber
 {
     /** @var RequestParameters $requestParams */
     protected $requestParams;

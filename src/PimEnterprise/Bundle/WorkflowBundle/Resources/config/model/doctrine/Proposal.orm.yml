@@ -1,7 +1,7 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\Proposal:
+PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
     type: entity
-    table: pimee_workflow_proposal
-    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM\ProposalRepository
+    table: pimee_workflow_proposition
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM\PropositionRepository
     id:
         id:
             type: integer

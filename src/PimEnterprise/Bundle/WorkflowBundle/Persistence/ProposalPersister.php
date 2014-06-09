@@ -8,16 +8,16 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
 
 /**
- * Store product through proposals
+ * Store product through propositions
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalPersister implements ProductPersister
+class PropositionPersister implements ProductPersister
 {
     /** @var ManagerRegistry */
     protected $registry;
@@ -28,7 +28,7 @@ class ProposalPersister implements ProductPersister
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var ProposalFactory */
+    /** @var PropositionFactory */
     protected $factory;
 
     /** @var CollectProductValuesSubscriber */
@@ -38,14 +38,14 @@ class ProposalPersister implements ProductPersister
      * @param ManagerRegistry          $registry
      * @param CompletenessManager      $completenessManager
      * @param SecurityContextInterface $securityContext
-     * @param ProposalFactory          $factory
+     * @param PropositionFactory          $factory
      * @param ProductChangesProvider   $changesProvider
      */
     public function __construct(
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
-        ProposalFactory $factory,
+        PropositionFactory $factory,
         CollectProductValuesSubscriber $collector
     ) {
         $this->registry = $registry;
@@ -60,14 +60,14 @@ class ProposalPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
-        $options = array_merge(['bypass_proposal' => false], $options);
+        $options = array_merge(['bypass_proposition' => false], $options);
 
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        if ($options['bypass_proposal'] || !$manager->contains($product)) {
+        if ($options['bypass_proposition'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
-            $this->persistProposal($manager, $product);
+            $this->persistProposition($manager, $product);
         }
     }
 
@@ -105,12 +105,12 @@ class ProposalPersister implements ProductPersister
     }
 
     /**
-     * Persist a proposal of the product
+     * Persist a proposition of the product
      *
      * @param ObjectManager    $manager
      * @param ProductInterface $product
      */
-    private function persistProposal(ObjectManager $manager, ProductInterface $product)
+    private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
         $changes = $this->collector->getChanges();
 
@@ -118,9 +118,9 @@ class ProposalPersister implements ProductPersister
             return $manager->flush();
         }
 
-        $proposal = $this->factory->createProposal($product, $this->getUser()->getUsername(), $changes);
+        $proposition = $this->factory->createProposition($product, $this->getUser()->getUsername(), $changes);
 
-        $manager->persist($proposal);
+        $manager->persist($proposition);
         $manager->flush();
     }
 

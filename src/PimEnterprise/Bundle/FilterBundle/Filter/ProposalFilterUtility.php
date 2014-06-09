@@ -4,30 +4,30 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
- * Proposal filter utility
+ * Proposition filter utility
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalFilterUtility extends BaseFilterUtility
+class PropositionFilterUtility extends BaseFilterUtility
 {
     /** @staticvar string */
     const PARENT_TYPE_KEY = 'parent_type';
 
-    /** @var ProposalRepositoryInterface */
-    protected $proposalRepository;
+    /** @var PropositionRepositoryInterface */
+    protected $propositionRepository;
 
     /**
      * Constructor
      *
-     * @param ProposalRepositoryInterface $proposalRepository
+     * @param PropositionRepositoryInterface $propositionRepository
      */
-    public function __construct(ProposalRepositoryInterface $proposalRepository)
+    public function __construct(PropositionRepositoryInterface $propositionRepository)
     {
-        $this->proposalRepository = $proposalRepository;
+        $this->propositionRepository = $propositionRepository;
     }
 
     /**
@@ -48,6 +48,6 @@ class ProposalFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->proposalRepository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
+        $this->propositionRepository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
     }
 }

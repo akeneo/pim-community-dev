@@ -1,3 +1,3 @@
 services:
-    pimee_datagrid.extension.pager.proposal.pager:
-        class: %pimee_datagrid.extension.pager.proposal.pager.class%
+    pimee_datagrid.extension.pager.proposition.pager:
+        class: %pimee_datagrid.extension.pager.proposition.pager.class%

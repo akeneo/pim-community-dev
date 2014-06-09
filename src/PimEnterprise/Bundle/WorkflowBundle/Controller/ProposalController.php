@@ -12,21 +12,21 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
 
 /**
- * Proposal controller
+ * Proposition controller
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalController extends AbstractController
+class PropositionController extends AbstractController
 {
     /** @var ObjectRepository */
-    protected $proposalRepository;
+    protected $propositionRepository;
 
-    /** @var ProposalManager */
-    protected $proposalManager;
+    /** @var PropositionManager */
+    protected $propositionManager;
 
     /**
      * @param Request                  $request
@@ -36,8 +36,8 @@ class ProposalController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param ObjectRepository         $proposalRepository
-     * @param ProposalManager          $proposalManager
+     * @param ObjectRepository         $propositionRepository
+     * @param PropositionManager          $propositionManager
      */
     public function __construct(
         Request $request,
@@ -47,8 +47,8 @@ class ProposalController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        ObjectRepository $proposalRepository,
-        ProposalManager $proposalManager
+        ObjectRepository $propositionRepository,
+        PropositionManager $propositionManager
     ) {
         parent::__construct(
             $request,
@@ -59,8 +59,8 @@ class ProposalController extends AbstractController
             $validator,
             $translator
         );
-        $this->proposalRepository = $proposalRepository;
-        $this->proposalManager = $proposalManager;
+        $this->propositionRepository = $propositionRepository;
+        $this->propositionManager = $propositionManager;
     }
 
     /**
@@ -71,17 +71,17 @@ class ProposalController extends AbstractController
      */
     public function approveAction($id)
     {
-        if (null === $proposal = $this->proposalRepository->findOpen($id)) {
-            throw new NotFoundHttpException(sprintf('Proposal "%s" not found', $id));
+        if (null === $proposition = $this->propositionRepository->findOpen($id)) {
+            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        $this->proposalManager->approve($proposal);
+        $this->propositionManager->approve($proposition);
 
         return $this->redirect(
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposal->getProduct()->getId()
+                    'id' => $proposition->getProduct()->getId()
                 ]
             )
         );
@@ -95,17 +95,17 @@ class ProposalController extends AbstractController
      */
     public function refuseAction($id)
     {
-        if (null === $proposal = $this->proposalRepository->findOpen($id)) {
-            throw new NotFoundHttpException(sprintf('Proposal "%s" not found', $id));
+        if (null === $proposition = $this->propositionRepository->findOpen($id)) {
+            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        $this->proposalManager->refuse($proposal);
+        $this->propositionManager->refuse($proposition);
 
         return $this->redirect(
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposal->getProduct()->getId()
+                    'id' => $proposition->getProduct()->getId()
                 ]
             )
         );

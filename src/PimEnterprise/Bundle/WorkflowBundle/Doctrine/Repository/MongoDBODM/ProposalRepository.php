@@ -3,15 +3,15 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
- * Proposal ODM repository
+ * Proposition ODM repository
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProposalRepository extends DocumentRepository implements ProposalRepositoryInterface
+class PropositionRepository extends DocumentRepository implements PropositionRepositoryInterface
 {
     /**
      * {@inheritdoc}
