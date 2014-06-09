@@ -1,10 +1,10 @@
 parameters:
-    pimee_dashboard.widget.proposal.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProposalWidget
+    pimee_dashboard.widget.proposition.class: PimEnterprise\Bundle\DashboardBundle\Widget\PropositionWidget
 
 services:
-    pimee_dashboard.widget.proposal:
-        class: %pimee_dashboard.widget.proposal.class%
+    pimee_dashboard.widget.proposition:
+        class: %pimee_dashboard.widget.proposition.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
         tags:
-            - { name: pim_dashboard.widget, alias: proposals }
+            - { name: pim_dashboard.widget, alias: propositions }

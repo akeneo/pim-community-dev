@@ -19,10 +19,10 @@ services:
         arguments:
             - '@pimee_security.manager.category_access'
 
-    pimee_enrich.event_listener.proposals_grid_listener:
+    pimee_enrich.event_listener.propositions_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposals-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.propositions-grid, method: onBuildAfter }

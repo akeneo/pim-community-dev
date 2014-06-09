@@ -1,7 +1,7 @@
 parameters:
-    pimee_workflow.twig.extension.proposal_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\ProposalChangesExtension
+    pimee_workflow.twig.extension.proposition_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\PropositionChangesExtension
     pimee_workflow.renderer.html.simple_list.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
-    pimee_workflow.proposal_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer
+    pimee_workflow.proposition_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer
     pimee_workflow.presenter.attribute.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\AttributePresenter
     pimee_workflow.presenter.text.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
     pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
@@ -18,18 +18,18 @@ services:
     ##
     # Twig Extension
     ##
-    pimee_workflow.twig.extension.proposal_changes:
-        class: %pimee_workflow.twig.extension.proposal_changes.class%
+    pimee_workflow.twig.extension.proposition_changes:
+        class: %pimee_workflow.twig.extension.proposition_changes.class%
         arguments:
             - '@pim_catalog.repository.product_value'
             - '@pim_catalog.repository.attribute'
-            - '@pimee_workflow.proposal_renderer'
+            - '@pimee_workflow.proposition_renderer'
             - '@translator'
         tags:
             - { name: twig.extension }
 
-    pimee_workflow.proposal_renderer:
-        class: %pimee_workflow.proposal_renderer.class%
+    pimee_workflow.proposition_renderer:
+        class: %pimee_workflow.proposition_renderer.class%
         arguments:
             - '@pimee_workflow.renderer.html.simple_list'
 

@@ -46,7 +46,7 @@ class MediaComparator extends AbstractComparator
         if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {
             $media = new Media();
             $media->setFile($submittedData['media']['file']);
-            $this->mediaManager->handle($media, 'proposal-' . md5(time() . uniqid()));
+            $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
 
             return [
                 'media' => [
