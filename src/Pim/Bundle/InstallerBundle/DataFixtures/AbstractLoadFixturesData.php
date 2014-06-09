@@ -87,10 +87,12 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
         $cmd->setContainer($this->container);
         $cmd->setApplication($app);
         $cmd->run(
-            new ArrayInput(array(
-                'command'     => 'akeneo:batch:job',
-                'code'        => $job->getCode(),
-            )),
+            new ArrayInput(
+                [
+                    'command'     => 'akeneo:batch:job',
+                    'code'        => $job->getCode()
+                ]
+            ),
             new ConsoleOutput()
         );
     }
