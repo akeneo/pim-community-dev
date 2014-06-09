@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
  * Proposition ODM repository
@@ -58,5 +59,22 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
     public function applySorter($qb, $field, $direction)
     {
         $qb->sort($field, $direction);
+    }
+
+    /**
+     * Find one open proposition
+     *
+     * @param integer $id
+     *
+     * @return null|Propositon
+     */
+    public function findOpen($id)
+    {
+        return $this->findOneBy(
+            [
+                'id'     => $id,
+                'status' => Proposal::WAITING
+            ]
+        );
     }
 }
