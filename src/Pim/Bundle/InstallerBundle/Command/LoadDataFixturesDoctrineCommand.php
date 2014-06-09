@@ -28,7 +28,11 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
 
         if ($input->isInteractive() && !$input->getOption('append')) {
             $dialog = $this->getHelperSet()->get('dialog');
-            if (!$dialog->askConfirmation($output, '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>', false)) {
+            if (!$dialog->askConfirmation(
+                $output,
+                '<question>Careful, database will be purged. Do you want to continue Y/N ?</question>',
+                false)
+            ) {
                 return;
             }
         }
@@ -56,7 +60,9 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
             );
         }
         $purger = new ORMPurger($em);
-        $purger->setPurgeMode($input->getOption('purge-with-truncate') ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE);
+        $purger->setPurgeMode(
+            $input->getOption('purge-with-truncate') ? ORMPurger::PURGE_MODE_TRUNCATE : ORMPurger::PURGE_MODE_DELETE
+        );
 
         // we use here our own Pim\Bundle\InstallerBundle\DataFixtures\Executor\ORMExecutor\ORMExecutor
         $executor = new ORMExecutor($em, $purger);
