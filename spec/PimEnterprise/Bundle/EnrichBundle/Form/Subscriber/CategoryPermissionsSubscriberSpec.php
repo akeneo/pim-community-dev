@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class CategoryRightsSubscriberSpec extends ObjectBehavior
+class CategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(CategoryAccessManager $accessManager)
     {
@@ -33,14 +33,14 @@ class CategoryRightsSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_rights_to_the_form(FormEvent $event, Form $form, Category $category)
+    function it_adds_permissions_to_the_form(FormEvent $event, Form $form, Category $category)
     {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn($category);
         $category->isRoot()->willReturn(true);
         $category->getId()->willReturn(1);
 
-        $form->add('rights', 'pimee_enrich_category_rights')->shouldBeCalled();
+        $form->add('permissions', 'pimee_enrich_category_permissions')->shouldBeCalled();
 
         $this->preSetData($event);
     }
@@ -58,7 +58,7 @@ class CategoryRightsSubscriberSpec extends ObjectBehavior
         $category->getId()->willReturn(1);
 
         $event->getForm()->willReturn($form);
-        $form->get('rights')->willReturn($form);
+        $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
 
@@ -71,7 +71,7 @@ class CategoryRightsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_persists_the_selected_rights_if_the_form_is_valid(
+    function it_persists_the_selected_permissions_if_the_form_is_valid(
         FormEvent $event,
         Category $category,
         Form $form,
@@ -85,7 +85,7 @@ class CategoryRightsSubscriberSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $form->get('rights')->willReturn($form);
+        $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
 

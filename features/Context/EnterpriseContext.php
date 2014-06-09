@@ -45,9 +45,9 @@ class EnterpriseContext extends RawMinkContext
     }
 
     /**
-     * @Given /^role "([^"]*)" has the right to (view|edit) the attribute group "([^"]*)"$/
+     * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
-    public function roleHasTheRightToEditTheAttributeGroup($role, $accessLevel, $attributeGroup)
+    public function roleHasThePermissionToEditTheAttributeGroup($role, $accessLevel, $attributeGroup)
     {
         $role = $this->getRole($role);
         $attributeGroup = $this->getAttributeGroup($attributeGroup);

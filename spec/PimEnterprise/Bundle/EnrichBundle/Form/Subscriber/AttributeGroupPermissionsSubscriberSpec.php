@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
-class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
+class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(AttributeGroupAccessManager $accessManager)
     {
@@ -33,10 +33,10 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_rights_to_the_form(FormEvent $event, Form $form)
+    function it_adds_permissions_to_the_form(FormEvent $event, Form $form)
     {
         $event->getForm()->willReturn($form);
-        $form->add('rights', 'pimee_enrich_attribute_group_rights')->shouldBeCalled();
+        $form->add('permissions', 'pimee_enrich_attribute_group_permissions')->shouldBeCalled();
 
         $this->preSetData($event);
     }
@@ -53,7 +53,7 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
         $group->getId()->willReturn(1);
 
         $event->getForm()->willReturn($form);
-        $form->get('rights')->willReturn($form);
+        $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
 
@@ -66,7 +66,7 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_persists_the_selected_rights_if_the_form_is_valid(
+    function it_persists_the_selected_permissions_if_the_form_is_valid(
         FormEvent $event,
         AttributeGroup $group,
         Form $form,
@@ -78,7 +78,7 @@ class AttributeGroupRightsSubscriberSpec extends ObjectBehavior
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
-        $form->get('rights')->willReturn($form);
+        $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
 

@@ -12,7 +12,7 @@ use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as PimProductFormView;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
- * Extending product form view adding rights
+ * Extending product form view adding permissions
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

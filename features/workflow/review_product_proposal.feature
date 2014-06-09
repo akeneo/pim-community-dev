@@ -10,7 +10,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  |
       | my-sandals | sandals |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "SKU" to "your-sandals"
@@ -27,7 +27,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | name-en_US |
       | my-sandals | sandals | Sandals    |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "Name" to "Tong"
@@ -44,7 +44,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | description-en_US-mobile |
       | my-sandals | sandals | Some awesome sandals     |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "mobile Description" to "Some awesome baskets"
@@ -61,7 +61,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  | number_in_stock-ecommerce |
       | my-tshirt | tshirts | 12                         |
-    And role "Administrator" has the right to edit the attribute group "internal"
+    And role "Administrator" has the permission to edit the attribute group "internal"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I expand the "Number in stock" attribute
@@ -83,7 +83,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | price-USD |
       | my-sandals | sandals | 45        |
-    And role "Administrator" has the right to edit the attribute group "marketing"
+    And role "Administrator" has the permission to edit the attribute group "marketing"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "$ Price" to "90"
@@ -102,7 +102,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | manufacturer |
       | my-sandals | sandals | Converse     |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "Manufacturer" to "TimberLand"
@@ -119,7 +119,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | weather_conditions |
       | my-sandals | sandals | dry, wet           |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "Weather conditions" to "Hot, Cold"
@@ -136,7 +136,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  |
       | my-tshirt | tshirts |
-    And role "Administrator" has the right to edit the attribute group "internal"
+    And role "Administrator" has the permission to edit the attribute group "internal"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I expand the "Number in stock" attribute
@@ -157,7 +157,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  |
       | my-tshirt | tshirts |
-    And role "Administrator" has the right to edit the attribute group "media"
+    And role "Administrator" has the permission to edit the attribute group "media"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I attach file "akeneo.jpg" to "Thumbnail"
@@ -174,7 +174,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  |
       | my-tshirt | tshirts |
-    And role "Administrator" has the right to edit the attribute group "additional"
+    And role "Administrator" has the permission to edit the attribute group "additional"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I check the "Handmade" switch
@@ -191,7 +191,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  | release_date-ecommerce |
       | my-tshirt | tshirts | 2014-05-14             |
-    And role "Administrator" has the right to edit the attribute group "sales"
+    And role "Administrator" has the permission to edit the attribute group "sales"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I change the "ecommerce Release date" to "2014-05-20"
@@ -208,7 +208,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku       | family  | washing_temperature |
       | my-tshirt | tshirts | 60 CELSIUS          |
-    And role "Administrator" has the right to edit the attribute group "additional"
+    And role "Administrator" has the permission to edit the attribute group "additional"
     And I am logged in as "admin"
     And I edit the "my-tshirt" product
     And I change the "Washing temperature" to "40"
@@ -225,7 +225,7 @@ Feature: Review a product changes proposal
     And the following product:
       | sku        | family  | name-en_US |
       | my-sandals | sandals | Sandals    |
-    And role "Administrator" has the right to edit the attribute group "info"
+    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "Name" to "Tong"

@@ -30,7 +30,7 @@ class ProductController extends BaseProductController
 
             return parent::indexAction($request);
         } catch (\LogicException $e) {
-            $this->addFlash('error', 'category.rights.no_access_to_products');
+            $this->addFlash('error', 'category.permissions.no_access_to_products');
 
             return $this->redirectToRoute('oro_default');
         }
