@@ -7,11 +7,11 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
-class ProposalManagerSpec extends ObjectBehavior
+class PropositionManagerSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ProductManager $manager, ProductChangesApplier $applier)
     {
@@ -22,7 +22,7 @@ class ProposalManagerSpec extends ObjectBehavior
         $registry,
         $manager,
         $applier,
-        Proposal $proposal,
+        Proposition $proposal,
         AbstractProduct $product,
         ObjectManager $manager
     ) {
@@ -33,7 +33,7 @@ class ProposalManagerSpec extends ObjectBehavior
         $applier->apply($product, ['foo' => 'bar', 'b' => 'c'])->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
         $manager->saveProduct($product, ['bypass_proposal' => true])->shouldBeCalled();
-        $proposal->setStatus(Proposal::APPROVED)->shouldBeCalled();
+        $proposal->setStatus(Proposition::APPROVED)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->approve($proposal);
@@ -41,12 +41,12 @@ class ProposalManagerSpec extends ObjectBehavior
 
     function it_closes_proposal_when_refusing_it(
         $registry,
-        Proposal $proposal,
+        Proposition $proposal,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($proposal->getWrappedObject()))->willReturn($manager);
 
-        $proposal->setStatus(Proposal::REFUSED)->shouldBeCalled();
+        $proposal->setStatus(Proposition::REFUSED)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->refuse($proposal);

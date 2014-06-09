@@ -4,9 +4,9 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid;
 
 use PhpSpec\ObjectBehavior;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
-class ProposalGridHelperSpec extends ObjectBehavior
+class PropositionGridHelperSpec extends ObjectBehavior
 {
     function it_hides_approve_and_refuse_actions_if_the_proposal_status_is_not_waiting(ResultRecordInterface $record)
     {
@@ -20,7 +20,7 @@ class ProposalGridHelperSpec extends ObjectBehavior
     {
         $closure = $this->getActionConfigurationClosure();
 
-        $record->getValue('status')->willReturn(Proposal::WAITING);
+        $record->getValue('status')->willReturn(Proposition::WAITING);
         $closure($record)->shouldReturn(null);
     }
 
@@ -28,9 +28,9 @@ class ProposalGridHelperSpec extends ObjectBehavior
     {
         $this->getStatusChoices()->shouldReturn(
             [
-                Proposal::WAITING  => 'pimee_workflow.proposal.status.waiting',
-                Proposal::APPROVED => 'pimee_workflow.proposal.status.approved',
-                Proposal::REFUSED  => 'pimee_workflow.proposal.status.refused'
+                Proposition::WAITING  => 'pimee_workflow.proposal.status.waiting',
+                Proposition::APPROVED => 'pimee_workflow.proposal.status.approved',
+                Proposition::REFUSED  => 'pimee_workflow.proposal.status.refused'
             ]
         );
     }

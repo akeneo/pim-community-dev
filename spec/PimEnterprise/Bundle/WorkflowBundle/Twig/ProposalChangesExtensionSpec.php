@@ -11,7 +11,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-class ProposalChangesExtensionSpec extends ObjectBehavior
+class PropositionChangesExtensionSpec extends ObjectBehavior
 {
     function let(
         ObjectRepository $valueRepository,

@@ -5,11 +5,11 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
-class ProposalFilterUtilitySpec extends ObjectBehavior
+class PropositionFilterUtilitySpec extends ObjectBehavior
 {
-    function let(ProposalRepositoryInterface $proposalRepository)
+    function let(PropositionRepositoryInterface $proposalRepository)
     {
         $this->beConstructedWith($proposalRepository);
     }

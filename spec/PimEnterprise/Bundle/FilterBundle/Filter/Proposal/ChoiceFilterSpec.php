@@ -1,22 +1,22 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Proposal;
+namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\ProposalFilterUtility;
+use PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProposalFilterUtility $utility)
+    function let(FormFactoryInterface $factory, PropositionFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
 
         $this->init(
             'foo',
             [
-                ProposalFilterUtility::DATA_NAME_KEY => 'data_name_key'
+                PropositionFilterUtility::DATA_NAME_KEY => 'data_name_key'
             ]
         );
     }

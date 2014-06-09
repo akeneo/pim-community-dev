@@ -6,13 +6,13 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposal;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
-class ProposalWidgetSpec extends ObjectBehavior
+class PropositionWidgetSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, EntityRepository $repository)
     {
-        $registry->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposal')->willReturn($repository);
+        $registry->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')->willReturn($repository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 
         $this->beConstructedWith($registry);
@@ -23,19 +23,19 @@ class ProposalWidgetSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
-    function it_exposes_the_proposal_widget_template()
+    function it_exposes_the_proposition_widget_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:proposals.html.twig');
+        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:propositions.html.twig');
     }
 
-    function it_exposes_the_proposal_widget_template_parameters()
+    function it_exposes_the_proposition_widget_template_parameters()
     {
         $this->getParameters()->shouldReturn(['params' => []]);
     }
 
-    function it_passes_proposals_from_the_repository_to_the_template($repository)
+    function it_passes_propositions_from_the_repository_to_the_template($repository)
     {
-        $repository->findBy(['status' => Proposal::WAITING], ['createdAt' => 'desc'], 10)->willReturn(['proposal one', 'proposal two']);
-        $this->getParameters()->shouldReturn(['params' => ['proposal one', 'proposal two']]);
+        $repository->findBy(['status' => Proposition::WAITING], ['createdAt' => 'desc'], 10)->willReturn(['proposition one', 'proposition two']);
+        $this->getParameters()->shouldReturn(['params' => ['proposition one', 'proposition two']]);
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposal;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposition;
 
 use PhpSpec\ObjectBehavior;
-use PimEnterprise\Bundle\DataGridBundle\Datasource\ProposalDatasource;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ProposalRepositoryInterface;
+use PimEnterprise\Bundle\DataGridBundle\Datasource\PropositionDatasource;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 class FieldSorterSpec extends ObjectBehavior
 {
@@ -14,8 +14,8 @@ class FieldSorterSpec extends ObjectBehavior
     }
 
     function it_applies_a_sort(
-        ProposalDatasource $datasource,
-        ProposalRepositoryInterface $proposalRepo
+        PropositionDatasource $datasource,
+        PropositionRepositoryInterface $proposalRepo
     ) {
         $datasource->getRepository()->willReturn($proposalRepo);
         $datasource->getQueryBuilder()->willReturn('qb');
