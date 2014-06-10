@@ -120,14 +120,17 @@ class PropositionPersister implements ProductPersister
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
         $changes = $this->collector->getChanges();
-
-        if (empty($changes)) {
-            return $manager->flush();
-        }
-
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
         $proposition = $this->propositionRepository->findUserProposition($username, $locale);
+
+        if (empty($changes)) {
+            if (null !== $proposition) {
+                $manager->remove($proposition);
+            }
+
+            return $manager->flush();
+        }
 
         if (null === $proposition) {
             $proposition = $this->factory->createProposition($product, $username, $locale);
