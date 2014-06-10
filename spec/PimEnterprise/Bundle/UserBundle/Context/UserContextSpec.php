@@ -59,7 +59,7 @@ class UserContextSpec extends ObjectBehavior
         $user->getDefaultTree()->willReturn($secondTree);
         $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $secondTree)->willReturn(false);
 
-        $categoryManager->getAccessibleTrees()->willReturn([$thirdTree, $firstTree]);
+        $categoryManager->getAccessibleTrees($user)->willReturn([$thirdTree, $firstTree]);
 
         $this->getAccessibleUserTree()->shouldReturn($thirdTree);
     }
@@ -70,7 +70,7 @@ class UserContextSpec extends ObjectBehavior
         $user->getDefaultTree()->willReturn($firstTree);
         $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $firstTree)->willReturn(false);
 
-        $categoryManager->getAccessibleTrees()->willReturn([]);
+        $categoryManager->getAccessibleTrees($user)->willReturn([]);
 
         $this->shouldThrow(new \LogicException('User should have a default tree'))->during('getAccessibleUserTree');
     }

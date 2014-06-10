@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\Classify as BaseClassify;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Batch operation to classify products
@@ -14,12 +15,19 @@ use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 class Classify extends BaseClassify
 {
     /**
-     * @param CategoryManager $categoryManager
+     * @var SecurityContextInterface
      */
-    public function __construct(CategoryManager $categoryManager)
+    protected $securityContext;
+
+    /**
+     * @param CategoryManager          $categoryManager
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(CategoryManager $categoryManager, SecurityContextInterface $securityContext)
     {
+        $this->securityContext = $securityContext;
         $this->categoryManager = $categoryManager;
-        $this->trees           = $categoryManager->getAccessibleTrees();
+        $this->trees           = $categoryManager->getAccessibleTrees($securityContext->getToken()->getUser());
         $this->categories      = [];
     }
 }
