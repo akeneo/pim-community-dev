@@ -35,6 +35,7 @@ services:
             - '@security.context'
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
+            - '@pimee_workflow.repository.proposition'
 
     pimee_workflow.datagrid.proposition_grid_helper:
         class: %pimee_workflow.datagrid.proposition_grid_helper.class%

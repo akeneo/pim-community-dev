@@ -16,6 +16,33 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
 {
     /**
      * {@inheritdoc}
+     */
+    public function findOpen($id)
+    {
+        return $this->findOneBy(
+            [
+                'id'     => $id,
+                'status' => Proposition::WAITING,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findUserProposition($username, $locale)
+    {
+        return $this->findOneBy(
+            [
+                'author' => $username,
+                'locale' => $locale,
+                'status' => Proposition::WAITING,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
@@ -59,22 +86,5 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
     public function applySorter($qb, $field, $direction)
     {
         $qb->sort($field, $direction);
-    }
-
-    /**
-     * Find one open proposition
-     *
-     * @param integer $id
-     *
-     * @return null|Propositon
-     */
-    public function findOpen($id)
-    {
-        return $this->findOneBy(
-            [
-                'id'     => $id,
-                'status' => Proposition::WAITING
-            ]
-        );
     }
 }
