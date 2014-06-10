@@ -127,7 +127,7 @@ services:
 
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
-        factory_service: pim_catalog.object_manager.product
+        factory_service: pim_catalog.doctrine.smart_manager_registry
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
         calls:
@@ -155,7 +155,7 @@ services:
 
     pim_catalog.repository.media:
         class: %doctrine.document_repository.class%
-        factory_service: doctrine.odm.mongodb.document_manager
+        factory_service: pim_catalog.doctrine.smart_manager_registry
         factory_method: getRepository
         arguments: [%pim_catalog.entity.media.class%]
         tags:
