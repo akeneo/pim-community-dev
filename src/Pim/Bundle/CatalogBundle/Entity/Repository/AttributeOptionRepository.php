@@ -55,7 +55,10 @@ class AttributeOptionRepository extends EntityRepository implements
         }
 
         if (isset($options['ids'])) {
-            $qb->andWhere($qb->expr()->in('o.id', ':ids'))
+            $qb
+                ->andWhere(
+                    $qb->expr()->in('o.id', ':ids')
+                )
                 ->setParameter('ids', $options['ids']);
         }
 
