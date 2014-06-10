@@ -1,6 +1,6 @@
 parameters:
-    pimee_enrich.form.type.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupRightsType
-    pimee_enrich.form.type.category_rights.class:        PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryRightsType
+    pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
+    pimee_enrich.form.type.category_permissions.class:        PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pim_enrich.form.type.available_attributes.class:     PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
 
 services:
@@ -21,12 +21,12 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_attribute_group }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_rights']]
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.attribute_group_permissions']]
 
-    pimee_enrich.form.type.attribute_group_rights:
-        class: %pimee_enrich.form.type.attribute_group_rights.class%
+    pimee_enrich.form.type.attribute_group_permissions:
+        class: %pimee_enrich.form.type.attribute_group_permissions.class%
         tags:
-            - { name: form.type, alias: pimee_enrich_attribute_group_rights }
+            - { name: form.type, alias: pimee_enrich_attribute_group_permissions }
 
     pim_enrich.form.type.product.view:
         public: false
@@ -45,10 +45,10 @@ services:
         tags:
             - { name: form.type, alias: pim_available_attributes }
 
-    pimee_enrich.form.type.category_rights:
-        class: %pimee_enrich.form.type.category_rights.class%
+    pimee_enrich.form.type.category_permissions:
+        class: %pimee_enrich.form.type.category_permissions.class%
         tags:
-            - { name: form.type, alias: pimee_enrich_category_rights }
+            - { name: form.type, alias: pimee_enrich_category_permissions }
 
     pim_enrich.form.type.category:
         class: %pim_enrich.form.type.category.class%
@@ -58,4 +58,4 @@ services:
         tags:
             - { name: form.type, alias: pim_category }
         calls:
-            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_rights']]
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_permissions']]

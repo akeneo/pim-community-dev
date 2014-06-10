@@ -14,7 +14,7 @@ class RegisterProductFormTypeComparatorsPassSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
-    function it_adds_tagged_presenter_to_the_proposal_twig_extension(
+    function it_adds_tagged_presenter_to_the_proposition_twig_extension(
         ContainerBuilder $container,
         Definition $comparator,
         Definition $barDefinition,

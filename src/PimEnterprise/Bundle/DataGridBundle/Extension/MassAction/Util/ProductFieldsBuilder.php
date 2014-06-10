@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRe
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
 /**
- * Override to apply rights on attribute groups
+ * Override to apply permissions on attribute groups
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

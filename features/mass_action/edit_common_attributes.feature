@@ -1,5 +1,5 @@
 @javascript
-Feature: Apply rights for an attribute group when mass edit common attributes
+Feature: Apply permissions for an attribute group when mass edit common attributes
   In order to be able to only edit the product data I have access
   As admin
   I need to be able to mass edit only attributes I have access
@@ -19,7 +19,7 @@ Feature: Apply rights for an attribute group when mass edit common attributes
     And I am logged in as "Peter"
     And I am on the products page
 
-  Scenario: Successfully display only attributes I have edit rights access
+  Scenario: Successfully display only attributes I have edit permissions access
     Given I mass-edit products highheels
     And I choose the "Edit attributes" operation
     Then I should see available attributes Name, Manufacturer and Description in group "Product information"

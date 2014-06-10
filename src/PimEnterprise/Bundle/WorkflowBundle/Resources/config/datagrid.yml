@@ -1,75 +1,75 @@
 datagrid:
-    proposals-grid:
+    propositions-grid:
         options:
-            entityHint: proposal
+            entityHint: proposition
         source:
-            type: pim_proposal
-            entity: %pimee_workflow.entity.proposal.class%
+            type: pim_proposition
+            entity: %pimee_workflow.model.proposition.class%
             repository_method: createDatagridQueryBuilder
         columns:
             author:
-                label: pimee_workflow.proposal.author
+                label: pimee_workflow.proposition.author
                 type: field
                 frontend_type: string
             locale:
-                label: pimee_workflow.proposal.locale
+                label: pimee_workflow.proposition.locale
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
                 frontend_type: html
             changes:
-                label: pimee_workflow.proposal.changes
+                label: pimee_workflow.proposition.changes
                 type: twig
                 template: PimEnterpriseWorkflowBundle:Datagrid:Property/changes.html.twig
                 frontend_type: html
             createdAt:
-                label: pimee_workflow.proposal.created
+                label: pimee_workflow.proposition.created
                 type: field
                 frontend_type: datetime
             status:
-                label: pimee_workflow.proposal.status.label
+                label: pimee_workflow.proposition.status.label
                 type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposal_status.html.twig
+                template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposition_status.html.twig
                 frontend_type: html
         properties:
             id: ~
             approve_link:
                 type: url
-                route: pimee_workflow_proposal_approve
+                route: pimee_workflow_proposition_approve
                 params:
                     - id
             refuse_link:
                 type: url
-                route: pimee_workflow_proposal_refuse
+                route: pimee_workflow_proposition_refuse
                 params:
                     - id
         actions:
             approve:
                 type: navigate
-                label: pimee_workflow.proposal.action.approve
+                label: pimee_workflow.proposition.action.approve
                 icon: ok
                 link: approve_link
             refuse:
                 type: navigate
-                label: pimee_workflow.proposal.action.refuse
+                label: pimee_workflow.proposition.action.refuse
                 icon: remove
                 link: refuse_link
-        action_configuration: '@pimee_workflow.datagrid.proposal_grid_helper->getActionConfigurationClosure'
+        action_configuration: '@pimee_workflow.datagrid.proposition_grid_helper->getActionConfigurationClosure'
         filters:
             columns:
                 status:
-                    type:        proposal_choice
+                    type:        proposition_choice
                     parent_type: choice
                     data_name:   status
-                    label:       pimee_workflow.proposal.status.label
+                    label:       pimee_workflow.proposition.status.label
                     options:
                         field_options:
                             multiple: true
-                            choices: '@pimee_workflow.datagrid.proposal_grid_helper->getStatusChoices'
+                            choices: '@pimee_workflow.datagrid.proposition_grid_helper->getStatusChoices'
                 locale_context:
-                    type:        proposal_choice
+                    type:        proposition_choice
                     parent_type: choice
                     data_name:   locale
-                    label:       pimee_workflow.proposal.locale
+                    label:       pimee_workflow.proposition.locale
                     options:
                         field_options:
                             multiple: true
@@ -78,12 +78,12 @@ datagrid:
             columns:
                 author:
                     data_name: author
-                    sorter: proposal_field
+                    sorter: proposition_field
                 status:
                     data_name: status
-                    sorter: proposal_field
+                    sorter: proposition_field
                 createdAt:
                     data_name: createdAt
-                    sorter: proposal_field
+                    sorter: proposition_field
             default:
                 createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

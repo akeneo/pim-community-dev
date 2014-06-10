@@ -2,9 +2,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
 
 /**
  * Applies product changes
@@ -14,16 +15,40 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class ProductChangesApplier
 {
+    /** @var FormFactoryInterface */
     protected $formFactory;
 
-    public function __construct(FormFactoryInterface $formFactory)
-    {
+    /** @var EventDispatcherInterface */
+    protected $dispatcher;
+
+    /**
+     * @param FormFactoryInterface     $formFactory
+     * @param EventDispatcherInterface $dispatcher
+     */
+    public function __construct(
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $dispatcher
+    ) {
         $this->formFactory = $formFactory;
+        $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * Apply changes to a product
+     *
+     * @param AbstractProduct $product
+     * @param array           $changes
+     */
     public function apply(AbstractProduct $product, array $changes)
     {
-        $changes = $this->prepareChanges($changes);
+        if ($this->dispatcher->hasListeners(PropositionEvent::BEFORE_APPLY_CHANGES)) {
+            $event = $this->dispatcher->dispatch(
+                PropositionEvent::BEFORE_APPLY_CHANGES,
+                new PropositionEvent($changes)
+            );
+            $changes = $event->getChanges();
+        }
+
         $this
             ->formFactory
             ->createBuilder('form', $product)
@@ -42,27 +67,5 @@ class ProductChangesApplier
             )
             ->getForm()
             ->submit($changes, false);
-    }
-
-    protected function prepareChanges(array $changes)
-    {
-        if (!isset($changes['values'])) {
-            return $changes;
-        }
-
-        foreach ($changes['values'] as $key => $change) {
-            if (isset($change['media'])) {
-                $changes['values'][$key]['media'] = [
-                    'file' => new UploadedFile(
-                        $change['media']['filePath'],
-                        $change['media']['originalFilename'],
-                        $change['media']['mimeType'],
-                        $change['media']['size']
-                    )
-                ];
-            }
-        }
-
-        return $changes;
     }
 }

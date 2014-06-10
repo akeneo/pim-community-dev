@@ -13,8 +13,8 @@
 {% if form.vars.value.id %}
 
     {% if form.vars.value.isRoot() %}
-        <div class="tab-pane" id="rights">
-            {{ elements.accordion({ 'pane.accordion.rights': form_widget(form.rights) }) }}
+        <div class="tab-pane" id="permissions">
+            {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
         </div>
     {% endif %}
 

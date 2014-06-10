@@ -1,11 +1,11 @@
-Rights: Rights
-pane.accordion.rights: Rights
+Permissions: Permissions
+pane.accordion.permissions: Permissions
 
-attribute group.rights:
-    view.label: Rights to view attributes
-    edit.label: Rights to edit attributes
+attribute group.permissions:
+    view.label: Permissions to view attributes
+    edit.label: Permissions to edit attributes
 
-category.rights:
-    view.label: Rights to view products in the current category
-    edit.label: Rights to edit product in the current category
+category.permissions:
+    view.label: Permissions to view products in the current category
+    edit.label: Permissions to edit products in the current category
     no_access_to_products: You don't have access to products in any tree, please contact your administrator

@@ -1,4 +1,4 @@
 parameters:
-    pimee_filter.datasource.proposal_adapter.class:              Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
-    pimee_datagrid.extension.pager.proposal.pager.class:         Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
-    pimee_datagrid.extension.sorter.proposal.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter
+    pimee_filter.datasource.proposition_adapter.class:              Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
+    pimee_datagrid.extension.pager.proposition.pager.class:         Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
+    pimee_datagrid.extension.sorter.proposition.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter

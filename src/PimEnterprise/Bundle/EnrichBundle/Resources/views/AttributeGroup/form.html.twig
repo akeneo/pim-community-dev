@@ -32,7 +32,7 @@
 
     {% set tabs = ['Properties'] %}
     {% if editMode %}
-        {% set tabs = tabs|merge(['Attributes', 'Rights', 'History']) %}
+        {% set tabs = tabs|merge(['Attributes', 'Permissions', 'History']) %}
     {% endif %}
 
     {{ elements.form_navbar(tabs) }}
@@ -48,8 +48,8 @@
         {% if editMode %}
             {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
 
-            <div class="tab-pane" id="rights">
-                {{ elements.accordion({ 'pane.accordion.rights': form_widget(form.rights) }) }}
+            <div class="tab-pane" id="permissions">
+                {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
 
             <div class="tab-pane" id="history">
