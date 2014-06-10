@@ -1,6 +1,7 @@
 parameters:
     pimee_security.voter.attribute_group.class: PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter
     pimee_security.voter.category.class:        PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
+    pimee_security.voter.job_profile.class:     PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter
 
 services:
     pimee_security.voter.attribute_group:
@@ -16,3 +17,11 @@ services:
             - '@pimee_security.manager.category_access'
         tags:
             - { name: security.voter }
+
+    pimee_security.voter.job_profile:
+        class: %pimee_security.voter.job_profile.class%
+        arguments:
+            - '@pimee_security.manager.job_profile_access'
+        tags:
+            - { name: security.voter }
+            

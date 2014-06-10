@@ -1,3 +1,4 @@
 parameters:
     pimee_security.entity.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess
-    pimee_security.entity.category_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess
+    pimee_security.entity.category_access.class:        PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess
+    pimee_security.entity.job_profile_access.class:     PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess
