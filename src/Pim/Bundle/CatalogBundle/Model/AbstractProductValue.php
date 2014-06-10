@@ -647,7 +647,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get prices
      *
-     * @return array
+     * @return Collection
      */
     public function getPrices()
     {
@@ -658,7 +658,7 @@ abstract class AbstractProductValue implements ProductValueInterface
 
         ksort($prices);
 
-        return $prices;
+        return new ArrayCollection($prices);
     }
 
     /**
