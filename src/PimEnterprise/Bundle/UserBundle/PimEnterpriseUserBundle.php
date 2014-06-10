@@ -12,4 +12,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimEnterpriseUserBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function getParent()
+    {
+        return 'PimUserBundle';
+    }
 }
