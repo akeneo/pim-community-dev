@@ -36,7 +36,6 @@ define(
             _renderCriteria: function() {
                 TextFilter.prototype._renderCriteria.apply(this, arguments);
 
-                var self = this;
                 var $select = this.$(this.criteriaValueSelectors.value);
 
                 var options = {
@@ -53,10 +52,10 @@ define(
                             search: term
                         };
                     },
-                    results: function(data) {
-                        self._cacheResults(data.results);
+                    results: _.bind(function(data) {
+                        this._cacheResults(data.results);
                         return data;
-                    }
+                    }, this)
                 };
                 $select.select2(options);
             },
@@ -79,10 +78,18 @@ define(
                     }
                 }, this);
 
-                _.each(missingResults, function(id) {
-                    // TODO: get the label from the server
-                    results.push({ id: id, text: id });
-                });
+                if (missingResults.length) {
+                    var params = { options: { ids: missingResults } };
+
+                    $.ajax({
+                        url: Routing.generate(this.choiceUrl, this.choiceUrlParams) + '&' + $.param(params),
+                        success: _.bind(function(data) {
+                            this._cacheResults(data.results);
+                            results = _.union(results, data.results);
+                        }, this),
+                        async: false
+                    });
+                }
 
                 return results;
             },
