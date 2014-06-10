@@ -6,8 +6,12 @@ CHANGELOG for 0.1.x
 
 ### Features
 
-- StepExecution object is updated on base at every batch writes, allowing to effectively follow the
+- StepExecution object is updated to repository at every batch writes, allowing to effectively follow the
 batch progress
+- JobExecution has now the PID of the system process executing the job
+
+### BC Breaks
+- a doctrine:schema:update call is required to update database schema to add the pid column to JobExecution
 
 
 0.1.5 (2014-05-28)

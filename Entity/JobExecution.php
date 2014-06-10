@@ -53,6 +53,13 @@ class JobExecution
     private $jobInstance;
 
     /**
+     * @var integer Process Identifier
+     *
+     * @ORM\Column(name="pid", type="integer", nullable=true)
+     */
+    private $pid;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="status", type="integer")
@@ -271,6 +278,30 @@ class JobExecution
     public function setUpdatedTime(\DateTime $updatedTime)
     {
         $this->updatedTime = $updatedTime;
+
+        return $this;
+    }
+
+    /**
+     * Returns the process identifier of the batch job
+     *
+     * @return integer
+     */
+    public function getPid()
+    {
+        return $this->pid;
+    }
+
+    /**
+     * Sets the process identifier of the batch job
+     *
+     * @param integer $pid
+     *
+     * @return JobExecution
+     */
+    public function setPid($pid)
+    {
+        $this->pid = $pid;
 
         return $this;
     }

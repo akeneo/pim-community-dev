@@ -475,5 +475,4 @@ class Job implements JobInterface
     {
         $jobExecution->setStatus(new BatchStatus($status));
     }
-
 }

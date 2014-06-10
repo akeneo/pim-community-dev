@@ -120,6 +120,8 @@ class BatchCommand extends ContainerAwareCommand
         }
         $jobExecution->setJobInstance($jobInstance);
 
+        $jobExecution->setPid(getmypid());
+
         $this
             ->getContainer()
             ->get('akeneo_batch.logger.batch_log_handler')

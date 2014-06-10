@@ -7,7 +7,9 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
-class ProcessorStub extends AbstractConfigurableStepElement implements ItemProcessorInterface, StepExecutionAwareInterface
+class ProcessorStub extends AbstractConfigurableStepElement implements
+    ItemProcessorInterface,
+    StepExecutionAwareInterface
 {
     /**
      * {@inheritDoc}
