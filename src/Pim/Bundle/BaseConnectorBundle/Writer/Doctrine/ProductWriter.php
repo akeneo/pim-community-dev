@@ -196,18 +196,16 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         foreach ($this->managerRegistry->getManagers() as $objectManager) {
 
-            $clearAll = true;
-            foreach ($objectManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
-                if (count($entities) > 0) {
-                    if (in_array($className, $this->nonClearableEntities)) {
-                        $clearAll = false;
-                    } else {
-                        $objectManager->clear($className);
-                    }
-                }
+            $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
+            $managedClasses = array_keys($identityMap);
+            $nonClearableClasses = array_intersect($managedClasses, $this->nonClearableEntities);
 
-                if ($clearAll) {
-                    $objectManager->clear();
+            if (empty($nonClearableClasses)) {
+                $objectManager->clear();
+            } else {
+                $clearableClasses = array_diff($managedClasses, $this->nonClearableEntities);
+                foreach ($clearableClasses as $clearableClass) {
+                    $objectManager->clear($clearableClass);
                 }
             }
         }
