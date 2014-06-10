@@ -33,7 +33,7 @@ services:
 
     pim_catalog.repository.product:
         class: %pim_catalog.repository.product.class%
-        factory_service: pim_catalog.doctrine.smart_manager_registry
+        factory_service: pim_catalog.object_manager.product
         factory_method: getRepository
         arguments: [%pim_catalog.entity.product.class%]
         calls:
@@ -56,7 +56,7 @@ services:
 
     pim_catalog.repository.association:
         class: %pim_catalog.repository.association.class%
-        factory_service: pim_catalog.doctrine.smart_manager_registry
+        factory_service: pim_catalog.object_manager.association
         factory_method: getRepository
         arguments: [%pim_catalog.entity.association.class%]
         tags:
