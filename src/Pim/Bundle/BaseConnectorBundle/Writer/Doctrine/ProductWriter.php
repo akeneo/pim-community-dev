@@ -191,7 +191,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * Clear the Unit of Work of the manager(s) from the clearable entities
      * between batch writes
-     *
      */
     protected function clear()
     {
