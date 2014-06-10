@@ -8,12 +8,15 @@ use Pim\Bundle\CatalogBundle\Model;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ProductChangesApplierSpec extends ObjectBehavior
 {
-    public function let(FormFactoryInterface $formFactory)
-    {
-        $this->beConstructedWith($formFactory);
+    function let(
+        FormFactoryInterface $formFactory,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->beConstructedWith($formFactory, $dispatcher);
     }
 
     function it_uses_form_factory_to_apply_data_to_a_product_value(
