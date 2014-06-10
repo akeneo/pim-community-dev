@@ -20,6 +20,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
  TimestampableInterface, VersionableInterface
 {
+    /** @staticvar string */
     const IDENTIFIER_TYPE = 'pim_catalog_identifier';
 
     /** @var mixed $id */
