@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess:
     type: entity
     table: pimee_security_job_profile_access
-    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileRepository
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
     uniqueConstraints:
         job_profile_role_idx:
             columns:
