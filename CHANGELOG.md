@@ -24,6 +24,7 @@
 - Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
 - Deleting completeness when a locale of a channel is deleted
 - Display flags in the completenesses grid
+- Fixes a memory leak on product import when using MongoDB
 
 ## BC breaks
 - Remove FlexibleEntityBundle
