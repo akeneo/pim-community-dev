@@ -624,6 +624,24 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
+     * Get the product root category ids
+     *
+     * @return array
+     */
+    public function getRootCategoryIds()
+    {
+        $roots = [];
+
+        foreach ($this->categories as $category) {
+            if (!in_array($category->getRoot(), $roots)) {
+                $roots[] = $category->getRoot();
+            }
+        }
+
+        return $roots;
+    }
+
+    /**
      * Get a string with categories linked to product
      *
      * @return string

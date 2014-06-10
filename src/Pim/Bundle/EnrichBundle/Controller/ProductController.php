@@ -2,9 +2,11 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\EnrichBundle\EnrichEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -217,6 +219,8 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
+        $this->getEventDispatcher()->dispatch(EnrichEvents::PRE_EDIT_PRODUCT, new GenericEvent($product));
+
         $this->productManager->ensureAllAssociationTypes($product);
 
         $form = $this->createForm(
@@ -249,6 +253,8 @@ class ProductController extends AbstractDoctrineController
                 $this->addFlash('error', 'flash.product.invalid');
             }
         }
+
+        $this->getEventDispatcher()->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->productCatManager->getProductCountByTree($product);
@@ -523,5 +529,13 @@ class ProductController extends AbstractDoctrineController
     protected function getCreateFormOptions(ProductInterface $product)
     {
         return array();
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->eventDispatcher;
     }
 }
