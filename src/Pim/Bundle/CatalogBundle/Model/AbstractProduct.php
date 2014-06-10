@@ -20,6 +20,8 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
  TimestampableInterface, VersionableInterface
 {
+    const IDENTIFIER_TYPE = 'pim_catalog_identifier';
+
     /** @var mixed $id */
     protected $id;
 
@@ -474,18 +476,13 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getIdentifier()
     {
-        $values = array_filter(
-            $this->getValues()->toArray(),
-            function ($value) {
-                return $value->getAttribute()->getAttributeType() === 'pim_catalog_identifier';
+        foreach ($this->values as $value) {
+            if (self::IDENTIFIER_TYPE === $value->getAttribute()->getAttributeType()) {
+                return $value;
             }
-        );
-
-        if (false === $identifier = reset($values)) {
-            throw new MissingIdentifierException($this);
         }
 
-        return $identifier;
+        throw new MissingIdentifierException($this);
     }
 
     /**
@@ -495,12 +492,13 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getAttributes()
     {
-        return array_map(
-            function ($value) {
-                return $value->getAttribute();
-            },
-            $this->getValues()->toArray()
-        );
+        $attributes = array();
+
+        foreach ($this->values as $value) {
+            $attributes[] = $value->getAttribute();
+        }
+
+        return $attributes;
     }
 
     /**
