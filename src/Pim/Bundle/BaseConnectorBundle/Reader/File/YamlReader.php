@@ -65,6 +65,28 @@ class YamlReader extends FileReader implements ItemReaderInterface
     }
 
     /**
+     * Set the multiple attribute
+     *
+     * @param boolean $multiple
+     *
+     * @return YamlReader
+     */
+    public function setMultiple($multiple)
+    {
+        $this->multiple = $multiple;
+
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isMultiple()
+    {
+        return $this->multiple;
+    }
+
+    /**
      * Set the code field
      *
      * @param string $codeField
@@ -129,6 +151,13 @@ class YamlReader extends FileReader implements ItemReaderInterface
      */
     public function getConfigurationFields()
     {
-        return array();
+        return [
+            'filePath' => [
+                'system' => true
+            ],
+            'multiple' => [
+                'system' => true
+            ],
+        ];
     }
 }

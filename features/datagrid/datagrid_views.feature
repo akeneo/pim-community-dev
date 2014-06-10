@@ -19,7 +19,7 @@ Feature: Datagrid views
 
   Scenario: Successfully create a new view
     Given I filter by "Family" with value "Sneakers"
-    And I press the "Add" button
+    And I press the "Create view" button
     And I fill in the following information in the popin:
       | label | Sneakers only |
     And I press the "OK" button
@@ -38,7 +38,7 @@ Feature: Datagrid views
 
   Scenario: Successfully update a view
     Given I filter by "Family" with value "Boots"
-    And I press the "Add" button
+    And I press the "Create view" button
     And I fill in the following information in the popin:
       | label | Some shoes |
     And I press the "OK" button
@@ -59,7 +59,7 @@ Feature: Datagrid views
 
   Scenario: Successfully delete a view
     Given I filter by "Family" with value "Boots"
-    And I press the "Add" button
+    And I press the "Create view" button
     And I fill in the following information in the popin:
       | label | Boots only |
     And I press the "OK" button

@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_persisting(
         LifecycleEventArgs $args,
-        Metric $metric,
+        AbstractMetric $metric,
         MeasureManager $manager,
         MeasureConverter $converter
     ) {
@@ -50,7 +50,7 @@ class MetricBaseValuesSubscriberSpec extends ObjectBehavior
 
     function it_converts_metric_data_before_updating(
         LifecycleEventArgs $args,
-        Metric $metric,
+        AbstractMetric $metric,
         MeasureManager $manager,
         MeasureConverter $converter
     ) {

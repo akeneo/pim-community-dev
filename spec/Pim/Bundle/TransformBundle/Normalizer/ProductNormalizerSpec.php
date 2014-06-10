@@ -8,7 +8,7 @@ use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
@@ -46,7 +46,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_properties_of_product(
-        Product $product,
+        AbstractProduct $product,
         ArrayCollection $values,
         \ArrayIterator $iterator,
         $filter
@@ -73,7 +73,7 @@ class ProductNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_the_values_of_product(
-        Product $product,
+        AbstractProduct $product,
         AbstractAttribute $attribute,
         ProductValueInterface $value,
         ArrayCollection $values,

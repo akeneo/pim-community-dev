@@ -1,0 +1,282 @@
+options:
+    210_x_1219_mm:
+        code: 210_x_1219_mm
+        attribute: maximum_print_size
+        labels: { fr_FR: '210 x 1219 mm', en_US: '210 x 1219 mm', de_DE: '210 x 1219 mm' }
+    215_x_355_mm:
+        code: 215_x_355_mm
+        attribute: maximum_print_size
+        labels: { fr_FR: '215 x 355 mm', en_US: '215 x 355 mm', de_DE: '215 x 355 mm' }
+    216_x_406_4_mm:
+        code: 216_x_406_4_mm
+        attribute: maximum_print_size
+        labels: { fr_FR: '216 x 406.4 mm', en_US: '216 x 406.4 mm', de_DE: '216 x 406.4 mm' }
+    216_x_432_mm:
+        code: 216_x_432_mm
+        attribute: maximum_print_size
+        labels: { fr_FR: '216 x 432 mm', en_US: '216 x 432 mm', de_DE: '216 x 432 mm' }
+    297_x_432_mm:
+        code: 297_x_432_mm
+        attribute: maximum_print_size
+        labels: { fr_FR: '297 x 432 mm', en_US: '297 x 432 mm', de_DE: '297 x 432 mm' }
+    a3_297_x_420_mm_:
+        code: a3_297_x_420_mm_
+        attribute: maximum_print_size
+        labels: { fr_FR: 'A3 (297 x 420 mm)', en_US: 'A3 (297 x 420 mm)', de_DE: 'A3 (297 x 420 mm)' }
+    a4_210_x_297_mm_:
+        code: a4_210_x_297_mm_
+        attribute: maximum_print_size
+        labels: { fr_FR: 'A4 (210 x 297 mm)', en_US: 'A4 (210 x 297 mm)', de_DE: 'A4 (210 x 297 mm)' }
+    a4_letter_216_x_297_mm_:
+        code: a4_letter_216_x_297_mm_
+        attribute: maximum_print_size
+        labels: { fr_FR: 'A4 / Letter (216 x 297 mm)', en_US: 'A4 / Letter (216 x 297 mm)', de_DE: 'A4 / Letter (216 x 297 mm)' }
+    din_a3_310_x_437_mm_:
+        code: din_a3_310_x_437_mm_
+        attribute: maximum_print_size
+        labels: { fr_FR: 'DIN A3 (310 x 437 mm)', en_US: 'DIN A3 (310 x 437 mm)', de_DE: 'DIN A3 (310 x 437 mm)' }
+    legal_216_x_356_mm_:
+        code: legal_216_x_356_mm_
+        attribute: maximum_print_size
+        labels: { fr_FR: 'Legal (216 x 356 mm)', en_US: 'Legal (216 x 356 mm)', de_DE: 'Legal (216 x 356 mm)' }
+    ccd:
+        code: ccd
+        attribute: sensor_type
+        labels: { fr_FR: CCD, en_US: CCD, de_DE: CCD }
+    cmos:
+        code: cmos
+        attribute: sensor_type
+        labels: { fr_FR: CMOS, en_US: CMOS, de_DE: CMOS }
+    bridge:
+        code: bridge
+        attribute: camera_type
+        labels: { fr_FR: Bridge, en_US: Bridge, de_DE: Bridge }
+    compact:
+        code: compact
+        attribute: camera_type
+        labels: { fr_FR: Compact, en_US: Compact, de_DE: Compact }
+    milc:
+        code: milc
+        attribute: camera_type
+        labels: { fr_FR: MILC, en_US: MILC, de_DE: MILC }
+    milc_body:
+        code: milc_body
+        attribute: camera_type
+        labels: { fr_FR: 'MILC Body', en_US: 'MILC Body', de_DE: 'MILC Body' }
+    slr_body:
+        code: slr_body
+        attribute: camera_type
+        labels: { fr_FR: 'SLR Body', en_US: 'SLR Body', de_DE: 'SLR Body' }
+    slr_kit:
+        code: slr_kit
+        attribute: camera_type
+        labels: { fr_FR: 'SLR Kit', en_US: 'SLR Kit', de_DE: 'SLR Kit' }
+    6_3mm:
+        code: 6_3mm
+        attribute: headphone_connectivity
+        labels: { fr_FR: 6.3mm, en_US: 6.3mm, de_DE: 6.3mm }
+    1280_x_1024:
+        code: 1280_x_1024
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '1280 x 1024', en_US: '1280 x 1024', de_DE: '1280 x 1024' }
+    1280_x_720:
+        code: 1280_x_720
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '1280 x 720', en_US: '1280 x 720', de_DE: '1280 x 720' }
+    1280_x_960:
+        code: 1280_x_960
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '1280 x 960', en_US: '1280 x 960', de_DE: '1280 x 960' }
+    1600_x_1200:
+        code: 1600_x_1200
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '1600 x 1200', en_US: '1600 x 1200', de_DE: '1600 x 1200' }
+    1920_x_1080:
+        code: 1920_x_1080
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '1920 x 1080', en_US: '1920 x 1080', de_DE: '1920 x 1080' }
+    2560_x_1920:
+        code: 2560_x_1920
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '2560 x 1920', en_US: '2560 x 1920', de_DE: '2560 x 1920' }
+    2560_x_2048:
+        code: 2560_x_2048
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '2560 x 2048', en_US: '2560 x 2048', de_DE: '2560 x 2048' }
+    320_x_240:
+        code: 320_x_240
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '320 x 240', en_US: '320 x 240', de_DE: '320 x 240' }
+    640_x_480:
+        code: 640_x_480
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '640 x 480', en_US: '640 x 480', de_DE: '640 x 480' }
+    800_x_600:
+        code: 800_x_600
+        attribute: maximum_video_resolution
+        labels: { fr_FR: '800 x 600', en_US: '800 x 600', de_DE: '800 x 600' }
+    copy:
+        code: copy
+        attribute: multifunctional_functions
+        labels: { fr_FR: copy, en_US: copy, de_DE: copy }
+    fax:
+        code: fax
+        attribute: multifunctional_functions
+        labels: { fr_FR: fax, en_US: fax, de_DE: fax }
+    n:
+        code: n
+        attribute: multifunctional_functions
+        labels: { fr_FR: N, en_US: N, de_DE: N }
+    print:
+        code: print
+        attribute: multifunctional_functions
+        labels: { fr_FR: print, en_US: print, de_DE: print }
+    scan:
+        code: scan
+        attribute: multifunctional_functions
+        labels: { fr_FR: scan, en_US: scan, de_DE: scan }
+    earthenware:
+        code: earthenware
+        attribute: container_material
+        labels: { fr_FR: 'Faïence', en_US: 'Earthenware', de_DE: 'Tonwaren' }
+    porcelain:
+        code: porcelain
+        attribute: container_material
+        labels: { fr_FR: 'Porcelaine', en_US: 'Porcelain', de_DE: 'Porzellan' }
+    ceramic:
+        code: ceramic
+        attribute: container_material
+        labels: { fr_FR: 'Céramique', en_US: 'Ceramic', de_DE: 'Keramisch' }
+    white_main:
+        code: white
+        attribute: main_color
+        labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
+        default: 1
+    black_main:
+        code: black
+        attribute: main_color
+        labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'S  chwarz' }
+    grey_main:
+        code: grey
+        attribute: main_color
+        labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
+    blue_main:
+        code: blue
+        attribute: main_color
+        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+    purple_main:
+        code: purple
+        attribute: main_color
+        labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
+    orange_main:
+        code: orange
+        attribute: main_color
+        labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
+    white_secondary:
+        code: white
+        attribute: secondary_color
+        labels: { fr_FR: 'Blanc', en_US: 'White', de_DE: 'Weiß' }
+    black_secondary:
+        code: black
+        attribute: secondary_color
+        labels: { fr_FR: 'Noir', en_US: 'Black', de_DE: 'Schwarz' }
+    grey_secondary:
+        code: grey
+        attribute: secondary_color
+        labels: { fr_FR: 'Gris', en_US: 'Grey', de_DE: 'Grau' }
+    yellow_secondary:
+        code: yellow
+        attribute: secondary_color
+        labels: { fr_FR: 'Jaune', en_US: 'Yellow', de_DE: 'Gelb' }
+    orange_secondary:
+        code: orange
+        attribute: secondary_color
+        labels: { fr_FR: 'Orange', en_US: 'Orange', de_DE: 'Orange' }
+    red_secondary:
+        code: red
+        attribute: secondary_color
+        labels: { fr_FR: 'Rouge', en_US: 'Red', de_DE: 'Rot' }
+    green_secondary:
+        code: green
+        attribute: secondary_color
+        labels: { fr_FR: 'Vert', en_US: 'Green', de_DE: 'Grün' }
+    blue_secondary:
+        code: blue
+        attribute: secondary_color
+        labels: { fr_FR: 'Bleu', en_US: 'Blue', de_DE: Blau' }
+    purple_secondary:
+        code: purple
+        attribute: secondary_color
+        labels: { fr_FR: 'Violet', en_US: 'Purple', de_DE: 'Lila' }
+    xs:
+        code: xs
+        attribute: clothing_size
+        labels: { fr_FR: 'XS', en_US: 'XS', de_DE: 'XS' }
+    s:
+        code: s
+        attribute: clothing_size
+        labels: { fr_FR: 'S', en_US: 'S', de_DE: 'S' }
+    m:
+        code: m
+        attribute: clothing_size
+        labels: { fr_FR: 'M', en_US: 'M', de_DE: 'M' }
+    l:
+        code: l
+        attribute: clothing_size
+        labels: { fr_FR: 'L', en_US: 'L', de_DE: 'L' }
+    xl:
+        code: xl
+        attribute: clothing_size
+        labels: { fr_FR: 'XL', en_US: 'XL', de_DE: 'XL' }
+    xxl:
+        code: xxl
+        attribute: clothing_size
+        labels: { fr_FR: 'XXL', en_US: 'XXL', de_DE: 'XXL' }
+    cotton:
+        code: cotton
+        attribute: tshirt_materials
+        labels: { fr_FR: '100% Coton', en_US: '100% Cotton', de_DE: '100% Baumwolle' }
+    polyester:
+        code: polyester
+        attribute: tshirt_materials
+        labels: { fr_FR: 'Polyester', en_US: 'Polyester', de_DE: 'Polyester' }
+    polycotton:
+        code: polycotton
+        attribute: tshirt_materials
+        labels: { fr_FR: 'Poly/Coton', en_US: 'Poly/Cotton', de_DE: 'Poly/Bauwolle' }
+    wool:
+        code: wool
+        attribute: tshirt_materials
+        labels: { fr_FR: 'Laine', en_US: 'Wool', de_DE: 'Wolle' }
+    organic_cotton:
+        code: organic_cotton
+        attribute: tshirt_materials
+        labels: { fr_FR: 'Coton Bio', en_US: 'Organic Cotton', de_DE: 'Bio Baumwolle' }
+    recycled_materials:
+        code: recycled_materials
+        attribute: tshirt_materials
+        labels: { fr_FR: 'Matières recyclées', en_US: 'Recycled materials', de_DE: 'Recycling-Materialien' }
+    turtleneck:
+        code: turtleneck
+        attribute: tshirt_style
+        labels: { fr_FR: 'Col roulé', en_US: 'Turtleneck', de_DE: 'Rollkragen' }
+    vneck:
+        code: vneck
+        attribute: tshirt_style
+        labels: { fr_FR: 'Col en V', en_US: 'V neck', de_DE: 'V-Ausschnitt' }
+    sportwear:
+        code: sportwear
+        attribute: tshirt_style
+        labels: { fr_FR: 'Sportif', en_US: 'Sport wear', de_DE: 'Sport Verschleiß' }
+    crewneck:
+        code: crewneck
+        attribute: tshirt_style
+        labels: { fr_FR: 'Col ras du cou', en_US: 'Crewneck', de_DE: 'Rundhalsausschnitt' }
+    long_sleeve:
+        code: long_sleeve
+        attribute: tshirt_style
+        labels: { fr_FR: 'Manches longues', en_US: 'Long sleeve', de_DE: 'Lange Ärmel ' }
+    short_sleeve:
+        code: short_sleeve
+        attribute: tshirt_style
+        labels: { fr_FR: 'Manches courtes', en_US: 'Short sleeve', de_DE: 'Kurze Ärmel' }

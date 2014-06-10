@@ -20,7 +20,7 @@ class LocaleHelperSpec extends ObjectBehavior
 
     function it_provides_current_locale($en)
     {
-        $this->getCurrentLocale()->shouldReturn($en);
+        $this->getCurrentLocaleCode()->shouldReturn('en_US');
     }
 
     function it_provides_translated_locale_label()

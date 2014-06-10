@@ -12,12 +12,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class DateTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser) {
+    function let(AttributeConstraintGuesser $guesser)
+    {
         $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_DATE, 'oro_date', $guesser);
     }
 
-    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $releaseDate) {
-
+    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $releaseDate)
+    {
         $this->buildAttributeFormTypes($factory, $releaseDate)->shouldHaveCount(7);
     }
 
@@ -28,11 +29,13 @@ class DateTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_DATE);
     }
 
-    function it_prepares_the_product_value_form_alias(AbstractProductValue $value){
+    function it_prepares_the_product_value_form_alias(AbstractProductValue $value)
+    {
         $this->prepareValueFormAlias($value)->shouldReturn('oro_date');
     }
 
-    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $releaseDate){
+    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $releaseDate)
+    {
         $releaseDate->getLabel()->willReturn('releaseDate');
         $releaseDate->isRequired()->willReturn(false);
         $value->getAttribute()->willReturn($releaseDate);
@@ -40,7 +43,8 @@ class DateTypeSpec extends ObjectBehavior
         $this->prepareValueFormOptions($value)->shouldHaveCount(6);
     }
 
-    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $releaseDate, $guesser){
+    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $releaseDate, $guesser)
+    {
         $value->getAttribute()->willReturn($releaseDate);
         $guesser->supportAttribute($releaseDate)->willReturn(true);
         $guesser->guessConstraints($releaseDate)->willReturn([]);
@@ -48,7 +52,8 @@ class DateTypeSpec extends ObjectBehavior
         $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
     }
 
-    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $releaseDate){
+    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $releaseDate)
+    {
         $date = new \DateTime();
         $value->getData()->willReturn($date);
         $this->prepareValueFormData($value)->shouldReturn($date);

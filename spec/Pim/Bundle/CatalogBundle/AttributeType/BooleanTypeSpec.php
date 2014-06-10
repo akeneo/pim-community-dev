@@ -12,12 +12,13 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 class BooleanTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser) {
+    function let(AttributeConstraintGuesser $guesser)
+    {
         $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_BOOLEAN, 'switch', $guesser);
     }
 
-    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $isAvailable) {
-
+    function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $isAvailable)
+    {
         $this->buildAttributeFormTypes($factory, $isAvailable)->shouldHaveCount(5);
     }
 
@@ -28,11 +29,13 @@ class BooleanTypeSpec extends ObjectBehavior
         $this->prepareValueFormName($value)->shouldReturn(AbstractAttributeType::BACKEND_TYPE_BOOLEAN);
     }
 
-    function it_prepares_the_product_value_form_alias(AbstractProductValue $value){
+    function it_prepares_the_product_value_form_alias(AbstractProductValue $value)
+    {
         $this->prepareValueFormAlias($value)->shouldReturn('switch');
     }
 
-    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $isAvailable){
+    function it_prepares_the_product_value_form_options(AbstractProductValue $value, AbstractAttribute $isAvailable)
+    {
         $isAvailable->getLabel()->willReturn('isAvailable');
         $isAvailable->isRequired()->willReturn(false);
         $value->getAttribute()->willReturn($isAvailable);
@@ -40,7 +43,8 @@ class BooleanTypeSpec extends ObjectBehavior
         $this->prepareValueFormOptions($value)->shouldHaveCount(4);
     }
 
-    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $isAvailable, $guesser){
+    function it_prepares_the_product_value_form_constraints(AbstractProductValue $value, AbstractAttribute $isAvailable, $guesser)
+    {
         $value->getAttribute()->willReturn($isAvailable);
         $guesser->supportAttribute($isAvailable)->willReturn(true);
         $guesser->guessConstraints($isAvailable)->willReturn([]);
@@ -48,7 +52,8 @@ class BooleanTypeSpec extends ObjectBehavior
         $this->prepareValueFormConstraints($value)->shouldHaveCount(1);
     }
 
-    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $isAvailable){
+    function it_prepares_the_product_value_form_data(AbstractProductValue $value, AbstractAttribute $isAvailable)
+    {
         $value->getData()->willReturn(true);
         $this->prepareValueFormData($value)->shouldReturn(true);
     }

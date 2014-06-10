@@ -14,8 +14,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CatalogBundle\Model\Association;
-use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 class IsAssociatedFilterSpec extends ObjectBehavior
 {
@@ -43,10 +43,10 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         $assocRepository,
         ProductManager $productManager,
         AssociationType $assocType,
-        Association $association,
-        Product $productOwner,
-        Product $productAssociatedOne,
-        Product $productAssociatedTwo
+        AbstractAssociation $association,
+        AbstractProduct $productOwner,
+        AbstractProduct $productAssociatedOne,
+        AbstractProduct $productAssociatedTwo
     ) {
         $params->get('associationType', null)->willReturn(1);
         $assocRepository->findOneBy(Argument::any())->willReturn($assocType);

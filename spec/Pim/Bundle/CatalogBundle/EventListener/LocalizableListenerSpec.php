@@ -45,7 +45,7 @@ class LocalizableListenerSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    function it_doesnt_configures_locale_for_other_object($context, LifecycleEventArgs $args)
+    function it_does_not_configure_locale_for_other_objects($context, LifecycleEventArgs $args)
     {
         $object = new \stdClass();
         $args->getObject()->willReturn($object);

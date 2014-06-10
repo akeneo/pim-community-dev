@@ -1,0 +1,193 @@
+jobs:
+    fixtures_category_csv:
+        order: 30
+        connector: Data fixtures
+        alias:     fixtures_category_csv
+        label:     Categories data fixtures
+        type:      fixtures
+        configuration:
+            filePath: categories.csv
+            uploadAllowed: true
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            circularRefsChecked: true
+            uploadAllowed: true
+
+    fixtures_category_yml:
+        order: 30
+        connector: Data fixtures
+        alias:     fixtures_category_yml
+        label:     Categories data fixtures
+        type:      fixtures
+        configuration:
+            filePath: categories.yml
+            multiple: true
+
+    fixtures_attribute_group_yml:
+        order: 30
+        connector: Data fixtures
+        alias:     fixtures_attribute_group_yml
+        label:     Attribute groups data fixtures
+        type:      fixtures
+        configuration:
+            filePath: attribute_groups.yml
+            multiple: false
+
+    fixtures_group_type_yml:
+        order: 30
+        connector: Data fixtures
+        alias:     fixtures_group_type_yml
+        label:     Group types data fixtures
+        type:      fixtures
+        configuration:
+            filePath: group_types.yml
+            multiple: false
+
+    fixtures_channel_yml:
+        order: 40
+        connector: Data fixtures
+        alias:     fixtures_channel_yml
+        label:     Channels data fixtures
+        type:      fixtures
+        configuration:
+            filePath: channels.yml
+            multiple: false
+
+    fixtures_association_type_yml:
+        order: 40
+        connector: Data fixtures
+        alias:     fixtures_association_type_yml
+        label:     Associations data fixtures
+        type:      fixtures
+        configuration:
+            filePath: association_types.yml
+            multiple: false
+
+    fixtures_attribute_yml:
+        order: 40
+        connector: Data fixtures
+        alias:     fixtures_attribute_yml
+        label:     Attributes data fixtures
+        type:      fixtures
+        configuration:
+            filePath: attributes.yml
+            multiple: false
+
+    fixtures_attribute_options_yml:
+        order: 50
+        connector: Data fixtures
+        alias:     fixtures_attribute_options_yml
+        label:     Attribute options data fixtures
+        type:      fixtures
+        configuration:
+            filePath: attribute_options.yml
+            multiple: false
+
+    fixtures_family_yml:
+        order: 60
+        connector: Data fixtures
+        alias:     fixtures_family_yml
+        label:     Families data fixtures
+        type:      fixtures
+        configuration:
+            filePath: families.yml
+            multiple: false
+
+    fixtures_group_yml:
+        order: 70
+        connector: Data fixtures
+        alias:     fixtures_group_yml
+        label:     Groups data fixtures
+        type:      fixtures
+        configuration:
+            filePath: groups.yml
+            multiple: false
+
+    fixtures_product_yml:
+        order: 80
+        connector: Data fixtures
+        alias:     fixtures_product_yml
+        label:     Product data fixtures
+        type:      fixtures
+        configuration:
+            filePath: products.yml
+            multiple: false
+            nonClearableEntities:
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobExecution'
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobInstance'
+                - 'Akeneo\Bundle\BatchBundle\Entity\StepExecution'
+                - 'Oro\Bundle\UserBundle\Entity\User'
+                - 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit'
+                - 'Oro\Bundle\UserBundle\Entity\UserApi'
+                - 'Pim\Bundle\CatalogBundle\Entity\Family'
+                - 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                - 'Pim\Bundle\CatalogBundle\Entity\Locale'
+                - 'Pim\Bundle\CatalogBundle\Entity\Currency'
+                - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement'
+                - 'Pim\Bundle\CatalogBundle\Entity\Attribute'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\Category'
+                - 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
+
+    fixtures_product_csv:
+        order: 80
+        connector: Data fixtures
+        alias:     fixtures_product_csv
+        label:     Product data fixtures
+        type:      fixtures
+        configuration:
+            filePath: products.csv
+            delimiter: ;
+            enclosure: '"'
+            escape: '\'
+            enabled: true
+            categoriesColumn: categories
+            familyColumn: family
+            groupsColumn: groups
+            realTimeVersioning: true
+            nonClearableEntities:
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobExecution'
+                - 'Akeneo\Bundle\BatchBundle\Entity\JobInstance'
+                - 'Akeneo\Bundle\BatchBundle\Entity\StepExecution'
+                - 'Oro\Bundle\UserBundle\Entity\User'
+                - 'Oro\Bundle\OrganizationBundle\Entity\BusinessUnit'
+                - 'Oro\Bundle\UserBundle\Entity\UserApi'
+                - 'Pim\Bundle\CatalogBundle\Entity\Family'
+                - 'Pim\Bundle\CatalogBundle\Entity\Channel'
+                - 'Pim\Bundle\CatalogBundle\Entity\Locale'
+                - 'Pim\Bundle\CatalogBundle\Entity\Currency'
+                - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeGroupTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeRequirement'
+                - 'Pim\Bundle\CatalogBundle\Entity\Attribute'
+                - 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation'
+                - 'Pim\Bundle\CatalogBundle\Entity\Category'
+                - 'Pim\Bundle\CatalogBundle\Entity\CategoryTranslation'
+            mediaAttributes:
+                - 'pdf_description'
+                - 'picture'
+
+    fixtures_association_yml:
+        order: 90
+        connector: Data fixtures
+        alias:     fixtures_association_yml
+        label:     Associations data fixtures
+        type:      fixtures
+        configuration:
+            filePath: associations.yml
+            multiple: false
+
+    fixtures_job_yml:
+        order: 100
+        connector: Data fixtures
+        alias:     fixtures_job_yml
+        label:     Jobs data fixtures
+        type:      fixtures
+        configuration:
+            filePath: jobs.yml
+            multiple: false

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 
+use Pim\Bundle\InstallerBundle\FixtureLoader\FixtureJobLoader;
 use Pim\Bundle\InstallerBundle\CommandExecutor;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
@@ -125,7 +126,18 @@ class DatabaseCommand extends ContainerAwareCommand
         }
 
         $output->writeln(
-            sprintf('<info>Load fixtures. (data set: %s)</info>', $this->getContainer()->getParameter('installer_data'))
+            sprintf(
+                '<info>Load jobs for fixtures. (data set: %s)</info>',
+                $this->getContainer()->getParameter('installer_data')
+            )
+        );
+        $this->getFixtureJobLoader()->load();
+
+        $output->writeln(
+            sprintf(
+                '<info>Load fixtures. (data set: %s)</info>',
+                $this->getContainer()->getParameter('installer_data')
+            )
         );
 
         $params = array(
@@ -141,6 +153,9 @@ class DatabaseCommand extends ContainerAwareCommand
         }
 
         $output->writeln('');
+
+        $output->writeln('<info>Delete jobs for fixtures.</info>');
+        $this->getFixtureJobLoader()->deleteJobs();
 
         return $this;
     }
@@ -208,5 +223,13 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function getStorageDriver()
     {
         return $this->getContainer()->getParameter('pim_catalog.storage_driver');
+    }
+
+    /**
+     * @return FixtureJobLoader
+     */
+    protected function getFixtureJobLoader()
+    {
+        return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
     }
 }

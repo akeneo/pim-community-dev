@@ -227,7 +227,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
     }
 
-    function it_generates_completenesse_with_prices()
+    function it_generates_completenesses_with_prices()
     {
         $normalizedReqs = [
             'mobile-fr_FR' => [
@@ -280,7 +280,7 @@ class CompletenessGeneratorSpec extends ObjectBehavior
         $this->getCompletenesses($normalizedData, $normalizedReqs)->shouldReturn($expectedResult);
     }
 
-    function it_generates_completenesse_with_incomplete_prices()
+    function it_generates_completenesses_with_incomplete_prices()
     {
         $normalizedReqs = [
             'mobile-fr_FR' => [

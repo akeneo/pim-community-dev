@@ -54,7 +54,7 @@ class AddToGroupsSpec extends ObjectBehavior
         $this->getFormOptions()->shouldReturn(['groups' => [$shirts, $pants]]);
     }
 
-    function it_adds_products_to_groups_when_performimg_the_operation(
+    function it_adds_products_to_groups_when_performing_the_operation(
         AbstractQuery $query,
         AbstractProduct $product1,
         AbstractProduct $product2,
