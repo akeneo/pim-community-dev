@@ -209,6 +209,7 @@ class ItemStep extends AbstractStep
                 if (0 === $writeCount % $this->batchSize) {
                     $this->write($itemsToWrite);
                     $itemsToWrite = array();
+                    $this->getJobRepository()->updateStepExecution($stepExecution);
                 }
             }
         }

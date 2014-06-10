@@ -28,17 +28,17 @@ abstract class AbstractStep implements StepInterface
     /**
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @var EventDispatcherInterface
      */
-    private $eventDispatcher;
+    protected $eventDispatcher;
 
     /**
      * @var JobRepositoryInterface
      */
-    private $jobRepository;
+    protected $jobRepository;
 
     /**
      * @param string $name

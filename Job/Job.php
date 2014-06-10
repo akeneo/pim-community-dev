@@ -397,6 +397,7 @@ class Job implements JobInterface
         $stepExecution = $jobExecution->createStepExecution($step->getName());
 
         try {
+            $step->setJobRepository($this->jobRepository);
             $step->execute($stepExecution);
         } catch (JobInterruptedException $e) {
             $stepExecution->setStatus(new BatchStatus(BatchStatus::STOPPING));
