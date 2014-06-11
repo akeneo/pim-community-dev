@@ -51,7 +51,7 @@ class UniqueValueValidator extends ConstraintValidator
 
         $value = $this->getProductValue();
 
-        if (($value instanceof ProductValueInterface) && ($this->productManager->valueExists($value))) {
+        if ($value instanceof ProductValueInterface && $this->productManager->valueExists($value)) {
             $this->context->addViolation($constraint->message);
         }
 
@@ -62,7 +62,7 @@ class UniqueValueValidator extends ConstraintValidator
      *
      * @return ProductValueInterface|null
      */
-    private function getProductValue()
+    protected function getProductValue()
     {
         preg_match(
             '/children\[values\].children\[(\w+)\].children\[\w+\].data/',
