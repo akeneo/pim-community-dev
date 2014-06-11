@@ -78,8 +78,8 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
             default:
                 $this->qb->addAnd(
                     $this->qb->expr()
-                        ->addOr($this->qb->expr()->field($field)->lt($this->getTimestamp($value['from'])))
-                        ->addOr($this->qb->expr()->field($field)->gt($this->getTimestamp($value['to'], true)))
+                        ->addOr($this->qb->expr()->field($field)->lte($this->getTimestamp($value['from'])))
+                        ->addOr($this->qb->expr()->field($field)->gte($this->getTimestamp($value['to'], true)))
                 );
         }
 
