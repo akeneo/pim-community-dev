@@ -4,12 +4,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductValue;
 use Pim\Bundle\CatalogBundle\Entity\Attribute;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\ProductValue;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 /**
  * Twig extension to present proposition changes
@@ -31,6 +33,12 @@ class PropositionChangesExtension extends \Twig_Extension
     /** @var TranslatorInterface */
     protected $translator;
 
+    /** @var ProductManager */
+    protected $productManager;
+
+    /** @var AttributeManager */
+    protected $attributeManager;
+
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
@@ -38,17 +46,23 @@ class PropositionChangesExtension extends \Twig_Extension
      * @param ObjectRepository    $valueRepository
      * @param RendererInterface   $renderer
      * @param TranslatorInterface $translator
+     * @param ProductManager      $productManager
+     * @param AttributeManager    $attributeManager
      */
     public function __construct(
         ObjectRepository $valueRepository,
         ObjectRepository $attributeRepository,
         RendererInterface $renderer,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        ProductManager $productManager,
+        AttributeManager $attributeManager
     ) {
         $this->valueRepository = $valueRepository;
         $this->attributeRepository = $attributeRepository;
         $this->renderer = $renderer;
         $this->translator = $translator;
+        $this->productManager = $productManager;
+        $this->attributeManager = $attributeManager;
     }
 
     /**
@@ -185,9 +199,8 @@ class PropositionChangesExtension extends \Twig_Extension
      */
     protected function createFakeValue()
     {
-        $value = new ProductValue();
-        $attribute = new Attribute();
-        $attribute->setBackendType('varchar');
+        $value = $this->productManager->createProductValue();
+        $attribute = $this->attributeManager->createAttribute('pim_catalog_text');
         $value->setAttribute($attribute);
 
         return $value;
