@@ -4,8 +4,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
  * Proposition ORM repository
@@ -17,13 +18,39 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
 {
     /**
      * {@inheritdoc}
+     */
+    public function findOpen($id)
+    {
+        return $this->findOneBy(
+            [
+                'id'     => $id,
+                'status' => Proposition::WAITING,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findUserProposition($username, $locale)
+    {
+        return $this->findOneBy(
+            [
+                'author' => $username,
+                'locale' => $locale,
+                'status' => Proposition::WAITING,
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder()
     {
-        return $this
-            ->createQueryBuilder('p');
+        return $this->createQueryBuilder('p');
     }
 
     /**
@@ -36,23 +63,6 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
         $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
 
         return $this;
-    }
-
-    /**
-     * Find one open proposition
-     *
-     * @param integer $id
-     *
-     * @return null|Proposition
-     */
-    public function findOpen($id)
-    {
-        return $this->findOneBy(
-            [
-                'id'     => $id,
-                'status' => Proposition::WAITING
-            ]
-        );
     }
 
     /**

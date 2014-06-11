@@ -22,15 +22,14 @@ class PropositionFactory
      *
      * @return Proposition
      */
-    public function createProposition(ProductInterface $product, $username, array $changes)
+    public function createProposition(ProductInterface $product, $username, $locale = null)
     {
         $proposition = new Proposition();
         $proposition
             ->setProduct($product)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime())
-            ->setChanges($changes)
-            ->setLocale($product->getLocale());
+            ->setLocale($locale ?: $product->getLocale());
 
         return $proposition;
     }

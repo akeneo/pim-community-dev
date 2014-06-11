@@ -47,4 +47,23 @@ interface PropositionRepositoryInterface extends ObjectRepository
      * @param string       $direction
      */
     public function applySorter($qb, $field, $direction);
+
+    /**
+     * Find one open proposition
+     *
+     * @param integer $id
+     *
+     * @return null|Proposition
+     */
+    public function findOpen($id);
+
+    /**
+     * Find one user proposition by its locale
+     *
+     * @param string $username
+     * @param string $locale
+     *
+     * @return null|Proposition
+     */
+    public function findUserProposition($username, $locale);
 }
