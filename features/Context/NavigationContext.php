@@ -138,6 +138,31 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $not
+     * @param string $identifier
+     * @param string $page
+     *
+     * @return null|Then
+     * @Given /^I should( not)? be able to edit the "([^"]*)" (\w+)$/
+     * @Given /^I should( not)? be able to access the "([^"]*)" (\w+) page$/
+     */
+    public function iShouldNotBeAbleToAccessTheEntityEditPage($not, $identifier, $page)
+    {
+        if (!$not) {
+            return $this->iAmOnTheEntityEditPage($identifier, $page);
+        }
+
+        $page = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+
+        $this->currentPage = sprintf('%s edit', $page);
+        $this->getCurrentPage()->open(['id' => $entity->getId()]);
+
+        return new Step\Then('I should see "403 Forbidden"');
+    }
+
+    /**
      * @param string $identifier
      * @param string $page
      *
