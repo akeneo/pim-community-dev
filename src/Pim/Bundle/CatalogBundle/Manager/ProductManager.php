@@ -7,6 +7,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
+use Pim\Bundle\CatalogBundle\Event\SaveProductEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -249,7 +250,12 @@ class ProductManager
             $options
         );
 
-        return $this->persister->persist($product, $options);
+        $event = new SaveProductEvent($this, $product, $options);
+        $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_BEFORE, $event);
+        $this->persister->persist($product, $options);
+        $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_AFTER, $event);
+
+        die('dede');
     }
 
     /**
