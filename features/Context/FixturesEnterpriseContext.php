@@ -2,58 +2,23 @@
 
 namespace Context;
 
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-
-use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Context\FixturesContext as BaseFixturesContext;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
-class EnterpriseContext extends RawMinkContext
+/**
+ * A context for creating entities
+ *
+ * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ */
+class FixturesEnterpriseContext extends BaseFixturesContext
 {
-    public function __construct(array $parameters = [])
-    {
-        # FeatureContext comes from akeneo/pim-community-dev
-        $this->useContext('community', new FeatureContext($parameters));
-    }
-
-    /**
-     * @BeforeScenario
-     */
-    public function registerConfigurationDirectory()
-    {
-        $this
-            ->getSubcontext('catalogConfiguration')
-            ->addConfigurationDirectory('../../../../../features/Context/catalog');
-    }
-
-    /**
-     * Fallback all unaccessible method calls to the community context
-     *
-     * For example, some community sub context might use `$this->getMainContext()`
-     * which will be the current class, instead of the community main context
-     *
-     * @param string $method
-     * @param array  $arguments
-     *
-     * @return mixed
-     */
-    public function __call($method, array $arguments)
-    {
-        $communityCtx = $this->getSubcontext('community');
-
-        if (0 === strpos($method, 'get')) {
-            try {
-                return call_user_func_array([$communityCtx->getSubcontext('fixtures'), $method], $arguments);
-            } catch (\BadMethodCallException $e) {
-                return call_user_func_array([$communityCtx, $method], $arguments);
-            }
-        }
-
-        return call_user_func_array([$communityCtx, $method], $arguments);
-    }
-
     /**
      * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
@@ -149,11 +114,19 @@ class EnterpriseContext extends RawMinkContext
         }
     }
 
+    /**
+     * @param $type
+     *
+     * @return AttributeGroupAccessManager|CategoryAccessManager
+     */
     protected function getAccessManager($type)
     {
         return $this->getContainer()->get(sprintf('pimee_security.manager.%s_access', str_replace(' ', '_', $type)));
     }
 
+    /**
+     * @return PropositionFactory
+     */
     protected function getPropositionFactory()
     {
         return $this->getContainer()->get('pimee_workflow.factory.proposition');
