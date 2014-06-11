@@ -7,7 +7,7 @@ parameters:
     pim_base_connector.writer.file.product.class: Pim\Bundle\BaseConnectorBundle\Writer\File\ProductWriter
 
     pim_base_connector.writer.dummy.class: Pim\Bundle\BaseConnectorBundle\Writer\DummyWriter
-    pim_base_connector.writer.file.csvwriter.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
+    pim_base_connector.writer.file.csv.class: Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter
 
 services:
     pim_base_connector.writer.file:
@@ -22,8 +22,8 @@ services:
     pim_base_connector.writer.dummy:
         class: %pim_base_connector.writer.dummy.class%
 
-    pim_base_connector.writer.file.csvwriter:
-        class: %pim_base_connector.writer.file.csvwriter.class%
+    pim_base_connector.writer.file.csv:
+        class: %pim_base_connector.writer.file.csv.class%
 
     pim_base_connector.writer.doctrine.product:
         class: %pim_base_connector.writer.doctrine.product.class%
