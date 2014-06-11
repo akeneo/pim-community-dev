@@ -251,9 +251,9 @@ class ProductManager
         );
 
         $event = new SaveProductEvent($this, $product, $options);
-        $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_BEFORE, $event);
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_SAVE_PRODUCT, $event);
         $this->persister->persist($product, $options);
-        $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_AFTER, $event);
+        $this->eventDispatcher->dispatch(CatalogEvents::POST_SAVE_PRODUCT, $event);
     }
 
     /**
