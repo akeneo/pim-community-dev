@@ -52,7 +52,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     {
         parent::setDefaultOptions($resolver);
 
-        $resolver->setDefaults(['choice_url' => null, 'choice_url_params' => null]);
+        $resolver->setDefaults(['preload_choices' => true, 'choice_url' => null, 'choice_url_params' => null]);
     }
 
     /**
@@ -61,6 +61,7 @@ class AjaxChoiceFilterType extends ChoiceFilterType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         parent::finishView($view, $form, $options);
+        $view->vars['preload_choices']   = $options['preload_choices'];
         $view->vars['choice_url']        = $options['choice_url'];
         $view->vars['choice_url_params'] = $options['choice_url_params'];
     }

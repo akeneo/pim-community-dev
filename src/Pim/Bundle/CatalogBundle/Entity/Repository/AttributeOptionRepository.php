@@ -54,13 +54,21 @@ class AttributeOptionRepository extends EntityRepository implements
                 ->setParameter('search', "$search%");
         }
 
-        $options = array();
+        if (isset($options['ids'])) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->in('o.id', ':ids')
+                )
+                ->setParameter('ids', $options['ids']);
+        }
+
+        $results = array();
         $autoSorting = null;
         foreach ($qb->getQuery()->getArrayResult() as $row) {
             if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
                 $autoSorting = $row['properties']['autoOptionSorting'];
             }
-            $options[] = array(
+            $results[] = array(
                 'id'   => $row['id'],
                 'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
             );
@@ -68,7 +76,7 @@ class AttributeOptionRepository extends EntityRepository implements
 
         if ($autoSorting) {
             usort(
-                $options,
+                $results,
                 function ($first, $second) {
                     return strcasecmp($first['text'], $second['text']);
                 }
@@ -76,7 +84,7 @@ class AttributeOptionRepository extends EntityRepository implements
         }
 
         return array(
-            'results' => $options
+            'results' => $results
         );
     }
 
