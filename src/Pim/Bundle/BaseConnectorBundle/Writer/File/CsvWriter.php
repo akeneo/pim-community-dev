@@ -169,11 +169,12 @@ class CsvWriter extends FileWriter
         foreach ($this->items as $item) {
             $fullItems[] = array_merge($uniqueKeys, $item);
         }
+
         return $fullItems;
     }
 
     /**
-     *
+     * Flush items into a csv file
      */
     public function flush()
     {
