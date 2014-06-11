@@ -193,5 +193,4 @@ class CsvWriter extends FileWriter
 
         fclose($csvFile);
     }
-
 }
