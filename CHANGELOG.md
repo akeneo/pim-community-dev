@@ -25,6 +25,7 @@
 - Deleting completeness when a locale of a channel is deleted
 - Display flags in the completenesses grid
 - Fixes a memory leak on product import when using MongoDB
+- Fixes a bug with image upload on product with a "\" or "/" in their sku
 
 ## BC breaks
 - Remove FlexibleEntityBundle
