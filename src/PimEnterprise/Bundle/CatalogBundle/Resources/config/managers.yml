@@ -1,9 +1,17 @@
 parameters:
-    pim_catalog.manager.product_mass_action.class:  PimEnterprise\Bundle\CatalogBundle\Manager\ProductMassActionManager
-    pim_catalog.manager.category.class:             PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
-    pim_catalog.manager.product_category.class:     PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager
+    pim_catalog.manager.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductMassActionManager
+    pim_catalog.manager.category.class: PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager
+    pim_catalog.manager.product_category.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager
+    pim_catalog.manager.product.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductManager
 
 services:
+    pim_catalog.manager.category:
+        class: %pim_catalog.manager.category.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - %pim_catalog.entity.category.class%
+            - '@security.context'
+
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%
         arguments:
@@ -25,3 +33,23 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
             - '@security.context'
+
+    pim_catalog.manager.product:
+        class: %pim_catalog.manager.product.class%
+        arguments:
+            -
+                  product_class:                %pim_catalog.entity.product.class%
+                  product_value_class:          %pim_catalog.entity.product_value.class%
+                  attribute_class:              %pim_catalog.entity.attribute.class%
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.persister.product'
+            - '@event_dispatcher'
+            - '@pim_catalog.manager.media'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.association_type'
+            - '@pim_catalog.repository.attribute'
+            - '@pim_catalog.repository.attribute_option'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.persister.product_changes_applier'
