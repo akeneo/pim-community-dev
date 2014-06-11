@@ -124,7 +124,7 @@ class TransformationContext extends RawMinkContext
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

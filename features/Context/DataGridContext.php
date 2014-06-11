@@ -729,7 +729,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      *
      * @return ExpectationException
      */
-    private function createExpectationException($message)
+    protected function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
     }
@@ -740,7 +740,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      * @param integer $time
      * @param string  $condition
      */
-    private function wait($time = 10000, $condition = null)
+    protected function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }
@@ -748,7 +748,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    private function getNavigationContext()
+    protected function getNavigationContext()
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
@@ -756,7 +756,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     /**
      * @return \Behat\Behat\Context\ExtendedContextInterface
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
