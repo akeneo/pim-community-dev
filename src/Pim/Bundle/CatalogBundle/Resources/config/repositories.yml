@@ -119,7 +119,7 @@ services:
             - { name: 'pim_repository' }
 
     pim_catalog.repository.media:
-        class: %doctrine.document_repository.class%
+        class: %pim_catalog.repository.media.class%
         factory_service: pim_catalog.doctrine.smart_manager_registry
         factory_method: getRepository
         arguments: [%pim_catalog.entity.media.class%]
