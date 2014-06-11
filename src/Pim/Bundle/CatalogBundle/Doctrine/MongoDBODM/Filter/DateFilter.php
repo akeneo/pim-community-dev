@@ -54,8 +54,8 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
 
         switch ($operator) {
             case 'BETWEEN':
-                $this->qb->field($field)->gt($this->getTimestamp($value[0]));
-                $this->qb->field($field)->lt($this->getTimestamp($value[1], true));
+                $this->qb->field($field)->gte($this->getTimestamp($value[0]));
+                $this->qb->field($field)->lte($this->getTimestamp($value[1], true));
                 break;
 
             case '>':
@@ -67,8 +67,8 @@ class DateFilter implements AttributeFilterInterface, FieldFilterInterface
                 break;
 
             case '=':
-                $this->qb->field($field)->gt($this->getTimestamp($value));
-                $this->qb->field($field)->lt($this->getTimestamp($value, true));
+                $this->qb->field($field)->gte($this->getTimestamp($value));
+                $this->qb->field($field)->lte($this->getTimestamp($value, true));
                 break;
 
             case 'EMPTY':
