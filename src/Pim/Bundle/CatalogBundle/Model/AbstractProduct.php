@@ -627,7 +627,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @return array
      */
-    public function getRootCategoryIds()
+    public function getTreeIds()
     {
         $roots = [];
 
