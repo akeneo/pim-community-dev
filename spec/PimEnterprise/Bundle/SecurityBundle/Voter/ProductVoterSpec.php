@@ -49,7 +49,7 @@ class ProductVoterSpec extends ObjectBehavior
         AbstractProduct $product
     ) {
         $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
-        $product->getRootCategoryIds()->willReturn([5, 6]);
+        $product->getTreeIds()->willReturn([5, 6]);
 
         $this
             ->vote($token, $product, [ProductVoter::PRODUCT_EDIT])
@@ -63,7 +63,7 @@ class ProductVoterSpec extends ObjectBehavior
         AbstractProduct $product
     ) {
         $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
-        $product->getRootCategoryIds()->willReturn([1, 6]);
+        $product->getTreeIds()->willReturn([1, 6]);
 
         $this
             ->vote($token, $product, [ProductVoter::PRODUCT_EDIT])

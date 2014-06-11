@@ -94,7 +94,7 @@ class ProductVoter implements VoterInterface
 
         $accessibleTreeIds = $this->categoryAccessRepository->getGrantedCategoryIds($user, $categoryAttribute);
 
-        $intersection = array_intersect($product->getRootCategoryIds(), $accessibleTreeIds);
+        $intersection = array_intersect($product->getTreeIds(), $accessibleTreeIds);
         if (count($intersection)) {
             return true;
         }
