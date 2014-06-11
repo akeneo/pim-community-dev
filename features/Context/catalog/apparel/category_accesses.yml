@@ -1,0 +1,35 @@
+category_accesses:
+    2013_collection:
+        edit: [administrator, manager, user]
+    2014_collection:
+        edit: [administrator, manager, user]
+    2015_collection:
+        edit: [administrator, manager, user]
+    men_2013:
+        edit: [administrator, manager, user]
+    women_2013:
+        edit: [administrator, manager, user]
+    men_2014:
+        edit: [administrator, manager, user]
+    women_2014:
+        edit: [administrator, manager, user]
+    men_2015:
+        edit: [administrator, manager, user]
+    women_2015:
+        edit: [administrator, manager, user]
+    men_2015_spring:
+        edit: [administrator, manager, user]
+    men_2015_summer:
+        edit: [administrator, manager, user]
+    men_2015_autumn:
+        edit: [administrator, manager, user]
+    men_2015_winter:
+        edit: [administrator, manager, user]
+    women_2015_spring:
+        edit: [administrator, manager, user]
+    women_2015_summer:
+        edit: [administrator, manager, user]
+    women_2015_autumn:
+        edit: [administrator, manager, user]
+    women_2015_winter:
+        edit: [administrator, manager, user]

@@ -1,0 +1,15 @@
+attribute_groups_accesses:
+    general:
+        edit: [administrator, manager, user]
+    media:
+        edit: [administrator, manager, user]
+    sales:
+        edit: [administrator, manager, user]
+    sizes:
+        edit: [administrator, manager, user]
+    colors:
+        edit: [administrator, manager, user]
+    additional:
+        edit: [administrator, manager, user]
+    internal:
+        edit: [administrator, manager, user]
