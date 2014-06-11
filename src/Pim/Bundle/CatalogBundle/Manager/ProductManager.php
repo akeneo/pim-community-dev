@@ -4,6 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
@@ -427,8 +428,9 @@ class ProductManager
     protected function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
     {
         return sprintf(
-            '%s-%s-%s-%s-%s',
-            $product->getIdentifier(),
+            '%s-%s-%s-%s-%s-%s',
+            $product->getId(),
+            Urlizer::urlize($product->getIdentifier(), '_'),
             $value->getAttribute()->getCode(),
             $value->getLocale(),
             $value->getScope(),
