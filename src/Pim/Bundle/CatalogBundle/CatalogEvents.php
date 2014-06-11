@@ -35,7 +35,7 @@ final class CatalogEvents
      * This event is thrown each time a product is saved in the system.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductEvent instance.
+     * Pim\Bundle\CatalogBundle\Event\SaveProductEvent instance.
      *
      * @staticvar string
      */
@@ -45,7 +45,7 @@ final class CatalogEvents
      * This event is thrown each time a product is saved in the system.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductEvent instance.
+     * Pim\Bundle\CatalogBundle\Event\SaveProductEvent instance.
      *
      * @staticvar string
      */
