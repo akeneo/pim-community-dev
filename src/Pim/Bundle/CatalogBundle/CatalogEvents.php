@@ -39,7 +39,7 @@ final class CatalogEvents
      *
      * @staticvar string
      */
-    const SAVE_PRODUCT_BEFORE = 'pim_catalog.save_product_before';
+    const PRE_SAVE_PRODUCT = 'pim_catalog.pre_save_product';
 
     /**
      * This event is thrown each time a product is saved in the system.
@@ -49,5 +49,5 @@ final class CatalogEvents
      *
      * @staticvar string
      */
-    const SAVE_PRODUCT_AFTER = 'pim_catalog.save_product_after';
+    const POST_SAVE_PRODUCT = 'pim_catalog.post_save_product';
 }
