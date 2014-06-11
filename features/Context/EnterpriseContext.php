@@ -19,6 +19,16 @@ class EnterpriseContext extends RawMinkContext
     }
 
     /**
+     * @BeforeScenario
+     */
+    public function registerConfigurationDirectory()
+    {
+        $this
+            ->getSubcontext('catalogConfiguration')
+            ->addConfigurationDirectory('../../../../../features/Context/catalog');
+    }
+
+    /**
      * Fallback all unaccessible method calls to the community context
      *
      * For example, some community sub context might use `$this->getMainContext()`

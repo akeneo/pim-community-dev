@@ -73,7 +73,7 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
         return $this->findOneBy(
             [
                 'id'     => $id,
-                'status' => Proposal::WAITING
+                'status' => Proposition::WAITING
             ]
         );
     }
