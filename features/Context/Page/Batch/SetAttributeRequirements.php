@@ -39,7 +39,7 @@ class SetAttributeRequirements extends Wizard
      * @throws \Exception
      * @return NodeElement
      */
-    private function getAttributeRequirementCell($attribute, $channel)
+    protected function getAttributeRequirementCell($attribute, $channel)
     {
         $attributesTable = $this->getElement('Attributes');
         $columnIdx = 0;

@@ -15,7 +15,7 @@ use Behat\Mink\Driver\BrowserKitDriver;
  */
 class Operation extends Wizard
 {
-    private $steps = array(
+    protected $steps = array(
         'Change status (enable / disable)' => 'Batch ChangeStatus',
         'Edit attributes'                  => 'Batch EditCommonAttributes',
         'Change the family of products'    => 'Batch ChangeFamily',
@@ -61,7 +61,7 @@ class Operation extends Wizard
      * @throws \InvalidArgumentException
      * @return string
      */
-    private function getStep($operation)
+    protected function getStep($operation)
     {
         if (!array_key_exists($operation, $this->steps)) {
             throw new \InvalidArgumentException(

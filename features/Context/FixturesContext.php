@@ -33,13 +33,13 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
  */
 class FixturesContext extends RawMinkContext
 {
-    private $locales = array(
+    protected $locales = array(
         'english' => 'en_US',
         'french'  => 'fr_FR',
         'german'  => 'de_DE',
     );
 
-    private $attributeTypes = array(
+    protected $attributeTypes = array(
         'text'         => 'pim_catalog_text',
         'number'       => 'pim_catalog_number',
         'textarea'     => 'pim_catalog_textarea',
@@ -53,7 +53,7 @@ class FixturesContext extends RawMinkContext
         'date'         => 'pim_catalog_date',
     );
 
-    private $entities = array(
+    protected $entities = array(
         'Attribute'       => 'PimCatalogBundle:Attribute',
         'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption' => 'PimCatalogBundle:AttributeOption',
@@ -71,9 +71,9 @@ class FixturesContext extends RawMinkContext
         'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
     );
 
-    private $placeholderValues = array();
+    protected $placeholderValues = array();
 
-    private $username;
+    protected $username;
 
     /**
      * @BeforeScenario
@@ -1116,7 +1116,7 @@ class FixturesContext extends RawMinkContext
      * @param string $familyCode
      * @param string $channelCode
      */
-    private function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
+    protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {
         $em = $this->getEntityManager();
         $repo = $em->getRepository('PimCatalogBundle:AttributeRequirement');
@@ -1172,7 +1172,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return ProductValue
      */
-    private function getProductValue($identifier, $attribute, $locale = null, $scope = null)
+    protected function getProductValue($identifier, $attribute, $locale = null, $scope = null)
     {
         if (null === $product = $this->getProduct($identifier)) {
             throw new \InvalidArgumentException(sprintf('Could not find product with identifier "%s"', $identifier));
@@ -1199,7 +1199,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return GroupType
      */
-    private function createGroupType($code, $label, $isVariant)
+    protected function createGroupType($code, $label, $isVariant)
     {
         $type = new GroupType();
         $type->setCode($code);
@@ -1216,7 +1216,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Attribute
      */
-    private function createAttribute($data)
+    protected function createAttribute($data)
     {
         if (is_string($data)) {
             $data = array('code' => $data);
@@ -1268,7 +1268,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return string
      */
-    private function getAttributeType($type)
+    protected function getAttributeType($type)
     {
         if (!isset($this->attributeTypes[$type])) {
             throw new \InvalidArgumentException(
@@ -1288,7 +1288,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Category
      */
-    private function createTree($code)
+    protected function createTree($code)
     {
         return $this->createCategory($code);
     }
@@ -1298,7 +1298,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Category
      */
-    private function createCategory($data)
+    protected function createCategory($data)
     {
         if (is_string($data)) {
             $data = array(array('code' => $data));
@@ -1327,7 +1327,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Channel
      */
-    private function createChannel($data)
+    protected function createChannel($data)
     {
         if (is_string($data)) {
             $data = [['code' => $data]];
@@ -1375,7 +1375,7 @@ class FixturesContext extends RawMinkContext
      * @param array  $attributes
      * @param array  $products
      */
-    private function createProductGroup($code, $label, $type, array $attributes, array $products = array())
+    protected function createProductGroup($code, $label, $type, array $attributes, array $products = array())
     {
         $group = new Group();
         $group->setCode($code);
@@ -1405,7 +1405,7 @@ class FixturesContext extends RawMinkContext
      * @param string $code
      * @param string $label
      */
-    private function createAssociationType($code, $label)
+    protected function createAssociationType($code, $label)
     {
         $associationType = new AssociationType();
         $associationType->setCode($code);
@@ -1419,7 +1419,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Role
      */
-    private function createRole($data)
+    protected function createRole($data)
     {
         $role = new Role($data['role']);
         $this->persist($role);
@@ -1434,7 +1434,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return AttributeOption
      */
-    private function createOption($code)
+    protected function createOption($code)
     {
         $option = new AttributeOption();
         $option->setCode($code);
@@ -1449,7 +1449,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Family
      */
-    private function createFamily($data)
+    protected function createFamily($data)
     {
         if (is_string($data)) {
             $data = array('code' => $data);
@@ -1469,7 +1469,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return AttributeGroup
      */
-    private function createAttributeGroup($data)
+    protected function createAttributeGroup($data)
     {
         if (is_string($data)) {
             $data = array('code' => $data);
@@ -1491,7 +1491,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return object
      */
-    private function loadFixture($type, array $data, $format = 'csv')
+    protected function loadFixture($type, array $data, $format = 'csv')
     {
         $processor = $this
             ->getContainer()
@@ -1508,7 +1508,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return string
      */
-    private function camelize($string)
+    protected function camelize($string)
     {
         return Inflector::camelize(str_replace(' ', '_', strtolower($string)));
     }
@@ -1516,7 +1516,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    private function getEntityManager()
+    protected function getEntityManager()
     {
         return $this->getMainContext()->getEntityManager();
     }
@@ -1524,7 +1524,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Doctrine\Common\Persistence\ManagerRegistry
      */
-    private function getSmartRegistry()
+    protected function getSmartRegistry()
     {
         return $this->getMainContext()->getSmartRegistry();
     }
@@ -1534,7 +1534,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return Repository
      */
-    private function getRepository($namespace)
+    protected function getRepository($namespace)
     {
         return $this->getSmartRegistry()->getManagerForClass($namespace)->getRepository($namespace);
     }
@@ -1542,7 +1542,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Pim\Bundle\CatalogBundle\Manager\ProductManager
      */
-    private function getProductManager()
+    protected function getProductManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.product');
     }
@@ -1550,7 +1550,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Pim\Bundle\CatalogBundle\Builder\ProductBuilder
      */
-    private function getProductBuilder()
+    protected function getProductBuilder()
     {
         return $this->getContainer()->get('pim_catalog.builder.product');
     }
@@ -1558,7 +1558,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Pim\Bundle\CatalogBundle\Manager\AttributeManager
      */
-    private function getAttributeManager()
+    protected function getAttributeManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.attribute');
     }
@@ -1566,7 +1566,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Pim\Bundle\CatalogBundle\Manager\MediaManager
      */
-    private function getMediaManager()
+    protected function getMediaManager()
     {
         return $this->getContainer()->get('pim_catalog.manager.media');
     }
@@ -1574,7 +1574,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Gaufrette\Filesystem
      */
-    private function getPimFilesystem()
+    protected function getPimFilesystem()
     {
         return $this->getContainer()->get('pim_filesystem');
     }
@@ -1582,7 +1582,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
         return $this->getMainContext()->getContainer();
     }
@@ -1592,7 +1592,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return array
      */
-    private function listToArray($list)
+    protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
     }
@@ -1600,7 +1600,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param object $object
      */
-    private function refresh($object)
+    protected function refresh($object)
     {
         if (is_object($object)) {
             $this->getSmartRegistry()->getManagerForClass(get_class($object))->refresh($object);
@@ -1611,7 +1611,7 @@ class FixturesContext extends RawMinkContext
      * @param object  $object
      * @param boolean $flush
      */
-    private function persist($object, $flush = true)
+    protected function persist($object, $flush = true)
     {
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
         $manager->persist($object);
@@ -1625,7 +1625,7 @@ class FixturesContext extends RawMinkContext
      * @param object  $object
      * @param boolean $flush
      */
-    private function remove($object, $flush = true)
+    protected function remove($object, $flush = true)
     {
         $manager = $this->getSmartRegistry()->getManagerForClass(get_class($object));
         $manager->remove($object);
@@ -1640,7 +1640,7 @@ class FixturesContext extends RawMinkContext
      *
      * @return null
      */
-    private function flush($object = null)
+    protected function flush($object = null)
     {
         if (!$object) {
             return $this->flushAll();
@@ -1653,7 +1653,7 @@ class FixturesContext extends RawMinkContext
     /**
      * Flush all managers
      */
-    private function flushAll()
+    protected function flushAll()
     {
         foreach ($this->getSmartRegistry()->getManagers() as $manager) {
             $manager->flush();

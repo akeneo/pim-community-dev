@@ -27,7 +27,7 @@ class CommandContext extends RawMinkContext
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
         return $this->getMainContext()->getContainer();
     }
