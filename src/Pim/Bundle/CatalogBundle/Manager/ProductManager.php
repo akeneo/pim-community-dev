@@ -254,8 +254,6 @@ class ProductManager
         $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_BEFORE, $event);
         $this->persister->persist($product, $options);
         $this->eventDispatcher->dispatch(CatalogEvents::SAVE_PRODUCT_AFTER, $event);
-
-        die('dede');
     }
 
     /**
