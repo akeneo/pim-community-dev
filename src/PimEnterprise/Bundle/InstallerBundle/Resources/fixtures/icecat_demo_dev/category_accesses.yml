@@ -11,4 +11,3 @@ category_accesses:
     home_appliances:
         view: [administrator, manager]
         edit: [administrator, manager]
-

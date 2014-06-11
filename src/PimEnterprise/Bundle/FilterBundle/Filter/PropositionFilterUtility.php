@@ -42,9 +42,9 @@ class PropositionFilterUtility extends BaseFilterUtility
      * Apply filter
      *
      * @param FilterDatasourceAdapterInterface $ds
-     * @param string $field
-     * @param string $operator
-     * @param mixed  $value
+     * @param string                           $field
+     * @param string                           $operator
+     * @param mixed                            $value
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {

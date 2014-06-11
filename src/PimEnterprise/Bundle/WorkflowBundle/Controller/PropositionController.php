@@ -37,7 +37,7 @@ class PropositionController extends AbstractController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param ObjectRepository         $propositionRepository
-     * @param PropositionManager          $propositionManager
+     * @param PropositionManager       $propositionManager
      */
     public function __construct(
         Request $request,

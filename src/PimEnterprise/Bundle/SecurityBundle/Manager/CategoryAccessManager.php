@@ -31,8 +31,8 @@ class CategoryAccessManager
     /**
      * Constructor
      *
-     * @param ManagerRegistry   $registry
-     * @param string            $categoryAccessClass
+     * @param ManagerRegistry $registry
+     * @param string          $categoryAccessClass
      */
     public function __construct(ManagerRegistry $registry, $categoryAccessClass)
     {
