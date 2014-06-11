@@ -132,7 +132,7 @@ interface ProductInterface
      *
      * @return array
      */
-    public function getRootCategoryIds();
+    public function getTreeIds();
 
     /**
      * Predicate to know if product is enabled or not
