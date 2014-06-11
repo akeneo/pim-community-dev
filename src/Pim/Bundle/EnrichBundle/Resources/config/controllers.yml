@@ -104,6 +104,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
+            - '@event_dispatcher'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%

@@ -128,6 +128,13 @@ interface ProductInterface
     public function removeCategory(CategoryInterface $category);
 
     /**
+     * Get the product root category ids
+     *
+     * @return array
+     */
+    public function getTreeIds();
+
+    /**
      * Predicate to know if product is enabled or not
      *
      * @return boolean

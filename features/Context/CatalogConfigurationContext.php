@@ -21,6 +21,11 @@ class CatalogConfigurationContext extends RawMinkContext
     protected $catalogPath = 'catalog';
 
     /**
+     * @var array Additional catalog configuration directories
+     */
+    protected $extraDirectories = [];
+
+    /**
      * @var ReferenceRepository Fixture reference repository
      */
     protected $referenceRepository;
@@ -44,43 +49,49 @@ class CatalogConfigurationContext extends RawMinkContext
     protected $postEntityLoaders = array(
         'UserLoader'           => 'users',
     );
+
+    /**
+     * Add an additional directory for catalog configuration files
+     *
+     * @param string $directory
+     *
+     * @return CatalogConfigurationContext
+     */
+    public function addConfigurationDirectory($directory)
+    {
+        $this->extraDirectories[] = $directory;
+
+        return $this;
+    }
+
     /**
      * @param string $catalog
      *
-     * @throws ExpectationException If configuration is not found
      * @Given /^(?:a|an|the) "([^"]*)" catalog configuration$/
      */
     public function aCatalogConfiguration($catalog)
     {
-        $directory = sprintf('%s/%s/%s', __DIR__, $this->catalogPath, strtolower($catalog));
+        $this->initializeReferenceRepository();
 
-        if (!file_exists($directory)) {
-            throw $this->getMainContext()->createExpectationException(
-                sprintf('No configuration found for catalog "%s", looked in "%s"', $catalog, $directory)
-            );
-        }
-
-        $this->createCatalog($directory);
+        $this->loadCatalog($this->getConfigurationFiles($catalog));
     }
 
     /**
-     * @param string $directory
+     * @param string[] $files Catalog configuration files to load
      */
-    private function createCatalog($directory)
+    private function loadCatalog($files)
     {
-        $this->initializeReferenceRepository();
-
-        $treatedFiles = array();
+        $treatedFiles = [];
         foreach ($this->preEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
+            $file = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
             $this->runLoader($loader, $file);
         }
 
-        $files = array_diff(glob($directory.'/*'), $treatedFiles);
+        $files = array_diff($files, $treatedFiles);
         if (count($files)) {
             $this->getContainer()
                 ->get('pim_installer.fixture_loader.multiple_loader')
@@ -93,11 +104,73 @@ class CatalogConfigurationContext extends RawMinkContext
 
         foreach ($this->postEntityLoaders as $loaderName => $fileName) {
             $loader = sprintf('%s\%s', $this->entityLoaderPath, $loaderName);
-            $file = $fileName !== null ? sprintf('%s/%s.yml', $directory, $fileName) : null;
+            $file = $this->getLoaderFile($files, $fileName);
             if ($file) {
                 $treatedFiles[] = $file;
             }
             $this->runLoader($loader, $file);
+        }
+    }
+
+    /**
+     * Get the list of catalog configuration file paths to load
+     *
+     * @param string $catalog
+     *
+     * @return string[]
+     *
+     * @throws ExpectationException If configuration is not found
+     */
+    private function getConfigurationFiles($catalog)
+    {
+        $directories = array_merge([$this->catalogPath], $this->extraDirectories);
+
+        $files = [];
+        foreach ($directories as &$directory) {
+            $directory = sprintf('%s/%s/%s', __DIR__, $directory, strtolower($catalog));
+            $files = array_merge($files, glob($directory.'/*'));
+        }
+
+        if (empty($files)) {
+            throw $this->getMainContext()->createExpectationException(
+                sprintf(
+                    'No configuration found for catalog "%s", looked in "%s"',
+                    $catalog,
+                    implode(', ', $directories)
+                )
+            );
+        }
+
+        return $files;
+    }
+
+    /**
+     * Find the appropriate file for the loader in the catalog configuration files
+     *
+     * @param string[]    $files
+     * @param string|null $fileName
+     *
+     * @return string|null
+     *
+     * @throws ExpectationException If the requested file is not found
+     */
+    private function getLoaderFile($files, $fileName)
+    {
+        if ($fileName !== null) {
+            $matchingFiles = array_filter(
+                $files,
+                function ($file) use ($fileName) {
+                    return $fileName === pathinfo($file, PATHINFO_FILENAME);
+                }
+            );
+
+            if (empty($matchingFiles)) {
+                throw $this->getMainContext()->createExpectationException(
+                    sprintf('Catalog configuration file "%s" not found', $fileName)
+                );
+            }
+
+            return end($matchingFiles);
         }
     }
 

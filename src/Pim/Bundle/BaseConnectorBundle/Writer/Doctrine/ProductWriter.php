@@ -9,6 +9,7 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
@@ -32,6 +33,11 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @var VersionManager
      */
     protected $versionManager;
+
+    /**
+     * @var SmartManagerRegistry
+     */
+    protected $managerRegistry;
 
     /**
      * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
@@ -75,15 +81,18 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param ProductManager $productManager
      * @param DoctrineCache  $doctrineCache
      * @param VersionManager $versionManager
+     * @param SmartManagerRegistry $managerRegistry
      */
     public function __construct(
         ProductManager $productManager,
         DoctrineCache $doctrineCache,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        SmartManagerRegistry $managerRegistry
     ) {
-        $this->productManager = $productManager;
-        $this->doctrineCache  = $doctrineCache;
-        $this->versionManager = $versionManager;
+        $this->productManager  = $productManager;
+        $this->doctrineCache   = $doctrineCache;
+        $this->versionManager  = $versionManager;
+        $this->managerRegistry = $managerRegistry;
     }
 
     /**
@@ -176,11 +185,28 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productManager->handleAllMedia($items);
         $this->productManager->saveAll($items, false);
 
-        $objectManager = $this->productManager->getObjectManager();
+        $this->clear();
+    }
 
-        foreach ($objectManager->getUnitOfWork()->getIdentityMap() as $className => $entities) {
-            if (count($entities) && !in_array($className, $this->nonClearableEntities)) {
-                $objectManager->clear($className);
+    /**
+     * Clear the Unit of Work of the manager(s) from the clearable entities
+     * between batch writes
+     */
+    protected function clear()
+    {
+        foreach ($this->managerRegistry->getManagers() as $objectManager) {
+
+            $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
+            $managedClasses = array_keys($identityMap);
+            $nonClearableClasses = array_intersect($managedClasses, $this->nonClearableEntities);
+
+            if (empty($nonClearableClasses)) {
+                $objectManager->clear();
+            } else {
+                $clearableClasses = array_diff($managedClasses, $this->nonClearableEntities);
+                foreach ($clearableClasses as $clearableClass) {
+                    $objectManager->clear($clearableClass);
+                }
             }
         }
         $this->doctrineCache->clear();

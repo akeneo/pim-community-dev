@@ -131,6 +131,3 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
                 - persist
                 - refresh
             mappedBy: value
-            indexBy: currency
-            orderBy:
-                currency: ASC

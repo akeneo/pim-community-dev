@@ -11,7 +11,7 @@
 - Group datagrid filters by attribute groups
 - Ease the adding of new filters and sorters in ProductQueryBuilder
 - All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
-- Ease the adding of subscribers in ProductEditType and AttributeGroupType with addEventSubscriber methods
+- Ease the adding of subscribers in ProductEditType, JobInstanceType and AttributeGroupType with addEventSubscriber methods
 - Introduce a ProductValueFormFactory which dispatch a EnrichEvents::CREATE_PRODUCT_VALUE_FORM to ease the product value form customization
 - MongoDB completeness calculation performances
 - Introduce Abstract models for Association, Media, Metric, Price, to ease the overriding of theses classes
@@ -25,6 +25,8 @@
 - Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
 - Deleting completeness when a locale of a channel is deleted
 - Display flags in the completenesses grid
+- Fixes a memory leak on product import when using MongoDB
+- Fixes a bug with image upload on product with a "\" or "/" in their sku
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -50,6 +52,7 @@
 - Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
 - Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
 - Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
