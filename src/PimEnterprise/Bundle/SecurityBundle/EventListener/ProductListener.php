@@ -27,7 +27,8 @@ class ProductListener implements EventSubscriberInterface
      *
      * @param SecurityContextInterface $securityContext
      */
-    public function __construct(SecurityContextInterface $securityContext) {
+    public function __construct(SecurityContextInterface $securityContext)
+    {
         $this->securityContext = $securityContext;
     }
 
@@ -55,4 +56,4 @@ class ProductListener implements EventSubscriberInterface
             throw new AccessDeniedException();
         }
     }
-} 
+}
