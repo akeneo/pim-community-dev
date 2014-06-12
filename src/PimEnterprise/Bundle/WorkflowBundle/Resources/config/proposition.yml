@@ -3,6 +3,7 @@ parameters:
     pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
     pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
     pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PrepareUploadingMedia
+    pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\InjectCurrentUserPropositionSubscriber
 
 services:
     pimee_workflow.factory.proposition:
@@ -27,5 +28,18 @@ services:
     ##
     pimee_workflow.product_changes_applier.prepare_uploading_media:
         class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ##
+    # Product to edit preparation
+    ##
+    pimee_workflow.subscriber.inject_current_user_proposition:
+        class: %pimee_workflow.subscriber.inject_current_user_proposition.class%
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_catalog.context.catalog'
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.persister.product_changes_applier'
         tags:
             - { name: kernel.event_subscriber }
