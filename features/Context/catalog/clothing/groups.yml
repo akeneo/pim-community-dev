@@ -1,0 +1,12 @@
+groups:
+    hm_jackets:
+        type: VARIANT
+        labels:
+            en_US: H&M jackets
+        attributes:
+            - main_color
+            - size
+    similar_jackets:
+        type: RELATED
+        labels:
+            en_US: Similar jackets
