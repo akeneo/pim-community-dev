@@ -108,7 +108,7 @@ class CategoryAccessManager
     }
 
     /**
-     * Get CategoryeAccess entity for a category and role
+     * Get CategoryAccess entity for a category and role
      *
      * @param CategoryInterface $category
      * @param Role              $role
