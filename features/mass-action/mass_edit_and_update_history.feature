@@ -82,6 +82,7 @@ Feature: Update product history when mass editing products
     And I visit the "History" tab
     Then there should be 1 update
 
+  @skip
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
