@@ -33,7 +33,7 @@ class UserContext extends BaseUserContext
             return $defaultTree;
         }
 
-        $trees = $this->categoryManager->getAccessibleTrees();
+        $trees = $this->categoryManager->getAccessibleTrees($this->getUser());
 
         if (count($trees)) {
             return current($trees);

@@ -1,5 +1,6 @@
 parameters:
     pimee_security.event_listener.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventListener\DisableProductValueFieldListener
+    pimee_security.event_listener.product.class:                    PimEnterprise\Bundle\SecurityBundle\EventListener\ProductListener
 
 services:
     pimee_security.event_listener.disable_product_value_form:
@@ -8,3 +9,11 @@ services:
             - '@security.context'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_security.event_listener.product:
+        class: %pimee_security.event_listener.product.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: kernel.event_subscriber }
+
