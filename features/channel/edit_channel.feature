@@ -21,8 +21,8 @@ Feature: Edit a channel
     Given I am on the "mobile" channel page
     When I fill in the following information:
       | Default label | My mobile |
-    Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the channel if you leave this page. |

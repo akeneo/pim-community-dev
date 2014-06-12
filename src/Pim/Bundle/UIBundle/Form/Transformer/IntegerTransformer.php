@@ -18,11 +18,15 @@ class IntegerTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        return $value;
+        return (double) $value;
     }
 
     /**
      * {@inheritdoc}
+     *
+     * If $value is integer we explicitly cast it as integer.
+     * Otherwise we return value as it was.
+     * $value can be a string so we have to check this case
      */
     public function transform($value)
     {

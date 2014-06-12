@@ -367,7 +367,7 @@ class AssertionContext extends RawMinkContext
     /**
      * @return Page
      */
-    private function getCurrentPage()
+    protected function getCurrentPage()
     {
         return $this->getMainContext()->getSubcontext('navigation')->getCurrentPage();
     }
@@ -377,7 +377,7 @@ class AssertionContext extends RawMinkContext
      *
      * @return ExpectationException
      */
-    private function createExpectationException($message)
+    protected function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
     }
@@ -387,7 +387,7 @@ class AssertionContext extends RawMinkContext
      *
      * @return string
      */
-    private function replacePlaceholders($value)
+    protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }

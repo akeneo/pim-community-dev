@@ -79,7 +79,7 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * @param string[] $files Catalog configuration files to load
      */
-    private function loadCatalog($files)
+    protected function loadCatalog($files)
     {
         $treatedFiles = [];
         foreach ($this->preEntityLoaders as $loaderName => $fileName) {
@@ -121,7 +121,7 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @throws ExpectationException If configuration is not found
      */
-    private function getConfigurationFiles($catalog)
+    protected function getConfigurationFiles($catalog)
     {
         $directories = array_merge([$this->catalogPath], $this->extraDirectories);
 
@@ -154,7 +154,7 @@ class CatalogConfigurationContext extends RawMinkContext
      *
      * @throws ExpectationException If the requested file is not found
      */
-    private function getLoaderFile($files, $fileName)
+    protected function getLoaderFile($files, $fileName)
     {
         if ($fileName !== null) {
             $matchingFiles = array_filter(
@@ -177,7 +177,7 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * Initialize the reference repository
      */
-    private function initializeReferenceRepository()
+    protected function initializeReferenceRepository()
     {
         $this->referenceRepository = new ReferenceRepository($this->getEntityManager());
         $listener = new ORMReferenceListener($this->referenceRepository);
@@ -189,7 +189,7 @@ class CatalogConfigurationContext extends RawMinkContext
      * @param string $loaderClass
      * @param string $filePath
      */
-    private function runLoader($loaderClass, $filePath)
+    protected function runLoader($loaderClass, $filePath)
     {
         $loader = new $loaderClass();
         $loader->setContainer($this->getContainer());
@@ -203,7 +203,7 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * @return \Doctrine\ORM\EntityManager
      */
-    private function getEntityManager()
+    protected function getEntityManager()
     {
         return $this->getMainContext()->getEntityManager();
     }
@@ -211,7 +211,7 @@ class CatalogConfigurationContext extends RawMinkContext
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
      */
-    private function getContainer()
+    protected function getContainer()
     {
         return $this->getMainContext()->getContainer();
     }

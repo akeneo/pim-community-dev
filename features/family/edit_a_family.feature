@@ -30,8 +30,8 @@ Feature: Edit a family
     Given I am on the "Boots" family page
     And I fill in the following information:
       | English (United States) | NewBoots |
-    Then I should see "There are unsaved changes."
     When I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                  |
       | content | You will lose changes to the family if you leave the page. |

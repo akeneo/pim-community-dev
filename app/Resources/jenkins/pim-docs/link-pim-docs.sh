@@ -2,6 +2,9 @@
 
 # clone custom-entity-bundle repository
 git clone https://github.com/akeneo/CustomEntityBundle.git
+cd CustomEntityBundle
+git checkout --track -b pim-dev origin/pim-dev
+cd ..
 
 # clone pim-docs repository
 git clone https://github.com/akeneo/pim-docs.git

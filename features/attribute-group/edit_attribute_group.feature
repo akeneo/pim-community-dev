@@ -21,8 +21,8 @@ Feature: Edit an attribute group
     Given I am on the "media" attribute group page
     When I fill in the following information:
       | English (United States) | My media |
-    Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                            |
       | content | You will lose changes to the attribute group if you leave this page. |

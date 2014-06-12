@@ -24,9 +24,9 @@ use Behat\Behat\Exception\BehaviorException;
  */
 class WebUser extends RawMinkContext
 {
-    private $windowWidth;
+    protected $windowWidth;
 
-    private $windowHeight;
+    protected $windowHeight;
 
     /**
      * Constructor
@@ -1746,7 +1746,7 @@ class WebUser extends RawMinkContext
      *
      * @return Page
      */
-    private function openPage($page, array $options = array())
+    protected function openPage($page, array $options = array())
     {
         $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();
@@ -1757,7 +1757,7 @@ class WebUser extends RawMinkContext
     /**
      * @return Page
      */
-    private function getCurrentPage()
+    protected function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -1767,7 +1767,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function getInvalidValueFor($field)
+    protected function getInvalidValueFor($field)
     {
         switch (strtolower($field)) {
             case 'family edit.code':
@@ -1786,7 +1786,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function lorem($length = 100)
+    protected function lorem($length = 100)
     {
         $lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore'
             .'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut'
@@ -1807,7 +1807,7 @@ class WebUser extends RawMinkContext
      *
      * @return void
      */
-    private function wait($time = 10000, $condition = null)
+    protected function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }
@@ -1815,7 +1815,7 @@ class WebUser extends RawMinkContext
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
@@ -1823,7 +1823,7 @@ class WebUser extends RawMinkContext
     /**
      * @return NavigationContext
      */
-    private function getNavigationContext()
+    protected function getNavigationContext()
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
@@ -1833,7 +1833,7 @@ class WebUser extends RawMinkContext
      *
      * @return array
      */
-    private function listToArray($list)
+    protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
     }
@@ -1843,7 +1843,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function getLocaleCode($language)
+    protected function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
     }
@@ -1853,7 +1853,7 @@ class WebUser extends RawMinkContext
      *
      * @return ExpectationException
      */
-    private function createExpectationException($message)
+    protected function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
     }
@@ -1863,7 +1863,7 @@ class WebUser extends RawMinkContext
      *
      * @return MailRecorder
      */
-    private function getMailRecorder()
+    protected function getMailRecorder()
     {
         return $this->getMainContext()->getMailRecorder();
     }
@@ -1873,7 +1873,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function replacePlaceholders($value)
+    protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }

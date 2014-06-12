@@ -506,7 +506,7 @@ class Grid extends Index
      *
      * @throws \InvalidArgumentException
      */
-    private function activateFilter($filterName)
+    protected function activateFilter($filterName)
     {
         if (!$this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
@@ -519,7 +519,7 @@ class Grid extends Index
      *
      * @throws \InvalidArgumentException
      */
-    private function deactivateFilter($filterName)
+    protected function deactivateFilter($filterName)
     {
         if ($this->getFilter($filterName)->isVisible()) {
             $this->clickOnFilterToManage($filterName);
@@ -538,7 +538,7 @@ class Grid extends Index
      *
      * @throws \InvalidArgumentException
      */
-    private function clickOnFilterToManage($filterName)
+    protected function clickOnFilterToManage($filterName)
     {
         try {
             $this
@@ -555,7 +555,7 @@ class Grid extends Index
     /**
      * Open/close filters list
      */
-    private function clickFiltersList()
+    protected function clickFiltersList()
     {
         $this
             ->getElement('Filters')
