@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
@@ -19,6 +20,28 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
  */
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function createProduct($data)
+    {
+        $product = parent::createProduct($data);
+
+        // add the first root category to all created products so that they can be edited
+        $categories = $this->getCategoryRepository()->findAll();
+        foreach ($categories as $category) {
+            if ($category->isRoot()) {
+                $product->addCategory($category);
+                break;
+            }
+        }
+
+        $this->getProductManager()->getObjectManager()->flush();
+
+        return $product;
+    }
+
+
     /**
      * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
@@ -130,6 +153,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getPropositionFactory()
     {
         return $this->getContainer()->get('pimee_workflow.factory.proposition');
+    }
+
+    /**
+     * @return CategoryRepository
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->getContainer()->get('pim_catalog.repository.category');
     }
 
     /**
