@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  */
-class FixturesEnterpriseContext extends BaseFixturesContext
+class EnterpriseFixturesContext extends BaseFixturesContext
 {
     /**
      * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
