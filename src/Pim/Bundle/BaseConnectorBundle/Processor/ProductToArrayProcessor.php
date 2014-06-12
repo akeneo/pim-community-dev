@@ -10,6 +10,8 @@ use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 
 /**
+ * Process a product to an array
+ *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
@@ -25,7 +27,7 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
      * @Assert\NotBlank(groups={"Execution"})
      * @Channel
      *
-     * @var string Channel code
+     * @var string $channel Channel code
      */
     protected $channel;
 
@@ -35,7 +37,7 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
     protected $channelManager;
 
     /**
-     * @var array
+     * @var array Normalizer context
      */
     protected $normalizerContext;
 
@@ -81,17 +83,21 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
     /**
      * Set channel
      *
-     * @param string $channel
+     * @param string $channelCode Channel code
+     *
+     * @return $this
      */
-    public function setChannel($channel)
+    public function setChannel($channelCode)
     {
-        $this->channel = $channel;
+        $this->channel = $channelCode;
+
+        return $this;
     }
 
     /**
      * Get channel
      *
-     * @return string
+     * @return string Channel code
      */
     public function getChannel()
     {
