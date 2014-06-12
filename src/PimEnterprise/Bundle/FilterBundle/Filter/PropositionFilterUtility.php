@@ -23,7 +23,7 @@ class PropositionFilterUtility extends BaseFilterUtility
     /**
      * Constructor
      *
-     * @param PropositionRepositoryInterface $propositionRepository
+     * @param PropositionRepositoryInterface $proposalRepository
      */
     public function __construct(PropositionRepositoryInterface $proposalRepository)
     {
