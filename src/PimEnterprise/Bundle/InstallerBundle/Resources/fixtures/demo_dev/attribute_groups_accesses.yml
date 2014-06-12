@@ -13,4 +13,3 @@ attribute_groups_accesses:
         edit: [administrator]
     colors:
         view: [administrator]
-

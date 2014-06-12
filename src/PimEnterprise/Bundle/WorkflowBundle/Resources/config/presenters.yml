@@ -25,6 +25,8 @@ services:
             - '@pim_catalog.repository.attribute'
             - '@pimee_workflow.proposition_renderer'
             - '@translator'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.attribute'
         tags:
             - { name: twig.extension }
 

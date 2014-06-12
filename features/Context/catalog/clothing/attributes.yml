@@ -1,0 +1,231 @@
+attributes:
+    sku:
+        labels:
+            en_US: SKU
+        type:  pim_catalog_identifier
+        group: info
+        required:            true
+        unique:              true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
+    name:
+        labels:
+            en_US: Name
+        type:  pim_catalog_text
+        group: info
+        localizable:         true
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
+    manufacturer:
+        labels:
+            en_US: Manufacturer
+        type:  pim_catalog_simpleselect
+        group: info
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           3
+        options:
+            Volcom:
+                labels:
+                    en_US: Volcom
+            Desigual:
+                labels:
+                    en_US: Desigual
+            Nike:
+                labels:
+                    en_US: Nike
+            H&M:
+                labels:
+                    en_US: H&M
+    weather_conditions:
+        labels:
+            en_US: Weather conditions
+        type:  pim_catalog_multiselect
+        group: info
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        sortOrder:           4
+        options:
+            dry:
+                labels:
+                    en_US: Dry
+            wet:
+                labels:
+                    en_US: Wet
+            hot:
+                labels:
+                    en_US: Hot
+            cold:
+                labels:
+                    en_US: Cold
+            snowy:
+                labels:
+                    en_US: Snowy
+    description:
+        labels:
+            en_US: Description
+        type:  pim_catalog_textarea
+        group: info
+        localizable:         true
+        scopable:            true
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        maxCharacters:       1000
+        sortOrder:           5
+    comment:
+        labels:
+            en_US: Comment
+        type:  pim_catalog_text
+        useableAsGridColumn: false
+        useableAsGridFilter: true
+        maxCharacters:       255
+    price:
+        labels:
+            en_US: Price
+        type:  pim_catalog_price_collection
+        group: marketing
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        numberMin:           1
+        numberMax:           200
+        sortOrder:           1
+        decimalsAllowed:     true
+    rating:
+        labels:
+            en_US: Rating
+        type:  pim_catalog_simpleselect
+        group: marketing
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
+        options:
+            1:
+                labels:
+                    en_US: 1 star
+            2:
+                labels:
+                    en_US: 2 stars
+            3:
+                labels:
+                    en_US: 3 stars
+            4:
+                labels:
+                    en_US: 4 stars
+            5:
+                labels:
+                    en_US: 5 stars
+    side_view:
+        labels:
+            en_US: Side view
+        type:  pim_catalog_image
+        group: media
+        maxFileSize: 1
+        sortOrder:   1
+        allowedExtensions: gif,png,jpeg
+    top_view:
+        labels:
+            en_US: Top view
+        type:  pim_catalog_image
+        group: media
+        maxFileSize: 1
+        sortOrder:   2
+        allowedExtensions: gif,png,jpeg
+    video:
+        labels:
+            en_US: Top view
+        type:  pim_catalog_file
+        group: media
+        maxFileSize: 1
+        sortOrder:   2
+        allowedExtensions: avi
+    size:
+        labels:
+            en_US: Size
+        type:  pim_catalog_simpleselect
+        group: sizes
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
+        options:
+            XS:
+                labels:
+                    en_US: XS
+            S:
+                labels:
+                    en_US: S
+            M:
+                labels:
+                    en_US: M
+            L:
+                labels:
+                    en_US: L
+            XL:
+                labels:
+                    en_US: XL
+            XXL:
+                labels:
+                    en_US: XXL
+    main_color:
+        labels:
+            en_US: Main color
+        type:  pim_catalog_simpleselect
+        group: colors
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           1
+        options:
+            white:
+                labels:
+                    en_US: White
+            black:
+                labels:
+                    en_US: Black
+            blue:
+                labels:
+                    en_US: Blue
+            maroon:
+                labels:
+                    en_US: Maroon
+            saddle:
+                labels:
+                    en_US: Saddle
+            greem:
+                labels:
+                    en_US: Greem
+            red:
+                labels:
+                    en_US: Red
+            charcoal:
+                labels:
+                    en_US: Charcoal
+    secondary_color:
+        labels:
+            en_US: Secondary color
+        type:  pim_catalog_simpleselect
+        group: colors
+        useableAsGridColumn: true
+        useableAsGridFilter: true
+        sortOrder:           2
+        options:
+            white:
+                labels:
+                    en_US: White
+            black:
+                labels:
+                    en_US: Black
+            blue:
+                labels:
+                    en_US: Blue
+            green:
+                labels:
+                    en_US: Green
+    length:
+        labels:
+            en_US: Length
+        type:  pim_catalog_metric
+        group: sizes
+        sortOrder:   10
+        metricFamily: Length
+        defaultMetricUnit: CENTIMETER
