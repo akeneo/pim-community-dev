@@ -5,11 +5,13 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model;
-use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
+use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 class PropositionChangesExtensionSpec extends ObjectBehavior
 {
@@ -19,9 +21,11 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         RendererInterface $renderer,
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
-        PresenterInterface $valuePresenter
+        PresenterInterface $valuePresenter,
+        ProductManager $productManager,
+        AttributeManager $attributeManager
     ) {
-        $this->beConstructedWith($valueRepository, $attributeRepository, $renderer, $translator);
+        $this->beConstructedWith($valueRepository, $attributeRepository, $renderer, $translator, $productManager, $attributeManager);
 
         $this->addPresenter($attributePresenter, 0);
         $this->addPresenter($valuePresenter, 1);

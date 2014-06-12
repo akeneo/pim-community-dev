@@ -32,5 +32,5 @@ abstract class AbstractComparator implements ComparatorInterface
     /**
      *
      */
-    abstract function getDataChanges(AbstractProductValue $value, $submittedData);
+    abstract public function getDataChanges(AbstractProductValue $value, $submittedData);
 }

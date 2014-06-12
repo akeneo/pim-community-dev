@@ -11,4 +11,3 @@ category_accesses:
     computers:
         view: [administrator, manager]
         edit: [administrator, manager]
-

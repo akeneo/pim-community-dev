@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
  * Store product through propositions
@@ -34,25 +35,31 @@ class PropositionPersister implements ProductPersister
     /** @var CollectProductValuesSubscriber */
     protected $collector;
 
+    /** @var PropositionRepositoryInterface */
+    protected $proposalRepository;
+
     /**
-     * @param ManagerRegistry          $registry
-     * @param CompletenessManager      $completenessManager
-     * @param SecurityContextInterface $securityContext
-     * @param PropositionFactory          $factory
-     * @param ProductChangesProvider   $changesProvider
+     * @param ManagerRegistry                $registry
+     * @param CompletenessManager            $completenessManager
+     * @param SecurityContextInterface       $securityContext
+     * @param PropositionFactory             $factory
+     * @param ProductChangesProvider         $changesProvider
+     * @param PropositionRepositoryInterface $proposalRepository
      */
     public function __construct(
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
-        CollectProductValuesSubscriber $collector
+        CollectProductValuesSubscriber $collector,
+        PropositionRepositoryInterface $proposalRepository
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
         $this->collector = $collector;
+        $this->proposalRepository = $proposalRepository;
     }
 
     /**
@@ -113,14 +120,25 @@ class PropositionPersister implements ProductPersister
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
         $changes = $this->collector->getChanges();
+        $username = $this->getUser()->getUsername();
+        $locale = $product->getLocale();
+        $proposition = $this->proposalRepository->findUserProposition($username, $locale);
 
         if (empty($changes)) {
+            if (null !== $proposition) {
+                $manager->remove($proposition);
+            }
+
             return $manager->flush();
         }
 
-        $proposition = $this->factory->createProposition($product, $this->getUser()->getUsername(), $changes);
+        if (null === $proposition) {
+            $proposition = $this->factory->createProposition($product, $username, $locale);
+            $manager->persist($proposition);
+        }
 
-        $manager->persist($proposition);
+        $proposition->setChanges($changes);
+
         $manager->flush();
     }
 

@@ -1,0 +1,99 @@
+families:
+    jackets:
+        labels:
+            en_US: Jackets
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - weather_conditions
+            - price
+            - rating
+            - side_view
+            - top_view
+            - size
+            - main_color
+            - secondary_color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - sku
+                - name
+                - description
+                - weather_conditions
+                - price
+                - rating
+                - side_view
+                - size
+                - main_color
+            mobile:
+                - sku
+                - name
+                - price
+                - size
+                - main_color
+    pants:
+        labels:
+            en_US: Pants
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - weather_conditions
+            - price
+            - rating
+            - side_view
+            - top_view
+            - size
+            - main_color
+            - secondary_color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - sku
+                - name
+                - description
+                - weather_conditions
+                - price
+                - rating
+                - side_view
+                - size
+                - main_color
+            mobile:
+                - sku
+                - name
+                - price
+                - size
+                - main_color
+    tees:
+        labels:
+            en_US: Tees
+        attributes:
+            - sku
+            - name
+            - manufacturer
+            - description
+            - price
+            - rating
+            - side_view
+            - size
+            - main_color
+        attributeAsLabel: name
+        requirements:
+            tablet:
+                - sku
+                - name
+                - description
+                - price
+                - rating
+                - side_view
+                - size
+                - main_color
+            mobile:
+                - sku
+                - name
+                - price
+                - size
+                - main_color

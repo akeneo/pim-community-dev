@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
 class PropositionController extends AbstractController
 {
     /** @var ObjectRepository */
-    protected $propositionRepository;
+    protected $proposalRepository;
 
     /** @var PropositionManager */
     protected $propositionManager;
@@ -36,8 +36,8 @@ class PropositionController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param ObjectRepository         $propositionRepository
-     * @param PropositionManager          $propositionManager
+     * @param ObjectRepository         $proposalRepository
+     * @param PropositionManager       $propositionManager
      */
     public function __construct(
         Request $request,
@@ -47,7 +47,7 @@ class PropositionController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        ObjectRepository $propositionRepository,
+        ObjectRepository $proposalRepository,
         PropositionManager $propositionManager
     ) {
         parent::__construct(
@@ -59,7 +59,7 @@ class PropositionController extends AbstractController
             $validator,
             $translator
         );
-        $this->propositionRepository = $propositionRepository;
+        $this->proposalRepository = $proposalRepository;
         $this->propositionManager = $propositionManager;
     }
 
@@ -71,7 +71,7 @@ class PropositionController extends AbstractController
      */
     public function approveAction($id)
     {
-        if (null === $proposition = $this->propositionRepository->findOpen($id)) {
+        if (null === $proposition = $this->proposalRepository->findOpen($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
@@ -95,7 +95,7 @@ class PropositionController extends AbstractController
      */
     public function refuseAction($id)
     {
-        if (null === $proposition = $this->propositionRepository->findOpen($id)) {
+        if (null === $proposition = $this->proposalRepository->findOpen($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 

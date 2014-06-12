@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposition;
 
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Extension\Sorter\SorterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
  * Field sorter for propositions
