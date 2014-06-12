@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -40,7 +41,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(self::VIEW_PRODUCTS, self::EDIT_PRODUCTS));
+        return in_array($attribute, [self::VIEW_PRODUCTS, self::EDIT_PRODUCTS]);
     }
 
     /**
@@ -79,8 +80,8 @@ class CategoryVoter implements VoterInterface
     /**
      * Get roles for specific attribute and object
      *
-     * @param string   $attribute
-     * @param Category $object
+     * @param string            $attribute
+     * @param CategoryInterface $object
      *
      * @return Role[]
      */

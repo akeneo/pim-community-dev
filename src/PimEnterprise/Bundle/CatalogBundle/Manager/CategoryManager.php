@@ -6,7 +6,9 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category manager
@@ -17,35 +19,40 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 class CategoryManager extends BaseCategoryManager
 {
     /**
-     * @var SecurityContextInterface
+     * @var CategoryAccessRepository
      */
-    protected $securityContext;
+    protected $categoryAccessRepository;
 
     /**
      * Constructor
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
-     * @param SecurityContextInterface $securityContext
+     * @param CategoryAccessRepository $categoryAccessRepository
      */
-    public function __construct(ObjectManager $om, $categoryClass, SecurityContextInterface $securityContext)
+    public function __construct(ObjectManager $om, $categoryClass, CategoryAccessRepository $categoryAccessRepository)
     {
         parent::__construct($om, $categoryClass);
 
-        $this->securityContext = $securityContext;
+        $this->categoryAccessRepository = $categoryAccessRepository;
     }
 
     /**
      * Get the trees accessible by the current user.
      *
+     * @param UserInterface $user
+     * @param string        $accessLevel
+     *
      * @return array
      */
-    public function getAccessibleTrees()
+    public function getAccessibleTrees(UserInterface $user, $accessLevel = CategoryVoter::VIEW_PRODUCTS)
     {
+        $accessibleCategoryIds = $this->categoryAccessRepository->getGrantedCategoryIds($user, $accessLevel);
+
         $trees = [];
 
         foreach ($this->getTrees() as $tree) {
-            if ($this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $tree)) {
+            if (in_array($tree->getId(), $accessibleCategoryIds)) {
                 $trees[] = $tree;
             }
         }

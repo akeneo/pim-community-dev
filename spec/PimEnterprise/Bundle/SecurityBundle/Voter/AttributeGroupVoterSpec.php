@@ -26,10 +26,10 @@ class AttributeGroupVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_abstain_access_if_not_supported_entity($token, AttributeGroup $attGroup)
+    function it_returns_abstain_access_if_not_supported_entity($token, AttributeGroupVoter $wrongClass)
     {
         $this
-            ->vote($token, $attGroup, array('bar'))
+            ->vote($token, $wrongClass, [AttributeGroupVoter::VIEW_ATTRIBUTES])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
