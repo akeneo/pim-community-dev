@@ -21,8 +21,8 @@ Feature: Edit an association type
     Given I am on the "PACK" association type page
     When I fill in the following information:
       | English (United States) | My pack |
-    Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                             |
       | content | You will lose changes to the association type if you leave this page. |
