@@ -56,8 +56,8 @@ class JobProfileAccessRepository extends EntityRepository
         $qb = $this->createQueryBuilder('a');
         $qb
             ->delete()
-            ->where('a.attributeGroup = :group')
-            ->setParameter('group', $group);
+            ->where('a.jobProfile = :jobProfile')
+            ->setParameter('jobProfile', $jobProfile);
 
         if (!empty($excludedRoles)) {
             $qb

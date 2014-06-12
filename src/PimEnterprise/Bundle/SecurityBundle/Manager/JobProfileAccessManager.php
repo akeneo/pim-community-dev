@@ -20,18 +20,18 @@ class JobProfileAccessManager
     protected $registry;
 
     /** @var string */
-    protected $jobProfileAccessClass;
+    protected $objectAccessClass;
 
     /**
      * Constructor
      *
      * @param ManagerRegistry $registry
-     * @param string          $jobProfileAccessClass
+     * @param string          $objectAccessClass
      */
-    public function __construct(ManagerRegistry $registry, $jobProfileAccessClass)
+    public function __construct(ManagerRegistry $registry, $objectAccessClass)
     {
-        $this->registry              = $registry;
-        $this->jobProfileAccessClass = $jobProfileAccessClass;
+        $this->registry          = $registry;
+        $this->objectAccessClass = $objectAccessClass;
     }
 
     /**
@@ -120,7 +120,7 @@ class JobProfileAccessManager
             );
 
         if (!$access) {
-            $access = new $this->jobProfileAccessClass();
+            $access = new $this->objectAccessClass();
             $access
                 ->setJobProfile($jobProfile)
                 ->setRole($role);
@@ -150,7 +150,7 @@ class JobProfileAccessManager
      */
     protected function getRepository()
     {
-        return $this->registry->getRepository($this->jobProfileAccessClass);
+        return $this->registry->getRepository($this->objectAccessClass);
     }
 
     /**
@@ -160,6 +160,6 @@ class JobProfileAccessManager
      */
     protected function getObjectManager()
     {
-        return $this->registry->getManagerForClass($this->jobProfileAccessClass);
+        return $this->registry->getManagerForClass($this->objectAccessClass);
     }
 }

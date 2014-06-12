@@ -21,20 +21,20 @@ class CategoryManager extends BaseCategoryManager
     /**
      * @var CategoryAccessRepository
      */
-    protected $categoryAccessRepository;
+    protected $categoryAccessRepo;
 
     /**
      * Constructor
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
-     * @param CategoryAccessRepository $categoryAccessRepository
+     * @param CategoryAccessRepository $categoryAccessRepo
      */
-    public function __construct(ObjectManager $om, $categoryClass, CategoryAccessRepository $categoryAccessRepository)
+    public function __construct(ObjectManager $om, $categoryClass, CategoryAccessRepository $categoryAccessRepo)
     {
         parent::__construct($om, $categoryClass);
 
-        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
@@ -47,7 +47,7 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getAccessibleTrees(UserInterface $user, $accessLevel = CategoryVoter::VIEW_PRODUCTS)
     {
-        $accessibleCategoryIds = $this->categoryAccessRepository->getGrantedCategoryIds($user, $accessLevel);
+        $accessibleCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
         $trees = [];
 

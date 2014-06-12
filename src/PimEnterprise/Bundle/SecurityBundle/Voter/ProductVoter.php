@@ -27,14 +27,14 @@ class ProductVoter implements VoterInterface
     /**
      * @var CategoryAccessRepository
      */
-    protected $categoryAccessRepository;
+    protected $categoryAccessRepo;
 
     /**
-     * @param CategoryAccessRepository $categoryAccessRepository
+     * @param CategoryAccessRepository $categoryAccessRepo
      */
-    public function __construct(CategoryAccessRepository $categoryAccessRepository)
+    public function __construct(CategoryAccessRepository $categoryAccessRepo)
     {
-        $this->categoryAccessRepository = $categoryAccessRepository;
+        $this->categoryAccessRepo = $categoryAccessRepo;
     }
 
     /**
@@ -92,7 +92,7 @@ class ProductVoter implements VoterInterface
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
 
-        $accessibleTreeIds = $this->categoryAccessRepository->getGrantedCategoryIds($user, $categoryAttribute);
+        $accessibleTreeIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
 
         $intersection = array_intersect($product->getTreeIds(), $accessibleTreeIds);
         if (count($intersection)) {
