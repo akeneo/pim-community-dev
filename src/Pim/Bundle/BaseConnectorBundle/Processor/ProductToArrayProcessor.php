@@ -43,7 +43,6 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
      * @param FlatProductNormalizer $flatProductNormalizer
      * @param ChannelManager        $channelManager
      */
-
     public function __construct(
         FlatProductNormalizer $flatProductNormalizer,
         ChannelManager $channelManager
