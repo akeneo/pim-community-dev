@@ -122,7 +122,7 @@ class PropositionPersister implements ProductPersister
         $changes = $this->collector->getChanges();
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
-        $proposition = $this->repository->findUserProposition($username, $locale);
+        $proposition = $this->repository->findUserProposition($product, $username, $locale);
 
         if (empty($changes)) {
             if (null !== $proposition) {

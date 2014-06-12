@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
@@ -69,6 +70,7 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
 
         if ((null !== $user = $this->userContext->getUser())
             && (null !== $proposition = $this->getProposition(
+                $product,
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
@@ -79,13 +81,14 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
     /**
      * Get a proposition
      *
-     * @param string $username
-     * @param string $locale
+     * @param AbstractProduct $product
+     * @param string          $username
+     * @param string          $locale
      *
      * @return Proposition|null
      */
-    protected function getProposition($username, $locale)
+    protected function getProposition(AbstractProduct $product, $username, $locale)
     {
-        return $this->repository->findUserProposition($username, $locale);
+        return $this->repository->findUserProposition($product, $username, $locale);
     }
 }
