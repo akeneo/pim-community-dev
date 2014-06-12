@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFormView
+class ProductFormView implements ProductFormViewInterface
 {
     /**
      * A list of the attribute types for which creating a new option is allowed
@@ -27,13 +27,11 @@ class ProductFormView
         'pim_catalog_simpleselect'
     );
 
-    /**
-     * @var FormView|array
-     */
-    protected $view = array();
+    /** @var FormView|array */
+    protected $view = [];
 
     /**
-     * @return FormView
+     * {@inheritdoc}
      */
     public function getView()
     {
@@ -41,8 +39,7 @@ class ProductFormView
     }
 
     /**
-     * @param ProductValueInterface $value
-     * @param FormView              $view
+     * {@inheritdoc}
      */
     public function addChildren(ProductValueInterface $value, FormView $view)
     {
