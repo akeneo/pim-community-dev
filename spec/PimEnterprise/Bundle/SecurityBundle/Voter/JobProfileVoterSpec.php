@@ -26,10 +26,10 @@ class JobProfileVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_abstain_access_if_not_supported_entity($token, JobInstance $jobProfile)
+    function it_returns_abstain_access_if_not_supported_entity($token, JobProfileVoter $jobProfile)
     {
         $this
-            ->vote($token, $jobProfile, array('bar'))
+            ->vote($token, $jobProfile, [JobProfileVoter::EDIT_JOB_PROFILE])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
