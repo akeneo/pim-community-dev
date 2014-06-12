@@ -292,7 +292,7 @@ class UserContext
     /**
      * Get authenticated user
      *
-     * @return UserInterface|null
+     * @return UserInterface|string|null
      */
     public function getUser()
     {
