@@ -26,10 +26,10 @@ class CategoryVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_abstain_access_if_not_supported_entity($token, Category $category)
+    function it_returns_abstain_access_if_not_supported_entity($token, CategoryVoter $wrongClass)
     {
         $this
-            ->vote($token, $category, array('bar'))
+            ->vote($token, $wrongClass, [CategoryVoter::VIEW_PRODUCTS])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 

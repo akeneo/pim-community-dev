@@ -5,12 +5,15 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -20,34 +23,61 @@ class CategoryManagerSpec extends ObjectBehavior
     }
 
     function let(
-        SecurityContextInterface $securityContext,
+        CategoryAccessRepository $categoryAccessRepository,
         ObjectManager $om,
-        CategoryRepository $categoryRepository,
-        TokenInterface $token,
-        User $user
+        CategoryRepository $categoryRepository
     ) {
-        $securityContext->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
-        $this->beConstructedWith($om, Argument::any(), $securityContext);
+        $this->beConstructedWith($om, Argument::any(), $categoryAccessRepository);
     }
 
-    function it_gets_accessible_trees(
-        $securityContext,
+    function it_gets_accessible_trees_for_display(
+        $categoryAccessRepository,
         $categoryRepository,
-        CategoryInterface $firstTree,
-        CategoryInterface $secondTree,
-        CategoryInterface $thirdTree
+        Category $firstTree,
+        Category $secondTree,
+        Category $thirdTree,
+        User $user
     ) {
+        $firstTree->getId()->willReturn(1);
+        $secondTree->getId()->willReturn(2);
+        $thirdTree->getId()->willReturn(3);
+
         $categoryRepository
             ->getChildren(Argument::any(), Argument::any(), Argument::any(), Argument::any())
             ->willReturn([$firstTree, $secondTree, $thirdTree]);
 
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $firstTree)->willReturn(true);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $secondTree)->willReturn(false);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $thirdTree)->willReturn(true);
+        $accessibleCategoryIds = array(1, 3);
 
-        $this->getAccessibleTrees()->shouldReturn([$firstTree, $thirdTree]);
+        $categoryAccessRepository
+            ->getGrantedCategoryIds($user, CategoryVoter::VIEW_PRODUCTS)
+            ->willReturn($accessibleCategoryIds);
+
+        $this->getAccessibleTrees($user)->shouldReturn([$firstTree, $thirdTree]);
+    }
+
+    function it_gets_accessible_trees_for_edition(
+        $categoryAccessRepository,
+        $categoryRepository,
+        Category $firstTree,
+        Category $secondTree,
+        Category $thirdTree,
+        User $user
+    ) {
+        $firstTree->getId()->willReturn(1);
+        $secondTree->getId()->willReturn(2);
+        $thirdTree->getId()->willReturn(3);
+
+        $categoryRepository
+            ->getChildren(Argument::any(), Argument::any(), Argument::any(), Argument::any())
+            ->willReturn([$firstTree, $secondTree, $thirdTree]);
+
+        $accessibleCategoryIds = array(1);
+
+        $categoryAccessRepository
+            ->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)
+            ->willReturn($accessibleCategoryIds);
+
+        $this->getAccessibleTrees($user, CategoryVoter::EDIT_PRODUCTS)->shouldReturn([$firstTree]);
     }
 }
