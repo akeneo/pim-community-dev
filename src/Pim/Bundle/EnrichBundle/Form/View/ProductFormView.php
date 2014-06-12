@@ -117,7 +117,11 @@ class ProductFormView implements ProductFormViewInterface
         $attributeView = $this->prepareAttributeView($attribute, $value, $view);
         $group         = $attribute->getVirtualGroup();
 
-        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
+        $attributeKey = $attribute->getCode();
+        if ($value->getLocale()) {
+            $attributeKey .= '_' . $value->getLocale();
+        }
+        $this->view[$group->getId()]['attributes'][$attributeKey] = $attributeView;
     }
 
     /**
@@ -168,11 +172,15 @@ class ProductFormView implements ProductFormViewInterface
     protected function getAttributeValues(AbstractAttribute $attribute, $locale)
     {
         $group = $attribute->getVirtualGroup();
-        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {
+        $key = $attribute->getCode();
+        if ($locale) {
+            $key .= '_' . $locale;
+        }
+        if (!isset($this->view[$group->getId()]['attributes'][$key]['values'])) {
             return array();
         }
 
-        return $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'];
+        return $this->view[$group->getId()]['attributes'][$key]['values'];
     }
 
     /**
