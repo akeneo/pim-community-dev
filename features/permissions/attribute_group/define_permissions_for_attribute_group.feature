@@ -34,6 +34,7 @@ Feature: Define permissions for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:
       | Permissions to view attributes | User, Administrator, Manager |
+      | Permissions to edit attributes |                              |
     And I save the attribute group
     And I edit the "foo" product
     Then I should see the SKU, Name and Manufacturer fields

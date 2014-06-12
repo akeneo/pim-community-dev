@@ -1,0 +1,20 @@
+categories:
+    2014_collection:
+        labels:
+            en_US: 2014 collection
+    summer_collection:
+        labels:
+            en_US: Summer collection
+        parent: 2014_collection
+    winter_collection:
+        labels:
+            en_US: Winter collection
+        parent: 2014_collection
+    winter_top:
+        labels:
+            en_US: Winter tops
+        parent: winter_collection
+    tees:
+        labels:
+            en_US: Tees
+        parent: summer_collection

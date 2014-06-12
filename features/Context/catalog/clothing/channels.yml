@@ -1,0 +1,16 @@
+channels:
+    tablet:
+        label: Tablet
+        locales:
+            - en_US
+        currencies:
+            - EUR
+            - USD
+        tree: 2014_collection
+    mobile:
+        label: Mobile
+        locales:
+            - en_US
+        currencies:
+            - EUR
+        tree: 2014_collection
