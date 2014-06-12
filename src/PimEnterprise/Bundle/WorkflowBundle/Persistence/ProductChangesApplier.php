@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
@@ -25,7 +26,7 @@ class ProductChangesApplier
     protected $dispatcher;
 
     /** @var array */
-    protected $modifiedFields = [];
+    protected $modifiedValues = [];
 
     /**
      * @param FormFactoryInterface     $formFactory
@@ -80,7 +81,7 @@ class ProductChangesApplier
 
                     foreach ($values as $key => $value) {
                         if (isset($data['values'][$key])) {
-                            $this->markFieldAsModified($value);
+                            $this->markValueAsModified($value->getData());
                         }
                     }
                 }
@@ -89,13 +90,30 @@ class ProductChangesApplier
             ->submit($changes, false);
     }
 
-    public function markFieldAsModified(FormInterface $form)
+    public function isMarkedAsModified($attributeCode, $scope = null)
     {
-        $this->modifiedFields[] = $form->getName();
+        $hasAttribute = array_key_exists($attributeCode, $this->modifiedValues);
+
+        if ($hasAttribute && null !== $scope) {
+            return in_array($scope, $this->modifiedValues[$attributeCode]['scopes']);
+        }
+
+        return $hasAttribute;
     }
 
-    public function isMarkedAsModified($fieldName)
+    protected function markValueAsModified(AbstractProductValue $value)
     {
-        return in_array($fieldName, $this->modifiedFields);
+        $options = [];
+        $key = $value->getAttribute()->getCode();
+
+        $attribute = $value->getAttribute();
+        if ($attribute->isScopable()) {
+            if (isset($this->modifiedValues[$key]['scopes'])) {
+                $options['scopes'] = $this->modifiedValues[$key]['scopes'];
+            }
+            $options['scopes'][] = $value->getScope();
+        }
+
+        $this->modifiedValues[$key] = $options;
     }
 }

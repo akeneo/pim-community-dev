@@ -55,14 +55,32 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         $views = $this->productFormView->getView();
 
         foreach ($views as $key => $view) {
-            foreach ($view['attributes'] as $name => $attribute) {
-                if ($this->applier->isMarkedAsModified($attribute['code'])) {
-                    $views[$key]['attributes'][$name]['groupClasses']['success'] = true;
+            foreach (array_keys($view['attributes']) as $name) {
+                if (isset($views[$key]['attributes'][$name]['value']) && $this->applier->isMarkedAsModified($name)) {
+
+                    $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
+
+                } else if (isset($views[$key]['attributes'][$name]['values'])) {
+
+                    foreach ($views[$key]['attributes'][$name]['values'] as $scope => $value) {
+                        if ($this->applier->isMarkedAsModified($name, $scope)) {
+                            $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
+                        }
+                    }
+
                 }
             }
         }
 
         return $views;
+    }
+
+    protected function markFieldAsModified(FormView $view)
+    {
+        foreach ($view as $child) {
+            $child->vars['modified'] = 'Display current value(s) here';
+            $this->markFieldAsModified($child);
+        }
     }
 }
 
