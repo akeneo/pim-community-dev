@@ -18,16 +18,16 @@ class PropositionFilterUtility extends BaseFilterUtility
     const PARENT_TYPE_KEY = 'parent_type';
 
     /** @var PropositionRepositoryInterface */
-    protected $propositionRepository;
+    protected $proposalRepository;
 
     /**
      * Constructor
      *
-     * @param PropositionRepositoryInterface $propositionRepository
+     * @param PropositionRepositoryInterface $proposalRepository
      */
-    public function __construct(PropositionRepositoryInterface $propositionRepository)
+    public function __construct(PropositionRepositoryInterface $proposalRepository)
     {
-        $this->propositionRepository = $propositionRepository;
+        $this->proposalRepository = $proposalRepository;
     }
 
     /**
@@ -48,6 +48,6 @@ class PropositionFilterUtility extends BaseFilterUtility
      */
     public function applyFilter(FilterDatasourceAdapterInterface $ds, $field, $operator, $value)
     {
-        $this->propositionRepository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
+        $this->proposalRepository->applyFilter($ds->getQueryBuilder(), $field, $operator, $value);
     }
 }
