@@ -26,6 +26,6 @@ class IntegerTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        return (double) $value;
+        return is_int($value) ? (int) $value : $value;
     }
 }
