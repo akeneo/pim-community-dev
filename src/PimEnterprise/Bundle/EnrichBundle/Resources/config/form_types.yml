@@ -7,7 +7,7 @@ services:
     pim_enrich.form.type.product_edit:
         class: %pim_enrich.form.type.product_edit.class%
         arguments:
-            - '@pim_enrich.form.type.product.view'
+            - '@pimee_workflow.form.type.product.highlight_modified_values_view'
             - '@pim_catalog.repository.family'
             - '%pim_catalog.entity.category.class%'
         tags:

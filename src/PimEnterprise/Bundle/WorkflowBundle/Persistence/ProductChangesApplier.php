@@ -6,6 +6,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
 
 /**
  * Applies product changes
@@ -20,6 +23,9 @@ class ProductChangesApplier
 
     /** @var EventDispatcherInterface */
     protected $dispatcher;
+
+    /** @var array */
+    protected $modifiedFields = [];
 
     /**
      * @param FormFactoryInterface     $formFactory
@@ -65,7 +71,31 @@ class ProductChangesApplier
                     'comparisonLocale' => null,
                 ]
             )
+            ->addEventListener(
+                FormEvents::PRE_SUBMIT,
+                function(FormEvent $event) {
+                    $data = $event->getData();
+                    $form = $event->getForm();
+                    $values = $form->get('values');
+
+                    foreach ($values as $key => $value) {
+                        if (isset($data['values'][$key])) {
+                            $this->markFieldAsModified($value);
+                        }
+                    }
+                }
+            )
             ->getForm()
             ->submit($changes, false);
+    }
+
+    public function markFieldAsModified(FormInterface $form)
+    {
+        $this->modifiedFields[] = $form->getName();
+    }
+
+    public function isMarkedAsModified($fieldName)
+    {
+        return in_array($fieldName, $this->modifiedFields);
     }
 }
