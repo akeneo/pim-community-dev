@@ -208,14 +208,13 @@ class ProductController extends AbstractDoctrineController
     /**
      * Edit product
      *
-     * @param Request $request
      * @param integer $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_edit")
      * @return array
      */
-    public function editAction(Request $request, $id)
+    public function editAction($id)
     {
         $product = $this->findProductOr404($id);
 
@@ -228,31 +227,6 @@ class ProductController extends AbstractDoctrineController
             $product,
             $this->getEditFormOptions($product)
         );
-
-        if ($request->isMethod('POST')) {
-            $form->submit($request, false);
-
-            if ($form->isValid()) {
-                try {
-                    $this->productManager->handleMedia($product);
-                    $this->productManager->save($product);
-
-                    $this->addFlash('success', 'flash.product.updated');
-                } catch (MediaManagementException $e) {
-                    $this->addFlash('error', $e->getMessage());
-                }
-
-                // TODO : Check if the locale exists and is activated
-                $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
-                if ($comparisonLocale = $this->getComparisonLocale()) {
-                    $params['compareWith'] = $comparisonLocale;
-                }
-
-                return $this->redirectAfterEdit($params);
-            } else {
-                $this->addFlash('error', 'flash.product.invalid');
-            }
-        }
 
         $this->getEventDispatcher()->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
 
@@ -273,6 +247,51 @@ class ProductController extends AbstractDoctrineController
             'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
+    }
+
+    /**
+     * Edit product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @AclAncestor("pim_enrich_product_edit")
+     * @return RedirectResponse
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $this->productManager->ensureAllAssociationTypes($product);
+
+        $form = $this->createForm(
+            'pim_product_edit',
+            $product,
+            $this->getEditFormOptions($product)
+        );
+
+        $form->submit($request, false);
+
+        if ($form->isValid()) {
+            try {
+                $this->productManager->handleMedia($product);
+                $this->productManager->save($product);
+
+                $this->addFlash('success', 'flash.product.updated');
+            } catch (MediaManagementException $e) {
+                $this->addFlash('error', $e->getMessage());
+            }
+
+            // TODO : Check if the locale exists and is activated
+            $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+            if ($comparisonLocale = $this->getComparisonLocale()) {
+                $params['compareWith'] = $comparisonLocale;
+            }
+        } else {
+            $this->addFlash('error', 'flash.product.invalid');
+        }
+
+        return $this->redirectAfterEdit($params);
     }
 
     /**
