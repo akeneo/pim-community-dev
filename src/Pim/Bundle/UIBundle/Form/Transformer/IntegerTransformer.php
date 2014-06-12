@@ -23,9 +23,13 @@ class IntegerTransformer implements DataTransformerInterface
 
     /**
      * {@inheritdoc}
+     *
+     * If $value is integer we explicitly cast it as integer.
+     * Otherwise we return value as it was.
+     * $value can be a string so we have to check this case
      */
     public function transform($value)
     {
-        return is_int($value) ? (int) $value : $value;
+        return $value == floor($value) ? floor($value) : $value;
     }
 }
