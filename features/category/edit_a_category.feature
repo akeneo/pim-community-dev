@@ -29,8 +29,8 @@ Feature: Edit a category
     Given I edit the "winter_boots" category
     When I fill in the following information:
       | English (United States) | My winter boots |
-    Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                    |
       | content | You will lose changes to the category if you leave the page. |

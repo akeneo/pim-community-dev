@@ -21,8 +21,8 @@ Feature: Edit a variant group
   Scenario: Successfully display a message when there are unsaved changes
     Given I fill in the following information:
       | English (United States) | My boots |
-    Then I should see "There are unsaved changes."
     And I click on the Akeneo logo
+    Then I should see "There are unsaved changes."
     Then I should see a confirm dialog with the following content:
       | title   | Are you sure you want to leave this page?                          |
       | content | You will lose changes to the variant group if you leave this page. |

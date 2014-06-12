@@ -233,6 +233,8 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         );
 
         $this->getMainContext()->reload();
+
+        $this->wait();
     }
 
     /**
