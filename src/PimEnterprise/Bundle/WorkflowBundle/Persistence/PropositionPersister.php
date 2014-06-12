@@ -36,7 +36,7 @@ class PropositionPersister implements ProductPersister
     protected $collector;
 
     /** @var PropositionRepositoryInterface */
-    protected $propositionRepository;
+    protected $proposalRepository;
 
     /**
      * @param ManagerRegistry                $registry
@@ -44,7 +44,7 @@ class PropositionPersister implements ProductPersister
      * @param SecurityContextInterface       $securityContext
      * @param PropositionFactory             $factory
      * @param ProductChangesProvider         $changesProvider
-     * @param PropositionRepositoryInterface $propositionRepository
+     * @param PropositionRepositoryInterface $proposalRepository
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -52,14 +52,14 @@ class PropositionPersister implements ProductPersister
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
         CollectProductValuesSubscriber $collector,
-        PropositionRepositoryInterface $propositionRepository
+        PropositionRepositoryInterface $proposalRepository
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
         $this->collector = $collector;
-        $this->propositionRepository = $propositionRepository;
+        $this->proposalRepository = $proposalRepository;
     }
 
     /**
@@ -122,7 +122,7 @@ class PropositionPersister implements ProductPersister
         $changes = $this->collector->getChanges();
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
-        $proposition = $this->propositionRepository->findUserProposition($username, $locale);
+        $proposition = $this->proposalRepository->findUserProposition($username, $locale);
 
         if (empty($changes)) {
             if (null !== $proposition) {
