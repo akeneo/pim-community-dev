@@ -65,8 +65,7 @@ class SmartManagerRegistry implements ManagerRegistry
         foreach ($this->registries as $registry) {
             try {
                 return $registry->getAliasNamespace($alias);
-            //TODO: catch more precise exception
-            } catch (\Exception $e) {
+            } catch (\Exception $e) { //TODO: catch more precise exception
                 continue;
             }
         }
