@@ -29,6 +29,7 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
+            - '@doctrine.orm.default_entity_manager'
 
     pim_base_connector.reader.doctrine.bulk_product:
         parent: pim_base_connector.reader.doctrine.product
