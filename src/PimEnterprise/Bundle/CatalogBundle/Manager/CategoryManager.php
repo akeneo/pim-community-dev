@@ -47,12 +47,12 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getAccessibleTrees(UserInterface $user, $accessLevel = CategoryVoter::VIEW_PRODUCTS)
     {
-        $accessibleCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
+        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
         $trees = [];
 
         foreach ($this->getTrees() as $tree) {
-            if (in_array($tree->getId(), $accessibleCategoryIds)) {
+            if (in_array($tree->getId(), $grantedCategoryIds)) {
                 $trees[] = $tree;
             }
         }
