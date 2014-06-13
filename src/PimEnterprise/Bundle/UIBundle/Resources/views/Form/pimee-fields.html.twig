@@ -1,0 +1,15 @@
+{% block form_info %}
+    {% spaceless %}
+        {% if type is not defined or type != 'hidden' %}
+            <div class="icons-container">
+                {% if help is defined %}
+                    <i class="icon-info-sign" data-toggle="tooltip" data-placement="right" data-original-title="{{ help|trans }}"></i>
+                {% endif %}
+                {% if modified is defined %}
+                    <i class="icon-file-text-alt" data-trigger="hover" data-toggle="popover" data-placement="right" data-title="{{ 'Current value(s)'|trans }}" data-content="{{ modified }}" data-container="body"></i>
+                {% endif %}
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+    {% endspaceless %}
+{% endblock form_info %}
