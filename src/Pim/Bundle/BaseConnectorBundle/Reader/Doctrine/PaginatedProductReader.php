@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
@@ -22,6 +23,11 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 class PaginatedProductReader extends AbstractConfigurableStepElement implements ItemReaderInterface
 {
     /**
+     * Range of items to fetch from database
+     */
+    const LIMIT = 100;
+
+    /**
      * @var string
      *
      * @Assert\NotBlank(groups={"Execution"})
@@ -29,30 +35,71 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
      */
     protected $channel;
 
-    /** @var AbstractQuery */
+    /**
+     * @var AbstractQuery
+     */
     protected $query;
 
-    /** @var StepExecution */
+    /**
+     * @var int
+     */
+    protected $offset = 0;
+
+    /**
+     * @var array
+     */
+    protected $ids;
+
+    /**
+     * @var int
+     */
+    protected $readIndex = 1;
+
+    /**
+     * @var ProductInterface[]
+     */
+    protected $products = [];
+
+    /**
+     * @var StepExecution
+     */
     protected $stepExecution;
 
-    /** @var boolean */
-    private $executed = false;
+    /**
+     * @var EntityManager
+     */
+    protected $entityManager;
 
-    /** @var array */
+    /**
+     * @var boolean
+     */
+    protected $areSentProducts = true;
+
+    /**
+     * @var array
+     */
     protected $results = array();
+
+    /**
+     * @var boolean
+     */
+    private $executed = false;
 
     /**
      * @param ProductRepositoryInterface $repository
      * @param ChannelManager             $channelManager
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
+     * @param EntityManager              $entityManager
      */
     public function __construct(
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
-        MetricConverter $metricConverter
+        MetricConverter $metricConverter,
+        EntityManager $entityManager
     ) {
+        $this->entityManager       = $entityManager;
         $this->repository          = $repository;
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
@@ -97,63 +144,30 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     public function read()
     {
         if (!$this->executed) {
-            $this->executed = true;
-            if (!is_object($this->channel)) {
-                $this->channel = $this->channelManager->getChannelByCode($this->channel);
-            }
-            $this->query = $this->repository
-                ->buildByChannelAndCompleteness($this->channel)
-                ->getQuery();
-
-            $this->results = $this->getQuery()
-                ->setFirstResult(0)
-                ->setMaxResults(50000);
-            $paginator = new Paginator($this->results, true);
-
-
-            var_dump(count($paginator));
-            foreach ($paginator as $product) {
-                echo $product->getId() . "\n";
-            }
-            die();
-
-        }
-        $result = $this->results->current();
-
-        if ($result) {
-            $this->results->next();
-            $this->stepExecution->incrementSummaryInfo('read');
+            $this->ids = $this->getIds();
         }
 
+        if ($this->areSentProducts) {
+            $limit = $this->offset + self::LIMIT;
+            $currentIds = array_slice($this->ids, $this->offset, $limit);
+            $this->products = $this->repository->findByIds($currentIds);
+            $this->offset = $limit;
+            $item = null;
+        }
 
+        if ($this->readIndex < count($this->products)) {
+            $this->areSentProducts = false;
+            $item = $this->products[$this->readIndex-1];
+            $this->readIndex++;
+        } elseif ($this->readIndex === count($this->products) && count($this->products) < self::LIMIT) {
+            $item = null;
+        } else {
+            $item = $this->products[$this->readIndex-1];
+            $this->readIndex = 1;
+            $this->areSentProducts = true;
+        }
 
-        return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function initialize()
-    {
-        $this->executed = false;
-        $this->query = false;
-    }
-    /**
-     * Set channel
-     * @param string $channel
-     */
-    public function setChannel($channel)
-    {
-        $this->channel = $channel;
-    }
-
-    /**
-     * Get channel
-     * @return string
-     */
-    public function getChannel()
-    {
-        return $this->channel;
+        return $item;
     }
 
     /**
@@ -173,5 +187,62 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
                 )
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->executed = false;
+        $this->query = false;
+    }
+
+    /**
+     * Set channel
+     * @param string $channel
+     */
+    public function setChannel($channel)
+    {
+        $this->channel = $channel;
+    }
+
+    /**
+     * Get channel
+     * @return string
+     */
+    public function getChannel()
+    {
+        return $this->channel;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getIds()
+    {
+        $this->entityManager->clear();
+        $this->executed = true;
+
+        if (!is_object($this->channel)) {
+            $this->channel = $this->channelManager->getChannelByCode($this->channel);
+        }
+        $this->query = $this->repository
+            ->buildByChannelAndCompleteness($this->channel);
+
+        $rootAlias = current($this->query->getRootAliases());
+        $rootIdExpr = sprintf('%s.id', $rootAlias);
+
+        $from = current($this->query->getDQLPart('from'));
+
+        $this->query
+            ->select($rootIdExpr)
+            ->resetDQLPart('from')
+            ->from($from->getFrom(), $from->getAlias(), $rootIdExpr)
+            ->groupBy($rootIdExpr);
+
+        $results = $this->query->getQuery()->getArrayResult();
+
+        return array_keys($results);
     }
 }
