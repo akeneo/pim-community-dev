@@ -1,5 +1,9 @@
 {% if form.vars.value.id and form.vars.value.isRoot() %}
-    {% set tabs = ['Properties', 'Permissions', 'History']%}
+    {% set tabs = ['Properties']%}
+    {% if resource_granted('pimee_enrich_category_edit_permissions') %}
+        {% set tabs = tabs|merge(['Permissions']) %}
+    {% endif %}
+    {% set tabs = tabs|merge(['History']) %}
 {% elseif form.vars.value.id %}
     {% set tabs = ['Properties', 'History']%}
 {% else %}
