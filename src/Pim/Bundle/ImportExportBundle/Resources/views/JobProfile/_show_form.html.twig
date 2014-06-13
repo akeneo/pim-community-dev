@@ -1,0 +1,24 @@
+<div class="row-fluid tab-content">
+    <div class="tab-pane active">
+        {% block configuration %}
+            {% set globalSettings %}
+                <table class="configuration">
+                    <thead></thead>
+                    <tbody>
+                        {% for step in form.job.steps %}
+                            {% for child in step.children %}
+                                {% for element in child.children %}
+                                <tr>
+                                    <td><b>{{ element.vars.label|trans }}</b></td>
+                                    <td>{{ element.vars.data|normalizeValue|trans }} {{ getViolations(violations, element.vars.name) }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endset %}
+            {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 1, true) }}
+        {% endblock configuration %}
+    </div>
+</div>

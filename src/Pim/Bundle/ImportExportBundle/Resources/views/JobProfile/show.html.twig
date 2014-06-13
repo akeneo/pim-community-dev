@@ -2,69 +2,8 @@
 
 {% block content %}
 
-    {% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label %}
+    {% include 'PimImportExportBundle:JobProfile:_show_headers.html.twig' %}
 
-    {% set left %}
-        <ul class="inline">
-            <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
-            <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
-        </ul>
-    {% endset %}
-
-    {% set buttons %}
-        {{ elements.backLink(indexRoute) }}
-        {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') %}
-            {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
-        {% endif %}
-        {% if uploadAllowed and uploadViolations|length == 0 %}
-            {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
-        {% endif %}
-        {% if violations|length == 0 %}
-            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
-        {% endif %}
-    {% endset %}
-
-    {{ elements.page_header(title, buttons, null, left) }}
-
-    {% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
-        {{ form_start(uploadForm, {
-            'id': 'pim_importexport_import_upload',
-            'action': launchRoute,
-            'attr': {
-                'class': 'form-upload hide'
-            }
-        }) }}
-            {{ elements.form_errors(uploadForm) }}
-            <div class="row-fluid">
-                {{ form_row(uploadForm.file) }}
-                {{ elements.submitBtn('Upload and '~action~' now') }}
-            </div>
-        {{ form_end(uploadForm) }}
-    {% endif %}
-
-    <div class="row-fluid tab-content">
-        <div class="tab-pane active">
-            {% block configuration %}
-                {% set globalSettings %}
-                    <table class="configuration">
-                        <thead></thead>
-                        <tbody>
-                            {% for step in form.job.steps %}
-                                {% for child in step.children %}
-                                    {% for element in child.children %}
-                                    <tr>
-                                        <td><b>{{ element.vars.label|trans }}</b></td>
-                                        <td>{{ element.vars.data|normalizeValue|trans }} {{ getViolations(violations, element.vars.name) }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                {% endfor %}
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                {% endset %}
-                {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 1, true) }}
-            {% endblock configuration %}
-        </div>
-    </div>
+    {% include 'PimImportExportBundle:JobProfile:_show_form.html.twig' %}
 
 {% endblock %}
