@@ -147,20 +147,19 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
             $this->ids = $this->getIds();
         }
 
-        if ($this->areSentProducts) {
+        if ($this->offset > count($this->ids) && $this->areSentProducts) {
+            return null;
+        } elseif ($this->areSentProducts) {
             $limit = $this->offset + self::LIMIT;
             $currentIds = array_slice($this->ids, $this->offset, $limit);
             $this->products = $this->repository->findByIds($currentIds);
             $this->offset = $limit;
-            $item = null;
         }
 
         if ($this->readIndex < count($this->products)) {
             $this->areSentProducts = false;
             $item = $this->products[$this->readIndex-1];
             $this->readIndex++;
-        } elseif ($this->readIndex === count($this->products) && count($this->products) < self::LIMIT) {
-            $item = null;
         } else {
             $item = $this->products[$this->readIndex-1];
             $this->readIndex = 1;
