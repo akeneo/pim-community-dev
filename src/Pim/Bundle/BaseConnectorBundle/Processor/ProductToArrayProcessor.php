@@ -54,11 +54,24 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
     }
 
     /**
-     * {@inheritdoc}
+     * Processes items
+     *
+     * @param array $items Items
+     *
+     * @return array $products Normalized flat products
      */
-    public function process($item)
+    public function process($items)
     {
-        return $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
+        if (!is_array($items)) {
+            $items = array($items);
+        }
+
+        $products = [];
+        foreach ($items as $item) {
+            $products[] = $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
+        }
+
+        return $products;
     }
 
     /**
