@@ -18,7 +18,7 @@ abstract class AbstractComparator implements ComparatorInterface
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
         if ($dataChanges = $this->getDataChanges($value, $submittedData)) {
-            // Those information are then used to display changes in the proposal view
+            // Those information are then used to display changes in the proposition view
             $dataChanges['__context__'] = [
                 'attribute_id' => $value->getAttribute()->getId(),
                 'value_id' => $value->getId(),
@@ -32,5 +32,5 @@ abstract class AbstractComparator implements ComparatorInterface
     /**
      *
      */
-    abstract function getDataChanges(AbstractProductValue $value, $submittedData);
+    abstract public function getDataChanges(AbstractProductValue $value, $submittedData);
 }

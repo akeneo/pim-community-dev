@@ -93,6 +93,7 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
             new PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
+            new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle()
         );
 
         $bundles = array_merge($bundles, $enterpriseBundles);

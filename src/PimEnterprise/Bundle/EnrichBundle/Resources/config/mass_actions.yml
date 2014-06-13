@@ -1,0 +1,16 @@
+parameters:
+    pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+
+services:
+    pim_enrich.mass_edit_action.classify:
+        public: false
+        class: %pim_enrich.mass_edit_action.classify.class%
+        arguments:
+            - '@pim_catalog.manager.category'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: classify
+                acl: pim_enrich_product_categories_view
+                operator: pim_enrich.mass_edit_action.operator.product

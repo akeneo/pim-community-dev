@@ -1,34 +1,31 @@
 parameters:
-    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProposalPersister
-    pimee_workflow.factory.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Factory\ProposalFactory
-    pimee_workflow.entity.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposal
-    pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
-    pimee_workflow.manager.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProposalManager
-    pimee_workflow.controller.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProposalController
-    pimee_workflow.datagrid.proposal_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\ProposalGridHelper
+    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
+    pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
+    pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
+    pimee_workflow.datagrid.proposition_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\PropositionGridHelper
 
 services:
-    pimee_workflow.event_listener.proposals_grid_listener:
+    pimee_workflow.event_listener.propositions_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposals-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.propositions-grid, method: onBuildAfter }
 
-    pimee_workflow.controller.proposal:
-        class: %pimee_workflow.controller.proposal.class%
+    pimee_workflow.controller.proposition:
+        class: %pimee_workflow.controller.proposition.class%
         parent: pim_enrich.controller.abstract
         scope: request
         arguments:
-            - '@pimee_workflow.repository.proposal'
-            - '@pimee_workflow.manager.proposal'
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.manager.proposition'
 
-    pimee_workflow.repository.proposal:
-        class: %pimee_workflow.repository.proposal.class%
-        factory_service: pimee_workflow.object_manager.proposal
+    pimee_workflow.repository.proposition:
+        class: %pimee_workflow.repository.proposition.class%
+        factory_service: pimee_workflow.object_manager.proposition
         factory_method: getRepository
-        arguments: [%pimee_workflow.entity.proposal.class%]
+        arguments: [%pimee_workflow.model.proposition.class%]
 
     pim_catalog.persister.product:
         class: %pim_catalog.persister.product.class%
@@ -36,24 +33,9 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.manager.completeness'
             - '@security.context'
-            - '@pimee_workflow.factory.proposal'
+            - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
+            - '@pimee_workflow.repository.proposition'
 
-    pimee_workflow.factory.proposal:
-        class: %pimee_workflow.factory.proposal.class%
-
-    pimee_workflow.manager.proposal:
-        class: %pimee_workflow.manager.proposal.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.product'
-            - '@pimee_workflow.persister.product_changes_applier'
-
-    pimee_workflow.persister.product_changes_applier:
-        public: false
-        class: %pimee_workflow.persister.product_changes_applier.class%
-        arguments:
-            - '@form.factory'
-
-    pimee_workflow.datagrid.proposal_grid_helper:
-        class: %pimee_workflow.datagrid.proposal_grid_helper.class%
+    pimee_workflow.datagrid.proposition_grid_helper:
+        class: %pimee_workflow.datagrid.proposition_grid_helper.class%

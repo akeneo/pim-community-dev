@@ -1,0 +1,39 @@
+<div class="widget-header">
+    {{ 'pimee_dashboard.widget.propositions.title'|trans }}
+</div>
+
+{% if widget.params|length %}
+    <table id="propositions-widget" class="table table-condensed table-light groups unspaced">
+        <thead>
+            <tr>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.date'|trans }}</th>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.author'|trans }}</th>
+                <th class="center">{{ 'pimee_dashboard.widget.propositions.product'|trans }}</th>
+                <th class="center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for proposition in widget.params %}
+                <tr>
+                    <td>
+                        {% set timeFormat = 'now'|date('Y-m-d') == proposition.createdAt|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
+                        {{ proposition.createdAt|date(timeFormat) }}
+                    </td>
+                    <td>{{ proposition.author }}</td>
+                    <td>
+                        <a href="{{ path('pim_enrich_product_edit', { id: proposition.product.id }) }}">
+                            {{ proposition.product }}
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn btn-mini" href="{{ path('pim_enrich_product_edit', { id: proposition.product.id }) }}" onclick="sessionStorage.setItem('redirectTab', '#propositions')">
+                            {{ 'pimee_dashboard.widget.propositions.review'|trans }}
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <span class="label text-center buffer-small-top buffer-small-bottom fullwidth">{{ 'pimee_dashboard.widget.propositions.empty'|trans }}</span>
+{% endif %}

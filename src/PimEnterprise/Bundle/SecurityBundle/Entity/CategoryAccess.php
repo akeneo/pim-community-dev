@@ -68,7 +68,7 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function setCategory($category)
+    public function setCategory(CategoryInterface $category)
     {
         $this->category = $category;
 

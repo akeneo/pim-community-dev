@@ -1,0 +1,26 @@
+users:
+    admin:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+    Julia:
+        catalogLocale: en_US
+        catalogScope:  tablet
+        defaultTree:   2014_collection
+        roles:         [ ROLE_MANAGER ]
+    Peter:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+        roles:         [ ROLE_ADMINISTRATOR ]
+    Sandra:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+        roles:         [ ROLE_USER ]
+    Mary:
+        catalogLocale: en_US
+        catalogScope:  mobile
+        defaultTree:   2014_collection
+        roles:         [ ROLE_USER ]
+

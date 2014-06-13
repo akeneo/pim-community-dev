@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 
 /**
@@ -16,6 +17,11 @@ use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductControlle
  */
 class ProductController extends BaseProductController
 {
+    /**
+     * @var UserContext
+     */
+    protected $userContext;
+
     /**
      * {@inheritdoc}
      *
@@ -30,7 +36,7 @@ class ProductController extends BaseProductController
 
             return parent::indexAction($request);
         } catch (\LogicException $e) {
-            $this->addFlash('error', 'category.rights.no_access_to_products');
+            $this->addFlash('error', 'category.permissions.no_access_to_products');
 
             return $this->redirectToRoute('oro_default');
         }

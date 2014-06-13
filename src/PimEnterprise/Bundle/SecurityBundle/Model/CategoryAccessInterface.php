@@ -17,7 +17,7 @@ interface CategoryAccessInterface extends AccessInterface
      *
      * @return CategoryAccessInterface
      */
-    public function setCategory($category);
+    public function setCategory(CategoryInterface $category);
 
     /**
      * @return CategoryInterface

@@ -12,7 +12,7 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_base_connector.processor.attribute_group_access
                         writer:    pim_base_connector.writer.doctrine
-        
+
         fixtures_category_access_yml:
             title: pim_installer.jobs.fixtures_category_access_yml.title
             type:  fixtures
@@ -23,4 +23,3 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_base_connector.processor.category_access
                         writer:    pim_base_connector.writer.doctrine
-        
