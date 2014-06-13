@@ -27,7 +27,8 @@ class LocaleHelper
 
     /**
      * Constructor
-     * @param UserContext $userContext
+     * @param UserContext   $userContext
+     * @param LocaleManager $localeManager
      */
     public function __construct(UserContext $userContext, LocaleManager $localeManager)
     {
