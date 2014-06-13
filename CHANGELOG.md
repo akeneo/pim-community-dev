@@ -17,6 +17,7 @@
 - Introduce Abstract models for Association, Media, Metric, Price, to ease the overriding of theses classes
 - Allow to override of a repository avoiding to redefine the entity mapping
 - Introduce a datagrid choice filter that loads attribute option choices based on the search query to enhance performance with a large number of attribute options
+- Apply "Remove product" permission to hide mass delete and delete row action
 
 ## Bug fixes
 - Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
