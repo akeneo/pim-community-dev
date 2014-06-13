@@ -32,7 +32,11 @@
 
     {% set tabs = ['Properties'] %}
     {% if editMode %}
-        {% set tabs = tabs|merge(['Attributes', 'Permissions', 'History']) %}
+        {% set tabs = tabs|merge(['Attributes']) %}
+        {% if resource_granted('pimee_enrich_attribute_group_edit_permissions') %}
+            {% set tabs = tabs|merge(['Permissions']) %}
+        {% endif %}
+        {% set tabs = tabs|merge(['History']) %}
     {% endif %}
 
     {{ elements.form_navbar(tabs) }}

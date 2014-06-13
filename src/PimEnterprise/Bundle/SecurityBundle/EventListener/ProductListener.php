@@ -32,7 +32,6 @@ class ProductListener implements EventSubscriberInterface
         $this->securityContext = $securityContext;
     }
 
-
     /**
      * {@inheritdoc}
      */

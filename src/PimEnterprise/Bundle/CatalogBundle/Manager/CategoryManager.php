@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;

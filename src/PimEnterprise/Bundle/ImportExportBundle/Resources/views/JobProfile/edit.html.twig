@@ -29,7 +29,12 @@
 
         {{ elements.form_errors(form) }}
 
-        {% set navbarTabs = ['General properties', 'Permissions', 'History'] %}
+        {% set navbarTabs = ['General properties'] %}
+        {% set resourceName = ['pimee_importexport_', entityName|replace({' ': '_'}), '_edit_permissions']|join %}
+        {% if resource_granted(resourceName) %}
+            {% set navbarTabs = navbarTabs|merge(['Permissions']) %}
+        {% endif %}
+        {% set navbarTabs = navbarTabs|merge(['History']) %}
 
         {{ elements.form_navbar(navbarTabs) }}
 
@@ -52,9 +57,11 @@
                 {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
             </div>
 
+            {% if resource_granted(resourceName) %}
             <div class="tab-pane buffer-top active" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
+            {% endif %}
 
             <div class="tab-pane" id="history">
                 {{ dataGrid.renderHistoryGrid(form.vars.value) }}

@@ -16,4 +16,3 @@ services:
             - '@security.context'
         tags:
             - { name: kernel.event_subscriber }
-
