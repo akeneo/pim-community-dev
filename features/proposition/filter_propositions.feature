@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter proposals
-  In order to easily find proposals for the product
-  As an admin
+  In order to easily find propositions for the product
+  As an owner
   I need to be able to filter them
 
   Background:
@@ -10,19 +10,19 @@ Feature: Filter proposals
       | sku         | family |
       | black-boots | boots  |
       | white-boots | boots  |
-    And the following proposals:
+    And the following propositions:
       | product     | status   | author | locale |
-      | black-boots | approved | admin  | en_US  |
-      | black-boots | waiting  | peter  | fr_FR  |
-      | grey-boots  | canceled | julia  | en_US  |
+      | black-boots | approved | admin  | fr_FR  |
+      | black-boots | open     | peter  | en_US  |
+      | white-boots | open     | julia  | en_US  |
     And I am logged in as "admin"
 
-  Scenario: Successfully filter proposals
+  Scenario: Successfully filter propositions
     Given I edit the "black-boots" product
-    When I visit the "Proposals" tab
+    When I visit the "Propositions" tab
     Then the grid should contain 2 elements
-    And I should see proposals approved and waiting
+    And I should see entities admin and peter
     And I should be able to use the following filters:
-      | filter         | value           | result |
-      | Status         | approved        | admin  |
-      | Locale context | French (France) | peter  |
+      | filter         | value                   | result |
+      | Status         | Approved                | admin  |
+      | Locale context | English (United States) | peter  |
