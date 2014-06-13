@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormInterface;
 
 /**
  * Applies product changes

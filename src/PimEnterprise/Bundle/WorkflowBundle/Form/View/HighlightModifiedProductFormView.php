@@ -12,7 +12,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class HighlightModifiedProductFormView implements ProductFormViewInterface
 {
@@ -60,7 +59,7 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
 
                     $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
 
-                } else if (isset($views[$key]['attributes'][$name]['values'])) {
+                } elseif (isset($views[$key]['attributes'][$name]['values'])) {
 
                     foreach ($views[$key]['attributes'][$name]['values'] as $scope => $value) {
                         if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
@@ -88,4 +87,3 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         }
     }
 }
-
