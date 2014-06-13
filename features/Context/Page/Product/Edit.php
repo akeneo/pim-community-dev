@@ -175,6 +175,15 @@ class Edit extends Form
         return $field;
     }
 
+    public function findFieldIcons($name)
+    {
+        if ($field = $this->findField($name)) {
+            return $field->getParent()->findAll('css', '.icons-container i');
+        }
+
+        return [];
+    }
+
     /**
      * @param string $field
      *
