@@ -4,11 +4,6 @@ pimee_workflow:
         created: Proposed at
         changes: Changes
         locale:  Locale context
-        status:
-            label:    Status
-            approved: Approved
-            refused:  Refused
-            waiting:  Waiting
         action:
             approve: Approve
             refuse:  Refuse

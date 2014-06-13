@@ -17,9 +17,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
         author:
             type: string
             nullalble: false
-        status:
-            type: integer
-            nullable: false
         locale:
             type: string
             length: 20

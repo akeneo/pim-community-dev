@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
@@ -17,26 +18,13 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
     /**
      * {@inheritdoc}
      */
-    public function findOpen($id)
-    {
-        return $this->findOneBy(
-            [
-                'id'     => $id,
-                'status' => Proposition::WAITING,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findUserProposition($username, $locale)
+    public function findUserProposition(AbstractProduct $product, $username, $locale)
     {
         return $this->findOneBy(
             [
                 'author' => $username,
                 'locale' => $locale,
-                'status' => Proposition::WAITING,
+                'product' => $product->getId()
             ]
         );
     }

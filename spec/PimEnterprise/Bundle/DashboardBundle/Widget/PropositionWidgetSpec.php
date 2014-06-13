@@ -35,7 +35,7 @@ class PropositionWidgetSpec extends ObjectBehavior
 
     function it_passes_propositions_from_the_repository_to_the_template($repository)
     {
-        $repository->findBy(['status' => Proposition::WAITING], ['createdAt' => 'desc'], 10)->willReturn(['proposition one', 'proposition two']);
+        $repository->findBy([], ['createdAt' => 'desc'], 10)->willReturn(['proposition one', 'proposition two']);
         $this->getParameters()->shouldReturn(['params' => ['proposition one', 'proposition two']]);
     }
 }

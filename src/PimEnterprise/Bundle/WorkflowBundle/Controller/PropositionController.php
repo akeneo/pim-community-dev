@@ -71,7 +71,7 @@ class PropositionController extends AbstractController
      */
     public function approveAction($id)
     {
-        if (null === $proposition = $this->repository->findOpen($id)) {
+        if (null === $proposition = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
@@ -95,7 +95,7 @@ class PropositionController extends AbstractController
      */
     public function refuseAction($id)
     {
-        if (null === $proposition = $this->repository->findOpen($id)) {
+        if (null === $proposition = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
