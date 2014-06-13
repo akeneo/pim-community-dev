@@ -35,6 +35,6 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $this
             ->getSubcontext('catalogConfiguration')
-            ->addConfigurationDirectory('../../../../../features/Context/catalog');
+            ->addConfigurationDirectory(__DIR__.'/catalog');
     }
 }
