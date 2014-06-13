@@ -50,11 +50,9 @@ class PropositionManager
 
         $this->applier->apply($product, $proposition->getChanges());
 
-        $proposition->setStatus(Proposition::APPROVED);
-
         $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_proposition' => true]);
-        $this->registry->getManagerForClass(get_class($proposition))->flush();
+        $this->remove($proposition);
     }
 
     /**
@@ -64,8 +62,19 @@ class PropositionManager
      */
     public function refuse(Proposition $proposition)
     {
-        $proposition->setStatus(Proposition::REFUSED);
+        $this->remove($proposition);
+    }
 
-        $this->registry->getManagerForClass(get_class($proposition))->flush();
+    /**
+     * Remove a persisted proposition
+     *
+     * @param Proposition $proposition
+     *
+     */
+    public function remove(Proposition $proposition)
+    {
+        $propositionManager = $this->registry->getManagerForClass(get_class($proposition));
+        $propositionManager->remove($proposition);
+        $propositionManager->flush();
     }
 }

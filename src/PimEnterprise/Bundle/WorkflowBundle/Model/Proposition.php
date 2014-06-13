@@ -12,15 +12,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class Proposition
 {
-    /** @staticvar integer */
-    const WAITING = 0;
-
-    /** @staticvar integer */
-    const APPROVED = 1;
-
-    /** @staticvar integer */
-    const REFUSED = 2;
-
     /** @var integer */
     protected $id;
 
@@ -35,9 +26,6 @@ class Proposition
 
     /** @var array */
     protected $changes = [];
-
-    /** @var integer */
-    protected $status = self::WAITING;
 
     /** @var string */
     protected $locale;
@@ -128,26 +116,6 @@ class Proposition
     public function getChanges()
     {
         return $this->changes;
-    }
-
-    /**
-     * @param integer $status
-     *
-     * @return Proposition
-     */
-    public function setStatus($status)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * @return integer
-     */
-    public function getStatus()
-    {
-        return $this->status;
     }
 
     /**

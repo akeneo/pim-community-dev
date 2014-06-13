@@ -33,7 +33,7 @@ class PropositionManagerSpec extends ObjectBehavior
         $applier->apply($product, ['foo' => 'bar', 'b' => 'c'])->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
         $manager->saveProduct($product, ['bypass_proposition' => true])->shouldBeCalled();
-        $proposition->setStatus(Proposition::APPROVED)->shouldBeCalled();
+        $manager->remove($proposition)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->approve($proposition);
@@ -46,7 +46,7 @@ class PropositionManagerSpec extends ObjectBehavior
     ) {
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
-        $proposition->setStatus(Proposition::REFUSED)->shouldBeCalled();
+        $manager->remove($proposition)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->refuse($proposition);

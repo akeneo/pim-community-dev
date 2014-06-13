@@ -17,7 +17,5 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
         author:
             type: string
-        status:
-            type: int
         locale:
             type: string

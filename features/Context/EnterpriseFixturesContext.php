@@ -70,7 +70,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $proposition->setStatus($data['status'] === 'open' ? Proposition::WAITING : Proposition::APPROVED);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposition));
             $manager->persist($proposition);
         }

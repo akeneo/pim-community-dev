@@ -25,11 +25,6 @@ datagrid:
                 label: pimee_workflow.proposition.created
                 type: field
                 frontend_type: datetime
-            status:
-                label: pimee_workflow.proposition.status.label
-                type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/proposition_status.html.twig
-                frontend_type: html
         properties:
             id: ~
             approve_link:
@@ -53,18 +48,8 @@ datagrid:
                 label: pimee_workflow.proposition.action.refuse
                 icon: remove
                 link: refuse_link
-        action_configuration: '@pimee_workflow.datagrid.proposition_grid_helper->getActionConfigurationClosure'
         filters:
             columns:
-                status:
-                    type:        proposition_choice
-                    parent_type: choice
-                    data_name:   status
-                    label:       pimee_workflow.proposition.status.label
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: '@pimee_workflow.datagrid.proposition_grid_helper->getStatusChoices'
                 locale_context:
                     type:        proposition_choice
                     parent_type: choice
@@ -78,9 +63,6 @@ datagrid:
             columns:
                 author:
                     data_name: author
-                    sorter: proposition_field
-                status:
-                    data_name: status
                     sorter: proposition_field
                 createdAt:
                     data_name: createdAt

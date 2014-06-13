@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * Proposition ORM repository
@@ -19,26 +20,13 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
     /**
      * {@inheritdoc}
      */
-    public function findOpen($id)
-    {
-        return $this->findOneBy(
-            [
-                'id'     => $id,
-                'status' => Proposition::WAITING,
-            ]
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function findUserProposition($username, $locale)
+    public function findUserProposition(AbstractProduct $product, $username, $locale)
     {
         return $this->findOneBy(
             [
                 'author' => $username,
                 'locale' => $locale,
-                'status' => Proposition::WAITING,
+                'product' => $product
             ]
         );
     }

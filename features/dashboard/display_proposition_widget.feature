@@ -17,9 +17,9 @@ Feature: Display proposition widget
       | sku        | family  |
       | my-sandals | sandals |
     And the following propositions:
-      | product    | status   | author |
-      | my-sandals | open     | admin  |
-      | my-sandals | approved | admin  |
+      | product    | author |
+      | my-sandals | admin  |
+      | my-sandals | admin  |
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see "Propositions to review"

@@ -37,4 +37,19 @@ class EnterpriseFeatureContext extends FeatureContext
             ->getSubcontext('catalogConfiguration')
             ->addConfigurationDirectory(__DIR__.'/catalog');
     }
+
+    /**
+     * @Then /^I should see that (.*) is a modified value$/
+     */
+    public function iShouldSeeThatFieldIsAModifiedValue($field)
+    {
+        $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($field);
+        foreach ($icons as $icon) {
+            if (false !== strpos($icon->getAttribute('class'), 'icon-file-text-alt')) {
+                return true;
+            }
+        }
+
+        throw $this->createExpectationException('Modified value icon was not found');
+    }
 }

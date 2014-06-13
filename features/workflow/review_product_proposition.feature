@@ -10,14 +10,12 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  |
       | my-sandals | sandals |
-    And role "Administrator" has the permission to edit the attribute group "info"
     And I am logged in as "admin"
     And I edit the "my-sandals" product
     And I change the "SKU" to "your-sandals"
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "SKU"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product SKU should be "your-sandals"
@@ -33,7 +31,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Name"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Tong"
@@ -49,7 +46,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "mobile - Description"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product mobile Description should be "Some awesome baskets"
@@ -69,7 +65,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Number in stock"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product ecommerce Number in stock should be "4"
@@ -89,7 +84,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Price"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Price in $ should be "90.00"
@@ -106,7 +100,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Manufacturer"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "TimberLand"
@@ -122,7 +115,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Weather conditions"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
@@ -143,7 +135,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Datasheet"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then I should see "akeneo.txt"
@@ -160,7 +151,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Thumbnail"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then I should see "akeneo.jpg"
@@ -177,7 +167,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Handmade"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Handmade should be "1"
@@ -194,7 +183,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "ecommerce - Release date"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product ecommerce Release date should be "2014-05-20"
@@ -211,7 +199,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Washing temperature"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Washing temperature should be "40"
@@ -227,7 +214,6 @@ Feature: Review a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     And I click on the "refuse" action of the row which contains "Name"
-    And I filter by "Status" with value "Waiting"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Sandals"

@@ -44,7 +44,7 @@ class PropositionWidget implements WidgetInterface
     {
         $propositions = $this->registry
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
-            ->findBy(['status' => Proposition::WAITING], ['createdAt' => 'desc'], 10);
+            ->findBy([], ['createdAt' => 'desc'], 10);
 
         return [
             'params' => $propositions
