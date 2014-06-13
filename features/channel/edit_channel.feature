@@ -17,15 +17,21 @@ Feature: Edit a channel
     Then I should see "My tablet"
 
   @javascript
+  Scenario: Successfully display a dialog when we quit a page with unsaved changes
+    Given I am on the "mobile" channel page
+    When I fill in the following information:
+      | Default label | My mobile |
+    And I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                    |
+      | content | You will lose changes to the channel if you leave this page. |
+
+  @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "mobile" channel page
     When I fill in the following information:
       | Default label | My mobile |
     Then I should see "There are unsaved changes."
-    And I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                    |
-      | content | You will lose changes to the channel if you leave this page. |
 
   @javascript
   Scenario: Successfully edit a channel to enable a locale and disable unused locales when deleting a channel

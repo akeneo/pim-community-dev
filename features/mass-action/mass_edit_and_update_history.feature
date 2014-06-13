@@ -61,6 +61,7 @@ Feature: Update product history when mass editing products
       | version | property | value |
       | 2       | enabled  | 0     |
 
+  @skip
   Scenario: Display history when changing product family
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
@@ -81,6 +82,7 @@ Feature: Update product history when mass editing products
     And I visit the "History" tab
     Then there should be 1 update
 
+  @skip
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"
