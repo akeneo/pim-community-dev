@@ -12,9 +12,9 @@ Feature: Browse propositions for a specific product
       | white-boots | boots  |
     And the following propositions:
       | product     | status   | author | locale |
-      | black-boots | approved | admin  | en_US  |
-      | black-boots | waiting  | peter  | fr_FR  |
-      | white-boots | canceled | julia  | en_US  |
+      | black-boots | approved | admin  | fr_FR  |
+      | black-boots | open     | peter  | en_US  |
+      | white-boots | open     | julia  | en_US  |
     And I am logged in as "admin"
 
   Scenario: Successfully display propositions
