@@ -233,28 +233,16 @@ class ProductController extends AbstractDoctrineController
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->productCatManager->getProductCountByTree($product);
 
-        return array(
-            'form'             => $form->createView(),
-            'dataLocale'       => $this->getDataLocale(),
-            'comparisonLocale' => $this->getComparisonLocale(),
-            'channels'         => $channels,
-            'attributesForm'   =>
-                $this->getAvailableAttributesForm($product->getAttributes())->createView(),
-            'product'          => $product,
-            'trees'            => $trees,
-            'created'          => $this->versionManager->getOldestLogEntry($product),
-            'updated'          => $this->versionManager->getNewestLogEntry($product),
-            'locales'          => $this->userContext->getUserLocales(),
-            'createPopin'      => $this->getRequest()->get('create_popin')
-        );
+        return $this->getProductEditTemplateParams();
     }
 
     /**
-     * Edit product
+     * Update product
      *
      * @param Request $request
      * @param integer $id
      *
+     * @Template("PimEnrichBundle:Product:edit.html.twig")
      * @AclAncestor("pim_enrich_product_edit")
      * @return RedirectResponse
      */
@@ -283,15 +271,20 @@ class ProductController extends AbstractDoctrineController
             }
 
             // TODO : Check if the locale exists and is activated
-            $params = array('id' => $product->getId(), 'dataLocale' => $this->getDataLocale());
+            $params = [
+                'id' => $product->getId(),
+                'dataLocale' => $this->getDataLocale(),
+            ];
             if ($comparisonLocale = $this->getComparisonLocale()) {
                 $params['compareWith'] = $comparisonLocale;
             }
+
+            return $this->redirectAfterEdit($params);
         } else {
             $this->addFlash('error', 'flash.product.invalid');
         }
 
-        return $this->redirectAfterEdit($params);
+        return $this->getProductEditTemplateParams();
     }
 
     /**
@@ -556,5 +549,28 @@ class ProductController extends AbstractDoctrineController
     protected function getEventDispatcher()
     {
         return $this->eventDispatcher;
+    }
+
+    /**
+     * Get the product edit template parameters
+     *
+     * @return array
+     */
+    protected function getProductEditTemplateParams()
+    {
+        return array(
+            'form'             => $form->createView(),
+            'dataLocale'       => $this->getDataLocale(),
+            'comparisonLocale' => $this->getComparisonLocale(),
+            'channels'         => $channels,
+            'attributesForm'   =>
+                $this->getAvailableAttributesForm($product->getAttributes())->createView(),
+            'product'          => $product,
+            'trees'            => $trees,
+            'created'          => $this->versionManager->getOldestLogEntry($product),
+            'updated'          => $this->versionManager->getNewestLogEntry($product),
+            'locales'          => $this->userContext->getUserLocales(),
+            'createPopin'      => $this->getRequest()->get('create_popin')
+        );
     }
 }
