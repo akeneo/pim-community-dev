@@ -1,0 +1,24 @@
+# Locale
+pimee_enrich_locale_edit_permissions:
+    type: action
+    label: pimee_enrich.acl.locale.edit_permissions
+
+# Category
+pimee_enrich_category_edit_permissions:
+    type: action
+    label: pimee_enrich.acl.category.edit_permissions
+
+# Attribute group
+pimee_enrich_attribute_group_edit_permissions:
+    type: action
+    label: pimee_enrich.acl.attribute_group.edit_permissions
+
+# Export
+pimee_importexport_export_profile_edit_permissions:
+    type: action
+    label: pimee_importexport.acl.export_profile.edit_permissions
+
+# Import
+pimee_importexport_import_profile_edit_permissions:
+    type: action
+    label: pimee_importexport.acl.import_profile.edit_permissions
