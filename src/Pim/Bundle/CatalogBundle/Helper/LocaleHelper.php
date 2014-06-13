@@ -60,7 +60,7 @@ class LocaleHelper
     /**
      * Returns the label of a locale in the specified language
      *
-     * @param string $code       the code of the locale to translate
+     * @param string $code        the code of the locale to translate
      * @param string $translateIn the locale in which the label should be translated (if null, user locale will be used)
      *
      * @return string

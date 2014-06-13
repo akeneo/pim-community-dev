@@ -78,9 +78,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     );
 
     /**
-     * @param ProductManager $productManager
-     * @param DoctrineCache  $doctrineCache
-     * @param VersionManager $versionManager
+     * @param ProductManager       $productManager
+     * @param DoctrineCache        $doctrineCache
+     * @param VersionManager       $versionManager
      * @param SmartManagerRegistry $managerRegistry
      */
     public function __construct(
