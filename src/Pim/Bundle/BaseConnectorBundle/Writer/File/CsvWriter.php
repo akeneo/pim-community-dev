@@ -186,9 +186,8 @@ class CsvWriter extends FileWriter
         } else {
             fputcsv($csvFile, [], $this->delimiter);
         }
-
         foreach ($fullItems as $item) {
-            fputcsv($csvFile, $item, $this->delimiter);
+            fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
             $this->stepExecution->incrementSummaryInfo('write');
         }
 
