@@ -24,7 +24,7 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
             [
                 'author' => $username,
                 'locale' => $locale,
-                'status' => Proposition::WAITING,
+                'product' => $product,
             ]
         );
     }
