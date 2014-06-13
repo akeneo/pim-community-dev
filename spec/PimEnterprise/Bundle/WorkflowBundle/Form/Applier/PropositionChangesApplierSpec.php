@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Persistence;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,8 +9,9 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormEvents;
 
-class ProductChangesApplierSpec extends ObjectBehavior
+class PropositionChangesApplierSpec extends ObjectBehavior
 {
     function let(
         FormFactoryInterface $formFactory,
@@ -36,7 +37,9 @@ class ProductChangesApplierSpec extends ObjectBehavior
             'comparisonLocale'   => null,
         ];
         $formBuilder->add('values', 'pim_enrich_localized_collection', $valuesFieldOptions)->willReturn($formBuilder);
+        $formBuilder->addEventListener(FormEvents::PRE_SUBMIT, Argument::any())->willReturn($formBuilder);
         $formBuilder->getForm()->willReturn($form);
+
         $form->submit(['foo' => 'bar'], false)->shouldBeCalled();
 
         $this->apply($product, ['foo' => 'bar']);

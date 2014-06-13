@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
+namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductChangesApplier
+class PropositionChangesApplier
 {
     /** @var FormFactoryInterface */
     protected $formFactory;
@@ -90,28 +90,56 @@ class ProductChangesApplier
             ->submit($changes, false);
     }
 
-    public function isMarkedAsModified($attributeCode, $scope = null)
+    /**
+     * Wether or not a a product value is marked as modified (meaning a proposition has changed its value)
+     *
+     * @param array  $attribute The attribute as stored in the product form view
+     * @param string $scope
+     *
+     * @return boolean
+     */
+    public function isMarkedAsModified($attribute, $scope = null)
     {
-        $hasAttribute = array_key_exists($attributeCode, $this->modifiedValues);
+        $hasAttribute = array_key_exists($attribute['code'], $this->modifiedValues);
 
-        if ($hasAttribute && null !== $scope) {
-            return in_array($scope, $this->modifiedValues[$attributeCode]['scopes']);
+        if ($hasAttribute
+            && null !== $scope
+            && !in_array($scope, $this->modifiedValues[$attribute['code']]['scopes'])) {
+            return false;
+        }
+
+        if ($hasAttribute
+            && isset($attribute['locale'])
+            && !in_array($attribute['locale'], $this->modifiedValues[$attribute['code']]['locales'])) {
+            return false;
         }
 
         return $hasAttribute;
     }
 
+    /**
+     * Mark a value as modified
+     *
+     * @param AbstractProductValue $value
+     */
     protected function markValueAsModified(AbstractProductValue $value)
     {
         $options = [];
-        $key = $value->getAttribute()->getCode();
-
         $attribute = $value->getAttribute();
+        $key = $attribute->getCode();
+
         if ($attribute->isScopable()) {
             if (isset($this->modifiedValues[$key]['scopes'])) {
                 $options['scopes'] = $this->modifiedValues[$key]['scopes'];
             }
             $options['scopes'][] = $value->getScope();
+        }
+
+        if ($attribute->isLocalizable()) {
+            if (isset($this->modifiedValues[$key]['locales'])) {
+                $options['locales'] = $this->modifiedValues[$key]['locales'];
+            }
+            $options['locales'][] = $value->getLocale();
         }
 
         $this->modifiedValues[$key] = $options;

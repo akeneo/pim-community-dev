@@ -56,14 +56,14 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
 
         foreach ($views as $key => $view) {
             foreach (array_keys($view['attributes']) as $name) {
-                if (isset($views[$key]['attributes'][$name]['value']) && $this->applier->isMarkedAsModified($name)) {
+                if (isset($views[$key]['attributes'][$name]['value']) && $this->applier->isMarkedAsModified($views[$key]['attributes'][$name])) {
 
                     $this->markFieldAsModified($views[$key]['attributes'][$name]['value']);
 
                 } else if (isset($views[$key]['attributes'][$name]['values'])) {
 
                     foreach ($views[$key]['attributes'][$name]['values'] as $scope => $value) {
-                        if ($this->applier->isMarkedAsModified($name, $scope)) {
+                        if ($this->applier->isMarkedAsModified($views[$key]['attributes'][$name], $scope)) {
                             $this->markFieldAsModified($views[$key]['attributes'][$name]['values'][$scope]);
                         }
                     }
@@ -75,6 +75,11 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
         return $views;
     }
 
+    /**
+     * Mark a form view and all its children as modified
+     *
+     * @param FormView $view
+     */
     protected function markFieldAsModified(FormView $view)
     {
         foreach ($view as $child) {

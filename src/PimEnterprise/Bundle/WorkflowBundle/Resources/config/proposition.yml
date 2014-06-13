@@ -1,7 +1,7 @@
 parameters:
     pimee_workflow.factory.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory
     pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
-    pimee_workflow.persister.product_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier
+    pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
     pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PrepareUploadingMedia
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
     pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\InjectCurrentUserPropositionSubscriber
@@ -17,9 +17,9 @@ services:
             - '@pim_catalog.manager.product'
             - '@pimee_workflow.persister.product_changes_applier'
 
-    pimee_workflow.persister.product_changes_applier:
+    pimee_workflow.applier.proposition_changes_applier:
         public: false
-        class: %pimee_workflow.persister.product_changes_applier.class%
+        class: %pimee_workflow.applier.proposition_changes_applier.class%
         arguments:
             - '@form.factory'
             - '@event_dispatcher'
