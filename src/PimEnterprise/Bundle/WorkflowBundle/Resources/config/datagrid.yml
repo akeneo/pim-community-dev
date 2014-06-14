@@ -94,6 +94,13 @@ datagrid:
                 type:          twig
                 template:      PimDataGridBundle:Property:enabled.html.twig
                 frontend_type: html
+            completeness:
+                label:         Complete
+                type:          twig
+                data_name:     ratio
+                template:      PimDataGridBundle:Property:completeness.html.twig
+                frontend_type: html
+                selector:      product_completeness
             created:
                 label:         Created At
                 frontend_type: date
@@ -119,14 +126,6 @@ datagrid:
                 icon:      eye-open
                 link:      view_link
                 rowAction: true
-        mass_actions:
-            mass_edit:
-                type: edit
-                acl_resource: pim_enrich_product_edit
-                label: pim.grid.mass_action.mass_edit
-                handler: product_mass_edit
-                route: pim_enrich_mass_edit_action_choose
-                icon: edit
         sorters:
             columns:
                 family:
@@ -135,6 +134,9 @@ datagrid:
                 enabled:
                     data_name: enabled
                     sorter:    product_field
+                completeness:
+                    data_name: ratio
+                    sorter:    product_completeness
                 created:
                     data_name: created
                     sorter:    product_field
@@ -184,6 +186,10 @@ datagrid:
                     type:      product_category
                     label:     Category
                     data_name: category
+                completeness:
+                    type:      product_completeness
+                    label:     Complete
+                    data_name: ratio
                 created:
                     type:        product_date
                     parent_type: date
