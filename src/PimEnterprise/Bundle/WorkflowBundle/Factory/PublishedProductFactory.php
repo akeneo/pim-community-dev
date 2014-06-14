@@ -14,7 +14,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
+// TODO : naming !!??
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness;
 
 /**
  * Published product factory
@@ -53,6 +55,7 @@ class PublishedProductFactory
         $this->copyGroups($product, $published);
         $this->copyCategories($product, $published);
         $this->copyAssociations($product, $published);
+        $this->copyCompletenesses($product, $published);
 
         return $published;
     }
@@ -116,6 +119,26 @@ class PublishedProductFactory
     }
 
     /**
+     * @param ProductInterface $product
+     * @param PublishedProduct $published
+     */
+    protected function copyCompletenesses(ProductInterface $product, PublishedProduct $published)
+    {
+        $copiedData = new ArrayCollection();
+        foreach ($product->getCompletenesses() as $completeness) {
+            $copiedCompleteness = new PublishedProductCompleteness();
+            $copiedCompleteness->setLocale($completeness->getLocale());
+            $copiedCompleteness->setChannel($completeness->getChannel());
+            $copiedCompleteness->setProduct($published);
+            $copiedCompleteness->setRatio($completeness->getRatio());
+            $copiedCompleteness->setMissingCount($completeness->getMissingCount());
+            $copiedCompleteness->setRequiredCount($completeness->getRequiredCount());
+            $copiedData->add($copiedCompleteness);
+        }
+        $published->setCompletenesses($copiedData);
+    }
+
+    /**
      * TODO : ugly POC method, we'll use normalization + processing to deal with the copy
      *
      * @param ProductInterface $product
@@ -142,7 +165,7 @@ class PublishedProductFactory
                             $copiedObject->setCurrency($object->getCurrency());
                             $copiedData->add($copiedObject);
                         } elseif ($object instanceof AttributeOption) {
-                            $copiedData[]= $object;
+                            $copiedData->add($object);
                         }
                     }
                 }
