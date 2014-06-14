@@ -123,11 +123,11 @@ class CatalogConfigurationContext extends RawMinkContext
      */
     protected function getConfigurationFiles($catalog)
     {
-        $directories = array_merge([$this->catalogPath], $this->extraDirectories);
+        $directories = array_merge([__DIR__.'/'.$this->catalogPath], $this->extraDirectories);
 
         $files = [];
         foreach ($directories as &$directory) {
-            $directory = sprintf('%s/%s/%s', __DIR__, $directory, strtolower($catalog));
+            $directory = sprintf('%s/%s', $directory, strtolower($catalog));
             $files = array_merge($files, glob($directory.'/*'));
         }
 

@@ -60,7 +60,7 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
     /**
      * Get the paths of the fixtures
      *
-     * @param $fixturesOption
+     * @param string|array $fixturesOption
      *
      * @return array
      */
@@ -81,12 +81,12 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
     /**
      * Get the fixtures to load
      *
-     * @param $paths
+     * @param string[] $paths
      *
      * @return array
      * @throws \InvalidArgumentException
      */
-    protected function getFixtures($paths)
+    protected function getFixtures(array $paths)
     {
         $loader = new DataFixturesLoader($this->getContainer());
         foreach ($paths as $path) {
@@ -109,8 +109,8 @@ class LoadDataFixturesDoctrineCommand extends BaseLoadDataFixturesDoctrineComman
      *
      * @param OutputInterface $output
      * @param array           $fixtures
-     * @param                 $purgeWithTruncate
-     * @param                 $appendFixtures
+     * @param boolean         $purgeWithTruncate
+     * @param boolean         $appendFixtures
      */
     protected function purgeAndExecute(OutputInterface $output, array $fixtures, $purgeWithTruncate, $appendFixtures)
     {

@@ -37,6 +37,10 @@ class FixtureJobLoader
     /** @var ContainerInterface  */
     protected $container;
 
+    /**
+     * @param ContainerInterface $container
+     * @param array              $jobsFilePaths
+     */
     public function __construct(ContainerInterface $container, array $jobsFilePaths)
     {
         $this->container = $container;
@@ -49,6 +53,8 @@ class FixtureJobLoader
 
     /**
      * Load the fixture jobs in database
+     *
+     * @return null
      */
     public function load()
     {
