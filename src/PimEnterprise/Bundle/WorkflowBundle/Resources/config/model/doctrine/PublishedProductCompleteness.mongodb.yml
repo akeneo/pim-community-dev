@@ -1,0 +1,17 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness:
+    type: embeddedDocument
+    fields:
+        id:
+            id: true
+        ratio:
+            type: int
+        missingCount:
+            type: int
+        requiredCount:
+            type: int
+        channel:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Channel
+        locale:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale

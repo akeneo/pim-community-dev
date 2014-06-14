@@ -64,10 +64,10 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - remove
                 - persist
                 - refresh
-#        completenesses:
-#            targetEntity: Pim\Bundle\CatalogBundle\Model\Completeness
-#            mappedBy: product
-#            cascade:
-#                - remove
-#                - persist
-#                - refresh
+        completenesses:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh
