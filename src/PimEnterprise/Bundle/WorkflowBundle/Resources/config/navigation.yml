@@ -3,7 +3,7 @@ oro_menu_config:
         pimee_workflow_publishedproduct:
             label: pim_menu.item.publishedproduct
             route: pimee_workflow_publishedproduct_index
-            aclResourceId: pim_enrich_product_index
+            aclResourceId: pimee_workflow_publishedproduct_index
             extras:
                 routes: ['/^pimee_workflow_publishedproduct_\w+$/']
                 position: 15

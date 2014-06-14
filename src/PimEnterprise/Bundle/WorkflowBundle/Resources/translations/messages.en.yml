@@ -9,8 +9,10 @@ pimee_workflow:
             refuse:  Refuse
     publishedproduct:
         index: Published Products
+    acl.publishedproduct:
+        index: Manage published products
 btn.publish: Publish
-flash.product.published: The product has been published in %locale%
+flash.product.published: The product has been successfully published
 pim_menu:
     item:
         publishedproduct: Published products

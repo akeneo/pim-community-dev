@@ -109,7 +109,7 @@ class PublishedProductController extends AbstractController
      * @param integer $id
      *
      * @Template
-     * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
+     * AclAncestor("pimee_workflow_publishedproduct_index")
      * @return array
      */
     public function publishAction(Request $request, $id)
@@ -126,7 +126,7 @@ class PublishedProductController extends AbstractController
         $this->manager->getObjectManager()->persist($published);
         $this->manager->getObjectManager()->flush();
 
-        $this->addFlash('success', 'flash.product.published', ['%locale%' => $locale]);
+        $this->addFlash('success', 'flash.product.published');
 
         return $this->redirect(
             $this->generateUrl(
@@ -145,7 +145,7 @@ class PublishedProductController extends AbstractController
      * @param integer $id
      *
      * @Template
-     * TODO : AclAncestor("pimee_workflow_publishedproduct_publish")
+     * AclAncestor("pimee_workflow_publishedproduct_index")
      * @return array
      */
     public function viewAction(Request $request, $id)
