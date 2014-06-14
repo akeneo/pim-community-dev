@@ -38,9 +38,14 @@ class CompletenessJoin
      */
     public function addJoins($completenessAlias)
     {
-        $rootAlias    = $this->qb->getRootAlias();
-        $localeAlias  = $completenessAlias.'Locale';
-        $channelAlias = $completenessAlias.'Channel';
+        $rootAlias         = $this->qb->getRootAlias();
+        $localeAlias       = $completenessAlias.'Locale';
+        $channelAlias      = $completenessAlias.'Channel';
+        $rootEntity        = current($this->qb->getRootEntities());
+        $completenessMapping = $this->qb->getEntityManager()
+            ->getClassMetadata($rootEntity)
+            ->getAssociationMapping('completenesses');
+        $completenessClass = $completenessMapping['targetEntity'];
 
         $this->qb
             ->leftJoin(
@@ -56,7 +61,7 @@ class CompletenessJoin
                 $channelAlias.'.code = :scopeCode'
             )
             ->leftJoin(
-                'Pim\Bundle\CatalogBundle\Model\Completeness',
+                $completenessClass,
                 $completenessAlias,
                 'WITH',
                 $completenessAlias.'.locale = '.$localeAlias.'.id AND '.
