@@ -1,0 +1,20 @@
+attribute_groups_accesses:
+    marketing:
+        view: [administrator, user]
+        edit: [administrator, user]
+    technical:
+        view: [administrator, user]
+        edit: [administrator]
+    design:
+        view: [administrator, user]
+        edit: [administrator]
+    manufacturing:
+        view: [user]
+        edit: [administrator]
+    color:
+        view: [administrator]
+    size:
+        edit: [user]
+    media:
+        view: [user]
+        edit: [user]

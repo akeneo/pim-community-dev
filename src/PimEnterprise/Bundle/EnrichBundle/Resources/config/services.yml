@@ -1,6 +1,7 @@
 parameters:
     pimee_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
-    pimee_enrich.form.subscriber.attribute_group_rights.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupRightsSubscriber
+    pimee_enrich.form.subscriber.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupPermissionsSubscriber
+    pimee_enrich.form.subscriber.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
 
 services:
     pimee_enrich.twig.version_extension:
@@ -8,15 +9,20 @@ services:
         tags:
             - { name: twig.extension }
 
-    pimee_enrich.form.subscriber.attribute_group_rights:
-        class: %pimee_enrich.form.subscriber.attribute_group_rights.class%
+    pimee_enrich.form.subscriber.attribute_group_permissions:
+        class: %pimee_enrich.form.subscriber.attribute_group_permissions.class%
         arguments:
             - '@pimee_security.manager.attribute_group_access'
 
-    pimee_enrich.event_listener.proposals_grid_listener:
+    pimee_enrich.form.subscriber.category_permissions:
+        class: %pimee_enrich.form.subscriber.category_permissions.class%
+        arguments:
+            - '@pimee_security.manager.category_access'
+
+    pimee_enrich.event_listener.propositions_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposals-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.propositions-grid, method: onBuildAfter }

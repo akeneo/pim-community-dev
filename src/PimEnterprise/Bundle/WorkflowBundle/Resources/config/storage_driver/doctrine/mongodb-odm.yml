@@ -1,9 +1,9 @@
 parameters:
-    pimee_workflow.repository.proposal.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\ProposalRepository
+    pimee_workflow.repository.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\PropositionRepository
     pimee_workflow.repository.publishedproduct.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
 
 services:
-    pimee_workflow.object_manager.proposal:
+    pimee_workflow.object_manager.proposition:
         alias: doctrine.odm.mongodb.document_manager
 
     pimee_workflow.repository.published_product:

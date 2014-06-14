@@ -7,12 +7,14 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
+ * Comparator which calculate change set for scalars
  *
  * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ScalarComparator implements ComparatorInterface
+class ScalarComparator extends AbstractComparator
 {
     /** @var PropertyAccessor */
     protected $accessor;
@@ -32,20 +34,24 @@ class ScalarComparator implements ComparatorInterface
      */
     public function supportsComparison(AbstractProductValue $value)
     {
-        return true;
+        $data = $value->getData();
+
+        return is_null($data) || is_scalar($data);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
         foreach ($submittedData as $key => $submittedValue) {
             if ($key === 'id') {
                 continue;
             }
             if ($this->accessor->getValue($value, $key) != $submittedValue) {
-                return [$key => $submittedValue];
+                return [
+                    $key => $submittedValue
+                ];
             }
         }
     }

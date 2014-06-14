@@ -5,14 +5,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
- * Comparator which calculate change set for Dates
+ * Comparator which calculate change set for dates
  *
  * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class DateComparator implements ComparatorInterface
+class DateComparator extends AbstractComparator
 {
     /**
      * {@inheritdoc}
@@ -25,13 +25,23 @@ class DateComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
-        $date = $value->getDate();
-        if (($date instanceof \DateTime && $date->format('Y-m-d') !== $submittedData['date'])
-            || (!$date instanceof \DateTime && '' !== $submittedData['date'])
-        ) {
-            return ['date' => $submittedData['date']];
+        if (!isset($submittedData['date'])) {
+            return;
         }
+
+        $date = $value->getDate();
+        if ($date instanceof \DateTime && $date->format('Y-m-d') === $submittedData['date']) {
+            return;
+        }
+
+        if (!$date instanceof \DateTime && '' === $submittedData['date']) {
+            return;
+        }
+
+        return [
+            'date' => $submittedData['date'],
+        ];
     }
 }

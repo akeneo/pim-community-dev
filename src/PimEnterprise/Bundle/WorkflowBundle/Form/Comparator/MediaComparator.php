@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Media;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaComparator implements ComparatorInterface
+class MediaComparator extends AbstractComparator
 {
     /** @var MediaManager */
     protected $mediaManager;
@@ -41,21 +41,28 @@ class MediaComparator implements ComparatorInterface
     /**
      * {@inheritdoc}
      */
-    public function getChanges(AbstractProductValue $value, $submittedData)
+    public function getDataChanges(AbstractProductValue $value, $submittedData)
     {
+        $changes = [];
+
         if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {
             $media = new Media();
             $media->setFile($submittedData['media']['file']);
-            $this->mediaManager->handle($media, 'proposal-' . md5(time() . uniqid()));
+            $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
 
-            return [
-                'media' => [
-                    'originalFilename' => $media->getOriginalFilename(),
-                    'filePath' => $media->getFilePath(),
-                    'mimeType' => $media->getMimeType(),
-                    'size' => $submittedData['media']['file']->getClientSize(),
-                ]
+            $changes['media'] = [
+                'filename' => $media->getFilename(),
+                'originalFilename' => $media->getOriginalFilename(),
+                'filePath' => $media->getFilePath(),
+                'mimeType' => $media->getMimeType(),
+                'size' => $submittedData['media']['file']->getClientSize(),
             ];
         }
+
+        if (isset($submittedData['media']['removed'])) {
+            $changes['media']['removed'] = true;
+        }
+
+        return $changes;
     }
 }

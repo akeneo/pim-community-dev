@@ -204,7 +204,20 @@
             <arg value="${basedir}/bin/behat ${behat.options}" />
             <env key="SYMFONY__DATABASE__USER" value="root" />
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+            <env key="FEATURES_DIRECTORY" value="features" />
         </exec>
+        <!--
+        <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
+            <arg value="${behat.concurrency}" />
+            <arg value="${behat.xdebug}" />
+            <arg value="${symfony.database.name}_" />
+            <arg value="${behat.profile.prefix}-" />
+            <arg value="${basedir}/bin/behat ${behat.options}" />
+            <env key="SYMFONY__DATABASE__USER" value="root" />
+            <env key="SYMFONY__DATABASE__PASSWORD" value="" />
+            <env key="FEATURES_DIRECTORY" value="vendor/akeneo/pim-community-dev/features" />
+        </exec>
+        -->
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">

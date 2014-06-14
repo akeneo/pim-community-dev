@@ -16,10 +16,10 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
  */
 class AttributeGroupVoter implements VoterInterface
 {
-    /** @var string */
+    /** @staticvar string */
     const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
 
-    /** @var string */
+    /** @staticvar string */
     const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
 
     /**

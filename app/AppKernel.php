@@ -92,6 +92,8 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\InstallerBundle\PimEnterpriseInstallerBundle(),
             new PimEnterprise\Bundle\DataGridBundle\PimEnterpriseDataGridBundle(),
             new PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle(),
+            new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
+            new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle()
         );
 

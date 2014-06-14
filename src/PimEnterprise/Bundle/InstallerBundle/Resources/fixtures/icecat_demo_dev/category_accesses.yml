@@ -1,0 +1,13 @@
+category_accesses:
+    master:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    brands:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    home_appliances:
+        view: [administrator, manager]
+        edit: [administrator, manager]

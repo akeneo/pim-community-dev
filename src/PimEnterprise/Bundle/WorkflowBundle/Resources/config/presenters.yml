@@ -1,0 +1,106 @@
+parameters:
+    pimee_workflow.twig.extension.proposition_changes.class: PimEnterprise\Bundle\WorkflowBundle\Twig\PropositionChangesExtension
+    pimee_workflow.renderer.html.simple_list.class: PimEnterprise\Bundle\WorkflowBundle\Diff\Renderer\Html\SimpleList
+    pimee_workflow.proposition_renderer.class: PimEnterprise\Bundle\WorkflowBundle\Rendering\PhpDiffRenderer
+    pimee_workflow.presenter.attribute.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\AttributePresenter
+    pimee_workflow.presenter.text.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\TextPresenter
+    pimee_workflow.presenter.metric.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\MetricPresenter
+    pimee_workflow.presenter.date.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DatePresenter
+    pimee_workflow.presenter.prices.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\PricesPresenter
+    pimee_workflow.presenter.boolean.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\BooleanPresenter
+    pimee_workflow.presenter.default.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\DefaultPresenter
+    pimee_workflow.presenter.option.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionPresenter
+    pimee_workflow.presenter.options.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\OptionsPresenter
+    pimee_workflow.presenter.file.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\FilePresenter
+    pimee_workflow.presenter.image.class: PimEnterprise\Bundle\WorkflowBundle\Presenter\ImagePresenter
+
+services:
+    ##
+    # Twig Extension
+    ##
+    pimee_workflow.twig.extension.proposition_changes:
+        class: %pimee_workflow.twig.extension.proposition_changes.class%
+        arguments:
+            - '@pim_catalog.repository.product_value'
+            - '@pim_catalog.repository.attribute'
+            - '@pimee_workflow.proposition_renderer'
+            - '@translator'
+            - '@pim_catalog.manager.product'
+            - '@pim_catalog.manager.attribute'
+        tags:
+            - { name: twig.extension }
+
+    pimee_workflow.proposition_renderer:
+        class: %pimee_workflow.proposition_renderer.class%
+        arguments:
+            - '@pimee_workflow.renderer.html.simple_list'
+
+    pimee_workflow.renderer.html.simple_list:
+        public: false
+        class: %pimee_workflow.renderer.html.simple_list.class%
+
+    ##
+    # Presenters
+    ##
+    pimee_workflow.presenter.default:
+        class: %pimee_workflow.presenter.default.class%
+        tags:
+            - { name: pimee_workflow.presenter, priority: -128 }
+
+    pimee_workflow.presenter.attribute:
+        class: %pimee_workflow.presenter.attribute.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.text:
+        class: %pimee_workflow.presenter.text.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.metric:
+        class: %pimee_workflow.presenter.metric.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.date:
+        class: %pimee_workflow.presenter.date.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.prices:
+        class: %pimee_workflow.presenter.prices.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.boolean:
+        class: %pimee_workflow.presenter.boolean.class%
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.option:
+        class: %pimee_workflow.presenter.option.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.options:
+        class: %pimee_workflow.presenter.options.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
+        tags:
+            - { name: pimee_workflow.presenter }
+
+    pimee_workflow.presenter.file:
+        class: %pimee_workflow.presenter.file.class%
+        arguments:
+            - '@router'
+        tags:
+            - { name: pimee_workflow.presenter, priority: -64 }
+
+    pimee_workflow.presenter.image:
+        class: %pimee_workflow.presenter.image.class%
+        arguments:
+            - '@router'
+        tags:
+            - { name: pimee_workflow.presenter }

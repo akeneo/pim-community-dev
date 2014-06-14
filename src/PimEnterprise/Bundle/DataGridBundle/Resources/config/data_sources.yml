@@ -1,11 +1,11 @@
 parameters:
-    pimee_datagrid.datasource.proposal.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ProposalDatasource
+    pimee_datagrid.datasource.proposition.class: PimEnterprise\Bundle\DataGridBundle\Datasource\PropositionDatasource
 
 services:
-    pimee_datagrid.datasource.proposal:
-        class: %pimee_datagrid.datasource.proposal.class%
+    pimee_datagrid.datasource.proposition:
+        class: %pimee_datagrid.datasource.proposition.class%
         arguments:
-            - '@pimee_workflow.object_manager.proposal'
+            - '@pimee_workflow.object_manager.proposition'
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_proposal }
+            - { name: oro_datagrid.datasource, type: pim_proposition }

@@ -4,7 +4,18 @@ services:
         public: false
         arguments:
             - '@pim_transform.transformer.property.relation'
-            - %pimee_catalog.entity.attribute_group_access.class%
+            - %pimee_security.entity.attribute_group_access.class%
+            - ['/^role/']
+            - { class: %pim_user.entity.role.class% }
+        tags:
+            - { name: pim_transform.transformer.guesser, priority: 40 }
+
+    pimee_transform.transformer.guesser.category_access_role:
+        class: %pim_transform.transformer.guesser.regexp.class%
+        public: false
+        arguments:
+            - '@pim_transform.transformer.property.relation'
+            - %pimee_security.entity.category_access.class%
             - ['/^role/']
             - { class: %pim_user.entity.role.class% }
         tags:

@@ -1,0 +1,40 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess:
+    type: entity
+    table: pimee_security_category_access
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+    uniqueConstraints:
+        category_role_idx:
+            columns:
+                - category_id
+                - role_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewProducts:
+            type: boolean
+            column: view_products
+            options:
+                default: false
+        editProducts:
+            type: boolean
+            column: edit_products
+            options:
+                default: false
+    manyToOne:
+        category:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            joinColumns:
+                category_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        role:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            joinColumns:
+                role_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

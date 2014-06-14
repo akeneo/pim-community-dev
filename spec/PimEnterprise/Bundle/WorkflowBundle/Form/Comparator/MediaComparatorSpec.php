@@ -33,19 +33,28 @@ class MediaComparatorSpec extends ObjectBehavior
                 Argument::type('Pim\Bundle\CatalogBundle\Model\Media'),
                 Argument::which('getFile', $file->getWrappedObject())
             ),
-            Argument::containingString('proposal-')
+            Argument::containingString('proposition-')
         )->will(function(array $args) {
             $args[0]->setOriginalFilename('foo.jpg');
             $args[0]->setFilePath('/tmp/foo.jpg');
             $args[0]->setMimeType('image/jpg');
         });
 
-        $this->getChanges($value, ['media' => ['file' => $file]])->shouldReturn([
+        $submittedData = [
+            'id' => 1,
+            'media' => [
+                'file' => $file,
+                'removed' => true,
+            ],
+        ];
+        $this->getChanges($value, $submittedData)->shouldReturn([
+            'id' => 1,
             'media' => [
                 'originalFilename' => 'foo.jpg',
                 'filePath' => '/tmp/foo.jpg',
                 'mimeType' => 'image/jpg',
                 'size' => 42,
+                'removed' => true,
             ]
         ]);
     }

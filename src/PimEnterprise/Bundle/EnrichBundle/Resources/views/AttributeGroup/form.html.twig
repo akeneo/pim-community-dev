@@ -32,7 +32,11 @@
 
     {% set tabs = ['Properties'] %}
     {% if editMode %}
-        {% set tabs = tabs|merge(['Attributes', 'Rights', 'History']) %}
+        {% set tabs = tabs|merge(['Attributes']) %}
+        {% if resource_granted('pimee_enrich_attribute_group_edit_permissions') %}
+            {% set tabs = tabs|merge(['Permissions']) %}
+        {% endif %}
+        {% set tabs = tabs|merge(['History']) %}
     {% endif %}
 
     {{ elements.form_navbar(tabs) }}
@@ -48,8 +52,8 @@
         {% if editMode %}
             {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
 
-            <div class="tab-pane" id="rights">
-                {{ elements.accordion({ 'pane.accordion.rights': form_widget(form.rights) }) }}
+            <div class="tab-pane" id="permissions">
+                {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
 
             <div class="tab-pane" id="history">

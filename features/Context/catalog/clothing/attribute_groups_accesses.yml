@@ -1,0 +1,12 @@
+attribute_groups_accesses:
+    info:
+        edit: [administrator, manager, user]
+    marketing:
+        edit: [administrator, manager, user]
+    sizes:
+        edit: [administrator, manager, user]
+    colors:
+        edit: [administrator]
+        view: [manager]
+    media:
+        edit: [administrator]

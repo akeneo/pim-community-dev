@@ -1,0 +1,13 @@
+category_accesses:
+    master:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    collections:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    books:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    computers:
+        view: [administrator, manager]
+        edit: [administrator, manager]
