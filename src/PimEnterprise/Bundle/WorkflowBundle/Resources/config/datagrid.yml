@@ -122,7 +122,7 @@ datagrid:
         actions:
             view:
                 type:      navigate
-                label:     View the details of the product
+                label:     View the product
                 icon:      eye-open
                 link:      view_link
                 rowAction: true
