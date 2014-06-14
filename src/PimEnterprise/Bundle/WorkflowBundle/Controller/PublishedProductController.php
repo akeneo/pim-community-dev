@@ -115,8 +115,6 @@ class PublishedProductController extends AbstractController
     public function publishAction(Request $request, $id)
     {
         $product = $this->manager->find($id);
-        $locale = $this->getDataLocale();
-
         $published = $this->repository->findOneByOriginalProductId($id);
         if ($published) {
             $this->manager->getObjectManager()->remove($published);
