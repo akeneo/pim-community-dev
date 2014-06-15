@@ -43,6 +43,4 @@ services:
         scope: request
         arguments:
             - '@pim_user.context.user'
-            - '@pim_catalog.manager.product'
-            - '@pimee_workflow.repository.published_product'
-            - '@pimee_workflow.publisher.product'
+            - '@pimee_workflow.manager.published_product'

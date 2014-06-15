@@ -15,10 +15,8 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher;
+use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
 /**
  * Published product controller
@@ -28,27 +26,22 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher;
  */
 class PublishedProductController extends AbstractController
 {
-    /** @var ProductManager */
-    protected $manager;
-
     /** @var UserContext */
     protected $userContext;
 
-    /** @var ProductPublisher */
-    protected $publisher;
+    /** @var PublishedProductManager */
+    protected $manager;
 
     /**
-     * @param Request                             $request
-     * @param EngineInterface                     $templating
-     * @param RouterInterface                     $router
-     * @param SecurityContextInterface            $securityContext
-     * @param FormFactoryInterface                $formFactory
-     * @param ValidatorInterface                  $validator
-     * @param TranslatorInterface                 $translator
-     * @param UserContext                         $userContext
-     * @param ProductManager                      $productManager
-     * @param PublishedProductRepositoryInterface $repository
-     * @param ProductPublisher                    $publisher
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param UserContext              $userContext
+     * @param PublishedProductManager  $manager
      */
     public function __construct(
         Request $request,
@@ -59,9 +52,7 @@ class PublishedProductController extends AbstractController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         UserContext $userContext,
-        ProductManager $manager,
-        PublishedProductRepositoryInterface $repository,
-        ProductPublisher $publisher
+        PublishedProductManager $manager
     ) {
         parent::__construct(
             $request,
@@ -74,8 +65,6 @@ class PublishedProductController extends AbstractController
         );
         $this->userContext    = $userContext;
         $this->manager        = $manager;
-        $this->repository     = $repository;
-        $this->publisher      = $publisher;
     }
 
     /**
@@ -107,8 +96,8 @@ class PublishedProductController extends AbstractController
      */
     public function publishAction(Request $request, $id)
     {
-        $product = $this->manager->find($id);
-        $this->publisher->publish($product);
+        $product = $this->manager->findOriginalProduct($id);
+        $this->manager->publish($product);
         $this->addFlash('success', 'flash.product.published');
 
         return $this->redirect(
@@ -133,7 +122,7 @@ class PublishedProductController extends AbstractController
      */
     public function viewAction(Request $request, $id)
     {
-        $published = $this->repository->findOneById($id);
+        $published = $this->manager->findPublishedProduct($id);
         $locale = $this->getDataLocale();
 
         return [
