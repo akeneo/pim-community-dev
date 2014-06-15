@@ -49,7 +49,6 @@ services:
         scope: request
         arguments:
             - '@pim_user.context.user'
-            - '@oro_security.security_facade'
-            - '@pimee_workflow.factory.published_product'
             - '@pim_catalog.manager.product'
             - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.publisher.product'

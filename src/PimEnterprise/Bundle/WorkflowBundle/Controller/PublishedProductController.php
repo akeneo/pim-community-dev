@@ -12,14 +12,13 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher;
 
 /**
  * Published product controller
@@ -29,17 +28,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  */
 class PublishedProductController extends AbstractController
 {
-    /** @var PublishedProductFactory */
-    protected $factory;
-
     /** @var ProductManager */
     protected $manager;
 
     /** @var UserContext */
     protected $userContext;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
+    /** @var ProductPublisher */
+    protected $publisher;
 
     /**
      * @param Request                             $request
@@ -50,10 +46,9 @@ class PublishedProductController extends AbstractController
      * @param ValidatorInterface                  $validator
      * @param TranslatorInterface                 $translator
      * @param UserContext                         $userContext
-     * @param SecurityFacade                      $securityFacade
-     * @param PublishedProductFactory             $factory
      * @param ProductManager                      $productManager
      * @param PublishedProductRepositoryInterface $repository
+     * @param ProductPublisher                    $publisher
      */
     public function __construct(
         Request $request,
@@ -64,10 +59,9 @@ class PublishedProductController extends AbstractController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         UserContext $userContext,
-        SecurityFacade $securityFacade,
-        PublishedProductFactory $factory,
         ProductManager $manager,
-        PublishedProductRepositoryInterface $repository
+        PublishedProductRepositoryInterface $repository,
+        ProductPublisher $publisher
     ) {
         parent::__construct(
             $request,
@@ -79,10 +73,9 @@ class PublishedProductController extends AbstractController
             $translator
         );
         $this->userContext    = $userContext;
-        $this->securityFacade = $securityFacade;
-        $this->factory        = $factory;
         $this->manager        = $manager;
         $this->repository     = $repository;
+        $this->publisher      = $publisher;
     }
 
     /**
@@ -115,15 +108,7 @@ class PublishedProductController extends AbstractController
     public function publishAction(Request $request, $id)
     {
         $product = $this->manager->find($id);
-        $published = $this->repository->findOneByOriginalProductId($id);
-        if ($published) {
-            $this->manager->getObjectManager()->remove($published);
-        }
-
-        $published = $this->factory->createPublishedProduct($product);
-        $this->manager->getObjectManager()->persist($published);
-        $this->manager->getObjectManager()->flush();
-
+        $this->publisher->publish($product);
         $this->addFlash('success', 'flash.product.published');
 
         return $this->redirect(
