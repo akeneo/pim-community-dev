@@ -78,7 +78,7 @@ datagrid:
         source:
             acl_resource:      pim_enrich_product_index
             type:              pim_product
-            entity:            %pimee_workflow.entity.publishedproduct.class%
+            entity:            %pimee_workflow.entity.published_product.class%
             repository_method: createDatagridQueryBuilder
         columns:
             label:

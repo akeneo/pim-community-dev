@@ -1,16 +1,16 @@
 parameters:
     pimee_workflow.repository.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\PropositionRepository
-    pimee_workflow.repository.publishedproduct.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
+    pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
 
 services:
     pimee_workflow.object_manager.proposition:
         alias: doctrine.odm.mongodb.document_manager
 
     pimee_workflow.repository.published_product:
-        class: %pimee_workflow.repository.publishedproduct.class%
+        class: %pimee_workflow.repository.published_product.class%
         factory_service: pim_catalog.object_manager.product
         factory_method: getRepository
-        arguments: [%pimee_workflow.entity.publishedproduct.class%]
+        arguments: [%pimee_workflow.entity.published_product.class%]
         calls:
             - [setProductQueryBuilder, ['@pim_catalog.doctrine.product_query_builder']]
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
