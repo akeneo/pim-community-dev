@@ -1,0 +1,10 @@
+parameters:
+    pimee_workflow.publisher.product.class: PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher
+
+services:
+    pimee_workflow.publisher.product:
+        class: %pimee_workflow.publisher.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.factory.published_product'
