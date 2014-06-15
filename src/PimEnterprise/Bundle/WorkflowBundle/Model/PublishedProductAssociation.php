@@ -13,6 +13,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
  *
  * @ExclusionPolicy("all")
  */
-class PublishedAssociation extends AbstractAssociation
+class PublishedProductAssociation extends AbstractAssociation
 {
 }

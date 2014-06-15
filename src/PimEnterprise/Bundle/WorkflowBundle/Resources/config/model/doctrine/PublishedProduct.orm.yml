@@ -51,7 +51,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                         onDelete: CASCADE
     oneToMany:
         associations:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
             mappedBy: owner
             cascade:
                 - persist

@@ -14,8 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
-// TODO : naming !!??
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness;
 
 /**
@@ -98,7 +97,7 @@ class PublishedProductFactory
     protected function copyAssociations(ProductInterface $product, PublishedProduct $published)
     {
         foreach ($product->getAssociations() as $association) {
-            $copiedAssociation = new PublishedAssociation();
+            $copiedAssociation = new PublishedProductAssociation();
             $copiedAssociation->setOwner($published);
             $copiedAssociation->setAssociationType($association->getAssociationType());
             $productIds = [];

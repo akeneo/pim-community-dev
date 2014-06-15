@@ -1,6 +1,6 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
     type: entity
-    table: pimee_workflow_publishedassociation
+    table: pimee_workflow_published_product_association
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\ORM\AssociationRepository
     fields:
         id:
@@ -33,7 +33,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
         groups:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
             joinTable:
-                name: pimee_workflow_publishedassociation_publishedgroup
+                name: pimee_workflow_published_product_association_published_group
                 joinColumns:
                     association_id:
                         referencedColumnName: id
@@ -45,7 +45,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
         products:
             targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
             joinTable:
-                name: pimee_workflow_publishedassociation_publishedproduct
+                name: pimee_workflow_published_product_association_published_product
                 joinColumns:
                     association_id:
                         onDelete: CASCADE

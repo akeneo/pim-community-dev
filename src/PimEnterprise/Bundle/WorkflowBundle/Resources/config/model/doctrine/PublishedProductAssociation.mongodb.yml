@@ -1,4 +1,4 @@
-PimEnterprise\Bundle\WorkflowBundle\Model\PublishedAssociation:
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation:
     type: embeddedDocument
     fields:
         id:
