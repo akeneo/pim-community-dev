@@ -2,7 +2,6 @@ parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
     pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
     pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
-    pimee_workflow.factory.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
 
 services:
@@ -37,11 +36,6 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
             - '@pimee_workflow.repository.proposition'
-
-    pimee_workflow.factory.published_product:
-        class: %pimee_workflow.factory.published_product.class%
-        arguments:
-            - '@pimee_workflow.repository.published_product'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
