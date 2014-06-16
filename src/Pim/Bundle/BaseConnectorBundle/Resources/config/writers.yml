@@ -24,6 +24,8 @@ services:
 
     pim_base_connector.writer.file.csv:
         class: %pim_base_connector.writer.file.csv.class%
+        arguments:
+            - '@pim_catalog.manager.media'
 
     pim_base_connector.writer.doctrine.product:
         class: %pim_base_connector.writer.doctrine.product.class%
