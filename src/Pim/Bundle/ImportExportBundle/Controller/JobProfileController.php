@@ -2,17 +2,19 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Routing\RouterInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\ValidatorInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
@@ -22,6 +24,7 @@ use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
+use Pim\Bundle\ImportExportBundle\JobEvents;
 
 /**
  * Job Profile controller
@@ -32,29 +35,22 @@ use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
  */
 class JobProfileController extends AbstractDoctrineController
 {
-    /**
-     * @var ConnectorRegistry
-     */
+    /** @var ConnectorRegistry */
     protected $connectorRegistry;
 
-    /**
-     * @var string
-     */
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var string */
     protected $jobType;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $rootDir;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $environment;
 
-    /**
-     * @var JobInstanceType
-     */
+    /** @var JobInstanceType */
     protected $jobInstanceType;
 
     /**
@@ -69,6 +65,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
+     * @param EventDispatcherInterface $eventDispatcher
      * @param string                   $jobType
      * @param string                   $rootDir
      * @param string                   $environment
@@ -84,6 +81,7 @@ class JobProfileController extends AbstractDoctrineController
         TranslatorInterface $translator,
         ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
+        EventDispatcherInterface $eventDispatcher,
         $jobType,
         $rootDir,
         $environment,
@@ -101,6 +99,7 @@ class JobProfileController extends AbstractDoctrineController
         );
 
         $this->connectorRegistry = $connectorRegistry;
+        $this->eventDispatcher   = $eventDispatcher;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
         $this->environment       = $environment;
@@ -214,6 +213,9 @@ class JobProfileController extends AbstractDoctrineController
 
             return $this->redirectToIndexView();
         }
+
+        $this->eventDispatcher->dispatch(JobEvents::PRE_EDIT_JOB_PROFILE, new GenericEvent($jobInstance));
+
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
@@ -229,6 +231,8 @@ class JobProfileController extends AbstractDoctrineController
                 return $this->redirectToShowView($jobInstance->getId());
             }
         }
+
+        $this->eventDispatcher->dispatch(JobEvents::POST_EDIT_JOB_PROFILE, new GenericEvent($jobInstance));
 
         if (null === $template = $jobInstance->getJob()->getEditTemplate()) {
             $template = sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType()));
@@ -290,6 +294,8 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
+        $this->eventDispatcher->dispatch(JobEvents::PRE_EXECUTE_JOB_PROFILE, new GenericEvent($jobInstance));
+
         $violations       = $this->getValidator()->validate($jobInstance, array('Default', 'Execution'));
         $uploadViolations = $this->getValidator()->validate($jobInstance, array('Default', 'UploadExecution'));
 
@@ -316,6 +322,8 @@ class JobProfileController extends AbstractDoctrineController
             // the process cloning fail when the parent process, i.e. HTTP request, stops
             // at the same time)
             exec($cmd.' &');
+
+            $this->eventDispatcher->dispatch(JobEvents::POST_EXECUTE_JOB_PROFILE, new GenericEvent($jobInstance));
 
             $this->addFlash('success', sprintf('The %s is running.', $this->getJobType()));
 
