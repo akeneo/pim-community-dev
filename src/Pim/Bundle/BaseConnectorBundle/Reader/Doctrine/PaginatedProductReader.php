@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -20,7 +22,9 @@ use ArrayIterator;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PaginatedProductReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class PaginatedProductReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface
 {
     /**
      * Range of items to fetch from database
@@ -79,6 +83,11 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
      * @var MetricConverter
      */
     protected $metricConverter;
+
+    /**
+     * @var StepExecution
+     */
+    protected $stepExecution;
 
     /**
      * @param ProductRepositoryInterface $repository
@@ -250,8 +259,17 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
             $items = $this->repository->findByIds($currentIds);
             $products = new ArrayIterator($items);
             $this->offset += self::LIMIT;
+            $this->stepExecution->incrementSummaryInfo('read');
         }
 
         return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }
