@@ -99,6 +99,7 @@ class JobProfileController extends AbstractDoctrineController
         );
 
         $this->connectorRegistry = $connectorRegistry;
+        $this->eventDispatcher   = $eventDispatcher;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
         $this->environment       = $environment;
