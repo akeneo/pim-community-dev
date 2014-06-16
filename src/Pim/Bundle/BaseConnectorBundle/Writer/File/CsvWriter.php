@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Pim\Bundle\BaseConnectorBundle\Writer\File\FileWriter;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -142,7 +141,7 @@ class CsvWriter extends FileWriter
     /**
      * Get a set of all keys inside arrays
      *
-     * @param array $items
+     * @param  array $items
      * @return array
      */
     protected function getAllKeys(array $items)
