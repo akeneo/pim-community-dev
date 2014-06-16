@@ -37,11 +37,17 @@ datagrid:
                 type: url
                 params:
                     - id
-            launch_link:
+            show_link:
                 type: url
                 params:
                     - id
         actions:
+            view:
+                type:      navigate
+                label:     pim.grid.action.show.title
+                icon:      eye-open
+                link:      show_link
+                rowAction: true
             edit:
                 type:  navigate
                 label: Edit
@@ -52,12 +58,6 @@ datagrid:
                 label: Delete
                 icon:  trash
                 link:  delete_link
-            launch:
-                type:      navigate
-                label:     pim.grid.action.launch.title
-                icon:      play
-                link:      launch_link
-                rowAction: true
         sorters:
             columns:
                 code:
@@ -116,7 +116,7 @@ datagrid:
                 route: pim_importexport_export_profile_edit
             delete_link:
                 route: pim_importexport_export_profile_remove
-            launch_link:
+            show_link:
                 route: pim_importexport_export_profile_show
         filters:
             columns:
@@ -144,7 +144,7 @@ datagrid:
                 route: pim_importexport_import_profile_edit
             delete_link:
                 route: pim_importexport_import_profile_remove
-            launch_link:
+            show_link:
                 route: pim_importexport_import_profile_show
         filters:
             columns:
