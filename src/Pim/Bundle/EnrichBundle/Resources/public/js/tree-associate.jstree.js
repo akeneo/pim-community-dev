@@ -112,7 +112,6 @@ define(
 
             this.initTree = function (treeId) {
                 var $tree = $('#tree-' + treeId);
-                $('#apply-on-tree-' + treeId).val(1);
                 $tree.jstree(self.config);
 
                 $tree.bind('check_node.jstree', function (e, d) {
