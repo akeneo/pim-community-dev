@@ -41,4 +41,24 @@ class ProductController extends BaseProductController
             return $this->redirectToRoute('oro_default');
         }
     }
+
+
+    /**
+     * Show product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @Template
+     * @AclAncestor("pim_enrich_product_edit")
+     * @return array
+     */
+    public function showAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        return [
+            'product' => $product,
+        ];
+    }
 }
