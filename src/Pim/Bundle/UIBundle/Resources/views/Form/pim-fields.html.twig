@@ -147,7 +147,7 @@
 {% block pim_enrich_media_row %}
     {% spaceless %}
 
-    {% set empty = not form.vars.value or not form.vars.value.filePath %}
+    {% set empty = not form.vars.value or not form.vars.value.filename %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
             {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
@@ -212,7 +212,7 @@
 {% block pim_enrich_image_row %}
     {% spaceless %}
 
-    {% set empty = not form.vars.value or not form.vars.value.filePath %}
+    {% set empty = not form.vars.value or not form.vars.value.filename %}
     {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
         <div class="control-group">
             {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
