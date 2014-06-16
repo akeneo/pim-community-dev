@@ -1,5 +1,4 @@
 services:
-
     pimee_transform.transformer.guesser.job_profile_access_job_profile:
         class: %pim_transform.transformer.guesser.regexp.class%
         public: false
