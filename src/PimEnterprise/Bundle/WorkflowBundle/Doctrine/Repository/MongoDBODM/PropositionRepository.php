@@ -20,13 +20,12 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
      */
     public function findUserProposition(AbstractProduct $product, $username, $locale)
     {
-        return $this->findOneBy(
-            [
-                'author' => $username,
-                'locale' => $locale,
-                'product' => $product->getId()
-            ]
-        );
+        return $this
+            ->createQueryBuilder('Proposition')
+            ->field('author')->equals($username)
+            ->field('locale')->equals($locale)
+            ->field('product')->references($product)
+            ->getQuery()->getSingleResult();
     }
 
     /**
