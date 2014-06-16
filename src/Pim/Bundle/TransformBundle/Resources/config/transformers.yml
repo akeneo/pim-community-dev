@@ -144,3 +144,5 @@ services:
         class: %pim_serializer.normalizer.flat_product.class%
         arguments:
             - '@pim_catalog.manager.media'
+        calls:
+            - [setFilters, [['@pim_serializer.filter.flat_product_value']]]
