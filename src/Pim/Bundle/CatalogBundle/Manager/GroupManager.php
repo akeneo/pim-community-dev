@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\ORM\EntityManager;
 use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupTypeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 
 /**
  * Group manager
@@ -15,32 +18,43 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 class GroupManager
 {
     /**
-     * @var RegistryInterface
+     * @var AttributeRepository $attributeRepository
      */
-    protected $doctrine;
+    protected $attributeRepository;
 
     /**
-     * @var string
+     * @var GroupRepository $groupRepository
      */
-    protected $productClass;
+    protected $groupRepository;
 
     /**
-     * @var string
+     * @var GroupTypeRepository $groupTypeRepository
      */
-    protected $attributeClass;
+    protected $groupTypeRepository;
+
+    /**
+     * @var EntityManager $em
+     */
+    protected $em;
 
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
-     * @param string            $productClass
-     * @param string            $attributeClass
+     * @param EntityManager       $em
+     * @param GroupRepository     $groupRepository
+     * @param GroupTypeRepository $groupTypeRepository
+     * @param AttributeRepository $attributeRepository
      */
-    public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
-    {
-        $this->doctrine = $doctrine;
-        $this->productClass  = $productClass;
-        $this->attributeClass = $attributeClass;
+    public function __construct(
+        EntityManager $em,
+        GroupRepository $groupRepository,
+        GroupTypeRepository $groupTypeRepository,
+        AttributeRepository $attributeRepository
+    ) {
+        $this->em = $em;
+        $this->groupRepository     = $groupRepository;
+        $this->groupTypeRepository = $groupTypeRepository;
+        $this->attributeRepository = $attributeRepository;
     }
 
     /**
@@ -50,9 +64,7 @@ class GroupManager
      */
     public function getAvailableAxis()
     {
-        $repo = $this->getAttributeRepository();
-
-        return $repo->findAllAxis();
+        return $this->attributeRepository->findAllAxis();
     }
 
     /**
@@ -95,9 +107,7 @@ class GroupManager
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->doctrine
-            ->getRepository('PimCatalogBundle:GroupType')
-            ->findBy(array('variant' => $isVariant));
+        $types = $this->groupTypeRepository->findBy(array('variant' => $isVariant));
 
         $choices = array();
         foreach ($types as $type) {
@@ -109,13 +119,13 @@ class GroupManager
     }
 
     /**
-     * Returns the entity repository
+     * Returns the group repository
      *
-     * @return \Doctrine\ORM\EntityRepository
+     * @return GroupRepository
      */
     public function getRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:Group');
+        return $this->groupRepository;
     }
 
     /**
@@ -125,7 +135,7 @@ class GroupManager
      */
     public function getGroupTypeRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:GroupType');
+        return $this->groupTypeRepository;
     }
 
     /**
@@ -135,9 +145,8 @@ class GroupManager
      */
     public function remove(Group $group)
     {
-        $em = $this->doctrine->getManager();
-        $em->remove($group);
-        $em->flush();
+        $this->em->remove($group);
+        $this->em->flush();
     }
 
     /**
@@ -150,8 +159,7 @@ class GroupManager
      */
     public function getProductList(Group $group, $maxResults)
     {
-        $manager = $this->doctrine->getManager();
-        $products = $manager
+        $products = $this->em
             ->createQueryBuilder()
             ->select('p')
             ->from($this->productClass, 'p')
@@ -163,7 +171,7 @@ class GroupManager
 
         if (count($products) > $maxResults) {
             array_pop($products);
-            $count = $manager->createQueryBuilder()
+            $count = $this->em->createQueryBuilder()
                 ->select('COUNT(p)')
                 ->from($this->productClass, 'p')
                 ->innerJoin('p.groups', 'g', 'WITH', 'g=:group')
@@ -178,15 +186,5 @@ class GroupManager
             'products'      => $products,
             'productCount'  => $count
         );
-    }
-
-    /**
-     * Get the attribute repository
-     *
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository
-     */
-    protected function getAttributeRepository()
-    {
-        return $this->doctrine->getRepository($this->attributeClass);
     }
 }
