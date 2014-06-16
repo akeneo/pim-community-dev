@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use ArrayIterator;
 
 /**
  * Reads products one by one
@@ -36,6 +37,11 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     protected $channel;
 
     /**
+     * @var ChannelManager
+     */
+    protected $channelManager;
+
+    /**
      * @var AbstractQuery
      */
     protected $query;
@@ -48,22 +54,12 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     /**
      * @var array
      */
-    protected $ids;
+    protected $ids = null;
 
     /**
-     * @var int
+     * @var ArrayIterator
      */
-    protected $readIndex = 1;
-
-    /**
-     * @var ProductInterface[]
-     */
-    protected $products = [];
-
-    /**
-     * @var StepExecution
-     */
-    protected $stepExecution;
+    protected $products;
 
     /**
      * @var EntityManager
@@ -71,19 +67,19 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     protected $entityManager;
 
     /**
-     * @var boolean
+     * @var ProductRepositoryInterface
      */
-    protected $areSentProducts = true;
+    protected $repository;
 
     /**
-     * @var array
+     * @var CompletenessManager
      */
-    protected $results = array();
+    protected $completenessManager;
 
     /**
-     * @var boolean
+     * @var MetricConverter
      */
-    private $executed = false;
+    protected $metricConverter;
 
     /**
      * @param ProductRepositoryInterface $repository
@@ -104,6 +100,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
+        $this->products = new ArrayIterator();
     }
 
     /**
@@ -143,30 +140,18 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
      */
     public function read()
     {
-        if (!$this->executed) {
-            $this->ids = $this->getIds();
+        $product = null;
+
+        if (!$this->products->valid()) {
+            $this->products = $this->getNextProducts();
         }
 
-        if ($this->offset > count($this->ids) && $this->areSentProducts) {
-            return null;
-        } elseif ($this->areSentProducts) {
-            $limit = $this->offset + self::LIMIT;
-            $currentIds = array_slice($this->ids, $this->offset, $limit);
-            $this->products = $this->repository->findByIds($currentIds);
-            $this->offset = $limit;
+        if (null !== $this->products) {
+            $product = $this->products->current();
+            $this->products->next();
         }
 
-        if ($this->readIndex < count($this->products)) {
-            $this->areSentProducts = false;
-            $item = $this->products[$this->readIndex-1];
-            $this->readIndex++;
-        } else {
-            $item = $this->products[$this->readIndex-1];
-            $this->readIndex = 1;
-            $this->areSentProducts = true;
-        }
-
-        return $item;
+        return $product;
     }
 
     /**
@@ -199,6 +184,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
 
     /**
      * Set channel
+     *
      * @param string $channel
      */
     public function setChannel($channel)
@@ -208,6 +194,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
 
     /**
      * Get channel
+     *
      * @return string
      */
     public function getChannel()
@@ -216,13 +203,12 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     }
 
     /**
+     * Get ids of products which are complete and in channel
+     *
      * @return array
      */
     protected function getIds()
     {
-        $this->entityManager->clear();
-        $this->executed = true;
-
         if (!is_object($this->channel)) {
             $this->channel = $this->channelManager->getChannelByCode($this->channel);
         }
@@ -243,5 +229,31 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
         $results = $this->query->getQuery()->getArrayResult();
 
         return array_keys($results);
+    }
+
+    /**
+     * Get next products batch from DB
+     *
+     * @return ArrayIterator
+     */
+    protected function getNextProducts()
+    {
+        $this->entityManager->clear();
+        $products = null;
+
+        if (null === $this->ids) {
+            $this->ids = $this->getIds();
+        }
+
+        $limit = $this->offset + self::LIMIT;
+        $currentIds = array_slice($this->ids, $this->offset, $limit);
+
+        if (!empty($currentIds)) {
+            $items = $this->repository->findByIds($currentIds);
+            $products = new ArrayIterator($items);
+            $this->offset = $limit;
+        }
+
+        return $products;
     }
 }
