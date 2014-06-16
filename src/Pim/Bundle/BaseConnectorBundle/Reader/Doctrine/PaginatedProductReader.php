@@ -10,7 +10,6 @@ use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use ArrayIterator;
 
