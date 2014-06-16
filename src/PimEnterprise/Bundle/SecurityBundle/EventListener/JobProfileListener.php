@@ -38,7 +38,8 @@ class JobProfileListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::PRE_EDIT_JOB_PROFILE => ['checkEditPermission']
+            JobEvents::PRE_EDIT_JOB_PROFILE => ['checkEditPermission'],
+            JobEvents::PRE_EXECUTE_JOB_PROFILE => ['checkExecutePermission']
         ];
     }
 
@@ -52,6 +53,20 @@ class JobProfileListener implements EventSubscriberInterface
     public function checkEditPermission(GenericEvent $event)
     {
         if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * Throws an access denied exception if the user can not execute the job profile
+     *
+     * @param GenericEvent $event
+     *
+     * @throws AccessDeniedException
+     */
+    public function checkExecutePermission(GenericEvent $event)
+    {
+        if (false === $this->securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }
