@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -233,7 +234,7 @@ class ProductController extends AbstractDoctrineController
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->productCatManager->getProductCountByTree($product);
 
-        return $this->getProductEditTemplateParams();
+        return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
     }
 
     /**
@@ -284,7 +285,7 @@ class ProductController extends AbstractDoctrineController
             $this->addFlash('error', 'flash.product.invalid');
         }
 
-        return $this->getProductEditTemplateParams();
+        return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
     }
 
     /**
@@ -556,8 +557,12 @@ class ProductController extends AbstractDoctrineController
      *
      * @return array
      */
-    protected function getProductEditTemplateParams()
-    {
+    protected function getProductEditTemplateParams(
+        FormInterface $form,
+        ProductInterface $product,
+        array $channels,
+        array $trees
+    ) {
         return array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocale(),
