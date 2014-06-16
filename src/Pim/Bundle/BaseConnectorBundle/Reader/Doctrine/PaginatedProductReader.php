@@ -26,7 +26,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     /**
      * Range of items to fetch from database
      */
-    const LIMIT = 100;
+    const LIMIT = 10;
 
     /**
      * @var string
@@ -203,7 +203,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
     }
 
     /**
-     * Get ids of products which are complete and in channel
+     * Get ids of products which are completes and in channel
      *
      * @return array
      */
@@ -245,13 +245,12 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
             $this->ids = $this->getIds();
         }
 
-        $limit = $this->offset + self::LIMIT;
-        $currentIds = array_slice($this->ids, $this->offset, $limit);
+        $currentIds = array_slice($this->ids, $this->offset, self::LIMIT);
 
         if (!empty($currentIds)) {
             $items = $this->repository->findByIds($currentIds);
             $products = new ArrayIterator($items);
-            $this->offset = $limit;
+            $this->offset += self::LIMIT;
         }
 
         return $products;
