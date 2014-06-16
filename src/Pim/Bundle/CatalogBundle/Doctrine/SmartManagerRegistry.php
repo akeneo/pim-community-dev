@@ -63,9 +63,10 @@ class SmartManagerRegistry implements ManagerRegistry
     public function getAliasNamespace($alias)
     {
         foreach ($this->registries as $registry) {
+            //TODO: catch more precise exception
             try {
                 return $registry->getAliasNamespace($alias);
-            } catch (\Exception $e) { //TODO: catch more precise exception
+            } catch (\Exception $e) {
                 continue;
             }
         }

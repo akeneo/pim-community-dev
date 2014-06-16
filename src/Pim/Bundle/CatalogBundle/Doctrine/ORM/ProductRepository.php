@@ -97,8 +97,12 @@ class ProductRepository extends EntityRepository implements
             $qb->expr()->eq('pCompleteness.ratio', '100').' AND '.
             $qb->expr()->eq('pCompleteness.channel', $channel->getId());
 
+        $rootEntity          = current($qb->getRootEntities());
+        $completenessMapping = $this->_em->getClassMetadata($rootEntity)
+            ->getAssociationMapping('completenesses');
+        $completenessClass   = $completenessMapping['targetEntity'];
         $qb->innerJoin(
-            'Pim\Bundle\CatalogBundle\Model\Completeness',
+            $completenessClass,
             'pCompleteness',
             'WITH',
             $expression
