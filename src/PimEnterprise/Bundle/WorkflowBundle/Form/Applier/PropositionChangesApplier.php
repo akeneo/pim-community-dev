@@ -73,7 +73,7 @@ class PropositionChangesApplier
             )
             ->addEventListener(
                 FormEvents::PRE_SUBMIT,
-                function(FormEvent $event) {
+                function (FormEvent $event) {
                     $data = $event->getData();
                     $form = $event->getForm();
                     $values = $form->get('values');
