@@ -1,22 +1,12 @@
 services:
-    pimee_transform.transformer.guesser.attribute_group_access_role:
-        class: %pim_transform.transformer.guesser.regexp.class%
-        public: false
-        arguments:
-            - '@pim_transform.transformer.property.relation'
-            - %pimee_security.entity.attribute_group_access.class%
-            - ['/^role/']
-            - { class: %pim_user.entity.role.class% }
-        tags:
-            - { name: pim_transform.transformer.guesser, priority: 40 }
 
-    pimee_transform.transformer.guesser.category_access_role:
+    pimee_transform.transformer.guesser.job_profile_access_job_profile:
         class: %pim_transform.transformer.guesser.regexp.class%
         public: false
         arguments:
             - '@pim_transform.transformer.property.relation'
-            - %pimee_security.entity.category_access.class%
-            - ['/^role/']
-            - { class: %pim_user.entity.role.class% }
+            - %pimee_security.entity.job_profile_access.class%
+            - ['/^jobProfile/']
+            - { class: %akeneo_batch.entity.job_instance.class% }
         tags:
             - { name: pim_transform.transformer.guesser, priority: 40 }
