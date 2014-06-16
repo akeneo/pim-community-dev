@@ -10,9 +10,9 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 class InjectCurrentUserPropositionSubscriberSpec extends ObjectBehavior
 {
@@ -20,7 +20,7 @@ class InjectCurrentUserPropositionSubscriberSpec extends ObjectBehavior
         UserContext $userContext,
         CatalogContext $catalogContext,
         PropositionRepositoryInterface $repository,
-        ProductChangesApplier $applier
+        PropositionChangesApplier $applier
     ) {
         $this->beConstructedWith($userContext, $catalogContext, $repository, $applier);
     }
@@ -39,7 +39,7 @@ class InjectCurrentUserPropositionSubscriberSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $catalogContext->getLocaleCode()->willReturn('en_US');
         $user->getUsername()->willReturn('julia');
-        $repository->findUserProposition('julia', 'en_US')->willReturn($proposition);
+        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn($proposition);
         $proposition->getChanges()->willReturn(['changes']);
         $applier->apply($product, ['changes'])->shouldBeCalled();
 
@@ -82,7 +82,7 @@ class InjectCurrentUserPropositionSubscriberSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('julia');
         $catalogContext->getLocaleCode()->willReturn('en_US');
-        $repository->findUserProposition('julia', 'en_US')->willReturn(null);
+        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn(null);
         $applier->apply($product, Argument::any())->shouldNotBeCalled();
 
         $this->inject($event);

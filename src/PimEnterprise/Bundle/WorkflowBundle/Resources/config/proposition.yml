@@ -15,7 +15,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.manager.product'
-            - '@pimee_workflow.persister.product_changes_applier'
+            - '@pimee_workflow.applier.proposition_changes_applier'
 
     pimee_workflow.applier.proposition_changes_applier:
         public: false
@@ -39,7 +39,7 @@ services:
         class: %pimee_workflow.form.type.product.highlight_modified_values_view.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
-            - '@pimee_workflow.persister.product_changes_applier'
+            - '@pimee_workflow.applier.proposition_changes_applier'
 
     ##
     # Product form view overriding
@@ -62,6 +62,6 @@ services:
             - '@pim_user.context.user'
             - '@pim_catalog.context.catalog'
             - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.persister.product_changes_applier'
+            - '@pimee_workflow.applier.proposition_changes_applier'
         tags:
             - { name: kernel.event_subscriber }

@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 /**
  * Inject current user proposition in a product before editing a product
@@ -28,20 +28,20 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
     /** @var PropositionRepositoryInterface */
     protected $repository;
 
-    /** @var ProductChangesApplier */
+    /** @var PropositionChangesApplier */
     protected $applier;
 
     /**
      * @param UserContext                    $userContext
      * @param CatalogContext                 $catalogContext
      * @param PropositionRepositoryInterface $repository
-     * @param ProductChangesApplier          $applier
+     * @param PropositionChangesApplier      $applier
      */
     public function __construct(
         UserContext $userContext,
         CatalogContext $catalogContext,
         PropositionRepositoryInterface $repository,
-        ProductChangesApplier $applier
+        PropositionChangesApplier $applier
     ) {
         $this->userContext = $userContext;
         $this->catalogContext = $catalogContext;

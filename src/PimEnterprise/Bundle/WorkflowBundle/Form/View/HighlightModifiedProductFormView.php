@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 use Symfony\Component\Form\FormView;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 /**
  * Product form view decorator that adds classes and fields on which proposal value is applied
@@ -18,19 +18,19 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     /** @var ProductFormView */
     protected $productFormView;
 
-    /** @var ProductChangesApplier */
+    /** @var PropositionChangesApplier */
     protected $applier;
 
     /** @var array|FormView */
     protected $view = [];
 
     /**
-     * @param ProductFormView       $productFormView,
-     * @param ProductChangesApplier $applier
+     * @param ProductFormView           $productFormView
+     * @param PropositionChangesApplier $applier
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        ProductChangesApplier $applier
+        PropositionChangesApplier $applier
     ) {
         $this->productFormView = $productFormView;
         $this->applier = $applier;
