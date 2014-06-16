@@ -13,3 +13,157 @@
         {% endif %}
     {% endspaceless %}
 {% endblock form_info %}
+
+{% block pim_enrich_image_row %}
+    {% spaceless %}
+
+    {% set empty = (not form.vars.value or not form.vars.value.filename) and form.vars.value.file is null %}
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone image{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if form.vars.value.file is not null %}
+                            {# The Media object has an UploadedFile #}
+                            {% set empty = false %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.file.clientOriginalName }}" rel="slimbox">
+                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'thumbnail_small' }) }}">
+                            </a>
+                            {% set filename = form.vars.value.file.clientOriginalName %}
+                            {% if filename|length > 20 %}
+                                {% set filename = filename|slice(0, 17) ~ '...' %}
+                            {% endif %}
+                        {% else %}
+                            {% if not empty %}
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.originalFilename }}" rel="slimbox">
+                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename, 'filter': 'thumbnail_small' }) }}">
+                                </a>
+                                {% set filename = form.vars.value.originalFilename %}
+                                {% if filename|length > 20 %}
+                                    {% set filename = filename|slice(0, 17) ~ '...' %}
+                                {% endif %}
+                            {% else %}
+                                <i class="icon-camera-retro upload-preview empty"></i>
+                            {% endif %}
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop an image or click here'|trans }}">{% if empty %}{{ 'Drop an image or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
+                        </a>
+                    {% endif %}
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { 'attr': { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, { 'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                {{ block('form_info') }}
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
+            </div>
+        </div>
+        <script type="text/javascript">
+            require(
+                ['pim/fileinput'],
+                function(fileinput) {
+                    fileinput.init('{{ form.file.vars.id }}');
+                }
+            );
+        </script>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                <label class="upload-zone image empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock pim_enrich_image_row %}
+
+{% block pim_enrich_media_row %}
+    {% spaceless %}
+
+    {% set empty = (not form.vars.value or not form.vars.value.filename) and form.vars.value.file is null %}
+    {% if not (empty and form.parent.vars.mode is defined and 'comparison' == form.parent.vars.mode) %}
+        <div class="control-group">
+            {{ form_label(form, null, { 'label_attr': {'class': 'control-label', 'for': form.file.vars.id} }) }}
+            <div class="controls">
+                <label class="upload-zone file{% if empty %} empty{% endif %}">
+                    <div class="upload-info">
+                        {% if form.vars.value.file is not null %}
+                            {# The Media object has an UploadedFile #}
+                            {% set empty = false %}
+                            <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.file.clientOriginalName }}" rel="slimbox">
+                                <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'thumbnail_small' }) }}">
+                            </a>
+                            {% set filename = form.vars.value.file.clientOriginalName %}
+                            {% if filename|length > 20 %}
+                                {% set filename = filename|slice(0, 17) ~ '...' %}
+                            {% endif %}
+                        {% else %}
+                            {% if not empty %}
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.filename }) }}" target="_blank" title="{{ form.vars.value.originalFilename }}">
+                                    <i class="icon-file upload-preview"></i>
+                                </a>
+                                {% set filename = form.vars.value.originalFilename %}
+                                {% if filename|length > 20 %}
+                                    {% set filename = filename|slice(0, 17) ~ '...' %}
+                                {% endif %}
+                            {% else %}
+                                <i class="icon-file upload-preview empty"></i>
+                            {% endif %}
+                        {% endif %}
+                        <span class="upload-filename" data-empty-title="{{ 'Drop a file or click here'|trans }}">{% if empty %}{{ 'Drop a file or click here'|trans }}{% else %}{{ filename }}{% endif %}</span>
+                    </div>
+                    {% if form.parent.vars.mode is not defined or 'comparison' != form.parent.vars.mode %}
+                        <a class="btn no-hash remove-upload{% if empty %} hide{% endif %}">
+                            <i class="icon-trash"></i>
+                        </a>
+                    {% endif %}
+                    {% if empty %}
+                        {{ form_widget(form.file) }}
+                    {% else %}
+                        {{ form_widget(form.file, { attr: { 'class': 'hide', 'disabled': 'disabled' }}) }}
+                        {{ form_widget(form.removed, {'attr': { 'class': 'hide' }}) }}
+                    {% endif %}
+                </label>
+                {{ block('form_info') }}
+                {{ form_widget(form.id) }}
+                {{ form_widget(form.copyFrom) }}
+            </div>
+        </div>
+        <script type="text/javascript">
+            require(
+                ['pim/fileinput'],
+                function(fileinput) {
+                    fileinput.init('{{ form.file.vars.id }}');
+                }
+            );
+        </script>
+    {% else %}
+        <div class="control-group">
+            <div class="controls">
+                <label class="upload-zone file empty">
+                    <div class="upload-info">
+                        <span class="upload-filename">
+                            {{ 'pim_enrich.product.no_compared_media'|trans }}
+                        </span>
+                    </div>
+                </label>
+            </div>
+        </div>
+    {% endif %}
+
+    {% endspaceless %}
+{% endblock %}
