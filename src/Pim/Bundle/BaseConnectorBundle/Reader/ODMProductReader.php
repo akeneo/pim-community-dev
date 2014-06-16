@@ -5,6 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -19,7 +20,9 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ODMProductReader extends AbstractConfigurableStepElement implements ItemReaderInterface
+class ODMProductReader extends AbstractConfigurableStepElement implements
+    ItemReaderInterface,
+    StepExecutionAwareInterface
 {
     /**
      * @var string
@@ -126,6 +129,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements ItemRe
         $result = $this->products->current();
 
         if ($result) {
+            $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
         }
 
@@ -169,5 +173,13 @@ class ODMProductReader extends AbstractConfigurableStepElement implements ItemRe
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
     }
 }
