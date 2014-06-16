@@ -2,12 +2,13 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
@@ -19,6 +20,9 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
  */
 class ContextConfigurator extends PimContextConfigurator
 {
+    /** @staticvar string */
+    const CURRENT_TREE_ID_KEY = 'current_tree_id';
+
     /**
      * @var AttributeGroupAccessRepository
      */
@@ -27,7 +31,12 @@ class ContextConfigurator extends PimContextConfigurator
     /**
      * @param integer[]
      */
-    protected $grantedGroupIds = null;
+    protected $grantedGroupIds;
+
+    /**
+     * @var UserContext
+     */
+    protected $userContext;
 
     /**
      * @param ProductManager                 $productManager
@@ -45,6 +54,16 @@ class ContextConfigurator extends PimContextConfigurator
     ) {
         parent::__construct($productManager, $requestParams, $userContext, $gridViewRepository);
         $this->accessRepository = $accessRepository;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function configure(DatagridConfiguration $configuration)
+    {
+        $this->configuration = $configuration;
+        parent::configure($configuration);
+        $this->addCurrentTreeId();
     }
 
     /**
@@ -85,5 +104,35 @@ class ContextConfigurator extends PimContextConfigurator
         }
 
         return $this->grantedGroupIds;
+    }
+
+    /**
+     * Inject current tree id in the datagrid configuration
+     */
+    protected function addCurrentTreeId()
+    {
+        $treeId = $this->getTreeId();
+        $path = $this->getSourcePath(self::CURRENT_TREE_ID_KEY);
+        $this->configuration->offsetSetByPath($path, $treeId);
+    }
+
+    /**
+     * Get current tree from datagrid parameters, then user config
+     *
+     * @return string
+     */
+    protected function getTreeId()
+    {
+        $filterValues = $this->requestParams->get('_filter');
+        if (
+            isset($filterValues['category']['value']['treeId']) &&
+            null !== $filterValues['category']['value']['treeId']
+        ) {
+            return $filterValues['category']['value']['treeId'];
+        } else {
+            $tree = $this->userContext->getAccessibleUserTree();
+
+            return $tree->getId();
+        }
     }
 }
