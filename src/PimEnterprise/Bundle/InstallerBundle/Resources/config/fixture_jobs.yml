@@ -19,3 +19,13 @@ jobs:
         configuration:
             filePath: category_accesses.yml
             multiple: false
+
+    fixtures_job_profile_access_yml:
+        order:     150
+        connector: Data fixtures
+        alias:     fixtures_job_profile_access_yml
+        label:     Job profile accesses data fixtures
+        type:      fixtures
+        configuration:
+            filePath: job_profile_accesses.yml
+            multiple: false
