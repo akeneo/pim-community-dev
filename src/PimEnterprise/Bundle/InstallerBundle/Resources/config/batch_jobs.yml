@@ -1,7 +1,6 @@
 connector:
     name: Data fixtures
     jobs:
-
         fixtures_attribute_group_access_yml:
             title: pim_installer.jobs.fixtures_attribute_group_access_yml.title
             type:  fixtures
