@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -21,18 +21,18 @@ class PropositionManager
     /** @var ProductManager */
     protected $manager;
 
-    /** @var ProductChangesApplier */
+    /** @var PropositionChangesApplier */
     protected $applier;
 
     /**
-     * @param ManagerRegistry       $registry
-     * @param ProductManager        $manager
-     * @param ProductChangesApplier $applier
+     * @param ManagerRegistry           $registry
+     * @param ProductManager            $manager
+     * @param PropositionChangesApplier $applier
      */
     public function __construct(
         ManagerRegistry $registry,
         ProductManager $manager,
-        ProductChangesApplier $applier
+        PropositionChangesApplier $applier
     ) {
         $this->registry = $registry;
         $this->manager = $manager;
