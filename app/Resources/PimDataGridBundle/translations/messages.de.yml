@@ -17,11 +17,9 @@ oro.grid.mass_action.delete.success_message: '{0} Keine Entität wurde entfernt|
 datagrid_view:
   views: Ansichten
   default: Meine Standard-Ansicht
-  create: Hinzufügen
   placeholder: Name der neuen Ansicht
   remove: Diese Ansicht löschen
   save_changes: Aktualisieren
-  save_view: Speichern
   choose_label: Wählen Sie eine Bezeichnung für die Ansicht
   columns:
     min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen

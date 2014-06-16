@@ -112,10 +112,10 @@ Show profile: Afficher le profil
 execution details: "détails d'exécution"
 job_execution.summary:
   read: lire
-  write: écrire
-  skip: ignorer
-  create: créer
-  update: mettre à jour
+  write: écrit
+  skip: ignoré
+  create: créé
+  update: mis à jour
 Step: Étape
 Status: Statut
 Summary: Résumé
