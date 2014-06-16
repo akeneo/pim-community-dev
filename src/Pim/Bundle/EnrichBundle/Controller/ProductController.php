@@ -285,6 +285,9 @@ class ProductController extends AbstractDoctrineController
             $this->addFlash('error', 'flash.product.invalid');
         }
 
+        $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
+        $trees    = $this->productCatManager->getProductCountByTree($product);
+
         return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
     }
 
