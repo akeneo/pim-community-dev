@@ -15,6 +15,7 @@ services:
         calls:
             - [addEventSubscriber, ['@pimee_security.form.subscriber.remove_product_value_subscriber']]
             - [addEventSubscriber, ['@pimee_workflow.form.subscriber.collect_product_value_changes']]
+            - [addEventSubscriber, ['@pimee_workflow.form.subscriber.unmap_product_values']]
 
     pim_enrich.form.type.attribute_group:
         class: %pim_enrich.form.type.attribute_group.class%

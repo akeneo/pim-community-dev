@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
+    pimee_workflow.form.subscriber.unmap_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\UnmapProductValuesSubscriber
     pimee_workflow.form.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ChainedComparator
     pimee_workflow.form.comparator.media.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\MediaComparator
     pimee_workflow.form.comparator.date.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\DateComparator
@@ -16,6 +17,13 @@ services:
         arguments:
             - '@pimee_workflow.form.comparator.chained'
 
+    pimee_workflow.form.subscriber.unmap_product_values:
+        public: false
+        class: %pimee_workflow.form.subscriber.unmap_product_values.class%
+
+    ##
+    # Comparators of product values
+    ##
     pimee_workflow.form.comparator.chained:
         public: false
         class: %pimee_workflow.form.comparator.chained.class%
