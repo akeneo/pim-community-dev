@@ -7,8 +7,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
 class EditCommonAttributesType extends AbstractType
 {
     /**
-     * @var ProductFormView $productFormView
+     * @var ProductFormViewInterface $productFormView
      */
     protected $productFormView;
 
@@ -35,12 +35,12 @@ class EditCommonAttributesType extends AbstractType
     protected $attributeClass;
 
     /**
-     * @param ProductFormView $productFormView
-     * @param LocaleHelper    $localeHelper
-     * @param string          $attributeClass
+     * @param ProductFormViewInterface $productFormView
+     * @param LocaleHelper             $localeHelper
+     * @param string                   $attributeClass
      */
     public function __construct(
-        ProductFormView $productFormView,
+        ProductFormViewInterface $productFormView,
         LocaleHelper $localeHelper,
         $attributeClass
     ) {
