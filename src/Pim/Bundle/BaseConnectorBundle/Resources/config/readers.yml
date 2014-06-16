@@ -1,6 +1,7 @@
 parameters:
     pim_base_connector.reader.doctrine.product.class:                  Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader
     pim_base_connector.reader.doctrine.paginated_product_reader.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\PaginatedProductReader
+    pim_base_connector.reader.doctrine.odm_product_reader.class:       Pim\Bundle\BaseConnectorBundle\Reader\ODMProductReader
     pim_base_connector.reader.doctrine.bulk_product.class:             Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
     pim_base_connector.reader.orm.entity.class:                        Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
 
@@ -24,6 +25,15 @@ services:
 
     pim_base_connector.reader.doctrine.paginated_product_reader:
         class: %pim_base_connector.reader.doctrine.paginated_product_reader.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_transform.converter.metric'
+            - '@doctrine.orm.default_entity_manager'
+
+    pim_base_connector.reader.doctrine.odm_product_reader:
+        class: %pim_base_connector.reader.doctrine.odm_product_reader.class%
         arguments:
             - '@pim_catalog.repository.product'
             - '@pim_catalog.manager.channel'
