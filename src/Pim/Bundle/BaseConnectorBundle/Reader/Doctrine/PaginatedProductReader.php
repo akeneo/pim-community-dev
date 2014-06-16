@@ -100,7 +100,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements 
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
-        $this->products = new ArrayIterator();
+        $this->products            = new ArrayIterator();
     }
 
     /**
