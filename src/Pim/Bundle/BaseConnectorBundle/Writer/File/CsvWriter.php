@@ -3,6 +3,8 @@
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Symfony\Component\Validator\Constraints as Assert;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 
 /**
  * Write data into a csv file on the filesystem
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CsvWriter extends FileWriter
+class CsvWriter extends FileWriter implements ArchivableWriterInterface
 {
     /**
      * @Assert\NotBlank
@@ -33,6 +35,26 @@ class CsvWriter extends FileWriter
     protected $withHeader = true;
 
     /**
+     * @param MediaManager $mediaManager
+     */
+    protected $mediaManager;
+
+    /**
+     * @var array
+     */
+    protected $writtenFiles = array();
+
+    /**
+     * @var array
+     */
+    protected $items = [];
+
+    public function __construct(MediaManager $mediaManager)
+    {
+        $this->mediaManager = $mediaManager;
+    }
+
+    /**
      * Set the csv delimiter character
      *
      * @param string $delimiter
@@ -41,12 +63,6 @@ class CsvWriter extends FileWriter
     {
         $this->delimiter = $delimiter;
     }
-
-    /**
-     *
-     * @var array
-     */
-    protected $items = [];
 
     /**
      * Get the csv delimiter character
@@ -101,6 +117,39 @@ class CsvWriter extends FileWriter
     /**
      * {@inheritdoc}
      */
+    public function getWrittenFiles()
+    {
+        return $this->writtenFiles;
+    }
+
+    /**
+     * Flush items into a csv file
+     */
+    public function flush()
+    {
+        $this->writtenFiles[$this->getPath()] = basename($this->getPath());
+
+        $uniqueKeys = $this->getAllKeys($this->items);
+        $fullItems = $this->mergeKeys($uniqueKeys);
+        $csvFile = fopen($this->getPath(), 'w');
+
+        if (true == $this->isWithHeader()) {
+            fputcsv($csvFile, $uniqueKeys, $this->delimiter);
+        } else {
+            fputcsv($csvFile, [], $this->delimiter);
+        }
+
+        foreach ($fullItems as $item) {
+            fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
+            $this->stepExecution->incrementSummaryInfo('write');
+        }
+
+        fclose($csvFile);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getConfigurationFields()
     {
         return
@@ -135,7 +184,31 @@ class CsvWriter extends FileWriter
      */
     public function write(array $items)
     {
-        $this->items = array_merge($this->items, $items);
+        $products = [];
+        foreach ($items as $item) {
+            $products[] = $item['product'];
+            foreach ($item['media'] as $media) {
+                if ($media) {
+                    $this->copyMedia($media);
+                }
+            }
+        }
+
+        $this->items = array_merge($this->items, $products);
+    }
+
+    /**
+     * @param AbstractMedia $media
+     *
+     * @return null
+     */
+    protected function copyMedia(AbstractMedia $media)
+    {
+        $result = $this->mediaManager->copy($media, dirname($this->getPath()));
+        $exportPath = $this->mediaManager->getExportPath($media);
+        if (true === $result) {
+            $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
+        }
     }
 
     /**
@@ -170,26 +243,5 @@ class CsvWriter extends FileWriter
         }
 
         return $fullItems;
-    }
-
-    /**
-     * Flush items into a csv file
-     */
-    public function flush()
-    {
-        $uniqueKeys = $this->getAllKeys($this->items);
-        $fullItems = $this->mergeKeys($uniqueKeys);
-        $csvFile = fopen($this->getPath(), 'w');
-        if (true == $this->isWithHeader()) {
-            fputcsv($csvFile, $uniqueKeys, $this->delimiter);
-        } else {
-            fputcsv($csvFile, [], $this->delimiter);
-        }
-        foreach ($fullItems as $item) {
-            fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
-            $this->stepExecution->incrementSummaryInfo('write');
-        }
-
-        fclose($csvFile);
     }
 }

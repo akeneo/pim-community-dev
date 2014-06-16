@@ -50,7 +50,7 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
         ChannelManager $channelManager
     ) {
         $this->flatProductNormalizer = $flatProductNormalizer;
-        $this->channelManager = $channelManager;
+        $this->channelManager        = $channelManager;
     }
 
     /**
@@ -58,7 +58,15 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
      */
     public function process($item)
     {
-        return $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
+        $media = $item->getMedia();
+
+        foreach ($media as $medium) {
+            $data['media'][] = (null !== $medium) ? $medium : null;
+        }
+
+        $data['product'] = $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
+
+        return $data;
     }
 
     /**
