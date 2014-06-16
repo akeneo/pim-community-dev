@@ -1,0 +1,6 @@
+pim:
+    resource: '@PimEnrichBundle/Resources/config/routing.yml'
+
+pimee_product:
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_product.yml'
+    prefix: /enrich/product
