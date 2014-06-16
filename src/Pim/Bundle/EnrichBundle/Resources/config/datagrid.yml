@@ -294,6 +294,7 @@ datagrid:
                 label: Delete the product
                 icon:  trash
                 link:  delete_link
+                acl_resource: pim_enrich_product_remove
         mass_actions:
             delete:
                 type: delete

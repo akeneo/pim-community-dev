@@ -62,7 +62,16 @@ class SmartManagerRegistry implements ManagerRegistry
      */
     public function getAliasNamespace($alias)
     {
-        throw new \LogicException('Not smart enough');
+        foreach ($this->registries as $registry) {
+            //TODO: catch more precise exception
+            try {
+                return $registry->getAliasNamespace($alias);
+            } catch (\Exception $e) {
+                continue;
+            }
+        }
+
+        throw new \LogicException(sprintf('Can not resolve alias namespace "%s"', $alias));
     }
 
     /**
