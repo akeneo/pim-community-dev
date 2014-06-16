@@ -214,7 +214,7 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_EDIT_JOB_PROFILE, new GenericEvent($jobProfile));
+        $this->eventDispatcher->dispatch(JobEvents::PRE_EDIT_JOB_PROFILE, new GenericEvent($jobInstance));
 
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
@@ -232,7 +232,7 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
-        $this->eventDispatcher->dispatch(JobEvents::POST_EDIT_JOB_PROFILE, new GenericEvent($jobProfile));
+        $this->eventDispatcher->dispatch(JobEvents::POST_EDIT_JOB_PROFILE, new GenericEvent($jobInstance));
 
         if (null === $template = $jobInstance->getJob()->getEditTemplate()) {
             $template = sprintf('PimImportExportBundle:%sProfile:edit.html.twig', ucfirst($this->getJobType()));
