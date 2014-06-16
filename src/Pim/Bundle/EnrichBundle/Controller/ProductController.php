@@ -555,6 +555,11 @@ class ProductController extends AbstractDoctrineController
     /**
      * Get the product edit template parameters
      *
+     * @param FormInterface    $form
+     * @param ProductInterface $product
+     * @param array            $channels
+     * @param array            $trees
+     *
      * @return array
      */
     protected function getProductEditTemplateParams(
