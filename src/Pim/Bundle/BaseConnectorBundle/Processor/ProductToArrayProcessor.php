@@ -58,12 +58,7 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
      */
     public function process($item)
     {
-        $media = $item->getMedia();
-
-        foreach ($media as $medium) {
-            $data['media'][] = (null !== $medium) ? $medium : null;
-        }
-
+        $data['media'] = $item->getMedia();
         $data['product'] = $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
 
         return $data;
