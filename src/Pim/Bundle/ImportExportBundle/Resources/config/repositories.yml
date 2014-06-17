@@ -1,0 +1,11 @@
+parameters:
+    pim_catalog.repository.job_instance.class: Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository
+
+services:
+    pim_catalog.repository.job_instance:
+        class: %pim_catalog.repository.job_instance.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%akeneo_batch.entity.job_instance.class%]
+        tags:
+            - { name: 'pim_repository' }
