@@ -48,6 +48,8 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
+     * Copy the family
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -57,6 +59,8 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
+     * Copy the groups
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -68,6 +72,8 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
+     * Copy the categories
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -79,6 +85,8 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
+     * Copy the associations
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -93,6 +101,8 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
+     * Copy the completeness
+     *
      * @param ProductInterface $product
      * @param PublishedProduct $published
      */
@@ -107,7 +117,7 @@ class ProductPublisher implements PublisherInterface
     }
 
     /**
-     * TODO : ugly POC method, we'll use normalization + processing to deal with the copy
+     * Copy the product values
      *
      * @param ProductInterface $product
      * @param PublishedProduct $published
