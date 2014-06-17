@@ -122,7 +122,7 @@ class PublishedProductController extends AbstractController
      */
     public function viewAction(Request $request, $id)
     {
-        $published = $this->manager->findPublishedProduct($id);
+        $published = $this->manager->findPublishedProductById($id);
         $locale = $this->getDataLocale();
 
         return [
