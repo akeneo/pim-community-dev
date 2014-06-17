@@ -11,3 +11,10 @@ category_accesses:
         processor: pimee_base_connector.processor.category_access
     yml:
         processor: pimee_base_connector.processor.category_access
+
+job_profile_accesses:
+    order: 150
+    csv:
+        processor: pimee_base_connector.processor.job_profile_access
+    yml:
+        processor: pimee_base_connector.processor.job_profile_access

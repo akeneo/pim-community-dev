@@ -1,0 +1,37 @@
+job_profile_accesses:
+    csv_product_import:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_category_import:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_category_export:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_association_type_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    csv_association_type_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    csv_group_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    csv_group_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    csv_attribute_import:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_attribute_export:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_option_import:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
+    csv_option_export:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]

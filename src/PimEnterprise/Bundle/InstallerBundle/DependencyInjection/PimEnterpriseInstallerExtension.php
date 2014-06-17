@@ -19,26 +19,6 @@ class PimEnterpriseInstallerExtension extends BasePimInstallerExtension
     /**
      * {@inheritdoc}
      */
-    protected $entities = array(
-        'channels',
-        'locales',
-        'currencies',
-        'families',
-        'attribute_groups',
-        'attributes',
-        'categories',
-        'group_types',
-        'groups',
-        'associations',
-        'jobs',
-        'products',
-        'users',
-        'attribute_groups_accesses'
-    );
-
-    /**
-     * {@inheritdoc}
-     */
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
