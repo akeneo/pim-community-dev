@@ -50,7 +50,9 @@ class JobProfileListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())) {
+        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $event->getSubject()->getType());
+        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())
+            && $this->securityContext->isGranted($resource)) {
             throw new AccessDeniedException();
         }
     }
