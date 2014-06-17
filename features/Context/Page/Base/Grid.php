@@ -96,14 +96,14 @@ class Grid extends Index
     }
 
     /**
-     * @param string $element
-     * @param string $actionName
+     * @param $element
+     * @param $actionName
+     *
+     * @throws \InvalidArgumentException
      */
     public function clickOnAction($element, $actionName)
     {
-        $rowElement = $this->getRow($element);
-
-        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+        $action = $this->findAction($element, $actionName);
 
         if (!$action) {
             throw new \InvalidArgumentException(
@@ -112,6 +112,20 @@ class Grid extends Index
         }
 
         $action->click();
+    }
+
+    /**
+     * @param $element
+     * @param $actionName
+     *
+     * @return NodeElement|mixed|null
+     */
+    public function findAction($element, $actionName)
+    {
+        $rowElement = $this->getRow($element);
+        $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
+
+        return null !== $action;
     }
 
     /**
