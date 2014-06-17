@@ -1,0 +1,5 @@
+attribute_groups:
+    others:
+        sort_order: 1
+        labels:
+            en_US: Others

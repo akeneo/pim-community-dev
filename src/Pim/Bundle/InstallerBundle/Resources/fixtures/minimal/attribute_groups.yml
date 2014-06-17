@@ -4,3 +4,8 @@ attribute_groups:
         labels:
             en_US: General
             fr_FR: Général
+    others:
+        sort_order: 2
+        labels:
+            en_US: Others
+            fr_FR: Autres

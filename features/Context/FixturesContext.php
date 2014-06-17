@@ -1219,7 +1219,10 @@ class FixturesContext extends RawMinkContext
     protected function createAttribute($data)
     {
         if (is_string($data)) {
-            $data = array('code' => $data);
+            $data = array(
+                'code' => $data,
+                'group' => 'others',
+            );
         }
 
         $data = array_merge(
@@ -1228,6 +1231,7 @@ class FixturesContext extends RawMinkContext
                 'label'    => null,
                 'families' => null,
                 'type'     => 'text',
+                'group'    => 'others',
             ),
             $data
         );
