@@ -16,7 +16,7 @@ class ProductCompletenessPublisher implements PublisherInterface
     protected $publishClassName;
 
     /**
-     * @param string                              $publishClassName
+     * @param string $publishClassName
      */
     public function __construct($publishClassName)
     {

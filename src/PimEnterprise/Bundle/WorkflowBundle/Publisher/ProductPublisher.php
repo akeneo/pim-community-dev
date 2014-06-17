@@ -14,8 +14,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness;
 
 /**
  * Product publisher
