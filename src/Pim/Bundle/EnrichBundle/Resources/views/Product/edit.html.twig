@@ -18,7 +18,7 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_product_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,

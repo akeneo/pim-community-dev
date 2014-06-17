@@ -13,6 +13,14 @@ pim_enrich_product_edit:
     defaults: { _controller: pim_enrich.controller.product:editAction }
     requirements:
         id: '[0-9a-f]+'
+    methods: [GET, POST]
+
+pim_enrich_product_update:
+    path: /{id}
+    defaults: { _controller: pim_enrich.controller.product:updateAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
 
 pim_enrich_product_addattributes:
     path: /{id}/attributes

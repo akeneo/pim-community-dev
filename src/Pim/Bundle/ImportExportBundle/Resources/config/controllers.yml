@@ -11,6 +11,7 @@ services:
         class: %pim_import_export.controller.export_profile.class%
         arguments:
             - '@akeneo_batch.connectors'
+            - '@event_dispatcher'
             - export
             - %kernel.root_dir%
             - %kernel.environment%
@@ -22,6 +23,7 @@ services:
         class: %pim_import_export.controller.import_profile.class%
         arguments:
             - '@akeneo_batch.connectors'
+            - '@event_dispatcher'
             - import
             - %kernel.root_dir%
             - %kernel.environment%

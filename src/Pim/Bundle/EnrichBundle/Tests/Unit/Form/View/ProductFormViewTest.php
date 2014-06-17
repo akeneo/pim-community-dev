@@ -61,7 +61,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -133,7 +133,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -143,7 +143,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'id'                 => 42,
                         'locale'             => null,
                     ),
-                    'color_' => array(
+                    'color' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'color',
@@ -209,7 +209,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -271,7 +271,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'price_' => array(
+                    'price' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'price',
@@ -407,8 +407,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($weightValue, $weightView);
 
         $result = $this->formView->getView();
-        $this->assertEquals(array('color_', 'name_', 'price_'), array_keys($result[1]['attributes']));
-        $this->assertEquals(array('weight_', 'release_date_'), array_keys($result[2]['attributes']));
+        $this->assertEquals(array('color', 'name', 'price'), array_keys($result[1]['attributes']));
+        $this->assertEquals(array('weight', 'release_date'), array_keys($result[2]['attributes']));
     }
 
     public function testAddLocalizableChildren()

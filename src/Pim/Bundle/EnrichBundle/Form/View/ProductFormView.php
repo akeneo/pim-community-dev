@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductFormView
+class ProductFormView implements ProductFormViewInterface
 {
     /**
      * A list of the attribute types for which creating a new option is allowed
@@ -27,13 +27,11 @@ class ProductFormView
         'pim_catalog_simpleselect'
     );
 
-    /**
-     * @var FormView|array
-     */
-    protected $view = array();
+    /** @var FormView|array */
+    protected $view = [];
 
     /**
-     * @return FormView
+     * {@inheritdoc}
      */
     public function getView()
     {
@@ -41,8 +39,7 @@ class ProductFormView
     }
 
     /**
-     * @param ProductValueInterface $value
-     * @param FormView              $view
+     * {@inheritdoc}
      */
     public function addChildren(ProductValueInterface $value, FormView $view)
     {
@@ -120,7 +117,11 @@ class ProductFormView
         $attributeView = $this->prepareAttributeView($attribute, $value, $view);
         $group         = $attribute->getVirtualGroup();
 
-        $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $value->getLocale()] = $attributeView;
+        $attributeKey = $attribute->getCode();
+        if ($value->getLocale()) {
+            $attributeKey .= '_' . $value->getLocale();
+        }
+        $this->view[$group->getId()]['attributes'][$attributeKey] = $attributeView;
     }
 
     /**
@@ -171,11 +172,15 @@ class ProductFormView
     protected function getAttributeValues(AbstractAttribute $attribute, $locale)
     {
         $group = $attribute->getVirtualGroup();
-        if (!isset($this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'])) {
+        $key = $attribute->getCode();
+        if ($locale) {
+            $key .= '_' . $locale;
+        }
+        if (!isset($this->view[$group->getId()]['attributes'][$key]['values'])) {
             return array();
         }
 
-        return $this->view[$group->getId()]['attributes'][$attribute->getCode() . '_' . $locale]['values'];
+        return $this->view[$group->getId()]['attributes'][$key]['values'];
     }
 
     /**

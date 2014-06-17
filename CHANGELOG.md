@@ -18,16 +18,19 @@
 - Allow to override of a repository avoiding to redefine the entity mapping
 - Introduce a datagrid choice filter that loads attribute option choices based on the search query to enhance performance with a large number of attribute options
 - Apply "Remove product" permission to hide mass delete and delete row action
+- Change "launch" button by "view" on job profile datagrids
+- Create a `JobInstanceRepository`
 
 ## Bug fixes
-- Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
-- Add missing translation keys for "manage filters", "all", "records", etc
+- Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Added missing translation keys for "manage filters", "all", "records", etc
 - Images import from fixtures now works
 - Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
-- Deleting completeness when a locale of a channel is deleted
-- Display flags in the completenesses grid
-- Fixes a memory leak on product import when using MongoDB
-- Fixes a bug with image upload on product with a "\" or "/" in their sku
+- Deleted completeness when a locale of a channel is deleted
+- Displayed flags in the completenesses grid
+- Fixed a memory leak on product import when using MongoDB
+- Fixed a bug with image upload on product with a "\" or "/" in their sku
+- Fixed a bug that silently failed when uploading file that does not comply with server configuration
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -53,7 +56,7 @@
 - Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
 - Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
 - Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` and `Pim\Bundle\ImportExportController\JobProfileController` (inject event dispatcher)
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
