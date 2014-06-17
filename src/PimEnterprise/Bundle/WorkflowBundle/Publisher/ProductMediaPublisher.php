@@ -2,16 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
-use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
 
 /**
  * Product media publisher
@@ -25,7 +16,7 @@ class ProductMediaPublisher implements PublisherInterface
     protected $publishClassName;
 
     /**
-     * @param string             $publishClassName
+     * @param string $publishClassName
      */
     public function __construct($publishClassName)
     {

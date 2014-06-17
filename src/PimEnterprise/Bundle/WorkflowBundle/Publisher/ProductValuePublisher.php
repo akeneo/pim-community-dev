@@ -4,14 +4,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
-use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
 
 /**
  * Product value publisher
