@@ -15,14 +15,14 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * @param mixed $originalId
      *
-     * @return PublishedProduct
+     * @return PublishedProductInterface
      */
     public function findOneByOriginalProductId($originalId);
 
     /**
      * @param array $originalIds
      *
-     * @return PublishedProduct[]
+     * @return PublishedProductInterface[]
      */
     public function findAllByOriginalProductId(array $originalIds);
 }

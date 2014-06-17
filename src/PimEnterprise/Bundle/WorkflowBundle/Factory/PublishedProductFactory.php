@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
@@ -30,7 +30,7 @@ class PublishedProductFactory
      *
      * @param ProductInterface $product
      *
-     * @return PublishedProduct
+     * @return PublishedProductInterface
      */
     public function createPublishedProduct(ProductInterface $product)
     {

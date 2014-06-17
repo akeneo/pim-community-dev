@@ -45,7 +45,7 @@ class PublishedProductManager
      *
      * @param mixed $publishedId
      *
-     * @return PublishedProduct
+     * @return PublishedProductInterface
      */
     public function findPublishedProductById($publishedId)
     {
@@ -57,7 +57,7 @@ class PublishedProductManager
      *
      * @param mixed $productId
      *
-     * @return PublishedProduct
+     * @return PublishedProductInterface
      */
     public function findPublishedProductByOriginalId($productId)
     {

@@ -12,6 +12,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @ExclusionPolicy("all")
  */
-class PublishedProductValue extends AbstractProductValue
+class PublishedProductValue extends AbstractProductValue implements PublishedProductValueInterface
 {
 }

@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
  * Product publisher
@@ -50,10 +50,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the family
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyFamily(ProductInterface $product, PublishedProduct $published)
+    protected function copyFamily(ProductInterface $product, PublishedProductInterface $published)
     {
         $published->setFamily($product->getFamily());
     }
@@ -61,10 +61,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the groups
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyGroups(ProductInterface $product, PublishedProduct $published)
+    protected function copyGroups(ProductInterface $product, PublishedProductInterface $published)
     {
         foreach ($product->getGroups() as $group) {
             $published->addGroup($group);
@@ -74,10 +74,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the categories
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyCategories(ProductInterface $product, PublishedProduct $published)
+    protected function copyCategories(ProductInterface $product, PublishedProductInterface $published)
     {
         foreach ($product->getCategories() as $category) {
             $published->addCategory($category);
@@ -87,10 +87,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the associations
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyAssociations(ProductInterface $product, PublishedProduct $published)
+    protected function copyAssociations(ProductInterface $product, PublishedProductInterface $published)
     {
         foreach ($product->getAssociations() as $association) {
             $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
@@ -103,10 +103,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the completeness
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyCompletenesses(ProductInterface $product, PublishedProduct $published)
+    protected function copyCompletenesses(ProductInterface $product, PublishedProductInterface $published)
     {
         $copiedData = new ArrayCollection();
         foreach ($product->getCompletenesses() as $completeness) {
@@ -119,10 +119,10 @@ class ProductPublisher implements PublisherInterface
     /**
      * Copy the product values
      *
-     * @param ProductInterface $product
-     * @param PublishedProduct $published
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
      */
-    protected function copyValues(ProductInterface $product, PublishedProduct $published)
+    protected function copyValues(ProductInterface $product, PublishedProductInterface $published)
     {
         foreach ($product->getValues() as $originalValue) {
             $publishedValue = $this->publisher->publish($originalValue);
