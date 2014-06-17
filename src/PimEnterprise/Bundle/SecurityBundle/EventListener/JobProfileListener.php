@@ -2,14 +2,11 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
-
-use Symfony\Component\EventDispatcher\GenericEvent;
-
-use Pim\Bundle\ImportExportBundle\JobEvents;
-
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\ImportExportBundle\JobEvents;
+use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
 /**
  * Job profile listener used to handle permissions
