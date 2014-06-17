@@ -52,6 +52,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
             return;
         }
 
+        $currentValues = $form->get('values')->getViewData();
         foreach ($data['values'] as $key => $value) {
             // TODO (2014-06-16 15:45 by Gildas): Values that are sent and not available in the product
             // values should be stored in the changeset, shouldn't they?
