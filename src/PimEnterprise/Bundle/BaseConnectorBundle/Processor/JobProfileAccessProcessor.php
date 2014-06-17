@@ -47,14 +47,14 @@ class JobProfileAccessProcessor extends TransformerProcessor
      * [
      *      'code': 'general',
      *      'role': 'administrator',
-     *      'executeProducts': true,
-     *      'editProducts': true,
+     *      'executeJobProfile': true,
+     *      'editJobProfile': true,
      * ],
      * [
      *      'code': 'general',
      *      'role': 'user',
-     *      'executeProducts': true,
-     *      'editProducts': false,
+     *      'executeJobProfile': true,
+     *      'editJobProfile': false,
      * ]
      * @param $data
      *
