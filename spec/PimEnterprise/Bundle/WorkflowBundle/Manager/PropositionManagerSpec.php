@@ -7,14 +7,17 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductChangesApplier;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 class PropositionManagerSpec extends ObjectBehavior
 {
-    function let(ManagerRegistry $registry, ProductManager $manager, ProductChangesApplier $applier)
-    {
+    function let(
+        ManagerRegistry $registry,
+        ProductManager $manager,
+        PropositionChangesApplier $applier
+    ) {
         $this->beConstructedWith($registry, $manager, $applier);
     }
 

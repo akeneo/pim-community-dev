@@ -1,0 +1,5 @@
+pimee_enrich_product_show:
+    path: /{id}/show
+    defaults: { _controller: pim_enrich.controller.product:showAction }
+    requirements:
+        id: '[0-9a-f]+'

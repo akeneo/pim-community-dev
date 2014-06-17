@@ -64,6 +64,7 @@ class AppKernel extends OroKernel
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
+            new Pim\Bundle\EntityBundle\PimEntityBundle(),
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
@@ -94,6 +95,7 @@ class AppKernel extends OroKernel
             new PimEnterprise\Bundle\FilterBundle\PimEnterpriseFilterBundle(),
             new PimEnterprise\Bundle\UserBundle\PimEnterpriseUserBundle(),
             new PimEnterprise\Bundle\ImportExportBundle\PimEnterpriseImportExportBundle(),
+            new PimEnterprise\Bundle\UIBundle\PimEnterpriseUIBundle(),
             new PimEnterprise\Bundle\VersioningBundle\PimEnterpriseVersioningBundle()
         );
 

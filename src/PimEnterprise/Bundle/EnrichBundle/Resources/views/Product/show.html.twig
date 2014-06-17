@@ -1,0 +1,16 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+
+{% oro_title_set({ params: { "%product.sku%": product.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+{% endblock %}
+
+{% block content %}
+    <div class="layout-content">
+        {% include 'PimEnrichBundle:Product:_navbar.html.twig' %}
+        <div class="no-data">
+            Product {{ product.sku }} in view mode
+        </div>
+    </div>
+{% endblock %}

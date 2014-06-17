@@ -30,3 +30,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
                 referencedColumnName: id
                 nullable: false
                 onDelete: CASCADE
+    uniqueConstraints:
+        unique_idx:
+            columns: [ author, locale, product_id ]

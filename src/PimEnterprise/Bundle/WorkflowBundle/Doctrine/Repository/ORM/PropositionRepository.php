@@ -26,7 +26,7 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
             [
                 'author' => $username,
                 'locale' => $locale,
-                'product' => $product
+                'product' => $product,
             ]
         );
     }

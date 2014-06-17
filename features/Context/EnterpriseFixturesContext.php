@@ -100,7 +100,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $expectedPropositions = $table->getHash();
         $actualPropositions = $this->getSession()->getPage()->findAll('css', '#propositions-widget tbody tr');
 
-        if (count($expectedPropositions) !== count($actualPropositions)) {
+        $expectedCount = count($expectedPropositions);
+        $actualCount   = count($actualPropositions);
+        if ($expectedCount !== $actualCount) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting %d propositions, actually saw %d',
