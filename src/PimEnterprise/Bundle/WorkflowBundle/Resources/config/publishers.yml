@@ -6,6 +6,7 @@ parameters:
     pimee_workflow.publisher.product_completeness.class: PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductCompletenessPublisher
     pimee_workflow.publisher.product_metric.class:       PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMetricPublisher
     pimee_workflow.publisher.product_media.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMediaPublisher
+    pimee_workflow.publisher.product_price.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPricePublisher
     pimee_workflow.publisher.datetime.class:             PimEnterprise\Bundle\WorkflowBundle\Publisher\DateTimePublisher
     pimee_workflow.publisher.attribute_option.class:     PimEnterprise\Bundle\WorkflowBundle\Publisher\AttributeOptionPublisher
 
@@ -40,6 +41,13 @@ services:
         class: %pimee_workflow.publisher.product_media.class%
         arguments:
             - %pimee_workflow.entity.published_product_media.class%
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.product_price:
+        class: %pimee_workflow.publisher.product_price.class%
+        arguments:
+            - %pimee_workflow.entity.published_product_price.class%
         tags:
             - { name: pimee_workflow.publisher }
 

@@ -49,14 +49,8 @@ class ProductValuePublisher implements PublisherInterface
             if (count($originalData) > 0) {
                 $copiedData = new ArrayCollection();
                 foreach ($originalData as $object) {
-                    if ($object instanceof ProductPrice) {
-                        $copiedObject = new PublishedProductPrice();
-                        $copiedObject->setData($object->getData());
-                        $copiedObject->setCurrency($object->getCurrency());
-                        $copiedData->add($copiedObject);
-                    } elseif ($object instanceof AttributeOption) {
-                        $copiedData->add($object);
-                    }
+                    $copiedObject = $this->publisher->publish($object);
+                    $copiedData->add($copiedObject);
                 }
             }
 
