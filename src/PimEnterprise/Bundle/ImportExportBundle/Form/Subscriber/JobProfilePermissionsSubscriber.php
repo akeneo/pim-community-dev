@@ -68,8 +68,12 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('execute')->setData($this->accessManager->getExecuteRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+
+        $executeRoles = $this->accessManager->getExecuteRoles($event->getData());
+        $editRoles    = $this->accessManager->getEditRoles($event->getData());
+
+        $form->get('execute')->setData($executeRoles);
+        $form->get('edit')->setData($editRoles);
     }
 
     /**
