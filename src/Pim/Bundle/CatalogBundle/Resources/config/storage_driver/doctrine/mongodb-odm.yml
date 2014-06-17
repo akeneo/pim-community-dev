@@ -23,6 +23,7 @@ parameters:
     pim_catalog.event_listener.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
+    pim_catalog.event_listener.mongodb.ensure_indexes.class:                 Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EnsureIndexesSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -182,6 +183,18 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
+        tags:
+            - { name: doctrine.event_subscriber, priority: 100 }
+
+    pim_catalog.event_listener.mongodb.ensure_indexes:
+        class: %pim_catalog.event_listener.mongodb.ensure_indexes.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.channel.class%
+            - %pim_catalog.entity.locale.class%
+            - %pim_catalog.entity.currency.class%
+            - %pim_catalog.entity.attribute.class%
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
 
