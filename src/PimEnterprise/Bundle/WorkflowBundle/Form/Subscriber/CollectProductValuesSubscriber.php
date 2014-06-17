@@ -19,7 +19,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     protected $comparator;
 
     /** @var array */
-    private $changes = [];
+    protected $changes = [];
 
     /**
      * @param ComparatorInterface $comparator
