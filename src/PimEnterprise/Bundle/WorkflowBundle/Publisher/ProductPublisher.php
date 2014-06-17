@@ -4,16 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
-use Pim\Bundle\CatalogBundle\Model\Metric;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
-use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric;
 
 /**
  * Product publisher
@@ -28,9 +19,6 @@ class ProductPublisher implements PublisherInterface
 
     /** @var PublisherInterface */
     protected $publisher;
-
-    /** @var PublishedProductRepositoryInterface*/
-    protected $repository;
 
     /**
      * @param string             $publishClassName
@@ -54,7 +42,8 @@ class ProductPublisher implements PublisherInterface
         $this->copyCategories($object, $published);
         $this->copyAssociations($object, $published);
         $this->copyCompletenesses($object, $published);
-        //$this->copyValues($object, $published);
+        $this->copyValues($object, $published);
+
         return $published;
     }
 
@@ -126,68 +115,8 @@ class ProductPublisher implements PublisherInterface
     protected function copyValues(ProductInterface $product, PublishedProduct $published)
     {
         foreach ($product->getValues() as $originalValue) {
-
-            // publish ?
-
-            $publishedValue = new PublishedProductValue();
-            $publishedValue->setAttribute($originalValue->getAttribute());
-            $publishedValue->setLocale($originalValue->getLocale());
-            $publishedValue->setScope($originalValue->getScope());
-
-            $originalData = $originalValue->getData();
-            $copiedData = null;
-
-            //$copiedData = $this->publish($originalData);
-
-            // collection -> call publish
-            // - price
-            // - option
-            // metric
-            // media
-            // raw
-
-            if ($originalData instanceof \Doctrine\Common\Collections\Collection) {
-                if (count($originalData) > 0) {
-                    $copiedData = new ArrayCollection();
-                    foreach ($originalData as $object) {
-                        if ($object instanceof ProductPrice) {
-                            $copiedObject = new PublishedProductPrice();
-                            $copiedObject->setData($object->getData());
-                            $copiedObject->setCurrency($object->getCurrency());
-                            $copiedData->add($copiedObject);
-                        } elseif ($object instanceof AttributeOption) {
-                            $copiedData->add($object);
-                        }
-                    }
-                }
-
-            } elseif (is_object($originalData) && $originalData instanceof Metric) {
-
-                $copiedMetric = new PublishedProductMetric();
-                $copiedMetric->setData($originalData->getData());
-                $copiedMetric->setBaseData($originalData->getBaseData());
-                $copiedMetric->setUnit($originalData->getUnit());
-                $copiedMetric->setBaseUnit($originalData->getBaseUnit());
-                $copiedMetric->setFamily($originalData->getFamily());
-                $copiedData = $copiedMetric;
-
-            } elseif (is_object($originalData) && $originalData instanceof Media) {
-                // TODO : we have to copy the media file not reference the same !
-                $copiedMedia = new PublishedProductMedia();
-                $copiedMedia->setFilename($originalData->getFilename());
-                $copiedMedia->setOriginalFilename($originalData->getOriginalFilename());
-                $copiedMedia->setFilePath($originalData->getFilePath());
-                $copiedMedia->setMimeType($originalData->getMimeType());
-                $copiedData = $copiedMedia;
-
-            } else {
-                $copiedData = $originalData;
-            }
-
-            if ($copiedData) {
-                $publishedValue->setData($copiedData);
-                $published->addValue($publishedValue);
-            }
+            $publishedValue = $this->publisher->publish($originalValue);
+            $published->addValue($publishedValue);
         }
     }
 
