@@ -96,7 +96,7 @@ define(
                 currentTree = treeId;
                 var $tree = $('#tree-' + treeId);
 
-                $('#trees').find('div').hide();
+                $('#trees').find('> div').hide();
                 $('#trees-list').find('li').removeClass('active');
                 $('#tree-link-' + treeId).parent().addClass('active');
 
@@ -126,8 +126,7 @@ define(
                             $(hiddenCategoryId).val(selected).trigger('change');
                             var treeId = e.target.id;
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('gray');
-                            $('#'+treeLinkId+' i').addClass('green');
+                            $('#'+treeLinkId+' i').removeClass('gray').addClass('green');
                         }
                     }
                 });
@@ -143,8 +142,7 @@ define(
                         var treeId = e.target.id;
                         if ($('#'+treeId).jstree('get_checked').length === 0) {
                             var treeLinkId = treeId.replace('-', '-link-');
-                            $('#'+treeLinkId+' i').removeClass('green');
-                            $('#'+treeLinkId+' i').addClass('gray');
+                            $('#'+treeLinkId+' i').removeClass('green').addClass('gray');
                         }
                     }
                 });
