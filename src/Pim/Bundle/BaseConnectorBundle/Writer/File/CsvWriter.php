@@ -200,7 +200,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * @param AbstractMedia $media
      *
-     * @return null
+     * @return void
      */
     protected function copyMedia(AbstractMedia $media)
     {
