@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -18,12 +19,17 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param JobProfileAccessManager $accessManager
+     * @param SecurityFacade          $securityFacade
      */
-    public function __construct(JobProfileAccessManager $accessManager)
+    public function __construct(JobProfileAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager = $accessManager;
+        $this->accessManager  = $accessManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
