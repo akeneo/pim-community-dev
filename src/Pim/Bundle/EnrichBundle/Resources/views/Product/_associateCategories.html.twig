@@ -48,7 +48,6 @@
         {% for tree in trees %}
             <div class="tree" data-tree-id="{{ tree['tree'].id }}">
                 <h3>{{ tree['tree'].label }}</h3>
-                <input type="hidden" id="apply-on-tree-{{ tree['tree'].id }}" name="apply_on_tree_{{ tree['tree'].id }}" value="0"/>
                 <div id="tree-{{ tree['tree'].id }}" class="buffer-small-left"></div>
             </div>
         {% endfor %}
