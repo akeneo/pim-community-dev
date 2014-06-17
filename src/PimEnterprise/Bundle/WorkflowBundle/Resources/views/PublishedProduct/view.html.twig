@@ -8,7 +8,7 @@
 
         {% set buttons %}
             {{ elements.backLink(path('pimee_workflow_publishedproduct_index')) }}
-            {{ elements.link('btn.seeworkversion', path('pim_enrich_product_edit', {id: published.originalProductId, locale: dataLocale}), {icon: 'pencil'}) }}
+            {{ elements.link('btn.editworkingcopy', path('pim_enrich_product_edit', {id: published.originalProductId, locale: dataLocale}), {icon: 'pencil'}) }}
         {% endset %}
 
         {% set subtitle %}
