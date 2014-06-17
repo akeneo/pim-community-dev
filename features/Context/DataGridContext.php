@@ -315,7 +315,7 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $action = ucfirst(strtolower($actionName));
 
-        if($not === $this->datagrid->findAction($element, $action)) {
+        if ($not === $this->datagrid->findAction($element, $action)) {
             throw $this->createExpectationException(
                 sprintf(
                     'Expecting action "%s" on the row which containe "%s", but none found.',
