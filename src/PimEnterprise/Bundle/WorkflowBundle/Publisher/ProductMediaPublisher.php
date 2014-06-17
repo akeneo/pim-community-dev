@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 /**
  * Product media publisher
@@ -15,12 +16,19 @@ class ProductMediaPublisher implements PublisherInterface
     /** @var string */
     protected $publishClassName;
 
+    /** @var MediaManager */
+    protected $mediaManager;
+
+    const PREFIX_FILE = 'published';
+
     /**
-     * @param string $publishClassName
+     * @param string       $publishClassName
+     * @param MediaManager $mediaManager
      */
-    public function __construct($publishClassName)
+    public function __construct($publishClassName, MediaManager $mediaManager)
     {
         $this->publishClassName = $publishClassName;
+        $this->mediaManager     = $mediaManager;
     }
 
     /**
@@ -29,11 +37,7 @@ class ProductMediaPublisher implements PublisherInterface
     public function publish($object, array $options = [])
     {
         $copiedMedia = new $this->publishClassName();
-        $copiedMedia->setFilename($object->getFilename());
-        $copiedMedia->setOriginalFilename($object->getOriginalFilename());
-        // TODO :copy the media !!
-        $copiedMedia->setFilePath($object->getFilePath());
-        $copiedMedia->setMimeType($object->getMimeType());
+        $this->mediaManager->duplicate($object, $copiedMedia, self::PREFIX_FILE);
 
         return $copiedMedia;
     }
