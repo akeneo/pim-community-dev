@@ -168,18 +168,18 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements
      */
     public function getConfigurationFields()
     {
-        return array(
-            'channel' => array(
+        return [
+            'channel' => [
                 'type'    => 'choice',
-                'options' => array(
+                'options' => [
                     'choices'  => $this->channelManager->getChannelChoices(),
                     'required' => true,
                     'select2'  => true,
                     'label'    => 'pim_base_connector.export.channel.label',
                     'help'     => 'pim_base_connector.export.channel.help'
-                )
-            )
-        );
+                ]
+            ]
+        ];
     }
 
     /**
