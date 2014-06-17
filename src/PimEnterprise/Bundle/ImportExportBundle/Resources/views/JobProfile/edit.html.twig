@@ -30,7 +30,7 @@
         {{ elements.form_errors(form) }}
 
         {% set navbarTabs = ['General properties'] %}
-        {% set resourceName = ['pimee_importexport_', entityName|replace({' ': '_'}), '_edit_permissions']|join %}
+        {% set resourceName = 'pimee_importexport_' ~ jobInstance.type ~ '_profile_edit_permissions' %}
         {% if resource_granted(resourceName) %}
             {% set navbarTabs = navbarTabs|merge(['Permissions']) %}
         {% endif %}
