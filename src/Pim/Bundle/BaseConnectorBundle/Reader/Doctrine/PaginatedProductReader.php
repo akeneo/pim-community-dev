@@ -157,6 +157,7 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements
         if (null !== $this->products) {
             $product = $this->products->current();
             $this->products->next();
+            $this->stepExecution->incrementSummaryInfo('read');
         }
 
         return $product;
@@ -259,7 +260,6 @@ class PaginatedProductReader extends AbstractConfigurableStepElement implements
             $items = $this->repository->findByIds($currentIds);
             $products = new ArrayIterator($items);
             $this->offset += self::LIMIT;
-            $this->stepExecution->incrementSummaryInfo('read');
         }
 
         return $products;
