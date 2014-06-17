@@ -155,19 +155,21 @@ class MediaManager
      */
     protected function upload(AbstractMedia $media, $filename, $overwrite = false)
     {
-        $file = $media->getFile();
-        $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
+        if (($file = $media->getFile()) && UPLOAD_ERR_OK === $file->getError()) {
+            $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
 
-        $media->setOriginalFilename(
-            $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
-        );
-        $media->setFilename($filename);
-        $media->setFilepath($this->getFilePath($media));
-        $media->setMimeType($file->getMimeType());
+            $media->setOriginalFilename(
+                $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
+            );
+            $media->setFilename($filename);
+            $media->setFilepath($this->getFilePath($media));
+            $media->setMimeType($file->getMimeType());
+        }
     }
 
     /**
      * Write file in filesystem
+     *
      * @param string  $filename  Filename
      * @param string  $content   File content
      * @param boolean $overwrite Overwrite file or not
