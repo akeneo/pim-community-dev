@@ -85,6 +85,28 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $this->manager->handle($media, 'foo');
     }
 
+    public function testNoUploadIfAnErrorOccuredDuringUpload()
+    {
+        $this->filesystem->expects($this->never())->method('write');
+
+        $this->filesystem->expects($this->at(0))
+                   ->method('has')
+                   ->will($this->returnValue(false));
+
+        $media = $this->getMediaMock($this->getFileMock(UPLOAD_ERR_INI_SIZE));
+
+        $media->expects($this->any())
+              ->method('getFilename')
+              ->will($this->returnValue('foo-akeneo.jpg'));
+
+        $media->expects($this->never())->method('setOriginalFilename');
+        $media->expects($this->never())->method('setFilename');
+        $media->expects($this->never())->method('setFilepath');
+        $media->expects($this->never())->method('setMimeType');
+
+        $this->manager->handle($media, 'foo');
+    }
+
     /**
      * Test related method
      */
@@ -206,7 +228,7 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return \Symfony\Component\HttpFoundation\File\UploadedFile
      */
-    protected function getFileMock()
+    protected function getFileMock($error = UPLOAD_ERR_OK)
     {
         $file = $this
             ->getMockBuilder('Symfony\Component\HttpFoundation\File\UploadedFile')
@@ -226,6 +248,10 @@ class MediaManagerTest extends \PHPUnit_Framework_TestCase
         $file->expects($this->any())
              ->method('getMimeType')
              ->will($this->returnValue('image/jpeg'));
+
+        $file->expects($this->any())
+             ->method('getError')
+             ->will($this->returnValue($error));
 
         return $file;
     }
