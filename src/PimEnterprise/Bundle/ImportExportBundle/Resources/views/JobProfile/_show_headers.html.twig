@@ -9,17 +9,22 @@
 
 {% set buttons %}
     {{ elements.backLink(indexRoute) }}
-    {% set resourceName = ['pimee_importexport_', entityName|replace({' ': '_'}), '_edit_permissions']|join %}
+
     {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') and
         (is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EDIT_JOB_PROFILE'), jobInstance)
-        or resource_granted(resourceName)) %}
+            or resource_granted('pimee_importexport_' ~ jobInstance.type ~ '_profile_edit_permissions'))
+    %}
         {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
     {% endif %}
-    {% if uploadAllowed and uploadViolations|length == 0 %}
-        {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
-    {% endif %}
-    {% if violations|length == 0 %}
-        {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+
+    {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EXECUTE_JOB_PROFILE'), jobInstance) %}
+        {% if uploadAllowed and uploadViolations|length == 0 %}
+            {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+        {% endif %}
+
+        {% if violations|length == 0 %}
+            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+        {% endif %}
     {% endif %}
 {% endset %}
 
