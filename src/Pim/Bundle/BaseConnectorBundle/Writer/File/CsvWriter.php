@@ -49,6 +49,9 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     protected $items = [];
 
+    /**
+     * @param MediaManager $mediaManager
+     */
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
