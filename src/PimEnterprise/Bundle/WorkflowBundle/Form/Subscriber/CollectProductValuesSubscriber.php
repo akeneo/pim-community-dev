@@ -8,21 +8,30 @@ use Symfony\Component\Form\FormEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber
+ * A collector of changes that a client is sending to a product edit form
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class CollectProductValuesSubscriber implements EventSubscriberInterface
 {
+    /** @var ComparatorInterface */
     protected $comparator;
-    private $changes = [];
 
+    /** @var array */
+    protected $changes = [];
+
+    /**
+     * @param ComparatorInterface $comparator
+     */
     public function __construct(ComparatorInterface $comparator)
     {
         $this->comparator = $comparator;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -30,15 +39,20 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Collect changes that client sent to the product values
+     *
+     * @param FormEvent $event
+     */
     public function collect(FormEvent $event)
     {
         $form = $event->getForm();
-        if ('pim_product_edit' !== $form->getName()) {
+        $data = $event->getData();
+        if ('pim_product_edit' !== $form->getName() || !array_key_exists('values', $data)) {
             return;
         }
 
         $currentValues = $form->get('values')->getViewData();
-        $data = $event->getData();
         foreach ($data['values'] as $key => $value) {
             if ($currentValues->containsKey($key)) {
                 if (null !== $changes = $this->comparator->getChanges($currentValues->get($key), $value)) {
@@ -46,19 +60,15 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
                 }
             }
         }
-
-        $this->removeValuesFromFormData($event);
     }
 
+    /**
+     * Get the collected changes sent to the product values
+     *
+     * @return array
+     */
     public function getChanges()
     {
         return $this->changes;
-    }
-
-    protected function removeValuesFromFormData(FormEvent $event)
-    {
-        $data = $event->getData();
-        unset($data['values']);
-        $event->setData($data);
     }
 }
