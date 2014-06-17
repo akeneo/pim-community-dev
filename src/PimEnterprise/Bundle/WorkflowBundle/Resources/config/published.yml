@@ -6,7 +6,7 @@ services:
     pimee_workflow.factory.published_product:
         class: %pimee_workflow.factory.published_product.class%
         arguments:
-            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.publisher.chained'
 
     pimee_workflow.manager.published_product:
         class: %pimee_workflow.manager.published_product.class%
