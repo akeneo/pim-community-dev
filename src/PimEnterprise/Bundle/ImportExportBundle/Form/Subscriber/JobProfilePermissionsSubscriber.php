@@ -84,10 +84,10 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     public function postSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        $resource = 'pimee_importexport_export_profile_edit_permissions';
+        $data = $event->getData();
+        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $data->getType());
 
         if ($form->isValid() && $this->securityFacade->isGranted($resource)) {
-
             $executeRoles = $form->get('permissions')->get('execute')->getData();
             $editRoles    = $form->get('permissions')->get('edit')->getData();
 
