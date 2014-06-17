@@ -63,7 +63,7 @@ class ProductVoter implements VoterInterface
 
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
-                    $result       = VoterInterface::ACCESS_DENIED;
+                    $result = VoterInterface::ACCESS_DENIED;
 
                     if ($this->isProductAccessible($object, $token->getUser(), $attribute)) {
                         return VoterInterface::ACCESS_GRANTED;
@@ -87,13 +87,20 @@ class ProductVoter implements VoterInterface
      */
     protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
     {
+        $productTreeIds = $product->getTreeIds();
+
+        // TODO: change this temporary fix and handle a "all products" permission
+        if (0 === count($productTreeIds)) {
+            return true;
+        }
+
         $categoryAttribute = (ProductVoter::PRODUCT_EDIT === $attribute) ?
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
 
-        $accessibleTreeIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
+        $grantedTreeIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
 
-        $intersection = array_intersect($product->getTreeIds(), $accessibleTreeIds);
+        $intersection = array_intersect($productTreeIds, $grantedTreeIds);
         if (count($intersection)) {
             return true;
         }
