@@ -155,7 +155,11 @@ class MediaManager
      */
     protected function upload(AbstractMedia $media, $filename, $overwrite = false)
     {
-        if (($file = $media->getFile()) && UPLOAD_ERR_OK === $file->getError()) {
+        if (($file = $media->getFile())) {
+            if ($file instanceof UploadedFile && UPLOAD_ERR_OK !== $file->getError()) {
+                return;
+            }
+
             $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
 
             $media->setOriginalFilename(
