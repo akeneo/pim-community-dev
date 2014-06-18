@@ -97,4 +97,22 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
 
         $this->postSubmit($event);
     }
+
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
+        FormEvent $event,
+        Category $category,
+        Form $form,
+        $accessManager
+    ) {
+        $event->getData()->willReturn($category);
+        $category->isRoot()->willReturn(true);
+        $category->getId()->willReturn(1);
+
+        $event->getForm()->willReturn($form);
+        $form->isValid()->willReturn(false);
+
+        $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
+
+        $this->postSubmit($event);
+    }
 }
