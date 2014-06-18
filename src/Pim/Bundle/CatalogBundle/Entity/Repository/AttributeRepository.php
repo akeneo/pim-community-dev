@@ -306,10 +306,7 @@ class AttributeRepository extends EntityRepository implements
 
         if ($withLabel) {
             $labelExpr = 'COALESCE(trans.label, CONCAT(CONCAT(\'[\', att.code), \']\'))';
-            $groupLabelExpr = sprintf(
-                'CASE WHEN g IS NOT NULL THEN COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\')) ELSE \'%s\'',
-                AttributeGroup::DEFAULT_GROUP_CODE
-            );
+            $groupLabelExpr = 'COALESCE(gtrans.label, CONCAT(CONCAT(\'[\', g.code), \']\'))';
 
             $qb = $this->_em->createQueryBuilder()
                 ->select('att.code', sprintf('%s as label', $labelExpr))
