@@ -229,6 +229,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
             $intKeys[] = array_keys($item);
         }
         $mergedKeys = call_user_func_array('array_merge', $intKeys);
+
         return array_unique($mergedKeys);
     }
 
