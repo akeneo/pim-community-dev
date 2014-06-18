@@ -1,13 +1,15 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\UploadedFileFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvents;
 
-class PrepareUploadingMediaSpec extends ObjectBehavior
+class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
 {
     function let(UploadedFileFactory $factory)
     {
@@ -22,13 +24,17 @@ class PrepareUploadingMediaSpec extends ObjectBehavior
     function it_registers_to_the_before_changes_applying_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            PropositionEvent::BEFORE_APPLY_CHANGES => 'prepareMedia'
+            PropositionEvents::PRE_APPLY => 'prepareMedia'
         ]);
     }
 
-    function it_converts_uploading_media_into_object($factory, PropositionEvent $event)
-    {
-        $event->getChanges()->willReturn([
+    function it_converts_uploading_media_into_object(
+        $factory,
+        PropositionEvent $event,
+        Proposition $proposition
+    ) {
+        $event->getProposition()->willReturn($proposition);
+        $proposition->getChanges()->willReturn([
             'values' => [
                 'foo' => [
                     'media' => [
@@ -52,13 +58,15 @@ class PrepareUploadingMediaSpec extends ObjectBehavior
             ]
         ];
 
-        $event->setChanges($changes)->shouldBeCalled();
+        $proposition->setChanges($changes)->shouldBeCalled();
 
         $this->prepareMedia($event);
     }
 
-    function it_ignores_changes_not_related_to_media(PropositionEvent $event)
-    {
+    function it_ignores_changes_not_related_to_media(
+        PropositionEvent $event,
+        Proposition $proposition
+    ) {
         $changes = [
             'values' => [
                 'foo' => [
@@ -66,8 +74,9 @@ class PrepareUploadingMediaSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $event->getChanges()->willReturn($changes);
-        $event->setChanges($changes)->shouldBeCalled();
+        $event->getProposition()->willReturn($proposition);
+        $proposition->getChanges()->willReturn($changes);
+        $proposition->setChanges($changes)->shouldBeCalled();
 
         $this->prepareMedia($event);
     }

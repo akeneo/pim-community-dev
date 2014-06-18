@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use PhpSpec\ObjectBehavior;

@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
