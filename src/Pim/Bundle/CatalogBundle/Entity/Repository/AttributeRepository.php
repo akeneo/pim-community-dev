@@ -139,14 +139,19 @@ class AttributeRepository extends EntityRepository implements
     }
 
     /**
-     * Find all attributes that belong to a group
+     * Find all attributes that belongs to the default group
      *
      * @return array
      */
-    public function findAllGrouped()
+    public function findAllInDefaultGroup()
     {
         $qb = $this->createQueryBuilder('a');
-        $qb->where($qb->expr()->isNotNull('a.group'))->orderBy('a.code');
+        $qb
+            ->innerJoin('a.group', 'g')
+            ->where('g.code != :default_code')
+            ->orderBy('a.code')
+            ->setParameter(':default_code', AttributeGroup::DEFAULT_GROUP_CODE)
+        ;
 
         return $qb->getQuery()->getResult();
     }

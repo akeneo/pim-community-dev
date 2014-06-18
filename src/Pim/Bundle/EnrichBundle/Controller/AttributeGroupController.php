@@ -197,8 +197,12 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
+        if ($group === $this->getDefaultGroup()) {
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed default'));
+        }
+
         if (0 !== $group->getAttributes()->count()) {
-            throw new \LogicException($this->translator->trans('flash.attribute group.not removed'));
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
         $this->remove($group);
@@ -243,7 +247,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param integer $id      The group id to add attributes to
      *
      * @AclAncestor("pim_enrich_attribute_group_add_attribute")
-     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
     {
@@ -289,6 +293,10 @@ class AttributeGroupController extends AbstractDoctrineController
             );
         }
 
+        if ($group === $this->getDefaultGroup()) {
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed default attributes'));
+        }
+
         $this->manager->removeAttribute($group, $attribute);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
@@ -305,6 +313,14 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository($this->attributeClass)->findAllGrouped();
+        return $this->getRepository($this->attributeClass)->findAllInDefaultGroup();
+    }
+
+    /**
+     * @return AttributeGroup
+     */
+    protected function getDefaultGroup()
+    {
+        return $this->getRepository('PimCatalogBundle:AttributeGroup')->findDefaultAttributeGroup();
     }
 }

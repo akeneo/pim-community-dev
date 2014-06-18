@@ -137,9 +137,11 @@ flash:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
         removed:           Attribute group successfully removed
-        not removed:       Attribute group can't be removed as it contains attributes
         attributes added:  Attributes successfully added to the attribute group
         attribute removed: Attribute successfully removed from the attribute group
+        not removed attributes:            Attribute group can't be removed as it contains attributes
+        not removed default:               Default attribute group can't be removed
+        not removed default attributes:    Attribute can't be removed from the default attribute group
     category:
         created: Category successfully created
         updated: Category successfully updated
