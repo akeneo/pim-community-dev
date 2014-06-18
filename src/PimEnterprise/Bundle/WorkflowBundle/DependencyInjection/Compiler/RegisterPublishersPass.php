@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * Compiler pass that register product data publishers into the chained publisher
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class RegisterPublishersPass implements CompilerPassInterface

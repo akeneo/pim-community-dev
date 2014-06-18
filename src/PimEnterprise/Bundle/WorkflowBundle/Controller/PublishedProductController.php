@@ -132,8 +132,6 @@ class PublishedProductController extends AbstractController
     /**
      * Get data locale code
      *
-     * @throws \Exception
-     *
      * @return string
      */
     protected function getDataLocale()
