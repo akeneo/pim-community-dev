@@ -33,6 +33,7 @@ MongoDB implementation
 ----------------------
 
 We removed null values from normalizedData field to avoid storing useless values
+The normalized media now contains originalFilename
 
 DataGridBundle
 --------------
