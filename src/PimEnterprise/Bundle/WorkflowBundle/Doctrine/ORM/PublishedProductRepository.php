@@ -24,7 +24,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function findAllByOriginalProductId(array $originalIds)
+    public function findByOriginalProductIds(array $originalIds)
     {
         return parent::findBy(['originalProductId' => $originalIds]);
     }

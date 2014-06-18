@@ -46,7 +46,7 @@ class ProductAssociationPublisher implements PublisherInterface
         foreach ($object->getProducts() as $product) {
             $productIds[]= $product->getId();
         }
-        $publishedProducts = $this->repository->findAllByOriginalProductId($productIds);
+        $publishedProducts = $this->repository->findByOriginalProductIds($productIds);
         if (count($publishedProducts) > 0) {
             $copiedAssociation->setProducts($publishedProducts);
         }
