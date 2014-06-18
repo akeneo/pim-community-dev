@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\DataGridBundle\Datagrid\Product;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,10 @@ class ContextConfiguratorSpec extends ObjectBehavior
         DatagridConfiguration $configuration,
         ProductManager $manager,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext,
+        UserContext $userContext,
         EntityRepository $repository
     ) {
-        $this->beConstructedWith($manager, $requestParams, $securityContext, $repository);
+        $this->beConstructedWith($manager, $requestParams, $userContext, $repository);
     }
 
     function it_is_a_configurator()
