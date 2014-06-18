@@ -137,6 +137,7 @@ flash:
         created:           Attribute group successfully created
         updated:           Attribute group successfully updated
         removed:           Attribute group successfully removed
+        not removed:       Attribute group can't be removed as it contains attributes
         attributes added:  Attributes successfully added to the attribute group
         attribute removed: Attribute successfully removed from the attribute group
     category:

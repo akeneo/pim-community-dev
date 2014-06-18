@@ -181,11 +181,17 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request        $request
      * @param AttributeGroup $group
      *
+     * @throws \LogicException
+     *
      * @AclAncestor("pim_enrich_attribute_group_remove")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
+        if (0 !== $group->getAttributes()->count()) {
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed'));
+        }
+
         $this->remove($group);
 
         if ($request->get('_redirectBack')) {
