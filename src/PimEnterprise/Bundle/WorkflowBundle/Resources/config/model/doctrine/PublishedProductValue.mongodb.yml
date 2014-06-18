@@ -1,0 +1,58 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
+    type: embeddedDocument
+    fields:
+        id:
+            id: true
+        varchar:
+            index: true
+            type: string
+        integer:
+            type: int
+        decimal:
+            type: float
+        boolean:
+            type: boolean
+        text:
+            type: string
+        date:
+            type: date
+        datetime:
+            type: date
+        locale:
+            type: string
+        scope:
+            type: string
+        attribute:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Attribute
+        entity:
+            reference: true
+            type: one
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+
+            inversedBy: values
+        option:
+            type: entity
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+        options:
+            notSaved: true
+            type: entities
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\AttributeOption
+            idsField: optionIds
+        optionIds:
+            type: collection
+        metric:
+            embedded: true
+            type: one
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
+        prices:
+            embedded: true
+            type: many
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
+#            orderBy:
+#                currency: ASC
+    referenceOne:
+        media:
+            simple: true
+            cascade: all
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia

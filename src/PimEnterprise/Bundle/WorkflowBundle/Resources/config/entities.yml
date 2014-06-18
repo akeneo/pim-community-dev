@@ -1,0 +1,8 @@
+parameters:
+    pimee_workflow.entity.published_product.class:              PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+    pimee_workflow.entity.published_product_value.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+    pimee_workflow.entity.published_product_media.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia
+    pimee_workflow.entity.published_product_metric.class:       PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
+    pimee_workflow.entity.published_product_price.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
+    pimee_workflow.entity.published_product_completeness.class: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+    pimee_workflow.entity.published_product_association.class:  PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation

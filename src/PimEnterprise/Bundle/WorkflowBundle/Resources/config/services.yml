@@ -2,6 +2,7 @@ parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
     pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
     pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
+    pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
 
 services:
     pimee_workflow.event_listener.propositions_grid_listener:
@@ -35,3 +36,11 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
             - '@pimee_workflow.repository.proposition'
+
+    pimee_workflow.controller.published_product:
+        class: %pimee_workflow.controller.published_product.class%
+        parent: pim_enrich.controller.abstract
+        scope: request
+        arguments:
+            - '@pim_user.context.user'
+            - '@pimee_workflow.manager.published_product'

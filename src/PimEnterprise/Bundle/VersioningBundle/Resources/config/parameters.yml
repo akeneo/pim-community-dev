@@ -1,0 +1,2 @@
+parameters:
+    pim_versioning.event_listener.addversion.class:        PimEnterprise\Bundle\VersioningBundle\EventListener\AddVersionListener

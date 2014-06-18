@@ -1,0 +1,16 @@
+parameters:
+    pimee_workflow.factory.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory
+    pimee_workflow.manager.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+
+services:
+    pimee_workflow.factory.published_product:
+        class: %pimee_workflow.factory.published_product.class%
+        arguments:
+            - '@pimee_workflow.publisher.chained'
+
+    pimee_workflow.manager.published_product:
+        class: %pimee_workflow.manager.published_product.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pimee_workflow.repository.published_product'
+            - '@pimee_workflow.factory.published_product'

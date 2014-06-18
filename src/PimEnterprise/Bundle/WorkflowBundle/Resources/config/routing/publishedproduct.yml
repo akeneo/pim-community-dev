@@ -1,0 +1,13 @@
+pimee_workflow_published_product_index:
+    path: /
+    defaults: { _controller: pimee_workflow.controller.published_product:indexAction }
+pimee_workflow_published_product_publish:
+    path: /{id}/publish
+    defaults: { _controller: pimee_workflow.controller.published_product:publishAction }
+    requirements:
+        id: '[0-9a-f]+'
+pimee_workflow_published_product_view:
+    path: /{id}/view
+    defaults: { _controller: pimee_workflow.controller.published_product:viewAction }
+    requirements:
+        id: '[0-9a-f]+'

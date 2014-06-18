@@ -42,7 +42,6 @@ class ProductController extends BaseProductController
         }
     }
 
-
     /**
      * Show product
      *

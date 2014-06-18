@@ -1,0 +1,73 @@
+PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
+    type: entity
+    table: pimee_workflow_published_product
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        enabled:
+            type: boolean
+            column: is_enabled
+        created:
+            type: datetime
+        updated:
+            type: datetime
+        originalProductId:
+            type: integer
+    manyToOne:
+        family:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
+            joinColumns:
+                family_id:
+                    referencedColumnName: id
+                    onDelete: 'SET NULL'
+    manyToMany:
+        groups:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Group
+            joinTable:
+                name: pimee_workflow_group_published_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    group_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+        categories:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\CategoryInterface
+            joinTable:
+                name: pimee_workflow_category_published_product
+                joinColumns:
+                    product_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+                inverseJoinColumns:
+                    category_id:
+                        referencedColumnName: id
+                        onDelete: CASCADE
+    oneToMany:
+        associations:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
+            mappedBy: owner
+            cascade:
+                - persist
+                - refresh
+        values:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            orphanRemoval: true
+            mappedBy: entity
+            cascade:
+                - remove
+                - persist
+                - refresh
+        completenesses:
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+            mappedBy: product
+            cascade:
+                - remove
+                - persist
+                - refresh

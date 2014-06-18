@@ -1,0 +1,56 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set title = 'published products'|trans %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'jquery.sidebarize'],
+            function ($) {
+                'use strict';
+                $(function() {
+                    $('.has-sidebar').sidebarize();
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    {% set subtitle %}
+        <div id="locale-switcher" class="btn-group sub-title">
+            <span class="product-name dropdown-toggle" data-toggle="dropdown">
+                {{ dataLocale|flag }}
+                <i class="icon-caret-down"></i>
+            </span>
+            <ul class="dropdown-menu">
+                {% for locale in locales %}
+                    <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
+                        <a href="{{ path('pimee_workflow_published_product_index', { 'dataLocale': locale.code }) }}" title="{{ locale_label(locale.code) }}">
+                            <span class="indicator">
+                                {% if locale.code == dataLocale %}
+                                    <i class="icon-circle"></i>
+                                {% endif %}
+                            </span>
+                            {{ locale.code|flag }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {{ render(controller('pim_datagrid.controller.datagrid_view:indexAction', { 'alias': 'publishedproduct-grid' })) }}
+    {% endset %}
+
+    {{ elements.page_header(title, [], subtitle) }}
+
+    <div class="row-fluid has-sidebar">
+        <div id="tree" data-datalocale="{{ dataLocale }}"></div>
+        <div id="publishedproduct-grid">
+            {{ dataGrid.renderStatefulGrid('publishedproduct-grid', { dataLocale: dataLocale }) }}
+        </div>
+    </div>
+
+{% endblock %}
