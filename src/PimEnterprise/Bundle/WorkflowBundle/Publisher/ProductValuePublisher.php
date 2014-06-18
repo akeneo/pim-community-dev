@@ -41,18 +41,19 @@ class ProductValuePublisher implements PublisherInterface
 
         $originalData = $object->getData();
         $copiedData = null;
+        $options = ['product' => $object->getEntity(), 'value' => $object];
 
         if ($originalData instanceof \Doctrine\Common\Collections\Collection) {
             if (count($originalData) > 0) {
                 $copiedData = new ArrayCollection();
                 foreach ($originalData as $object) {
-                    $copiedObject = $this->publisher->publish($object);
+                    $copiedObject = $this->publisher->publish($object, $options);
                     $copiedData->add($copiedObject);
                 }
             }
 
         } elseif (is_object($originalData)) {
-            $copiedData = $this->publisher->publish($originalData);
+            $copiedData = $this->publisher->publish($originalData, $options);
 
         } else {
             $copiedData = $originalData;
