@@ -122,12 +122,9 @@ class PublishedProductController extends AbstractController
      */
     public function viewAction(Request $request, $id)
     {
-        $published = $this->manager->findPublishedProductById($id);
-        $locale = $this->getDataLocale();
-
         return [
-            'published'  => $published,
-            'dataLocale' => $locale,
+            'published'  => $this->manager->findPublishedProductById($id),
+            'dataLocale' => $this->getDataLocale(),
             'locales'    => $this->userContext->getUserLocales()
         ];
     }
