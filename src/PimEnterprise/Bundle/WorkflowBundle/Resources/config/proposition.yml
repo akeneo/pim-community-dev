@@ -29,10 +29,19 @@ services:
             - '@event_dispatcher'
 
     ##
-    # Preparators of product changes before applying
+    # Proposition event subscribers
     ##
     pimee_workflow.product_changes_applier.prepare_uploading_media:
         class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.product_changes_applier.submit_proposition_form:
+        scope: request
+        class: %pimee_workflow.product_changes_applier.submit_proposition_form.class%
+        arguments:
+            - '@form.factory'
+            - '@request'
         tags:
             - { name: kernel.event_subscriber }
 

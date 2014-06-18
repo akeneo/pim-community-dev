@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
 
 /**
  * Store product through propositions
@@ -138,6 +140,13 @@ class PropositionPersister implements ProductPersister
         }
 
         $proposition->setChanges($changes);
+
+        if ($this->dispatcher->hasListeners(PropositionEvents::PRE_UPDATE)) {
+            $this->eventDispatcher->dispatch(
+                PropositionEvents::PRE_UPDATE,
+                new PropositionEvent($proposition)
+            );
+        }
 
         $manager->flush();
     }
