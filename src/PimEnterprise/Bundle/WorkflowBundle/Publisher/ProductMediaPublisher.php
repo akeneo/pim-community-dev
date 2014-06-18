@@ -19,6 +19,7 @@ class ProductMediaPublisher implements PublisherInterface
     /** @var MediaManager */
     protected $mediaManager;
 
+    /** @staticvar string */
     const PREFIX_FILE = 'published';
 
     /**

@@ -13,6 +13,8 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
 {
     /**
+     * Fetch a published product by the working copy product id
+     *
      * @param mixed $originalId
      *
      * @return PublishedProductInterface
@@ -20,6 +22,8 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     public function findOneByOriginalProductId($originalId);
 
     /**
+     * Fetch many published products by a list of working copy product ids
+     *
      * @param array $originalIds
      *
      * @return PublishedProductInterface[]
