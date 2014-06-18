@@ -53,8 +53,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    public function listTreesResponse(array $trees, $selectedTreeId = null, $withProductCount = true, $includeSub = false)
-    {
+    public function listTreesResponse(
+        array $trees,
+        $selectedTreeId = null,
+        $withProductCount = true,
+        $includeSub = false
+    ) {
         $return = array();
         foreach ($trees as $tree) {
             $return[] = $this->formatTree($tree, $selectedTreeId, $withProductCount, $includeSub);
