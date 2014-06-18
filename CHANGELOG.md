@@ -186,6 +186,8 @@
 - Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
 - Renamed service writer ids `pim_base_connector.writer.orm.*` -> `pim_base_connector.writer.doctrine.*`
 - Replace `@security.context` by `@pim_user.context.user` in `ContextConfigurator`
+- Delete the `Other` virtual group and the `getVirtualGroup` method of the class `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
+- Render the attribute group mandatory for the creation and the edition of an attribute
 
 # 1.0.2
 ## Bug Fixes
