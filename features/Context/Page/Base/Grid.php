@@ -125,7 +125,7 @@ class Grid extends Index
         $rowElement = $this->getRow($element);
         $action = $rowElement->find('css', sprintf('a.action[title="%s"]', $actionName));
 
-        return null !== $action;
+        return $action;
     }
 
     /**
