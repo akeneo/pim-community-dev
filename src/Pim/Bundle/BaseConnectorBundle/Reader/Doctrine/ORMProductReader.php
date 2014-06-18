@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -110,11 +111,11 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     /**
      * Set query used by the reader
      *
-     * @param Doctrine\ORM\AbstractQuery $query
+     * @param AbstractQuery $query
      *
      * @throws \InvalidArgumentException
      */
-    public function setQuery($query)
+    public function setQuery(AbstractQuery $query)
     {
         if (!is_a($query, 'Doctrine\ORM\AbstractQuery', true)) {
             throw new \InvalidArgumentException(
@@ -244,12 +245,12 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             $this->ids = $this->getIds();
         }
 
-        $currentIds = array_slice($this->ids, $this->offset, self::LIMIT);
+        $currentIds = array_slice($this->ids, $this->offset, $this->limit);
 
         if (!empty($currentIds)) {
             $items = $this->repository->findByIds($currentIds);
-            $products = new ArrayIterator($items);
-            $this->offset += self::LIMIT;
+            $products = new \ArrayIterator($items);
+            $this->offset += $this->limit;
         }
 
         return $products;
