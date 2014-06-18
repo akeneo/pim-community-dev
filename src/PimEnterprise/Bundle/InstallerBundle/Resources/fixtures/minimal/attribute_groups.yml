@@ -1,6 +1,6 @@
 attribute_groups:
-    general:
-        sort_order: 1
+    other:
+        sort_order: 100
         labels:
-            en_US: General
-            fr_FR: Général
+            en_US: Other
+            fr_FR: Autre
