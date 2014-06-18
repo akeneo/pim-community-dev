@@ -48,9 +48,9 @@ attribute_groups:
             fr_FR: Media
             de_DE: Media
 
-    others:
+    other:
         sort_order: 8
         labels:
-            en_US: Others
-            fr_FR: Autres
+            en_US: Other
+            fr_FR: Autre
             de_DE: Ander

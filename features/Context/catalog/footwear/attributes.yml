@@ -77,7 +77,7 @@ attributes:
     comment:
         labels:
             en_US: Comment
-        group: others
+        group: other
         type:  pim_catalog_text
         useableAsGridColumn: false
         useableAsGridFilter: true

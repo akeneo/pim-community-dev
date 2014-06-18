@@ -1,5 +1,5 @@
 attribute_groups:
-    others:
+    other:
         sort_order: 1
         labels:
-            en_US: Others
+            en_US: Other

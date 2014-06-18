@@ -12,8 +12,8 @@ Feature: Display the attribute history
     Given I am on the attributes page
     And I create a "Simple select" attribute
     Given I fill in the following information:
-      | Code              | packaging  |
-      | Attribute group   | Others     |
+      | Code              | packaging |
+      | Attribute group   | Other     |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code        | Selected by default |

@@ -54,9 +54,9 @@ thanks to the following queries :
 
 ```
     INSERT INTO `pim_catalog_attribute_group` (`code`, `sort_order`, `created`, `updated`)
-    VALUES ('others', 100, NOW(), NOW());
+    VALUES ('other', 100, NOW(), NOW());
 
     UPDATE `pim_catalog_attribute` a
-    SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='others')
+    SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
     WHERE a.`group_id` IS NULL
 ```

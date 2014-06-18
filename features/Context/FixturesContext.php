@@ -1221,7 +1221,7 @@ class FixturesContext extends RawMinkContext
         if (is_string($data)) {
             $data = array(
                 'code' => $data,
-                'group' => 'others',
+                'group' => 'other',
             );
         }
 
@@ -1231,7 +1231,7 @@ class FixturesContext extends RawMinkContext
                 'label'    => null,
                 'families' => null,
                 'type'     => 'text',
-                'group'    => 'others',
+                'group'    => 'other',
             ),
             $data
         );
