@@ -70,6 +70,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
+            $proposition->setStatus($data['status'] === 'ready' ? Proposition::READY : Proposition::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposition));
             $manager->persist($proposition);
         }

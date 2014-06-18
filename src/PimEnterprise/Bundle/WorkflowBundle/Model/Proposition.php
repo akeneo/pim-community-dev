@@ -12,6 +12,12 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class Proposition
 {
+    /** @staticvar integer */
+    const IN_PROGRESS = 0;
+
+    /** @staticvar integer */
+    const READY = 1;
+
     /** @var integer */
     protected $id;
 
@@ -29,6 +35,17 @@ class Proposition
 
     /** @var string */
     protected $locale;
+
+    /** @var integer */
+    protected $status;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->status = self::IN_PROGRESS;
+    }
 
     /**
      * @return integer
@@ -119,16 +136,6 @@ class Proposition
     }
 
     /**
-     * Get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
      * Set locale
      *
      * @param string $locale
@@ -140,5 +147,35 @@ class Proposition
         $this->locale = $locale;
 
         return $this;
+    }
+
+    /**
+     * Get locale
+     *
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }

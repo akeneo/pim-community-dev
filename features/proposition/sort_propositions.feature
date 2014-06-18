@@ -11,10 +11,10 @@ Feature: Sort proposals
       | black-boots | boots  |
       | white-boots | boots  |
     And the following propositions:
-      | product     | author | locale |
-      | black-boots | admin  | fr_FR  |
-      | black-boots | peter  | en_US  |
-      | white-boots | julia  | en_US  |
+      | product     | status      | author | locale |
+      | black-boots | in progress | admin  | fr_FR  |
+      | black-boots | ready       | peter  | en_US  |
+      | white-boots | ready       | julia  | en_US  |
     And I am logged in as "admin"
 
   Scenario: Successfully sort propositions in the grid
@@ -22,4 +22,4 @@ Feature: Sort proposals
     When I visit the "Propositions" tab
     Then the grid should contain 2 elements
     And the rows should be sorted descending by proposed at
-    And I should be able to sort the rows by author and proposed at
+    And I should be able to sort the rows by author, proposed at and status
