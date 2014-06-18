@@ -12,7 +12,6 @@ use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConst
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
-use ArrayIterator;
 
 /**
  * Reads products one by one
@@ -24,9 +23,9 @@ use ArrayIterator;
 class ORMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
     /**
-     * Range of items to fetch from database
+     * @var integer
      */
-    const LIMIT = 10;
+    protected $limit = 10;
 
     /**
      * @var string
@@ -47,12 +46,12 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $query;
 
     /**
-     * @var int
+     * @var integer
      */
     protected $offset = 0;
 
     /**
-     * @var array
+     * @var null|integer[]
      */
     protected $ids = null;
 
@@ -105,7 +104,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
-        $this->products            = new ArrayIterator();
+        $this->products            = new \ArrayIterator();
     }
 
     /**
@@ -189,9 +188,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     }
 
     /**
-     * Set channel
-     *
-     * @param string $channel
+     * {@inheritdoc}
      */
     public function setChannel($channel)
     {
@@ -199,9 +196,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     }
 
     /**
-     * Get channel
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getChannel()
     {
@@ -268,5 +263,17 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @param integer $limit
+     *
+     * @return ORMProductReader
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
     }
 }

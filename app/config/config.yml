@@ -89,7 +89,7 @@ swiftmailer:
     spool:                    { type: memory }
 
 pim_catalog:
-    storage_driver: 'doctrine/orm'
+    storage_driver: 'doctrine/mongodb-orm'
 
 services:
     oro.cache.abstract:

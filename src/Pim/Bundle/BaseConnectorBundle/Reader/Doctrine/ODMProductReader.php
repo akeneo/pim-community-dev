@@ -91,8 +91,6 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      * Get query to execute
      *
      * @return Doctrine\ORM\AbstractQuery
-     *
-     * @throws ORMReaderException
      */
     public function getQuery()
     {
@@ -153,9 +151,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     }
 
     /**
-     * Set channel
-     *
-     * @param string $channel
+     * {@inheritdoc}
      */
     public function setChannel($channel)
     {
@@ -163,9 +159,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     }
 
     /**
-     * Get channel
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getChannel()
     {
