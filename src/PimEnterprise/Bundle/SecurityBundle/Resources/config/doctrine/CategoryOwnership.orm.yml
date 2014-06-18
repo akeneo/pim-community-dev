@@ -1,0 +1,30 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership:
+    type: entity
+    table: pimee_security_category_ownership
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository
+    uniqueConstraints:
+        role_category_idx:
+            columns:
+                - role_id
+                - category_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    manyToOne:
+        role:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+            joinColumns:
+                role_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
+        category:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
+            joinColumns:
+                category_id:
+                    nullable: false
+                    referencedColumnName: id
+                    onDelete: CASCADE
