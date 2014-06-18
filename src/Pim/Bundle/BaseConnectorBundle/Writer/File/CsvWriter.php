@@ -224,12 +224,12 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     protected function getAllKeys(array $items)
     {
-        $keys = [];
+        $intKeys = [];
         foreach ($items as $item) {
-            $keys = array_merge($keys, array_keys($item));
+            $intKeys[] = array_keys($item);
         }
-
-        return array_unique($keys);
+        $mergedKeys = call_user_func_array('array_merge', $intKeys);
+        return array_unique($mergedKeys);
     }
 
     /**
