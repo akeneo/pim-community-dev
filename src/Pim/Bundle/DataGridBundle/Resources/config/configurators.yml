@@ -12,7 +12,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@oro_datagrid.datagrid.request_params'
-            - '@security.context'
+            - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
         calls:
             - [setRequest, ['@?request=']]

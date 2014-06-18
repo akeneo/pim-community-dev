@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\Behat\Context\Step;
 use Behat\Gherkin\Node\TableNode;
+use Behat\Mink\Exception\ExpectationException;
 use Behat\MinkExtension\Context\RawMinkContext;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -299,6 +300,30 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
         $action = ucfirst(strtolower($actionName));
         $this->datagrid->clickOnAction($element, $action);
         $this->wait();
+    }
+
+    /**
+     * @param string $not
+     * @param string $actionName
+     * @param string $element
+     *
+     * @throws ExpectationException
+     *
+     * @Given /^I should( not)? be able to view the "([^"]*)" action of the row which contains "([^"]*)"$/
+     */
+    public function iViewTheActionOfTheRowWhichContains($not, $actionName, $element)
+    {
+        $action = ucfirst(strtolower($actionName));
+
+        if($not === $this->datagrid->findAction($element, $action)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expecting action "%s" on the row which containe "%s", but none found.',
+                    $action,
+                    $element
+                )
+            );
+        }
     }
 
     /**
