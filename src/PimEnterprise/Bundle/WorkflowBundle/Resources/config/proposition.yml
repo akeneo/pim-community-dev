@@ -40,6 +40,7 @@ services:
         arguments:
             - '@pim_enrich.form.type.product.view'
             - '@pimee_workflow.applier.proposition_changes_applier'
+            - '@router'
 
     ##
     # Product form view overriding
