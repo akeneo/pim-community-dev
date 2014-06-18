@@ -179,9 +179,9 @@ class EnsureIndexesSubscriber implements EventSubscriber
         $completenessFields = $this->getCompletenessNormFields($channel);
         $this->ensureIndexes($completenessFields);
 
-        $multiValuedAttributes = $this->getMultiValuedAttributes();
-        foreach ($multiValuedAttributes as $multiValuedAttribute) {
-            $this->ensureIndexesFromAttribute($multiValuedAttribute);
+        $multiValuedAttrs = $this->getMultiValuedAttributes();
+        foreach ($multiValuedAttrs as $multiValuedAttr) {
+            $this->ensureIndexesFromAttribute($multiValuedAttr);
         }
 
         $pricesAttributes = $this->getPricesAttributes();
