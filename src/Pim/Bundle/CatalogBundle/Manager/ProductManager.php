@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
@@ -362,9 +361,14 @@ class ProductManager
                         );
                     }
 
-                    $this->mediaManager->duplicate($source, $media, $this->generateFilenamePrefix($product, $value));
+                    $this->mediaManager->duplicate(
+                        $source,
+                        $media,
+                        $this->mediaManager->generateFilenamePrefix($product, $value)
+                    );
                 } else {
-                    $filenamePrefix =  $media->getFile() ? $this->generateFilenamePrefix($product, $value) : null;
+                    $filenamePrefix =  $media->getFile() ?
+                        $this->mediaManager->generateFilenamePrefix($product, $value) : null;
                     $this->mediaManager->handle($media, $filenamePrefix);
                 }
             }
@@ -417,25 +421,6 @@ class ProductManager
             $this->objectManager->remove($product);
         }
         $this->objectManager->flush();
-    }
-
-    /**
-     * @param ProductInterface      $product
-     * @param ProductValueInterface $value
-     *
-     * @return string
-     */
-    protected function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
-    {
-        return sprintf(
-            '%s-%s-%s-%s-%s-%s',
-            $product->getId(),
-            Urlizer::urlize($product->getIdentifier(), '_'),
-            $value->getAttribute()->getCode(),
-            $value->getLocale(),
-            $value->getScope(),
-            time()
-        );
     }
 
     /**
