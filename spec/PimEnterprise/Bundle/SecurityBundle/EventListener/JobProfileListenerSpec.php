@@ -2,6 +2,8 @@
 
 namespace spec\PimEnterprise\Bundle\SecurityBundle\EventListener;
 
+use Prophecy\Argument;
+
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -34,7 +36,7 @@ class JobProfileListenerSpec extends ObjectBehavior
         );
     }
 
-    function it_checks_execute_permission($securityContext, $event, $job)
+    function it_allows_to_execute_permission_when_job_edit_permission_is_granted($securityContext, $event, $job)
     {
         $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(true);
 
@@ -46,5 +48,30 @@ class JobProfileListenerSpec extends ObjectBehavior
         $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(false);
 
         $this->shouldThrow(new AccessDeniedException())->during('checkExecutePermission', [$event]);
+    }
+
+    function it_allows_to_edit_job_when_job_permission_is_granted($securityContext, $event, $job)
+    {
+        $job->getType()->willReturn('import');
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(true);
+
+        $this->checkEditPermission($event);
+    }
+
+    function it_allows_to_edit_job_when_job_management_is_granted($securityContext, $event, $job)
+    {
+        $job->getType()->willReturn('export');
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(false);
+        $securityContext->isGranted('pimee_importexport_export_profile_edit_permissions')->willReturn(true);
+
+        $this->checkEditPermission($event);
+    }
+
+    function it_throws_access_denied_exception_when_no_edit_permission($securityContext, $event, $job)
+    {
+        $job->getType()->willReturn('export');
+        $securityContext->isGranted(Argument::cetera())->willReturn(false);
+
+        $this->shouldThrow(new AccessDeniedException())->during('checkEditPermission', [$event]);
     }
 }
