@@ -967,6 +967,20 @@ class WebUser extends RawMinkContext
     /**
      * @param string $button
      *
+     * @Given /^I should not see the "([^"]*)" button$/
+     */
+    public function iShouldNotSeeTheButton($button)
+    {
+        if (null === $this->getCurrentPage()->getButton($button)) {
+            throw $this->createExpectationException(
+                sprintf('Button "%s" should not be displayed', $button)
+            );
+        }
+    }
+
+    /**
+     * @param string $button
+     *
      * @Given /^I press the "([^"]*)" button in the popin$/
      */
     public function iPressTheButtonInThePopin($button)
