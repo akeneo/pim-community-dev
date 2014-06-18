@@ -112,7 +112,7 @@ class ProductToArrayProcessor extends AbstractConfigurableStepElement implements
      *
      * @return array $normalizerContext
      */
-    protected function getNormalizercontext()
+    protected function getNormalizerContext()
     {
         if (null === $this->normalizerContext) {
             $this->normalizerContext = [
