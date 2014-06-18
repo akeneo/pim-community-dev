@@ -226,7 +226,7 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     {
         $result = array();
         foreach ($this->attributes as $attribute) {
-            $result[(string) $attribute->getVirtualGroup()][] = $attribute;
+            $result[(string) $attribute->getGroup()][] = $attribute;
         }
 
         return $result;

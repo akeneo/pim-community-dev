@@ -127,7 +127,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $name->isScopable()->willReturn(false);
         $name->isLocalizable()->willReturn(false);
         $name->getCode()->willReturn('name');
-        $name->getVirtualGroup()->willReturn(new AttributeGroup());
+        $name->getGroup()->willReturn(new AttributeGroup());
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$name]);
 
@@ -157,7 +157,7 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $attribute->isScopable()->willReturn(false);
         $attribute->isLocalizable()->willReturn(false);
         $attribute->getCode()->willReturn('attribute');
-        $attribute->getVirtualGroup()->willReturn(new AttributeGroup());
+        $attribute->getGroup()->willReturn(new AttributeGroup());
 
         $massActionManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
         $productValue->getAttribute()->willReturn($attribute);

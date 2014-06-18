@@ -83,7 +83,7 @@ class EditCommonAttributesType extends AbstractType
                     'required' => false,
                     'multiple' => true,
                     'expanded' => false,
-                    'group_by' => 'virtualGroup.label',
+                    'group_by' => 'group.label',
                 )
             );
     }

@@ -279,7 +279,7 @@ class EditCommonAttributes extends ProductMassEditOperation
 
         foreach ($attributes as $attribute) {
             $attribute->setLocale($currentLocaleCode);
-            $attribute->getVirtualGroup()->setLocale($currentLocaleCode);
+            $attribute->getGroup()->setLocale($currentLocaleCode);
 
             $this->commonAttributes[] = $attribute;
         }

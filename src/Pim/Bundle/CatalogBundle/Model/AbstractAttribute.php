@@ -696,26 +696,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
-     * Get virtual group
-     * Returns a group named 'Other' if entity doesn't belong to a group
-     *
-     * @return AttributeGroup
-     */
-    public function getVirtualGroup()
-    {
-        if ($this->group) {
-            return $this->group;
-        }
-
-        $group = new AttributeGroup();
-        $group->setId(0);
-        $group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
-        $group->setSortOrder(-1);
-
-        return $group;
-    }
-
-    /**
      * Set group
      *
      * @param AttributeGroup $group
