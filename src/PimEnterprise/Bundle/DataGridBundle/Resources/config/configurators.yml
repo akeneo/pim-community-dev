@@ -7,7 +7,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@oro_datagrid.datagrid.request_params'
-            - '@security.context'
+            - '@pim_user.context.user'
             - '@pim_datagrid.repository.datagrid_view'
             - '@pimee_security.repository.attribute_group_access'
         calls:

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 
@@ -31,18 +32,18 @@ class ContextConfigurator extends PimContextConfigurator
     /**
      * @param ProductManager                 $productManager
      * @param RequestParameters              $requestParams
-     * @param SecurityContextInterface       $securityContext
+     * @param UserContext                    $userContext
      * @param EntityRepository               $gridViewRepository
      * @param AttributeGroupAccessRepository $accessRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext,
+        UserContext $userContext,
         EntityRepository $gridViewRepository,
         AttributeGroupAccessRepository $accessRepository
     ) {
-        parent::__construct($productManager, $requestParams, $securityContext, $gridViewRepository);
+        parent::__construct($productManager, $requestParams, $userContext, $gridViewRepository);
         $this->accessRepository = $accessRepository;
     }
 
@@ -71,7 +72,7 @@ class ContextConfigurator extends PimContextConfigurator
     {
         if (!$this->grantedGroupIds) {
             $result = $this->accessRepository
-                ->getGrantedAttributeGroupQB($this->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES)
+                ->getGrantedAttributeGroupQB($this->userContext->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES)
                 ->getQuery()
                 ->getArrayResult();
 
