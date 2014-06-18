@@ -1,6 +1,6 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia:
     type: document
-    collection: pim_catalog_media
+    collection: pimee_workflow_published_media
     fields:
         id:
             id: true
