@@ -1,0 +1,111 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'pim/optionform', 'pim/scopable', 'pim/currencyfield', 'datepicker', 'pim/dialog', 'pim/dialogform', 'oro/mediator', 'backbone/bootstrap-modal', 'jquery.select2'],
+        function ($, _, optionform, Scopable, CurrencyField, datepicker, Dialog, DialogForm, mediator) {
+            {# BEGIN PimEnrichBundle:Product:_js-handler.html.twig #}
+            'use strict';
+
+            $(function () {
+                _.each($('a.add-attribute-option'), function(optionLink) {
+                    optionform.init('#' + optionLink.getAttribute('id'));
+                });
+
+                _.each($('form div.scopable:not(.currency)'), function (field) {
+                    new Scopable({ el: $(field) });
+                });
+
+                _.each($('form div.currency'), function (field) {
+                    new CurrencyField({ el: $(field) });
+                });
+
+                _.each($('form input.datepicker:not(.hasPicker)'), function (field) {
+                    datepicker.init(field.getAttribute('id'));
+                });
+
+                mediator.trigger('pim:reinit');
+
+                {% if resource_granted('pim_enrich_product_change_family') %}
+                    {% set familyWidget %}
+                        {{ 'info.product.merge attributes'|trans }}<br />
+                        {{ 'info.product.keep attributes'|trans }}<br />
+                        {{ 'info.product.change family to'|trans }}:
+                        {{ form_widget(form.family) }}
+                    {% endset %}
+
+                    $('#edit-family').on('click', function () {
+                        Dialog.confirm(
+                            '{{ familyWidget|e("js")|raw }}',
+                            '{{ "info.product.change family"|trans }}',
+                            function () {
+                                $('#{{ form.vars.id }}').append($('#{{ form.family.vars.id }}'));
+                                $('#{{ form.vars.id }}').submit();
+                            }
+                        );
+                        $('#{{ form.family.vars.id }}')
+                            .attr('data-placeholder', '{{ "Choose a family"|trans }}')
+                            .select2({ allowClear: true });
+                        $('#{{ form.family.vars.id }}').closest('.modal-body').css({'line-height': '25px', 'height': 130});
+                    });
+                {% endif %}
+
+                {% for group in form.vars.value.groups %}
+                    $('#group-products-{{ group.id }}').on('click', function (event) {
+                        event.preventDefault();
+                        $.get(
+                            {{ path('pim_enrich_group_productlist', { id: group.id })|json_encode|raw }},
+                            function (content) {
+                                var groupDoAction = function () {
+                                    var $groupLink = $('<a href="{{ path('pim_enrich_group_edit', { 'id': group.id }) }}" class="hide"></a>');
+                                    $groupLink.appendTo($('#{{ form.vars.id }}')).click();
+                                };
+
+                                var groupModal = new Backbone.BootstrapModal({
+                                    allowCancel: true,
+                                    cancelText: '{{ "Close"|trans }}',
+                                    title: '{{ "Group"|trans }} {{ group.label }}',
+                                    content: content,
+                                    okText: '{{ "View group"|trans }}'
+                                });
+
+                                groupModal.on('ok', groupDoAction);
+                                groupModal.open();
+                            }
+                        )
+                    });
+                {% endfor %}
+
+                // submit form
+                $('div.submit-form a').click(function() {
+                    var action = $(this).attr('value');
+                    $('#{{ form.vars.id }}').attr('action', $('#{{ form.vars.id }}').attr('action') +"&action="+ action);
+                    $('#{{ form.vars.id }}').submit();
+                });
+
+                {% if createPopin is not null %}
+                    // create popin if needed
+                    new DialogForm('#create-product');
+                    $('#create-product').click();
+                {% endif %}
+                {# END PimEnrichBundle:Product:_js-handler.html.twig #}
+
+                // Current value popover
+                $('.icon-file-text-alt[data-async-content]').on('mouseover', function() {
+                    var $this = $(this);
+                    var url = $this.data('async-content');
+
+                    $this.attr('data-content', '{{ "Loading"|trans }}');
+                    $this.popover('show');
+
+                    $this.off('mouseover');
+                    $.get(url, function(data) {
+                        if (data.length > 250) {
+                            data = data.substring(0, 250) + '...';
+                        }
+                        $this.attr('data-content', data);
+                        $this.popover('show');
+                    });
+                });
+            });
+        }
+    );
+</script>
