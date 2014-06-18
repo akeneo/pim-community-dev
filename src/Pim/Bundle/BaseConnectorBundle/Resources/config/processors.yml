@@ -7,7 +7,7 @@ parameters:
     pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
 
-    pim_base_connector.processor.product_to_array.class:             Pim\Bundle\BaseConnectorBundle\Processor\ProductToArrayProcessor
+    pim_base_connector.processor.product_to_array.class:             Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
