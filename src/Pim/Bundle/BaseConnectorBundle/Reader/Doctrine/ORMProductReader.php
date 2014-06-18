@@ -131,8 +131,6 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      * Get query to execute
      *
      * @return Doctrine\ORM\AbstractQuery
-     *
-     * @throws ORMReaderException
      */
     public function getQuery()
     {
