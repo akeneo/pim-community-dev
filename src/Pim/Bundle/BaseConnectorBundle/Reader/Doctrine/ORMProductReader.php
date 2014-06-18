@@ -4,9 +4,8 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Doctrine\ORM\EntityManager;
+use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel as ChannelConstraint;
@@ -22,9 +21,7 @@ use ArrayIterator;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ORMProductReader extends AbstractConfigurableStepElement implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface
+class ORMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
     /**
      * Range of items to fetch from database
