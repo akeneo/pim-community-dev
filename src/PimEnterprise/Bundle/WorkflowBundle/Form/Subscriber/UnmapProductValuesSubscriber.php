@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\ResolvedFormTypeInterface;
 
 /**
  * Unmap product value fields so they are not changed during submission
@@ -38,7 +40,9 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
         }
 
         foreach ($form->get('values') as $valueField) {
-            $this->unmapOne($valueField);
+            foreach ($valueField as $field) {
+                $this->unmapOne($field);
+            }
         }
     }
 
@@ -49,13 +53,50 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
      */
     protected function unmapOne(FormInterface $form)
     {
-        foreach ($form as $name => $field) {
-            $config = $field->getConfig();
-            $form->add(
-                $name,
-                $config->getType()->getInnerType(),
-                array_merge($config->getOptions(), ['mapped' => false])
-            );
+        $config = $form->getConfig();
+        if ($this->isACollectionType($config->getType())) {
+            // Collection fields must be treated separatly as sub-fields can be created on the fly
+            $options = $config->getOptions();
+            $options['options']['mapped'] = false;
+            $form
+                ->getParent()
+                ->add(
+                    $form->getName(),
+                    $config->getType()->getInnerType(),
+                    $options
+                );
+        } else {
+            $form
+                ->getParent()
+                ->add(
+                    $form->getName(),
+                    $config->getType()->getInnerType(),
+                    array_merge($config->getOptions(), ['mapped' => false])
+                );
+
+            foreach ($form as $field) {
+                $this->unmapOne($field);
+            }
         }
+    }
+
+    /**
+     * Wether the form type is a collection type or extends it
+     *
+     * @param ResolvedFormTypeInterface $type
+     *
+     * return boolean
+     */
+    protected function isACollectionType(ResolvedFormTypeInterface $type)
+    {
+        if ($type->getInnerType() instanceof CollectionType) {
+            return true;
+        }
+
+        if (null !== $parent = $type->getParent()) {
+            return $this->isACollectionType($parent);
+        }
+
+        return false;
     }
 }

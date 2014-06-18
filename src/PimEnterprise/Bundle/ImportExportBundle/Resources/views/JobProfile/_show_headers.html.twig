@@ -1,0 +1,47 @@
+{% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label %}
+
+{% set left %}
+    <ul class="inline">
+        <li>{{ 'Job'|trans }}: {{ jobInstance.job.name|trans }}</li>
+        <li>{{ 'Connector'|trans }}: {{ jobInstance.connector|trans }}</li>
+    </ul>
+{% endset %}
+
+{% set buttons %}
+    {{ elements.backLink(indexRoute) }}
+
+    {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') and
+        (is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EDIT_JOB_PROFILE'), jobInstance)
+            or resource_granted('pimee_importexport_' ~ jobInstance.type ~ '_profile_edit_permissions'))
+    %}
+        {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
+    {% endif %}
+
+    {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EXECUTE_JOB_PROFILE'), jobInstance) %}
+        {% if uploadAllowed and uploadViolations|length == 0 %}
+            {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
+        {% endif %}
+
+        {% if violations|length == 0 %}
+            {{ elements.link(action~' now', launchRoute, {icon: 'cogs', class: 'btn-primary'}) }}
+        {% endif %}
+    {% endif %}
+{% endset %}
+
+{{ elements.page_header(title, buttons, null, left) }}
+
+{% if uploadForm is defined and uploadForm is not empty and uploadAllowed and uploadViolations|length == 0 %}
+    {{ form_start(uploadForm, {
+        'id': 'pim_importexport_import_upload',
+        'action': launchRoute,
+        'attr': {
+            'class': 'form-upload hide'
+        }
+    }) }}
+        {{ elements.form_errors(uploadForm) }}
+        <div class="row-fluid">
+            {{ form_row(uploadForm.file) }}
+            {{ elements.submitBtn('Upload and '~action~' now') }}
+        </div>
+    {{ form_end(uploadForm) }}
+{% endif %}

@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -18,12 +19,17 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param JobProfileAccessManager $accessManager
+     * @param SecurityFacade          $securityFacade
      */
-    public function __construct(JobProfileAccessManager $accessManager)
+    public function __construct(JobProfileAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager = $accessManager;
+        $this->accessManager  = $accessManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -62,8 +68,12 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('execute')->setData($this->accessManager->getExecuteRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+
+        $executeRoles = $this->accessManager->getExecuteRoles($event->getData());
+        $editRoles    = $this->accessManager->getEditRoles($event->getData());
+
+        $form->get('execute')->setData($executeRoles);
+        $form->get('edit')->setData($editRoles);
     }
 
     /**
@@ -74,9 +84,13 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     public function postSubmit(FormEvent $event)
     {
         $form = $event->getForm();
-        if ($form->isValid()) {
+        $data = $event->getData();
+        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $data->getType());
+
+        if ($form->isValid() && $this->securityFacade->isGranted($resource)) {
             $executeRoles = $form->get('permissions')->get('execute')->getData();
             $editRoles    = $form->get('permissions')->get('edit')->getData();
+
             $this->accessManager->setAccess($event->getData(), $executeRoles, $editRoles);
         }
     }

@@ -1,38 +1,38 @@
 job_profile_accesses:
-    csv_association_type_export:
+    clothing_association_type_export:
         execute: [administrator, manager, user]
         edit: [administrator]
-    csv_attribute_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
-    csv_category_import:
-        execute: [administrator]
-        edit: [administrator]
-    csv_group_export:
+    clothing_attribute_export:
         execute: [administrator, manager, user]
         edit: [administrator]
-    csv_option_export:
+    clothing_category_export:
         execute: [administrator, manager, user]
-        edit: [administrator, manager]
-    csv_product_export:
+        edit: [administrator]
+    clothing_group_export:
         execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator]
+    clothing_option_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    clothing_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
 
-    csv_association_type_import:
+    clothing_association_type_import:
         execute: [administrator, manager, user]
         edit: [administrator]
-    csv_attribute_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
-    csv_category_export:
-        execute: [administrator]
-        edit: [administrator]
-    csv_group_import:
+    clothing_attribute_import:
         execute: [administrator, manager, user]
         edit: [administrator]
-    csv_option_import:
+    clothing_category_import:
         execute: [administrator, manager, user]
-        edit: [administrator, manager]
-    csv_product_import:
+        edit: [administrator]
+    clothing_group_import:
         execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator]
+    clothing_option_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    clothing_product_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
