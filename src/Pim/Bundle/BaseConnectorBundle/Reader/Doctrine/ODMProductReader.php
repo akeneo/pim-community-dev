@@ -4,8 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
@@ -20,9 +19,7 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ODMProductReader extends AbstractConfigurableStepElement implements
-    ItemReaderInterface,
-    StepExecutionAwareInterface
+class ODMProductReader extends AbstractConfigurableStepElement implements ProductReaderInterface
 {
     /**
      * @var string
