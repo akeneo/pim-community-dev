@@ -1,0 +1,44 @@
+job_profile_accesses:
+    association_type_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    attribute_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    category_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    group_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    option_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    ecommerce_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    print_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    tablet_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+
+    association_type_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    attribute_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    category_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    group_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    option_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
+    product_import:
+        execute: [administrator, manager, user]
+        edit: [administrator]
