@@ -6,9 +6,11 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
  * Applies product changes
@@ -40,19 +42,18 @@ class PropositionChangesApplier
     }
 
     /**
-     * Apply changes to a product
+     * Apply proposition to a product
      *
      * @param AbstractProduct $product
-     * @param array           $changes
+     * @param Proposition     $proposition
      */
-    public function apply(AbstractProduct $product, array $changes)
+    public function apply(AbstractProduct $product, Proposition $proposition)
     {
-        if ($this->dispatcher->hasListeners(PropositionEvent::BEFORE_APPLY_CHANGES)) {
+        if ($this->dispatcher->hasListeners(PropositionEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(
-                PropositionEvent::BEFORE_APPLY_CHANGES,
-                new PropositionEvent($changes)
+                PropositionEvents::PRE_APPLY,
+                new PropositionEvent($proposition)
             );
-            $changes = $event->getChanges();
         }
 
         $this
@@ -86,7 +87,7 @@ class PropositionChangesApplier
                 }
             )
             ->getForm()
-            ->submit($changes, false);
+            ->submit($proposition->getChanges(), false);
     }
 
     /**

@@ -17,6 +17,8 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.applier.proposition_changes_applier'
 
     pimee_workflow.applier.proposition_changes_applier:

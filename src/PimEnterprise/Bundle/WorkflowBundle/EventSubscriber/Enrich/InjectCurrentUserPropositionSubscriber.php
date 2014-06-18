@@ -74,7 +74,7 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
-               $this->applier->apply($product, $proposition->getChanges());
+               $this->applier->apply($product, $proposition);
         }
     }
 
