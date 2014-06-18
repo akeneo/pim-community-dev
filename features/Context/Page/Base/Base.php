@@ -125,6 +125,21 @@ class Base extends Page
      */
     public function pressButton($locator)
     {
+        $button = $this->getButton($locator);
+        $button->click();
+    }
+
+    /**
+     * Get button
+     *
+     * @param string $locator
+     *
+     * @throws ElementNotFoundException
+     *
+     * @return NodeElement
+     */
+    public function getButton($locator)
+    {
         // Search with exact name at first
         $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
 
@@ -139,11 +154,11 @@ class Base extends Page
 
         if (!$button) {
             $button =  $this->find(
-                'named',
-                array(
-                    'link',
-                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                )
+                    'named',
+                    array(
+                            'link',
+                            $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                    )
             );
         }
 
@@ -151,7 +166,7 @@ class Base extends Page
             throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
         }
 
-        $button->click();
+        return $button;
     }
 
     /**

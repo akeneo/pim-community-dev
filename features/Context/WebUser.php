@@ -957,6 +957,16 @@ class WebUser extends RawMinkContext
     /**
      * @param string $button
      *
+     * @Given /^I should see the "([^"]*)" button$/
+     */
+    public function iShouldSeeTheButton($button)
+    {
+        $this->getCurrentPage()->getButton($button);
+    }
+
+    /**
+     * @param string $button
+     *
      * @Given /^I press the "([^"]*)" button in the popin$/
      */
     public function iPressTheButtonInThePopin($button)
