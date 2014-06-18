@@ -42,6 +42,21 @@ class ProductAssociationPublisher implements PublisherInterface
         $copiedAssociation = new $this->publishClassName();
         $copiedAssociation->setOwner($published);
         $copiedAssociation->setAssociationType($object->getAssociationType());
+
+        $this->copyProducts($object, $copiedAssociation);
+        $this->copyGroups($object, $copiedAssociation);
+
+        return $copiedAssociation;
+    }
+
+    /**
+     * Copy the products from original to published association
+     *
+     * @param AbstractAssociation $object
+     * @param AbstractAssociation $copiedAssociation
+     */
+    protected function copyProducts(AbstractAssociation $object, AbstractAssociation $copiedAssociation)
+    {
         $productIds = [];
         foreach ($object->getProducts() as $product) {
             $productIds[]= $product->getId();
@@ -50,14 +65,19 @@ class ProductAssociationPublisher implements PublisherInterface
         if (count($publishedProducts) > 0) {
             $copiedAssociation->setProducts($publishedProducts);
         }
+    }
+
+    /**
+     * Copy the groups from original to published association
+     *
+     * @param AbstractAssociation $object
+     * @param AbstractAssociation $copiedAssociation
+     */
+    protected function copyGroups(AbstractAssociation $object, AbstractAssociation $copiedAssociation)
+    {
         foreach ($object->getGroups() as $group) {
             $copiedAssociation->addGroup($group);
         }
-        if (count($copiedAssociation->getGroups()) > 0 || count($copiedAssociation->getProducts())) {
-            $published->addAssociation($copiedAssociation);
-        }
-
-        return $copiedAssociation;
     }
 
     /**
