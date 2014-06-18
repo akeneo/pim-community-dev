@@ -72,7 +72,7 @@ class PublishedProductController extends AbstractController
      *
      * @param Request $request the request
      *
-     * @AclAncestor("pimee_workflow_publishedproduct_index")
+     * @AclAncestor("pimee_workflow_published_product_index")
      * @Template
      * @return Response
      */
@@ -91,7 +91,7 @@ class PublishedProductController extends AbstractController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pimee_workflow_publishedproduct_index")
+     * @AclAncestor("pimee_workflow_published_product_index")
      * @return array
      */
     public function publishAction(Request $request, $id)
@@ -117,7 +117,7 @@ class PublishedProductController extends AbstractController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pimee_workflow_publishedproduct_index")
+     * @AclAncestor("pimee_workflow_published_product_index")
      * @return array
      */
     public function viewAction(Request $request, $id)

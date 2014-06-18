@@ -1,18 +1,18 @@
 oro_menu_config:
     items:
-        pimee_workflow_publishedproduct:
+        pimee_workflow_published_product:
             label: pim_menu.item.publishedproduct
-            route: pimee_workflow_publishedproduct_index
-            aclResourceId: pimee_workflow_publishedproduct_index
+            route: pimee_workflow_published_product_index
+            aclResourceId: pimee_workflow_published_product_index
             extras:
-                routes: ['/^pimee_workflow_publishedproduct_\w+$/']
+                routes: ['/^pimee_workflow_published_product_\w+$/']
                 position: 15
     tree:
         application_menu:
             children:
                 pim_enrich_tab:
                     children:
-                        pimee_workflow_publishedproduct: ~
+                        pimee_workflow_published_product: ~
 
 oro_titles:
-    pimee_workflow_publishedproduct_index: pim_title.publishedproduct.index
+    pimee_workflow_published_product_index: pim_title.publishedproduct.index

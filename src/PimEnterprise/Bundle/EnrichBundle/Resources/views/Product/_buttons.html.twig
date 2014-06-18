@@ -9,7 +9,7 @@
         'flash.product.removed'|trans
     ) }}
 {% endif %}
-{{ elements.link('btn.publish', path('pimee_workflow_publishedproduct_publish', {id: form.vars.value.id}), {icon: 'check'}) }}
+{{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'check'}) }}
 {{ elements.submitDropdownBtn(
     'btn.save',
     {

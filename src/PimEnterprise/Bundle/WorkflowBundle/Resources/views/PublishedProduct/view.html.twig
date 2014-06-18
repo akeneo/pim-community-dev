@@ -7,7 +7,7 @@
         {% set title = 'pim_title.publishedproduct.view'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pimee_workflow_publishedproduct_index')) }}
+            {{ elements.backLink(path('pimee_workflow_published_product_index')) }}
             {{ elements.link('btn.editworkingcopy', path('pim_enrich_product_edit', {id: published.originalProductId, locale: dataLocale}), {icon: 'pencil'}) }}
         {% endset %}
 
@@ -23,7 +23,7 @@
                 <ul class="dropdown-menu">
                     {% for locale in locales %}
                         <li class="{{ locale.code == dataLocale ? 'active' : '' }}">
-                            <a href="{{ path('pimee_workflow_publishedproduct_view', {id: published.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
+                            <a href="{{ path('pimee_workflow_published_product_view', {id: published.id, dataLocale: locale.code}) }}" title="{{ locale_label(locale.code) }}">
                                 <span class="indicator">
                                     {% if locale.code == dataLocale %}
                                         <i class="icon-circle"></i>
