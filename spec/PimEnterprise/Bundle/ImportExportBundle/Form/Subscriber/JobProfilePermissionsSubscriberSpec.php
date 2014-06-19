@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
@@ -15,14 +15,14 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(
         JobProfileAccessManager $accessManager,
-        SecurityContextInterface $securityContext,
+        SecurityFacade $securityFacade,
         FormEvent $event,
         Form $form,
         JobInstance $jobInstance,
         Form $executeForm,
         Form $editForm
     ) {
-        $this->beConstructedWith($accessManager, $securityContext);
+        $this->beConstructedWith($accessManager, $securityFacade);
 
         $event->getData()->willReturn($jobInstance);
         $event->getForm()->willReturn($form);
@@ -81,12 +81,12 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $executeForm,
         $editForm,
         $accessManager,
-        $securityContext
+        $securityFacade
     ) {
         $jobInstance->getType()->willReturn('import');
 
         $form->isValid()->willReturn(true);
-        $securityContext->isGranted(Argument::any())->willReturn(true);
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
 
         $executeForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
@@ -115,11 +115,11 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $jobInstance,
         $form,
         $accessManager,
-        $securityContext
+        $securityFacade
     ) {
         $jobInstance->getType()->willReturn('import');
 
-        $securityContext->isGranted(Argument::any())->willReturn(false);
+        $securityFacade->isGranted(Argument::any())->willReturn(false);
         $form->isValid()->willReturn(true);
 
         $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
