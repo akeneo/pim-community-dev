@@ -294,7 +294,11 @@ class CategoryExtension extends \Twig_Extension
      * @return array
      */
     protected function formatTree(
-        CategoryInterface $tree, $selectedTreeId, $withProductCount, $includeSub, $relatedEntity
+        CategoryInterface $tree,
+        $selectedTreeId,
+        $withProductCount,
+        $includeSub,
+        $relatedEntity
     ) {
         $label = $this->getLabel($tree, $withProductCount, $includeSub, $relatedEntity);
 
