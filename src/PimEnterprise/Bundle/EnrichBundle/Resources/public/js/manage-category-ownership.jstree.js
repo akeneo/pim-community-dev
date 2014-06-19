@@ -141,7 +141,7 @@ define(
             $.get(treeUrl, function(trees) {
                 _.each(trees, function(tree) {
                     $list.append($('<li>', {'class': tree.selected ? 'active' : ''}).html(
-                        $('<a>', {'data-toggle': 'tab', id: 'tree-link-' + tree.id }).text(tree.label))
+                        $('<a>', {'href': 'javascript:void(0);', 'data-toggle': 'tab', id: 'tree-link-' + tree.id }).text(tree.label))
                     );
                     $trees.append(
                         $('<div>', {'class': 'tree buffer-small-left', 'data-tree-id': tree.id }).append(
