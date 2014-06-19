@@ -19,3 +19,7 @@ attribute_groups:
         sort_order: 5
         labels:
             en_US: Media
+    other:
+        sort_order: 100
+        labels:
+            en_US: Other
