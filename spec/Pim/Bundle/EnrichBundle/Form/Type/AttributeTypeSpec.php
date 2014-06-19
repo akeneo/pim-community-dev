@@ -105,9 +105,9 @@ class AttributeTypeSpec extends ObjectBehavior
                 'entity',
                 [
                     'class'       => 'Pim\Bundle\CatalogBundle\Entity\AttributeGroup',
-                    'required'    => false,
+                    'required'    => true,
                     'multiple'    => false,
-                    'empty_value' => AttributeGroup::DEFAULT_GROUP_CODE,
+                    'empty_value' => 'Choose the attribute group',
                     'select2'     => true
                 ]
             )->shouldHaveBeenCalled();

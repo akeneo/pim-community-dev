@@ -4,6 +4,7 @@ attributes:
             en_US: SKU
             fr_FR: SKU
         type:  pim_catalog_identifier
+        group: other
         required:            true
         unique:              true
         useableAsGridColumn: true

@@ -38,7 +38,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -93,7 +93,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $nameAttr = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -111,7 +111,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $colorAttr = $this->getAttributeMock(
             array(
                 'id'           => 1337,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
@@ -175,7 +175,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -247,7 +247,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'            => 42,
-                'virtualGroup'  => $group,
+                'group'         => $group,
                 'code'          => 'price',
                 'label'         => 'Price',
                 'sortOrder'     => 0,
@@ -312,7 +312,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $nameAttr = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 10,
@@ -329,7 +329,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $colorAttr = $this->getAttributeMock(
             array(
                 'id'           => 1337,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
@@ -346,7 +346,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $priceAttr = $this->getAttributeMock(
             array(
                 'id'           => 14,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'price',
                 'label'        => 'Price',
                 'sortOrder'    => 20,
@@ -363,7 +363,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $releaseAttr = $this->getAttributeMock(
             array(
                 'id'           => 1987,
-                'virtualGroup' => $otherGroup,
+                'group'        => $otherGroup,
                 'code'         => 'release_date',
                 'label'        => 'Release date',
                 'sortOrder'    => 20,
@@ -380,7 +380,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $weightAttr = $this->getAttributeMock(
             array(
                 'id'           => 73,
-                'virtualGroup' => $otherGroup,
+                'group'        => $otherGroup,
                 'code'         => 'weight',
                 'label'        => 'Weight',
                 'sortOrder'    => 10,
@@ -423,7 +423,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -532,7 +532,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $options = array_merge(
             array(
                 'id'            => null,
-                'virtualGroup'  => null,
+                'group'         => null,
                 'code'          => null,
                 'label'         => null,
                 'sortOrder'     => null,
@@ -549,8 +549,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($options['id']));
 
         $attribute->expects($this->any())
-            ->method('getVirtualGroup')
-            ->will($this->returnValue($options['virtualGroup']));
+            ->method('getGroup')
+            ->will($this->returnValue($options['group']));
 
         $attribute->expects($this->any())
             ->method('getCode')

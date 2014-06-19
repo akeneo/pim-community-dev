@@ -11,7 +11,9 @@ Feature: Display the attribute history
   Scenario: Succesfully edit a attribute and see the history
     Given I am on the attributes page
     And I create a "Simple select" attribute
-    And I change the Code to "packaging"
+    Given I fill in the following information:
+      | Code              | packaging |
+      | Attribute group   | Other     |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code        | Selected by default |

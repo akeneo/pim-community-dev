@@ -103,7 +103,7 @@ class SetAttributeRequirements extends FamilyMassEditOperation
         $this->channels = $this->channelRepository->findAll();
 
         foreach ($this->attributeRepository->getNonIdentifierAttributes() as $attribute) {
-            $this->attributes[(string) $attribute->getVirtualGroup()][] = $attribute;
+            $this->attributes[(string) $attribute->getGroup()][] = $attribute;
 
             foreach ($this->channels as $channel) {
                 $this->addAttributeRequirement(
