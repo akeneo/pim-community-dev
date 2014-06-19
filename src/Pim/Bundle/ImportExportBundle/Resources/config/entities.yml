@@ -1,5 +1,5 @@
 parameters:
     akeneo_batch.entity.job_instance.class:  Akeneo\Bundle\BatchBundle\Entity\JobInstance
-    akeneo_batch.entity.job_execution.class: Akeneo\Bundle\BatchBundle\Entity\JobInstance
+    akeneo_batch.entity.job_execution.class: Akeneo\Bundle\BatchBundle\Entity\JobExecution
     akeneo_batch.job.batch_status.class:     Akeneo\Bundle\BatchBundle\Job\BatchStatus
     pim_import_export.entity.export.class:   Pim\Bundle\ImportExportBundle\Entity\Export
