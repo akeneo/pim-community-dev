@@ -32,7 +32,7 @@ define(
                         dataLocale:     dataLocale,
                         select_node_id: getActiveNode(true),
                         include_sub:    +includeSub,
-                        relatedEntity: relatedEntity
+                        related_entity: relatedEntity
                     }
                 );
             },
@@ -43,7 +43,7 @@ define(
                     {
                         _format:    'json',
                         dataLocale: dataLocale,
-                        relatedEntity: relatedEntity
+                        related_entity: relatedEntity
                     }
                 );
             },
