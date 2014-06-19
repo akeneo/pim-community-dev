@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
@@ -90,10 +89,10 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $gridViewRepository;
 
     /**
-     * @param ProductManager           $productManager
-     * @param RequestParameters        $requestParams
-     * @param UserContext              $userContext
-     * @param EntityRepository         $gridViewRepository
+     * @param ProductManager    $productManager
+     * @param RequestParameters $requestParams
+     * @param UserContext       $userContext
+     * @param EntityRepository  $gridViewRepository
      */
     public function __construct(
         ProductManager $productManager,
