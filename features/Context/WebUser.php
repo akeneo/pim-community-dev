@@ -385,7 +385,7 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getFixturesContext()->findAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getFixturesContext()->findAttributeGroup($group);
 
         if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -952,6 +952,30 @@ class WebUser extends RawMinkContext
     {
         $this->getCurrentPage()->pressButton($button);
         $this->wait();
+    }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I should see the "([^"]*)" button$/
+     */
+    public function iShouldSeeTheButton($button)
+    {
+        $this->getCurrentPage()->getButton($button);
+    }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I should not see the "([^"]*)" button$/
+     */
+    public function iShouldNotSeeTheButton($button)
+    {
+        if (null === $this->getCurrentPage()->getButton($button)) {
+            throw $this->createExpectationException(
+                sprintf('Button "%s" should not be displayed', $button)
+            );
+        }
     }
 
     /**

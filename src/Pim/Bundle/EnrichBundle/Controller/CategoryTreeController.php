@@ -126,6 +126,8 @@ class CategoryTreeController extends AbstractDoctrineController
             'trees'          => $this->categoryManager->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
+            'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
+            'related_entity' => $this->getRequest()->get('related_entity', 'product'),
         );
     }
 
@@ -177,6 +179,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
         $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
         $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
+        $relatedEntity     = $this->getRequest()->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -199,11 +202,12 @@ class CategoryTreeController extends AbstractDoctrineController
         return $this->render(
             $view,
             array(
-                'categories'    => $categories,
-                'parent'        => ($includeParent) ? $parent : null,
-                'include_sub'   => $includeSub,
-                'product_count' => $withProductsCount,
-                'select_node'   => $selectNode
+                'categories'     => $categories,
+                'parent'         => ($includeParent) ? $parent : null,
+                'include_sub'    => $includeSub,
+                'product_count'  => $withProductsCount,
+                'select_node'    => $selectNode,
+                'related_entity' => $relatedEntity
             ),
             new JsonResponse()
         );

@@ -17,8 +17,9 @@ Feature: Edit an identifier attribute
     Given I am on the attributes page
     When I create an "Identifier" attribute
     And I fill in the following information:
-      | Code           | mySecondId |
-      | Max characters | 100        |
+      | Code            | mySecondId |
+      | Max characters  | 100        |
+      | Attribute group | Other      |
     And I press the "Save" button
     And I visit the "Parameters" tab
     Then I should see validation error "An identifier attribute already exists."
@@ -34,6 +35,13 @@ Feature: Edit an identifier attribute
     And I should see history:
       | version | property       | value |
       | 2       | max_characters | 199   |
+
+  Scenario: Fail to edit a text attribute when the group is missing
+    Given I am on the "SKU" attribute page
+    And I fill in the following information:
+      | Attribute group |  |
+    And I save the attribute
+    Then I should see validation error "This value should not be blank."
 
   @javascript
   Scenario: Successfully display a dialog when we quit a page with unsaved changes

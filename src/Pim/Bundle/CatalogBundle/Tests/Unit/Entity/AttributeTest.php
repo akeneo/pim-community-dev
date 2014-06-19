@@ -115,21 +115,6 @@ class AttributeTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get virtual group
-     */
-    public function testGetVirtualGroup()
-    {
-        $this->attribute->getVirtualGroup()->setLocale('en_US');
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
-        $this->assertEquals('Other', $this->attribute->getVirtualGroup()->getLabel());
-
-        $attributeGroup = new AttributeGroup();
-        $this->assertEntity($this->attribute->setGroup($attributeGroup));
-        $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeGroup', $this->attribute->getVirtualGroup());
-        $this->assertEquals($attributeGroup, $this->attribute->getGroup());
-    }
-
-    /**
      * Test getter/setter for group property
      *
      * TODO : Test with null

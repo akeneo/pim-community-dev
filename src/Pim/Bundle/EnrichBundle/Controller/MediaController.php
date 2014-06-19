@@ -27,6 +27,7 @@ class MediaController
         'gif' => 'image/gif',
         'png' => 'image/png',
         'txt' => 'text/plain',
+        'pdf' => 'application/pdf',
     ];
 
     /** @var ImagineInterface */

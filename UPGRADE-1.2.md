@@ -33,6 +33,7 @@ MongoDB implementation
 ----------------------
 
 We removed null values from normalizedData field to avoid storing useless values
+The normalized media now contains originalFilename
 
 DataGridBundle
 --------------
@@ -44,3 +45,18 @@ OroSegmentationTreeBundle
 
 The bundle has been removed from Oro Platform, entities extending AbstractSegment should implement the desired
 methods themselves and repositories extending SegmentRepository should extend Gedmo\Tree\Entity\Repository\NestedTreeRepository
+
+EnrichBundle
+--------------
+The virtual attribute group `Other` has been deleted. The attribute group is now a mandatory parameter for creating of editing
+an attribute group. This means you now have to set an attribute group for all the orphans attributes. This can be done
+thanks to the following queries :
+
+```
+    INSERT INTO `pim_catalog_attribute_group` (`code`, `sort_order`, `created`, `updated`)
+    VALUES ('other', 100, NOW(), NOW());
+
+    UPDATE `pim_catalog_attribute` a
+    SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
+    WHERE a.`group_id` IS NULL
+```

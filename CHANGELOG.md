@@ -21,6 +21,8 @@
 - Change "launch" button by "view" on job profile datagrids
 - Create a `JobInstanceRepository`
 - Creation of indexes for MongoDB
+- Dispatch event before rendering the product edit template
+- Fixed asymetric enable product button
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -32,6 +34,7 @@
 - Fixed a memory leak on product import when using MongoDB
 - Fixed a bug with image upload on product with a "\" or "/" in their sku
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
+- Fixed a bug when display image thumbnail in the product grid with MongoDB support
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -185,6 +188,9 @@
 - Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
 - Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
 - Renamed service writer ids `pim_base_connector.writer.orm.*` -> `pim_base_connector.writer.doctrine.*`
+- Replace `@security.context` by `@pim_user.context.user` in `ContextConfigurator`
+- Delete the attribute virtual group and the `getVirtualGroup` method of the class `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
+- Render the attribute group mandatory for the creation and the edition of an attribute
 
 # 1.0.2
 ## Bug Fixes

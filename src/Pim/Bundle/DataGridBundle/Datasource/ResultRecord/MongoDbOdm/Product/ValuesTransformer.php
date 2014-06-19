@@ -36,6 +36,7 @@ class ValuesTransformer
                     $result[$attributeCode] = $value;
                     $result[$attributeCode] = $optionsTransformer->transform($result, $attribute, $locale, $scope);
                     $result[$attributeCode] = $this->prepareDateData($result, $attribute);
+                    $result[$attributeCode] = $this->prepareMediaData($result, $attribute);
                 }
             }
 
@@ -61,6 +62,25 @@ class ValuesTransformer
         if ($attribute['attributeType'] === 'pim_catalog_date' && isset($value[$backendType])) {
             $mongoDate = $value[$backendType];
             $value[$backendType] = $dateTransformer->transform($mongoDate);
+        }
+
+        return $value;
+    }
+
+    /**
+     * @param array $result
+     * @param array $attribute
+     *
+     * @return array
+     */
+    protected function prepareMediaData(array $result, array $attribute)
+    {
+        $attributeCode = $attribute['code'];
+        $backendType = $attribute['backendType'];
+        $value = $result[$attributeCode];
+        if ($attribute['attributeType'] === 'pim_catalog_image' && isset($value[$backendType])) {
+            $normalizedData = $result['normalizedData'];
+            $value[$backendType] = $normalizedData[$attributeCode];
         }
 
         return $value;

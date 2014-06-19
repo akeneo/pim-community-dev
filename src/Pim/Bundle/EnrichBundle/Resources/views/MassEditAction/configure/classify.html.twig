@@ -60,7 +60,7 @@
                 {% endif %}
                 <div id="trees" data-selected-tree="{{ selectedTree }}">
                     {% for tree in trees %}
-                        <div class="tree" data-tree-id="{{ tree.id }}">
+                        <div class="tree root-unselectable" data-tree-id="{{ tree.id }}">
                             <h3>{{ tree.label }}</h3>
                             <div id="tree-{{ tree.id }}"></div>
                         </div>

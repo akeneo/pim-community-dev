@@ -5,8 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem;
+use Gedmo\Sluggable\Util\Urlizer;
 use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -134,6 +137,25 @@ class MediaManager
         }
 
         return $target . '/' . $media->getOriginalFilename();
+    }
+
+    /**
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
+     *
+     * @return string
+     */
+    public function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
+    {
+        return sprintf(
+            '%s-%s-%s-%s-%s-%s',
+            $product->getId(),
+            Urlizer::urlize($product->getIdentifier(), '_'),
+            $value->getAttribute()->getCode(),
+            $value->getLocale(),
+            $value->getScope(),
+            time()
+        );
     }
 
     /**

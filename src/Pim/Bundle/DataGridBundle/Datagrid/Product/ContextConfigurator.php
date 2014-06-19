@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Doctrine\ORM\EntityRepository;
 
@@ -74,9 +74,9 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $requestParams;
 
     /**
-     * @var SecurityContextInterface
+     * @var UserContext
      */
-    protected $securityContext;
+    protected $userContext;
 
     /**
      * @var Request
@@ -89,20 +89,20 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $gridViewRepository;
 
     /**
-     * @param ProductManager           $productManager
-     * @param RequestParameters        $requestParams
-     * @param SecurityContextInterface $securityContext
-     * @param EntityRepository         $gridViewRepository
+     * @param ProductManager    $productManager
+     * @param RequestParameters $requestParams
+     * @param UserContext       $userContext
+     * @param EntityRepository  $gridViewRepository
      */
     public function __construct(
         ProductManager $productManager,
         RequestParameters $requestParams,
-        SecurityContextInterface $securityContext,
+        UserContext $userContext,
         EntityRepository $gridViewRepository
     ) {
         $this->productManager     = $productManager;
         $this->requestParams      = $requestParams;
-        $this->securityContext    = $securityContext;
+        $this->userContext        = $userContext;
         $this->gridViewRepository = $gridViewRepository;
     }
 
@@ -300,7 +300,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if (!$dataLocale) {
             $dataLocale = $this->request->get('dataLocale', null);
         }
-        if (!$dataLocale && $locale = $this->getUser()->getCatalogLocale()) {
+        if (!$dataLocale && $locale = $this->userContext->getUser()->getCatalogLocale()) {
             $dataLocale = $locale->getCode();
         }
 
@@ -318,7 +318,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {
-            $channel = $this->getUser()->getCatalogScope();
+            $channel = $this->userContext->getUser()->getCatalogScope();
 
             return $channel->getCode();
         }
@@ -354,23 +354,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
         }
-    }
 
-    /**
-     * Get the user from the security context
-     *
-     * @return null|User
-     */
-    protected function getUser()
-    {
-        if (null === $token = $this->securityContext->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user;
+        return null;
     }
 }
