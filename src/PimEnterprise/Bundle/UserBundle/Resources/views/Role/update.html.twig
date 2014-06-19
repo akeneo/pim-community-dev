@@ -102,6 +102,35 @@
         )
     %}
 
+    {% set ownershipBlock %}
+        <script type="text/javascript">
+            require(
+                ['jquery', 'pimee/category-ownership'],
+                function ($, CategoryOwnership) {
+                    'use strict';
+                    $(function () {
+                        new CategoryOwnership(
+                            {{ entityId }},
+                            '#{{ form.ownership.appendCategories.vars.id }}',
+                            '#{{ form.ownership.removeCategories.vars.id }}',
+                            '{{ locale_code() }}'
+                        );
+                    });
+                }
+            );
+        </script>
+
+        <div class="tab-pane" id="product_ownership_rights">
+            <div id="trees-list" class="tab-groups">
+                <ul class="nav nav-list"></ul>
+            </div>
+            <div class="tab-content">
+                <div id="trees"></div>
+            </div>
+            {{ form_widget(form.ownership) }}
+        </div>
+    {% endset %}
+
     {% set dataBlocks = dataBlocks|merge(
         [{
             'title': 'pimee_enrich.acl.product_ownership.title',
@@ -109,7 +138,7 @@
                 {
                     'title': '',
                     'useSpan': false,
-                    'data': [ '<div id="product_ownership_rights"></div>' ]
+                    'data': [ownershipBlock]
                 }
             ]
         }]

@@ -1,0 +1,3 @@
+category_ownership:
+    resource: '@PimEnterpriseSecurityBundle/Resources/config/routing/category_ownership.yml'
+    prefix: /ownership

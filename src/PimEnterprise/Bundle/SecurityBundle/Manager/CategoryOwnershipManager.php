@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
@@ -61,6 +62,26 @@ class CategoryOwnershipManager
         if ($ownership) {
             $this->manager->remove($ownership);
         }
+    }
+
+    /**
+     * Get categories owned by a role
+     *
+     * @param Role $role
+     *
+     * @return ArrayCollection
+     */
+    public function getOwnedCategories(Role $role)
+    {
+        $ownerships = $this->getRepository()->findBy(['role' => $role]);
+
+        $categories = new ArrayCollection();
+
+        foreach ($ownerships as $ownership) {
+            $categories[] = $ownership->getCategory();
+        }
+
+        return $categories;
     }
 
     /**
