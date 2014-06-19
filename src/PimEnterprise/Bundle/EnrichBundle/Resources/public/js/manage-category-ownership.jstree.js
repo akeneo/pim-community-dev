@@ -71,26 +71,39 @@ define(
 
                 $tree.bind('check_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $(appendField).val();
-                        selected = selected.length > 0 ? selected.split(',') : [];
                         var id = d.rslt.obj[0].id.replace('node_', '');
-                        if ($.inArray(id, selected) < 0) {
-                            selected.push(id);
-                            selected = $.unique(selected);
-                            selected = selected.join(',');
-                            $(appendField).val(selected).trigger('change');
+                        var removed = $(removeField).val();
+                        removed = removed.length > 0 ? removed.split(',') : [];
+                        var appended = $(appendField).val();
+                        appended = appended.length > 0 ? appended.split(',') : [];
+
+                        if (-1 !== _.indexOf(removed, id)) {
+                            removed = _.uniq(_.without(removed, id)).join(',');
+                            $(removeField).val(removed).trigger('change');
+                        } else {
+                            appended.push(id);
+                            appended = _.uniq(appended).join(',');
+                            $(appendField).val(appended).trigger('change');
                         }
                     }
                 });
 
                 $tree.bind('uncheck_node.jstree', function (e, d) {
                     if (d.inst.get_checked()) {
-                        var selected = $(appendField).val();
-                        selected = selected.split(',');
                         var id = d.rslt.obj[0].id.replace('node_', '');
-                        selected.splice($.inArray(id, selected),1);
-                        selected = selected.join(',');
-                        $(appendField).val(selected).trigger('change');
+                        var removed = $(removeField).val();
+                        removed = removed.length > 0 ? removed.split(',') : [];
+                        var appended = $(appendField).val();
+                        appended = appended.length > 0 ? appended.split(',') : [];
+
+                        if (-1 !== _.indexOf(appended, id)) {
+                            appended = _.uniq(_.without(appended, id)).join(',');
+                            $(appendField).val(appended).trigger('change');
+                        } else {
+                            removed.push(id);
+                            removed = _.uniq(removed).join(',');
+                            $(removeField).val(removed).trigger('change');
+                        }
                     }
                 });
             };
