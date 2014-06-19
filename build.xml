@@ -206,7 +206,7 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="features" />
         </exec>
-        <!--
+
         <exec executable="${basedir}/app/Resources/jenkins/behat/run_behat.sh" failonerror="true">
             <arg value="${behat.concurrency}" />
             <arg value="${behat.xdebug}" />
@@ -217,7 +217,6 @@
             <env key="SYMFONY__DATABASE__PASSWORD" value="" />
             <env key="FEATURES_DIRECTORY" value="vendor/akeneo/pim-community-dev/features" />
         </exec>
-        -->
     </target>
 
     <target name="phpcb" description="Aggregate tool output with PHP_CodeBrowser">
