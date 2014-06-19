@@ -50,6 +50,7 @@ class CategoryExtension extends \Twig_Extension
      * @param integer $selectedTreeId
      * @param boolean $withProductCount
      * @param boolean $includeSub
+     * @param string  $relatedEntity
      *
      * @return array
      */
@@ -57,7 +58,8 @@ class CategoryExtension extends \Twig_Extension
         array $trees,
         $selectedTreeId = null,
         $withProductCount = true,
-        $includeSub = false
+        $includeSub = false,
+        $relatedEntity = 'product'
     ) {
         $return = array();
         foreach ($trees as $tree) {
@@ -75,6 +77,7 @@ class CategoryExtension extends \Twig_Extension
      * @param CategoryInterface $parent
      * @param boolean           $withProductCount
      * @param boolean           $includeSub
+     * @param string            $relatedEntity
      *
      * @return array
      */
@@ -83,7 +86,8 @@ class CategoryExtension extends \Twig_Extension
         CategoryInterface $selectedCategory = null,
         CategoryInterface $parent = null,
         $withProductCount = null,
-        $includeSub = false
+        $includeSub = false,
+        $relatedEntity = 'product'
     ) {
         $selectedIds = array($selectedCategory->getId());
         $result = $this->formatCategoriesFromArray($categories, $selectedIds, $withProductCount, $includeSub);
@@ -102,6 +106,7 @@ class CategoryExtension extends \Twig_Extension
      * @param CategoryInterface $parent
      * @param boolean           $withProductCount
      * @param boolean           $includeSub
+     * @param string            $relatedEntity
      *
      * @return array
      */
@@ -109,7 +114,8 @@ class CategoryExtension extends \Twig_Extension
         array $categories,
         CategoryInterface $parent = null,
         $withProductCount = false,
-        $includeSub = false
+        $includeSub = false,
+        $relatedEntity = 'product'
     ) {
         $result = $this->formatCategories($categories, array(), $withProductCount, $includeSub);
 
@@ -125,11 +131,15 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array      $categories
      * @param Collection $selectedCategories
+     * @param string     $relatedEntity
      *
      * @return array
      */
-    public function listCategoriesResponse(array $categories, Collection $selectedCategories)
-    {
+    public function listCategoriesResponse(
+        array $categories,
+        Collection $selectedCategories,
+        $relatedEntity = 'product'
+    ) {
         $selectedIds = array();
         foreach ($selectedCategories as $selectedCategory) {
             $selectedIds[] = $selectedCategory->getId();
