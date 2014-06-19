@@ -1,6 +1,7 @@
 parameters:
     pimee_security.repository.attribute_group_access.class: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
     pimee_security.repository.category_access.class:        PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository
+    pimee_security.repository.job_profile_access.class:     PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
 
 services:
     pimee_security.repository.attribute_group_access:
@@ -22,3 +23,11 @@ services:
             - { name: 'pim_repository' }
         calls:
             - [setTableNameBuilder, ['@pim_catalog.doctrine.table_name_builder']]
+
+    pimee_security.repository.job_profile_access:
+        class: %pimee_security.repository.job_profile_access.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%pimee_security.entity.job_profile_access.class%]
+        tags:
+            - { name: 'pim_repository' }
