@@ -71,6 +71,7 @@ class CategoryTreeController extends BaseCategoryTreeController
             'trees'          => $this->categoryManager->getAccessibleTrees($this->getUser()),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
+            'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
         );
     }
 }
