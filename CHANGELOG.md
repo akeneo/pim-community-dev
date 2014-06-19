@@ -20,6 +20,8 @@
 - Apply "Remove product" permission to hide mass delete and delete row action
 - Change "launch" button by "view" on job profile datagrids
 - Create a `JobInstanceRepository`
+- Dispatch event before rendering the product edit template
+- Fixed asymetric enable product button
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
