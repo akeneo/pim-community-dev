@@ -142,7 +142,8 @@ class IndexPurger
         $matchingIndexes = [];
 
         foreach ($indexes as $index) {
-            $key = reset(array_keys($index['key']));
+            $indexKeys = array_keys($index['key']);
+            $key = reset($indexKeys);
             if (0 !== preg_match($pattern, $key)) {
                 $matchingIndexes[] = $key;
             }
