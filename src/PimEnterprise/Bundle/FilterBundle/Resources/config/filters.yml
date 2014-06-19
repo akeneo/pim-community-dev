@@ -9,3 +9,12 @@ services:
             - '@pimee_filter.proposition_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: proposition_choice }
+
+    pimee_filter.published_product_category_filter:
+        class: %pim_filter.product_category_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@pimee_workflow.manager.published_product_category'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }
