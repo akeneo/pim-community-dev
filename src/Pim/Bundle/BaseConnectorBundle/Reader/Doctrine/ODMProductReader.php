@@ -128,6 +128,10 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
             $this->products->next();
         }
 
+        if ($result) {
+            $this->metricConverter->convert($result, $this->channel);
+        }
+
         return $result;
     }
 

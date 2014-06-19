@@ -155,6 +155,10 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
+        if ($product) {
+            $this->metricConverter->convert($product, $this->channel);
+        }
+
         return $product;
     }
 
