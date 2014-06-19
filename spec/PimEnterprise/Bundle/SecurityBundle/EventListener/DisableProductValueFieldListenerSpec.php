@@ -42,7 +42,7 @@ class DisableProductValueFieldListenerSpec extends ObjectBehavior
         $event->getFormOptions()->willReturn([]);
         $event->getContext()->willReturn(['root_form_name' => 'pim_catalog_edit']);
         $value->getAttribute()->willReturn($sku);
-        $sku->getVirtualGroup()->willReturn($group);
+        $sku->getGroup()->willReturn($group);
 
         $context->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $group)->willReturn(false);
         $event->updateFormOptions(['disabled' => true, 'read_only' => true])->shouldBeCalled();
@@ -61,7 +61,7 @@ class DisableProductValueFieldListenerSpec extends ObjectBehavior
         $event->getFormOptions()->willReturn([]);
         $event->getContext()->willReturn(['root_form_name' => 'pim_catalog_create']);
         $value->getAttribute()->willReturn($sku);
-        $sku->getVirtualGroup()->willReturn($group);
+        $sku->getGroup()->willReturn($group);
 
         $event->updateFormOptions(['disabled' => true, 'read_only' => true])->shouldNotBeCalled();
 

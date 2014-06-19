@@ -2,6 +2,7 @@ parameters:
     pimee_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
     pimee_enrich.form.subscriber.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupPermissionsSubscriber
     pimee_enrich.form.subscriber.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
+    pim_enrich.twig.category_extension.class:                PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
 
 services:
     pimee_enrich.twig.version_extension:
@@ -26,3 +27,11 @@ services:
           - '@oro_datagrid.datagrid.request_params'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.propositions-grid, method: onBuildAfter }
+
+    pim_enrich.twig.category_extension:
+        class: %pim_enrich.twig.category_extension.class%
+        arguments:
+            - '@pim_catalog.manager.product_category'
+            - '@pimee_workflow.manager.published_product_category'
+        tags:
+            - { name: twig.extension }

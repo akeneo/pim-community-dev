@@ -47,7 +47,7 @@
     {{ elements.page_header(title, [], subtitle) }}
 
     <div class="row-fluid has-sidebar">
-        <div id="tree" data-datalocale="{{ dataLocale }}"></div>
+        <div id="tree" data-datalocale="{{ dataLocale }}" data-relatedentity="publishedproduct"></div>
         <div id="publishedproduct-grid">
             {{ dataGrid.renderStatefulGrid('publishedproduct-grid', { dataLocale: dataLocale }) }}
         </div>
