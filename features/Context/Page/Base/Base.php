@@ -158,11 +158,11 @@ class Base extends Page
 
         if (!$button) {
             $button =  $this->find(
-                    'named',
-                    array(
-                            'link',
-                            $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                    )
+                'named',
+                array(
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                )
             );
         }
 
