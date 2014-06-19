@@ -131,7 +131,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     /**
      * Get query to execute
      *
-     * @return Doctrine\ORM\AbstractQuery
+     * @return AbstractQuery
      */
     public function getQuery()
     {
@@ -238,7 +238,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     /**
      * Get next products batch from DB
      *
-     * @return ArrayIterator
+     * @return \ArrayIterator
      */
     protected function getNextProducts()
     {
