@@ -32,7 +32,8 @@ class AttributeGroupManager
      * @param ObjectManager             $objectManager   Object manager
      * @param AttributeGroupRepository  $repository      Repository
      */
-    public function __construct(ObjectManager $objectManager, AttributeGroupRepository $repository) {
+    public function __construct(ObjectManager $objectManager, AttributeGroupRepository $repository)
+    {
         $this->repository = $repository;
         $this->objectManager = $objectManager;
     }

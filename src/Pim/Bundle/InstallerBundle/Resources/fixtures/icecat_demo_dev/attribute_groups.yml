@@ -49,7 +49,7 @@ attribute_groups:
             de_DE: Media
 
     other:
-        sort_order: 8
+        sort_order: 100
         labels:
             en_US: Other
             fr_FR: Autre

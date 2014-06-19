@@ -20,6 +20,6 @@ attribute_groups:
         labels:
             en_US: Media
     other:
-        sort_order: 6
+        sort_order: 100
         labels:
             en_US: Other
