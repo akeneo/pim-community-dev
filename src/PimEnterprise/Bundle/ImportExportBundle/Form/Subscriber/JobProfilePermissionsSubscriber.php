@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -19,17 +19,17 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
-    /** @var SecurityFacade */
-    protected $securityFacade;
+    /** @var SecurityContextInterface */
+    protected $securityContext;
 
     /**
-     * @param JobProfileAccessManager $accessManager
-     * @param SecurityFacade          $securityFacade
+     * @param JobProfileAccessManager  $accessManager
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(JobProfileAccessManager $accessManager, SecurityFacade $securityFacade)
+    public function __construct(JobProfileAccessManager $accessManager, SecurityContextInterface $securityContext)
     {
-        $this->accessManager  = $accessManager;
-        $this->securityFacade = $securityFacade;
+        $this->accessManager   = $accessManager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -87,7 +87,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $data->getType());
 
-        if ($form->isValid() && $this->securityFacade->isGranted($resource)) {
+        if ($form->isValid() && $this->securityContext->isGranted($resource)) {
             $executeRoles = $form->get('permissions')->get('execute')->getData();
             $editRoles    = $form->get('permissions')->get('edit')->getData();
 
