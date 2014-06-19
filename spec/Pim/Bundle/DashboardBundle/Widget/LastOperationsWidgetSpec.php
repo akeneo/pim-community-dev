@@ -4,15 +4,13 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {
-    function let(SecurityFacade $securityFacade, JobExecutionManager $repository)
+    function let(JobExecutionManager $manager)
     {
-        $securityFacade->isGranted(Argument::any())->willReturn(true);
-        $this->beConstructedWith($securityFacade, $repository);
+        $this->beConstructedWith($manager);
     }
 
     function it_is_a_widget()
