@@ -37,6 +37,7 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
             - '@pimee_workflow.repository.proposition'
+            - '@event_dispatcher'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%

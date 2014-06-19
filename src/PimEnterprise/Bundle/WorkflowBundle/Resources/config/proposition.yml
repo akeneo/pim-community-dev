@@ -3,7 +3,7 @@ parameters:
     pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
     pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
     pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
-    pimee_workflow.product_changes_applier.submit_proposition_form.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\SubmitPropositionFormSubscriber
+    pimee_workflow.product_changes_applier.update_proposition_status.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\UpdatePropositionStatusSubscriber
     pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
     pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
@@ -36,12 +36,13 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_workflow.product_changes_applier.submit_proposition_form:
-        scope: request
-        class: %pimee_workflow.product_changes_applier.submit_proposition_form.class%
+    pimee_workflow.product_changes_applier.update_proposition_status:
+        class: %pimee_workflow.product_changes_applier.update_proposition_status.class%
         arguments:
             - '@form.factory'
-            - '@request'
+            # We need to have access to the request but scoping this service to "request"
+            # raises exception
+            - '@service_container'
         tags:
             - { name: kernel.event_subscriber }
 
