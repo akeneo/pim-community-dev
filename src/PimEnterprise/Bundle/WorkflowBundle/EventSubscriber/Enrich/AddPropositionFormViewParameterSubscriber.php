@@ -16,6 +16,10 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
  */
 class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterface
 {
+    /** @var FormFactoryInterface */
+    protected $formFactory;
+
+    /** @var PropositionManager */
     protected $manager;
 
     public function __construct(
@@ -26,6 +30,9 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
         $this->manager = $manager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -33,6 +40,11 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
         ];
     }
 
+    /**
+     * Add a proposition form view parameter to the template parameters
+     *
+     * @param GenericEvent $event
+     */
     public function addPropositionFormView(GenericEvent $event)
     {
         try {
