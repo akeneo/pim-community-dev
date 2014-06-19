@@ -91,12 +91,21 @@ class CategoryExtension extends \Twig_Extension
     ) {
         $selectedIds = array($selectedCategory->getId());
         $result = $this->formatCategoriesFromArray(
-            $categories, $selectedIds, $withProductCount, $includeSub, $relatedEntity
+            $categories,
+            $selectedIds,
+            $withProductCount,
+            $includeSub,
+            $relatedEntity
         );
 
         if ($parent !== null) {
             $result = $this->formatCategory(
-                $parent, $selectedIds, $withProductCount, $includeSub, $result, $relatedEntity
+                $parent,
+                $selectedIds,
+                $withProductCount,
+                $includeSub,
+                $result,
+                $relatedEntity
             );
         }
 
@@ -181,7 +190,11 @@ class CategoryExtension extends \Twig_Extension
         $result = array();
         foreach ($categories as $category) {
             $result[] = $this->formatCategoryFromArray(
-                $category, $selectedIds, $withProductCount, $includeSub, $relatedEntity
+                $category,
+                $selectedIds,
+                $withProductCount,
+                $includeSub,
+                $relatedEntity
             );
         }
 
@@ -225,7 +238,11 @@ class CategoryExtension extends \Twig_Extension
             'data'     => $label,
             'state'    => $state,
             'children' => $this->formatCategoriesFromArray(
-                $category['__children'], $selectedIds, $withProductCount, $includeSub, $relatedEntity
+                $category['__children'],
+                $selectedIds,
+                $withProductCount,
+                $includeSub,
+                $relatedEntity
             )
         );
     }
@@ -399,8 +416,12 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return string
      */
-    protected function getLabel(CategoryInterface $category, $withCount = false, $includeSub = false, $relatedEntity)
-    {
+    protected function getLabel(
+        CategoryInterface $category,
+        $withCount = false,
+        $includeSub = false,
+        $relatedEntity = 'product'
+    ) {
         $label = $category->getLabel();
         if ($withCount) {
             $label = $label .' ('. $this->countProducts($category, $includeSub, $relatedEntity) .')';
