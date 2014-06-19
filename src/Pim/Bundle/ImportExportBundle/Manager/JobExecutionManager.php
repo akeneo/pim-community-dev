@@ -14,16 +14,19 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
  */
 class JobExecutionManager
 {
+    /** @var JobExecutionRepository */
+    protected $repository;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * Constructor
      *
      * @param JobExecutionRepository $repository
      * @param SecurityFacade         $securityFacade
      */
-    public function __construct(
-        JobExecutionRepository $repository,
-        SecurityFacade $securityFacade
-    ) {
+    public function __construct(JobExecutionRepository $repository, SecurityFacade $securityFacade) {
         $this->repository     = $repository;
         $this->securityFacade = $securityFacade;
     }
