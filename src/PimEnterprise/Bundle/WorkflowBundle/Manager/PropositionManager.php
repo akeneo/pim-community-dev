@@ -72,9 +72,9 @@ class PropositionManager
 
         $this->applier->apply($product, $proposition);
 
+        $this->remove($proposition);
         $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_proposition' => true]);
-        $this->remove($proposition);
     }
 
     /**
@@ -95,9 +95,9 @@ class PropositionManager
      */
     public function remove(Proposition $proposition)
     {
-        $propositionManager = $this->registry->getManagerForClass(get_class($proposition));
-        $propositionManager->remove($proposition);
-        $propositionManager->flush();
+        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager->remove($proposition);
+        $manager->flush();
     }
 
     /**
