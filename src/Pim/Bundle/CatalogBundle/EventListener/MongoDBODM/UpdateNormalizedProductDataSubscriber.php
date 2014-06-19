@@ -27,36 +27,37 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     protected $productClass;
 
     /** @var string */
-    protected $entityMapping = [
-        'Pim\Bundle\CatalogBundle\Model\AbstractAttribute' => 'Attribute',
-        'Pim\Bundle\CatalogBundle\Entity\Family'           => 'Family',
-        'Pim\Bundle\CatalogBundle\Entity\Channel'          => 'Channel',
-    ];
+    protected $familyClass;
+
+    /** @var string */
+    protected $familyTranslationClass;
 
     /**
-     * Ids of documents to update
+     * Scheduled queries to apply
      *
      * @var string[]
      */
-    protected $pendingProducts = array();
-
-    /**
-     * Ids of updated documents
-     *
-     * @var string[]
-     */
-    protected $updatedProducts = array();
+    protected $scheduledQueries = [];
 
     /**
      * @param ManagerRegistry     $registry
      * @param NormalizerInterface $normalizer
      * @param string              $productClass
+     * @param string              $familyClass
+     * @param string              $familyTranslationClass
      */
-    public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer, $productClass)
-    {
-        $this->registry     = $registry;
-        $this->normalizer   = $normalizer;
-        $this->productClass = $productClass;
+    public function __construct(
+        ManagerRegistry $registry,
+        NormalizerInterface $normalizer,
+        $productClass,
+        $familyClass,
+        $familyTranslationClass
+    ) {
+        $this->registry               = $registry;
+        $this->normalizer             = $normalizer;
+        $this->productClass           = $productClass;
+        $this->familyClass            = $familyClass;
+        $this->familyTranslationClass = $familyTranslationClass;
     }
 
     /**
@@ -75,19 +76,19 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $uow = $args->getEntityManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueries($entity, $uow->getEntityChangeSet($entity));
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueries($entity, $uow->getEntityChangeSet($entity));
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueries($entity, $uow->getEntityChangeSet($entity));
         }
 
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueries($entity, $uow->getEntityChangeSet($entity));
         }
     }
 
@@ -96,7 +97,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $this->processPendingProducts();
+        $this->executeQueries();
     }
 
     /**
@@ -104,44 +105,85 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function scheduleRelatedProducts($entity)
+    protected function scheduleQueries($entity, array $changes)
     {
-        $productIds = $this->getRelatedProductIds($entity);
-        foreach ($productIds as $id) {
-            if (!in_array($id, $this->pendingProducts) && !in_array($id, $this->updatedProducts)) {
-                $this->pendingProducts[] = $id;
+        foreach ($changes as $field => $values) {
+            list($oldValue, $newValue) = $values;
+
+            $query = $this->generateQuery($entity, $field, $oldValue, $newValue);
+
+            if (null !== $query) {
+                $this->scheduledQueries[] = $this->generateQuery($entity, $field, $oldValue, $newValue);
             }
         }
     }
 
-    /**
-     * Find ids of products related to the entity
-     *
-     * @param object $entity
-     *
-     * @return array
-     */
-    protected function getRelatedProductIds($entity)
+    protected function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $repository = $this->registry->getRepository($this->productClass);
+        $generator = $this->getGenerator($entity, $field);
 
-        foreach ($this->entityMapping as $class => $name) {
-            if ($entity instanceof $class) {
-                $method = sprintf('findAllIdsFor%s', $name);
+        if (null !== $generator) {
+            return $generator($entity, $field, $oldValue, $newValue);
+        } else {
+            return null;
+        }
+    }
 
-                if (method_exists($repository, $method)) {
-                    return $repository->$method($entity);
+    protected function getGenerator($entity, $field) {
+        foreach ($this->getQueriesGenerators() as $queriesGenerator) {
+            if ($entity instanceof $queriesGenerator['class'] &&
+                $field === $queriesGenerator['field']) {
+                return $queriesGenerator['generator'];
+            }
+        }
+
+        return null;
+    }
+
+    protected function getQueriesGenerators()
+    {
+        return [
+            [
+                'class'     => $this->familyClass,
+                'field'     => 'attributeAsLabel',
+                'generator' => function($entity, $field, $oldValue, $newValue) {
+                    return [
+                        [
+                            'family' => $entity->getId()
+                        ],
+                        [
+                            'normalizedData.family.attributeAsLabel' => (string) $newValue
+                        ],
+                        [
+                            'multi' => true
+                        ]
+                    ];
                 }
-            }
-        }
-
-        return [];
+            ],
+            [
+                'class'     => $this->familyTranslationClass,
+                'field'     => 'label',
+                'generator' => function($entity, $field, $oldValue, $newValue) {
+                    return [
+                        [
+                            'family' => $entity->getId()
+                        ],
+                        [
+                            'normalizedData.family.label.' . $entity->getLocale() => (string) $newValue
+                        ],
+                        [
+                            'multi' => true
+                        ]
+                    ];
+                }
+            ]
+        ];
     }
 
     /**
-     * Process products that are scheduled for normalized data recalculation
+     *
      */
-    protected function processPendingProducts()
+    protected function executeQueries()
     {
         $manager = $this->registry->getManagerForClass($this->productClass);
 

@@ -177,6 +177,8 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_serializer'
             - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.family.class%
+            - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
