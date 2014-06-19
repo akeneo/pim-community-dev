@@ -105,8 +105,8 @@
                             {% if form.vars.value.file is not null %}
                                 {# The Media object has an UploadedFile #}
                                 {% set empty = false %}
-                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'image_preview' }) }}" title="{{ form.vars.value.file.clientOriginalName }}" rel="slimbox">
-                                    <img src="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename, 'filter': 'thumbnail_small' }) }}">
+                                <a class="no-hash upload-preview" href="{{ path('pim_enrich_media_show', { 'filename': form.vars.value.file.filename}) }}" target="_blank" title="{{ form.vars.value.file.clientOriginalName }}">
+                                    <i class="icon-file upload-preview"></i>
                                 </a>
                                 {% set filename = form.vars.value.file.clientOriginalName %}
                                 {% if filename|length > 20 %}
