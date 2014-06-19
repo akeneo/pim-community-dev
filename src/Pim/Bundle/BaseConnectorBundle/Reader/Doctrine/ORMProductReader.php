@@ -216,6 +216,9 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         if (!is_object($this->channel)) {
             $this->channel = $this->channelManager->getChannelByCode($this->channel);
         }
+
+        $this->completenessManager->generateMissingForChannel($this->channel);
+
         $this->query = $this->repository
             ->buildByChannelAndCompleteness($this->channel);
 
