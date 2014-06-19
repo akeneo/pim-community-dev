@@ -16,7 +16,7 @@ services:
         class: %pimee_import_export.form.subscriber.job_profile_permissions.class%
         arguments:
             - '@pimee_security.manager.job_profile_access'
-            - '@oro_security.security_facade'
+            - '@security.context'
 
     pimee_import_export.form.subscriber.job_profile_permissions:
         class: %pimee_import_export.form.type.job_profile_permissions.class%

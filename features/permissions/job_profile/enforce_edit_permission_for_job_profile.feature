@@ -26,3 +26,6 @@ Feature: Define permissions for a job profile
     And I save the role
     Then I am on the "footwear_product_import" import job page
     And I should not see the "Edit" button
+    And I am on the "Administrator" role page
+    And I grant rights to Manage import profile permissions
+    And I save the role
