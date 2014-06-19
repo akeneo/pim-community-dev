@@ -391,7 +391,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
         ];
 
         foreach ($fields as $field) {
-            $this->collection->ensureIndex(
+            $collection->ensureIndex(
                 [ $field => 1 ],
                 $indexOptions
             );
@@ -592,7 +592,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
     {
         $collection = $this->getCollection();
 
-        $indexes = $this->collection->getIndexInfo();
+        $indexes = $collection->getIndexInfo();
         $matchingIndexes = [];
 
         foreach ($indexes as $index) {
@@ -615,7 +615,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
         $collection = $this->getCollection();
 
         foreach ($indexes as $key) {
-            $this->collection->deleteIndex($key);
+            $collection->deleteIndex($key);
         }
     }
 }
