@@ -5,11 +5,11 @@ namespace spec\Pim\Bundle\DashboardBundle\Widget;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 
 class LastOperationsWidgetSpec extends ObjectBehavior
 {
-    function let(SecurityFacade $securityFacade, WidgetRepository $repository)
+    function let(SecurityFacade $securityFacade, JobExecutionRepository $repository)
     {
         $securityFacade->isGranted(Argument::any())->willReturn(true);
         $this->beConstructedWith($securityFacade, $repository);
