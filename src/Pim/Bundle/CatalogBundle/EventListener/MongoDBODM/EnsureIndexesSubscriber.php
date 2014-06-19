@@ -10,6 +10,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger;
 
 /**
  * Makes sure that the right indexes are set on MongoDB.
@@ -34,8 +36,8 @@ class EnsureIndexesSubscriber implements EventSubscriber
      */
     public function __construct(IndexCreator $indexCreator, IndexPurger $indexPurger)
     {
-        $this->indexCreator = $this->indexCreator;
-        $this->indexPurger  = $this->indexPurger;
+        $this->indexCreator = $indexCreator;
+        $this->indexPurger  = $indexPurger;
     }
 
     /**
@@ -98,7 +100,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
             if (true === $entity->isActivated()) {
                 $this->indexCreator->ensureIndexesFromLocale($entity);
             } else {
-                $this->indexCreator->purgeIndexesFromLocale($entity);
+                $this->indexPurger->purgeIndexesFromLocale($entity);
             }
         }
 
@@ -106,7 +108,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
             if (true === $entity->isActivated()) {
                 $this->indexCreator->ensureIndexesFromCurrency($entity);
             } else {
-                $this->indexCreator->purgeIndexesFromCurrency($entity);
+                $this->indexPurger->purgeIndexesFromCurrency($entity);
             }
         }
     }
