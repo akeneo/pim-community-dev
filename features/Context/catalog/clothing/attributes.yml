@@ -78,6 +78,7 @@ attributes:
         labels:
             en_US: Comment
         type:  pim_catalog_text
+        group: other
         useableAsGridColumn: false
         useableAsGridFilter: true
         maxCharacters:       255
