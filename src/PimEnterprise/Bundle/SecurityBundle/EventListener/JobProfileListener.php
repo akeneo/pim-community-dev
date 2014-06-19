@@ -36,8 +36,8 @@ class JobProfileListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::PRE_EDIT_JOB_PROFILE => ['checkEditPermission'],
-            JobEvents::PRE_EXECUTE_JOB_PROFILE => ['checkExecutePermission']
+            JobEvents::PRE_EDIT_JOB_PROFILE => 'checkEditPermission',
+            JobEvents::PRE_EXECUTE_JOB_PROFILE => 'checkExecutePermission'
         ];
     }
 
