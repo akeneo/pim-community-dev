@@ -2,9 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as PimCategoryExtension;
-
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
