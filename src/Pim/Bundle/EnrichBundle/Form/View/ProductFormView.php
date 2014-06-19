@@ -44,7 +44,7 @@ class ProductFormView implements ProductFormViewInterface
     public function addChildren(ProductValueInterface $value, FormView $view)
     {
         $attribute = $value->getAttribute();
-        $group = $attribute->getVirtualGroup();
+        $group = $attribute->getGroup();
 
         if (!$this->hasGroup($group)) {
             $this->initializeGroup($group);
@@ -115,7 +115,7 @@ class ProductFormView implements ProductFormViewInterface
     {
         $attribute     = $value->getAttribute();
         $attributeView = $this->prepareAttributeView($attribute, $value, $view);
-        $group         = $attribute->getVirtualGroup();
+        $group         = $attribute->getGroup();
 
         $attributeKey = $attribute->getCode();
         if ($value->getLocale()) {
@@ -171,7 +171,7 @@ class ProductFormView implements ProductFormViewInterface
      */
     protected function getAttributeValues(AbstractAttribute $attribute, $locale)
     {
-        $group = $attribute->getVirtualGroup();
+        $group = $attribute->getGroup();
         $key = $attribute->getCode();
         if ($locale) {
             $key .= '_' . $locale;

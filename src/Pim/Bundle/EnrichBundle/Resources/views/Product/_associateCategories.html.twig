@@ -46,7 +46,7 @@
     {% endif %}
     <div id="trees" data-id="{{ product.id }}" data-datalocale="{{ dataLocale }}" data-selected-tree="{{ selectedTree }}">
         {% for tree in trees %}
-            <div class="tree" data-tree-id="{{ tree['tree'].id }}">
+            <div class="tree root-unselectable" data-tree-id="{{ tree['tree'].id }}">
                 <h3>{{ tree['tree'].label }}</h3>
                 <div id="tree-{{ tree['tree'].id }}" class="buffer-small-left"></div>
             </div>

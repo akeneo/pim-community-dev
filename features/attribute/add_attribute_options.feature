@@ -29,14 +29,16 @@ Feature: Add attribute options
   Scenario: Fail to create a select attribute with an empty option
     Given I create a "Simple select" attribute
     And I fill in the following information:
-      | Code | color |
+      | Code            | color |
+      | Attribute group | Other |
     And I save the attribute
     Then I should see "Code must be specified for all options"
 
   Scenario: Successfully create a select attribute with some options
     Given I create a "Simple select" attribute
     And I fill in the following information:
-      | Code | color |
+      | Code            | color |
+      | Attribute group | Other |
     And I visit the "Values" tab
     And I check the "Automatic option sorting" switch
     And I create the following attribute options:
@@ -51,7 +53,8 @@ Feature: Add attribute options
   Scenario: Remove some options
     Given I create a "Simple select" attribute
     And I fill in the following information:
-      | Code | size |
+      | Code            | size  |
+      | Attribute group | Other |
     And I visit the "Values" tab
     And I create the following attribute options:
       | Code | Selected by default |

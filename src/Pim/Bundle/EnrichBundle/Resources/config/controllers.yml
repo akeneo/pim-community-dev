@@ -41,6 +41,7 @@ services:
         arguments:
             - '@pim_enrich.form.handler.attribute_group'
             - '@pim_enrich.form.attribute_group'
+            - '@pim_catalog.manager.attribute_group'
             - %pim_catalog.entity.attribute.class%
 
     pim_enrich.controller.category_tree:

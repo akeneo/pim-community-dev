@@ -64,12 +64,6 @@ class AvailableAttributesType extends AbstractType
                 'repository_options' => [
                     'excluded_attribute_ids' => $options['attributes'],
                     'locale_code'            => $this->userContext->getCurrentLocaleCode(),
-                    'default_group_label'    => $this->translator->trans(
-                        'Other',
-                        array(),
-                        null,
-                        $this->userContext->getCurrentLocaleCode()
-                    ),
                 ],
                 'multiple' => true,
                 'expanded' => false,

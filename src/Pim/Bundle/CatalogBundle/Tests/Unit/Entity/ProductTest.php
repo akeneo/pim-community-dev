@@ -81,7 +81,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
     public function testGetGroups()
     {
         $groups = array(
-            $otherGroup   = $this->getGroupMock(1, 'Other', -1),
+            $otherGroup   = $this->getGroupMock(1, 'Other', 5),
             $generalGroup = $this->getGroupMock(2, 'General', 0),
             $alphaGroup   = $this->getGroupMock(3, 'Alpha', 20),
             $betaGroup    = $this->getGroupMock(4, 'Beta', 10),
@@ -94,9 +94,9 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $groups = $this->product->getOrderedGroups();
         $this->assertSame(4, count($groups));
         $this->assertSame($generalGroup, current($groups));
+        $this->assertSame($otherGroup, next($groups));
         $this->assertSame($betaGroup, next($groups));
         $this->assertSame($alphaGroup, next($groups));
-        $this->assertSame($otherGroup, next($groups));
     }
 
     /**
@@ -298,7 +298,7 @@ class ProductTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Attribute');
 
         $attribute->expects($this->any())
-            ->method('getVirtualGroup')
+            ->method('getGroup')
             ->will($this->returnValue($group));
 
         $attribute->expects($this->any())
