@@ -33,6 +33,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
+use Symfony\Component\EventDispatcher\Event;
 
 /**
  * Product Controller
@@ -219,7 +220,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $this->getEventDispatcher()->dispatch(EnrichEvents::PRE_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(EnrichEvents::PRE_EDIT_PRODUCT, new GenericEvent($product));
 
         $this->productManager->ensureAllAssociationTypes($product);
 
@@ -229,7 +230,7 @@ class ProductController extends AbstractDoctrineController
             $this->getEditFormOptions($product)
         );
 
-        $this->getEventDispatcher()->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->productCatManager->getProductCountByTree($product);
@@ -548,14 +549,6 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * @return EventDispatcherInterface
-     */
-    protected function getEventDispatcher()
-    {
-        return $this->eventDispatcher;
-    }
-
-    /**
      * Get the product edit template parameters
      *
      * @param FormInterface    $form
@@ -571,7 +564,7 @@ class ProductController extends AbstractDoctrineController
         array $channels,
         array $trees
     ) {
-        return array(
+        $defaultParameters = array(
             'form'             => $form->createView(),
             'dataLocale'       => $this->getDataLocale(),
             'comparisonLocale' => $this->getComparisonLocale(),
@@ -585,5 +578,23 @@ class ProductController extends AbstractDoctrineController
             'locales'          => $this->userContext->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
+
+        $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
+        $this->dispatch(EnrichEvents::PRE_RENDER_PRODUCT_EDIT, $event);
+
+        return $event->getArgument('parameters');
+    }
+
+    /**
+     * Dispatch event if at least one listener is registered for it
+     *
+     * @param string $eventName
+     * @param Event  $event
+     */
+    protected function dispatch($eventName, Event $event)
+    {
+        if ($this->eventDispatcher->hasListeners($eventName)) {
+            $this->eventDispatcher->dispatch($eventName, $event);
+        }
     }
 }

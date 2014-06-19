@@ -5,7 +5,10 @@
 {% block groupTab %}
     {% include 'PimEnrichBundle:AttributeGroup:form.html.twig' %}
 
-    {% if resource_granted('pim_enrich_attribute_group_add_attribute') %}
+    {% if
+        resource_granted('pim_enrich_attribute_group_add_attribute') and
+        not group.code is constant('DEFAULT_GROUP_CODE', group)
+    %}
         {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
             'action': path('pim_enrich_attributegroup_addattributes', { id: form.vars.value.id })

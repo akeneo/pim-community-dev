@@ -12,7 +12,7 @@ namespace Pim\Bundle\EnrichBundle;
 final class EnrichEvents
 {
     /**
-     * This event is thrown each time a product value form is created in the system.
+     * This event is dispatched each time a product value form is created in the system.
      *
      * The event listener receives an
      * Pim\Bundle\EnrichBundle\Event\BuildProductValueFormEvent instance.
@@ -22,7 +22,7 @@ final class EnrichEvents
     const CREATE_PRODUCT_VALUE_FORM = 'pim_enrich.build_product_value_form';
 
     /**
-     * This event is thrown each time a product is being edited.
+     * This event is dispatched each time a product is being edited.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
@@ -32,7 +32,7 @@ final class EnrichEvents
     const PRE_EDIT_PRODUCT = 'pim_enrich.product.pre_edit';
 
     /**
-     * This event is thrown each time a product has been edited.
+     * This event is dispatched each time a product has been edited.
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
@@ -40,4 +40,14 @@ final class EnrichEvents
      * @staticvar string
      */
     const POST_EDIT_PRODUCT = 'pim_enrich.product.post_edit';
+
+    /**
+     * This event is dispatched before the parameters are sent to the twig engine
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_RENDER_PRODUCT_EDIT = 'pim_enrich.product.pre_render';
 }
