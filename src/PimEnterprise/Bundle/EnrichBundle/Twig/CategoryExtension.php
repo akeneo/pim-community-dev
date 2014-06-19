@@ -36,10 +36,10 @@ class CategoryExtension extends PimCategoryExtension
      */
     protected function countProducts(CategoryInterface $category, $includeSub, $relatedEntity)
     {
-        if ($relatedEntity === 'product') {
-            return $this->manager->getProductsCountInCategory($category, $includeSub);
-        } else {
+        if ($relatedEntity === 'publishedproduct') {
             return $this->publishedManager->getProductsCountInCategory($category, $includeSub);
+        } else {
+            return $this->manager->getProductsCountInCategory($category, $includeSub);
         }
     }
 }
