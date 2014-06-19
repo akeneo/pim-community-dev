@@ -26,7 +26,8 @@ class JobExecutionManager
      * @param JobExecutionRepository $repository
      * @param SecurityFacade         $securityFacade
      */
-    public function __construct(JobExecutionRepository $repository, SecurityFacade $securityFacade) {
+    public function __construct(JobExecutionRepository $repository, SecurityFacade $securityFacade)
+    {
         $this->repository     = $repository;
         $this->securityFacade = $securityFacade;
     }
