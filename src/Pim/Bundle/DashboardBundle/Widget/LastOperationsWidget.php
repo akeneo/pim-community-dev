@@ -2,10 +2,8 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
-
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 
 /**
  * Widget to display last import/export operations
