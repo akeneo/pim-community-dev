@@ -13,8 +13,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class JobExecutionRepository extends EntityRepository
 {
-
-
     /**
      * Get data for the last operations widget
      *
