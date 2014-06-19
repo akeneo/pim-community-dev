@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
-use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
+use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager;
 
 /**
  * Widget to display last import/export operations
@@ -14,20 +13,15 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
  */
 class LastOperationsWidget implements WidgetInterface
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
-
-    /** @var JobExecutionRepository */
-    protected $repository;
+    /** @var JobExecutionManager */
+    protected $manager;
 
     /**
-     * @param SecurityFacade   $securityFacade
-     * @param WidgetRepository $repository
+     * @param JobExecutionManager $manager
      */
-    public function __construct(SecurityFacade $securityFacade, JobExecutionRepository $repository)
+    public function __construct(JobExecutionManager $manager)
     {
-        $this->securityFacade = $securityFacade;
-        $this->repository     = $repository;
+        $this->manager = $manager;
     }
 
     /**
@@ -43,15 +37,8 @@ class LastOperationsWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $types = array_filter(
-            ['import', 'export'],
-            function ($type) {
-                return $this->securityFacade->isGranted(sprintf('pim_importexport_%s_execution_show', $type));
-            }
-        );
-
-        $params = empty($types) ? [] : $this->repository->getLastOperationsData($types);
-
-        return ['params' => $params];
+        return [
+            'params' => $this->manager->getLastOperationsData(['import', 'export'])
+        ];
     }
 }
