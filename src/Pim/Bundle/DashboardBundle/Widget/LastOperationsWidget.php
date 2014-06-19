@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DashboardBundle\Widget;
 
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
+
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository;
 
@@ -17,14 +19,14 @@ class LastOperationsWidget implements WidgetInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var WidgetRepository */
+    /** @var JobExecutionRepository */
     protected $repository;
 
     /**
      * @param SecurityFacade   $securityFacade
      * @param WidgetRepository $repository
      */
-    public function __construct(SecurityFacade $securityFacade, WidgetRepository $repository)
+    public function __construct(SecurityFacade $securityFacade, JobExecutionRepository $repository)
     {
         $this->securityFacade = $securityFacade;
         $this->repository     = $repository;

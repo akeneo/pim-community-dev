@@ -41,6 +41,6 @@ services:
         class: %pim_dashboard.widget.last_operations.class%
         arguments:
             - '@oro_security.security_facade'
-            - '@pim_dashboard.repository.orm.widget'
+            - '@pim_import_export.repository.job_execution'
         tags:
             - { name: pim_dashboard.widget, alias: last_operations }
