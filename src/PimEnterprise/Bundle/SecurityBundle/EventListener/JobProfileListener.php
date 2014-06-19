@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\JobEvents;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
@@ -17,17 +17,17 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  */
 class JobProfileListener implements EventSubscriberInterface
 {
-    /** @var SecurityContextInterface */
-    protected $securityContext;
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * Constructor
      *
-     * @param SecurityContextInterface $securityContext
+     * @param SecurityFacade $securityContext
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(SecurityFacade $securityFacade)
     {
-        $this->securityContext = $securityContext;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -51,8 +51,8 @@ class JobProfileListener implements EventSubscriberInterface
     public function checkEditPermission(GenericEvent $event)
     {
         $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $event->getSubject()->getType());
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())
-            && false === $this->securityContext->isGranted($resource)) {
+        if (false === $this->securityFacade->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())
+            && false === $this->securityFacade->isGranted($resource)) {
             throw new AccessDeniedException();
         }
     }
@@ -66,7 +66,7 @@ class JobProfileListener implements EventSubscriberInterface
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
+        if (false === $this->securityFacade->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }
