@@ -23,7 +23,8 @@ class MediaNormalizerSpec extends ObjectBehavior
     function it_normalizes_media(AbstractMedia $media)
     {
         $media->getFilename()->willReturn('myfile.pdf');
+        $media->getOriginalFilename()->willReturn('myfile.pdf');
 
-        $this->normalize($media, 'mongodb_json', [])->shouldReturn(['filename' => 'myfile.pdf']);
+        $this->normalize($media, 'mongodb_json', [])->shouldReturn(['filename' => 'myfile.pdf', 'originalFilename' => 'myfile.pdf']);
     }
 }

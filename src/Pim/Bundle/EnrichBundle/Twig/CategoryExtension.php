@@ -48,15 +48,20 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array   $trees
      * @param integer $selectedTreeId
+     * @param boolean $withProductCount
      * @param boolean $includeSub
      *
      * @return array
      */
-    public function listTreesResponse(array $trees, $selectedTreeId = null, $includeSub = false)
-    {
+    public function listTreesResponse(
+        array $trees,
+        $selectedTreeId = null,
+        $withProductCount = true,
+        $includeSub = false
+    ) {
         $return = array();
         foreach ($trees as $tree) {
-            $return[] = $this->formatTree($tree, $selectedTreeId, $includeSub);
+            $return[] = $this->formatTree($tree, $selectedTreeId, $withProductCount, $includeSub);
         }
 
         return $return;
@@ -259,13 +264,14 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $tree
      * @param integer           $selectedTreeId
+     * @param boolean           $withProductCount
      * @param boolean           $includeSub
      *
      * @return array
      */
-    protected function formatTree(CategoryInterface $tree, $selectedTreeId, $includeSub)
+    protected function formatTree(CategoryInterface $tree, $selectedTreeId, $withProductCount, $includeSub)
     {
-        $label = $this->getLabel($tree, true, $includeSub);
+        $label = $this->getLabel($tree, $withProductCount, $includeSub);
 
         return array(
             'id' => $tree->getId(),
