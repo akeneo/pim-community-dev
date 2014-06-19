@@ -29,6 +29,7 @@ Feature: Edit an identifier attribute
     Given I am on the "SKU" attribute page
     When I fill in the following information:
       | Max characters | 199 |
+    And I press the "Save" button
     When I visit the "History" tab
     Then there should be 2 updates
     And I should see history:
