@@ -16,3 +16,9 @@ services:
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
         tags:
             - { name: 'pim_repository' }
+
+    pimee_workflow.repository.published_product_category:
+        class: %pim_catalog.repository.product_category.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - %pimee_workflow.entity.published_product.class%

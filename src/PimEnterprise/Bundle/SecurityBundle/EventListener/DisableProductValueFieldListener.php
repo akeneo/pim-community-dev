@@ -45,7 +45,7 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
     public function onCreateProductValueForm(CreateProductValueFormEvent $event)
     {
         $value = $event->getProductValue();
-        $attributeGroup = $value->getAttribute()->getVirtualGroup();
+        $attributeGroup = $value->getAttribute()->getGroup();
         $eventContext   = $event->getContext();
         $isCreateForm   = isset($eventContext['root_form_name'])
             && $eventContext['root_form_name'] === 'pim_product_create';

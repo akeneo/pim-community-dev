@@ -42,7 +42,7 @@ class ProductFormView extends PimProductFormView
         $attributeView = parent::prepareAttributeView($attribute, $value, $view);
 
         $attributeView['allowValueCreation'] = $attributeView['allowValueCreation']
-            && $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attribute->getVirtualGroup());
+            && $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attribute->getGroup());
 
         return $attributeView;
     }

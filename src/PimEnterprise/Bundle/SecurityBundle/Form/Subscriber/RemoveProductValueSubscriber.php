@@ -51,7 +51,7 @@ class RemoveProductValueSubscriber implements EventSubscriberInterface
         foreach ($formValues as $formValue) {
             $productValue = $formValue->getData();
             $attribute = $productValue->getAttribute();
-            $attributeGroup = $attribute->getVirtualGroup();
+            $attributeGroup = $attribute->getGroup();
             if (false === $this->securityContext->isGranted(AttributeGroupVoter::VIEW_ATTRIBUTES, $attributeGroup)) {
                 $formValueName = $formValue->getName();
                 $formValues->remove($formValueName);
