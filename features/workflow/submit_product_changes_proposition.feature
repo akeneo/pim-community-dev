@@ -29,3 +29,18 @@ Feature: Submit a product changes proposition
     And I save the product
     When I visit the "Propositions" tab
     Then the grid should contain 0 element
+
+  Scenario: Succesfully mark my proposition as ready to review
+    Given the "footwear" catalog configuration
+    And the following product:
+      | sku        | family  |
+      | my-sandals | sandals |
+    And I am logged in as "admin"
+    When I edit the "my-sandals" product
+    And I change the Name to "Basket"
+    And I press the "In progress" button
+    And I save the product
+    When I visit the "Propositions" tab
+    Then the row "admin" should contain:
+      | column | value |
+      | Status | Ready |
