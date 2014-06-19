@@ -70,7 +70,12 @@ class JobProfileAccessRepository extends EntityRepository
     }
 
     /**
+     * Get granted job profiles query builder
      *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function getGrantedJobsQB(User $user, $accessLevel)
     {
