@@ -13,3 +13,5 @@ attribute_groups_accesses:
         edit: [administrator, manager, user]
     internal:
         edit: [administrator, manager, user]
+    other:
+        edit: [administrator, manager, user]
