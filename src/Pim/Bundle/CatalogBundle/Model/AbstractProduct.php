@@ -529,32 +529,24 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get ordered group
      *
-     * Group with negative sort order (Other) will be put at the end
-     *
      * @return array
      */
     public function getOrderedGroups()
     {
-        $firstGroups = array();
-        $lastGroups = array();
+        $groups = array();
 
         foreach ($this->getAttributes() as $attribute) {
-            $group = $attribute->getVirtualGroup();
-            if ($group->getSortOrder() < 0) {
-                $lastGroups[$group->getId()] = $group;
-            } else {
-                $firstGroups[$group->getId()] = $group;
-            }
+            $group = $attribute->getGroup();
+            $groups[$group->getId()] = $group;
         }
 
         $sortGroup = function (AttributeGroup $fst, AttributeGroup $snd) {
             return $fst->getSortOrder() - $snd->getSortOrder();
         };
 
-        @usort($firstGroups, $sortGroup);
-        @usort($lastGroups, $sortGroup);
+        @usort($groups, $sortGroup);
 
-        return array_merge($firstGroups, $lastGroups);
+        return $groups;
     }
 
     /**

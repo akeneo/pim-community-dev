@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 /**
  * Repository
@@ -60,5 +61,15 @@ class AttributeGroupRepository extends ReferableEntityRepository
         asort($choices);
 
         return $choices;
+    }
+
+    /**
+     * Get the default attribute group
+     *
+     * @return null|AttributeGroup
+     */
+    public function findDefaultAttributeGroup()
+    {
+        return $this->findOneBy(array('code' => AttributeGroup::DEFAULT_GROUP_CODE));
     }
 }
