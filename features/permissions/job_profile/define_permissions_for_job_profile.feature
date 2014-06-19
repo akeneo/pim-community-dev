@@ -12,3 +12,9 @@ Feature: Define permissions for a job profile
   Scenario: Successfully display the fields for job profile permissions
     Given I visit the "Permissions" tab
     Then I should see the Permissions to execute job profile and Permissions to edit job profile fields
+    When I fill in the following information:
+      | Permissions to execute job profile | Administrator |
+      | Permissions to edit job profile    | Administrator |
+    And I save the job profile
+    Then I should be on the "footwear_product_import" import job page
+    And I should see the "Edit" button
