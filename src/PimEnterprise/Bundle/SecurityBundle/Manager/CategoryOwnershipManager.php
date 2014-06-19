@@ -50,7 +50,7 @@ class CategoryOwnershipManager
     }
 
     /**
-     * Revoke ownership to a role for the specified categories
+     * Revoke ownership from a role for the specified categories
      *
      * @param Role              $role
      * @param CategoryInterface $category
