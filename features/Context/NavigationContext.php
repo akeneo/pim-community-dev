@@ -384,6 +384,19 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param JobInstance $job
+     * @param string      $type
+     *
+     * @Given /^I should be on the ("([^"]*)" (import|export) job) page$/
+     */
+    public function iShouldBeOnTheJobPage(JobInstance $job)
+    {
+        $jobPage = sprintf('%s show', ucfirst($job->getType()));
+        $expectedAddress = $this->getPage($jobPage)->getUrl(array('id' => $job->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
      * @param GroupType $groupType
      *
      * @Given /^I should be on the ("([^"]*)" group type) page$/
