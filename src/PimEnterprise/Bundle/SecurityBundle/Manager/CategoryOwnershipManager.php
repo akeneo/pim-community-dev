@@ -66,14 +66,16 @@ class CategoryOwnershipManager
 
     /**
      * Get categories owned by a role
+     * If tree is provided, only categories in this tree are returned
      *
-     * @param Role $role
+     * @param Role                   $role
+     * @param CategoryInterface|null $tree
      *
      * @return ArrayCollection
      */
-    public function getOwnedCategories(Role $role)
+    public function getOwnedCategories(Role $role, CategoryInterface $tree = null)
     {
-        $ownerships = $this->getRepository()->findBy(['role' => $role]);
+        $ownerships = $this->getRepository()->findForRole($role, $tree);
 
         $categories = new ArrayCollection();
 

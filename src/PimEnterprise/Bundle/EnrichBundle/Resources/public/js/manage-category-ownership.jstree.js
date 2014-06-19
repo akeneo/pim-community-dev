@@ -32,11 +32,10 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            // TODO: Uncomment this when the backend is fixed
-                            // if ((!node || (node === -1))) {
-                            //     // First load of the tree: get the checked categories
-                            //     return Routing.generate('pimee_security_role_listcategories', { id: roleId, tree_id: selectedTree, _format: 'json', dataLocale: dataLocale });
-                            // }
+                            if ((!node || (node === -1))) {
+                                // First load of the tree: get the checked categories
+                                return Routing.generate('pimee_security_role_listcategories', { id: roleId, tree_id: selectedTree, _format: 'json', dataLocale: dataLocale });
+                            }
 
                             return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale });
                         },

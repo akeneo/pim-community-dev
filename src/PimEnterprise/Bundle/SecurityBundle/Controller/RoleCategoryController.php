@@ -3,6 +3,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
@@ -20,6 +22,11 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryOwnershipManager;
 class RoleCategoryController
 {
     /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * @var CategoryManager
      */
     protected $categoryManager;
@@ -32,11 +39,16 @@ class RoleCategoryController
     /**
      * Constructor
      *
+     * @param RouterInterface          $router
      * @param CategoryManager          $categoryManager
      * @param CategoryOwnershipManager $ownershipManager
      */
-    public function __construct(CategoryManager $categoryManager, CategoryOwnershipManager $ownershipManager)
-    {
+    public function __construct(
+        RouterInterface $router,
+        CategoryManager $categoryManager,
+        CategoryOwnershipManager $ownershipManager
+    ) {
+        $this->router           = $router;
         $this->categoryManager  = $categoryManager;
         $this->ownershipManager = $ownershipManager;
     }
@@ -56,7 +68,21 @@ class RoleCategoryController
      */
     public function listCategoriesAction(Request $request, Role $role, CategoryInterface $tree)
     {
-        $categories = $this->ownershipManager->getOwnedCategories($role);
+        $categories = $this->ownershipManager->getOwnedCategories($role, $tree);
+
+        if ($categories->count() === 0) {
+            return new RedirectResponse(
+                $this->router->generate(
+                    'pim_enrich_categorytree_children',
+                    [
+                        'id'             => $tree->getId(),
+                        '_format'        => 'json',
+                        'include_parent' => true,
+                        'dataLocale'     => $request->get('dataLocale')
+                    ]
+                )
+            );
+        }
 
         $trees = $this->categoryManager->getFilledTree($tree, $categories);
 

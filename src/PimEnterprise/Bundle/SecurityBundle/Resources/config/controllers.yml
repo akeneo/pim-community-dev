@@ -6,5 +6,6 @@ services:
         scope: request
         class: %pimee_security.controller.role_category.class%
         arguments:
+            - '@router'
             - '@pim_catalog.manager.category'
             - '@pimee_security.manager.category_ownership'
