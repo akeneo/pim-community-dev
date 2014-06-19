@@ -202,6 +202,7 @@ class AttributeGroupController extends AbstractDoctrineController
         }
 
         if (0 !== $group->getAttributes()->count()) {
+            $this->addFlash('error', 'flash.attribute group.not removed attributes');
             throw new \LogicException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
