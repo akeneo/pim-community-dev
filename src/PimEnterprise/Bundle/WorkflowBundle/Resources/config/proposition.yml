@@ -19,6 +19,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pim_user.context.user'
             - '@pimee_workflow.factory.proposition'
+            - '@pimee_workflow.repository.proposition'
             - '@pimee_workflow.applier.proposition_changes_applier'
 
     pimee_workflow.applier.proposition_changes_applier:
@@ -77,5 +78,13 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pimee_workflow.repository.proposition'
             - '@pimee_workflow.applier.proposition_changes_applier'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.add_proposition_form_view_parameter:
+        class: %pimee_workflow.subscriber.add_proposition_form_view_parameter.class%
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.manager.proposition'
         tags:
             - { name: kernel.event_subscriber }

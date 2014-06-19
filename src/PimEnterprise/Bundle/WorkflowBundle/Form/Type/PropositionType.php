@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Type;
 
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\DataTransformer\StatusToBooleanTransformer;
 
@@ -18,13 +19,13 @@ class PropositionType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add(
-            $builder
-                ->create('status', 'checkbox')
-                ->addModelTransformer(new StatusToBooleanTransformer())
-        );
+        $builder
+            ->add('status', 'hidden');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'pimee_workflow_proposition';

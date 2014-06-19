@@ -4,12 +4,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -44,10 +44,10 @@ class PropositionChangesApplier
     /**
      * Apply proposition to a product
      *
-     * @param AbstractProduct $product
+     * @param ProductInterface $product
      * @param Proposition     $proposition
      */
-    public function apply(AbstractProduct $product, Proposition $proposition)
+    public function apply(ProductInterface $product, Proposition $proposition)
     {
         if ($this->dispatcher->hasListeners(PropositionEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(

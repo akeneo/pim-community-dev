@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
@@ -18,7 +18,7 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(AbstractProduct $product, $username, $locale)
+    public function findUserProposition(ProductInterface $product, $username, $locale)
     {
         return $this
             ->createQueryBuilder('Proposition')

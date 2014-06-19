@@ -9,6 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 
 /**
  * Manage product propositions
@@ -30,27 +31,33 @@ class PropositionManager
     /** @var PropositionFactory */
     protected $factory;
 
+    /** @var PropositionRepositoryInterface */
+    protected $repository;
+
     /** @var PropositionChangesApplier */
     protected $applier;
 
     /**
-     * @param ManagerRegistry           $registry
-     * @param ProductManager            $manager
-     * @param UserContext               $userContext
-     * @param PropositionFactory        $factory
-     * @param PropositionChangesApplier $applier
+     * @param ManagerRegistry                $registry
+     * @param ProductManager                 $manager
+     * @param UserContext                    $userContext
+     * @param PropositionFactory             $factory
+     * @param PropositionRepositoryInterface $repository
+     * @param PropositionChangesApplier      $applier
      */
     public function __construct(
         ManagerRegistry $registry,
         ProductManager $manager,
         UserContext $userContext,
         PropositionFactory $factory,
+        PropositionRepositoryInterface $repository,
         PropositionChangesApplier $applier
     ) {
         $this->registry = $registry;
         $this->manager = $manager;
         $this->userContext = $userContext;
         $this->factory = $factory;
+        $this->repository = $repository;
         $this->applier = $applier;
     }
 
@@ -63,7 +70,7 @@ class PropositionManager
     {
         $product = $proposition->getProduct();
 
-        $this->applier->apply($product, $proposition->getChanges());
+        $this->applier->apply($product, $proposition);
 
         $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_proposition' => true]);
@@ -100,13 +107,17 @@ class PropositionManager
      * @param string           $locale
      *
      * @return Proposition
+     *
+     * @throw \LogicException
      */
     // TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
     public function findOrCreate(ProductInterface $product, $locale)
     {
-        // TODO (2014-06-18 17:00 by Gildas): check getUser does not return null
+        if (null === $user = $this->userContext->getUser()) {
+            throw new \LogicException('Current user cannot be resolved');
+        }
         $username = $this->userContext->getUser()->getUsername();
-        $proposition = $this->repository->findUserProposition($product, $username, $locale)
+        $proposition = $this->repository->findUserProposition($product, $username, $locale);
 
         if (null === $proposition) {
             $proposition = $this->factory->createProposition($product, $username, $locale);
