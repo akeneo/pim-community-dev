@@ -176,7 +176,7 @@ class CategoryExtension extends \Twig_Extension
         array $selectedIds,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity
+        $relatedEntity = 'product'
     ) {
         $result = array();
         foreach ($categories as $category) {
@@ -213,7 +213,7 @@ class CategoryExtension extends \Twig_Extension
         array $selectedIds,
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity
+        $relatedEntity = 'product'
     ) {
         $state = $this->defineCategoryStateFromArray($category, $selectedIds);
         $label = $this->getLabel($category['item'], $withProductCount, $includeSub, $relatedEntity);
@@ -256,7 +256,7 @@ class CategoryExtension extends \Twig_Extension
         $withProductCount = false,
         $includeSub = false,
         array $children = array(),
-        $relatedEntity
+        $relatedEntity = 'product'
     ) {
         $state = $this->defineCategoryState($category, false, $selectedIds);
         $label = $this->getLabel($category, $withProductCount, $includeSub, $relatedEntity);
@@ -321,7 +321,7 @@ class CategoryExtension extends \Twig_Extension
         $selectedIds = array(),
         $withProductCount = false,
         $includeSub = false,
-        $relatedEntity
+        $relatedEntity = 'product'
     ) {
         $result = array();
         foreach ($categories as $category) {
@@ -340,7 +340,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @return array
      */
-    protected function formatCategoriesAndCount(array $categories, $selectedIds = array(), $relatedEntity)
+    protected function formatCategoriesAndCount(array $categories, $selectedIds = array(), $relatedEntity = 'product')
     {
         $result = array();
         foreach ($categories as $category) {
