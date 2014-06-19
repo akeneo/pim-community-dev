@@ -44,7 +44,7 @@ class JobExecutionRepository extends EntityRepository
             ->setMaxResults(10);
 
         if (!empty($types)) {
-            $qb->where($qb->expr()->in('j.type', $types));
+            $qb->andWhere($qb->expr()->in('j.type', $types));
         }
 
         return $qb;
