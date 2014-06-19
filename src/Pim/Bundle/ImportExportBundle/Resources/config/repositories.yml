@@ -1,5 +1,6 @@
 parameters:
-    pim_import_export.repository.job_instance.class: Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository
+    pim_import_export.repository.job_instance.class:  Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository
+    pim_import_export.repository.job_execution.class: Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository
 
 services:
     pim_import_export.repository.job_instance:
@@ -7,5 +8,13 @@ services:
         factory_service: doctrine.orm.entity_manager
         factory_method: getRepository
         arguments: [%akeneo_batch.entity.job_instance.class%]
+        tags:
+            - { name: 'pim_repository' }
+
+    pim_import_export.repository.job_execution:
+        class: %pim_import_export.repository.job_execution.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments: [%akeneo_batch.entity.job_execution.class%]
         tags:
             - { name: 'pim_repository' }
