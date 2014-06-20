@@ -1,0 +1,7 @@
+pimee_security_role_listcategories:
+    path: /list-categories/role/{id}/parent/{tree_id}.{_format}
+    defaults: { _controller: pimee_security.controller.role_category:listCategoriesAction }
+    requirements:
+        id: \d+
+        tree_id: \d+
+        _format: json

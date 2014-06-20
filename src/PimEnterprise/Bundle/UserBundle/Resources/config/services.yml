@@ -1,2 +1,31 @@
 parameters:
     pim_user.context.user.class: PimEnterprise\Bundle\UserBundle\Context\UserContext
+
+    pimee_user.form.subscriber.category_ownership.class: PimEnterprise\Bundle\UserBundle\Form\Subscriber\CategoryOwnershipSubscriber
+    pimee_user.form.type.category_ownership.class:       PimEnterprise\Bundle\UserBundle\Form\Type\CategoryOwnershipType
+    oro_user.form.handler.acl_role.class:                PimEnterprise\Bundle\UserBundle\Form\Handler\AclRoleHandler
+
+services:
+    pimee_user.form.subscriber.category_ownership:
+        class: %pimee_user.form.subscriber.category_ownership.class%
+        arguments:
+            - '@pimee_security.manager.category_ownership'
+
+    pimee_user.form.type.category_ownership:
+        class: %pimee_user.form.type.category_ownership.class%
+        arguments:
+            - %pim_catalog.entity.category.class%
+        tags:
+            - { name: form.type, alias: pimee_user_category_ownership }
+
+    oro_user.form.handler.acl_role:
+        class: %oro_user.form.handler.acl_role.class%
+        scope: prototype
+        arguments:
+            - '@form.factory'
+            - %oro_user.privileges%
+            - '@pimee_user.form.subscriber.category_ownership'
+        calls:
+            - [setAclManager, ['@oro_security.acl.manager']]
+            - [setEntityManager, ['@doctrine.orm.entity_manager']]
+            - [setRequest, ['@request']]

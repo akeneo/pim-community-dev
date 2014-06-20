@@ -1,0 +1,3 @@
+config:
+    paths:
+        pimee/category-ownership: pimenterpriseenrich/js/manage-category-ownership.jstree
