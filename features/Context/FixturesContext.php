@@ -725,7 +725,7 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @Given /^the (\w+) of "([^"]*)" should be "([^"]*)"$/
+     * @Given /^attribute (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
     {
