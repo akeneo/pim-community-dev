@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -28,9 +29,9 @@ class ODMProductReaderSpec extends ObjectBehavior
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
         StepExecution $stepExecution,
-        EntityManager $entityManager
+        DocumentManager $documentManager
     ) {
-        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter, $entityManager);
+        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter, $documentManager);
 
         $this->setStepExecution($stepExecution);
     }
