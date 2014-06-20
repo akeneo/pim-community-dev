@@ -4,6 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\BaseConnectorBundle\Reader\ProductReaderInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -50,6 +51,11 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $products;
 
     /**
+     * @var DocumentManager
+     */
+    protected $documentManager;
+
+    /**
      * @var ProductRepositoryInterface
      */
     protected $repository;
@@ -74,13 +80,16 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      * @param ChannelManager             $channelManager
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
+     * @param DocumentManager            $documentManager
      */
     public function __construct(
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
-        MetricConverter $metricConverter
+        MetricConverter $metricConverter,
+        DocumentManager $documentManager
     ) {
+        $this->documentManager       = $documentManager;
         $this->repository          = $repository;
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
@@ -102,6 +111,8 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function read()
     {
+        $this->documentManager->clear();
+
         if (!$this->executed) {
             $this->executed = true;
             if (!is_object($this->channel)) {
@@ -124,12 +135,9 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         $result = $this->products->current();
 
         if ($result) {
+            $this->metricConverter->convert($result, $this->channel);
             $this->stepExecution->incrementSummaryInfo('read');
             $this->products->next();
-        }
-
-        if ($result) {
-            $this->metricConverter->convert($result, $this->channel);
         }
 
         return $result;
@@ -176,5 +184,15 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     public function setStepExecution(StepExecution $stepExecution)
     {
         $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        $this->query = null;
+        $this->documentManager->clear();
+        $this->executed = false;
     }
 }

@@ -7,7 +7,7 @@ parameters:
     pim_base_connector.processor.product.class:                      Pim\Bundle\BaseConnectorBundle\Processor\ProductProcessor
     pim_base_connector.processor.category.class:                     Pim\Bundle\BaseConnectorBundle\Processor\CategoryProcessor
 
-    pim_base_connector.processor.product_to_array.class:             Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
+    pim_base_connector.processor.product_to_flat_array.class:        Pim\Bundle\BaseConnectorBundle\Processor\ProductToFlatArrayProcessor
     pim_base_connector.processor.dummy.class:                        Pim\Bundle\BaseConnectorBundle\Processor\DummyProcessor
 
 services:
@@ -31,8 +31,8 @@ services:
         arguments:
             - '@pim_catalog.manager.channel'
 
-    pim_base_connector.processor.product_to_array:
-        class: %pim_base_connector.processor.product_to_array.class%
+    pim_base_connector.processor.product_to_flat_array:
+        class: %pim_base_connector.processor.product_to_flat_array.class%
         arguments:
             - '@pim_transform.normalizer.flat_product'
             - '@pim_catalog.manager.channel'
