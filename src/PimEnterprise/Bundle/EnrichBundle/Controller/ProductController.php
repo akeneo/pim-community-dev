@@ -60,4 +60,28 @@ class ProductController extends BaseProductController
             'product' => $product,
         ];
     }
+
+    /**
+     * Show a product value
+     *
+     * @param Request $requset
+     * @param string  $productId
+     * @param string  $attributeCode
+     *
+     * @return Response
+     */
+    public function showAttributeAction(Request $request, $productId, $attributeCode)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $product = $this->findProductOr404($productId);
+        $locale = $request->query->get('locale');
+        $scope = $request->query->get('scope');
+
+        $value = $product->getValue($attributeCode, $locale, $scope);
+
+        return new Response((string) $value);
+    }
 }

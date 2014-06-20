@@ -2,9 +2,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\View;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Form\FormView;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 /**
@@ -21,19 +23,22 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     /** @var PropositionChangesApplier */
     protected $applier;
 
-    /** @var array|FormView */
-    protected $view = [];
+    /** @var UrlGeneratorInterface */
+    protected $urlGenerator;
 
     /**
      * @param ProductFormView           $productFormView
      * @param PropositionChangesApplier $applier
+     * @param UrlGeneratorInterface     $urlGenerator
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        PropositionChangesApplier $applier
+        PropositionChangesApplier $applier,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->productFormView = $productFormView;
         $this->applier = $applier;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -76,15 +81,32 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     }
 
     /**
-     * Mark a form view and all its children as modified
+     * Mark a form view as modified
+     *
+     * We do it by inserting the product value id in a "modified" attribute of the form field
+     * This is usefull to later load the current product value data
      *
      * @param FormView $view
      */
     protected function markFieldAsModified(FormView $view)
     {
-        foreach ($view as $child) {
-            $child->vars['modified'] = 'Display current value(s) here';
-            $this->markFieldAsModified($child);
+        $value = $view->vars['value'];
+        if (!$value instanceof AbstractProductValue) {
+            return;
+        }
+
+        $url = $this->urlGenerator->generate(
+            'pimee_enrich_product_value_show',
+            [
+                'productId' => $value->getEntity()->getId(),
+                'attributeCode' => $value->getAttribute()->getCode(),
+                'locale' => $value->getLocale(),
+                'scope' => $value->getScope(),
+            ]
+        );
+
+        foreach ($view as $name => $child) {
+            $child->vars['modified'] = $url;
         }
     }
 }

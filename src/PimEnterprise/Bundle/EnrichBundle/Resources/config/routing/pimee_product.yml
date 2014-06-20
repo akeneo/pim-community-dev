@@ -3,3 +3,11 @@ pimee_enrich_product_show:
     defaults: { _controller: pim_enrich.controller.product:showAction }
     requirements:
         id: '[0-9a-f]+'
+    methods: [GET]
+
+pimee_enrich_product_value_show:
+    path: /{productId}/attribute/{attributeCode}
+    defaults: { _controller: pim_enrich.controller.product:showAttributeAction }
+    requirements:
+        product: '[0-9a-f]+'
+    methods: [GET]
