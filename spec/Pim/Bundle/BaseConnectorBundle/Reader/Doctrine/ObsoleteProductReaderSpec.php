@@ -14,7 +14,7 @@ use Doctrine\ORM\QueryBuilder;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
-class ProductReaderSpec extends ObjectBehavior
+class ObsoleteProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $repository,
