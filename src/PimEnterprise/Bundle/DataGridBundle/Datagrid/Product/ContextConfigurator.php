@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
@@ -124,8 +123,7 @@ class ContextConfigurator extends PimContextConfigurator
     protected function getTreeId()
     {
         $filterValues = $this->requestParams->get('_filter');
-        if (
-            isset($filterValues['category']['value']['treeId']) &&
+        if (isset($filterValues['category']['value']['treeId']) &&
             null !== $filterValues['category']['value']['treeId']
         ) {
             return $filterValues['category']['value']['treeId'];
