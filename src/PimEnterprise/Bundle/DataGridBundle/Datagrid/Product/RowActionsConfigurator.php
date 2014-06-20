@@ -2,12 +2,13 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Row actions configurator for product grid
@@ -29,10 +30,13 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var CategoryRepository */
     protected $categoryRepository;
 
+    /** @var array */
+    protected $actionConfiguration = [];
+
     /**
-     * @param ConfigurationRegistry    $registry the conf registry
-     * @param SecurityContextInterface $securityContext the security context
-     * @param CategoryRepository       $categoryRepository the category registry
+     * @param ConfigurationRegistry    $registry
+     * @param SecurityContextInterface $securityContext
+     * @param CategoryRepository       $categoryRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
@@ -55,51 +59,43 @@ class RowActionsConfigurator implements ConfiguratorInterface
 
     /**
      * Check if the user has the permission to use the row actions.
+     *
+     * @return null
      */
     protected function checkEditActions()
     {
+        $this->addShowRowAction();
+        $this->addShowLinkProperty();
+
         $path = sprintf('[source][%s]', ContextConfigurator::CURRENT_TREE_ID_KEY);
         $tree = $this->categoryRepository->find($this->configuration->offsetGetByPath($path));
 
-        if (false === $this->securityContext->isGranted(CategoryVoter::EDIT_PRODUCTS, $tree)) {
-            $this->removeRowAction('edit');
-            $this->removeRowAction('edit_categories');
-            $this->removeRowAction('delete');
-            $this->removeProperty('edit_link');
-            $this->removeProperty('delete_link');
-            $this->addShowRowAction();
-            $this->addShowLinkProperty();
+        if ($this->securityContext->isGranted(CategoryVoter::EDIT_PRODUCTS, $tree)) {
+            $this->actionConfiguration = ['show' => false];
+        } else {
+            $this->actionConfiguration = [
+                'edit'            => false,
+                'edit_categories' => false,
+                'delete'          => false,
+            ];
         }
+
+        $this->configuration->offsetSetByPath(
+            sprintf('[%s]', ActionExtension::ACTION_CONFIGURATION_KEY),
+            function () {
+                return $this->getActionConfiguration();
+            }
+        );
     }
 
     /**
-     * Remove row actions from the configuration.
+     * Get row action configuration
      *
-     * @param string $action
-     *
-     * @return RowActionsConfigurator
+     * @return array
      */
-    protected function removeRowAction($action)
+    protected function getActionConfiguration()
     {
-        $actions = $this->configuration->offsetGet('actions');
-        unset($actions[$action]);
-        $this->configuration->offsetSet('actions', $actions);
-
-        return $this;
-    }
-
-    /**
-     * @param $property
-     *
-     * @return RowActionsConfigurator
-     */
-    protected function removeProperty($property)
-    {
-        $properties = $this->configuration->offsetGet('properties');
-        unset($properties[$property]);
-        $this->configuration->offsetSet('properties', $properties);
-
-        return $this;
+        return $this->actionConfiguration;
     }
 
     /**
