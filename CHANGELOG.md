@@ -26,6 +26,7 @@
 - Create repositories for JobInstance and JobExecution
 - Create manager for JobInstance
 - Clean LastOperationsWidget architecture
+- New readers for export improve memory usage loading small batches of products instead of all products in same time
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
