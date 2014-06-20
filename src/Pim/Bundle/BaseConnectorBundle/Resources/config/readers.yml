@@ -1,7 +1,7 @@
 parameters:
-    pim_base_connector.reader.doctrine.product.class:                  Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader
-    pim_base_connector.reader.doctrine.bulk_product.class:             Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
-    pim_base_connector.reader.orm.entity.class:                        Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
+    pim_base_connector.reader.doctrine.product.class:      Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader
+    pim_base_connector.reader.doctrine.bulk_product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\BulkProductReader
+    pim_base_connector.reader.orm.entity.class:            Pim\Bundle\BaseConnectorBundle\Reader\ORM\EntityReader
 
     pim_base_connector.reader.file.csv.class:          Pim\Bundle\BaseConnectorBundle\Reader\File\CsvReader
     pim_base_connector.reader.file.csv_product.class:  Pim\Bundle\BaseConnectorBundle\Reader\File\CsvProductReader
@@ -20,6 +20,15 @@ services:
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
+
+    pim_base_connector.reader.doctrine.product_reader:
+        class: %pim_base_connector.reader.doctrine.product_reader.class%
+        arguments:
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_transform.converter.metric'
+            - '@pim_catalog.object_manager.product'
 
     pim_base_connector.reader.doctrine.bulk_product:
         parent: pim_base_connector.reader.doctrine.product

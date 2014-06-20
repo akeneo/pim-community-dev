@@ -146,8 +146,6 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
             fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
             $this->stepExecution->incrementSummaryInfo('write');
         }
-
-        fclose($csvFile);
     }
 
     /**
@@ -220,6 +218,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      * Get a set of all keys inside arrays
      *
      * @param  array $items
+     *
      * @return array
      */
     protected function getAllKeys(array $items)
