@@ -1,11 +1,11 @@
-    <li>
-        {{ 'Family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
-        {% if resource_granted('pim_enrich_product_change_family') %}
-            <i id="edit-family" class="icon-pencil"></i>
-        {% endif %}
-    </li>
+<li>
+    {{ 'Family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+    {% if resource_granted('pim_enrich_product_change_family') %}
+        <i id="edit-family" class="icon-pencil"></i>
+    {% endif %}
+</li>
 
-    {% if form.vars.value.groups|length != 0 %}
+{% if form.vars.value.groups|length != 0 %}
     <li>
         {{ 'Groups'|trans|capitalize }}:
         {% for group in form.vars.value.groups %}
@@ -19,8 +19,7 @@
             </a>
         {% endfor %}
     </li>
-    {% endif %}
+{% endif %}
 
-    <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
-    <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
-
+<li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+<li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
