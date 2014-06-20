@@ -42,6 +42,7 @@ class IndexCreator
      * @param string          $channelClass
      * @param string          $localeClass
      * @param string          $currencyClass
+     * @param string          $attributeClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
@@ -111,7 +112,7 @@ class IndexCreator
      * - completenesses
      * - localizable attributes
      *
-     * @param AbstractAttribute $attribute
+     * @param Locale $locale
      */
     public function ensureIndexesFromLocale(Locale $locale)
     {
@@ -130,9 +131,9 @@ class IndexCreator
      * Indexes will be created on the normalizedData part for:
      * - prices (because of potentially added currency)
      *
-     * @param Channel $channel
+     * @param Currency $currency
      */
-    public function ensureIndexesFromCurrency(Currency $channel)
+    public function ensureIndexesFromCurrency(Currency $currency)
     {
         $pricesAttributes = $this->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
@@ -212,6 +213,8 @@ class IndexCreator
      *
      * @param array             $fields
      * @param AbstractAttribute $attribute
+     *
+     * @return array
      */
     protected function addFieldsFromPrices(array $fields, AbstractAttribute $attribute)
     {
@@ -235,6 +238,8 @@ class IndexCreator
      *
      * @param array             $fields
      * @param AbstractAttribute $attribute
+     *
+     * @return array
      */
     protected function addFieldsFromOption(array $fields, AbstractAttribute $attribute)
     {
@@ -265,7 +270,7 @@ class IndexCreator
 
         foreach ($fields as $field) {
             $collection->ensureIndex(
-                [ $field => 1 ],
+                [$field => 1],
                 $indexOptions
             );
         }
@@ -286,7 +291,7 @@ class IndexCreator
     /**
      * Get all channels
      *
-     * @return array
+     * @return Channel[]
      */
     protected function getChannels()
     {
@@ -299,7 +304,7 @@ class IndexCreator
     /**
      * Get active currencies
      *
-     * @return array
+     * @return Currency[]
      */
     protected function getCurrencies()
     {
@@ -312,7 +317,7 @@ class IndexCreator
     /**
      * Get active locales
      *
-     * @return array
+     * @return Locale[]
      */
     protected function getLocales()
     {
@@ -325,7 +330,7 @@ class IndexCreator
     /**
      * Get filterable prices backend type attribute
      *
-     * @return array
+     * @return AbstractAttribute[]
      */
     protected function getPricesAttributes()
     {
@@ -340,7 +345,7 @@ class IndexCreator
     /**
      * Get filterable scopable attributes
      *
-     * @return array
+     * @return AbstractAttribute[]
      */
     protected function getScopableAttributes()
     {
@@ -355,7 +360,7 @@ class IndexCreator
     /**
      * Get filterable localizable attributes
      *
-     * @return array
+     * @return AbstractAttribute[]
      */
     protected function getLocalizableAttributes()
     {

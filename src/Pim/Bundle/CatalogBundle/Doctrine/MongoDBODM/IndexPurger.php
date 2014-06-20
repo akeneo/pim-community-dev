@@ -152,7 +152,7 @@ class IndexPurger
     /**
      * Remove indexes with names provided in the array parameter
      *
-     * @oaram array $indexes
+     * @param array $indexes
      */
     protected function removeIndexes(array $indexes)
     {

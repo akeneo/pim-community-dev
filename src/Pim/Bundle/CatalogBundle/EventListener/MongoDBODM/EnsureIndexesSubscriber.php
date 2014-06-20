@@ -141,6 +141,5 @@ class EnsureIndexesSubscriber implements EventSubscriber
         if ($entity instanceof Channel) {
             $this->indexPurger->purgeIndexesFromChannel($entity);
         }
-
     }
 }
