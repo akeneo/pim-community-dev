@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Proposition repository interface
@@ -57,5 +57,5 @@ interface PropositionRepositoryInterface extends ObjectRepository
      *
      * @return null|Proposition
      */
-    public function findUserProposition(AbstractProduct $product, $username, $locale);
+    public function findUserProposition(ProductInterface $product, $username, $locale);
 }

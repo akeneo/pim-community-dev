@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -74,7 +74,7 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
-               $this->applier->apply($product, $proposition->getChanges());
+               $this->applier->apply($product, $proposition);
         }
     }
 

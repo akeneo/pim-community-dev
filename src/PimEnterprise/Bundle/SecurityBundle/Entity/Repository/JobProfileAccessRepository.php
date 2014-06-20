@@ -90,7 +90,6 @@ class JobProfileAccessRepository extends EntityRepository
         return $qb;
     }
 
-
     /**
      * Get the access field depending of access level sent
      *

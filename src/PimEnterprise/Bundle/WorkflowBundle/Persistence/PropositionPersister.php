@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
@@ -11,6 +12,8 @@ use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
 
 /**
  * Store product through propositions
@@ -38,6 +41,9 @@ class PropositionPersister implements ProductPersister
     /** @var PropositionRepositoryInterface */
     protected $repository;
 
+    /** @var EventDispatcherInterface */
+    protected $dispatcher;
+
     /**
      * @param ManagerRegistry                $registry
      * @param CompletenessManager            $completenessManager
@@ -52,7 +58,8 @@ class PropositionPersister implements ProductPersister
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
         CollectProductValuesSubscriber $collector,
-        PropositionRepositoryInterface $repository
+        PropositionRepositoryInterface $repository,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -60,6 +67,7 @@ class PropositionPersister implements ProductPersister
         $this->factory = $factory;
         $this->collector = $collector;
         $this->repository = $repository;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -138,6 +146,13 @@ class PropositionPersister implements ProductPersister
         }
 
         $proposition->setChanges($changes);
+
+        if ($this->dispatcher->hasListeners(PropositionEvents::PRE_UPDATE)) {
+            $this->dispatcher->dispatch(
+                PropositionEvents::PRE_UPDATE,
+                new PropositionEvent($proposition)
+            );
+        }
 
         $manager->flush();
     }

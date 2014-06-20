@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Proposition ORM repository
@@ -20,7 +20,7 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(AbstractProduct $product, $username, $locale)
+    public function findUserProposition(ProductInterface $product, $username, $locale)
     {
         return $this->findOneBy(
             [

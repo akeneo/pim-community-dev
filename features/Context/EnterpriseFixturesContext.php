@@ -61,15 +61,22 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     public function theFollowingPropositions(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $localeCode = isset($data['locale']) ? $data['locale'] : 'en_US';
+            $data = array_merge(
+                [
+                    'locale' => 'en_US',
+                    'status' => 'in progress'
+                ],
+                $data
+            );
             $product = $this->getProduct($data['product']);
-            $product->setLocale($localeCode);
+            $product->setLocale($data['locale']);
 
             $proposition = $this->getPropositionFactory()->createProposition(
                 $product,
                 $data['author'],
                 []
             );
+            $proposition->setStatus($data['status'] === 'ready' ? Proposition::READY : Proposition::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposition));
             $manager->persist($proposition);
         }

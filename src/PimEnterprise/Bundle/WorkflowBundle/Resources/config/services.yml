@@ -3,6 +3,7 @@ parameters:
     pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
     pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
+    pimee_workflow.datagrid.proposition_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\PropositionGridHelper
 
 services:
     pimee_workflow.event_listener.propositions_grid_listener:
@@ -36,6 +37,7 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.form.subscriber.collect_product_value_changes'
             - '@pimee_workflow.repository.proposition'
+            - '@event_dispatcher'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
@@ -44,3 +46,6 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
+
+    pimee_workflow.datagrid.proposition_grid_helper:
+        class: %pimee_workflow.datagrid.proposition_grid_helper.class%

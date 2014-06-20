@@ -4,6 +4,10 @@ pimee_workflow:
         created: Proposed at
         changes: Changes
         locale:  Locale context
+        status:
+            label: Status
+            in_progress: In progress
+            ready: Ready
         action:
             approve: Approve
             refuse:  Refuse

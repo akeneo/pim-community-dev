@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use PhpSpec\ObjectBehavior;
@@ -40,8 +40,7 @@ class InjectCurrentUserPropositionSubscriberSpec extends ObjectBehavior
         $catalogContext->getLocaleCode()->willReturn('en_US');
         $user->getUsername()->willReturn('julia');
         $repository->findUserProposition($product, 'julia', 'en_US')->willReturn($proposition);
-        $proposition->getChanges()->willReturn(['changes']);
-        $applier->apply($product, ['changes'])->shouldBeCalled();
+        $applier->apply($product, $proposition)->shouldBeCalled();
 
         $this->inject($event);
     }

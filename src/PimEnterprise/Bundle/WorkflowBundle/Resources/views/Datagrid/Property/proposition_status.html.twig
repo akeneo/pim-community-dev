@@ -1,0 +1,3 @@
+<span class="label label-{{ value == 1 ? 'success' : 'info' }}">
+    {{ ('pimee_workflow.proposition.status.' ~ (value == 1 ? 'ready' : 'in_progress'))|trans }}
+</span>

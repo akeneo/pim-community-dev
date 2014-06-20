@@ -33,7 +33,7 @@ class DisableProductValueFieldListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EnrichEvents::CREATE_PRODUCT_VALUE_FORM => array('onCreateProductValueForm'),
+            EnrichEvents::CREATE_PRODUCT_VALUE_FORM => 'onCreateProductValueForm',
         );
     }
 

@@ -19,6 +19,8 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
             type: string
         locale:
             type: string
+        status:
+            type: int
     indexes:
         unique_idx:
             keys:

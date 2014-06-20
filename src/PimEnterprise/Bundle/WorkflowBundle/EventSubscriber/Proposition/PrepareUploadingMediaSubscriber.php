@@ -1,8 +1,11 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\EventDispatcher;
+namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 
 /**
  * Prepare the data before submitting them to the form
@@ -10,7 +13,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PrepareUploadingMedia implements EventSubscriberInterface
+class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
 {
     /** @var UploadedFileFactory */
     protected $factory;
@@ -29,7 +32,7 @@ class PrepareUploadingMedia implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PropositionEvent::BEFORE_APPLY_CHANGES => 'prepareMedia'
+            PropositionEvents::PRE_APPLY => 'prepareMedia'
         ];
     }
 
@@ -40,10 +43,11 @@ class PrepareUploadingMedia implements EventSubscriberInterface
      */
     public function prepareMedia(PropositionEvent $event)
     {
-        $changes = $event->getChanges();
+        $proposition = $event->getProposition();
+        $changes = $proposition->getChanges();
 
         if (!isset($changes['values'])) {
-            return $changes;
+            return;
         }
 
         foreach ($changes['values'] as $key => $change) {
@@ -59,7 +63,7 @@ class PrepareUploadingMedia implements EventSubscriberInterface
             }
         }
 
-        $event->setChanges($changes);
+        $proposition->setChanges($changes);
     }
 
     /**

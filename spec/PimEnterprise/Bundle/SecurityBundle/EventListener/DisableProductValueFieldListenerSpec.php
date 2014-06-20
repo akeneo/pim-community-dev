@@ -26,9 +26,9 @@ class DisableProductValueFieldListenerSpec extends ObjectBehavior
 
     function it_subscribes_to_create_product_value_form()
     {
-        $this->getSubscribedEvents()->shouldReturn(
-            [EnrichEvents::CREATE_PRODUCT_VALUE_FORM => ['onCreateProductValueForm']]
-        );
+        $this->getSubscribedEvents()->shouldReturn([
+            EnrichEvents::CREATE_PRODUCT_VALUE_FORM => 'onCreateProductValueForm'
+        ]);
     }
 
     function it_disables_the_product_value_form_when_no_edit_right(

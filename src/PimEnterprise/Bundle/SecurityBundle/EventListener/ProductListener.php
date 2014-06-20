@@ -38,7 +38,7 @@ class ProductListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            EnrichEvents::PRE_EDIT_PRODUCT => ['checkEditPermission'],
+            EnrichEvents::PRE_EDIT_PRODUCT => 'checkEditPermission',
         ];
     }
 
