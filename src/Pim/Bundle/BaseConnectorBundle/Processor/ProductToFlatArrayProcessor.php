@@ -8,6 +8,7 @@ use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Akeneo\Bundle\BatchBundle\Item\ItemProcessorInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Process a product to an array
@@ -21,7 +22,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     /**
      * @var FlatProductNormalizer
      */
-    protected $flatProductNormalizer;
+    protected $serializer;
 
     /**
      * @Assert\NotBlank(groups={"Execution"})
@@ -46,11 +47,12 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
      * @param ChannelManager        $channelManager
      */
     public function __construct(
-        FlatProductNormalizer $flatProductNormalizer,
+        //FlatProductNormalizer $flatProductNormalizer,
+        Serializer $serializer,
         ChannelManager $channelManager
     ) {
-        $this->flatProductNormalizer = $flatProductNormalizer;
-        $this->channelManager        = $channelManager;
+        $this->serializer     = $serializer;
+        $this->channelManager = $channelManager;
     }
 
     /**
@@ -59,7 +61,7 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     public function process($item)
     {
         $data['media']   = $item->getMedia();
-        $data['product'] = $this->flatProductNormalizer->normalize($item, null, $this->getNormalizerContext());
+        $data['product'] = $this->serializer->normalize($item, 'flat', $this->getNormalizerContext());
 
         return $data;
     }
