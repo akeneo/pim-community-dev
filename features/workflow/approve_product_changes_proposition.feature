@@ -1,5 +1,5 @@
 @javascript
-Feature: Submit a product changes proposition
+Feature: Approvde a product changes proposition
   In order to contribute to a product edition
   As a contributor
   I need to be able to submit a product changes proposition
