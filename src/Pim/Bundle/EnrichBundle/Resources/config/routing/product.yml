@@ -8,6 +8,13 @@ pim_enrich_product_create:
     path: /create/{dataLocale}
     defaults: { _controller: pim_enrich.controller.product:createAction, dataLocale: null }
 
+pim_enrich_product_display:
+    path: /{id}/display
+    defaults: { _controller: pim_enrich.controller.product:displayAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
 pim_enrich_product_edit:
     path: /{id}/edit
     defaults: { _controller: pim_enrich.controller.product:editAction }
