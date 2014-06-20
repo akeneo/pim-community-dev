@@ -14,7 +14,7 @@ Feature: Submit a product changes proposition
     And I edit the "my-sandals" product
     And I change the "SKU" to "your-sandals"
     And I save the product
-    Then the SKU of "my-sandals" should be "my-sandals"
+    Then attribute SKU of "my-sandals" should be "my-sandals"
 
   Scenario: Successfully propose a text attribute change
     Given a "footwear" catalog configuration
@@ -134,7 +134,7 @@ Feature: Submit a product changes proposition
     And I visit the "Additional information" group
     And I check the "Handmade" switch
     And I save the product
-    Then the handmade of "my-tshirt" should be "false"
+    Then attribute handmade of "my-tshirt" should be "false"
 
   # Fix date diff
   @skip
