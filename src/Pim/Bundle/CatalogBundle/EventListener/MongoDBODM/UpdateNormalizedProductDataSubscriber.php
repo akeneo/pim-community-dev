@@ -422,7 +422,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
             $channelRepository  = $channelManager->getRepository($this->channelClass);
 
             foreach ($channelManager as $channel) {
-                $channelSuffixes = sptrinf('-%s', $channel->>getCode());
+                $channelSuffixes = sptrinf('-%s', $channel->getCode());
             }
         }
 
