@@ -4,10 +4,10 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\EventDispatcher\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
 
 class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
 {

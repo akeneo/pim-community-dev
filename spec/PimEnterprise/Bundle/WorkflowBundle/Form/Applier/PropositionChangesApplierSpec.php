@@ -10,6 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class PropositionChangesApplierSpec extends ObjectBehavior
 {
@@ -24,7 +25,8 @@ class PropositionChangesApplierSpec extends ObjectBehavior
         $formFactory,
         FormBuilderInterface $formBuilder,
         FormInterface $form,
-        Model\AbstractProduct $product
+        Model\AbstractProduct $product,
+        Proposition $proposition
     ) {
         $formFactory->createBuilder('form', $product)->willReturn($formBuilder);
         $valuesFieldOptions = [
@@ -40,8 +42,9 @@ class PropositionChangesApplierSpec extends ObjectBehavior
         $formBuilder->addEventListener(FormEvents::PRE_SUBMIT, Argument::any())->willReturn($formBuilder);
         $formBuilder->getForm()->willReturn($form);
 
+        $proposition->getChanges()->willReturn(['foo' => 'bar']);
         $form->submit(['foo' => 'bar'], false)->shouldBeCalled();
 
-        $this->apply($product, ['foo' => 'bar']);
+        $this->apply($product, $proposition);
     }
 }

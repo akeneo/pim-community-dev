@@ -27,12 +27,10 @@ class JobProfileListenerSpec extends ObjectBehavior
 
     function it_subscribes_events()
     {
-        $this->getSubscribedEvents()->shouldReturn(
-            [
-                JobEvents::PRE_EDIT_JOB_PROFILE => ['checkEditPermission'],
-                JobEvents::PRE_EXECUTE_JOB_PROFILE => ['checkExecutePermission']
-            ]
-        );
+        $this->getSubscribedEvents()->shouldReturn([
+            JobEvents::PRE_EDIT_JOB_PROFILE => 'checkEditPermission',
+            JobEvents::PRE_EXECUTE_JOB_PROFILE => 'checkExecutePermission',
+        ]);
     }
 
     function it_allows_to_execute_permission_when_job_edit_permission_is_granted($securityFacade, $event, $job)
