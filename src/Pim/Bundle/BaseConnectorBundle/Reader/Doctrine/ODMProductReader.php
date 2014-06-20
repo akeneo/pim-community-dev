@@ -89,7 +89,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         MetricConverter $metricConverter,
         DocumentManager $documentManager
     ) {
-        $this->documentManager       = $documentManager;
+        $this->documentManager     = $documentManager;
         $this->repository          = $repository;
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
