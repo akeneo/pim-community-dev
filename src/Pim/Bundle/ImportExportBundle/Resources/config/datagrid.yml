@@ -1,18 +1,9 @@
 datagrid:
     job-profile-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - j.id
-                    - j.code
-                    - j.label
-                    - j.alias as jobAlias
-                    - j.status
-                    - j.connector
-                    - CONCAT('pim_import_export.status.', j.status) as statusLabel
-                from:
-                    - { table: AkeneoBatchBundle:JobInstance, alias: j }
+            type: pim_orm
+            entity: %akeneo_batch.entity.job_instance.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -107,10 +98,6 @@ datagrid:
             entityHint: export profile
         source:
             acl_resource: pim_importexport_export_profile_index
-            query:
-                where:
-                    and:
-                        - j.type = 'export'
         properties:
             edit_link:
                 route: pim_importexport_export_profile_edit
@@ -135,10 +122,6 @@ datagrid:
             entityHint: import profile
         source:
             acl_resource: pim_importexport_import_profile_index
-            query:
-                where:
-                    and:
-                        - j.type = 'import'
         properties:
             edit_link:
                 route: pim_importexport_import_profile_edit
