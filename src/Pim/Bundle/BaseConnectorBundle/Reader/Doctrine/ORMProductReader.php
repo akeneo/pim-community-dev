@@ -155,7 +155,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             $this->stepExecution->incrementSummaryInfo('read');
         }
 
-        if ($product) {
+        if (null !== $product) {
             $this->metricConverter->convert($product, $this->channel);
         }
 
@@ -186,8 +186,10 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
      */
     public function initialize()
     {
-        $this->executed = false;
-        $this->query = false;
+        $this->query = null;
+        $this->entityManager->clear();
+        $this->ids = null;
+        $this->offset = 0;
     }
 
     /**
@@ -204,6 +206,26 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     public function getChannel()
     {
         return $this->channel;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStepExecution(StepExecution $stepExecution)
+    {
+        $this->stepExecution = $stepExecution;
+    }
+
+    /**
+     * @param integer $limit
+     *
+     * @return ORMProductReader
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
     }
 
     /**
@@ -261,25 +283,5 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         }
 
         return $products;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStepExecution(StepExecution $stepExecution)
-    {
-        $this->stepExecution = $stepExecution;
-    }
-
-    /**
-     * @param integer $limit
-     *
-     * @return ORMProductReader
-     */
-    public function setLimit($limit)
-    {
-        $this->limit = $limit;
-
-        return $this;
     }
 }
