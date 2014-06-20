@@ -15,6 +15,7 @@ Feature: Update product history when mass editing products
     And I am on the products page
     And I mass-edit products boots, sandals and sneakers
 
+  @skip
   Scenario: Display history when editing product attributes
     Given I choose the "Edit attributes" operation
     And I display the Name attribute
@@ -39,6 +40,7 @@ Feature: Update product history when mass editing products
       | version | property   | value      |
       | 2       | name-en_US | cool boots |
 
+  @skip
   Scenario: Display history when changing product status
     Given I choose the "Change status (enable / disable)" operation
     And I disable the products
