@@ -186,6 +186,11 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     public function write(array $items)
     {
         $products = [];
+
+        if (!is_dir(dirname($this->getPath()))) {
+            mkdir(dirname($this->getPath()), 0777, true);
+        }
+
         foreach ($items as $item) {
             $products[] = $item['product'];
             foreach ($item['media'] as $media) {
