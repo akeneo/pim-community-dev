@@ -23,4 +23,8 @@
 
     <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
     <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
-    <li>{{ 'Owner roles'|trans }}: {{ ownerRoles |join(', ') }}</li>
+    <li>{{ 'Owner roles'|trans }}:
+        {% for role in ownerRoles %}
+            {{ role['label'] }}{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </li>

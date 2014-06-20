@@ -3,8 +3,10 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Category ownership repository
@@ -43,5 +45,24 @@ class CategoryOwnershipRepository extends EntityRepository
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return array
+     */
+    public function findRoleLabelsForProduct(ProductInterface $product)
+    {
+        $categories = $product->getCategories();
+        $categoryIds = [];
+        foreach ($categories as $category) {
+            $categoryIds[]= $category->getId();
+        }
+        $qb = $this->createQueryBuilder('o');
+        $qb->where($qb->expr()->in('o.category', $categoryIds));
+        $qb->leftJoin('o.role', 'role');
+        $qb->select('role.label');
+        $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+
+        return $labels;
     }
 }

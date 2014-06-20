@@ -53,10 +53,8 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
         }
 
         $product = $parameters['product'];
-
-        // TODO : get the roles from product categories
-        $parameters['ownerRoles'] = ['AdmiTest', 'UserTest'];
-
+        $roleLabels = $this->repository->findRoleLabelsForProduct($product);
+        $parameters['ownerRoles'] = $roleLabels;
         $event->setArgument('parameters', $parameters);
     }
 }
