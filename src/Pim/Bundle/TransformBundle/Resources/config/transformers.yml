@@ -140,9 +140,3 @@ services:
         class: %pim_transform.transformer.property.skip.class%
         public: false
 
-    pim_transform.normalizer.flat_product:
-        class: %pim_serializer.normalizer.flat_product.class%
-        arguments:
-            - '@pim_catalog.manager.media'
-        calls:
-            - [setFilters, [['@pim_serializer.filter.flat_product_value']]]
