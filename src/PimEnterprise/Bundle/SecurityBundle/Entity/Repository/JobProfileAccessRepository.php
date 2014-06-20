@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
@@ -66,5 +67,41 @@ class JobProfileAccessRepository extends EntityRepository
         }
 
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get granted job profiles query builder
+     *
+     * @param User   $user
+     * @param string $accessLevel
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getGrantedJobsQB(User $user, $accessLevel)
+    {
+        $qb = $this->createQueryBuilder('ja');
+        $qb
+            ->andWhere($qb->expr()->in('ja.role', ':roles'))
+            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
+            ->innerJoin('ja.jobProfile', 'jp', 'jp.id')
+            ->select('jp.id');
+
+        return $qb;
+    }
+
+
+    /**
+     * Get the access field depending of access level sent
+     *
+     * @param string $accessLevel
+     *
+     * @return string
+     */
+    protected function getAccessField($accessLevel)
+    {
+        return ($accessLevel === JobProfileVoter::EDIT_JOB_PROFILE)
+            ? 'ja.editJobProfile'
+            : 'ja.executeJobProfile';
     }
 }
