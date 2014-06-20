@@ -725,28 +725,46 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
-     * @param string $lang
-     * @param string $attribute
-     * @param string $identifier
-     * @param string $value
-     *
+     * @Given /^the (\w+) of "([^"]*)" should be "([^"]*)"$/
+     */
+    public function theOfShouldBe($attribute, $identifier, $value)
+    {
+        $this->clearUOW();
+        $productValue = $this->getProductValue($identifier, strtolower($attribute));
+        $this->assertDataEquals($productValue->getData(), $value);
+    }
+
+    protected function assertDataEquals($data, $value)
+    {
+        switch ($value) {
+            case 'true':
+                assertTrue($data);
+                break;
+
+            case 'false':
+                assertFalse($data);
+                break;
+
+            default:
+                if ($data instanceof \DateTime) {
+                    $data = $data->format('Y-m-d');
+                }
+                assertEquals($value, $data);
+        }
+    }
+
+    /**
      * @Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
-    public function theOfShouldBe($lang, $attribute, $identifier, $value)
+    public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
     {
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang]);
 
-        assertEquals($value, $productValue->getData());
+        $this->assertDataEquals($productValue->getData(), $value);
     }
 
     /**
-     * @param string $lang
-     * @param string $scope
-     * @param string $attribute
-     * @param string $identifier
-     * @param string $value
-     *
      * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
@@ -754,15 +772,11 @@ class FixturesContext extends RawMinkContext
         $this->clearUOW();
         $productValue = $this->getProductValue($identifier, strtolower($attribute), $this->locales[$lang], $scope);
 
-        assertEquals($value, $productValue->getData());
+        $this->assertDataEquals($productValue->getData(), $value);
     }
 
     /**
-     * @param string    $attribute
-     * @param string    $products
-     * @param TableNode $table
-     *
-     * @Given /^the prices "([^"]*)" of products (.*) should be:$/
+     * @Given /^the prices "([^"]*)" of products? (.*) should be:$/
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
     {
@@ -772,19 +786,29 @@ class FixturesContext extends RawMinkContext
 
             foreach ($table->getHash() as $price) {
                 $productPrice = $productValue->getPrice($price['currency']);
-                assertEquals($price['amount'], $productPrice->getData());
+                if ('' === trim($price['amount'])) {
+                    assertNull($productPrice->getData());
+                } else {
+                    assertEquals($price['amount'], $productPrice->getData());
+                }
             }
         }
     }
 
     /**
-     * @param string    $attribute
-     * @param string    $products
-     * @param TableNode $table
-     *
-     * @return null
-     *
-     * @Given /^the options "([^"]*)" of products (.*) should be:$/
+     * @Given /^the option "([^"]*)" of products? (.*) should be "([^"]*)"$/
+     */
+    public function theOptionOfProductsShouldBe($attribute, $products, $optionCode)
+    {
+        $this->clearUOW();
+        foreach ($this->listToArray($products) as $identifier) {
+            $productValue = $this->getProductValue($identifier, strtolower($attribute));
+            assertEquals($optionCode, $productValue->getOption()->getCode());
+        }
+    }
+
+    /**
+     * @Given /^the options "([^"]*)" of products? (.*) should be:$/
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
     {
@@ -800,17 +824,17 @@ class FixturesContext extends RawMinkContext
 
             assertEquals(count($table->getHash()), $options->count());
             foreach ($table->getHash() as $data) {
-                assertContains($data['value'], $optionCodes);
+                assertContains(
+                    $data['value'],
+                    $optionCodes,
+                    sprintf('"%s" does not contain "%s"', join(', ', $optionCodes->toArray()), $data['value'])
+                );
             }
         }
     }
 
     /**
-     * @param string $attribute
-     * @param string $products
-     * @param string $filename
-     *
-     * @Given /^the file "([^"]*)" of products (.*) should be "([^"]*)"$/
+     * @Given /^the file "([^"]*)" of products? (.*) should be "([^"]*)"$/
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
     {
@@ -818,7 +842,13 @@ class FixturesContext extends RawMinkContext
         foreach ($this->listToArray($products) as $identifier) {
             $productValue = $this->getProductValue($identifier, strtolower($attribute));
             $media = $productValue->getMedia();
-            assertEquals($filename, $media->getOriginalFilename());
+            if ('' === trim($filename)) {
+                if ($media) {
+                    assertNull($media->getOriginalFilename());
+                }
+            } else {
+                assertEquals($filename, $media->getOriginalFilename());
+            }
         }
     }
 
@@ -827,7 +857,7 @@ class FixturesContext extends RawMinkContext
      * @param string $products
      * @param string $data
      *
-     * @Given /^the metric "([^"]*)" of products (.*) should be "([^"]*)"$/
+     * @Given /^the metric "([^"]*)" of products? (.*) should be "([^"]*)"$/
      */
     public function theMetricOfProductsShouldBe($attribute, $products, $data)
     {
