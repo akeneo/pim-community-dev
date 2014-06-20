@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Form\DataTransformer\StatusToBooleanTransformer;
 
 /**
  * PimEnterprise\Bundle\WorkflowBundle\Form\Type

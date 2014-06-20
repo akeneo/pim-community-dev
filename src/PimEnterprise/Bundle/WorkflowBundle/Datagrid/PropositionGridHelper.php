@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**

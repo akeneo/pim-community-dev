@@ -26,7 +26,7 @@ class UpdatePropositionStatusSubscriber implements EventSubscriberInterface
      * Constructor
      *
      * @param FormFactoryInterface $formFactory
-     * @param ContainerInterface $container
+     * @param ContainerInterface   $container
      */
     public function __construct(
         FormFactoryInterface $formFactory,

@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\ImportExportBundle\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as PimJobExecutionRepository;
 
 /**

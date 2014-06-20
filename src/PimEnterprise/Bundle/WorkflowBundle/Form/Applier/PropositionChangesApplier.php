@@ -45,7 +45,7 @@ class PropositionChangesApplier
      * Apply proposition to a product
      *
      * @param ProductInterface $product
-     * @param Proposition     $proposition
+     * @param Proposition      $proposition
      */
     public function apply(ProductInterface $product, Proposition $proposition)
     {
