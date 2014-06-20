@@ -18,9 +18,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class IndexCreator
 {
-    /** @var Collection */
-    protected $collection;
-
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
@@ -38,15 +35,6 @@ class IndexCreator
 
     /** @var string */
     protected $attributeClass;
-
-    /** @var array */
-    protected $currencies;
-
-    /** @var array */
-    protected $channels;
-
-    /** @var array */
-    protected $locales;
 
     /**
      * @param ManagerRegistry $registry
@@ -105,6 +93,8 @@ class IndexCreator
      */
     public function ensureIndexesFromChannel(Channel $channel)
     {
+        $this->channel = null;
+
         $completenessFields = $this->getCompletenessNormFields($channel);
         $this->ensureIndexes($completenessFields);
 
@@ -125,7 +115,7 @@ class IndexCreator
      */
     public function ensureIndexesFromLocale(Locale $locale)
     {
-        $completenessFields = $this->getCompletenessNormFields(null, $locale);
+        $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
 
         $localizables = $this->getLocalizableAttributes();
@@ -288,12 +278,9 @@ class IndexCreator
      */
     protected function getCollection()
     {
-        if (null === $this->collection) {
-            $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
-            $this->collection = $documentManager->getDocumentCollection($this->productClass);
-        }
+        $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
 
-        return $this->collection;
+        return $documentManager->getDocumentCollection($this->productClass);
     }
 
     /**
@@ -303,20 +290,10 @@ class IndexCreator
      */
     protected function getChannels()
     {
-        if (null === $this->channels) {
-            $this->channels = array();
+        $channelManager = $this->managerRegistry->getManagerForClass($this->channelClass);
+        $channelRepository = $channelManager->getRepository($this->channelClass);
 
-            $channelManager = $this->managerRegistry->getManagerForClass($this->channelClass);
-            $channelRepository = $channelManager->getRepository($this->channelClass);
-
-            $channels = $channelRepository->findAll();
-
-            foreach ($channels as $channel) {
-                $this->channels[$channel->getCode()] = $channel;
-            }
-        }
-
-        return $this->channels;
+        return $channelRepository->findAll();
     }
 
     /**
@@ -326,19 +303,10 @@ class IndexCreator
      */
     protected function getCurrencies()
     {
-        if (null === $this->currencies) {
-            $this->currencies = array();
+        $currencyManager = $this->managerRegistry->getManagerForClass($this->currencyClass);
+        $currencyRepository = $currencyManager->getRepository($this->currencyClass);
 
-            $currencyManager = $this->managerRegistry->getManagerForClass($this->currencyClass);
-            $currencyRepository = $currencyManager->getRepository($this->currencyClass);
-
-            $currencies = $currencyRepository->findBy(['activated' => true]);
-            foreach ($currencies as $currency) {
-                $this->currencies[$currency->getCode()] = $currency;
-            }
-        }
-
-        return $this->currencies;
+        return $currencyRepository->getActivatedCurrencies();
     }
 
     /**
@@ -348,19 +316,10 @@ class IndexCreator
      */
     protected function getLocales()
     {
-        if (null === $this->locales) {
-            $this->locales = array();
+        $localeManager = $this->managerRegistry->getManagerForClass($this->localeClass);
+        $localeRepository = $localeManager->getRepository($this->localeClass);
 
-            $localeManager = $this->managerRegistry->getManagerForClass($this->localeClass);
-            $localeRepository = $localeManager->getRepository($this->localeClass);
-
-            $locales = $localeRepository->findBy(['activated' => true]);
-            foreach ($locales as $locale) {
-                $this->locales[$locale->getCode()] = $locale;
-            }
-        }
-
-        return $this->locales;
+        return $localeRepository->getActivatedLocales();
     }
 
     /**

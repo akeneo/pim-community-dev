@@ -18,9 +18,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class IndexPurger
 {
-    /** @staticvar string */
-    const NORMALIZED_FIELD = 'normalizedData';
-
     /** @var Collection */
     protected $collection;
 

@@ -11,6 +11,8 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
@@ -97,7 +99,7 @@ class IndexCreatorSpec extends ObjectBehavior
         Locale $de_DE,
         Channel $ecommerce,
         EntityRepository $channelRepo,
-        EntityRepository $localeRepo,
+        LocaleRepository $localeRepo,
         EntityManager $entityManager,
         EntityRepository $attributeRepo
     ) {
@@ -122,7 +124,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
         $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->findBy(['activated' => true])->willReturn([$en_US, $de_DE]);
+        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
 
         $managerRegistry->getManagerForClass('Attribute')->willReturn($entityManager);
         $entityManager->getRepository('Attribute')->willReturn($attributeRepo);
@@ -151,13 +153,13 @@ class IndexCreatorSpec extends ObjectBehavior
         Currency $usd,
         Currency $eur,
         AbstractAttribute $price,
-        EntityRepository $currencyRepo,
+        CurrencyRepository $currencyRepo,
         EntityManager $entityManager,
         EntityRepository $attributeRepo
     ) {
         $managerRegistry->getManagerForClass('Currency')->willReturn($entityManager);
         $entityManager->getRepository('Currency')->willReturn($currencyRepo);
-        $currencyRepo->findBy(['activated' => true])->willReturn([$eur, $usd]);
+        $currencyRepo->getActivatedCurrencies()->willReturn([$eur, $usd]);
 
         $eur->getCode()->willReturn('EUR');
         $eur->isActivated()->willReturn(true);
@@ -257,12 +259,12 @@ class IndexCreatorSpec extends ObjectBehavior
         Currency $usd,
         Currency $eur,
         AbstractAttribute $price,
-        EntityRepository $currencyRepo,
+        CurrencyRepository $currencyRepo,
         EntityManager $entityManager
     ) {
         $managerRegistry->getManagerForClass('Currency')->willReturn($entityManager);
         $entityManager->getRepository('Currency')->willReturn($currencyRepo);
-        $currencyRepo->findBy(['activated' => true])->willReturn([$eur, $usd]);
+        $currencyRepo->getActivatedCurrencies()->willReturn([$eur, $usd]);
 
         $eur->getCode()->willReturn('EUR');
         $eur->isActivated()->willReturn(true);
@@ -350,7 +352,7 @@ class IndexCreatorSpec extends ObjectBehavior
         Channel $ecommerce,
         AbstractAttribute $description,
         EntityRepository $channelRepo,
-        EntityRepository $localeRepo,
+        LocaleRepository $localeRepo,
         EntityManager $entityManager
     ) {
         $en_US->getCode()->willReturn('en_US');
@@ -360,7 +362,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
         $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->findBy(['activated' => true])->willReturn([$en_US, $de_DE]);
+        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
 
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
@@ -390,7 +392,7 @@ class IndexCreatorSpec extends ObjectBehavior
         Locale $de_DE,
         AbstractAttribute $description,
         EntityRepository $channelRepo,
-        EntityRepository $localeRepo,
+        LocaleRepository $localeRepo,
         EntityManager $entityManager
     ) {
         $en_US->getCode()->willReturn('en_US');
@@ -406,7 +408,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
         $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->findBy(['activated' => true])->willReturn([$en_US, $de_DE]);
+        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
 
         $managerRegistry->getManagerForClass('Channel')->willReturn($entityManager);
         $entityManager->getRepository('Channel')->willReturn($channelRepo);
