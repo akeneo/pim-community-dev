@@ -58,7 +58,6 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     public function __construct(
         ManagerRegistry $registry,
-        EntityManager $entityManager,
         $productClass,
         $familyClass,
         $familyTranslationClass,
@@ -232,24 +231,24 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
                         if ($attribute->isLocalizable()) {
                             foreach ($entity->getLocales() as $locale) {
-                                 $attributesToRemove[] = sprintf(
+                                 $attributesToRemove[] = [sprintf(
                                     'normalizedData.%s-%s-%s',
                                     $attribute->getCode(),
                                     $locale->getCode(),
                                     $entity->getCode()
-                                );
+                                ) => ''];
                             }
                         } else {
-                            $attributesToRemove[] = sprintf(
+                            $attributesToRemove[] = [sprintf(
                                 'normalizedData.%s-%s',
                                 $attribute->getCode(),
                                 $entity->getCode()
-                            );
+                            ) => ''];
                         }
 
                         $queries[] = [
                             [sprintf('normalizedData.%s', $attribute->getCode()) => [ '$exists' => true ]],
-                            ['$unset' => $this->getAttributesToRemove()],
+                            ['$unset' => $attributesToRemove],
                             ['multi' => true]
                         ];
                     }
@@ -261,50 +260,74 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                 'class'     => $this->attributeOptionClass,
                 'field'     => '',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
-                    return [[
-                        [sprintf('normalizedData.%s', $entity->getAttribute()->getCode()) => [ '$exists' => true ]],
-                        ['$unset' => [sprintf('normalizedData.%s', $entity->getCode())]],
-                        ['multi' => true]
-                    ]];
+                    $attributeCodes = $this->getPossibleAttributeCodes($entity->getOption()->getAttribute());
+
+                    $queries = [];
+
+                    foreach ($attributeCodes as $attributeCode) {
+                        $queries[] = [
+                            [sprintf('normalizedData.%s', $entity->getAttribute()->getCode()) => [ '$exists' => true ]],
+                            ['$unset' => [sprintf('normalizedData.%s', $entity->getCode()) => '']],
+                            ['multi' => true]
+                        ];
+                    }
+
+                    return $queries;
                 }
             ],
             [
                 'class'     => $this->attributeOptionClass,
                 'field'     => 'code',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
-                    return [[
-                        [sprintf('normalizedData.%s', $entity->getAttribute()->getCode()) => [ '$exists' => true ]],
-                        [
-                            '$set' => [
-                                sprintf('normalizedData.%s.code', $entity->getAttribute()->getCode()) => $newValue
-                            ]
-                        ],
-                        ['multi' => true]
-                    ]];
+                    $attributeCodes = $this->getPossibleAttributeCodes($entity->getOption()->getAttribute());
+
+                    $queries = [];
+
+                    foreach ($attributeCodes as $attributeCode) {
+                        $queries[] = [
+                            [sprintf('normalizedData.%s', $attributeCode) => [ '$exists' => true ]],
+                            [
+                                '$set' => [
+                                    sprintf('normalizedData.%s.code', $attributeCode) => $newValue
+                                ]
+                            ],
+                            ['multi' => true]
+                        ];
+                    }
+
+                    return $queries;
                 }
             ],
             [
                 'class'     => $this->attributeOptionValueClass,
-                'field'     => 'code',
+                'field'     => 'value',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
-                    return [[
-                        [
-                            sprintf(
-                                'normalizedData.%s',
-                                $entity->getOption()->getAttribute()->getCode()
-                            ) => [ '$exists' => true ]
-                        ],
-                        [
-                            '$set' => [
+                    $attributeCodes = $this->getPossibleAttributeCodes($entity->getOption()->getAttribute());
+
+                    $queries = [];
+
+                    foreach ($attributeCodes as $attributeCode) {
+                        $queries[] = [
+                            [
                                 sprintf(
-                                    'normalizedData.%s.code.optionValues%s.value',
-                                    $entity->getOption()->getAttribute()->getCode(),
-                                    $entity->getLocale()
-                                ) => $newValue
-                            ]
-                        ],
-                        ['multi' => true]
-                    ]];
+                                    'normalizedData.%s.',
+                                    $attributeCode
+                                ) => $entity->getOption()->getCode(),
+                            ],
+                            [
+                                '$set' => [
+                                    sprintf(
+                                        'normalizedData.%s.code.optionValues.%s.value',
+                                        $attributeCode,
+                                        $entity->getLocale()
+                                    ) => $newValue
+                                ]
+                            ],
+                            ['multi' => true]
+                        ];
+                    }
+
+                    return $queries;
                 }
             ]
         ];
@@ -323,6 +346,87 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $attributes = $attributeRepository->findBy(['scopable' => true]);
 
         return $attributes;
+    }
+
+    /**
+     * Get possible attribute codes
+     *
+     * @return array
+     */
+    protected function getPossibleAttributeCodes(AbstractAttribute $attribute)
+    {
+        $localeSuffixes  = $this->getLocaleSuffixes($attribute);
+        $channelSuffixes = $this->getChannelSuffixes($attribute);
+
+        $attributeCodes = [];
+
+        if (count($localeSuffixes) > 0) {
+            foreach ($localeSuffixes as $localeSuffix) {
+                $attributeCode = sprintf(
+                    '%s-%s',
+                    $attribute->getCode(),
+                    $localeSuffix
+                );
+
+                foreach ($channelSuffixes as $channelSuffix) {
+                    $attributeCode = sptrinf('%f-%f',
+                        $attributeCode,
+                        $channelSuffixes
+                    );
+                }
+            }
+        } else {
+            foreach ($channelSuffixes as $channelSuffix) {
+                $attributeCode = sptrinf('%f-%f',
+                    $attribute->getCode(),
+                    $channelSuffixes
+                );
+            }
+        }
+
+        return $attributes;
+    }
+
+    /**
+     * Get all locale prefixes
+     *
+     * @return array
+     */
+    protected function getLocaleSuffixes(AbstractAttribute $attribute)
+    {
+        $localeSuffixes = [];
+
+        if ($attribute->isScopable()) {
+            $localeManager     = $this->registry->getManagerForClass($this->localeClass);
+            $localeRepository  = $localeManager->getRepository($this->localeClass);
+
+            foreach ($localeManager as $locale) {
+                $localeSuffixes = sptrinf('-%s', $locale->getCode());
+            }
+        }
+
+        return $localeSuffixes;
+    }
+
+    /**
+     * Get all channel prefixes
+     *
+     * @return array
+     */
+    protected function getChannelSuffixes(AbstractAttribute $attribute)
+    {
+        $channelSuffixes = [];
+
+        if ($attribute->isLocalizable()) {
+            $channelManager     = $this->registry->getManagerForClass($this->channelClass);
+            $channelRepository  = $channelManager->getRepository($this->channelClass);
+
+            foreach ($channelManager as $channel) {
+                $channelSuffixes = sptrinf('-%s', $channel->>getCode());
+            }
+        }
+
+        return $channelSuffixes;
     }
 
     /**
