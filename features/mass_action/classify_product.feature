@@ -1,11 +1,11 @@
 @javascript
 Feature: Classify many products at once for the tree I have access
   In order to easily classify products
-  As Julia
+  As a product manager
   I need to associate many products to categories I have access at once
 
   Background:
-    Given the "footwear" catalog configuration
+    Given the "clothing" catalog configuration
     And the following products:
       | sku     |
       | rangers |
@@ -17,13 +17,9 @@ Feature: Classify many products at once for the tree I have access
       | trendy       | Trendy        | shoes     |
       | classy       | Classy        | shoes     |
       | boots        | Boots         |           |
-    #TODO: add this directly in the Behat data set
-    And the following attribute group accesses:
-      | attribute group | role          | access |
-      | info            | Administrator | edit   |
     And the following category accesses:
-      | category | role          | access |
-      | shoes    | Administrator | view   |
+      | category        | role    | access |
+      | shoes           | Manager | edit   |
     And I am logged in as "Julia"
     And I am on the products page
 

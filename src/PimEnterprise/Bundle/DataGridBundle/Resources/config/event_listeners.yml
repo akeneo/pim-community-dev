@@ -1,0 +1,2 @@
+parameters:
+    pim_datagrid.event_listener.configure_product_grid_listener.class: PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener
