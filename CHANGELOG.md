@@ -22,6 +22,10 @@
 - Create a `JobInstanceRepository`
 - Dispatch event before rendering the product edit template
 - Fixed asymetric enable product button
+- Remove qb definition from job profile grid configs
+- Create repositories for JobInstance and JobExecution
+- Create manager for JobInstance
+- Clean LastOperationsWidget architecture
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -60,6 +64,10 @@
 - Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
 - Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
 - Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` and `Pim\Bundle\ImportExportController\JobProfileController` (inject event dispatcher)
+- Add parameters to load datagrids in job profiles index twig templates
+- Remove WidgetRepository to replace it by `Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository`
+- Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
+- Remove injection of WidgetRepository from LastOperationsWidget
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
