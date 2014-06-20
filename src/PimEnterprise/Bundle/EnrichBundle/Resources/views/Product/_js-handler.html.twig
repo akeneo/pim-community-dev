@@ -101,8 +101,15 @@
                         if (data.length > 250) {
                             data = data.substring(0, 250) + '...';
                         }
-                        $this.attr('data-content', data);
-                        $this.popover('show');
+
+                        if (data.length == 0) {
+                            data = '{{ "empty"|trans|capitalize }}';
+                        }
+
+                        $this
+                            .attr('data-content', data)
+                            .popover('destroy')
+                            .popover('show');
                     });
                 });
             });
