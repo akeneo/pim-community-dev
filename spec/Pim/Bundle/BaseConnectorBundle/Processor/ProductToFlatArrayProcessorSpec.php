@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Model\Media;
@@ -14,19 +14,19 @@ use Pim\Bundle\CatalogBundle\Model\Media;
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
     function let(
-        FlatProductNormalizer $flatProductNormalizer,
+        Serializer $serializer,
         ChannelManager $channelManager
     ) {
-        $this->beConstructedWith($flatProductNormalizer, $channelManager);
+        $this->beConstructedWith($serializer, $channelManager);
     }
 
-    function it_return_flat_data(
+    function it_returns_flat_data(
         Channel $channel,
         ChannelManager $channelManager,
         Product $item,
         Media $media1,
         Media $media2,
-        FlatProductNormalizer $flatProductNormalizer
+        Serializer $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
         $media1->getFilePath()->willReturn('media_file_path');
@@ -38,8 +38,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 
         $item->getMedia()->willReturn([$media1, $media2]);
 
-        $flatProductNormalizer
-            ->normalize($item, null, ['scopeCode' => 'foobar', 'localeCodes' => ''])
+        $serializer
+            ->normalize($item, 'flat', ['scopeCode' => 'foobar', 'localeCodes' => ''])
             ->willReturn(['normalized_product']);
 
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
