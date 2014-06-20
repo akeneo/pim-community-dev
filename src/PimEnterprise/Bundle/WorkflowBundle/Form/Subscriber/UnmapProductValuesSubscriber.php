@@ -40,7 +40,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
         }
 
         foreach ($form->get('values') as $valueField) {
-            foreach ($valueField as $field) {
+            foreach ($valueField as $name => $field) {
                 $this->unmapOne($field);
             }
         }
@@ -55,6 +55,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
     {
         $config = $form->getConfig();
         if ($this->isACollectionType($config->getType())) {
+
             // Collection fields must be treated separatly as sub-fields can be created on the fly
             $options = $config->getOptions();
             $options['options']['mapped'] = false;
@@ -65,7 +66,10 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
                     $config->getType()->getInnerType(),
                     $options
                 );
-        } else {
+
+        } elseif ($form->count() === 0) {
+
+            // Unmap only leaf of the form tree
             $form
                 ->getParent()
                 ->add(
@@ -74,9 +78,12 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
                     array_merge($config->getOptions(), ['mapped' => false])
                 );
 
+        } else {
+
             foreach ($form as $field) {
                 $this->unmapOne($field);
             }
+
         }
     }
 
