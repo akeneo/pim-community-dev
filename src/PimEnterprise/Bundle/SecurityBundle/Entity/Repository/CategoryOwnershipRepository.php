@@ -53,6 +53,9 @@ class CategoryOwnershipRepository extends EntityRepository
     public function findRoleLabelsForProduct(ProductInterface $product)
     {
         $categories = $product->getCategories();
+        if (count($categories) === 0) {
+            return [];
+        }
         $categoryIds = [];
         foreach ($categories as $category) {
             $categoryIds[]= $category->getId();
