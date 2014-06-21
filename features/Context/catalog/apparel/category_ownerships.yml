@@ -1,0 +1,35 @@
+category_ownerships:
+    2013_collection:
+        roles: [administrator, manager, user]
+    2014_collection:
+        roles: [administrator, manager, user]
+    2015_collection:
+        roles: [administrator, manager, user]
+    men_2013:
+        roles: [administrator, manager, user]
+    women_2013:
+        roles: [administrator, manager, user]
+    men_2014:
+        roles: [administrator, manager, user]
+    women_2014:
+        roles: [administrator, manager, user]
+    men_2015:
+        roles: [administrator, manager, user]
+    women_2015:
+        roles: [administrator, manager, user]
+    men_2015_spring:
+        roles: [administrator, manager, user]
+    men_2015_summer:
+        roles: [administrator, manager, user]
+    men_2015_autumn:
+        roles: [administrator, manager, user]
+    men_2015_winter:
+        roles: [administrator, manager, user]
+    women_2015_spring:
+        roles: [administrator, manager, user]
+    women_2015_summer:
+        roles: [administrator, manager, user]
+    women_2015_autumn:
+        roles: [administrator, manager, user]
+    women_2015_winter:
+        roles: [administrator, manager, user]
