@@ -4,8 +4,11 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
+use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Add the owner roles parameter to the product edit template parameters
@@ -18,12 +21,17 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
     /** @var CategoryOwnershipRepository */
     protected $repository;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
-     * @param CategoryOwnershipRepository $repository
+     * @param CategoryOwnershipRepository $repository  the owner repo
+     * @param UserContext                 $userContext the user context
      */
-    public function __construct(CategoryOwnershipRepository $repository)
+    public function __construct(CategoryOwnershipRepository $repository, UserContext $userContext)
     {
-        $this->repository = $repository;
+        $this->repository  = $repository;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -53,8 +61,48 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
         }
 
         $product = $parameters['product'];
-        $roleLabels = $this->repository->findRoleLabelsForProduct($product);
-        $parameters['ownerRoles'] = $roleLabels;
+        $roles = $this->getOwnershipRoles($product);
+        $parameters['ownerRoles'] = $roles;
+        $parameters['isOwner'] = $this->isOwner($roles);
         $event->setArgument('parameters', $parameters);
+    }
+
+    /**
+     * @return array
+     */
+    protected function getOwnershipRoles(ProductInterface $product)
+    {
+        return $this->repository->findRolesForProduct($product);
+    }
+
+    /**
+     * @return boolean
+     */
+    protected function isOwner(array $ownershipRoles)
+    {
+        $userRoles   = $this->getUser()->getRoles();
+        $userRoleIds = [];
+        foreach ($userRoles as $role) {
+            $userRoleIds[]= $role->getId();
+        }
+        foreach ($ownershipRoles as $role) {
+            if (in_array($role['id'], $userRoleIds)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return User
+     */
+    protected function getUser()
+    {
+        if (null === $user = $this->userContext->getUser()) {
+            throw new \LogicException('Current user cannot be resolved');
+        }
+
+        return $user;
     }
 }

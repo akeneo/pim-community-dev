@@ -24,6 +24,9 @@
 {% endspaceless %}
 {% endset %}
 
+{% if isOwner %}
+{{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'cloud-upload'}) }}
+{% else %}
 <div class="btn-group">
     <button id="switch_proposition_status" type="button" class="btn">
         {{ propositionForm.status.vars.value ? label_ready : label_in_progress }}
@@ -50,10 +53,10 @@
     );
 </script>
 {# END Proposition button #}
+{% endif %}
 
-{{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'cloud-upload'}) }}
 {{ elements.submitDropdownBtn(
-    'btn.save',
+    isOwner ? 'btn.save working copy' : 'btn.save draft',
     {
         'Create': { 'text': 'btn.save and create' },
         'BackGrid': { 'text': 'btn.save and back' }

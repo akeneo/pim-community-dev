@@ -1,0 +1,9 @@
+category_ownerships:
+    master:
+        roles: [administrator, manager, user]
+    collections:
+        roles: [administrator, manager]
+    books:
+        roles: [administrator, manager]
+    computers:
+        roles: [administrator, manager]

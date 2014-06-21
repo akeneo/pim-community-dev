@@ -12,6 +12,13 @@ category_accesses:
     yml:
         processor: pimee_base_connector.processor.category_access
 
+category_ownerships:
+    order: 150
+    csv:
+        processor: pimee_base_connector.processor.category_ownership
+    yml:
+        processor: pimee_base_connector.processor.category_ownership
+
 job_profile_accesses:
     order: 150
     csv:
