@@ -40,7 +40,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
         }
 
         foreach ($form->get('values') as $valueField) {
-            foreach ($valueField as $name => $field) {
+            foreach ($valueField as $field) {
                 $this->unmapOne($field);
             }
         }

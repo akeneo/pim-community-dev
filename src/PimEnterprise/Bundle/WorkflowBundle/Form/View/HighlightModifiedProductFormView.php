@@ -105,7 +105,7 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
             ]
         );
 
-        foreach ($view as $name => $child) {
+        foreach ($view as $child) {
             $child->vars['modified'] = $url;
         }
     }
