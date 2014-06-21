@@ -1,6 +1,7 @@
 parameters:
     pimee_base_connector.processor.attribute_group_access.class: PimEnterprise\Bundle\BaseConnectorBundle\Processor\AttributeGroupAccessProcessor
     pimee_base_connector.processor.category_access.class:        PimEnterprise\Bundle\BaseConnectorBundle\Processor\CategoryAccessProcessor
+    pimee_base_connector.processor.category_ownership.class:     PimEnterprise\Bundle\BaseConnectorBundle\Processor\CategoryOwnershipProcessor
     pimee_base_connector.processor.job_profile_access.class:     PimEnterprise\Bundle\BaseConnectorBundle\Processor\JobProfileAccessProcessor
 
 services:
@@ -15,6 +16,12 @@ services:
         class: %pimee_base_connector.processor.category_access.class%
         arguments:
             - %pimee_security.entity.category_access.class%
+
+    pimee_base_connector.processor.category_ownership:
+        parent: pim_base_connector.processor.transformer
+        class: %pimee_base_connector.processor.category_ownership.class%
+        arguments:
+            - %pimee_security.entity.category_ownership.class%
 
     pimee_base_connector.processor.job_profile_access:
         parent: pim_base_connector.processor.transformer
