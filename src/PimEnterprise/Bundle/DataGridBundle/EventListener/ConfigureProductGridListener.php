@@ -38,10 +38,10 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
         ColumnsConfigurator $columnsConfigurator,
         FiltersConfigurator $filtersConfigurator,
         SortersConfigurator $sortersConfigurator,
-        RowActionsConfigurator $rowActionsConfigurator
+        RowActionsConfigurator $actionsConfigurator
     ) {
         parent::__construct($contextConfigurator, $columnsConfigurator, $filtersConfigurator, $sortersConfigurator);
-        $this->ationsConfigurator = $actionsConfigurator;
+        $this->actionsConfigurator = $actionsConfigurator;
     }
 
     /**
