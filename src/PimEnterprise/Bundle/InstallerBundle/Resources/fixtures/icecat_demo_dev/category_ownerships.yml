@@ -1,0 +1,9 @@
+category_ownerships:
+    master:
+        roles: [administrator, manager, user]
+    sales:
+        roles: [administrator, manager]
+    brands:
+        roles: [administrator, manager]
+    home_appliances:
+        roles: [administrator, manager]
