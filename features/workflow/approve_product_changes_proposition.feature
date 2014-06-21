@@ -30,6 +30,8 @@ Feature: Approvde a product changes proposition
     When I visit the "Propositions" tab
     Then the grid should contain 0 element
 
+  # TODO : don't see the "in progress" and "propositions" tab with the same ownership status
+  @skip
   Scenario: Succesfully mark my proposition as ready to review
     Given the "footwear" catalog configuration
     And the following product:
