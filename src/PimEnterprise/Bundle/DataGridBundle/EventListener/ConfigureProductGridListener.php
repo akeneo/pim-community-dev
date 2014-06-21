@@ -22,7 +22,7 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
     /**
      * @var RowActionsConfigurator
      */
-    protected $rowActionsConfigurator;
+    protected $actionsConfigurator;
 
     /**
      * Constructor
@@ -31,7 +31,7 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
      * @param ColumnsConfigurator    $columnsConfigurator
      * @param FiltersConfigurator    $filtersConfigurator
      * @param SortersConfigurator    $sortersConfigurator
-     * @param RowActionsConfigurator $rowActionsConfigurator
+     * @param RowActionsConfigurator $actionsConfigurator
      */
     public function __construct(
         ContextConfigurator $contextConfigurator,
@@ -41,7 +41,7 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
         RowActionsConfigurator $rowActionsConfigurator
     ) {
         parent::__construct($contextConfigurator, $columnsConfigurator, $filtersConfigurator, $sortersConfigurator);
-        $this->rowActionsConfigurator = $rowActionsConfigurator;
+        $this->ationsConfigurator = $actionsConfigurator;
     }
 
     /**
@@ -60,6 +60,6 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
      */
     protected function getRowActionsConfigurator()
     {
-        return $this->rowActionsConfigurator;
+        return $this->actionsConfigurator;
     }
 }
