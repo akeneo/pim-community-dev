@@ -23,6 +23,17 @@ connector:
                         processor: pimee_base_connector.processor.category_access
                         writer:    pim_base_connector.writer.doctrine
 
+        fixtures_category_ownership_yml:
+            title: pim_installer.jobs.fixtures_category_ownership_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_category_ownership_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pimee_base_connector.processor.category_ownership
+                        writer:    pim_base_connector.writer.doctrine
+
         fixtures_job_profile_access_yml:
             title: pim_installer.jobs.fixtures_job_profile_yml.title
             type:  fixtures
