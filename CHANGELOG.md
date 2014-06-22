@@ -21,23 +21,23 @@
 - Change "launch" button by "view" on job profile datagrids
 - Create a `JobInstanceRepository`
 - Dispatch event before rendering the product edit template
-- Fixed asymetric enable product button
+- Fix asymetric enable product button
 - Remove qb definition from job profile grid configs
 - Create repositories for JobInstance and JobExecution
 - Create manager for JobInstance
 - Clean LastOperationsWidget architecture
 
 ## Bug fixes
-- Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
-- Added missing translation keys for "manage filters", "all", "records", etc
+- Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Add missing translation keys for "manage filters", "all", "records", etc
 - Images import from fixtures now works
-- Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
-- Deleted completeness when a locale of a channel is deleted
-- Displayed flags in the completenesses grid
-- Fixed a memory leak on product import when using MongoDB
-- Fixed a bug with image upload on product with a "\" or "/" in their sku
-- Fixed a bug that silently failed when uploading file that does not comply with server configuration
-- Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fix versions not being properly generated when real-time versioning is disabled (in imports/exports)
+- Delete completeness when a locale of a channel is deleted
+- Display flags in the completenesses grid
+- Fix a memory leak on product import when using MongoDB
+- Fix a bug with image upload on product with a "\" or "/" in their sku
+- Fix a bug that silently failed when uploading file that does not comply with server configuration
+- Fix a bug when displaying image thumbnail in the product grid with MongoDB support
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -47,7 +47,7 @@
 - The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
-- Changed the HydratorInterface::hydrate() method signature
+- Change the HydratorInterface::hydrate() method signature
 - Avoid to store null values in Product::normalizedData (MongoDB support)
 - Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
 - Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
