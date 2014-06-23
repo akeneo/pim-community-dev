@@ -29,8 +29,8 @@ class AttributeGroupManager
     /**
      * Constructor
      *
-     * @param ObjectManager             $objectManager   Object manager
-     * @param AttributeGroupRepository  $repository      Repository
+     * @param ObjectManager            $objectManager Object manager
+     * @param AttributeGroupRepository $repository    Repository
      */
     public function __construct(ObjectManager $objectManager, AttributeGroupRepository $repository)
     {

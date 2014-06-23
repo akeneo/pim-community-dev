@@ -16,7 +16,7 @@
     {% set title = editMode ? 'attribute group.edit'|trans ~ ' - ' ~ form.vars.data.label : 'attribute group.create'|trans %}
 
     {% set buttons %}
-        {% if editMode %}
+        {% if editMode and not group.code is constant('DEFAULT_GROUP_CODE', group) %}
             {{ elements.deleteLink(
                 path('pim_enrich_attributegroup_remove', {'id': form.vars.value.id}),
                 'pim_enrich_attribute_group_remove',

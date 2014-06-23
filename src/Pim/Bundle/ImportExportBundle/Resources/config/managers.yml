@@ -1,0 +1,9 @@
+parameters:
+    pim_import_export.manager.job_execution.class: Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager
+
+services:
+    pim_import_export.manager.job_execution:
+        class: %pim_import_export.manager.job_execution.class%
+        arguments:
+            - '@pim_import_export.repository.job_execution'
+            - '@oro_security.security_facade'

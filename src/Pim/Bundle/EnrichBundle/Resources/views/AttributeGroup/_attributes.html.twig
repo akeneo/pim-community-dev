@@ -1,4 +1,7 @@
-{% set removalGranted = resource_granted('pim_enrich_attribute_group_remove_attribute') %}
+{% set removalGranted =
+        resource_granted('pim_enrich_attribute_group_remove_attribute') and
+        not group.code is constant('DEFAULT_GROUP_CODE', group)
+%}
 {% set sortGranted = resource_granted('pim_enrich_attribute_sort') %}
 
 <div class="tab-pane" id="attributes">
