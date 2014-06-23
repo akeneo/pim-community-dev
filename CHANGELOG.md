@@ -20,6 +20,7 @@
 - Apply "Remove product" permission to hide mass delete and delete row action
 - Change "launch" button by "view" on job profile datagrids
 - Create a `JobInstanceRepository`
+- Automatic creation and purge of indexes for MongoDB
 - Dispatch event before rendering the product edit template
 - Fixed asymetric enable product button
 - Remove qb definition from job profile grid configs

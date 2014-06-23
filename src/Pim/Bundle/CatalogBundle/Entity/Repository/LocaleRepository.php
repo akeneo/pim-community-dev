@@ -50,9 +50,11 @@ class LocaleRepository extends ReferableEntityRepository
      */
     public function getActivatedLocalesQB()
     {
-        return $this->createQueryBuilder('l')
-            ->innerJoin('l.channels', 'channels')
+        $qb = $this->createQueryBuilder('l');
+        $qb->where($qb->expr()->eq('l.activated', true))
             ->orderBy('l.code');
+
+        return $qb;
     }
 
     /**

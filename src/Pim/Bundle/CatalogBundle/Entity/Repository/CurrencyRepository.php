@@ -14,6 +14,18 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
 class CurrencyRepository extends ReferableEntityRepository
 {
     /**
+     * Return an array of activated currencies
+     *
+     * @return array
+     */
+    public function getActivatedCurrencies()
+    {
+        $qb = $this->getActivatedCurrenciesQB();
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
      * Return a query builder for activated currencies
      *
      * @return QueryBuilder
