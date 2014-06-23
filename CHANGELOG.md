@@ -27,6 +27,7 @@
 - Create repositories for JobInstance and JobExecution
 - Create manager for JobInstance
 - Clean LastOperationsWidget architecture
+- New readers for export improve memory usage loading small batches of products instead of all products in same time
 - Update BatchBundle to 0.1.6 in order to get updated summary information during the execution of the process (and not only at the end)
 - Allow values 'true', 'false', 'yes' and 'no' to be converted into boolean during import
 
