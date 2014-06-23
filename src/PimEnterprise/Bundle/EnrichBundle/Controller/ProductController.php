@@ -4,10 +4,12 @@ namespace PimEnterprise\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
 
 /**
  * Product Controller
@@ -40,6 +42,28 @@ class ProductController extends BaseProductController
 
             return $this->redirectToRoute('oro_default');
         }
+    }
+
+    /**
+     * Dispatch to product view or product edit when a user click on a product grid row
+     *
+     * @param integer $id
+     *
+     * @Template
+     * @AclAncestor("pim_enrich_product_edit")
+     * @return array
+     */
+    public function dispatchAction($id)
+    {
+        $product = $this->findProductOr404($id);
+        if ($this->securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)) {
+            return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
+
+        } elseif ($this->securityContext->isGranted(ProductVoter::PRODUCT_VIEW, $product)) {
+            return $this->redirectToRoute('pimee_enrich_product_show', array('id' => $id));
+        }
+
+        throw new AccessDeniedException();
     }
 
     /**

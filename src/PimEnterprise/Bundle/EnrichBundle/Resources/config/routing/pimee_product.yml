@@ -5,6 +5,13 @@ pimee_enrich_product_show:
         id: '[0-9a-f]+'
     methods: [GET]
 
+pimee_enrich_product_dispatch:
+    path: /{id}/dispatch
+    defaults: { _controller: pim_enrich.controller.product:dispatchAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [GET]
+
 pimee_enrich_product_value_show:
     path: /{productId}/attribute/{attributeCode}
     defaults: { _controller: pim_enrich.controller.product:showAttributeAction }
