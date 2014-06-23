@@ -4,11 +4,13 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
  * Voltage measures constants
- *
- * @author karec
+ * 
+ * @author Emmanuel Valette <evalette@expertime.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license http://opensource.org/licenses/MIT MIT
  */
-interface VoltageFamilyInterface {
-    
+interface VoltageFamilyInterface
+{
     /**
      * Family measure name
      * @staticvar string

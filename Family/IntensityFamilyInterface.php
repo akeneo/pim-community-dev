@@ -3,12 +3,14 @@
 namespace Akeneo\Bundle\MeasureBundle\Family;
 
 /**
- * Voltage measures constants
+ * Intensity measures constants
  *
- * @author karec
+ * @author Emmanuel Valette <evalette@expertime.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license http://opensource.org/licenses/MIT MIT
  */
-interface IntensityFamilyInterface {
-    
+interface IntensityFamilyInterface
+{    
     /**
      * Family measure name
      * @staticvar string
@@ -49,5 +51,4 @@ interface IntensityFamilyInterface {
      * @staticvar string
      */
     const KILOAMPERE = 'KILOAMPERE';
-    
 }
