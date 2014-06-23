@@ -1,2 +1,3 @@
 parameters:
     pim_import_export.repository.job_execution.class: PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository
+    pim_import_export.repository.job_instance.class:  PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository
