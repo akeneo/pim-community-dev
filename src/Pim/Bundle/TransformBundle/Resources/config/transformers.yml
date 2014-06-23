@@ -20,6 +20,12 @@ parameters:
     pim_transform.transformer.column_info_transformer.class:     Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformer
     pim_transform.transformer.column_info.class:                 Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfo
 
+    pim_transform.transformer.mongodb.product.class:       Pim\Bundle\TransformBundle\Transformer\MongoDB\ProductTransformer
+    pim_transform.transformer.mongodb.product_value.class: Pim\Bundle\TransformBundle\Transformer\MongoDB\ProductValueTransformer
+    pim_transform.transformer.mongodb.metric.class:        Pim\Bundle\TransformBundle\Transformer\MongoDB\MetricTransformer
+    pim_transform.transformer.mongodb.price.class:         Pim\Bundle\TransformBundle\Transformer\MongoDB\PriceTransformer
+    pim_transform.transformer.mongodb.datetime.class:      Pim\Bundle\TransformBundle\Transformer\MongoDB\DateTimeTransformer
+
 services:
     pim_transform.transformer.registry:
         class: %pim_transform.transformer.registry.class%
@@ -139,3 +145,30 @@ services:
     pim_transform.transformer.property.skip:
         class: %pim_transform.transformer.property.skip.class%
         public: false
+
+    # Object to MongoDB document transformers
+    pim_transform.transformer.mongodb.datetime:
+        class: %pim_transform.transformer.mongodb.datetime.class%
+
+    pim_transform.transformer.mongodb.metric:
+        class: %pim_transform.transformer.mongodb.metric.class%
+        arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
+
+    pim_transform.transformer.mongodb.price:
+        class: %pim_transform.transformer.mongodb.price.class%
+
+    pim_transform.transformer.mongodb.product_value:
+        class: %pim_transform.transformer.mongodb.product_value.class%
+        arguments:
+            - '@pim_transform.transformer.mongodb.datetime'
+            - '@pim_transform.transformer.mongodb.metric'
+            - '@pim_transform.transformer.mongodb.price'
+
+    pim_transform.transformer.mongodb.product:
+        class: %pim_transform.transformer.mongodb.product.class%
+        arguments:
+            - '@pim_transform.transformer.mongodb.product_value'
+            - '@pim_transform.transformer.mongodb.datetime'
+            - '@pim_serializer'
