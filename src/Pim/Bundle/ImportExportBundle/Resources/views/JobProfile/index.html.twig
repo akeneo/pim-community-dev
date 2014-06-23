@@ -14,6 +14,6 @@
 
     {{ elements.page_header((entityName ~ '.overview')|trans, buttons) }}
 
-    {{ dataGrid.renderStatefulGrid(gridName) }}
+    {{ dataGrid.renderStatefulGrid(gridName, { jobType: jobType }) }}
 
 {% endblock %}

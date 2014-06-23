@@ -13,4 +13,21 @@ use Pim\Bundle\CatalogBundle\Doctrine\ReferableEntityRepository;
  */
 class JobInstanceRepository extends ReferableEntityRepository
 {
+    /**
+     * Create datagrid query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('j');
+        $qb
+            ->addSelect('j.alias AS jobAlias')
+            ->addSelect(
+                "CONCAT('pim_import_export.status.', j.status) as statusLabel"
+            )
+            ->andWhere('j.type = :jobType');
+
+        return $qb;
+    }
 }

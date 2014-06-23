@@ -357,7 +357,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array  $categories
      * @param array  $selectedIds
-     * @param string $relatedentity
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -376,7 +376,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param array  $category
      * @param array  $selectedIds
-     * @param string $relatedentity
+     * @param string $relatedEntity
      *
      * @return array
      */
@@ -412,7 +412,7 @@ class CategoryExtension extends \Twig_Extension
      * @param CategoryInterface $category
      * @param boolean           $withCount
      * @param boolean           $includeSub
-     * @param string            $relatedentity
+     * @param string            $relatedEntity
      *
      * @return string
      */
@@ -435,7 +435,7 @@ class CategoryExtension extends \Twig_Extension
      *
      * @param CategoryInterface $category
      * @param boolean           $includeSub
-     * @param string            $relatedentity
+     * @param string            $relatedEntity
      *
      * @return string
      */
