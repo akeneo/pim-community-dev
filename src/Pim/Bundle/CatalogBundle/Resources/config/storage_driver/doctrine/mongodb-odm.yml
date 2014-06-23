@@ -4,6 +4,8 @@ parameters:
     pim_catalog.repository.product_mass_action.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductMassActionRepository
     pim_catalog.repository.product_category.class:          Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
+    pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
+    pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
     pim_catalog.event_listener.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
@@ -23,6 +25,7 @@ parameters:
     pim_catalog.event_listener.mongodb.set_normalized_product_data.class:    Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\SetNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.update_normalized_product_data.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\UpdateNormalizedProductDataSubscriber
     pim_catalog.event_listener.mongodb.product_related_entity_removal.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\ProductRelatedEntityRemovalSubscriber
+    pim_catalog.event_listener.mongodb.ensure_indexes.class:                 Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EnsureIndexesSubscriber
 
 services:
     pim_catalog.object_manager.product:
@@ -38,6 +41,22 @@ services:
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.repository.family'
+
+    pim_catalog.doctrine.index_creator:
+        class: %pim_catalog.doctrine.index_creator.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
+            - %pim_catalog.entity.channel.class%
+            - %pim_catalog.entity.locale.class%
+            - %pim_catalog.entity.currency.class%
+            - %pim_catalog.entity.attribute.class%
+
+    pim_catalog.doctrine.index_purger:
+        class: %pim_catalog.doctrine.index_purger.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
 
     pim_catalog.event_listener.mongodb.entities_type:
         class: %pim_catalog.event_listener.mongodb.entities_type.class%
@@ -182,6 +201,14 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
+        tags:
+            - { name: doctrine.event_subscriber, priority: 100 }
+
+    pim_catalog.event_listener.mongodb.ensure_indexes:
+        class: %pim_catalog.event_listener.mongodb.ensure_indexes.class%
+        arguments:
+            - '@pim_catalog.doctrine.index_creator'
+            - '@pim_catalog.doctrine.index_purger'
         tags:
             - { name: doctrine.event_subscriber, priority: 100 }
 
