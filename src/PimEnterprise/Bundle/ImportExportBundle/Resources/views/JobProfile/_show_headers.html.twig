@@ -11,8 +11,8 @@
     {{ elements.backLink(indexRoute) }}
 
     {% if jobInstance.status != constant('Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance::STATUS_IN_PROGRESS') and
-        (is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EDIT_JOB_PROFILE'), jobInstance)
-            or resource_granted('pimee_importexport_' ~ jobInstance.type ~ '_profile_edit_permissions'))
+        is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EDIT_JOB_PROFILE'), jobInstance)
+            and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_edit')
     %}
         {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
     {% endif %}
