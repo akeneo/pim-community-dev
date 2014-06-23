@@ -2,16 +2,11 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-
-
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
-
-use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Oro\Bundle\DataGridBundle\Event\BuildAfter;
+use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
 /**
  * Add permissions to datagrid listener
@@ -31,17 +26,13 @@ class AddPermissionsToGridListener
      *
      * @param EntityRepository $accessRepository
      * @param SecurityContextInterface $securityContext
-     *
-     * @TODO: Create AccessRepositoryInterface
      */
     public function __construct(
         $accessRepository,
-        SecurityContextInterface $securityContext,
-        RequestParameters $requestParams
+        SecurityContextInterface $securityContext
     ) {
         $this->accessRepository = $accessRepository;
         $this->securityContext  = $securityContext;
-        $this->requestParams    = $requestParams;
     }
 
     /**
