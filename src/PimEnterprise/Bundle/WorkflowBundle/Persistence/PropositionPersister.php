@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\Event;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
@@ -49,8 +50,9 @@ class PropositionPersister implements ProductPersister
      * @param CompletenessManager            $completenessManager
      * @param SecurityContextInterface       $securityContext
      * @param PropositionFactory             $factory
-     * @param ProductChangesProvider         $changesProvider
+     * @param CollectProductValuesSubscriber $collector
      * @param PropositionRepositoryInterface $repository
+     * @param EventDispatcherInterface       $dispatcher
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -145,12 +147,10 @@ class PropositionPersister implements ProductPersister
             $manager->persist($proposition);
         }
 
-        $proposition->setChanges($changes);
-
         if ($this->dispatcher->hasListeners(PropositionEvents::PRE_UPDATE)) {
             $this->dispatcher->dispatch(
                 PropositionEvents::PRE_UPDATE,
-                new PropositionEvent($proposition)
+                new PropositionEvent($proposition, $changes)
             );
         }
 

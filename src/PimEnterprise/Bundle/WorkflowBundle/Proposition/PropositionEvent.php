@@ -16,22 +16,17 @@ class PropositionEvent extends Event
     /** @var Proposition */
     protected $proposition;
 
-    /**
-     * @param Proposition $proposition
-     */
-    public function __construct(Proposition $proposition)
-    {
-        $this->proposition = $proposition;
-    }
+    /** @var array */
+    protected $changes;
 
     /**
-     * Set proposition
-     *
      * @param Proposition $proposition
+     * @param array       $changes
      */
-    public function setProposition(array $proposition)
+    public function __construct(Proposition $proposition, array $changes = null)
     {
         $this->proposition = $proposition;
+        $this->changes = $changes;
     }
 
     /**
@@ -42,5 +37,15 @@ class PropositionEvent extends Event
     public function getProposition()
     {
         return $this->proposition;
+    }
+
+    /**
+     * Get the submitted changes
+     *
+     * @return array
+     */
+    public function getChanges()
+    {
+        return $this->changes;
     }
 }
