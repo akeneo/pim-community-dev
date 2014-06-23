@@ -149,7 +149,7 @@ class DatabaseCommand extends ContainerAwareCommand
         $this->commandExecutor->runCommand('doctrine:fixtures:load', $params);
 
         if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->getStorageDriver()) {
-            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load');
+            $this->commandExecutor->runCommand('doctrine:mongodb:fixtures:load', array('--append' => true));
         }
 
         $output->writeln('');
