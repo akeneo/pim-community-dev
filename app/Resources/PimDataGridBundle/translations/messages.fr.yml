@@ -17,6 +17,7 @@ oro.grid.mass_action.delete.success_message: "{0} Aucune entité n'a été suppr
 datagrid_view:
   views: Vues
   default: Ma vue par défaut
+  create: Créer une vue
   placeholder: Nom de la nouvelle vue
   remove: Supprimer cette vue
   save_changes: Mettre à jour

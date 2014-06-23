@@ -382,6 +382,30 @@ pim_catalog_metric: Maßeinheit
 Activated: Aktiviert
 Disable: Deaktivieren
 pim_enrich.mass_edit_action:
+  product:
+    page_title: Produkte
+    page_subtitle: 'Massenbearbeitung (1 Produkt)|Massenbearbeitung (%count% Produkte)'
+    title: Aktion auswählen
+    subtitle: 'Wählen Sie die Aktion aus, die Sie auf das ausgewählte Produkt anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produkte anwenden wollen'
+    confirm: 'Sie sind dabei ein Produkt mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produkte mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+    limit_exceeded: 'Bitte wählen Sie weniger als %limit% Produkte für die Bearbeitung aus'
+    steps:
+      first: Produkte auswählen
+      second: Aktion auswählen
+      third: Konfigurieren
+      fourth: Bestätigen
+  family:
+    page_title: Produktfamilien
+    page_subtitle: 'Massenbearbeitung (1 Produktfamilie)|Massenbearbeitung (%count% Produktfamilien)'
+    title: Aktion auswählen
+    subtitle: 'Wählen Sie die Aktion aus, die Sie auf die ausgewählte Produktfamilie anwenden wollen|Wählen Sie die Aktion aus, die Sie auf die ausgewählten %count% Produktfamilien anwenden wollen'
+    confirm: 'Sie sind dabei eine Produktfamilie mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|Sie sind dabei %count% Produktfamilien mit den folgenden Informationen zu aktualisieren - bitte bestätigten Sie den Vorgang.|.'
+    limit_exceeded: 'Bitte wählen Sie weniger als %limit% Produktfamilien für die Bearbeitung aus'
+    steps:
+      first: Produktfamilien auswählen
+      second: Aktion auswählen
+      third: Konfigurieren
+      fourth: Bestätigen
   change-status:
     label: Status ändern (aktivieren / deaktivieren)
     description: Die ausgewählten Produkte werden aktiviert oder deaktiviert.
