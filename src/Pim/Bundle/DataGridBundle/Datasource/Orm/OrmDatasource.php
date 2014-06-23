@@ -86,8 +86,8 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     public function setParameters($parameters)
     {
-        $this->parameters = $parameters;
-        $this->qb->setParameters($parameters);
+        $this->parameters += $parameters;
+        $this->qb->setParameters($this->parameters);
 
         return $this;
     }
