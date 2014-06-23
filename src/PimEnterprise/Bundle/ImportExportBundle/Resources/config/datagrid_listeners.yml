@@ -1,0 +1,10 @@
+services:
+    pimee_import_export.event_listener.inject_job_profile_access:
+        class: %pimee_datagrid.event_listener.add_permissions_to_grid.class%
+        arguments:
+            - '@pimee_security.repository.job_profile_access'
+            - '@security.context'
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }

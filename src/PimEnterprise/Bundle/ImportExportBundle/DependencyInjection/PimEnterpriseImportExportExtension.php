@@ -24,5 +24,6 @@ class PimEnterpriseImportExportExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('managers.yml');
         $loader->load('repositories.yml');
+        $loader->load('datagrid_listeners.yml');
     }
 }
