@@ -46,7 +46,9 @@ define(
                     if (_.isUndefined(actionConfiguration) ||
                         _.isUndefined(actionConfiguration[name]) ||
                         actionConfiguration[name]) {
-                        result.push(this.createAction(action));
+                        if (action.prototype.hidden !== true) {
+                            result.push(this.createAction(action));
+                        }
                     }
                 }, this);
 
