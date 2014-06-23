@@ -275,12 +275,6 @@ datagrid:
                 route: pim_enrich_product_remove
                 params:
                     - id
-            display_link:
-                type: url
-                route: pim_enrich_product_display
-                params:
-                    - id
-                    - dataLocale
         actions:
             edit:
                 type:      tab-redirect
@@ -288,13 +282,7 @@ datagrid:
                 tab:       attributes
                 icon:      edit
                 link:      edit_link
-            row_action:
-                type:      tab-redirect
-                label:     Display a product
-                tab:       attributes
-                link:      display_link
                 rowAction: true
-                hidden:    true
             edit_categories:
                 type:  tab-redirect
                 label: Classify the product

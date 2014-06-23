@@ -208,22 +208,6 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
-     * Display a product
-     *
-     * @param integer $id
-     *
-     * @Template
-     * @AclAncestor("pim_enrich_product_edit")
-     * @return array
-     */
-    public function displayAction($id)
-    {
-        $product = $this->findProductOr404($id);
-
-        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
-    }
-
-    /**
      * Edit product
      *
      * @param integer $id
