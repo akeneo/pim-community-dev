@@ -164,6 +164,54 @@ measures_config:
             TERAWATT:
                 convert: [{'mul': 1000000000000}]
                 symbol: TW
+    Voltage:
+        standard: VOLT
+        units:
+            MILLIVOLT:
+                convert: [{'mul': 0.001}]
+                symbol: mV
+            CENTIVOLT:
+                convert: [{'mul': 0.01}]
+                symbol: cV
+            DECIVOLT:
+                convert: [{'mul': 0.1}]
+                symbol: dV
+            VOLT:
+                convert: [{'mul': 1}]
+                symbol: V
+            DEKAVOLT:
+                convert: [{'mul': 10}]
+                symbol: daV
+            HECTOVOLT:
+                convert: [{'mul': 100}]
+                symbol: hV
+            KILOVOLT:
+                convert: [{'mul': 1000}]
+                symbol: kV
+    Intensity:
+        standard: AMPERE
+        units:
+            MILLIAMPERE:
+                convert: [{'mul': 0.001}]
+                symbol: mA
+            CENTIAMPERE:
+                convert: [{'mul':0.01}]
+                symbol: cA
+            DECIAMPERE:
+                convert: [{'mul':0.1}]
+                symbol: dA
+            AMPERE:
+                convert: [{'mul': 1}]
+                symbol: A
+            DEKAMPERE:
+                convert: [{'mul': 10}]
+                symbol: daA
+            HECTOAMPERE:
+                convert: [{'mul': 100}]
+                symbol: hA
+            KILOAMPERE:
+                convert: [{'mul': 1000}]
+                symbol: kA
     Resistance:
         standard: OHM
         units:
