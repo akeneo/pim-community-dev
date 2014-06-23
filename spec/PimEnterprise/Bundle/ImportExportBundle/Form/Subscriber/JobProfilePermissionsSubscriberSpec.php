@@ -74,6 +74,19 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
+    function it_does_not_persist_permissions_on_creation(
+        $event,
+        $form,
+        $jobInstance
+    ) {
+        $jobInstance->getId()->willReturn(null);
+
+        $this->postSetData($event);
+        $this->postSubmit($event);
+
+        $form->isValid()->shouldNotBeCalled();
+    }
+
     function it_persists_the_selected_permissions_if_the_form_is_valid(
         $event,
         $form,
@@ -84,6 +97,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $securityFacade
     ) {
         $jobInstance->getType()->willReturn('import');
+        $jobInstance->getId()->willReturn(1);
 
         $form->isValid()->willReturn(true);
         $securityFacade->isGranted(Argument::any())->willReturn(true);
@@ -103,6 +117,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $accessManager
     ) {
         $jobInstance->getType()->willReturn('import');
+        $jobInstance->getId()->willReturn(1);
 
         $form->isValid()->willReturn(false);
         $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
@@ -118,6 +133,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $securityFacade
     ) {
         $jobInstance->getType()->willReturn('import');
+        $jobInstance->getId()->willReturn(1);
 
         $securityFacade->isGranted(Argument::any())->willReturn(false);
         $form->isValid()->willReturn(true);
