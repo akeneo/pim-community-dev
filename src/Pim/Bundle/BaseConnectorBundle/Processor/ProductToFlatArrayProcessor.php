@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Serializer;
 class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implements ItemProcessorInterface
 {
     /**
-     * @var FlatProductNormalizer
+     * @var Serializer
      */
     protected $serializer;
 
@@ -43,11 +43,10 @@ class ProductToFlatArrayProcessor extends AbstractConfigurableStepElement implem
     protected $normalizerContext;
 
     /**
-     * @param FlatProductNormalizer $flatProductNormalizer
-     * @param ChannelManager        $channelManager
+     * @param Serializer     $serializer
+     * @param ChannelManager $channelManager
      */
     public function __construct(
-        //FlatProductNormalizer $flatProductNormalizer,
         Serializer $serializer,
         ChannelManager $channelManager
     ) {
