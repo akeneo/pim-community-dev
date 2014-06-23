@@ -58,6 +58,11 @@ class RowActionsConfigurator implements ConfiguratorInterface
         $this->checkEditActions();
     }
 
+    /**
+     * Add a dispatch action to redirect on granted action (view or edit)
+     *
+     * @return null
+     */
     protected function addDispatchAction()
     {
         $properties = $this->configuration->offsetGetByPath('[properties]');
