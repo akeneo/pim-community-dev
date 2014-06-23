@@ -23,7 +23,6 @@ class AddPermissionsToGridListener
     protected $securityContext;
 
     /**
-     *
      * @param EntityRepository $accessRepository
      * @param SecurityContextInterface $securityContext
      */
