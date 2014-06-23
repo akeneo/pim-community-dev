@@ -3,6 +3,8 @@ An identifier attribute already exists.: Ein identifizierendes Attribut existier
 Attribute code may contain only letters, numbers and underscore: Ein Attributcode darf sich nur aus Buchstaben, Nummern und Unterstrichen zusammensetzen
 This attribute type can't be used as a grid filter: Dieser Attributtyp kann nicht als Tabellenfilter verwendet werden
 This code is not available: Dieser Code ist nicht verfügbar
+This attribute type must be required: Dieser Attributtyp muss ein Pflichtfeld sein
+This attribute type can't be required: Dieser Attributtyp kann kein Pflichtfeld sein
 This attribute type can't have unique value: Dieser Attributtyp kann keine einmaligen Werte haben
 No default value may be specified for this attribute type: Für diesen Attributtyp kann kein Standardwert angegeben werden
 This value should be Yes or No: Dieser Wert sollte Ja oder Nein sein
