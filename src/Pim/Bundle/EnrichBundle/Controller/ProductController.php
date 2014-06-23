@@ -220,7 +220,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        return [];
+        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
     }
 
     /**
