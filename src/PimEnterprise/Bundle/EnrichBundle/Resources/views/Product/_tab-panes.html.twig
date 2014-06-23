@@ -1,13 +1,13 @@
 <div class="tab-pane active" id="attributes">
     {% include 'PimEnrichBundle:Product:_attributes.html.twig' %}
 </div>
-{% if resource_granted("pim_enrich_product_categories_view") %}
+{% if resource_granted("pim_enrich_product_categories_view") and isOwner %}
     <div class="tab-pane" id="categories">
        {% include 'PimEnrichBundle:Product:_associateCategories.html.twig' %}
     </div>
 {% endif %}
 
-{% if resource_granted("pim_enrich_associations_view") %}
+{% if resource_granted("pim_enrich_associations_view") and isOwner %}
     <div class="tab-pane" id="associations" data-url="{{ path('pim_enrich_associations', { id: product.id , dataLocale: dataLocale}) }}">
     </div>
 {% endif %}
@@ -18,6 +18,8 @@
 <div class="tab-pane" id="history" data-url="{{ path('pim_enrich_product_history', { id: product.id }) }}">
 </div>
 
+{% if isOwner %}
 <div class="tab-pane" id="propositions">
     {% include 'PimEnterpriseEnrichBundle:Product:_propositions.html.twig' %}
 </div>
+{% endif %}

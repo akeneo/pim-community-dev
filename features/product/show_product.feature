@@ -32,6 +32,7 @@ Feature: Show a product
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"
     And I should not be able to view the "Delete the product" action of the row which contains "rangers"
 
+  @skip
   Scenario: Being able to view a product I can not edit
     Given I am on the products page
     Then I should not be able to access the "rangers" product page

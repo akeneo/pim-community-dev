@@ -123,9 +123,7 @@ class ContextConfigurator extends PimContextConfigurator
     protected function getTreeId()
     {
         $filterValues = $this->requestParams->get('_filter');
-        if (isset($filterValues['category']['value']['treeId']) &&
-            null !== $filterValues['category']['value']['treeId']
-        ) {
+        if (isset($filterValues['category']['value']['treeId']) && $filterValues['category']['value']['treeId']) {
             return $filterValues['category']['value']['treeId'];
         } else {
             $tree = $this->userContext->getAccessibleUserTree();

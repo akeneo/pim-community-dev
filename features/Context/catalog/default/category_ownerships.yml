@@ -1,0 +1,3 @@
+category_ownerships:
+    default:
+        roles: [administrator, manager, user]

@@ -48,9 +48,11 @@ class CategoryOwnershipRepository extends EntityRepository
     }
 
     /**
+     * @param ProductInterface $product
+     *
      * @return array
      */
-    public function findRoleLabelsForProduct(ProductInterface $product)
+    public function findRolesForProduct(ProductInterface $product)
     {
         $categories = $product->getCategories();
         if (count($categories) === 0) {
@@ -63,9 +65,9 @@ class CategoryOwnershipRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
         $qb->where($qb->expr()->in('o.category', $categoryIds));
         $qb->leftJoin('o.role', 'role');
-        $qb->select('role.label');
-        $labels = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $qb->select('role.id, role.label');
+        $roles = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        return $labels;
+        return $roles;
     }
 }

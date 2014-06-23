@@ -19,6 +19,16 @@ jobs:
             filePath: category_accesses.yml
             multiple: false
 
+    fixtures_category_ownership_yml:
+        order: 150
+        connector: Data fixtures
+        alias:     fixtures_category_ownership_yml
+        label:     Category ownerships data fixtures
+        type:      fixtures
+        configuration:
+            filePath: category_ownerships.yml
+            multiple: false
+
     fixtures_job_profile_access_yml:
         order:     150
         connector: Data fixtures

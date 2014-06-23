@@ -113,7 +113,7 @@ class PropositionManager
     // TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
     public function findOrCreate(ProductInterface $product, $locale)
     {
-        if (null === $user = $this->userContext->getUser()) {
+        if (null === $this->userContext->getUser()) {
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();

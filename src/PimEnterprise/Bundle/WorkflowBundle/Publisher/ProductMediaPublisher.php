@@ -46,8 +46,14 @@ class ProductMediaPublisher implements PublisherInterface
         $product = $options['product'];
         $value = $options['value'];
         $copiedMedia = new $this->publishClassName();
-        $prefix = sprintf('%s-%s', self::PREFIX_FILE, $this->mediaManager->generateFilenamePrefix($product, $value));
-        $this->mediaManager->duplicate($object, $copiedMedia, $prefix);
+        if ($value->getData() && $value->getData()->getFilePath()) {
+            $prefix = sprintf(
+                '%s-%s',
+                self::PREFIX_FILE,
+                $this->mediaManager->generateFilenamePrefix($product, $value)
+            );
+            $this->mediaManager->duplicate($object, $copiedMedia, $prefix);
+        }
 
         return $copiedMedia;
     }
