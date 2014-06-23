@@ -446,6 +446,5 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected function executeQueries()
     {
-        error_log(print_r($this->scheduledQueries, true));
     }
 }
