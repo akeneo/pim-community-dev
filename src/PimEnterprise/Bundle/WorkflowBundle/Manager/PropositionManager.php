@@ -104,23 +104,22 @@ class PropositionManager
      * Find or create a proposition
      *
      * @param ProductInterface $product
-     * @param string           $locale
      *
      * @return Proposition
      *
      * @throw \LogicException
      */
     // TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
-    public function findOrCreate(ProductInterface $product, $locale)
+    public function findOrCreate(ProductInterface $product)
     {
         if (null === $this->userContext->getUser()) {
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $proposition = $this->repository->findUserProposition($product, $username, $locale);
+        $proposition = $this->repository->findUserProposition($product, $username);
 
         if (null === $proposition) {
-            $proposition = $this->factory->createProposition($product, $username, $locale);
+            $proposition = $this->factory->createProposition($product, $username);
         }
 
         return $proposition;

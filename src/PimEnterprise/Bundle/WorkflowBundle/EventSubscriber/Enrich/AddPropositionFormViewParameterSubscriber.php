@@ -49,17 +49,14 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
     {
         try {
             $parameters = $event->getArgument('parameters');
-            if (!array_key_exists('product', $parameters) || !array_key_exists('dataLocale', $parameters)) {
+            if (!array_key_exists('product', $parameters)) {
                 throw new \InvalidArgumentException();
             }
         } catch (\InvalidArgumentException $e) {
             return;
         }
 
-        $proposition = $this->manager->findOrCreate(
-            $parameters['product'],
-            $parameters['dataLocale']
-        );
+        $proposition = $this->manager->findOrCreate($parameters['product']);
 
         $parameters['propositionForm'] = $this
             ->formFactory

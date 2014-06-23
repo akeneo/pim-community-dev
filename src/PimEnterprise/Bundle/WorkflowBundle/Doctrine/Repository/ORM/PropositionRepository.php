@@ -20,13 +20,12 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(ProductInterface $product, $username, $locale)
+    public function findUserProposition(ProductInterface $product, $username)
     {
         return $this->findOneBy(
             [
-                'author' => $username,
-                'locale' => $locale,
                 'product' => $product,
+                'author' => $username,
             ]
         );
     }
