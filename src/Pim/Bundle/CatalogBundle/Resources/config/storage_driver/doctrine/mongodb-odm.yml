@@ -179,6 +179,7 @@ services:
             - %pim_catalog.entity.family.class%
             - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
             - %pim_catalog.entity.channel.class%
+            - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.attribute_option.class%
             - %pim_catalog.entity.attribute_option_value.class%
         tags:

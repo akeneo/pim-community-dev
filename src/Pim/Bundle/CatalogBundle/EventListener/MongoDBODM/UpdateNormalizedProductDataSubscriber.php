@@ -35,6 +35,9 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     protected $channelClass;
 
     /** @var string */
+    protected $localeClass;
+
+    /** @var string */
     protected $attributeOptionClass;
 
     /** @var string */
@@ -53,6 +56,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      * @param string              $familyClass
      * @param string              $familyTranslationClass
      * @param string              $channelClass
+     * @param string              $localeClass
      * @param string              $attributeOptionClass
      * @param string              $attributeOptionValueClass
      */
@@ -62,6 +66,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $familyClass,
         $familyTranslationClass,
         $channelClass,
+        $localeClass,
         $attributeOptionClass,
         $attributeOptionValueClass
     ) {
@@ -70,6 +75,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $this->familyClass               = $familyClass;
         $this->familyTranslationClass    = $familyTranslationClass;
         $this->channelClass              = $channelClass;
+        $this->localeClass              = $localeClass;
         $this->attributeOptionClass      = $attributeOptionClass;
         $this->attributeOptionValueClass = $attributeOptionValueClass;
     }
@@ -256,34 +262,34 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                     return [];
                 }
             ],
-            // [
-            //     'class'     => $this->attributeOptionClass,
-            //     'field'     => '',
-            //     'generator' => function($entity, $field, $oldValue, $newValue) {
-            //         $attributeNormFields = $this->getPossibleAttributeCodes(
-            //             $entity->getOption()->getAttribute(),
-            //             'normalizedData.'
-            //         );
+            [//DONE
+                'class'     => $this->attributeOptionClass,
+                'field'     => '',
+                'generator' => function($entity, $field, $oldValue, $newValue) {
+                    $attributeNormFields = $this->getPossibleAttributeCodes(
+                        $entity->getAttribute(),
+                        'normalizedData.'
+                    );
 
-            //         $queries = [];
+                    $queries = [];
 
-            //         foreach ($attributeNormFields as $attributeNormField) {
-            //             $queries[] = [
-            //                 [$attributeNormField => [ '$exists' => true ]],
-            //                 ['$unset' => [sprintf('%s', $entity->getCode()) => '']],
-            //                 ['multi' => true]
-            //             ];
-            //         }
+                    foreach ($attributeNormFields as $attributeNormField) {
+                        $queries[] = [
+                            [$attributeNormField => [ '$exists' => true ]],
+                            ['$unset' => [sprintf('%s', $entity->getCode()) => '']],
+                            ['multi' => true]
+                        ];
+                    }
 
-            //         return $queries;
-            //     }
-            // ],
-            [
+                    return $queries;
+                }
+            ],
+            [//DONE
                 'class'     => $this->attributeOptionClass,
                 'field'     => 'code',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
                     $attributeNormFields = $this->getPossibleAttributeCodes(
-                        $entity->getOption()->getAttribute(),
+                        $entity->getAttribute(),
                         'normalizedData.'
                     );
 
@@ -304,7 +310,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                     return $queries;
                 }
             ],
-            [
+            [//DONE
                 'class'     => $this->attributeOptionValueClass,
                 'field'     => 'value',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
@@ -317,9 +323,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
                     foreach ($attributeNormFields as $attributeNormField) {
                         $queries[] = [
-                            [
-                                $attributeNormField => $entity->getOption()->getCode(),
-                            ],
+                            [$attributeNormField => $entity->getOption()->getCode()],
                             [
                                 '$set' => [
                                     sprintf(
@@ -405,11 +409,11 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $localeSuffixes = [];
 
         if ($attribute->isLocalizable()) {
-            $localeManager     = $this->registry->getManagerForClass($this->localeClass);
-            $localeRepository  = $localeManager->getRepository($this->localeClass);
+            $objectManager     = $this->registry->getManagerForClass($this->localeClass);
+            $localeRepository  = $objectManager->getRepository($this->localeClass);
 
-            foreach ($localeManager->getActiveLocales() as $locale) {
-                $localeSuffixes = sptrinf('-%s', $locale->getCode());
+            foreach ($localeRepository->getActivatedLocales() as $locale) {
+                $localeSuffixes[] = sprintf('-%s', $locale->getCode());
             }
         }
 
@@ -426,11 +430,11 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $channelSuffixes = [];
 
         if ($attribute->isScopable()) {
-            $channelManager     = $this->registry->getManagerForClass($this->channelClass);
-            $channelRepository  = $channelManager->getRepository($this->channelClass);
+            $objectManager     = $this->registry->getManagerForClass($this->channelClass);
+            $channelRepository  = $objectManager->getRepository($this->channelClass);
 
-            foreach ($channelManager->getChannels() as $channel) {
-                $channelSuffixes = sprintf('-%s', $channel->getCode());
+            foreach ($channelRepository->findAll() as $channel) {
+                $channelSuffixes[] = sprintf('-%s', $channel->getCode());
             }
         }
 
