@@ -76,6 +76,10 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
+        if (null === $event->getData() || null === $event->getData()->getId()) {
+            return;
+        }
+
         $form = $event->getForm();
         if ($form->isValid()) {
             $viewRoles = $form->get('permissions')->get('view')->getData();
