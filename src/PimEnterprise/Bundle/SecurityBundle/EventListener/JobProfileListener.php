@@ -5,9 +5,9 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\JobEvents;
-use PimEnterprise\Bundle\SecurityBundle\SecurityContext;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
 /**
@@ -18,15 +18,15 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  */
 class JobProfileListener implements EventSubscriberInterface
 {
-    /** @var SecurityContext */
+    /** @var SecurityContextInterface */
     protected $securityContext;
 
     /**
      * Constructor
      *
-     * @param SecurityFacade $securityContext
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(SecurityContext $securityContext)
+    public function __construct(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
     }
@@ -51,8 +51,6 @@ class JobProfileListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        $resource = sprintf('pim_importexport_%s_profile_edit', $event->getSubject()->getType());
-
         if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())) {
             throw new AccessDeniedException();
         }
