@@ -73,6 +73,7 @@
 - Remove WidgetRepository to replace it by `Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository`
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
 - Remove injection of WidgetRepository from LastOperationsWidget
+- Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
