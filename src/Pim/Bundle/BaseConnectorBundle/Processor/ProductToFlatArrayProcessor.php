@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Processor;
 
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\BaseConnectorBundle\Validator\Constraints\Channel;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
