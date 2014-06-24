@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class JobInstanceFactorySpec extends ObjectBehavior
 {
-    const TESTED_CLASS = 'spec\Pim\Bundle\ImportExportBundle\Factory\MyObjectClass';
+    const TESTED_CLASS = 'Akeneo\Bundle\BatchBundle\Entity\JobInstance';
 
     function let()
     {
@@ -22,22 +22,8 @@ class JobInstanceFactorySpec extends ObjectBehavior
     {
         $jobInstance = $this->createJobInstance('foo', 'bar', 'baz');
         $jobInstance->shouldBeAnInstanceOf(self::TESTED_CLASS);
-        $jobInstance->connector->shouldReturn('foo');
-        $jobInstance->type->shouldReturn('bar');
-        $jobInstance->alias->shouldReturn('baz');
-    }
-}
-
-class MyObjectClass
-{
-    public $connector;
-    public $type;
-    public $alias;
-
-    public function __construct($connector = null, $type = null, $alias = null)
-    {
-        $this->connector     = $connector;
-        $this->type          = $type;
-        $this->alias         = $alias;
+        $jobInstance->getConnector()->shouldReturn('foo');
+        $jobInstance->getType()->shouldReturn('bar');
+        $jobInstance->getAlias()->shouldReturn('baz');
     }
 }
