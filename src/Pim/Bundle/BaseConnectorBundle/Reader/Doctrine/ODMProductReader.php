@@ -101,6 +101,7 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
+        $this->missingCompleteness = $missingCompleteness;
     }
 
     /**
