@@ -2,7 +2,8 @@
 
 {% block content %}
 
-    {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label %}
+    {% set title = "execution details"|trans ~ ' - ' ~ execution.jobInstance.label ~ ' [' ~ 
+                   execution.jobInstance.code ~ ']' %}
 
     {% set buttons %}
         <span id="archives"></span>
