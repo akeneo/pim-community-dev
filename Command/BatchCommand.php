@@ -172,7 +172,7 @@ class BatchCommand extends ContainerAwareCommand
                 true
             );
             if ($verbose) {
-                $output->write("<error>$exception[trace]</error>", true);
+                $output->write(sprintf('<error>%s</error>', $exception['trace']), true);
             }
         }        
     }
