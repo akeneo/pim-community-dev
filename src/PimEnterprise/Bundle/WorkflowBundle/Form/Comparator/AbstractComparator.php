@@ -23,6 +23,7 @@ abstract class AbstractComparator implements ComparatorInterface
                 'attribute_id' => $value->getAttribute()->getId(),
                 'value_id' => $value->getId(),
                 'scope' => $value->getScope(),
+                'locale' => $value->getLocale(),
             ];
 
             return $dataChanges;

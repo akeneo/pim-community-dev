@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 
 /**
@@ -40,6 +41,9 @@ class PropositionChangesExtension extends \Twig_Extension
     /** @var PresenterInterface[] */
     protected $presenters = [];
 
+    /** @var \Twig_Environment */
+    protected $twig;
+
     /**
      * @param ObjectRepository    $valueRepository
      * @param RendererInterface   $renderer
@@ -61,6 +65,14 @@ class PropositionChangesExtension extends \Twig_Extension
         $this->translator = $translator;
         $this->productManager = $productManager;
         $this->attributeManager = $attributeManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initRuntime(\Twig_Environment $twig)
+    {
+        $this->twig = $twig;
     }
 
     /**
@@ -183,6 +195,10 @@ class PropositionChangesExtension extends \Twig_Extension
 
                 if ($presenter instanceof RendererAwareInterface) {
                     $presenter->setRenderer($this->renderer);
+                }
+
+                if ($presenter instanceof TwigAwareInterface) {
+                    $presenter->setTwig($this->twig);
                 }
 
                 return $presenter->present($object, $change);
