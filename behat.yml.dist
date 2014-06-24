@@ -34,7 +34,7 @@ jenkins-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~doc&&~ce
 
 jenkins-mongodb-1:
     context:
@@ -51,7 +51,7 @@ jenkins-mongodb-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~doc&&~ce
 
 jenkins-pr-1:
     context:
@@ -68,7 +68,7 @@ jenkins-pr-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~doc&&~ce
 
 jenkins-pr-mongodb-1:
     context:
@@ -85,4 +85,4 @@ jenkins-pr-mongodb-1:
         parameters:
             output_path: null,app/build/logs/behat/
     filters:
-        tags: ~skip&&~doc
+        tags: ~skip&&~doc&&~ce
