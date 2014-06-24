@@ -49,9 +49,7 @@ class ProductController extends BaseProductController
      *
      * @param integer $id
      *
-     * @Template
      * @AclAncestor("pim_enrich_product_edit")
-     * @return array
      */
     public function dispatchAction($id)
     {
