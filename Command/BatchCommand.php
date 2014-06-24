@@ -157,7 +157,7 @@ class BatchCommand extends ContainerAwareCommand
      * Writes failure exceptions to the output
      * 
      * @param OutputInterface $output
-     * @param array           $exceptions
+     * @param array[]         $exceptions
      * @param boolean         $verbose
      */
     protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose) {
