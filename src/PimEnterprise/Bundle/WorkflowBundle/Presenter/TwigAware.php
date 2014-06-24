@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-
 /**
  * Provides twig capabilities default implementation
  *

@@ -56,7 +56,7 @@ class ProductOwnershipVoter implements VoterInterface
                 $user = $token->getUser();
                 $roles = $user->getRoles();
                 $userRoleIds = array_map(
-                    function($role) {
+                    function ($role) {
                         return $role->getId();
                     },
                     $roles

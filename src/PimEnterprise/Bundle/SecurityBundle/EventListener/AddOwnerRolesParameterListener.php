@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Add the owner roles parameter to the product edit template parameters
