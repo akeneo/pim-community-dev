@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  *
@@ -30,7 +31,7 @@ class ProductOwnershipVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return 'OWNER' === $attribute;
+        return Attributes::OWNER === $attribute;
     }
 
     /**

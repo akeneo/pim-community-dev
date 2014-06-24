@@ -11,6 +11,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class ProductOwnershipVoterSpec extends ObjectBehavior
 {
@@ -26,7 +27,7 @@ class ProductOwnershipVoterSpec extends ObjectBehavior
 
     function it_supports_the_OWNER_attribute()
     {
-        $this->supportsAttribute('OWNER')->shouldReturn(true);
+        $this->supportsAttribute(Attributes::OWNER)->shouldReturn(true);
     }
 
     function it_supports_product(ProductInterface $product)

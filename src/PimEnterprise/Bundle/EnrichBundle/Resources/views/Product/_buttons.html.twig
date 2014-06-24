@@ -24,7 +24,7 @@
 {% endspaceless %}
 {% endset %}
 
-{% if is_granted('OWNER', product) %}
+{% if is_granted(constant('PimEnterprise\Bundle\SecurityBundle\Attributes::OWNER'), product) %}
     {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'cloud-upload'}) }}
 {% else %}
 <div class="btn-group">
@@ -56,7 +56,7 @@
 {% endif %}
 
 {{ elements.submitDropdownBtn(
-    is_granted('OWNER', product) ? 'btn.save working copy' : 'btn.save draft',
+    is_granted(constant('PimEnterprise\Bundle\SecurityBundle\Attributes::OWNER'), product) ? 'btn.save working copy' : 'btn.save draft',
     {
         'Create': { 'text': 'btn.save and create' },
         'BackGrid': { 'text': 'btn.save and back' }
