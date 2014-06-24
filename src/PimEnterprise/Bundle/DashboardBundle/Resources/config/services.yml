@@ -6,5 +6,6 @@ services:
         class: %pimee_dashboard.widget.proposition.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_user.context.user'
         tags:
             - { name: pim_dashboard.widget, alias: propositions }

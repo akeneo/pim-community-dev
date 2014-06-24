@@ -110,7 +110,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $expectedCount = count($expectedPropositions);
         $actualCount   = count($actualPropositions);
         if ($expectedCount !== $actualCount) {
-            throw $this->createExpectationException(
+            throw new \Exception(
                 sprintf(
                     'Expecting %d propositions, actually saw %d',
                     $expectedCount,
@@ -122,7 +122,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($expectedPropositions as $key => $proposition) {
             $cells = $actualPropositions[$key]->findAll('css', 'td');
             if ($cells[1]->getText() !== $proposition['author']) {
-                throw $this->createExpectationException(
+                throw new \Exception(
                     sprintf(
                         'Proposition #%d author is expected to be "%s", actually is "%s"',
                         $key + 1,
@@ -133,7 +133,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             if ($cells[2]->getText() !== $proposition['product']) {
-                throw $this->createExpectationException(
+                throw new \Exception(
                     sprintf(
                         'Proposition #%d product is expected to be "%s", actually is "%s"',
                         $key + 1,

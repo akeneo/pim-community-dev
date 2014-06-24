@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -24,8 +25,9 @@ class PropositionWidget implements WidgetInterface
      *
      * @param ManagerRegistry $registry
      */
-    public function __construct(ManagerRegistry $registry)
-    {
+    public function __construct(
+        ManagerRegistry $registry
+    ) {
         $this->registry = $registry;
     }
 
@@ -42,9 +44,16 @@ class PropositionWidget implements WidgetInterface
      */
     public function getParameters()
     {
-        $propositions = $this->registry
+        $propositions = $this
+            ->registry
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
-            ->findBy([], ['createdAt' => 'desc'], 10);
+            ->findBy(
+                [
+                    'status' => Proposition::READY
+                ],
+                ['createdAt' => 'desc'],
+                10
+            );
 
         return [
             'params' => $propositions
