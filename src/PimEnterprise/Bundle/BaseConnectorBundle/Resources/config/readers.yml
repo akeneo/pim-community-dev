@@ -1,0 +1,9 @@
+services:
+    pimee_base_connector.reader.doctrine.published_product:
+        class: %pim_base_connector.reader.doctrine.product.class%
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_transform.converter.metric'
+            - '@pim_catalog.object_manager.product'
