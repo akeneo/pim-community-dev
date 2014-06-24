@@ -180,8 +180,10 @@ services:
             - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
+            - %pim_catalog.entity.attribute.class%
             - %pim_catalog.entity.attribute_option.class%
             - %pim_catalog.entity.attribute_option_value.class%
+            - %pim_catalog.entity.currency.class%
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 

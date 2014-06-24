@@ -38,10 +38,16 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     protected $localeClass;
 
     /** @var string */
+    protected $attributeClass;
+
+    /** @var string */
     protected $attributeOptionClass;
 
     /** @var string */
     protected $attributeOptionValueClass;
+
+    /** @var string */
+    protected $currencyClass;
 
     /**
      * Scheduled queries to apply
@@ -57,8 +63,10 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      * @param string              $familyTranslationClass
      * @param string              $channelClass
      * @param string              $localeClass
+     * @param string              $attributeClass
      * @param string              $attributeOptionClass
      * @param string              $attributeOptionValueClass
+     * @param string              $currencyClass
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -67,17 +75,21 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $familyTranslationClass,
         $channelClass,
         $localeClass,
+        $attributeClass,
         $attributeOptionClass,
-        $attributeOptionValueClass
+        $attributeOptionValueClass,
+        $currencyClass
     ) {
         $this->registry                  = $registry;
         $this->productClass              = $productClass;
         $this->familyClass               = $familyClass;
         $this->familyTranslationClass    = $familyTranslationClass;
         $this->channelClass              = $channelClass;
-        $this->localeClass              = $localeClass;
+        $this->localeClass               = $localeClass;
+        $this->attributeClass            = $attributeClass;
         $this->attributeOptionClass      = $attributeOptionClass;
         $this->attributeOptionValueClass = $attributeOptionValueClass;
+        $this->currencyClass             = $currencyClass;
     }
 
     /**
@@ -125,7 +137,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function scheduleQueriesAfterUpdate($entity, array $changes)
+    protected function scheduleQueriesAfterUpdate($entity, $changes)
     {
         foreach ($changes as $field => $values) {
             list($oldValue, $newValue) = $values;
@@ -229,40 +241,56 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                 'field'     => '',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
                     $attributes = $this->getScopableAttributes();
-
                     $queries = [];
 
                     foreach ($attributes as $attribute) {
-                        $attributesToRemove = [];
+                        $attributeCodes = $this->getPossibleAttributeCodes($attribute, 'normalizedData.');
 
-                        if ($attribute->isLocalizable()) {
-                            foreach ($entity->getLocales() as $locale) {
-                                 $attributesToRemove[] = [sprintf(
-                                    'normalizedData.%s-%s-%s',
-                                    $attribute->getCode(),
-                                    $locale->getCode(),
-                                    $entity->getCode()
-                                ) => ''];
-                            }
-                        } else {
-                            $attributesToRemove[] = [sprintf(
-                                'normalizedData.%s-%s',
-                                $attribute->getCode(),
-                                $entity->getCode()
-                            ) => ''];
+                        foreach ($attributeCodes as $attributeCode) {
+                            $queries[] = [
+                                [sprintf('%s', $attributeCode) => [ '$exists' => true ]],
+                                ['$unset' => [$attributeCode => '']],
+                                ['multi' => true]
+                            ];
+
                         }
-
-                        $queries[] = [
-                            [sprintf('normalizedData.%s', $attribute->getCode()) => [ '$exists' => true ]],
-                            ['$unset' => $attributesToRemove],
-                            ['multi' => true]
-                        ];
                     }
 
-                    return [];
+                    return $queries;
                 }
             ],
-            [//DONE
+            [
+                'class'     => $this->localeClass,
+                'field'     => 'activated',
+                'generator' => function($entity, $field, $oldValue, $newValue) {
+                    if (!$newValue) {
+                        $attributes = $this->getLocalizableAttributes();
+                        $queries = [];
+
+                        foreach ($attributes as $attribute) {
+                            $attributeNormFields = [
+                                sprintf('normalizedData.%s-%s', $attribute->getCode(), $entity->getCode())
+                            ];
+                            $channelSuffixes = $this->getChannelSuffixes($attribute);
+                            $attributeNormFields = $this->appendSuffixes($attributeNormFields, $channelSuffixes);
+
+                            foreach ($attributeNormFields as $attributeNormField) {
+                                $queries[] = [
+                                    [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
+                                    ['$unset' => [$attributeNormField => '']],
+                                    ['multi' => true]
+                                ];
+                            }
+                        }
+
+
+                        return $queries;
+                    } else {
+                        return [];
+                    }
+                }
+            ],
+            [
                 'class'     => $this->attributeOptionClass,
                 'field'     => '',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
@@ -284,7 +312,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                     return $queries;
                 }
             ],
-            [//DONE
+            [
                 'class'     => $this->attributeOptionClass,
                 'field'     => 'code',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
@@ -310,7 +338,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
                     return $queries;
                 }
             ],
-            [//DONE
+            [
                 'class'     => $this->attributeOptionValueClass,
                 'field'     => 'value',
                 'generator' => function($entity, $field, $oldValue, $newValue) {
@@ -339,6 +367,48 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
                     return $queries;
                 }
+            ],
+            [
+                'class'     => $this->currencyClass,
+                'field'     => 'activated',
+                'generator' => function($entity, $field, $oldValue, $newValue) {
+                    if (!$newValue) {
+                        $attributeManager = $this->registry->getManagerForClass($this->attributeClass);
+                        $attributeRepository = $attributeManager->getRepository($this->attributeClass);
+
+                        $attributes = $attributeRepository->findBy(
+                            [
+                                'attributeType' => 'pim_catalog_price_collection'
+                            ]
+                        );
+
+                        $queries = [];
+
+                        foreach ($attributes as $attribute) {
+                            $attributeNormFields = $this->getPossibleAttributeCodes($attribute, 'normalizedData.');
+
+                            foreach ($attributeNormFields as $attributeNormField) {
+                                $queries[] = [
+                                    [sprintf(
+                                        '%s',
+                                        $attributeNormField,
+                                        $entity->getCode()
+                                    ) => [ '$exists' => true ]],
+                                    ['$unset' => [sprintf(
+                                        '%s.%s',
+                                        $attributeNormField,
+                                        $entity->getCode()
+                                    ) => '']],
+                                    ['multi' => true]
+                                ];
+                            }
+                        }
+
+                        return $queries;
+                    } else {
+                        return [];
+                    }
+                }
             ]
         ];
     }
@@ -354,6 +424,21 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $attributeRepository = $attributeManager->getRepository($this->attributeClass);
 
         $attributes = $attributeRepository->findBy(['scopable' => true]);
+
+        return $attributes;
+    }
+
+    /**
+     * Get scopable attributes
+     *
+     * @return array
+     */
+    protected function getLocalizableAttributes()
+    {
+        $attributeManager = $this->registry->getManagerForClass($this->attributeClass);
+        $attributeRepository = $attributeManager->getRepository($this->attributeClass);
+
+        $attributes = $attributeRepository->findBy(['localizable' => true]);
 
         return $attributes;
     }
@@ -409,10 +494,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $localeSuffixes = [];
 
         if ($attribute->isLocalizable()) {
-            $objectManager     = $this->registry->getManagerForClass($this->localeClass);
-            $localeRepository  = $objectManager->getRepository($this->localeClass);
-
-            foreach ($localeRepository->getActivatedLocales() as $locale) {
+            foreach ($this->getActivatedLocales() as $locale) {
                 $localeSuffixes[] = sprintf('-%s', $locale->getCode());
             }
         }
@@ -439,6 +521,19 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         }
 
         return $channelSuffixes;
+    }
+
+    /**
+     * Get all activated locale
+     *
+     * @return array
+     */
+    protected function getActivatedLocales()
+    {
+        $objectManager     = $this->registry->getManagerForClass($this->localeClass);
+            $localeRepository  = $objectManager->getRepository($this->localeClass);
+
+        return $localeRepository->getActivatedLocales();
     }
 
     /**
