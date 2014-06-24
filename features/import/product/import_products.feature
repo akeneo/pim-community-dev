@@ -23,7 +23,7 @@ Feature: Execute a job
   Scenario: Successfully import a csv file of products
     Given the following file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US
+      sku;family;groups;categories;name-en_US;description-en_US-ecommerce
       SKU-001;boots;CROSS;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-002;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       SKU-003;sneakers;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
@@ -43,15 +43,13 @@ Feature: Execute a job
     Then there should be 10 products
     And the family of the product "SKU-006" should be "boots"
     And product "SKU-007" should be enabled
-    And the product "SKU-001" should have the following value:
-      | name-en_US | Donec |
-    And the product "SKU-002" should have the following value:
-      | description-en_US | Pellentesque habitant morbi tristique senectus et netus et malesuada fames |
+    And the english ecommerce name of "SKU-001" should be "Donec"
+    And the english ecommerce description of "SKU-002" should be "Pellentesque habitant morbi tristique senectus et netus et malesuada fames"
 
   Scenario: Successfully import a csv file of products with associations
     Given the following file to import:
       """
-      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US
+      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-ecommerce
       SKU-001;boots;CROSS;leather,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-002;sneakers;;travel;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       SKU-003;sneakers;;men;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
@@ -64,14 +62,14 @@ Feature: Execute a job
     Then there should be 3 products
     Given I edit the "SKU-001" product
     When I visit the "Associations" tab
-    And I visit the "X_SELL" group
+    And I visit the "Cross sell" group
     Then I should see "2 products and 1 groups"
 
   @pim-2445
   Scenario: Successfully skip associations of invalid product
     Given the following file to import:
       """
-      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US
+      sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-ecommerce
       SKU-001;boots;CROSS;unknown,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "footwear_product_import" configuration:
@@ -84,7 +82,7 @@ Feature: Execute a job
   Scenario: Successfully ignore duplicate unique data
     Given the following file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US
+      sku;family;groups;categories;name-en_US;description-en_US-ecommerce
       SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-001;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
@@ -95,9 +93,8 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then I should see "The unique code \"SKU-001\" was already read in this file"
     Then there should be 1 product
-    And the product "SKU-001" should have the following values:
-      | name-en_US        | Donec                                                             |
-      | description-en_US | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |
+    And the english ecommerce name of "SKU-001" should be "Donec"
+    And the english ecommerce description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully update an existing product
     Given the following product:
@@ -105,7 +102,7 @@ Feature: Execute a job
       | SKU-001 | FooBar |
     And the following file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US
+      sku;family;groups;categories;name-en_US;description-en_US-ecommerce
       SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "footwear_product_import" configuration:
@@ -114,14 +111,13 @@ Feature: Execute a job
     And I launch the import job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 product
-    And the product "SKU-001" should have the following values:
-      | name-en_US        | Donec                                                             |
-      | description-en_US | dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est |
+    And the english ecommerce name of "SKU-001" should be "Donec"
+    And the english ecommerce description of "SKU-001" should be "dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est"
 
   Scenario: Successfully import products through file upload
     Given the following file to import:
       """
-      sku;family;groups;categories;name-en_US;description-en_US
+      sku;family;groups;categories;name-en_US;description-en_US-ecommerce
       SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       SKU-002;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       SKU-003;sneakers;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
@@ -189,7 +185,7 @@ Feature: Execute a job
     And I wait for the "footwear_product_import" job to finish
     Then there should be 1 products
     And the product "SKU-001" should have the following value:
-      | length | 4000.0000 GRAM |
+      | length | 4000.0000 CENTIMETER |
 
   Scenario: Successfully import products metrics splitting the data and unit
     Given the following file to import:
