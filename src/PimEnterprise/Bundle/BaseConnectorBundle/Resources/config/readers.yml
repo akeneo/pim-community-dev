@@ -7,3 +7,4 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@pim_transform.converter.metric'
             - '@pim_catalog.object_manager.product'
+            - false
