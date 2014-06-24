@@ -22,6 +22,9 @@ class ListJobsCommand extends ContainerAwareCommand
      */
     const LIST_ALL = 'all';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function configure()
     {
         $this
