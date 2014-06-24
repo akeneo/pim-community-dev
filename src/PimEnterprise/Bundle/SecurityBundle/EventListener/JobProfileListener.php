@@ -7,6 +7,7 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\JobEvents;
+use PimEnterprise\Bundle\SecurityBundle\SecurityContext;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
 /**
@@ -17,17 +18,17 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  */
 class JobProfileListener implements EventSubscriberInterface
 {
-    /** @var SecurityFacade */
-    protected $securityFacade;
+    /** @var SecurityContext */
+    protected $securityContext;
 
     /**
      * Constructor
      *
      * @param SecurityFacade $securityContext
      */
-    public function __construct(SecurityFacade $securityFacade)
+    public function __construct(SecurityContext $securityContext)
     {
-        $this->securityFacade = $securityFacade;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -36,7 +37,7 @@ class JobProfileListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::PRE_EDIT_JOB_PROFILE => 'checkEditPermission',
+            JobEvents::PRE_EDIT_JOB_PROFILE    => 'checkEditPermission',
             JobEvents::PRE_EXECUTE_JOB_PROFILE => 'checkExecutePermission'
         ];
     }
@@ -50,9 +51,9 @@ class JobProfileListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $event->getSubject()->getType());
-        if (false === $this->securityFacade->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())
-            && false === $this->securityFacade->isGranted($resource)) {
+        $resource = sprintf('pim_importexport_%s_profile_edit', $event->getSubject()->getType());
+
+        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }
@@ -66,7 +67,7 @@ class JobProfileListener implements EventSubscriberInterface
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        if (false === $this->securityFacade->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
+        if (false === $this->securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }
