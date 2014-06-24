@@ -385,7 +385,6 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param JobInstance $job
-     * @param string      $type
      *
      * @Given /^I should be on the ("([^"]*)" (import|export) job) page$/
      */
