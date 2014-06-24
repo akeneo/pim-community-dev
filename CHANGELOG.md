@@ -34,6 +34,7 @@
 - Allow to add hidden row actions in grids
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
+- Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
