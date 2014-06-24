@@ -1,0 +1,9 @@
+groups:
+    all:
+        name: All
+    #administrators:
+    #    name: Administrators
+    #marketing:
+    #    name: Marketing
+    logistic:
+        name: Logistic
