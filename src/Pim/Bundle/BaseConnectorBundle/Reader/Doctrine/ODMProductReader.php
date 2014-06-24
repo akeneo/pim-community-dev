@@ -76,24 +76,32 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $executed = false;
 
     /**
+     * @var boolean
+     */
+    protected $missingCompleteness;
+
+    /**
      * @param ProductRepositoryInterface $repository
      * @param ChannelManager             $channelManager
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param DocumentManager            $documentManager
+     * @param boolean                    $missingCompleteness
      */
     public function __construct(
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        DocumentManager $documentManager
+        DocumentManager $documentManager,
+        $missingCompleteness = true
     ) {
         $this->documentManager     = $documentManager;
         $this->repository          = $repository;
         $this->channelManager      = $channelManager;
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
+        $this->missingCompleteness = $missingCompleteness;
     }
 
     /**
@@ -119,7 +127,9 @@ class ODMProductReader extends AbstractConfigurableStepElement implements Produc
                 $this->channel = $this->channelManager->getChannelByCode($this->channel);
             }
 
-            $this->completenessManager->generateMissingForChannel($this->channel);
+            if ($this->missingCompleteness) {
+                $this->completenessManager->generateMissingForChannel($this->channel);
+            }
 
             $this->query = $this->repository
                 ->buildByChannelAndCompleteness($this->channel)

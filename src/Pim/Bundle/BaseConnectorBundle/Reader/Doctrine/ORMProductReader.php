@@ -87,18 +87,25 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
     protected $stepExecution;
 
     /**
+     * @var boolean
+     */
+    protected $missingCompleteness;
+
+    /**
      * @param ProductRepositoryInterface $repository
      * @param ChannelManager             $channelManager
      * @param CompletenessManager        $completenessManager
      * @param MetricConverter            $metricConverter
      * @param EntityManager              $entityManager
+     * @param boolean                    $missingCompleteness
      */
     public function __construct(
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        $missingCompleteness = true
     ) {
         $this->entityManager       = $entityManager;
         $this->repository          = $repository;
@@ -106,6 +113,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         $this->completenessManager = $completenessManager;
         $this->metricConverter     = $metricConverter;
         $this->products            = new \ArrayIterator();
+        $this->missingCompleteness = $missingCompleteness;
     }
 
     /**
@@ -239,7 +247,9 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
             $this->channel = $this->channelManager->getChannelByCode($this->channel);
         }
 
-        $this->completenessManager->generateMissingForChannel($this->channel);
+        if ($this->missingCompleteness) {
+            $this->completenessManager->generateMissingForChannel($this->channel);
+        }
 
         $this->query = $this->repository
             ->buildByChannelAndCompleteness($this->channel);

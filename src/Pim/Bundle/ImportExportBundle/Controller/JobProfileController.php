@@ -23,6 +23,7 @@ use Akeneo\Bundle\BatchBundle\Item\UploadedFileAwareInterface;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
+use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\ImportExportBundle\JobEvents;
 
@@ -53,6 +54,9 @@ class JobProfileController extends AbstractDoctrineController
     /** @var JobInstanceType */
     protected $jobInstanceType;
 
+    /** @var JobInstanceFactory */
+    protected $jobInstanceFactory;
+
     /**
      * Constructor
      *
@@ -70,6 +74,7 @@ class JobProfileController extends AbstractDoctrineController
      * @param string                   $rootDir
      * @param string                   $environment
      * @param JobInstanceType          $jobInstanceType
+     * @param JobInstanceFactory       $jobInstanceFactory
      */
     public function __construct(
         Request $request,
@@ -85,7 +90,8 @@ class JobProfileController extends AbstractDoctrineController
         $jobType,
         $rootDir,
         $environment,
-        JobInstanceType $jobInstanceType
+        JobInstanceType $jobInstanceType,
+        JobInstanceFactory $jobInstanceFactory
     ) {
         parent::__construct(
             $request,
@@ -106,6 +112,8 @@ class JobProfileController extends AbstractDoctrineController
 
         $this->jobInstanceType   = $jobInstanceType;
         $this->jobInstanceType->setJobType($this->jobType);
+
+        $this->jobInstanceFactory = $jobInstanceFactory;
     }
 
     /**
@@ -117,7 +125,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $jobInstance = new JobInstance(null, $this->getJobType(), null);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance(null, $this->getJobType(), null);
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {

@@ -2,18 +2,20 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\TransformBundle\Cache\AttributeCache;
+use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
 use Pim\Bundle\TransformBundle\Transformer\Property\SkipTransformer;
-use Pim\Bundle\BaseConnectorBundle\Reader\CachedReader;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\RegistryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * Specialized ORMTransformer for products
@@ -45,7 +47,7 @@ class ProductTransformer extends EntityTransformer
     protected $associationReader;
 
     /**
-     * @var \Pim\Bundle\CatalogBundle\Model\AbstractAttribute
+     * @var AbstractAttribute
      */
     protected $identifierAttribute;
 
@@ -115,6 +117,9 @@ class ProductTransformer extends EntityTransformer
      */
     protected function findEntity($class, array $data)
     {
+        if (!$this->identifierAttribute) {
+            throw new MissingIdentifierException;
+        }
         return $this->productManager->getProductRepository()->findByReference(
             $data[$this->identifierAttribute->getCode()]
         );
