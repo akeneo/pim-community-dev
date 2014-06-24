@@ -27,5 +27,11 @@ class PimBaseConnectorExtension extends Extension
         $loader->load('writers.yml');
         $loader->load('archiving.yml');
         $loader->load('validators.yml');
+
+        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
+        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
+            $loader->load($storageConfig);
+        }
     }
 }
