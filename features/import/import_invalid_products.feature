@@ -5,23 +5,20 @@ Feature: Import invalid products
   I need to know which rows are incorrect and why
 
   Background: Fail to import malformed prices
-    Given the "default" catalog configuration
+    Given the "footwear" catalog configuration
     And the following attributes:
       | label        | type   |
       | Public Price | prices |
     And the following product:
       | sku         | publicPrice |
       | honda-civic |             |
-    And the following job:
-      | connector            | alias              | code                | label                       | type   |
-      | Akeneo CSV Connector | csv_product_import | acme_product_import | Product import for Acme.com | import |
     And the following file to import:
     """
     sku;publicPrice
     renault-kangoo;20000 EUR
     honda-civic;15EUR
     """
-    And the following job "acme_product_import" configuration:
+    And the following job "footwear_product_import" configuration:
       | filePath          | %file to import% |
       | uploadAllowed     | no               |
       | delimiter         | ;                |
@@ -34,17 +31,17 @@ Feature: Import invalid products
     And I am logged in as "Julia"
 
 Scenario: Fail to import malformed prices
-    Given I am on the "acme_product_import" import job page
+    Given I am on the "footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "acme_product_import" job to finish
+    And I wait for the "footwear_product_import" job to finish
     Then there should be 2 products
     And I should see "Malformed price: \"15EUR\""
 
   Scenario: Download a file containing invalid products
-    Given I am on the "acme_product_import" import job page
+    Given I am on the "footwear_product_import" import job page
     And I launch the import job
-    And I wait for the "acme_product_import" job to finish
-    And the invalid data file of "acme_product_import" should contain:
+    And I wait for the "footwear_product_import" job to finish
+    And the invalid data file of "footwear_product_import" should contain:
     """
     sku;publicPrice
     honda-civic;15EUR
