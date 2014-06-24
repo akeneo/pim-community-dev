@@ -17,7 +17,8 @@
         {{ elements.link('Edit', editRoute, { icon: 'edit' }) }}
     {% endif %}
 
-    {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EXECUTE_JOB_PROFILE'), jobInstance) %}
+    {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Voter\\JobProfileVoter::EXECUTE_JOB_PROFILE'), jobInstance)
+        and resource_granted('pim_importexport_' ~ jobInstance.type ~ '_profile_launch') %}
         {% if uploadAllowed and uploadViolations|length == 0 %}
             {{ elements.link('Upload and '~action, null, {icon: 'upload-alt', class: 'btn-primary', attr: { 'data-form-toggle': 'pim_importexport_import_upload'}}) }}
         {% endif %}
