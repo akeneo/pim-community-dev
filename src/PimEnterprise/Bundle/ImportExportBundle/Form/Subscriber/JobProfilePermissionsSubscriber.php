@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -22,14 +23,22 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var RoleRepository */
+    protected $roleRepository;
+
     /**
      * @param JobProfileAccessManager $accessManager
      * @param SecurityFacade          $securityFacade
+     * @param RoleRepository          $roleRepository
      */
-    public function __construct(JobProfileAccessManager $accessManager, SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        JobProfileAccessManager $accessManager,
+        SecurityFacade $securityFacade,
+        RoleRepository $roleRepository
+    ) {
         $this->accessManager  = $accessManager;
         $this->securityFacade = $securityFacade;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
