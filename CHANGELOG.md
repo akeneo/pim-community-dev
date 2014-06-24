@@ -31,6 +31,8 @@
 - Update BatchBundle to 0.1.6 in order to get updated summary information during the execution of the process (and not only at the end)
 - Allow values 'true', 'false', 'yes' and 'no' to be converted into boolean during import
 - Create a job instance factory to create job instances
+- Allow to add hidden row actions in grids
+- Make optional the generation of missing completenesses in product reader
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
