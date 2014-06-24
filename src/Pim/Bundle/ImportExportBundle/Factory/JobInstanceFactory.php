@@ -27,8 +27,8 @@ class JobInstanceFactory
      *
      * @return JobInstance
      */
-    public function createJobInstance()
+    public function createJobInstance($connector = null, $type = null, $alias = null)
     {
-        return new $this->jobInstanceClass();
+        return new $this->jobInstanceClass($connector, $type, $alias);
     }
 }
