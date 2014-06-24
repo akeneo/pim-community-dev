@@ -125,7 +125,7 @@ class JobProfileController extends AbstractDoctrineController
      */
     public function createAction(Request $request)
     {
-        $jobInstance = $this->jobInstanceFactory->createJobInstance(null, $jobType, null);
+        $jobInstance = $this->jobInstanceFactory->createJobInstance(null, $this->getJobType(), null);
         $form = $this->createForm($this->jobInstanceType, $jobInstance);
 
         if ($request->isMethod('POST')) {
