@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -14,6 +15,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubs
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Store product through propositions
@@ -80,7 +82,14 @@ class PropositionPersister implements ProductPersister
 
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        if ($options['bypass_proposition'] || !$manager->contains($product)) {
+        try {
+            $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+        } catch (AuthenticationCredentialsNotFoundException $e) {
+            // We are probably on a CLI context
+            $isOwner = true;
+        }
+
+        if ($isOwner || $options['bypass_proposition'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
             $this->persistProposition($manager, $product);
