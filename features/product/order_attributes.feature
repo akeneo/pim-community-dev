@@ -4,43 +4,31 @@ Feature: Order attributes
   I need to be able to set an order parameter which will manage fields order
 
   Background:
-    Given the "default" catalog configuration
-    And a "Car" product
+    Given the "footwear" catalog configuration
+    And a "Rangers" product
     And I am logged in as "admin"
 
   @javascript @skip
   Scenario: Successfully update an attribute position
-    Given the following attribute group:
-      | code    | label-en_US |
-      | general | General     |
-    And the following attributes:
-      | label        | group   | sort order |
-      | Release Date | General | 1          |
-      | Color        | General | 2          |
-      | Price        | General | 3          |
-    When I am on the "General" attribute group page
+    Given I am on the "info" attribute group page
     And I visit the "Attributes" tab
-    Then the attribute "Price" should be in position 3
-    And I change the attribute "Price" position to 1
-    When I am on the "General" attribute group page
+    Then the attribute "Length" should be in position 6
+    And I change the attribute "Length" position to 1
+    When I am on the "info" attribute group page
     And I visit the "Attributes" tab
-    Then the attribute "Price" should be in position 1
-    And the attribute "Color" should be in position 3
+    Then the attribute "Length" should be in position 1
+    And the attribute "Description" should be in position 3
 
   Scenario: Display attribute fields ordered by their position
-    Given the following attribute groups:
-      | code    | label-en_US |
-      | general | General     |
-      | shape   | Shape       |
-    And the following attributes:
-      | label        | sort order | group   |
-      | Release date | 20         | General |
-      | Manufacturer | 30         | General |
-      | File upload  | 10         | General |
-      | Color        | 10         | Shape   |
-      | Weight       | 30         | Shape   |
-      | Height       | 20         | Shape   |
-    And the "Car" product has the "releaseDate, manufacturer, fileUpload, color, weight and height" attributes
-    When I am on the "Car" product page
-    Then attributes in group "General" should be File upload, Release date and Manufacturer
-    And attributes in group "Shape" should be Color, Height and Weight
+    Given the following attributes:
+      | label         | sort order | group |
+      | Sole weight   | 20         | info  |
+      | Provider      | 30         | info  |
+      | File upload   | 10         | info  |
+      | Sole color    | 10         | other |
+      | Sole material | 30         | other |
+      | Height        | 20         | other |
+    And the "Rangers" product has the "soleWeight, Provider, fileUpload, soleColor, soleMaterial and height" attributes
+    When I am on the "Rangers" product page
+    Then attributes in group "info" should be SKU, File upload, Sole weight and Provider
+    And attributes in group "Other" should be Sole color, Height and Sole material
