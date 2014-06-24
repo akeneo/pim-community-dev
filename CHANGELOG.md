@@ -1,6 +1,11 @@
 CHANGELOG for 0.1.x
 ===================
 
+0.1.8 (2014-06-24)
+------------------
+
+ - Added precise error messages for failures on jobs.
+
 0.1.7 (2014-06-24)
 ------------------
 

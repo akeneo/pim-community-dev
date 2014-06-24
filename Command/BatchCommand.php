@@ -145,7 +145,36 @@ class BatchCommand extends ContainerAwareCommand
                     $jobInstance->getType()
                 )
             );
+            $verbose = $input->getOption('verbose');
+            $this->writeExceptions($output, $jobExecution->getFailureExceptions(), $verbose);
+            foreach ($jobExecution->getStepExecutions() as $stepExecution) {
+                $this->writeExceptions($output, $stepExecution->getFailureExceptions(), $verbose);
+            }
         }
+    }
+
+    /**
+     * Writes failure exceptions to the output
+     * 
+     * @param OutputInterface $output
+     * @param array           $exceptions
+     * @param boolean         $verbose
+     */
+    protected function writeExceptions(OutputInterface $output, array $exceptions, $verbose) {
+        foreach ($exceptions as $exception) {
+            $output->write(
+                sprintf(
+                    '<error>Error #%s in class %s: %s</error>',
+                    $exception['code'],
+                    $exception['class'],
+                    strtr($exception['message'], $exception['messageParameters'])
+                ),
+                true
+            );
+            if ($verbose) {
+                $output->write("<error>$exception[trace]</error>", true);
+            }
+        }        
     }
 
     /**
