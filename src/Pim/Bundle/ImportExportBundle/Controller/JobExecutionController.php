@@ -95,6 +95,7 @@ class JobExecutionController extends AbstractDoctrineController
         $this->jobType         = $jobType;
         $this->serializer      = $serializer;
     }
+
     /**
      * List the reports
      *
