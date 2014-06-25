@@ -1,7 +1,0 @@
-roles:
-    administrator:
-        label: Administrator
-    manager:
-        label: Manager
-    user:
-        label: User

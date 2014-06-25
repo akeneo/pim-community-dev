@@ -1,0 +1,9 @@
+user_roles:
+    #administrator:
+    #    label: Administrator
+    #manager:
+    #    label: Manager
+    #user:
+    #    label: User
+    ROLE_MARKETING:
+        label: Marketing

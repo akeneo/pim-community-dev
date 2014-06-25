@@ -27,11 +27,27 @@ class LoadGroupData extends AbstractInstallerFixture
     {
         $this->om = $manager;
         $dataGroups = Yaml::parse(realpath($this->getFilePath()));
-        foreach ($dataGroups['groups'] as $dataGroup) {
+        foreach ($dataGroups['user_groups'] as $dataGroup) {
             $group = $this->buildGroup($dataGroup);
             $manager->persist($group);
         }
         $manager->flush();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntity()
+    {
+        return 'user_groups';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOrder()
+    {
+        return 105;
     }
 
     /**
@@ -50,22 +66,6 @@ class LoadGroupData extends AbstractInstallerFixture
         $group->setOwner($owner);
 
         return $group;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getEntity()
-    {
-        return 'groups';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOrder()
-    {
-        return 105;
     }
 
     /**

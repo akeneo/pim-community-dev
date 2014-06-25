@@ -1,4 +1,4 @@
-groups:
+user_groups:
     all:
         name: All
     #administrators:
