@@ -4,29 +4,17 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Voter of the product ownership attribute
+ * Voter of the proposition ownership attribute
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductOwnershipVoter implements VoterInterface
+class PropositionOwnershipVoter implements VoterInterface
 {
-    /** @var CategoryOwnershipRepository */
-    protected $repository;
-
-    /**
-     * @param CategoryOwnershipRepository $repository
-     */
-    public function __construct(CategoryOwnershipRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -40,7 +28,7 @@ class ProductOwnershipVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof ProductInterface;
+        return $class instanceof Proposition;
     }
 
     /**
@@ -54,19 +42,8 @@ class ProductOwnershipVoter implements VoterInterface
 
         foreach ($attributes as $attribute) {
             if ($this->supportsAttribute($attribute)) {
-                $user = $token->getUser();
-                $roles = $user->getRoles();
-                $userRoleIds = array_map(
-                    function ($role) {
-                        return $role->getId();
-                    },
-                    $roles
-                );
-
-                foreach ($this->repository->findRolesForProduct($object) as $role) {
-                    if (in_array($role['id'], $userRoleIds)) {
-                        return VoterInterface::ACCESS_GRANTED;
-                    }
+                if ($token->getUser()->getUsername() === $object->getAuthor()) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
 
                 return VoterInterface::ACCESS_DENIED;

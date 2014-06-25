@@ -151,4 +151,14 @@ class Proposition
     {
         return $this->status;
     }
+
+    /**
+     * Wether or not proposition is in progress
+     *
+     * @return boolean
+     */
+    public function isInProgress()
+    {
+        return self::IN_PROGRESS === $this->status;
+    }
 }

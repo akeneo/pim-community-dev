@@ -100,4 +100,17 @@ class PropositionManagerSpec extends ObjectBehavior
 
         $this->shouldThrow(new \LogicException('Current user cannot be resolved'))->duringFindOrCreate($product, 'fr_FR');
     }
+
+    function it_marks_proposition_as_ready(
+        $registry,
+        Proposition $proposition,
+        ObjectManager $manager
+    ) {
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+
+        $proposition->setStatus(Proposition::READY)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $this->markAsReady($proposition);
+    }
 }

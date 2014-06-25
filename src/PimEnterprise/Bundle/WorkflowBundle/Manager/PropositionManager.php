@@ -124,4 +124,17 @@ class PropositionManager
 
         return $proposition;
     }
+
+    /**
+     * Mark a proposition as ready
+     *
+     * @param Proposition $proposition
+     */
+    public function markAsReady(Proposition $proposition)
+    {
+        $proposition->setStatus(Proposition::READY);
+
+        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager->flush();
+    }
 }

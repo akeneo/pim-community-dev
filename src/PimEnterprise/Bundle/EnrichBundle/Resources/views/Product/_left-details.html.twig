@@ -26,5 +26,7 @@
     <li>{{ 'Owner roles'|trans }}:
         {% for role in ownerRoles %}
             {{ role['label'] }}{% if not loop.last %}, {% endif %}
+        {% else %}
+            {{ 'none'|trans }}
         {% endfor %}
     </li>
