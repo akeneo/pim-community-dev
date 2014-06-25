@@ -68,6 +68,7 @@ class JobExecutionController extends AbstractDoctrineController
         ValidatorInterface $validator,
         TranslatorInterface $translator,
         ManagerRegistry $doctrine,
+        EventDispatcherInterface $eventDispatcher,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
         $jobType,
@@ -84,6 +85,7 @@ class JobExecutionController extends AbstractDoctrineController
             $doctrine
         );
 
+        $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist       = $archivist;
         $this->jobType         = $jobType;
