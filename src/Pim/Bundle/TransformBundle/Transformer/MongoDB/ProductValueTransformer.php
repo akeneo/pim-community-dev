@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Normalizer\MongoDb;
+namespace Pim\Bundle\TransformBundle\Transformer\MongoDB;
 
-user Pim\Bundle\TransformBundle\Transformer\ObjectTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\ObjectTransformerInterface;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
@@ -31,13 +31,13 @@ class ProductValueTransformer implements ObjectTransformerInterface
     protected $priceTransformer;
 
     /**
-     * @param DateTransformer            $dateTransformer
-     * @param MetricTransformer          $metricTransformer
-     * @param PriceTransformer           $priceTransformer
+     * @param DateTimeTransformer $dateTransformer
+     * @param MetricTransformer   $metricTransformer
+     * @param PriceTransformer    $priceTransformer
      */
     public function __construct(
-        DateTransformer  $dateTransformer
-        MetricTransformer $metricTransformer
+        DateTimeTransformer  $dateTransformer,
+        MetricTransformer $metricTransformer,
         PriceTransformer $priceTransformer
     ) {
         $this->dateTransformer   = $dateTransformer;
@@ -122,16 +122,16 @@ class ProductValueTransformer implements ObjectTransformerInterface
         $target = null;
 
         switch($backendType) {
-            "prices":
+            case "prices":
                 $target = $this->priceTransformer->transform($dataObject, $context);
                 break;
-            "date":
+            case "date":
                 $target = $this->dateTransformer->transform($dataObject, $context);
                 break;
-            "media":
+            case "media":
                 $target = $this->mediaTransformer->transform($dataObject, $context);
                 break;
-            "metric":
+            case "metric":
                 $target = $this->metricTransformer->transform($dataObject, $context);
                 break;
             default:

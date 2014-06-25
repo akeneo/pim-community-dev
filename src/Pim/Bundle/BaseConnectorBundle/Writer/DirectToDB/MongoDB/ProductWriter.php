@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
-use Pim\Bundle\TransformBundle\Transform\MongoDB\ProductTransformer;
+use Pim\Bundle\TransformBundle\Transformer\MongoDB\ProductTransformer;
 
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
