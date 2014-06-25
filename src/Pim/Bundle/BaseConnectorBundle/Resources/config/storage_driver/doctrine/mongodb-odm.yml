@@ -7,6 +7,6 @@ services:
         arguments:
             - '@pim_transform.transformer.mongodb.product'
             - '@pim_catalog.manager.product'
-            - '@pim_serializer'
+            - '@doctrine.odm.mongodb.document_manager'
 
 

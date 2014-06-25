@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\MongoDB;
 
-use Pim\Bundle\TransformBundle\Transformer\TransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\ObjectTransformerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 use Symfony\Component\Serializer\SerializerInterface;
@@ -17,7 +17,7 @@ use \MongoDate;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements ObjectTransformerInterface
+class ProductTransformer implements ObjectTransformerInterface
 {
     /** @staticvar string */
     const MONGO_ID = '_id';
