@@ -29,7 +29,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const POST_EDIT_JOB_PROFILE      = 'pim_enrich.job_profile.post_edit';
+    const POST_EDIT_JOB_PROFILE = 'pim_enrich.job_profile.post_edit';
 
     /**
      * This event is thrown each a job profile is being executed
@@ -39,7 +39,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_EXECUTE_JOB_PROFILE    = 'pim_enrich.job_profile.pre_execute';
+    const PRE_EXECUTE_JOB_PROFILE = 'pim_enrich.job_profile.pre_execute';
 
     /**
      * This event is thrown each a job profile has been executed
@@ -49,7 +49,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const POST_EXECUTE_JOB_PROFILE   = 'pim_enrich.job_profile.post_execute';
+    const POST_EXECUTE_JOB_PROFILE = 'pim_enrich.job_profile.post_execute';
 
     /**
      * This event is thrown each a job execution is being shown
@@ -59,7 +59,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_SHOW_JOB_EXECUTION     = 'pim_enrich.job_execution.pre_show';
+    const PRE_SHOW_JOB_EXECUTION = 'pim_enrich.job_execution.pre_show';
 
     /**
      * This event is thrown each the log of a job execution is being downloaded
@@ -69,7 +69,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_DL_LOG_JOB_EXECUTION   = 'pim_enrich.job_execution.pre_dl_log';
+    const PRE_DL_LOG_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_log';
 
     /**
      * This event is thrown each the files of a job execution is being downloaded
