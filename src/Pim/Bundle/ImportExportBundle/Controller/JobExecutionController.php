@@ -35,17 +35,17 @@ class JobExecutionController extends AbstractDoctrineController
     /**
      * @var BatchLogHandler
      */
-    private $batchLogHandler;
+    protected $batchLogHandler;
 
     /**
      * @var JobExecutionArchivist
      */
-    private $archivist;
+    protected $archivist;
 
     /**
      * @var string
      */
-    private $jobType;
+    protected $jobType;
 
     /**
      * Constructor
