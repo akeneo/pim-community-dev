@@ -3,8 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Transformer\MongoDB;
 
 use Pim\Bundle\TransformBundle\Transformer\ObjectTransformerInterface;
-
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+
+use Doctrine\Common\Collections\Collection;
 
 use \MongoId;
 use \MongoDBRef;
@@ -62,10 +63,10 @@ class ProductValueTransformer implements ObjectTransformerInterface
         $targetValue->attribute = $value->getAttribute()->getId();
         $targetValue->entity = MongoDBRef::create($productCollection, $productId);
 
-        if (null !== $entity->getLocale()) {
+        if (null !== $value->getLocale()) {
             $targetValue->locale = $value->getLocale();
         }
-        if (null !== $entity->getScope()) {
+        if (null !== $value->getScope()) {
             $targetValue->scope = $value->getScope();
         }
 
@@ -92,11 +93,11 @@ class ProductValueTransformer implements ObjectTransformerInterface
 
         if (is_array($data) || $data instanceof Collection) {
             $targetData = array();
-            foreach ($data as $dataObject) {
-                if (is_object) {
-                    $targetData[] = $this->transformDataObject($dataObject, $backendType, $context);
+            foreach ($data as $dataItem) {
+                if (is_object($dataItem)) {
+                    $targetData[] = $this->transformDataObject($dataItem, $backendType, $context);
                 } else {
-                    $targetData[] = $data;
+                    $targetData[] = $dataItem;
                 }
             }
         } elseif (is_object($data)) {

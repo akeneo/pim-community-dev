@@ -70,7 +70,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $mongoCollection = $this->documentManager->getDocumentCollection(get_class(reset($items)));
 
         $transformContext = array();
-        $transformContext[ProductNormalizer::MONGO_COLLECTION_NAME] = $mongoCollection->getName();
+        $transformContext[ProductTransformer::MONGO_COLLECTION_NAME] = $mongoCollection->getName();
 
         $mongoItems = array();
         foreach ($items as $product) {
