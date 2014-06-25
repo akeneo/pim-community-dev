@@ -32,20 +32,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
  */
 class JobExecutionController extends AbstractDoctrineController
 {
-    /**
-     * @var BatchLogHandler
-     */
+    /** @var BatchLogHandler */
     protected $batchLogHandler;
 
-    /**
-     * @var JobExecutionArchivist
-     */
+    /** @var JobExecutionArchivist */
     protected $archivist;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $jobType;
+
+    /** @var SerializerInterface */
+    protected $serializer;
 
     /**
      * Constructor
