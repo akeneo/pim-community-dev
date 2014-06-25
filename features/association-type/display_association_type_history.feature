@@ -1,6 +1,6 @@
 Feature: Display the association type history
   In order to know who, when and what changes has been made to an association type
-  As a user
+  As a product manager
   I need to have access to an association history
 
   @javascript

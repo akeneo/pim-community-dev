@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse imports
   In order to view the list of import job instances that have been created
-  As a user
+  As a product manager
   I need to be able to view a list of them
 
   Scenario: Successfully view, sort and filter import jobs
     Given an "apparel" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the imports page
     Then the grid should contain 6 elements
     And I should see the columns Code, Label, Job, Connector and Status

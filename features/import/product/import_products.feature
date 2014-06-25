@@ -1,7 +1,7 @@
 @javascript
 Feature: Execute a job
   In order to use existing product information
-  As Julia
+  As a product manager
   I need to be able to import products
 
   Background:

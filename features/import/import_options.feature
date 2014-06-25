@@ -1,7 +1,7 @@
 @javascript
 Feature: Import options
   In order to reuse the options
-  As Julia
+  As a product manager
   I need to be able to import options
 
   Scenario: Successfully import options

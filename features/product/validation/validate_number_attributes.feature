@@ -1,7 +1,7 @@
 @javascript
 Feature: Validate number attributes of a product
   In order to keep my data consistent
-  As Julia
+  As a regular user
   I need to be able to see validation errors for number attributes
 
   Background:
@@ -20,7 +20,7 @@ Feature: Validate number attributes of a product
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |
       | bar | baz    | 4                 | 4                    | 2      |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the "foo" product page
 
   Scenario: Validate the unique constraint of number attribute

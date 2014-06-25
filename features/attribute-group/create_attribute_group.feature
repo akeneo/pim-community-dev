@@ -1,6 +1,6 @@
 Feature: Attribute group creation
   In order to organize attributes into group
-  As Julia
+  As a product manager
   I need to be able to create an attribute group
 
   Scenario: Succesfully create an attribute group

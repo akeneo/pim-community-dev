@@ -1,7 +1,7 @@
 @javascript
 Feature: Remove a category
   In order to be able to remove an unused category
-  As a user
+  As a product manager
   I need to be able to remove a category
 
   Background:
@@ -10,7 +10,7 @@ Feature: Remove a category
       | sku           | categories        |
       | caterpillar_1 | winter_collection |
       | caterpillar_2 | winter_boots      |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Remove a simple category
     Given I am on the "sandals" category page

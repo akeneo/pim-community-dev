@@ -1,7 +1,7 @@
 @javascript
 Feature: Product category back to the grid
   In order to restore the product grid filters
-  As a user
+  As a regular user
   I need to be able to set a category filter and retrieve it after going back to the page
 
   Background:
@@ -11,7 +11,7 @@ Feature: Product category back to the grid
       | purple-sneakers | summer_collection                    |
       | black-sneakers  | summer_collection, winter_collection |
       | black-boots     |                                      |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
     And I am on the products page
 
   Scenario: Successfully restore category filter without hashnav
