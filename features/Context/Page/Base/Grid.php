@@ -96,8 +96,8 @@ class Grid extends Index
     }
 
     /**
-     * @param $element
-     * @param $actionName
+     * @param string $element
+     * @param string $actionName
      *
      * @throws \InvalidArgumentException
      */
@@ -115,8 +115,8 @@ class Grid extends Index
     }
 
     /**
-     * @param $element
-     * @param $actionName
+     * @param string $element
+     * @param string $actionName
      *
      * @return NodeElement|mixed|null
      */

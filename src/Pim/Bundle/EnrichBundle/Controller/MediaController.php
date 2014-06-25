@@ -20,16 +20,6 @@ use Gaufrette\Filesystem;
  */
 class MediaController
 {
-    /** @staticvar array */
-    protected static $mimeTypes = [
-        'jpeg' => 'image/jpeg',
-        'jpg' => 'image/jpeg',
-        'gif' => 'image/gif',
-        'png' => 'image/png',
-        'txt' => 'text/plain',
-        'pdf' => 'application/pdf',
-    ];
-
     /** @var ImagineInterface */
     protected $imagine;
 
@@ -77,7 +67,7 @@ class MediaController
 
         $response = new Response($content = $this->filesystem->read($filename));
 
-        $mime = $this->getMimeType($filename);
+        $mime = $this->filesystem->mimeType($filename);
         if (($filter = $request->query->get('filter')) && null !== $mime && 0 === strpos($mime, 'image')) {
             try {
                 $cachePath = $this->cacheManager->resolve($request, $filename, $filter);
@@ -102,24 +92,5 @@ class MediaController
         }
 
         return $response;
-    }
-
-    /**
-     * Get the MIME type from a file extension
-     *
-     * TODO (2014-06-02 16:07 by Gildas): Get rid of this method when Gaufrette will provide a file MIME type
-     * by merging https://github.com/KnpLabs/Gaufrette/pull/292 for example.
-     *
-     * @param string $filename
-     *
-     * @return null|string
-     */
-    protected function getMimeType($filename)
-    {
-        $extension = substr($filename, strrpos($filename, '.') + 1);
-
-        if (isset(static::$mimeTypes[$extension])) {
-            return static::$mimeTypes[$extension];
-        }
     }
 }
