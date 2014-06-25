@@ -54,7 +54,7 @@ class PlaceholderNode extends \Twig_Node
                 //);
                 if (array_key_exists('template', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['template'], $this->lineno);
-                    $block = new Twig_Node_Include($expression, $this->variables, true, $this->lineno, $this->tag);
+                    $block = new Twig_Node_Include($expression, $this->variables, false, false, $this->lineno, $this->tag);
                     $block->compile($compiler);
                 } elseif (array_key_exists('action', $item)) {
                     $expression = new Twig_Node_Expression_Constant($item['action'], $this->lineno);
