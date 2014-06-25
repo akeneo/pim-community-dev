@@ -128,6 +128,17 @@ class Base extends Page
     public function pressButton($locator)
     {
         $button = $this->getButton($locator);
+
+        if (!$button) {
+            $button =  $this->find(
+                'named',
+                array(
+                    'link',
+                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
+                )
+            );
+        }
+
         if (null === $button) {
             throw new ElementNotFoundException($this->getSession(), 'button', 'id|name|title|alt|value', $locator);
         }
@@ -154,16 +165,6 @@ class Base extends Page
         if (!$button) {
             // Use Mink search, which use "contains" xpath condition
             $button = $this->findButton($locator);
-        }
-
-        if (!$button) {
-            $button =  $this->find(
-                'named',
-                array(
-                    'link',
-                    $this->getSession()->getSelectorsHandler()->xpathLiteral($locator)
-                )
-            );
         }
 
         return $button;
