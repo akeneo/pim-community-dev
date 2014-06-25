@@ -5,7 +5,7 @@ Feature: Edit a user
   I need to be able to edit a user
 
   Background:
-    Given the "default" catalog configuration
+    Given the "apparel" catalog configuration
     And I am logged in as "admin"
 
   Scenario: Successfully edit a user
@@ -20,20 +20,16 @@ Feature: Edit a user
 
   @javascript
   Scenario: Successfully edit and apply user preferences
-    Given the following categories:
-      | code        | label-en_US | parent      |
-      | books       | Books       |             |
-      | kitchenware | Kitchenware |             |
-      | kettle      | Kettle      | kitchenware |
     And an enabled "teapot" product
     When I edit the "admin" user
     And I visit the "Additional" tab
     And I fill in the following information:
-      | Catalog locale | fr_FR       |
-      | Catalog scope  | Mobile      |
-      | Default tree   | Kitchenware |
+      | Catalog locale | de_DE           |
+      | Catalog scope  | Print           |
+      | Default tree   | 2015 collection |
     And I save the user
     When I am on the products page
-    Then I should see "Products / FR"
-    And I should see "Mobile"
-    And I should see "kettle"
+    Then I should see "Products / DE"
+    And I should see "Print"
+    And I should see "2015 Männer-Kollektion"
+    And I should see "2015 Damenkollektion"

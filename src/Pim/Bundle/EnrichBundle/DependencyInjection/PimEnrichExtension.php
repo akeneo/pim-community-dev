@@ -75,6 +75,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'LexikMaintenanceBundle'         => 'lexik_maintenance',
             'OroRequireJSBundle'             => 'oro_require_js',
             'OroHelpBundle'                  => 'oro_help',
+            'OroUserBundle'                  => 'oro_user',
         );
 
         foreach ($prependConfig as $bundle => $alias) {

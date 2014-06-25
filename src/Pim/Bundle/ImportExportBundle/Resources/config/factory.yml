@@ -1,0 +1,8 @@
+parameters:
+    pim_import_export.factory.job_instance.class: Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory
+
+services:
+    pim_import_export.factory.job_instance:
+        class: %pim_import_export.factory.job_instance.class%
+        arguments:
+            - %akeneo_batch.entity.job_instance.class%

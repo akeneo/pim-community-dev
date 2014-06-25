@@ -20,25 +20,33 @@
 - Apply "Remove product" permission to hide mass delete and delete row action
 - Change "launch" button by "view" on job profile datagrids
 - Create a `JobInstanceRepository`
+- Automatic creation and purge of indexes for MongoDB
 - Dispatch event before rendering the product edit template
-- Fix asymetric enable product button
+- Fixed asymetric enable product button
 - Remove qb definition from job profile grid configs
 - Create repositories for JobInstance and JobExecution
 - Create manager for JobInstance
 - Clean LastOperationsWidget architecture
+- New readers for export improve memory usage loading small batches of products instead of all products in same time
 - Update BatchBundle to 0.1.6 in order to get updated summary information during the execution of the process (and not only at the end)
+- Allow values 'true', 'false', 'yes' and 'no' to be converted into boolean during import
+- Create a job instance factory to create job instances
+- Allow to add hidden row actions in grids
+- Make optional the generation of missing completenesses in product reader
+- Update install to be able to define email address/name used for system emailing
+- Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
 
 ## Bug fixes
-- Replace usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
-- Add missing translation keys for "manage filters", "all", "records", etc
+- Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Added missing translation keys for "manage filters", "all", "records", etc
 - Images import from fixtures now works
-- Fix versions not being properly generated when real-time versioning is disabled (in imports/exports)
-- Delete completeness when a locale of a channel is deleted
-- Display flags in the completenesses grid
-- Fix a memory leak on product import when using MongoDB
-- Fix a bug with image upload on product with a "\" or "/" in their sku
-- Fix a bug that silently failed when uploading file that does not comply with server configuration
-- Fix a bug when displaying image thumbnail in the product grid with MongoDB support
+- Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
+- Deleted completeness when a locale of a channel is deleted
+- Displayed flags in the completenesses grid
+- Fixed a memory leak on product import when using MongoDB
+- Fixed a bug with image upload on product with a "\" or "/" in their sku
+- Fixed a bug that silently failed when uploading file that does not comply with server configuration
+- Fixed a bug when display image thumbnail in the product grid with MongoDB support
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -48,7 +56,7 @@
 - The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
-- Change the HydratorInterface::hydrate() method signature
+- Changed the HydratorInterface::hydrate() method signature
 - Avoid to store null values in Product::normalizedData (MongoDB support)
 - Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
 - Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
@@ -69,6 +77,7 @@
 - Remove WidgetRepository to replace it by `Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository`
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
 - Remove injection of WidgetRepository from LastOperationsWidget
+- Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

@@ -725,6 +725,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
      * @Given /^attribute (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theOfShouldBe($attribute, $identifier, $value)
@@ -734,6 +738,10 @@ class FixturesContext extends RawMinkContext
         $this->assertDataEquals($productValue->getData(), $value);
     }
 
+    /**
+     * @param mixed  $data
+     * @param string $value
+     */
     protected function assertDataEquals($data, $value)
     {
         switch ($value) {
@@ -754,6 +762,11 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
      * @Given /^the (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theLocalizableOfShouldBe($lang, $attribute, $identifier, $value)
@@ -765,6 +778,12 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $lang
+     * @param string $scope
+     * @param string $attribute
+     * @param string $identifier
+     * @param string $value
+     *
      * @Given /^the (\w+) (\w+) (\w+) of "([^"]*)" should be "([^"]*)"$/
      */
     public function theScopableOfShouldBe($lang, $scope, $attribute, $identifier, $value)
@@ -776,6 +795,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $attribute
+     * @param string    $products
+     * @param TableNode $table
+     *
      * @Given /^the prices "([^"]*)" of products? (.*) should be:$/
      */
     public function thePricesOfProductsShouldBe($attribute, $products, TableNode $table)
@@ -796,6 +819,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $products
+     * @param string $optionCode
+     *
      * @Given /^the option "([^"]*)" of products? (.*) should be "([^"]*)"$/
      */
     public function theOptionOfProductsShouldBe($attribute, $products, $optionCode)
@@ -808,6 +835,12 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string    $attribute
+     * @param string    $products
+     * @param TableNode $table
+     *
+     * @return null
+     *
      * @Given /^the options "([^"]*)" of products? (.*) should be:$/
      */
     public function theOptionsOfProductsShouldBe($attribute, $products, TableNode $table)
@@ -834,6 +867,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $products
+     * @param string $filename
+     *
      * @Given /^the file "([^"]*)" of products? (.*) should be "([^"]*)"$/
      */
     public function theFileOfShouldBe($attribute, $products, $filename)
@@ -1120,6 +1157,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $family
+     * @param string $channel
+     *
      * @Then /^attribute "([^"]*)" should be required in family "([^"]*)" for channel "([^"]*)"$/
      */
     public function attributeShouldBeRequiredInFamilyForChannel($attribute, $family, $channel)
@@ -1131,6 +1172,10 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param string $attribute
+     * @param string $family
+     * @param string $channel
+     *
      * @Given /^attribute "([^"]*)" should be optional in family "([^"]*)" for channel "([^"]*)"$/
      */
     public function attributeShouldBeOptionalInFamilyForChannel($attribute, $family, $channel)
@@ -1146,6 +1191,8 @@ class FixturesContext extends RawMinkContext
      * @param string $attributeCode
      * @param string $familyCode
      * @param string $channelCode
+     *
+     * @return AttributeRequirement|null
      */
     protected function getAttributeRequirement($attributeCode, $familyCode, $channelCode)
     {

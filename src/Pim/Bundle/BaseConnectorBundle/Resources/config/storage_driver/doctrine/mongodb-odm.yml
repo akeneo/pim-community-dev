@@ -1,4 +1,5 @@
 parameters:
+    pim_base_connector.reader.doctrine.product.class: Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ODMProductReader
     pim_base_connector.writer.direct_to_db.mongodb.product.class: Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB\ProductWriter
 
 services:
@@ -8,5 +9,4 @@ services:
             - '@pim_transform.transformer.mongodb.product'
             - '@pim_catalog.manager.product'
             - '@doctrine.odm.mongodb.document_manager'
-
 

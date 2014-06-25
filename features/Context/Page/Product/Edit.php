@@ -175,6 +175,11 @@ class Edit extends Form
         return $field;
     }
 
+    /**
+     * @param string $name
+     *
+     * @return NodeElement[]
+     */
     public function findFieldIcons($name)
     {
         if ($field = $this->findField($name)) {

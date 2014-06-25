@@ -2,35 +2,38 @@
 
 namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
+use Doctrine\ODM\MongoDB\Cursor;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ORM\EntityManager;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Doctrine\ODM\MongoDB\Query\Builder;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use Doctrine\ORM\Query\Expr\From;
 
-class BulkProductReaderSpec extends ObjectBehavior
+/**
+ * @require Doctrine\ODM\MongoDB\Query\Builder
+ */
+class ODMProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $repository,
         ChannelManager $channelManager,
         CompletenessManager $completenessManager,
         MetricConverter $metricConverter,
-        StepExecution $stepExecution
+        StepExecution $stepExecution,
+        DocumentManager $documentManager
     ) {
-        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter);
+        $this->beConstructedWith($repository, $channelManager, $completenessManager, $metricConverter, $documentManager);
 
         $this->setStepExecution($stepExecution);
-    }
-
-    function it_is_a_product_reader()
-    {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ObsoleteProductReader');
     }
 
     function it_has_a_channel()
@@ -39,23 +42,27 @@ class BulkProductReaderSpec extends ObjectBehavior
         $this->getChannel()->shouldReturn('mobile');
     }
 
-    function it_reads_all_products_at_once(
+    function it_reads_products_one_by_one(
         $channelManager,
         $repository,
         Channel $channel,
-        QueryBuilder $queryBuilder,
+        Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
-        ProductInterface $sku2
+        Cursor $cursor
     ) {
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
-        $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
+
+        $builder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+
+        $cursor->getNext()->willReturn(null);
+        $cursor->current()->willReturn($sku1);
+        $cursor->next()->willReturn(null);
 
         $this->setChannel('foobar');
-        $this->read()->shouldReturn(array($sku1, $sku2));
-        $this->read()->shouldReturn(null);
+        $this->read()->shouldReturn($sku1);
     }
 
     function it_generates_channel_completenesses_first_time_it_reads(
@@ -63,22 +70,26 @@ class BulkProductReaderSpec extends ObjectBehavior
         $completenessManager,
         $repository,
         Channel $channel,
-        QueryBuilder $queryBuilder,
+        Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
-        ProductInterface $sku2
+        Cursor $cursor
     ) {
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
-        $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
+
+        $builder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+
+        $cursor->getNext()->willReturn(null);
+        $cursor->current()->willReturn($sku1);
+        $cursor->next()->willReturn(null);
 
         $completenessManager->generateMissingForChannel($channel)->shouldBeCalledTimes(1);
 
         $this->setChannel('foobar');
-        $this->read();
-        $this->read();
-        $this->read();
+        $this->read()->shouldReturn($sku1);
+
     }
 
     function it_converts_metric_values(
@@ -86,21 +97,25 @@ class BulkProductReaderSpec extends ObjectBehavior
         $repository,
         $metricConverter,
         Channel $channel,
-        QueryBuilder $queryBuilder,
+        Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
-        ProductInterface $sku2
+        Cursor $cursor
     ) {
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
-        $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
+
+        $builder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+
+        $cursor->getNext()->willReturn(null);
+        $cursor->current()->willReturn($sku1);
+        $cursor->next()->willReturn(null);
+        $this->setChannel('foobar');
 
         $metricConverter->convert($sku1, $channel)->shouldBeCalled();
-        $metricConverter->convert($sku2, $channel)->shouldBeCalled();
 
-        $this->setChannel('foobar');
-        $this->read();
+        $this->read()->shouldReturn($sku1);
     }
 
     function it_increments_read_count_each_time_it_reads(
@@ -108,28 +123,26 @@ class BulkProductReaderSpec extends ObjectBehavior
         $repository,
         $stepExecution,
         Channel $channel,
-        QueryBuilder $queryBuilder,
+        Builder $builder,
         AbstractQuery $query,
         ProductInterface $sku1,
-        ProductInterface $sku2
+        Cursor $cursor
     ) {
         $channelManager->getChannelByCode('foobar')->willReturn($channel);
-        $repository->buildByChannelAndCompleteness($channel)->willReturn($queryBuilder);
-        $queryBuilder->getQuery()->willReturn($query);
-        $query->execute()->willReturn(array($sku1, $sku2));
+        $repository->buildByChannelAndCompleteness($channel)->willReturn($builder);
 
-        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
+        $builder->getQuery()->willReturn($query);
+        $query->execute()->willReturn($cursor);
+
+        $cursor->getNext()->willReturn(null);
+        $cursor->current()->willReturn($sku1);
+        $cursor->next()->willReturn(null);
+        $this->setChannel('foobar');
+
+        $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(1);
 
         $this->setChannel('foobar');
         $this->read();
-    }
-
-    function its_read_method_throws_exception_if_channel_cannot_be_found($channelManager)
-    {
-        $channelManager->getChannelByCode('mobile')->willReturn(null);
-
-        $this->setChannel('mobile');
-        $this->shouldThrow(new \InvalidArgumentException('Could not find the channel "mobile"'))->duringRead();
     }
 
     function it_exposes_the_channel_field($channelManager)

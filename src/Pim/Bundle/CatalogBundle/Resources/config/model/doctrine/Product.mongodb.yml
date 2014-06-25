@@ -2,6 +2,37 @@ Pim\Bundle\CatalogBundle\Model\Product:
     type: document
     repositoryClass: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository
     collection: pim_catalog_product
+    indexes:
+        family:
+            options:
+                background: true
+            keys:
+                family: 1
+        categoryIds:
+            options:
+                background: true
+            keys:
+                categoryIds: 1
+        groupIds:
+            options:
+                background: true
+            keys:
+                groupIds: 1
+        normalized_enabled:
+            options:
+                background: true
+            keys:
+                normalizedData.enabled: 1
+        normalized_created:
+            options:
+                background: true
+            keys:
+                normalizedData.created: 1
+        normalized_updated:
+            options:
+                background: true
+            keys:
+                normalizedData.updated: 1
     fields:
         id:
             id: true

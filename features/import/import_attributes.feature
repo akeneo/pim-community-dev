@@ -5,54 +5,44 @@ Feature: Import attributes
   I need to be able to import attributes
 
   Scenario: Successfully import attributes
-    Given the "default" catalog configuration
-    And the following attribute groups:
-      | code      | label-en_US |
-      | info      | Info        |
-      | marketing | Marketing   |
-      | media     | Media       |
-      | sizes     | Sizes       |
-      | colors    | Colors      |
-    And the following job:
-      | connector            | alias                | code                  | label                     | type   |
-      | Akeneo CSV Connector | csv_attribute_import | acme_attribute_import | Attribute import for Acme | import |
+    Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following file to import:
     """
     type;code;label-en_US;group;unique;useable_as_grid_column;useable_as_grid_filter;localizable;scopable;allowed_extensions;metric_family;default_metric_unit
-    pim_catalog_text;name;Name;info;0;1;1;1;0;;;
-    pim_catalog_simpleselect;manufacturer;Manufacturer;info;0;1;1;0;0;;;
-    pim_catalog_multiselect;weather_cond;"Weather conditions";info;0;1;1;0;0;;;
-    pim_catalog_textarea;description;Description;info;0;0;1;1;1;;;
-    pim_catalog_price_collection;price;Price;marketing;0;1;1;0;0;;;
-    pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;0;0;;;
-    pim_catalog_simpleselect;size;Size;sizes;0;1;1;0;0;;;
-    pim_catalog_simpleselect;color;Color;colors;0;1;1;0;0;;;
-    pim_catalog_simpleselect;lace_color;"Lace color";colors;0;0;1;0;0;;;
+    pim_catalog_text;shortname;Shortname;info;0;1;1;1;0;;;
+    pim_catalog_simpleselect;provider;Provider;info;0;1;1;0;0;;;
+    pim_catalog_multiselect;season;"Season";info;0;1;1;0;0;;;
+    pim_catalog_textarea;commentary;Commentary;info;0;0;1;1;1;;;
+    pim_catalog_price_collection;public_price;"Public price";marketing;0;1;1;0;0;;;
+    pim_catalog_simpleselect;grade;Grade;marketing;0;1;1;0;0;;;
+    pim_catalog_simpleselect;width;Width;sizes;0;1;1;0;0;;;
+    pim_catalog_simpleselect;hue;Hue;colors;0;1;1;0;0;;;
+    pim_catalog_simpleselect;sole_color;"Sole color";colors;0;0;1;0;0;;;
     pim_catalog_image;image_upload;"Image upload";media;0;0;0;0;0;gif,png;;
     pim_catalog_date;release;"Release date";info;0;1;1;0;0;;;
-    pim_catalog_metric;length;Length;info;0;0;0;0;0;;Length;CENTIMETER
+    pim_catalog_metric;lace_length;"Lace length";info;0;0;0;0;0;;Length;CENTIMETER
 
     """
-    And the following job "acme_attribute_import" configuration:
+    And the following job "footwear_attribute_import" configuration:
       | filePath | %file to import% |
-    When I am on the "acme_attribute_import" import job page
+    When I am on the "footwear_attribute_import" import job page
     And I launch the import job
-    And I wait for the "acme_attribute_import" job to finish
+    And I wait for the "footwear_attribute_import" job to finish
     Then there should be the following attributes:
-      | type         | code         | label-en_US        | group     | unique | useable_as_grid_column | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
-      | text         | name         | Name               | info      | 0      | 1                      | 1                      | 1           | 0        |                    |               |                     |
-      | simpleselect | manufacturer | Manufacturer       | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | multiselect  | weather_cond | Weather conditions | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | textarea     | description  | Description        | info      | 0      | 0                      | 1                      | 1           | 1        |                    |               |                     |
-      | prices       | price        | Price              | marketing | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | simpleselect | rating       | Rating             | marketing | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | simpleselect | size         | Size               | sizes     | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | simpleselect | color        | Color              | colors    | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | simpleselect | lace_color   | Lace color         | colors    | 0      | 0                      | 1                      | 0           | 0        |                    |               |                     |
-      | image        | image_upload | Image upload       | media     | 0      | 0                      | 0                      | 0           | 0        | gif,png            |               |                     |
-      | date         | release      | Release date       | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
-      | metric       | length       | Length             | info      | 0      | 0                      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
+      | type         | code         | label-en_US  | group     | unique | useable_as_grid_column | useable_as_grid_filter | localizable | scopable | allowed_extensions | metric_family | default_metric_unit |
+      | text         | shortname    | Shortname    | info      | 0      | 1                      | 1                      | 1           | 0        |                    |               |                     |
+      | simpleselect | provider     | Provider     | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | multiselect  | season       | Season       | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | textarea     | commentary   | Commentary   | info      | 0      | 0                      | 1                      | 1           | 1        |                    |               |                     |
+      | prices       | public_price | Public price | marketing | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | simpleselect | grade        | Grade        | marketing | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | simpleselect | width        | Width        | sizes     | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | simpleselect | hue          | Hue          | colors    | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | simpleselect | sole_color   | Sole color   | colors    | 0      | 0                      | 1                      | 0           | 0        |                    |               |                     |
+      | image        | image_upload | Image upload | media     | 0      | 0                      | 0                      | 0           | 0        | gif,png            |               |                     |
+      | date         | release      | Release date | info      | 0      | 1                      | 1                      | 0           | 0        |                    |               |                     |
+      | metric       | lace_length  | Lace length  | info      | 0      | 0                      | 0                      | 0           | 0        |                    | Length        | CENTIMETER          |
 
   Scenario: Fail to change immutable properties of attributes during the import
     Given an "apparel" catalog configuration

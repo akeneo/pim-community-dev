@@ -4,17 +4,17 @@ namespace spec\Pim\Bundle\BaseConnectorBundle\Reader\Doctrine;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Doctrine\ORM\AbstractQuery;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\TransformBundle\Converter\MetricConverter;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\ORM\AbstractQuery;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 
-class BulkProductReaderSpec extends ObjectBehavior
+class ObsoleteProductReaderSpec extends ObjectBehavior
 {
     function let(
         ProductRepositoryInterface $repository,
@@ -28,18 +28,13 @@ class BulkProductReaderSpec extends ObjectBehavior
         $this->setStepExecution($stepExecution);
     }
 
-    function it_is_a_product_reader()
-    {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ObsoleteProductReader');
-    }
-
     function it_has_a_channel()
     {
         $this->setChannel('mobile');
         $this->getChannel()->shouldReturn('mobile');
     }
 
-    function it_reads_all_products_at_once(
+    function it_reads_products_one_by_one(
         $channelManager,
         $repository,
         Channel $channel,
@@ -54,7 +49,8 @@ class BulkProductReaderSpec extends ObjectBehavior
         $query->execute()->willReturn(array($sku1, $sku2));
 
         $this->setChannel('foobar');
-        $this->read()->shouldReturn(array($sku1, $sku2));
+        $this->read()->shouldReturn($sku1);
+        $this->read()->shouldReturn($sku2);
         $this->read()->shouldReturn(null);
     }
 
@@ -101,6 +97,8 @@ class BulkProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read();
+        $this->read();
+        $this->read();
     }
 
     function it_increments_read_count_each_time_it_reads(
@@ -121,6 +119,8 @@ class BulkProductReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 
         $this->setChannel('foobar');
+        $this->read();
+        $this->read();
         $this->read();
     }
 
