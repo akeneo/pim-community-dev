@@ -353,7 +353,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
      */
-    public function iShouldNotLaunchTheJob($action, JobInstance $job)
+    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
     {
         $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
         $page = $this->getCurrentPage()->open(['id' => $job->getId()]);
