@@ -15,6 +15,7 @@
             "OroEmail\\": "app/emails/"
         }
     },
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.4.4",
         "knplabs/knp-gaufrette-bundle": "0.1.7",
@@ -40,10 +41,10 @@
         "kriswallsmith/buzz": ">=0.5",
         "phpspec/phpspec": "dev-develop@dev",
         "akeneo/phpspec-skip-example-extension": "1.0.*@dev",
-        "phpunit/phpunit": "3.7.*@stable",
-        "squizlabs/php_codesniffer": "1.*@stable",
-        "phpmd/phpmd": "1.*@stable",
-        "pdepend/pdepend": "1.1.*@stable"
+        "phpunit/phpunit": "3.7.*",
+        "squizlabs/php_codesniffer": "1.*",
+        "phpmd/phpmd": "1.*",
+        "pdepend/pdepend": "1.1.*"
     },
     "suggest": {
         "doctrine/mongodb-odm-bundle": "In order to activate the MongoDB support within Akeneo"
@@ -76,7 +77,6 @@
     "config": {
         "bin-dir": "bin"
     },
-    "minimum-stability": "dev",
     "extra": {
         "symfony-app-dir": "app",
         "symfony-web-dir": "web",
