@@ -54,7 +54,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        $this->checkPermission(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject());
     }
 
     /**
@@ -64,7 +64,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        $this->checkPermission(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject());
     }
 
     /**
@@ -74,7 +74,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkJobExecutionPermission(GenericEvent $event)
     {
-        $this->checkPermission(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
+        $this->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
     }
 
     /**
