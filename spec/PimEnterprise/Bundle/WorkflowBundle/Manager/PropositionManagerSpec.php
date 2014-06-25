@@ -49,13 +49,27 @@ class PropositionManagerSpec extends ObjectBehavior
         $this->approve($proposition);
     }
 
-    function it_closes_proposition_when_refusing_it(
+    function it_marks_as_in_progress_proposition_which_is_ready_when_refusing_it(
         $registry,
         Proposition $proposition,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
+        $proposition->isInProgress()->willReturn(false);
+        $proposition->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $this->refuse($proposition);
+    }
+    function it_removes_in_progress_proposition_when_refusing_it(
+        $registry,
+        Proposition $proposition,
+        ObjectManager $manager
+    ) {
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+
+        $proposition->isInProgress()->willReturn(true);
         $manager->remove($proposition)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

@@ -72,7 +72,10 @@ class PropositionManager
 
         $this->applier->apply($product, $proposition);
 
-        $this->remove($proposition);
+        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager->remove($proposition);
+        $manager->flush();
+
         $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_proposition' => true]);
     }
@@ -96,7 +99,13 @@ class PropositionManager
     public function remove(Proposition $proposition)
     {
         $manager = $this->registry->getManagerForClass(get_class($proposition));
-        $manager->remove($proposition);
+
+        if (!$proposition->isInProgress()) {
+            $proposition->setStatus(Proposition::IN_PROGRESS);
+        } else {
+            $manager->remove($proposition);
+        }
+
         $manager->flush();
     }
 
