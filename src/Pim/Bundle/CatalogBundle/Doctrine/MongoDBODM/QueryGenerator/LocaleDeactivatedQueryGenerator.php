@@ -18,10 +18,17 @@ class LocaleDeactivatedQueryGenerator extends AbstractQueryGenerator
 
             foreach ($attributes as $attribute) {
                 $attributeNormFields = [
-                    sprintf('normalizedData.%s-%s', $attribute->getCode(), $entity->getCode())
+                    sprintf(
+                        ProductQueryUtility::NORMALIZED_FIELD . '.%s-%s',
+                        $attribute->getCode(),
+                        $entity->getCode()
+                    )
                 ];
-                $channelSuffixes = $this->getChannelSuffixes($attribute);
-                $attributeNormFields = $this->appendSuffixes($attributeNormFields, $channelSuffixes);
+                $channelCodes        = $this->attributeNamingUtility->getChannelCodes($attribute);
+                $attributeNormFields = $this->attributeNamingUtility->appendSuffixes(
+                    $attributeNormFields,
+                    $channelCodes
+                );
 
                 foreach ($attributeNormFields as $attributeNormField) {
                     $queries[] = [

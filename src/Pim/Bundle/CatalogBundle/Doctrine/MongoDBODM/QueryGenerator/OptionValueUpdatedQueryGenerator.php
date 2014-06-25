@@ -12,9 +12,9 @@ class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->getPossibleAttributeCodes(
+        $attributeNormFields = $this->attributeNamingUtility->getPossibleAttributeCodes(
             $entity->getOption()->getAttribute(),
-            'normalizedData.'
+            ProductQueryUtility::NORMALIZED_FIELD . '.'
         );
 
         $queries = [];

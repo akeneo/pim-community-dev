@@ -12,9 +12,9 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->getPossibleAttributeCodes(
+        $attributeNormFields = $this->attributeNamingUtility->getPossibleAttributeCodes(
             $entity->getAttribute(),
-            'normalizedData.'
+            ProductQueryUtility::NORMALIZED_FIELD . '.'
         );
 
         $queries = [];

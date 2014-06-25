@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 /**
 * NormalizedData query generator interface
 */
-interface NormalizedDataQueryGenerator
+interface NormalizedDataQueryGeneratorInterface
 {
     /**
      * Generate the query to update concerned products

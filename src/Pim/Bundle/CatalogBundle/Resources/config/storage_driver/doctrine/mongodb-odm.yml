@@ -6,6 +6,7 @@ parameters:
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
+    pim_catalog.doctrine.product_query_utility.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility
     pim_catalog.event_listener.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
@@ -31,6 +32,7 @@ parameters:
 
     pim_catalog.query_generator.abstract_normalized_data.class:   Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AbstractQueryGenerator
     pim_catalog.query_generator.attribute_as_label_updated.class: Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\AttributeAsLabelUpdatedQueryGenerator
+    pim_catalog.query_generator.currency_deactivated.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\CurrencyDeactivatedQueryGenerator
     pim_catalog.query_generator.channel_deleted.class:            Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\ChannelDeletedQueryGenerator
     pim_catalog.query_generator.family_label_updated.class:       Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\FamilyLabelUpdatedQueryGenerator
     pim_catalog.query_generator.locale_detactivated.class:        Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\LocaleDeactivatedQueryGenerator
@@ -57,11 +59,20 @@ services:
         class: %pim_catalog.doctrine.index_creator.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.doctrine.product_query_utility'
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.currency.class%
             - %pim_catalog.entity.attribute.class%
+
+    pim_catalog.doctrine.product_query_utility:
+        class: %pim_catalog.doctrine.product_query_utility.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.channel.class%
+            - %pim_catalog.entity.locale.class%
+
 
     pim_catalog.doctrine.index_purger:
         class: %pim_catalog.doctrine.index_purger.class%
@@ -250,14 +261,16 @@ services:
             - %pim_catalog.entity.locale.class%
             - %pim_catalog.entity.attribute.class%
 
-    pim_catalog.query_generator.attribute_as_label:
-        class: %pim_catalog.query_generator.attribute_as_label.class%
+    pim_catalog.query_generator.attribute_as_label_updated:
+        class: %pim_catalog.query_generator.attribute_as_label_updated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.attribute.class%
             - 'attributeAsLabel'
 
     pim_catalog.query_generator.attribute_as_label_updated:
         class: %pim_catalog.query_generator.attribute_as_label_updated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.attribute.class%
             - 'attributeAsLabel'
@@ -266,6 +279,7 @@ services:
 
     pim_catalog.query_generator.channel_deleted:
         class: %pim_catalog.query_generator.channel_deleted.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.channel.class%
         tags:
@@ -273,6 +287,7 @@ services:
 
     pim_catalog.query_generator.currency_deactivated:
         class: %pim_catalog.query_generator.currency_deactivated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.currency.class%
             - 'activated'
@@ -281,6 +296,7 @@ services:
 
     pim_catalog.query_generator.family_label_updated:
         class: %pim_catalog.query_generator.family_label_updated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
             - 'label'
@@ -289,6 +305,7 @@ services:
 
     pim_catalog.query_generator.locale_detactivated:
         class: %pim_catalog.query_generator.locale_detactivated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.locale.class%
             - 'activated'
@@ -297,6 +314,7 @@ services:
 
     pim_catalog.query_generator.option_code_updated:
         class: %pim_catalog.query_generator.option_code_updated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.attribute_option.class%
             - 'code'
@@ -305,6 +323,7 @@ services:
 
     pim_catalog.query_generator.option_deleted:
         class: %pim_catalog.query_generator.option_deleted.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.attribute_option.class%
         tags:
@@ -312,6 +331,7 @@ services:
 
     pim_catalog.query_generator.option_value_updated:
         class: %pim_catalog.query_generator.option_value_updated.class%
+        parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - %pim_catalog.entity.attribute_option_value.class%
             - 'value'

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+
 /**
 * Channel deleted query generator
 */
@@ -16,7 +18,7 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
         $queries = [];
 
         foreach ($attributes as $attribute) {
-            $attributeCodes = $this->getPossibleAttributeCodes($attribute, 'normalizedData.');
+            $attributeCodes = $this->getPossibleAttributeCodes($attribute, ProductQueryUtility::NORMALIZED_FIELD);
 
             foreach ($attributeCodes as $attributeCode) {
                 $queries[] = [
