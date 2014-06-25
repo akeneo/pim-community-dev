@@ -8,7 +8,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Add the owner roles parameter to the product edit template parameters
@@ -60,49 +59,8 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
             return;
         }
 
-        $product = $parameters['product'];
-        $roles = $this->getOwnershipRoles($product);
-        $parameters['ownerRoles'] = $roles;
-        $parameters['isOwner'] = $this->isOwner($roles);
+        $parameters['ownerRoles'] = $this->repository->findRolesForProduct($parameters['product']);
+
         $event->setArgument('parameters', $parameters);
-    }
-
-    /**
-     * @return array
-     */
-    protected function getOwnershipRoles(ProductInterface $product)
-    {
-        return $this->repository->findRolesForProduct($product);
-    }
-
-    /**
-     * @return boolean
-     */
-    protected function isOwner(array $ownershipRoles)
-    {
-        $userRoles   = $this->getUser()->getRoles();
-        $userRoleIds = [];
-        foreach ($userRoles as $role) {
-            $userRoleIds[]= $role->getId();
-        }
-        foreach ($ownershipRoles as $role) {
-            if (in_array($role['id'], $userRoleIds)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * @return User
-     */
-    protected function getUser()
-    {
-        if (null === $user = $this->userContext->getUser()) {
-            throw new \LogicException('Current user cannot be resolved');
-        }
-
-        return $user;
     }
 }

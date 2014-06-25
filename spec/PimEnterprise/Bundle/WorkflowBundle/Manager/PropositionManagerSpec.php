@@ -71,9 +71,9 @@ class PropositionManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter', 'fr_FR')->willReturn($proposition);
+        $repository->findUserProposition($product, 'peter')->willReturn($proposition);
 
-        $this->findOrCreate($product, 'fr_FR');
+        $this->findOrCreate($product);
     }
 
     function it_creates_a_proposition_when_it_does_not_exist(
@@ -86,10 +86,10 @@ class PropositionManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter', 'fr_FR')->willReturn(null);
-        $factory->createProposition($product, 'peter', 'fr_FR')->willReturn($proposition);
+        $repository->findUserProposition($product, 'peter')->willReturn(null);
+        $factory->createProposition($product, 'peter')->willReturn($proposition);
 
-        $this->findOrCreate($product, 'fr_FR')->shouldReturn($proposition);
+        $this->findOrCreate($product)->shouldReturn($proposition);
     }
 
     function it_throws_exception_when_find_proposition_and_current_cannot_be_resolved(

@@ -18,12 +18,11 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(ProductInterface $product, $username, $locale)
+    public function findUserProposition(ProductInterface $product, $username)
     {
         return $this
             ->createQueryBuilder('Proposition')
             ->field('author')->equals($username)
-            ->field('locale')->equals($locale)
             ->field('product')->references($product)
             ->getQuery()->getSingleResult();
     }

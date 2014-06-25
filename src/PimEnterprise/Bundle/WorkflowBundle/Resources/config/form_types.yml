@@ -22,10 +22,13 @@ services:
         class: %pimee_workflow.form.subscriber.collect_product_value_changes.class%
         arguments:
             - '@pimee_workflow.form.comparator.chained'
+            - '@security.context'
 
     pimee_workflow.form.subscriber.unmap_product_values:
         public: false
         class: %pimee_workflow.form.subscriber.unmap_product_values.class%
+        arguments:
+            - '@security.context'
 
     ##
     # Comparators of product values
