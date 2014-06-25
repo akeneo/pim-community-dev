@@ -20,7 +20,7 @@
         "php": ">=5.4.4",
         "akeneo/pim-community-dev": "1.2.*",
         "phpspec/php-diff": "1.0.2",
-        "oro/platform": "dev-pim-1.2#e3108c2975df02357b788c10506f761bea9dfed2",
+        "oro/platform": "dev-pim-1.2#4dd84aff6f4689e2996fcc5384814b5b6b7048e6",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
         "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
