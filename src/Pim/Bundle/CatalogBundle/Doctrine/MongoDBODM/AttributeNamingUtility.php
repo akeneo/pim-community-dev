@@ -24,16 +24,26 @@ class AttributeNamingUtility
     /** @var string */
     protected $localeClass;
 
+    /** @var string */
+    protected $attributeClass;
+
+    /** @var string */
+    protected $currencyClass;
+
     /**
      * @param ManagerRegistry $managerRegistry
-     * @param string          $localeClass
      * @param string          $channelClass
+     * @param string          $localeClass
+     * @param string          $attributeClass
+     * @param string          $currencyClass
      */
-    public function __construct($managerRegistry, $channelClass, $localeClass)
+    public function __construct($managerRegistry, $channelClass, $localeClass, $attributeClass, $currencyClass)
     {
         $this->managerRegistry = $managerRegistry;
         $this->channelClass    = $channelClass;
         $this->localeClass     = $localeClass;
+        $this->attributeClass  = $attributeClass;
+        $this->currencyClass   = $currencyClass;
     }
 
     /**
@@ -129,18 +139,6 @@ class AttributeNamingUtility
         $normFields = $this->attributeNamingUtility->appendSuffixes($normFields, $channelCodes, '-');
 
         return $normFields;
-    }
-
-    /**
-     * Get the MongoDB collection object
-     *
-     * @return Collection
-     */
-    public function getCollection()
-    {
-        $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
-
-        return $documentManager->getDocumentCollection($this->productClass);
     }
 
     /**

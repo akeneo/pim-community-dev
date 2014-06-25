@@ -59,19 +59,17 @@ services:
         class: %pim_catalog.doctrine.index_creator.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.doctrine.product_query_utility'
+            - '@pim_catalog.doctrine.attribute_naming_utility'
             - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.channel.class%
-            - %pim_catalog.entity.locale.class%
-            - %pim_catalog.entity.currency.class%
-            - %pim_catalog.entity.attribute.class%
 
-    pim_catalog.doctrine.product_query_utility:
-        class: %pim_catalog.doctrine.product_query_utility.class%
+    pim_catalog.doctrine.attribute_naming_utility:
+        class: %pim_catalog.doctrine.attribute_naming_utility.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.channel.class%
             - %pim_catalog.entity.locale.class%
+            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.currency.class%
 
 
     pim_catalog.doctrine.index_purger:
