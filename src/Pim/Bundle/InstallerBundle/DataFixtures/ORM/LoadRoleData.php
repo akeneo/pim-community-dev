@@ -26,16 +26,26 @@ class LoadRoleData extends AbstractInstallerFixture
      */
     public function load(ObjectManager $manager)
     {
-        $this->om = $manager;
-        $dataRoles = Yaml::parse(realpath($this->getFilePath()));
-        //$dataRoles['IS_AUTHENTICATED_ANONYMOUSLY']['label']= 'Anonymous';
+        $this->om   = $manager;
+        $aclManager = $this->getAclManager();
+        $dataRoles  = Yaml::parse(realpath($this->getFilePath()));
+        $roles      = [];
+
+        $roleAnonymous = $this->buildRole(['role' => 'IS_AUTHENTICATED_ANONYMOUSLY', 'label' => 'Anonymous']);
+        $manager->persist($roleAnonymous);
+
         foreach ($dataRoles['user_roles'] as $code => $dataRole) {
             $dataRole['role']= $code;
             $role = $this->buildRole($dataRole);
+            $roles[]= $role;
             $manager->persist($role);
-            $this->loadAcls($role);
         }
         $manager->flush();
+
+        foreach ($roles as $role) {
+            $this->loadAcls($aclManager, $role);
+        }
+        $aclManager->flush();
     }
 
     /**
@@ -78,12 +88,12 @@ class LoadRoleData extends AbstractInstallerFixture
      * Load the ACL per role
      *
      * @param AclManager $manager
+     * @param Role       $role
      *
      * @see Oro\Bundle\SecurityBundle\DataFixtures\ORM\LoadAclRoles
      */
-    protected function loadAcls(Role $role)
+    protected function loadAcls(AclManager $manager, Role $role)
     {
-        $manager = $this->getAclManager();
         $sid = $manager->getSid($role);
 
         foreach ($manager->getAllExtensions() as $extension) {
@@ -93,7 +103,6 @@ class LoadRoleData extends AbstractInstallerFixture
                     ? $maskBuilder->getConst('GROUP_SYSTEM')
                     : $maskBuilder->getConst('GROUP_ALL');
                 $manager->setPermission($sid, $rootOid, $fullAccessMask, true);
-                echo $sid.' '.$rootOid.' '.$fullAccessMask.PHP_EOL;
             }
         }
     }

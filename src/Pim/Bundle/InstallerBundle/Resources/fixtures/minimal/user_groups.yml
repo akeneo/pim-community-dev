@@ -1,9 +1,5 @@
 user_groups:
     all:
         name: All
-    #administrators:
-    #    name: Administrators
-    #marketing:
-    #    name: Marketing
-    logistic:
-        name: Logistic
+    administrators:
+        name: Administrators
