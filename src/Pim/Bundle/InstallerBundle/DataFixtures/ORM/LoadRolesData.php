@@ -4,16 +4,16 @@ namespace Pim\Bundle\InstallerBundle\DataFixtures\ORM;
 
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Group;
+use Oro\Bundle\UserBundle\Entity\Role;
 
 /**
- * Load fixtures for groups
+ * Load fixtures for roles
  *
  * @author    nicolas dupont <nicolas@akeneo.com>
  * @copyright 2014 akeneo sas (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  open software license (osl 3.0)
  */
-class LoadGroupData extends AbstractInstallerFixture
+class LoadRoleData extends AbstractInstallerFixture
 {
     /**
      * @var ObjectManager
@@ -26,30 +26,33 @@ class LoadGroupData extends AbstractInstallerFixture
     public function load(ObjectManager $manager)
     {
         $this->om = $manager;
-        $dataGroups = Yaml::parse(realpath($this->getFilePath()));
-        foreach ($dataGroups['groups'] as $dataGroup) {
-            $group = $this->buildGroup($dataGroup);
-            $manager->persist($group);
+        $dataRoles = Yaml::parse(realpath($this->getFilePath()));
+        foreach ($dataRoles['roles'] as $code => $dataRole) {
+            $dataRole['role']= $code;
+            $role = $this->buildRole($dataRole);
+            $manager->persist($role);
         }
         $manager->flush();
     }
 
     /**
-     * Build the group entity from data
+     * Build the role entity from data
      *
      * @param array $data
      *
-     * @return Group
+     * @return Role
      */
-    protected function buildGroup(array $data)
+    protected function buildRole(array $data)
     {
-        $name = $data['name'];
-        $group = new Group($name);
+        $code = $data['code'];
+        $label = $data['label'];
+        $role = new Role($code);
+        $role->setLabel($label);
         $owner = isset($data['owner']) ? $data['owner'] : 'Main';
         $owner = $this->getOwner($owner);
-        $group->setOwner($owner);
+        $role->setOwner($owner);
 
-        return $group;
+        return $role;
     }
 
     /**
@@ -57,7 +60,7 @@ class LoadGroupData extends AbstractInstallerFixture
      */
     public function getEntity()
     {
-        return 'groups';
+        return 'roles';
     }
 
     /**

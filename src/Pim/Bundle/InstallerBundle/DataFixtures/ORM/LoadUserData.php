@@ -65,7 +65,7 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return User
      */
     protected function buildUser(array $data)
     {
