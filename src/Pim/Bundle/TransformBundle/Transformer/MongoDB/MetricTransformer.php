@@ -48,15 +48,15 @@ class MetricTransformer implements ObjectTransformerInterface
     {
         $doc = new \StdClass();
         $doc->_id = new MongoId;
-        $doc->unit = $object->getUnit();
-        $doc->data = $object->getData();
+        $doc->unit = $metric->getUnit();
+        $doc->data = $metric->getData();
 
-        $this->createMetricBaseValues($object);
+        $this->createMetricBaseValues($metric);
 
-        $doc->baseUnit = $object->getBaseUnit();
-        $doc->baseData = $object->getBaseData();
+        $doc->baseUnit = $metric->getBaseUnit();
+        $doc->baseData = $metric->getBaseData();
 
-        $doc->family = $object->getFamily();
+        $doc->family = $metric->getFamily();
 
         return $doc;
     }

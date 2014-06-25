@@ -71,8 +71,8 @@ class ProductTransformer implements ObjectTransformerInterface
         }
 
         $target->family         = $product->getFamily() ? $product->getFamily()->getId() : null;
-        $target->groupIds       = $this->getGroupIds($product->getGroups());
-        $target->categoryIds    = $this->getCategoryIds($product->getCategories());
+        $target->groupIds       = $this->transformGroups($product->getGroups());
+        $target->categoryIds    = $this->transformCategories($product->getCategories());
         $target->enabled        = $product->isEnabled();
         $target->associations   = $this->transformAssociations($product->getAssociations());
         $target->values         = $this->transformValues($product->getValues(), $context);
@@ -95,8 +95,8 @@ class ProductTransformer implements ObjectTransformerInterface
 
         foreach ($values as $value) {
             $targetValue = $this->valueTransformer->transform($value, $context);
-            if (null !== $normalizedValue) {
-                $targetValues[] = $normalizedValue;
+            if (null !== $targetValue) {
+                $targetValues[] = $targetValue;
             }
         }
 
