@@ -135,8 +135,8 @@ class AttributeNamingUtility
         $channelCodes = $this->getChannelCodes($attribute);
 
         $normFields = [ProductQueryUtility::NORMALIZED_FIELD . '.' . $attribute->getCode()];
-        $normFields = $this->attributeNamingUtility->appendSuffixes($normFields, $localeCodes, '-');
-        $normFields = $this->attributeNamingUtility->appendSuffixes($normFields, $channelCodes, '-');
+        $normFields = $this->appendSuffixes($normFields, $localeCodes, '-');
+        $normFields = $this->appendSuffixes($normFields, $channelCodes, '-');
 
         return $normFields;
     }

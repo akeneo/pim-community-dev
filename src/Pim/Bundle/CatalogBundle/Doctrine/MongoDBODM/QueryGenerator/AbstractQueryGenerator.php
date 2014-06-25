@@ -27,9 +27,6 @@ abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInt
      */
     public function __construct(
         AttributeNamingUtility $attributeNamingUtility,
-        $channelClass,
-        $localeClass,
-        $attributeClass,
         $entityClass,
         $field = ''
     ) {
