@@ -7,6 +7,7 @@ parameters:
     pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
     pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
+    pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
 
 services:
     pimee_workflow.factory.proposition:
@@ -39,6 +40,11 @@ services:
 
     pimee_workflow.product_changes_applier.merge_values:
         class: %pimee_workflow.product_changes_applier.merge_values.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.proposition_subscriber.mark_in_progress:
+        class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
         tags:
             - { name: kernel.event_subscriber }
 
