@@ -9,7 +9,8 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        roles:
+            - ROLE_ADMINISTRATOR
         enable: true
     julia:
         username: julia
@@ -21,7 +22,8 @@ users:
         catalog_locale: de_DE
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        roles:
+            - ROLE_ADMINISTRATOR
         enable: true
     mary:
         username: mary
@@ -33,7 +35,8 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        roles:
+            - ROLE_ADMINISTRATOR
         enable: true
     sandra:
         username: sandra
@@ -45,7 +48,8 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        roles:
+            - ROLE_ADMINISTRATOR
         enable: true
     peter:
         username: peter
@@ -57,5 +61,6 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        role:
+            - ROLE_ADMINISTRATOR
         enable: true
