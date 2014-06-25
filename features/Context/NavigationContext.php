@@ -347,6 +347,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param JobInstance $job
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
+     */
+    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
+    {
+        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
+        $page = $this->getCurrentPage()->open(['id' => $job->getId()]);
+
+        return new Step\Then('I should see "403 Forbidden"');
+    }
+
+    /**
      * @param string $name
      *
      * @return Page

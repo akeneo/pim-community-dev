@@ -966,7 +966,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeTheButton($button)
     {
-        if (null === $this->getCurrentPage()->getButton($button)) {
+        if (null !== $this->getCurrentPage()->getButton($button)) {
             throw $this->createExpectationException(
                 sprintf('Button "%s" should not be displayed', $button)
             );
