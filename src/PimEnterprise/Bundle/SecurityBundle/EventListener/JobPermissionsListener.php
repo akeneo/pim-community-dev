@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\JobEvents;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
@@ -16,7 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobProfileListener implements EventSubscriberInterface
+class JobPermissionsListener implements EventSubscriberInterface
 {
     /** @var SecurityContextInterface */
     protected $securityContext;
@@ -37,8 +38,12 @@ class JobProfileListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            JobEvents::PRE_EDIT_JOB_PROFILE    => 'checkEditPermission',
-            JobEvents::PRE_EXECUTE_JOB_PROFILE => 'checkExecutePermission'
+            JobEvents::PRE_EDIT_JOB_PROFILE       => 'checkEditPermission',
+            JobEvents::PRE_EXECUTE_JOB_PROFILE    => 'checkExecutePermission',
+            JobEvents::PRE_SHOW_JOB_PROFILE       => 'checkExecutePermission',
+            JobEvents::PRE_SHOW_JOB_EXECUTION     => 'checkJobExecutionPermission',
+            JobEvents::PRE_DL_FILES_JOB_EXECUTION => 'checkJobExecutionPermission',
+            JobEvents::PRE_DL_LOG_JOB_EXECUTION   => 'checkJobExecutionPermission'
         ];
     }
 
@@ -46,26 +51,43 @@ class JobProfileListener implements EventSubscriberInterface
      * Throws an access denied exception if the user can not edit the job profile
      *
      * @param GenericEvent $event
-     *
-     * @throws AccessDeniedException
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject())) {
-            throw new AccessDeniedException();
-        }
+        $this->checkPermission(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject());
     }
 
     /**
      * Throws an access denied exception if the user can not execute the job profile
      *
      * @param GenericEvent $event
-     *
-     * @throws AccessDeniedException
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject())) {
+        $this->checkPermission(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject());
+    }
+
+    /**
+     * Throws an access denied exception if the user can not execute the job profile
+     *
+     * @param GenericEvent $event
+     */
+    public function checkJobExecutionPermission(GenericEvent $event)
+    {
+        $this->checkPermission(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
+    }
+
+    /**
+     * Throws an access denied exception if the user has not the asked permission
+     *
+     * @param string      $permission
+     * @param JobInstance $jobInstance
+     *
+     * @throws AccessDeniedException
+     */
+    protected function isGranted($permission, JobInstance $jobInstance)
+    {
+        if (false === $this->securityContext->isGranted($permission, $jobInstance)) {
             throw new AccessDeniedException();
         }
     }
