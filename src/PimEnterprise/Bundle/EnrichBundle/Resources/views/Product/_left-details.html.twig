@@ -30,3 +30,10 @@
             {{ 'none'|trans }}
         {% endfor %}
     </li>
+    <li>{{ 'Status'|trans }}:
+        {% if proposition.inProgress %}
+            {{ 'pimee_workflow.proposition.status.in_progress'|trans }}
+        {% else %}
+            {{ 'pimee_workflow.proposition.status.ready'|trans }}
+        {% endif %}
+    </li>

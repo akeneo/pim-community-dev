@@ -7,7 +7,7 @@ pimee_workflow:
         status:
             label: Status
             in_progress: In progress
-            ready: Ready
+            ready: Waiting for approval
         action:
             approve: Approve
             refuse:  Refuse
