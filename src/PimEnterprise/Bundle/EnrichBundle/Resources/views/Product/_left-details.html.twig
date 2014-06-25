@@ -31,9 +31,17 @@
         {% endfor %}
     </li>
     <li>{{ 'Status'|trans }}:
-        {% if proposition.inProgress %}
-            {{ 'pimee_workflow.proposition.status.in_progress'|trans }}
+        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
+            {{ 'working copy'|trans }}
         {% else %}
-            {{ 'pimee_workflow.proposition.status.ready'|trans }}
+            {% if proposition.inProgress %}
+                {% if proposition.id is not null %}
+                    {{ 'pimee_workflow.proposition.status.in_progress'|trans }}
+                {% else %}
+                    {{ 'working copy'|trans }}
+                {% endif %}
+            {% else %}
+                {{ 'pimee_workflow.proposition.status.ready'|trans }}
+            {% endif %}
         {% endif %}
     </li>
