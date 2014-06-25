@@ -16,6 +16,7 @@ class OptionComparatorSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($attribute);
         $value->getId()->willReturn(713705);
         $value->getScope()->willReturn('ecommerce');
+        $value->getLocale()->willReturn('fr_FR');
         $attribute->getId()->willReturn(1337);
     }
 
@@ -47,6 +48,7 @@ class OptionComparatorSpec extends ObjectBehavior
                 'attribute_id' => 1337,
                 'value_id' => 713705,
                 'scope' => 'ecommerce',
+                'locale' => 'fr_FR',
             ],
         ]);
     }
@@ -66,6 +68,7 @@ class OptionComparatorSpec extends ObjectBehavior
                 'attribute_id' => 1337,
                 'value_id' => 713705,
                 'scope' => 'ecommerce',
+                'locale' => 'fr_FR',
             ],
         ]);
     }

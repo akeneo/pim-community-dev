@@ -5,6 +5,9 @@ job_profile_accesses:
     csv_product_export:
         execute: [administrator, manager, user]
         edit: [administrator, manager]
+    csv_published_product_export:
+        execute: [administrator, manager, user]
+        edit: [administrator, manager]
     csv_category_import:
         execute: [administrator, manager, user]
         edit: [administrator, manager]

@@ -52,10 +52,10 @@ interface PropositionRepositoryInterface extends ObjectRepository
     /**
      * Find one user proposition by its locale
      *
-     * @param string $username
-     * @param string $locale
+     * @param ProductInterface $product
+     * @param string           $username
      *
      * @return null|Proposition
      */
-    public function findUserProposition(ProductInterface $product, $username, $locale);
+    public function findUserProposition(ProductInterface $product, $username);
 }

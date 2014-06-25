@@ -75,6 +75,7 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $accessManager
     ) {
         $event->getData()->willReturn($group);
+        $group->getId()->willReturn(1);
 
         $event->getForm()->willReturn($form);
         $form->isValid()->willReturn(true);
@@ -84,7 +85,6 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
 
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
-
 
         $accessManager->setAccess($group, ['one', 'two'], ['three'])->shouldBeCalled();
 

@@ -33,9 +33,6 @@ class Proposition
     /** @var array */
     protected $changes = [];
 
-    /** @var string */
-    protected $locale;
-
     /** @var integer */
     protected $status;
 
@@ -133,30 +130,6 @@ class Proposition
     public function getChanges()
     {
         return $this->changes;
-    }
-
-    /**
-     * Set locale
-     *
-     * @param string $locale
-     *
-     * @return Proposition
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
     }
 
     /**

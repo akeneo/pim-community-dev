@@ -5,7 +5,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * A collector of changes that a client is sending to a product edit form
@@ -21,12 +23,19 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     /** @var array */
     protected $changes = [];
 
+    /** @var SecurityContextInterface */
+    protected $securityContext;
+
     /**
-     * @param ComparatorInterface $comparator
+     * @param ComparatorInterface      $comparator
+     * @param SecurityContextInterface $securityContext
      */
-    public function __construct(ComparatorInterface $comparator)
-    {
+    public function __construct(
+        ComparatorInterface $comparator,
+        SecurityContextInterface $securityContext
+    ) {
         $this->comparator = $comparator;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -48,7 +57,10 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     {
         $form = $event->getForm();
         $data = $event->getData();
-        if ('pim_product_edit' !== $form->getName() || !array_key_exists('values', $data)) {
+
+        if ('pim_product_edit' !== $form->getName()
+            || !array_key_exists('values', $data)
+            || $this->securityContext->isGranted(Attributes::OWNER, $form->getData())) {
             return;
         }
 

@@ -11,11 +11,6 @@ datagrid:
                 label: pimee_workflow.proposition.author
                 type: field
                 frontend_type: string
-            locale:
-                label: pimee_workflow.proposition.locale
-                type: twig
-                template: PimEnterpriseWorkflowBundle:Datagrid:Property/locale_flag.html.twig
-                frontend_type: html
             changes:
                 label: pimee_workflow.proposition.changes
                 type: twig
@@ -64,15 +59,6 @@ datagrid:
                         field_options:
                             multiple: true
                             choices: '@pimee_workflow.datagrid.proposition_grid_helper->getStatusChoices'
-                locale_context:
-                    type:        proposition_choice
-                    parent_type: choice
-                    data_name:   locale
-                    label:       pimee_workflow.proposition.locale
-                    options:
-                        field_options:
-                            multiple: true
-                            choices: '@pim_catalog.helper.locale->getActivatedLocaleChoices'
         sorters:
             columns:
                 author:
@@ -135,7 +121,6 @@ datagrid:
                 route: pimee_workflow_published_product_view
                 params:
                     - id
-                    - dataLocale
         actions:
             view:
                 type:      navigate

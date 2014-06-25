@@ -135,4 +135,28 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $this->addPresenter($presenter, 0);
         $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
     }
+
+    function it_injects_twig_in_twig_aware_presenter(
+        $valueRepository,
+        $renderer,
+        $attributePresenter,
+        $valuePresenter,
+        Model\AbstractProductValue $value,
+        PresenterInterface $presenter,
+        \Twig_Environment $twig
+    ){
+        $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
+        $valueRepository->find('123')->willReturn($value);
+
+        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
+        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
+        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
+
+        $presenter->setTwig($twig)->shouldBeCalled();
+
+        $this->initRuntime($twig);
+        $this->addPresenter($presenter, 0);
+        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
+    }
 }
