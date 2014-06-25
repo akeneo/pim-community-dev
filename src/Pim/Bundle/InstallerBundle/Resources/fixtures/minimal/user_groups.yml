@@ -1,5 +1,7 @@
 user_groups:
-    all:
-        name: All
     administrators:
         name: Administrators
+    marketing:
+        name: Marketing
+    sales:
+        name: Sales

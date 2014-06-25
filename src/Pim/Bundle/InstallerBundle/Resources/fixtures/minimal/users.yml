@@ -12,6 +12,5 @@ users:
         roles:
             - ROLE_ADMINISTRATOR
         groups:
-            - All
             - Administrators
         enable: true
