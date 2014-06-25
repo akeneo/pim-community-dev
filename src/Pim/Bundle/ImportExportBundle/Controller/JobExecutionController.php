@@ -43,6 +43,9 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * Constructor
      * @param Request                  $request
