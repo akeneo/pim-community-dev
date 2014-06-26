@@ -28,15 +28,15 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $product = parent::createProduct($data);
 
-        if (false === $this->productHasARootCategory($product)) {
-            // add the first root category to all created products so that they can be edited
-            $categories = $this->getCategoryRepository()->findAll();
-            foreach ($categories as $category) {
-                if ($category->isRoot()) {
-                    $product->addCategory($category);
-                    break;
-                }
-            }
+        $skipAddRootCategory = false;
+        if (array_key_exists('categories', $data) && empty($data['categories'])) {
+            $skipAddRootCategory = true;
+        } elseif ($this->productHasARootCategory($product)) {
+            $skipAddRootCategory = true;
+        }
+
+        if (!$skipAddRootCategory) {
+            $this->addRootCategoryToProduct($product);
         }
 
         $this->getProductManager()->getObjectManager()->flush();
@@ -236,5 +236,21 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         }
 
         return false;
+    }
+
+    /**
+     * Add the first root category to all created products so that they can be edited
+     *
+     * @param Product $product
+     */
+    protected function addRootCategoryToProduct(Product $product)
+    {
+        $categories = $this->getCategoryRepository()->findAll();
+        foreach ($categories as $category) {
+            if ($category->isRoot()) {
+                $product->addCategory($category);
+                break;
+            }
+        }
     }
 }
