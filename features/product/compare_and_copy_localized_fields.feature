@@ -1,7 +1,7 @@
 @javascript
 Feature: Compare and copy localized fields
   In order to reuse enrich values in other languages
-  As Julia
+  As a regular user
   I need to be able to compare and copy values in different languages
 
   Background:
@@ -9,7 +9,7 @@ Feature: Compare and copy localized fields
     And the following product:
       | sku    | family  | name-fr_FR | legend-en_US | legend-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce |
       | tshirt | tshirts | Floup      | Front view   | Vue de face  | City shoes                  | Chaussures de ville         |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
 
   Scenario: Successfully display available comparison languages
     Given I am on the "tshirt" product page

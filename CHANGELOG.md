@@ -37,6 +37,7 @@
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
 - Dispatch events on show/edit/execute job profile actions
 - Dispatch events on view/download job execution actions
+- Allow to install custom user roles and groups from installer fixtures
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -74,7 +75,7 @@
 - Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
 - Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
 - Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
-- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController`, `Pim\Bundle\ImportExportBundle\Controller\JobProfileController` and `Pim\Bundle\ImportExportBundle\Controller\JobExecutionController` (inject event dispatcher)
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` and `Pim\Bundle\ImportExportController\JobProfileController` (inject event dispatcher)
 - Add parameters to load datagrids in job profiles index twig templates
 - Remove WidgetRepository to replace it by `Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository`
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget

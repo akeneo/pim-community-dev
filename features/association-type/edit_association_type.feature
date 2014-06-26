@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit an association type
   In order to manage existing association types in the catalog
-  As a user
+  As a product manager
   I need to be able to edit an association type
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully edit an association type
     Given I am on the "SUBSTITUTION" association type page

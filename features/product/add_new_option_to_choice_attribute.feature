@@ -1,7 +1,7 @@
 @javascript
 Feature: Add a new option to a choice attribute directly from the product edit form
   In order to easily add a new option to a choice attribute
-  As Julia
+  As a product manager
   I need to be able to create a new attribute option without leaving the product edit page
 
   Background:

@@ -1,7 +1,7 @@
 @javascript
 Feature: Update product when removing an option of a choice attribute
   In order to keep my data consistent
-  As Julia
+  As a product manager
   I need to products to be updated when removing options of a choice attribute
 
   Background:

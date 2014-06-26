@@ -1,7 +1,7 @@
 @javascript
 Feature: Import invalid products
   In order to fix incorrect product data
-  As Julia
+  As a product manager
   I need to know which rows are incorrect and why
 
   Background: Fail to import malformed prices

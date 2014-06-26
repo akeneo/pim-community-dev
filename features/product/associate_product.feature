@@ -1,7 +1,7 @@
 @javascript
 Feature: Associate a product
   In order to create associations between products and groups
-  As Julia
+  As a product manager
   I need to associate a product to other products and groups
 
   Background:

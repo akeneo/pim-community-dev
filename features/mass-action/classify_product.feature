@@ -1,7 +1,7 @@
 @javascript
 Feature: Classify many products at once
   In order to easily classify products
-  As Julia
+  As a product manager
   I need to associate many products to categories at once
 
   Background:

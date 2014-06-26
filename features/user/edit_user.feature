@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit a user
   In order to manage the users and rights
-  As Peter
+  As an administrator
   I need to be able to edit a user
 
   Background:
     Given the "apparel" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit a user
     Given I edit the "admin" user
@@ -21,7 +21,7 @@ Feature: Edit a user
   @javascript
   Scenario: Successfully edit and apply user preferences
     And an enabled "teapot" product
-    When I edit the "admin" user
+    When I edit the "Peter" user
     And I visit the "Additional" tab
     And I fill in the following information:
       | Catalog locale | de_DE           |
