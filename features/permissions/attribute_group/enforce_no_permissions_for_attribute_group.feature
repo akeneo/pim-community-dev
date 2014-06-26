@@ -1,4 +1,4 @@
-@javascript @skip
+@javascript
 Feature: Enforce no permissions for an attribute group
   In order to be able to prevent some users from viewing some product data
   As a product manager
