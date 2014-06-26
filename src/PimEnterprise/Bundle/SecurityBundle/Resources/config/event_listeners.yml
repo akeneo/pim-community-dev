@@ -1,7 +1,7 @@
 parameters:
     pimee_security.event_listener.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventListener\DisableProductValueFieldListener
     pimee_security.event_listener.product.class:                    PimEnterprise\Bundle\SecurityBundle\EventListener\ProductListener
-    pimee_security.event_listener.job_profile.class:                PimEnterprise\Bundle\SecurityBundle\EventListener\JobProfileListener
+    pimee_security.event_listener.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventListener\JobPermissionsListener
     pimee_security.event_listener.add_owner_roles_parameter.class:  PimEnterprise\Bundle\SecurityBundle\EventListener\AddOwnerRolesParameterListener
 
 services:
@@ -19,8 +19,8 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_security.event_listener.job_profile:
-        class: %pimee_security.event_listener.job_profile.class%
+    pimee_security.event_listener.job_permissions:
+        class: %pimee_security.event_listener.job_permissions.class%
         arguments:
             - '@security.context'
         tags:
