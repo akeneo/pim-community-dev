@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Enforce read-only permissions for an attribute group
   In order to be able to prevent some users from editing some product data
   As Peter
