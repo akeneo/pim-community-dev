@@ -18,7 +18,7 @@ class IntegerTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
-        return is_numeric($value) ? (double) $value : $value;
+        return (double) $value;
     }
 
     /**
