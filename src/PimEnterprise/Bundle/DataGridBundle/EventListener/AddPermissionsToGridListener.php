@@ -58,17 +58,4 @@ class AddPermissionsToGridListener
             $datasource->setParameters($queryParameters);
         }
     }
-
-    /**
-     * @see Pim\Bundle\DataGridBundle\EventListener\AddParametersToGridListener
-     *
-     * @return array
-     */
-    protected function prepareParameters()
-    {
-        $queryParameters = array();
-        $queryParameters['roles'] = $user->getRoles();
-
-        return $queryParameters;
-    }
 }
