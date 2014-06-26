@@ -435,8 +435,10 @@ class Edit extends Form
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
+        $category = $this->findCategoryInTree($category)->getParent();
+        if ($category->hasClass('jstree-closed')) {
+            $category->getParent()->find('css', 'ins')->click();
+        }
 
         return $this;
     }
