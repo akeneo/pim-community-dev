@@ -32,7 +32,7 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            if ((!node || (node === -1))) {
+                            if (roleId && (!node || (node === -1))) {
                                 // First load of the tree: get the checked categories
                                 return Routing.generate('pimee_security_role_listcategories', { id: roleId, tree_id: selectedTree, _format: 'json', dataLocale: dataLocale });
                             }
