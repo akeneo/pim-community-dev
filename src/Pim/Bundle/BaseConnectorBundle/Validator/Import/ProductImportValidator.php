@@ -97,10 +97,11 @@ class ProductImportValidator extends ImportValidator
                     if ($valueData !== '') {
                         $this->uniqueValues[$code] =
                             isset($this->uniqueValues[$code]) ? $this->uniqueValues[$code] : [];
-                        if (in_array($valueData, $this->uniqueValues[$code])) {
+
+                        if (isset($this->uniqueValues[$code][$valueData])) {
                             throw new DuplicateProductValueException($code, $valueData, $data);
                         } else {
-                            $this->uniqueValues[$code][] = $valueData;
+                            $this->uniqueValues[$code][$valueData] = "";
                         }
                     }
                 }
