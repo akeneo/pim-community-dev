@@ -38,7 +38,7 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
         ColumnsConfigurator $columnsConfigurator,
         FiltersConfigurator $filtersConfigurator,
         SortersConfigurator $sortersConfigurator,
-        RowActionsConfigurator $actionsConfigurator
+        RowActionsConfigurator $actionsConfigurator = null
     ) {
         parent::__construct($contextConfigurator, $columnsConfigurator, $filtersConfigurator, $sortersConfigurator);
         $this->actionsConfigurator = $actionsConfigurator;
@@ -52,7 +52,9 @@ class ConfigureProductGridListener extends BaseConfigureProductGridListener
         parent::buildBefore($event);
 
         $datagridConfig = $event->getConfig();
-        $this->getRowActionsConfigurator()->configure($datagridConfig);
+        if ($this->getRowActionsConfigurator()) {
+            $this->getRowActionsConfigurator()->configure($datagridConfig);
+        }
     }
 
     /**
