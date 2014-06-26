@@ -37,7 +37,7 @@ class Classify extends Wizard
     public function selectTree($category)
     {
         $link = $this->getElement('Trees list')
-            ->find('css', sprintf('#trees-list li a:contains(%s)', $category));
+            ->find('css', sprintf('#trees-list li a:contains("%s")', $category));
         $link->click();
 
         return $this;
@@ -65,7 +65,7 @@ class Classify extends Wizard
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }

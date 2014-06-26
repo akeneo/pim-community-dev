@@ -191,7 +191,7 @@ class WebUser extends RawMinkContext
         $this->wait(); // Make sure that the tree is loaded
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
+        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
             throw $this->createExpectationException(
