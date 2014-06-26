@@ -5,32 +5,26 @@ Feature: Filter products by category
   I need to be able to manually filter products by category
 
   Background:
-    Given the "default" catalog configuration
+    Given an "apparel" catalog configuration
     And the following products:
-      | sku           |
-      | purple-tshirt |
-      | green-tshirt  |
-      | akeneo-mug    |
-      | blue-jeans    |
-    And the following categories:
-      | code     | parent   | label-en_US | products                   |
-      | catalog  |          | Catalog     |                            |
-      | tshirts  | catalog  | TShirts     | purple-tshirt,green-tshirt |
-      | trousers | catalog  | Trousers    |                            |
-      | jeans    | trousers | Jeans       | blue-jeans                 |
+      | sku           | categories      |
+      | purple-tshirt | women_2015      |
+      | green-tshirt  | women_2015      |
+      | akeneo-mug    |                 |
+      | blue-jeans    | men_2015_summer |
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products by category
     Given I am on the products page
-    When I select the "Catalog" tree
+    When I select the "2015 collection" tree
     Then I should see products purple-tshirt, green-tshirt and blue-jeans
     When I uncheck the "Include sub-categories" switch
     Then I should be able to use the following filters:
       | filter   | value        | result                         |
-      | category | tshirts      | purple-tshirt and green-tshirt |
-      | category | trousers     |                                |
+      | category | women_2015   | purple-tshirt and green-tshirt |
+      | category | men_2015     |                                |
       | category | unclassified | akeneo-mug                     |
     When I check the "Include sub-categories" switch
     Then I should be able to use the following filters:
       | filter   | value    | result     |
-      | category | trousers | blue-jeans |
+      | category | men_2015 | blue-jeans |
