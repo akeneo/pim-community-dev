@@ -37,7 +37,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'minimumInputLength' => [
                 'name'      => 'minimumInputLength',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'options' => [
                 'name'      => 'options',

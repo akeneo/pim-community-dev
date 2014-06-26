@@ -64,11 +64,11 @@ class PriceCollectionType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'numberMin' => [
                 'name'      => 'numberMin',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'numberMax' => [
                 'name'      => 'numberMax',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',
