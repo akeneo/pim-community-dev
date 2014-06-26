@@ -11,7 +11,6 @@ Feature: Execute a job
       | CROSS | Bag Cross |            | VARIANT |
     And I am logged in as "Julia"
 
-  @pouic
   Scenario: Successfully import a csv file of products
     Given the following file to import:
       """
