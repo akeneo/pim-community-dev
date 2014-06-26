@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Filter proposals
   In order to easily find propositions for the product
   As an owner
