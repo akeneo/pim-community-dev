@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Submit a product changes proposition
   In order to prevent changes on product when I am not allowed to
   As a contributor
@@ -137,7 +137,6 @@ Feature: Submit a product changes proposition
     Then attribute handmade of "my-tshirt" should be "false"
 
   # Fix date diff
-  @skip
   Scenario: Successfully accept a date attribute product changes proposition
     Given an "apparel" catalog configuration
     And the following product:

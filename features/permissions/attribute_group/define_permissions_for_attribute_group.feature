@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Define permissions for an attribute group
   In order to be able to restrict access to some product data
   As Peter

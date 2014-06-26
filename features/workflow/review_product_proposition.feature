@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Review a product changes proposition
   In order to control which data should be applied to a product
   As an owner
