@@ -74,6 +74,8 @@ class PropositionPersister implements ProductPersister
     }
 
     /**
+     * TODO: do not check the context here. PropositionPersister should only persist propostions.
+     *
      * {@inheritdoc}
      */
     public function persist(ProductInterface $product, array $options)
@@ -82,11 +84,16 @@ class PropositionPersister implements ProductPersister
 
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        try {
-            $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
-        } catch (AuthenticationCredentialsNotFoundException $e) {
-            // We are probably on a CLI context
+        if (null === $product->getId()) {
             $isOwner = true;
+        }
+        else {
+            try {
+                $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+            } catch (AuthenticationCredentialsNotFoundException $e) {
+                // We are probably on a CLI context
+                $isOwner = true;
+            }
         }
 
         if ($isOwner || $options['bypass_proposition'] || !$manager->contains($product)) {
