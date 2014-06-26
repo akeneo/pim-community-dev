@@ -42,22 +42,4 @@ abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInt
     {
         return $entity instanceof $this->entityClass && $field === $this->field;
     }
-
-    /**
-     * Get possible attribute codes
-     *
-     * @return array
-     */
-    protected function getPossibleAttributeCodes(AbstractAttribute $attribute, $prefix = '')
-    {
-        $localeCode  = $this->attributeNamingUtility->getLocaleCode($attribute);
-        $channelCode = $this->attributeNamingUtility->getChannelCode($attribute);
-
-        $attributeCodes = [($prefix !== '' ? $prefix : '') . $attribute->getCode()];
-
-        $attributeCodes = $this->attributeNamingUtility->appendSuffixes($attributeCodes, $localeSuffixes, '-');
-        $attributeCodes = $this->attributeNamingUtility->appendSuffixes($attributeCodes, $channelSuffixes, '-');
-
-        return $attributeCodes;
-    }
 }

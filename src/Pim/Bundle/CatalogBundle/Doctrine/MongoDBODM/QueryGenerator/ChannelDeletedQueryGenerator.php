@@ -14,19 +14,31 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributes = $this->getScopableAttributes();
+        $attributes = $this->attributeNamingUtility->getScopableAttributes(false);
         $queries = [];
 
         foreach ($attributes as $attribute) {
-            $attributeCodes = $this->getPossibleAttributeCodes($attribute, ProductQueryUtility::NORMALIZED_FIELD);
 
-            foreach ($attributeCodes as $attributeCode) {
+            $attributeNormFields = [
+                sprintf(
+                    ProductQueryUtility::NORMALIZED_FIELD . '.%s',
+                    $attribute->getCode()
+                )
+            ];
+
+            $localeCodes = $this->attributeNamingUtility->getLocaleCodes();
+            $attributeNormFields = $this->attributeNamingUtility->appendSuffixes($attributeNormFields, $localeCodes);
+            $attributeNormFields = $this->attributeNamingUtility->appendSuffixes(
+                $attributeNormFields,
+                [$entity->getCode()]
+            );
+
+            foreach ($attributeNormFields as $attributeNormField) {
                 $queries[] = [
-                    [sprintf('%s', $attributeCode) => [ '$exists' => true ]],
-                    ['$unset' => [$attributeCode => '']],
-                    ['multi' => true]
+                    [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
+                    ['$unset' => [$attributeNormField => '']],
+                    ['multiple' => true]
                 ];
-
             }
         }
 

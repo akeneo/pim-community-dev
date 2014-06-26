@@ -14,22 +14,19 @@ class CurrencyDeactivatedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        if (!$newValue) {
+        if ($newValue !== true) {
             $attributes = $this->attributeNamingUtility->getPricesAttributes(false);
 
             $queries = [];
 
             foreach ($attributes as $attribute) {
-                $attributeNormFields = $this->getPossibleAttributeCodes(
-                    $attribute,
-                    ProductQueryUtility::NORMALIZED_FIELD
-                );
+                $attributeNormFields = $this->attributeNamingUtility->getAttributeNormFields($attribute);
 
                 foreach ($attributeNormFields as $attributeNormField) {
                     $queries[] = [
-                        [sprintf('%s', $attributeNormField, $entity->getCode()) => [ '$exists' => true ]],
+                        [sprintf('%s.%s', $attributeNormField, $entity->getCode()) => [ '$exists' => true ]],
                         ['$unset' => [sprintf('%s.%s', $attributeNormField, $entity->getCode()) => '']],
-                        ['multi' => true]
+                        ['multiple' => true]
                     ];
                 }
             }

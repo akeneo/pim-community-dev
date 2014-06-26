@@ -12,10 +12,7 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->getPossibleAttributeCodes(
-            $entity->getAttribute(),
-            ProductQueryUtility::NORMALIZED_FIELD . '.'
-        );
+        $attributeNormFields = $this->attributeNamingUtility->getAttributeNormFields($entity->getAttribute());
 
         $queries = [];
 
@@ -23,7 +20,7 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
             $queries[] = [
                 [$attributeNormField => [ '$exists' => true ]],
                 ['$set' => [sprintf('%s.code', $attributeNormField) => $newValue]],
-                ['multi' => true]
+                ['multiple' => true]
             ];
         }
 

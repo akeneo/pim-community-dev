@@ -210,6 +210,9 @@ services:
 
     pim_catalog.event_listener.mongodb.update_normalized_product_data:
         class: %pim_catalog.event_listener.mongodb.update_normalized_product_data.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product.class%
         tags:
             - { name: doctrine.event_subscriber, priority: 50 }
 
@@ -260,14 +263,7 @@ services:
         class: %pim_catalog.query_generator.attribute_as_label_updated.class%
         parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
-            - %pim_catalog.entity.attribute.class%
-            - 'attributeAsLabel'
-
-    pim_catalog.query_generator.attribute_as_label_updated:
-        class: %pim_catalog.query_generator.attribute_as_label_updated.class%
-        parent: pim_catalog.query_generator.abstract_normalized_data
-        arguments:
-            - %pim_catalog.entity.attribute.class%
+            - %pim_catalog.entity.family.class%
             - 'attributeAsLabel'
         tags:
             - { name: pim_catalog.query_generator }

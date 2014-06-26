@@ -19,7 +19,7 @@ class FamilyLabelUpdatedQueryGenerator extends AbstractQueryGenerator
                     sprintf('normalizedData.family.label.%s', $entity->getLocale()) => (string) $newValue
                 ]
             ],
-            ['multi' => true]
+            ['multiple' => true]
         ]];
     }
 }

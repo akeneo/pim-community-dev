@@ -12,10 +12,7 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->attributeNamingUtility->getPossibleAttributeCodes(
-            $entity->getAttribute(),
-            ProductQueryUtility::NORMALIZED_FIELD . '.'
-        );
+        $attributeNormFields = $this->attributeNamingUtility->getAttributeNormFields($entity->getAttribute());
 
         $queries = [];
 
@@ -23,7 +20,7 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
             $queries[] = [
                 [$attributeNormField => [ '$exists' => true ]],
                 ['$unset' => [sprintf('%s', $entity->getCode()) => '']],
-                ['multi' => true]
+                ['multiple' => true]
             ];
         }
 

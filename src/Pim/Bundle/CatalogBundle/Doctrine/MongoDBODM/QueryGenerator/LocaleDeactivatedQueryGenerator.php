@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductQueryUtility;
+
 /**
 * Locale deactivated query generator
 */
@@ -12,8 +14,8 @@ class LocaleDeactivatedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        if (!$newValue) {
-            $attributes = $this->getLocalizableAttributes();
+        if ($newValue !== true) {
+            $attributes = $this->attributeNamingUtility->getLocalizableAttributes(false);
             $queries = [];
 
             foreach ($attributes as $attribute) {
@@ -34,7 +36,7 @@ class LocaleDeactivatedQueryGenerator extends AbstractQueryGenerator
                     $queries[] = [
                         [sprintf('%s', $attributeNormField) => [ '$exists' => true ]],
                         ['$unset' => [$attributeNormField => '']],
-                        ['multi' => true]
+                        ['multiple' => true]
                     ];
                 }
             }

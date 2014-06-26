@@ -6,6 +6,7 @@ use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Sets the normalized data of a Product document when related entities are modified
@@ -28,6 +29,21 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected $scheduledQueries = [];
 
+    /** @var ManagerRegistry */
+    protected $registry;
+
+    /** @var string */
+    protected $productClass;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param string          $productClass
+     */
+    public function __construct(ManagerRegistry $registry, $productClass)
+    {
+        $this->registry     = $registry;
+        $this->productClass = $productClass;
+    }
     /**
      * {@inheritdoc}
      */
@@ -132,5 +148,14 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     protected function executeQueries()
     {
+        $collection = $this->registry
+            ->getManagerForClass($this->productClass)
+            ->getDocumentCollection($this->productClass);
+
+        foreach ($this->scheduledQueries as $query) {
+            list($query, $compObject, $options) = $query;
+
+            $collection->update($query, $compObject, $options);
+        }
     }
 }

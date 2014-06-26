@@ -80,7 +80,7 @@ class AttributeNamingUtility
         $localeSuffixes = [];
 
         if (null === $attribute || $attribute->isLocalizable()) {
-            foreach ($this->getActivatedLocales() as $locale) {
+            foreach ($this->getLocales() as $locale) {
                 $localeSuffixes[] = $locale->getCode();
             }
         }
@@ -129,12 +129,17 @@ class AttributeNamingUtility
      *
      * @return string[]
      */
-    public function getAttributeNormFields(AbstractAttribute $attribute)
+    public function getAttributeNormFields(AbstractAttribute $attribute, $prefix = null)
     {
         $localeCodes  = $this->getLocaleCodes($attribute);
         $channelCodes = $this->getChannelCodes($attribute);
 
-        $normFields = [ProductQueryUtility::NORMALIZED_FIELD . '.' . $attribute->getCode()];
+
+        $normFields = [
+            (null === $prefix ? ProductQueryUtility::NORMALIZED_FIELD . '.' : $prefix) .
+            $attribute->getCode()
+        ];
+
         $normFields = $this->appendSuffixes($normFields, $localeCodes, '-');
         $normFields = $this->appendSuffixes($normFields, $channelCodes, '-');
 
@@ -190,7 +195,13 @@ class AttributeNamingUtility
         $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
         $attributeRepository = $attributeManager->getRepository($this->attributeClass);
 
-        $attributes = $attributeRepository->findBy(['backendType' => 'prices', 'useableAsGridFilter' => true]);
+        $criteria = ['backendType' => 'prices'];
+
+        if ($onlyInGrid) {
+            $criteria['useableAsGridFilter'] = true;
+        }
+
+        $attributes = $attributeRepository->findBy($criteria);
 
         return $attributes;
     }
@@ -200,12 +211,18 @@ class AttributeNamingUtility
      *
      * @return AbstractAttribute[]
      */
-    public function getScopableAttributes()
+    public function getScopableAttributes($onlyInGrid = true)
     {
         $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
         $attributeRepository = $attributeManager->getRepository($this->attributeClass);
 
-        $attributes = $attributeRepository->findBy(['scopable' => true, 'useableAsGridFilter' => true]);
+        $criteria = ['scopable' => true];
+
+        if ($onlyInGrid) {
+            $criteria['useableAsGridFilter'] = true;
+        }
+
+        $attributes = $attributeRepository->findBy($criteria);
 
         return $attributes;
     }
@@ -215,12 +232,18 @@ class AttributeNamingUtility
      *
      * @return AbstractAttribute[]
      */
-    public function getLocalizableAttributes()
+    public function getLocalizableAttributes($onlyInGrid = true)
     {
         $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
         $attributeRepository = $attributeManager->getRepository($this->attributeClass);
 
-        $attributes = $attributeRepository->findBy(['localizable' => true, 'useableAsGridFilter' => true]);
+        $criteria = ['localizable' => true];
+
+        if ($onlyInGrid) {
+            $criteria['useableAsGridFilter'] = true;
+        }
+
+        $attributes = $attributeRepository->findBy($criteria);
 
         return $attributes;
     }
