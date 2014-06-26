@@ -1,7 +1,7 @@
 {% set form_tabs=['Attributes'] %}
 
 {% if resource_granted('pim_enrich_product_categories_view')
-    and is_granted(constant('PimEnterprise\Bundle\SecurityBundle\Attributes::OWNER'), product) %}
+    and is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
     {% set form_tabs = form_tabs|merge(['Categories']) %}
 {% endif %}
 
