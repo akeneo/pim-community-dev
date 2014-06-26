@@ -29,7 +29,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $product = parent::createProduct($data);
 
         $skipAddRootCategory = false;
-        if (array_key_exists('categories', $data) && empty($data['categories'])) {
+        if (is_array($data) && array_key_exists('categories', $data) && empty($data['categories'])) {
             $skipAddRootCategory = true;
         } elseif ($this->productHasARootCategory($product)) {
             $skipAddRootCategory = true;
