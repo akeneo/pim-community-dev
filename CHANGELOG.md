@@ -35,7 +35,7 @@
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
-- Dispatch events on edit/execute job profile actions
+- Dispatch events on show/edit/execute job profile actions
 - Dispatch events on view/download job execution actions
 
 ## Bug fixes
