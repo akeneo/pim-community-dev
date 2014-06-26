@@ -36,6 +36,57 @@ jenkins-1:
     filters:
         tags: ~skip&&~doc&&~ce
 
+jenkins-2:
+    context:
+        parameters:
+            base_url: http://pim-enterprise-behat-2.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-enterprise-behat-2.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat2
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc&&~ce
+
+jenkins-3:
+    context:
+        parameters:
+            base_url: http://pim-enterprise-behat-3.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-enterprise-behat-3.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat3
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc&&~ce
+
+jenkins-4:
+    context:
+        parameters:
+            base_url: http://pim-enterprise-behat-4.ci/
+    extensions:
+        Behat\MinkExtension\Extension:
+            base_url: http://pim-enterprise-behat-4.ci/
+        Behat\Symfony2Extension\Extension:
+            kernel:
+                env: behat4
+    formatter:
+        name: Context\SummaryFormatter,junit
+        parameters:
+            output_path: null,app/build/logs/behat/
+    filters:
+        tags: ~skip&&~doc&&~ce
+
 jenkins-mongodb-1:
     context:
         parameters:
