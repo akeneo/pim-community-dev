@@ -1,4 +1,4 @@
-@javascript @skip
+@javascript
 Feature: Classify a product in the trees I have access
   In order to classify products
   As a product manager
