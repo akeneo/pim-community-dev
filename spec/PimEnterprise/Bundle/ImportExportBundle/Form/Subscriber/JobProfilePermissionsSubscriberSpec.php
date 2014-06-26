@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
@@ -16,13 +17,14 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
     function let(
         JobProfileAccessManager $accessManager,
         SecurityFacade $securityFacade,
+        RoleRepository $roleRepository,
         FormEvent $event,
         Form $form,
         JobInstance $jobInstance,
         Form $executeForm,
         Form $editForm
     ) {
-        $this->beConstructedWith($accessManager, $securityFacade);
+        $this->beConstructedWith($accessManager, $securityFacade, $roleRepository);
 
         $event->getData()->willReturn($jobInstance);
         $event->getForm()->willReturn($form);
@@ -74,17 +76,21 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_does_not_persist_permissions_on_creation(
+    function it_persists_all_roles_on_creation(
         $event,
         $form,
-        $jobInstance
+        $jobInstance,
+        $roleRepository,
+        $accessManager
     ) {
+        $form->isValid()->willReturn(true);
         $jobInstance->getId()->willReturn(null);
+        $jobInstance->getType()->willReturn('import');
+        $roleRepository->findAll()->willReturn(['foo']);
 
-        $this->postSetData($event);
+        $accessManager->setAccess($jobInstance, ['foo'], ['foo'])->shouldBeCalled();
+
         $this->postSubmit($event);
-
-        $form->isValid()->shouldNotBeCalled();
     }
 
     function it_persists_the_selected_permissions_if_the_form_is_valid(

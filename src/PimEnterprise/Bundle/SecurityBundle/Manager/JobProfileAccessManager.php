@@ -80,7 +80,9 @@ class JobProfileAccessManager
             }
         }
 
-        $this->revokeAccess($jobProfile, $grantedRoles);
+        if (null !== $jobProfile->getId()) {
+            $this->revokeAccess($jobProfile, $grantedRoles);
+        }
         $this->getObjectManager()->flush();
     }
 

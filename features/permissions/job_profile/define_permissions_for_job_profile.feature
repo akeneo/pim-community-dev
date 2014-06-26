@@ -18,3 +18,4 @@ Feature: Define permissions for a job profile
     And I save the job profile
     Then I should be on the "footwear_product_import" import job page
     And I should see the "Edit" button
+    And I should see the "Export now" button

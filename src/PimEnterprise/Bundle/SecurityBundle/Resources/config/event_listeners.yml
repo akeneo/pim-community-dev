@@ -22,7 +22,7 @@ services:
     pimee_security.event_listener.job_profile:
         class: %pimee_security.event_listener.job_profile.class%
         arguments:
-            - '@oro_security.security_facade'
+            - '@security.context'
         tags:
             - { name: kernel.event_subscriber }
 
