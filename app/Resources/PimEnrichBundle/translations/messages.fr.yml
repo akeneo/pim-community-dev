@@ -277,8 +277,8 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-"Yes": true
-"No": false
+"Yes": Oui
+"No": Non
 Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche

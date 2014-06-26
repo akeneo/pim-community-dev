@@ -277,8 +277,8 @@ default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
-"Yes": true
-"No": false
+"Yes": Ja
+"No": Nein
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Search: Suche
