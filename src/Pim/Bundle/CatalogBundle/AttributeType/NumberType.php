@@ -22,15 +22,15 @@ class NumberType extends AbstractAttributeType
         $properties = parent::defineCustomAttributeProperties($attribute) + [
             'defaultValue' => [
                 'name'      => 'defaultValue',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'numberMin' => [
                 'name'      => 'numberMin',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'numberMax' => [
                 'name'      => 'numberMax',
-                'fieldType' => 'number'
+                'fieldType' => 'pim_number'
             ],
             'decimalsAllowed' => [
                 'name'      => 'decimalsAllowed',

@@ -21,10 +21,7 @@ class ImageType extends AbstractAttributeType
         return parent::defineCustomAttributeProperties($attribute) + [
             'maxFileSize' => [
                 'name'      => 'maxFileSize',
-                'fieldType' => 'number',
-                'options'   => [
-                    'precision' => 2
-                ]
+                'fieldType' => 'pim_number',
             ],
             'allowedExtensions' => [
                 'name'    => 'allowedExtensions',
