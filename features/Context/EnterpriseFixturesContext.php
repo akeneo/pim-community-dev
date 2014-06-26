@@ -5,6 +5,7 @@ namespace Context;
 use Behat\Gherkin\Node\TableNode;
 use Context\FixturesContext as BaseFixturesContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
@@ -27,12 +28,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     {
         $product = parent::createProduct($data);
 
-        // add the first root category to all created products so that they can be edited
-        $categories = $this->getCategoryRepository()->findAll();
-        foreach ($categories as $category) {
-            if ($category->isRoot()) {
-                $product->addCategory($category);
-                break;
+        if (false === $this->productHasARootCategory($product)) {
+            // add the first root category to all created products so that they can be edited
+            $categories = $this->getCategoryRepository()->findAll();
+            foreach ($categories as $category) {
+                if ($category->isRoot()) {
+                    $product->addCategory($category);
+                    break;
+                }
             }
         }
 
@@ -215,5 +218,23 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $registry = $this->getSmartRegistry()
             ->getManagerForClass(sprintf('PimEnterprise\Bundle\SecurityBundle\Entity\%sAccess', $accessClass));
         $registry->flush();
+    }
+
+    /**
+     * Determine if a product has at least one root category
+     *
+     * @param Product $product
+     *
+     * @return bool
+     */
+    protected function productHasARootCategory(Product $product)
+    {
+        foreach ($product->getCategories()as $category) {
+            if ($category->isRoot()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
