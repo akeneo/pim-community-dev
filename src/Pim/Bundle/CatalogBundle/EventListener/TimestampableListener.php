@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\EventListener;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\TimestampableInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -51,14 +52,14 @@ class TimestampableListener implements EventSubscriber
     {
         $object = $args->getObject();
 
-        if ($object instanceof ProductValueInterface) {
-            $product = $object->getObject();
+        if ($object instanceof AbstractProductValue) {
+            $product = $object->getEntity();
             if ($product !== null) {
                 $this->updateProductFields($args->getObjectManager(), $product, array('updated'));
             }
         }
 
-        if ($object instanceof \Pim\Bundle\CatalogBundle\Model\TimestampableInterface) {
+        if ($object instanceof TimestampableInterface) {
             $object->setUpdated(new \DateTime('now', new \DateTimeZone('UTC')));
         }
     }
