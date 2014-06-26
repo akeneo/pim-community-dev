@@ -6,7 +6,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\JobEvents;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
 
