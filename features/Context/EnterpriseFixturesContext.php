@@ -229,7 +229,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     protected function productHasARootCategory(Product $product)
     {
-        foreach ($product->getCategories()as $category) {
+        foreach ($product->getCategories() as $category) {
             if ($category->isRoot()) {
                 return true;
             }

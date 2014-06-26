@@ -51,6 +51,8 @@ class JobPermissionsListener implements EventSubscriberInterface
      * Throws an access denied exception if the user can not edit the job profile
      *
      * @param GenericEvent $event
+     *
+     * @throws AccessDeniedException
      */
     public function checkEditPermission(GenericEvent $event)
     {
