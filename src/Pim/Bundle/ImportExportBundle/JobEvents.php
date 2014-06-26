@@ -79,7 +79,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_DL_LOG_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_log';
+    const PRE_DOWNLOAD_LOG_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_log';
 
     /**
      * This event is thrown each the files of a job execution is being downloaded
@@ -89,5 +89,5 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_DL_FILES_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_files';
+    const PRE_DOWNLOAD_FILES_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_files';
 }

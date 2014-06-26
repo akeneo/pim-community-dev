@@ -163,7 +163,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_DL_LOG_JOB_EXECUTION, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(JobEvents::PRE_DOWNLOAD_LOG_JOB_EXECUTION, new GenericEvent($jobExecution));
 
         $response = new BinaryFileResponse($jobExecution->getLogFile());
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
@@ -184,7 +184,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_DL_FILES_JOB_EXECUTION, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(JobEvents::PRE_DOWNLOAD_FILES_JOB_EXECUTION, new GenericEvent($jobExecution));
 
         $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
