@@ -34,11 +34,7 @@ class NumericGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = array();
-
-        if (!$attribute->isDecimalsAllowed()) {
-            $constraints[] = new Numeric();
-        }
+        $constraints = [new Numeric()];
 
         return $constraints;
     }
