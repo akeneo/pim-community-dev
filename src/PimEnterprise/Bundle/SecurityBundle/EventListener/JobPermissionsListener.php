@@ -40,7 +40,6 @@ class JobPermissionsListener implements EventSubscriberInterface
         return [
             JobEvents::PRE_EDIT_JOB_PROFILE             => 'checkEditPermission',
             JobEvents::PRE_EXECUTE_JOB_PROFILE          => 'checkExecutePermission',
-            JobEvents::PRE_SHOW_JOB_PROFILE             => 'checkExecutePermission',
             JobEvents::PRE_SHOW_JOB_EXECUTION           => 'checkJobExecutionPermission',
             JobEvents::PRE_DOWNLOAD_FILES_JOB_EXECUTION => 'checkJobExecutionPermission',
             JobEvents::PRE_DOWNLOAD_LOG_JOB_EXECUTION   => 'checkJobExecutionPermission'
