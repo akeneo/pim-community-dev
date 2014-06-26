@@ -276,30 +276,12 @@ services:
         tags:
             - { name: pim_catalog.query_generator }
 
-    pim_catalog.query_generator.currency_deactivated:
-        class: %pim_catalog.query_generator.currency_deactivated.class%
-        parent: pim_catalog.query_generator.abstract_normalized_data
-        arguments:
-            - %pim_catalog.entity.currency.class%
-            - 'activated'
-        tags:
-            - { name: pim_catalog.query_generator }
-
     pim_catalog.query_generator.family_label_updated:
         class: %pim_catalog.query_generator.family_label_updated.class%
         parent: pim_catalog.query_generator.abstract_normalized_data
         arguments:
             - 'Pim\Bundle\CatalogBundle\Entity\FamilyTranslation'
             - 'label'
-        tags:
-            - { name: pim_catalog.query_generator }
-
-    pim_catalog.query_generator.locale_detactivated:
-        class: %pim_catalog.query_generator.locale_detactivated.class%
-        parent: pim_catalog.query_generator.abstract_normalized_data
-        arguments:
-            - %pim_catalog.entity.locale.class%
-            - 'activated'
         tags:
             - { name: pim_catalog.query_generator }
 
