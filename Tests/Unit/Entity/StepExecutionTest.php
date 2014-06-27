@@ -170,6 +170,15 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
 
     public function testAddWarning()
     {
+        $getWarnings = function ($warnings) {
+            return array_map(
+                function ($warning) {
+                    return $warning->toArray();
+                },
+                $warnings->toArray()
+            );
+        };
+
         $this->stepExecution->addWarning(
             'foo',
             '%something% is wrong on line 1',
@@ -198,7 +207,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
                     'item'   => array('baz' => false)
                 )
             ),
-            $this->stepExecution->getWarnings()
+            $getWarnings($this->stepExecution->getWarnings())
         );
 
         $stepExecution = new StepExecution('my_step_execution.foobarbaz', $this->jobExecution);
@@ -231,7 +240,7 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
                     'item'   => array('baz' => false)
                 )
             ),
-            $stepExecution->getWarnings()
+            $getWarnings($stepExecution->getWarnings())
         );
     }
 

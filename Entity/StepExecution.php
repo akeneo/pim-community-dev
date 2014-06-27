@@ -508,7 +508,15 @@ class StepExecution
         if (strpos($element, '.')) {
             $element = substr($element, 0, strpos($element, '.'));
         }
-        $this->warnings->add(new Warning($this, $name, $reason, $reasonParameters, $item));
+        $this->warnings->add(
+            new Warning(
+                $this,
+                sprintf('%s.steps.%s.title', $element, $name),
+                $reason,
+                $reasonParameters,
+                $item
+            )
+        );
     }
 
     /**
