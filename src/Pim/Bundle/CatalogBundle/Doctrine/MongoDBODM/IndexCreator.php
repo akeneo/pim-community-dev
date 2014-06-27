@@ -142,7 +142,7 @@ class IndexCreator
         }
 
         foreach ($channels as $channel) {
-            foreach ($this->attributeNamingUtility->getLocales() as $locale) {
+            foreach ($channel->getLocales() as $locale) {
                 $normFields[] = sprintf(
                     '%s.completenesses.%s-%s',
                     ProductQueryUtility::NORMALIZED_FIELD,
