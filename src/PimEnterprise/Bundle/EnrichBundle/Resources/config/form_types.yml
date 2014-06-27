@@ -2,6 +2,7 @@ parameters:
     pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pim_enrich.form.type.available_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
+    pimee_enrich.form.type.publish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType
 
 services:
     pim_enrich.form.type.product_edit:
@@ -60,3 +61,8 @@ services:
             - { name: form.type, alias: pim_category }
         calls:
             - [addEventSubscriber, ['@pimee_enrich.form.subscriber.category_permissions']]
+
+    pimee_enrich.form.type.publish:
+        class: %pimee_enrich.form.type.publish.class%
+        tags:
+            - { name: form.type, alias: pimee_enrich_mass_publish }
