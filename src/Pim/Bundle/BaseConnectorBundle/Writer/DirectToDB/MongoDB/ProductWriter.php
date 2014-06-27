@@ -195,11 +195,12 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     protected function addPendingVersion(ProductInterface $product)
     {
-        $now = new \DateTime();
+        $now = new \DateTime('now', new \DateTimeZone('UTC'));
 
         $version = [];
         $version['author'] = $this->versionManager->getUsername();
         $version['changeset'] = serialize($this->normalizer->normalize($product, 'csv', ['versioning' => true]));
+        $version['snapshot'] = serialize(null);
         $version['resource_name'] = get_class($product);
         $version['resource_id'] = $product->getId();
         $version['context'] = $this->versionManager->getContext();
