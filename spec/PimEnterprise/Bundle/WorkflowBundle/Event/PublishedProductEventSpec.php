@@ -19,13 +19,18 @@ class PublishedProductEventSpec extends ObjectBehavior
         $this->shouldHaveType('Symfony\Component\EventDispatcher\Event');
     }
 
-    function its_product_should_be_mutable(ProductInterface $product)
+    function let(ProductInterface $product, PublishedProductInterface $published)
+    {
+        $this->beConstructedWith($product, $published);
+    }
+
+    function its_product_should_be_mutable($product)
     {
         $this->setProduct($product);
         $this->getProduct()->shouldReturn($product);
     }
 
-    function its_published_product_should_be_mutable(PublishedProductInterface $published)
+    function its_published_product_should_be_mutable($published)
     {
         $this->setPublishedProduct($published);
         $this->getPublishedProduct()->shouldReturn($published);

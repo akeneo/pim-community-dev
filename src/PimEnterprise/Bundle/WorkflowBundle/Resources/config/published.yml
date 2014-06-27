@@ -14,6 +14,7 @@ services:
             - '@pim_catalog.manager.product'
             - '@pimee_workflow.repository.published_product'
             - '@pimee_workflow.factory.published_product'
+            - '@event_dispatcher'
 
     pimee_workflow.manager.published_product_category:
         class: %pim_catalog.manager.product_category.class%
