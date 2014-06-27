@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
 * Abstract query generator

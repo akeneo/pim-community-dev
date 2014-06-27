@@ -18,8 +18,8 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField . '.code' => $entity->getCode()],
-                ['$unset' => [$attributeNormField => '']],
+                [$attributeNormField => [ '$elemMatch' => ['code' => $entity->getCode()] ]],
+                ['$pull' => [$attributeNormField => ['code' => $entity->getCode()]]],
                 ['multiple' => true]
             ];
         }
@@ -33,6 +33,6 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect';
+            $entity->getAttribute()->getAttributeType() === 'pim_catalog_multiselect';
     }
 }
