@@ -2,12 +2,10 @@ language: php
 php:
     - "5.4"
     - "5.5"
-    - "hhvm"
 
 matrix:
     allow_failures:
         - php: "5.5"
-        - php: hhvm
 
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
