@@ -135,6 +135,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $doc = $this->normalizer->normalize($product, ProductNormalizer::FORMAT, $context);
 
             if (null === $product->getId()) {
+                $product->setId($doc['_id']);
                 $insertDocs[] = $doc;
             } else {
                 $updateDocs[] = $doc;
@@ -201,7 +202,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $version['changeset'] = serialize($this->normalizer->normalize($product, 'csv', ['versioning' => true]));
         $version['resource_name'] = get_class($product);
         $version['resource_id'] = $product->getId();
-        $version['snapshot'] = 'N';
         $version['context'] = $this->versionManager->getContext();
         $version['logged_at'] = $now->format('Y-m-d H:i:s');
         $version['pending'] = true;

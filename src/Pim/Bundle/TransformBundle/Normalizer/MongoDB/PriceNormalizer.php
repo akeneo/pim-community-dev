@@ -35,7 +35,7 @@ class PriceNormalizer implements NormalizerInterface
         $data['_id'] = new MongoId;
         $data['currency'] = $object->getCurrency();
         if (null !== $object->getData()) {
-            $data['data'] = $object->getData();
+            $data['data'] = (float) $object->getData();
         }
 
         return $data;
