@@ -26,20 +26,4 @@
         </testsuite>
 
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>../src/Pim</directory>
-            <exclude>
-                <!-- exclude demo used load sample data -->
-                <directory>../src/Pim/DemoBundle</directory>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/vendor</directory>
-                <directory>../src/*/Bundle/*Bundle/cov</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>
