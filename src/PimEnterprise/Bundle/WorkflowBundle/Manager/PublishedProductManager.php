@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 
@@ -80,6 +81,8 @@ class PublishedProductManager
      * Publish a product
      *
      * @param ProductInterface $product
+     *
+     * @return PublishedProductInterface
      */
     public function publish(ProductInterface $product)
     {
@@ -91,6 +94,8 @@ class PublishedProductManager
         $published = $this->factory->createPublishedProduct($product);
         $this->getObjectManager()->persist($published);
         $this->getObjectManager()->flush();
+
+        return $published;
     }
 
     /**
