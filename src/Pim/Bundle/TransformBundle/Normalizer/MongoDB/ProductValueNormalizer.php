@@ -70,7 +70,11 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 
         $backendType = $value->getAttribute()->getBackendType();
 
-        $data[$backendType] = $this->normalizeValueData($value->getData(), $backendType, $context);
+        if ('options' !== $backendType) {
+            $data[$backendType] = $this->normalizeValueData($value->getData(), $backendType, $context);
+        } else {
+            $data['optionIds'] = $this->normalizeValueData($value->getData(), $backendType, $context);
+        }
 
         return $data;
     }
