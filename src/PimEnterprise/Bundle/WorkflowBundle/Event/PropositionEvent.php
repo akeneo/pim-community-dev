@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Proposition;
+namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;

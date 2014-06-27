@@ -5,8 +5,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Published product manager
@@ -25,19 +29,25 @@ class PublishedProductManager
     /** @var PublishedProductFactory **/
     protected $factory;
 
+    /** @var  EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
-     * @param ProductManager                      $manager    the product manager
-     * @param PublishedProductRepositoryInterface $repository the published repository
-     * @param PublishedProductFactory             $factory    the published product factory
+     * @param ProductManager                      $manager         the product manager
+     * @param PublishedProductRepositoryInterface $repository      the published repository
+     * @param PublishedProductFactory             $factory         the published product factory
+     * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
      */
     public function __construct(
         ProductManager $manager,
         PublishedProductRepositoryInterface $repository,
-        PublishedProductFactory $factory
+        PublishedProductFactory $factory,
+        EventDispatcherInterface $eventDispatcher
     ) {
-        $this->productManager = $manager;
-        $this->repository     = $repository;
-        $this->factory        = $factory;
+        $this->productManager  = $manager;
+        $this->repository      = $repository;
+        $this->factory         = $factory;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -80,9 +90,13 @@ class PublishedProductManager
      * Publish a product
      *
      * @param ProductInterface $product
+     *
+     * @return PublishedProductInterface
      */
     public function publish(ProductInterface $product)
     {
+        $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
+
         $published = $this->findPublishedProductByOriginalId($product->getId());
         if ($published) {
             $this->getObjectManager()->remove($published);
@@ -91,6 +105,10 @@ class PublishedProductManager
         $published = $this->factory->createPublishedProduct($product);
         $this->getObjectManager()->persist($published);
         $this->getObjectManager()->flush();
+
+        $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
+
+        return $published;
     }
 
     /**
@@ -99,5 +117,17 @@ class PublishedProductManager
     protected function getObjectManager()
     {
         return $this->productManager->getObjectManager();
+    }
+
+    /**
+     * Dispatch a published product event
+     *
+     * @param string                    $name
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
+     */
+    protected function dispatchEvent($name, ProductInterface $product, PublishedProductInterface $published = null)
+    {
+        $this->eventDispatcher->dispatch($name, new PublishedProductEvent($product, $published));
     }
 }
