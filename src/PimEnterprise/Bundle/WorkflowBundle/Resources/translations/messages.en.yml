@@ -15,6 +15,7 @@ pimee_workflow:
         index: Published Products
     acl.publishedproduct:
         index: Manage published products
+        publish: Publish product
 btn.publish: Publish
 flash.product.published: The product has been successfully published
 pim_menu:

@@ -14,3 +14,5 @@ pimee_enrich.acl.product_ownership.title: Ownership
 
 btn.save working copy: Save working copy
 btn.save draft: Save draft
+
+pim_enrich.mass_edit_action.publish.label: Publish products
