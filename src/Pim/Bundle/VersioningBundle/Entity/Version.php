@@ -2,76 +2,62 @@
 
 namespace Pim\Bundle\VersioningBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Resource version entity
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @ORM\Entity(repositoryClass="Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository")
- * @ORM\Table(
- *      name="pim_versioning_version",
- *      indexes={
- *          @ORM\Index(name="resource_name_resource_id_idx", columns={"resource_name", "resource_id"})
- *      }
- * )
  */
 class Version
 {
     /**
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @var integer
      */
     protected $id;
 
     /**
-     * @var string $author
-     *
-     * @ORM\Column(type="string")
+     * @var string
      */
     protected $author;
 
     /**
-     * @ORM\Column(name="resource_name", type="string")
+     * @var string
      */
     protected $resourceName;
 
     /**
-     * @ORM\Column(name="resource_id", type="string", length=24)
+     * @var string
      */
     protected $resourceId;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @var array
      */
     protected $snapshot;
 
     /**
-     * @ORM\Column(type="array")
+     * @var array
      */
     protected $changeset;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @var string
      */
     protected $context;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @var integer
      */
     protected $version;
 
     /**
-     * @ORM\Column(name="logged_at", type="datetime")
+     * @var datetime
      */
     protected $loggedAt;
 
     /**
-     * @ORM\Column(name="pending", type="boolean")
+     * @var boolean
      */
     protected $pending;
 

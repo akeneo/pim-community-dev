@@ -1,0 +1,40 @@
+Pim\Bundle\VersioningBundle\Entity\Version:
+    type: entity
+    table: pim_versioning_version
+    repositoryClass: Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository
+    indexes:
+        resource_name_resource_id_idx:
+            columns:
+                - resource_name
+                - resource_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        author:
+            type: string
+        resourceName:
+            type: string
+            column: resource_name
+        resourceId:
+            type: string
+            column: resource_id
+            length: 24
+        snapshot:
+            type: array
+            nullable: true
+        changeset:
+            type: array
+        context:
+            type: string
+            nullable: true
+        version:
+            type: integer
+            nullable: true
+        loggedAt:
+            type: datetime
+            column: logged_at
+        pending:
+            type: boolean
