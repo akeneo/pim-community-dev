@@ -1,7 +1,7 @@
 @javascript
 Feature: Define permissions for an attribute group
   In order to be able to restrict access to some product data
-  As Peter
+  As an administrator
   I need to be able to define permissions for attribute groups
 
   Background:
@@ -12,7 +12,7 @@ Feature: Define permissions for an attribute group
     And I am logged in as "Peter"
     And I am on the "info" attribute group page
 
-  Scenario: Succesfully display the fields for attribute group permissions
+  Scenario: Successfully display the fields for attribute group permissions
     Given I visit the "Permissions" tab
     Then I should see the Permissions to view attributes and Permissions to edit attributes fields
 

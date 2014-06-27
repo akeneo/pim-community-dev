@@ -1,7 +1,7 @@
 @javascript
 Feature: Enforce read-only permissions for an attribute group
   In order to be able to prevent some users from editing some product data
-  As Peter
+  As an administrator
   I need to be able to enforce read-only permissions for attribute groups
 
   Background:

@@ -1,16 +1,16 @@
 @javascript @skip
 Feature: Review a product changes proposition
   In order to control which data should be applied to a product
-  As an owner
+  As a product manager
   I need to be able to review product changes proposition
 
-  # TODO Change admin when contributor and owner roles have been introduce
+  # TODO Change Julia when contributor and owner roles have been introduce
   Scenario: Successfully accept an identifier attribute product changes proposition
     Given a "footwear" catalog configuration
     And the following product:
       | sku        | family  |
       | my-sandals | sandals |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "SKU" to "your-sandals"
     And I save the product
@@ -25,7 +25,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | name-en_US |
       | my-sandals | sandals | Sandals    |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "Name" to "Tong"
     And I save the product
@@ -40,7 +40,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | description-en_US-mobile |
       | my-sandals | sandals | Some awesome sandals     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "mobile Description" to "Some awesome baskets"
     And I save the product
@@ -55,7 +55,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Internal" group
     And I expand the "Number in stock" attribute
@@ -76,7 +76,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | price-USD |
       | my-sandals | sandals | 45        |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I visit the "Marketing" group
     And I change the "$ Price" to "90"
@@ -94,7 +94,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | manufacturer |
       | my-sandals | sandals | Converse     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "Manufacturer" to "TimberLand"
     And I save the product
@@ -109,7 +109,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | weather_conditions |
       | my-sandals | sandals | dry, wet           |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "Weather conditions" to "Hot, Cold"
     And I save the product
@@ -124,7 +124,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Internal" group
     And I expand the "Number in stock" attribute
@@ -144,7 +144,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Media" group
     And I attach file "akeneo.jpg" to "Thumbnail"
@@ -160,7 +160,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Additional information" group
     And I check the "Handmade" switch
@@ -176,7 +176,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | release_date-ecommerce | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 2014-05-14             | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Sales" group
     And I change the "ecommerce Release date" to "2014-05-20"
@@ -192,7 +192,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku       | family  | washing_temperature | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
       | my-tshirt | tshirts | 60 CELSIUS          | 2                         | 5                     | 20                     |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-tshirt" product
     And I visit the "Additional information" group
     And I change the "Washing temperature" to "40"
@@ -208,7 +208,7 @@ Feature: Review a product changes proposition
     And the following product:
       | sku        | family  | name-en_US |
       | my-sandals | sandals | Sandals    |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I edit the "my-sandals" product
     And I change the "Name" to "Tong"
     And I save the product

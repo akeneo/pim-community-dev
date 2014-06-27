@@ -1,7 +1,7 @@
 @javascript
 Feature: Define permissions for a job profile
   In order to be able to restrict access to job profiles
-  As Peter
+  As an administrator
   I need to be able to define permissions for job profiles
 
   Background:
