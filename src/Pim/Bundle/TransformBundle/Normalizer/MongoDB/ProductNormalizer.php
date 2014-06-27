@@ -67,11 +67,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data['created'] = new \MongoDate();
         }
 
-        if (null !== $product->getUpdated()) {
-            $data['updated'] = $this->normalizer->normalize($product->getUpdated(), self::FORMAT);
-        } else {
-            $data['updated'] = new \MongoDate();
-        }
+        $data['updated'] = new \MongoDate();
 
         $data['family']         = $product->getFamily() ? $product->getFamily()->getId() : null;
         $data['enabled']        = $product->isEnabled();
