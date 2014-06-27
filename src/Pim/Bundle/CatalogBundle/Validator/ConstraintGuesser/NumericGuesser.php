@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Validator\Constraints\Numeric;
 
 /**
- * Guesser
+ * Guesser for numeric attributes
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -34,8 +34,6 @@ class NumericGuesser implements ConstraintGuesserInterface
      */
     public function guessConstraints(AbstractAttribute $attribute)
     {
-        $constraints = [new Numeric()];
-
-        return $constraints;
+        return [new Numeric()];
     }
 }
