@@ -11,6 +11,8 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true
     julia:
         username: julia
@@ -24,6 +26,8 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true
     mary:
         username: mary
@@ -37,6 +41,8 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true
     sandra:
         username: sandra
@@ -50,6 +56,8 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true
     peter:
         username: peter
@@ -61,6 +69,8 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role:
+        roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true

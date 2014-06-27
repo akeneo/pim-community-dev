@@ -6,8 +6,8 @@ Feature: Expose product data via a REST API
   Background:
     Given a "footwear" catalog configuration
     And the following product:
-      | sku     | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD |
-      | sandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        |
+      | sku     | name-en_US | description-en_US-mobile | description-en_US-tablet | price-EUR | price-USD | categories      |
+      | sandals | My sandals | My great sandals         | My great new sandals     | 20        | 30        | 2014_collection |
 
   Scenario: Fail to authenticate an anonymous user
     Given I send a GET request to "api/rest/products/sandals.json"
@@ -28,7 +28,7 @@ Feature: Expose product data via a REST API
     {
       "family":null,
       "groups":[],
-      "categories":[],
+      "categories":["2014_collection"],
       "enabled":true,
       "associations":[],
       "values": {
