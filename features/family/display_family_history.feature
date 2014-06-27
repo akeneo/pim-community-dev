@@ -1,11 +1,11 @@
 Feature: Display the family history
   In order to know who, when and what changes has been made to an family
-  As a user
+  As an administrator
   I need to have access to a family history
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And the following attribute group:
       | code    | label-en_US |
       | general | General     |

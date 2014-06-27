@@ -25,7 +25,7 @@
         "akeneo/measure-bundle": "0.2.*",
         "akeneo/batch-bundle": "0.1.*",
         "gedmo/doctrine-extensions": "2.3.x-dev#de89aaec17f4bde70db675b6f6c0ed70d1e855fe",
-        "oro/platform": "dev-pim-1.2#e3108c2975df02357b788c10506f761bea9dfed2",
+        "oro/platform": "dev-pim-1.2#4dd84aff6f4689e2996fcc5384814b5b6b7048e6",
         "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
         "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
         "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",

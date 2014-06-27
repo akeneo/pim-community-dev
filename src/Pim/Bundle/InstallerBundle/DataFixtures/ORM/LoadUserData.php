@@ -65,15 +65,12 @@ class LoadUserData extends AbstractInstallerFixture
      *
      * @param array $data
      *
-     * @return \Oro\Bundle\UserBundle\Entity\User
+     * @return User
      */
     protected function buildUser(array $data)
     {
         $user = $this->getUserManager()->createUser();
-
         $owner = $this->getOwner($data['owner']);
-        $role  = $this->getRole($data['role']);
-
         $user
             ->setUsername($data['username'])
             ->setPlainPassword($data['password'])
@@ -81,9 +78,18 @@ class LoadUserData extends AbstractInstallerFixture
             ->setFirstName($data['firstname'])
             ->setLastName($data['lastname'])
             ->setEnabled($data['enable'])
-            ->addRole($role)
             ->setOwner($owner)
             ->addBusinessUnit($owner);
+
+        foreach ($data['roles'] as $code) {
+            $role = $this->getRole($code);
+            $user->addRole($role);
+        }
+
+        foreach ($data['groups'] as $code) {
+            $group = $this->getGroup($code);
+            $user->addGroup($group);
+        }
 
         $locale = $this->getLocale($data['catalog_locale']);
         $user->setCatalogLocale($locale);
@@ -123,6 +129,20 @@ class LoadUserData extends AbstractInstallerFixture
         return $this->om
             ->getRepository('OroUserBundle:Role')
             ->findOneBy(array('role' => $role));
+    }
+
+    /**
+     * Get the group from code
+     *
+     * @param string $group
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\Group
+     */
+    protected function getGroup($group)
+    {
+        return $this->om
+            ->getRepository('OroUserBundle:Group')
+            ->findOneBy(array('name' => $group));
     }
 
     /**

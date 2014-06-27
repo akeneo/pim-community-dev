@@ -139,24 +139,37 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
 
     /**
      * @param string $not
+     * @param string $action
      * @param string $identifier
      * @param string $page
      *
      * @return null|Then
-     * @Given /^I should( not)? be able to edit the "([^"]*)" (\w+)$/
-     * @Given /^I should( not)? be able to access the "([^"]*)" (\w+) page$/
+     * @Given /^I should( not)? be able to (\w+) the "([^"]*)" (\w+)$/
+     * @Given /^I should( not)? be able to access the (\w+) "([^"]*)" (\w+) page$/
      */
-    public function iShouldNotBeAbleToAccessTheEntityEditPage($not, $identifier, $page)
+    public function iShouldNotBeAbleToAccessTheEntityEditPage($not, $action, $identifier, $page)
     {
+        if (null === $action) {
+            $action = 'edit';
+        }
+
         if (!$not) {
-            return $this->iAmOnTheEntityEditPage($identifier, $page);
+            if ('edit' === $action) {
+                $this->iAmOnTheEntityEditPage($identifier, $page);
+            } elseif ('show' === $action) {
+                $this->iAmOnTheEntityShowPage($identifier, $page);
+            } else {
+                throw new \Exception('Action "%s" is not handled yet.');
+            }
+
+            return null;
         }
 
         $page = ucfirst($page);
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
 
-        $this->currentPage = sprintf('%s edit', $page);
+        $this->currentPage = sprintf('%s %s', $page, $action);
         $this->getCurrentPage()->open(['id' => $entity->getId()]);
 
         return new Step\Then('I should see "403 Forbidden"');
@@ -175,6 +188,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" (\w+)$/
+     * @Given /^I am on the "([^"]*)" (\w+) show page$/
+     */
+    public function iAmOnTheEntityShowPage($identifier, $page)
+    {
+        $page = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s show', $page), array('id' => $entity->getId()));
     }
 
     /**

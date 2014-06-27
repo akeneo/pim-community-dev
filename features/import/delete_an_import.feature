@@ -1,13 +1,13 @@
 @javascript
 Feature: Delete import
   In order to delete an import job that have been created
-  As a user
+  As an administrator
   I need to be able to view a list of them
   And I need to delete one of them or cancel my operation
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the imports page
     Then the grid should contain 6 elements
     When I delete the "footwear_product_import" job

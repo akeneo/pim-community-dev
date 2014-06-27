@@ -9,5 +9,8 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role: ROLE_ADMINISTRATOR
+        roles:
+            - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true

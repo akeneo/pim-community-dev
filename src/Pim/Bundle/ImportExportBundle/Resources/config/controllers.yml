@@ -36,6 +36,7 @@ services:
         scope: request
         class: %pim_import_export.controller.export_execution.class%
         arguments:
+            - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - export
@@ -46,6 +47,7 @@ services:
         scope: request
         class: %pim_import_export.controller.import_execution.class%
         arguments:
+            - '@event_dispatcher'
             - '@akeneo_batch.logger.batch_log_handler'
             - '@pim_base_connector.event_listener.archivist'
             - import

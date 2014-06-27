@@ -1,7 +1,7 @@
 @javascript
 Feature: Remove attribute from a family
   In order to correct myself when I have wrongly added an attribute into a family
-  As a user
+  As an administrator
   I need to be able to remove an attribute from a family
 
   Background:
@@ -16,7 +16,7 @@ Feature: Remove attribute from a family
     And the following product:
       | sku            | family | longDescription | manufacturer |
       | bag-dolce-vita | Bags   | my description  | dolce        |
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully remove an attribute from a family and display it as removable from product
     Given I am on the "Bags" family page

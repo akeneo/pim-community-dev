@@ -1,12 +1,12 @@
 @javascript @info https://akeneo.atlassian.net/browse/PIM-355
 Feature: Add attribute to a family
   In order to validate exported attributes
-  As a user
+  As an administrator
   I need to be able to define which attributes belong to a family
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully list available grouped attributes
     Given I am on the "Sandals" family page
