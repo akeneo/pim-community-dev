@@ -1,4 +1,4 @@
-@javascript @skip
+@javascript
 Feature: Sort proposals
   In order to easily manage propositions for a specific product
   As an admin
