@@ -4,8 +4,8 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class MergeValuesSubscriberSpec extends ObjectBehavior

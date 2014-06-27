@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Proposition;
+namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
 /**
  * Proposition events

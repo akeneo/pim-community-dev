@@ -8,8 +8,8 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class UpdatePropositionStatusSubscriberSpec extends ObjectBehavior
