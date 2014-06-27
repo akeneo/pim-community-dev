@@ -11,7 +11,7 @@ before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - composer self-update --no-interaction
     - echo "extension=mongo.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-    - composer require  --no-update doctrine/mongodb-odm-bundle 3.0.*@dev
+    - composer require --no-update doctrine/mongodb-odm-bundle 3.0.*
     - composer update --prefer-source --no-scripts --no-interaction
 
 script:
