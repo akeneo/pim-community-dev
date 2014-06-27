@@ -33,10 +33,10 @@ class PublishedProductManager
     protected $eventDispatcher;
 
     /**
-     * @param ProductManager                      $manager          the product manager
-     * @param PublishedProductRepositoryInterface $repository       the published repository
-     * @param PublishedProductFactory             $factory          the published product factory
-     * @param EventDispatcherInterface            $eventDispatcher  the event dispatcher
+     * @param ProductManager                      $manager         the product manager
+     * @param PublishedProductRepositoryInterface $repository      the published repository
+     * @param PublishedProductFactory             $factory         the published product factory
+     * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
      */
     public function __construct(
         ProductManager $manager,
