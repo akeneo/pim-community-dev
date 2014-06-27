@@ -2,18 +2,19 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\ORM\EntityRepository;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
