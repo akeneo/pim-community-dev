@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
