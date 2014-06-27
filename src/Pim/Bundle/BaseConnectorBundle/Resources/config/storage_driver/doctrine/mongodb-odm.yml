@@ -5,8 +5,10 @@ services:
     pim_base_connector.writer.direct_to_db.mongodb.product:
         class: %pim_base_connector.writer.direct_to_db.mongodb.product.class%
         arguments:
-            - '@pim_transform.transformer.mongodb.product'
             - '@pim_catalog.manager.product'
             - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_versioning.manager.version'
+            - '@pim_serializer'
+            - '@database_connection'
 
 

@@ -1,23 +1,24 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\Transformer\MongoDB;
+namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
-use Pim\Bundle\TransformBundle\Transformer\ObjectTransformerInterface;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 use MongoId;
 
 /**
- * Transform a metric entity into an MongoDB Document
+ * Normalize a metric entity into an MongoDB Document
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MetricTransformer implements ObjectTransformerInterface
+class MetricNormalizer implements NormalizerInterface
 {
     /**
      * @var MeasureConverter
@@ -44,17 +45,25 @@ class MetricTransformer implements ObjectTransformerInterface
     /**
      * {@inheritdoc}
      */
-    public function transform($metric, array $context = [])
+    public function supportsNormalization($data, $format = null)
     {
-        $doc = new \StdClass();
-        $doc->_id = new MongoId;
-        $doc->unit = $metric->getUnit();
-        $doc->data = $metric->getData();
+        return ($data instanceof ProductPrice && ProductNormalizer::FORMAT === $format);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function normalize($metric, $format = null, array $context = [])
+    {
+        $data = [];
+        $data['_id'] = new MongoId;
+        $data['unit'] = $metric->getUnit();
+        $data['data'] = $metric->getData();
 
         $this->createMetricBaseValues($metric);
 
-        $doc->baseUnit = $metric->getBaseUnit();
-        $doc->baseData = $metric->getBaseData();
+        $data['baseUnit'] = $metric->getBaseUnit();
+        $data['baseData'] = $metric->getBaseData();
 
         $doc->family = $metric->getFamily();
 
@@ -62,7 +71,7 @@ class MetricTransformer implements ObjectTransformerInterface
     }
 
     /**
-     * Allow to create convert data in standard unit for metrics
+     * Convert data in standard unit for metrics
      *
      * @param Metric
      */
