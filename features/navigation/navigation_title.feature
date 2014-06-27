@@ -1,13 +1,13 @@
 @javascript
 Feature: Well display navigation titles
   In order to have a well-formed title each the page
-  As a user
+  As an administrator
   I need to be able to see title depending of the catalog page
 
   Scenario: Successfully display the page titles
     Given a "footwear" catalog configuration
     And a "sandals" product
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     Then the following pages should have the following titles:
       | page                                      | title                                           |
       | association types                         | Association types                               |

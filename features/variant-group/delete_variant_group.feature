@@ -1,12 +1,12 @@
 @javascript
 Feature: Delete a variant group
   In order to manager variant groups for the catalog
-  As a user
+  As a product manager
   I need to be able to delete variant groups
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully delete a variant group from the grid
     Given I am on the variant groups page

@@ -1,6 +1,6 @@
 Feature: Display completeness widget
   In order to have a quick overview of products almost ready to be exported but incomplete
-  As Julia
+  As a regular user
   I need to be able to see on the dashboard a completeness widget that present channels and locales completenesses
 
   Scenario: Display completeness widget
@@ -11,7 +11,7 @@ Feature: Display completeness widget
       | sku2 | tshirts |                 |                 |                 | Superman                    |                             | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2014_collection                  |
       | sku3 | tshirts | Tshirt Iron Man | Tshirt Iron Man | Tshirt Iron Man | Iron Man                    | Iron Man                    | 10 USD, 6 GBP, 15 EUR | size_S  | blue  | american_apparel | cotton   | 2013_collection, 2015_collection |
     And I launched the completeness calculator
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     When I am on the dashboard page
     Then I should see "Completeness Over Channels and Locales"
     And completeness of "Ecommerce" should be "13%"

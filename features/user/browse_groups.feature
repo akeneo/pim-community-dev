@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse groups
   In order to manage the user groups and rights
-  As Peter
+  As an administrator
   I need to be able to see user groups
 
   Background:

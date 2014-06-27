@@ -1,11 +1,11 @@
 Feature: Edit a family
   In order to provide accurate information about a family
-  As a user
+  As an administrator
   I need to be able to edit its code and the translations of its name
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the families page
 
   Scenario: Successfully edit a family

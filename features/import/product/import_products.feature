@@ -1,20 +1,11 @@
 @javascript
 Feature: Execute a job
   In order to use existing product information
-  As Julia
+  As a product manager
   I need to be able to import products
 
   Background:
     Given the "footwear" catalog configuration
-    And the following categories:
-      | code    | label-en_US | parent |
-      | master  | Master      |        |
-      | leather | Leather     | master |
-      | silk    | Silk        | master |
-      | coton   | Coton       | master |
-      | travel  | Travel      | master |
-      | men     | Men         | master |
-      | women   | Women       | master |
     And the following product groups:
       | code  | label     | attributes | type    |
       | CROSS | Bag Cross |            | VARIANT |
@@ -24,16 +15,16 @@ Feature: Execute a job
     Given the following file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-ecommerce
-      SKU-001;boots;CROSS;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;sneakers;;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;boots;CROSS;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;boots;CROSS;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
+      SKU-001;boots;CROSS;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;sneakers;;sandals;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      SKU-004;sneakers;;sandals;nec;justo sit amet nulla. Donec non justo. Proin non massa
+      SKU-005;boots;CROSS;winter_boots,sandals;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
+      SKU-006;boots;CROSS;winter_boots;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
       SKU-007;sneakers;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;boots;CROSS;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
+      SKU-008;boots;CROSS;winter_boots;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;boots;CROSS;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
+      SKU-010;boots;CROSS;sandals;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -50,9 +41,9 @@ Feature: Execute a job
     Given the following file to import:
       """
       sku;family;groups;categories;X_SELL-groups;X_SELL-products;name-en_US;description-en_US-ecommerce
-      SKU-001;boots;CROSS;leather,travel;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;travel;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;men;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      SKU-001;boots;CROSS;winter_boots;CROSS;SKU-002,SKU-003;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;sneakers;;winter_boots;;;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;sneakers;;sandals;;;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -83,8 +74,8 @@ Feature: Execute a job
     Given the following file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-ecommerce
-      SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-001;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-001;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -103,7 +94,7 @@ Feature: Execute a job
     And the following file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-ecommerce
-      SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
       """
     And the following job "footwear_product_import" configuration:
       | filePath | %file to import% |
@@ -118,16 +109,16 @@ Feature: Execute a job
     Given the following file to import:
       """
       sku;family;groups;categories;name-en_US;description-en_US-ecommerce
-      SKU-001;boots;;leather,travel;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
-      SKU-002;sneakers;;travel;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
-      SKU-003;sneakers;;men;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
-      SKU-004;sneakers;;men;nec;justo sit amet nulla. Donec non justo. Proin non massa
-      SKU-005;boots;;women,silk;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
-      SKU-006;boots;;leather;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
+      SKU-001;boots;;winter_boots;Donec;dictum magna. Ut tincidunt orci quis lectus. Nullam suscipit, est
+      SKU-002;sneakers;;winter_boots;Donex;Pellentesque habitant morbi tristique senectus et netus et malesuada fames
+      SKU-003;sneakers;;sandals;ac;Morbi quis urna. Nunc quis arcu vel quam dignissim pharetra.
+      SKU-004;sneakers;;sandals;nec;justo sit amet nulla. Donec non justo. Proin non massa
+      SKU-005;boots;;winter_boots;non;tincidunt dui augue eu tellus. Phasellus elit pede, malesuada vel
+      SKU-006;boots;;winter_boots;ipsum;Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aliquam auctor,
       SKU-007;sneakers;;;rutrum.;quis, pede. Praesent eu dui. Cum sociis natoque penatibus et
-      SKU-008;boots;;coton;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
+      SKU-008;boots;;sandals;ligula;urna et arcu imperdiet ullamcorper. Duis at lacus. Quisque purus
       SKU-009;sneakers;;;porttitor;sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales.
-      SKU-010;boots;;men,silk;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
+      SKU-010;boots;;sandals,winter_boots;non,;vestibulum nec, euismod in, dolor. Fusce feugiat. Lorem ipsum dolor
       """
     And the following job "footwear_product_import" configuration:
       | uploadAllowed | yes |
