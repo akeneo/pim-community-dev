@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
+namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;

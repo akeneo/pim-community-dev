@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.repository.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM\PropositionRepository
+    pimee_workflow.repository.proposition.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PropositionRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository
 
 services:

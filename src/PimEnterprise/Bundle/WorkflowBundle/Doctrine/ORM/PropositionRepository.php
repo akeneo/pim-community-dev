@@ -1,12 +1,12 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM;
+namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**

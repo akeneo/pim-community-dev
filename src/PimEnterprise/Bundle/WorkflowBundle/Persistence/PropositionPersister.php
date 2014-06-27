@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
