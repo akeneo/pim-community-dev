@@ -1,4 +1,4 @@
-@javascript @skip
+@javascript
 Feature: Filter proposals
   In order to easily find propositions for the product
   As an owner
@@ -25,4 +25,3 @@ Feature: Filter proposals
     And I should be able to use the following filters:
       | filter         | value                   | result |
       | Status         | In progress             | admin  |
-      | Locale context | English (United States) | peter  |

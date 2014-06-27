@@ -24,8 +24,6 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers |
       | boots   | boots           | boots   |
 
-  #TODO: remove the skip tag when product ownership has been done
-  @skip
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:

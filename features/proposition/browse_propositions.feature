@@ -17,10 +17,9 @@ Feature: Browse propositions for a specific product
       | white-boots | ready       | julia  | en_US  |
     And I am logged in as "admin"
 
-  @skip
   Scenario: Successfully display propositions
     Given I edit the "black-boots" product
     When I visit the "Propositions" tab
     Then the grid should contain 2 elements
-    And I should see the columns Author, Locale context, Changes, Proposed at and Status
+    And I should see the columns Author, Changes, Proposed at and Status
     And I should see entities admin and peter
