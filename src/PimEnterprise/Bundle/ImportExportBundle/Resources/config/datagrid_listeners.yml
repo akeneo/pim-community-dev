@@ -7,3 +7,11 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }
+
+    pimee_import_export.event_listener.configure_job_profile_grid:
+        class: %pimee_datagrid.event_listener.configure_job_profile_grid_listener.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.export-profile-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.import-profile-grid, method: onBuildBefore }
