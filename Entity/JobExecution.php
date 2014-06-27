@@ -33,7 +33,7 @@ class JobExecution
     private $id;
 
     /**
-     * @var array
+     * @var ArrayCollection
      *
      * @ORM\OneToMany(
      *      targetEntity="StepExecution",
