@@ -16,3 +16,5 @@ btn.save working copy: Save working copy
 btn.save draft: Save draft
 
 pim_enrich.mass_edit_action.publish.label: Publish products
+pim_enrich.mass_edit_action.publish.description: Publish the selected products, the current published data will be erased by the current working copy.
+pim_enrich.mass_edit_action.publish.success_flash: Selected products have been successfully published
