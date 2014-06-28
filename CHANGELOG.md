@@ -38,6 +38,7 @@
 - Dispatch events on show/edit/execute job profile actions
 - Dispatch events on view/download job execution actions
 - Allow to install custom user roles and groups from installer fixtures
+- Display the code of import/export profiles on the edit and show views
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
