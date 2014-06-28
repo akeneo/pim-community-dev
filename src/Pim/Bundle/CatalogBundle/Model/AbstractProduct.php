@@ -75,6 +75,9 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     protected $enabled = true;
 
+    /** @var string */
+    protected $status = 'draft';
+
     /**
      * @var ArrayCollection $groups
      */
@@ -891,5 +894,25 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     public function setNormalizedData($normalizedData)
     {
         $this->normalizedData = $normalizedData;
+    }
+
+    /**
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return ProductInterface
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
     }
 }

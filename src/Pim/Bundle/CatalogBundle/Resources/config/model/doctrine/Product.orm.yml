@@ -11,6 +11,8 @@ Pim\Bundle\CatalogBundle\Model\Product:
         enabled:
             type: boolean
             column: is_enabled
+        status:
+            type: string
         created:
             type: datetime
         updated:
