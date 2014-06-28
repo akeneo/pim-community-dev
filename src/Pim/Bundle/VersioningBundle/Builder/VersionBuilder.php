@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Builder;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Version builder

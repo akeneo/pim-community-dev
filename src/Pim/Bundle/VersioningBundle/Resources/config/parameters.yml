@@ -1,5 +1,6 @@
 parameters:
     pim_versioning.versionable_entities:                   ~
+    pim_versioning.entity.version.class:                   Pim\Bundle\VersioningBundle\Model\Version
     pim_versioning.manager.version.class:                  Pim\Bundle\VersioningBundle\Manager\VersionManager
     pim_versioning.builder.version.class:                  Pim\Bundle\VersioningBundle\Builder\VersionBuilder
     pim_versioning.event_listener.addversion.class:        Pim\Bundle\VersioningBundle\EventListener\AddVersionListener

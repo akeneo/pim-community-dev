@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -149,7 +149,7 @@ class VersionManager
      */
     public function getVersionRepository()
     {
-        return $this->registry->getRepository('PimVersioningBundle:Version');
+        return $this->registry->getRepository('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
     /**

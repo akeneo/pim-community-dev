@@ -1,7 +1,7 @@
-Pim\Bundle\VersioningBundle\Entity\Version:
+Pim\Bundle\VersioningBundle\Model\Version:
     type: entity
     table: pim_versioning_version
-    repositoryClass: Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository
+    repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
     indexes:
         resource_name_resource_id_idx:
             columns:

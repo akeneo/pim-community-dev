@@ -9,7 +9,7 @@ use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 class VersionManagerSpec extends ObjectBehavior
 {
@@ -52,7 +52,7 @@ class VersionManagerSpec extends ObjectBehavior
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
-        $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Entity\Version');
+        $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
     function it_creates_pending_versions_when_real_time_versioning_is_disabled(AbstractProduct $product, $builder)
@@ -63,7 +63,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
         $version = $versions[0];
-        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Entity\Version');
+        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
         $version->isPending()->shouldReturn(true);
     }
 

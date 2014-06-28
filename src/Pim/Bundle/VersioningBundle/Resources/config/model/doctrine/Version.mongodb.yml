@@ -1,0 +1,27 @@
+Pim\Bundle\VersioningBundle\Model\Version:
+    type: document
+    collection: pim_versioning_version
+    repositoryClass: Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
+    fields:
+        id:
+            id: true
+            generator:
+                strategy: AUTO
+        author:
+            type: string
+        resourceName:
+            type: string
+        resourceId:
+            type: string
+        snapshot:
+            type: hash
+        changeset:
+            type: hash
+        context:
+            type: string
+        version:
+            type: int
+        loggedAt:
+            type: date
+        pending:
+            type: boolean

@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Entity;
+namespace Pim\Bundle\VersioningBundle\Model;
 
 /**
  * Resource version entity
