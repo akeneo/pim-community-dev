@@ -1,7 +1,7 @@
 @javascript
 Feature: Import partial product information
   In order to avoid overwriting existing data
-  As Julia
+  As a product manager
   I need to be able to import a product without specifying all of its properties
 
   Scenario: Successfully keep the product family if it is not present in the import file

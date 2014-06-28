@@ -33,6 +33,11 @@
 - Create a job instance factory to create job instances
 - Allow to add hidden row actions in grids
 - Make optional the generation of missing completenesses in product reader
+- Update install to be able to define email address/name used for system emailing
+- Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
+- Dispatch events on show/edit/execute job profile actions
+- Dispatch events on view/download job execution actions
+- Allow to install custom user roles and groups from installer fixtures
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment

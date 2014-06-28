@@ -1,7 +1,7 @@
 @javascript
 Feature: Change status of many products at once
   In order to include or exclude many products in or from the export
-  As Julia
+  As a product manager
   I need to be able to change the status of many products at once
 
   Background:

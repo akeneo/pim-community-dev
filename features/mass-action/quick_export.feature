@@ -1,7 +1,7 @@
 @javascript
 Feature: Quick export many products from datagrid
   In order to quick export a set of products
-  As Julia
+  As a product manager
   I need to be able to display products I want and export them
 
   Background:

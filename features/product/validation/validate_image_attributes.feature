@@ -1,7 +1,7 @@
 @javascript @info More user-friendly validation to be done in the scope of @jira https://akeneo.atlassian.net/browse/PIM-2029
 Feature: Validate image attributes of a product
   In order to keep my data consistent
-  As Julia
+  As a regular user
   I need to be able to see validation errors for image attributes
 
   Background:
@@ -16,7 +16,7 @@ Feature: Validate image attributes of a product
     And the following product:
       | sku | family |
       | foo | baz    |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the "foo" product page
 
   Scenario: Validate the max file size constraint of image attribute

@@ -1,12 +1,12 @@
 @javascript
 Feature: Define the attribute requirement
   In order to ensure product completness when exporting them
-  As a user
+  As an administrator
   I need to be able to define which attributes are required or not for a given channel
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the "Boots" family page
 
   Scenario: Succesfully display the attribute requirements

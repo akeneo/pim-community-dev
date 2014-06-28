@@ -1,7 +1,7 @@
 @javascript
 Feature: Add attributes to a product
   In order to provide more information about a product
-  As a user
+  As a product manager
   I need to be able to add attributes to a product
 
   Background:
@@ -10,7 +10,7 @@ Feature: Add attributes to a product
     | sku     | family  |
     | sandals | sandals |
     | boots   |         |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Display available attributes to a product
     Given I am on the "sandals" product page

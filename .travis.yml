@@ -2,12 +2,10 @@ language: php
 php:
     - "5.4"
     - "5.5"
-    - "hhvm"
 
 matrix:
     allow_failures:
         - php: "5.5"
-        - php: hhvm
 
 before_script:
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
@@ -17,5 +15,5 @@ before_script:
     - composer update --prefer-source --no-scripts --no-interaction
 
 script:
-    - phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
+    - ./bin/phpunit -c app/phpunit.travis.xml --testsuite PIM_Unit_Test
     - ./phpspec-fix

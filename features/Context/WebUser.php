@@ -3,16 +3,11 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Behat\Mink\Element\Element;
 use Behat\Behat\Exception\BehaviorException;
 
 /**
@@ -196,7 +191,7 @@ class WebUser extends RawMinkContext
         $this->wait(); // Make sure that the tree is loaded
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
+        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
             throw $this->createExpectationException(
@@ -971,7 +966,7 @@ class WebUser extends RawMinkContext
      */
     public function iShouldNotSeeTheButton($button)
     {
-        if (null === $this->getCurrentPage()->getButton($button)) {
+        if (null !== $this->getCurrentPage()->getButton($button)) {
             throw $this->createExpectationException(
                 sprintf('Button "%s" should not be displayed', $button)
             );

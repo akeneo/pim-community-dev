@@ -1,11 +1,11 @@
 Feature: Edit an import
   In order to manage existing import jobs
-  As a user
+  As an administrator
   I need to be able to edit an import job
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit an import job
     Given I am on the "footwear_product_import" import job edit page

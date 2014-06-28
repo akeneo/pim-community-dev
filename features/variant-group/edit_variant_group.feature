@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit a variant group
   In order to manage existing variant groups for the catalog
-  As a user
+  As a product manager
   I need to be able to edit a variant group
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
     And I visit the "Properties" tab
 

@@ -1,7 +1,7 @@
 @javascript
 Feature: Export of metric values
   In order to homogeneize exported metric values
-  As Julia
+  As a product manager
   I need to be able to define in which unit to convert metric values during export
 
   Background:
