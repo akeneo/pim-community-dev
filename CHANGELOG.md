@@ -82,6 +82,7 @@
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
+- Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

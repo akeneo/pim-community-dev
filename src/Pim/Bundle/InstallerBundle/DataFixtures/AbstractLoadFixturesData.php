@@ -107,7 +107,7 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
         $manager = $this->container->get('doctrine.orm.entity_manager');
 
         return $manager
-            ->getRepository($this->container->getParameter('pim_catalog.entity.job_instance.class'))
+            ->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
             ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
     }
 }
