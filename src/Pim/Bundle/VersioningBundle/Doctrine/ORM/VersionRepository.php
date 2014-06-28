@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Entity\Repository;
+namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
  * Version repository
@@ -12,13 +12,10 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionRepository extends EntityRepository
+class VersionRepository extends EntityRepository implements VersionRepositoryInterface
 {
     /**
-     * @param string $resourceName
-     * @param string $resourceId
-     *
-     * @return Version[]|null
+     * {@inheritdoc}
      */
     public function getLogEntries($resourceName, $resourceId)
     {
@@ -29,10 +26,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string $resourceName
-     * @param string $resourceId
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getOldestLogEntry($resourceName, $resourceId)
     {
@@ -43,10 +37,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string $resourceName
-     * @param string $resourceId
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getNewestLogEntry($resourceName, $resourceId)
     {
@@ -57,9 +48,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * Get pending versions
-     *
-     * @return Version[]
+     * {@inheritdoc}
      */
     public function getPendingVersions()
     {

@@ -145,7 +145,7 @@ class VersionManager
     }
 
     /**
-     * @return VersionRepository
+     * @return VersionRepositoryInterface
      */
     public function getVersionRepository()
     {

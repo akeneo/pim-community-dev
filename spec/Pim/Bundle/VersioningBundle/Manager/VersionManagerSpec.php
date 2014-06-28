@@ -8,13 +8,17 @@ use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
 class VersionManagerSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry, VersionBuilder $builder, ObjectManager $om, VersionRepository $repo)
-    {
+    function let(
+        SmartManagerRegistry $registry,
+        VersionBuilder $builder,
+        ObjectManager $om,
+        VersionRepositoryInterface $repo
+    ) {
         $this->beConstructedWith($registry, $builder);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
