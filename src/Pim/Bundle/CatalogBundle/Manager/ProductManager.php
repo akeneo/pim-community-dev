@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
+use Pim\Bundle\CatalogBundle\Event\SaveProductEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -248,7 +249,10 @@ class ProductManager
             $options
         );
 
-        return $this->persister->persist($product, $options);
+        $event = new SaveProductEvent($this, $product, $options);
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_SAVE_PRODUCT, $event);
+        $this->persister->persist($product, $options);
+        $this->eventDispatcher->dispatch(CatalogEvents::POST_SAVE_PRODUCT, $event);
     }
 
     /**

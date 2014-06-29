@@ -30,4 +30,24 @@ final class CatalogEvents
      * @staticvar string
      */
     const CREATE_PRODUCT_VALUE = 'pim_catalog.create_product_value';
+
+    /**
+     * This event is thrown each time a product is saved in the system.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\SaveProductEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SAVE_PRODUCT = 'pim_catalog.pre_save_product';
+
+    /**
+     * This event is thrown each time a product is saved in the system.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\SaveProductEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_SAVE_PRODUCT = 'pim_catalog.post_save_product';
 }
