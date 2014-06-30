@@ -10,5 +10,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@pim_serializer'
             - '@database_connection'
+            - '@pim_transform.cache.product_cache_clearer'
+
 
 
