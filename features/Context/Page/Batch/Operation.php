@@ -61,7 +61,7 @@ class Operation extends Wizard
      */
     public function addStep($operation, $page)
     {
-        $this->steps[$operation]= $page;
+        $this->steps[$operation] = $page;
     }
 
     /**
