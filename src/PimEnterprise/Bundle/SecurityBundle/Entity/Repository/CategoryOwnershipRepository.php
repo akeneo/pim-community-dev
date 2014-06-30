@@ -65,7 +65,7 @@ class CategoryOwnershipRepository extends EntityRepository
         $qb = $this->createQueryBuilder('o');
         $qb->where($qb->expr()->in('o.category', $categoryIds));
         $qb->leftJoin('o.role', 'role');
-        $qb->select('role.id, role.label');
+        $qb->select('DISTINCT(role.id) as id, role.label');
         $roles = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
         return $roles;
