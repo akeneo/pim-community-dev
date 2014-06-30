@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Create index for different entity requirements
@@ -21,43 +22,25 @@ class IndexCreator
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
+    /** @var NamingUtility */
+    protected $namingUtility;
+
     /** @var string */
     protected $productClass;
 
-    /** @var string */
-    protected $channelClass;
-
-    /** @var string */
-    protected $localeClass;
-
-    /** @var string */
-    protected $currencyClass;
-
-    /** @var string */
-    protected $attributeClass;
-
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry $managerRegistry
+     * @param NamingUtility   $namingUtility
      * @param string          $productClass
-     * @param string          $channelClass
-     * @param string          $localeClass
-     * @param string          $currencyClass
-     * @param string          $attributeClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        $productClass,
-        $channelClass,
-        $localeClass,
-        $currencyClass,
-        $attributeClass
+        NamingUtility $namingUtility,
+        $productClass
     ) {
         $this->managerRegistry = $managerRegistry;
+        $this->namingUtility   = $namingUtility;
         $this->productClass    = $productClass;
-        $this->channelClass    = $channelClass;
-        $this->localeClass     = $localeClass;
-        $this->currencyClass   = $currencyClass;
-        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -69,7 +52,7 @@ class IndexCreator
      */
     public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
     {
-        $attributeFields = $this->getAttributeNormFields($attribute);
+        $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
 
         switch ($attribute->getBackendType()) {
             case "prices":
@@ -99,7 +82,7 @@ class IndexCreator
         $completenessFields = $this->getCompletenessNormFields($channel);
         $this->ensureIndexes($completenessFields);
 
-        $scopables = $this->getScopableAttributes();
+        $scopables = $this->namingUtility->getScopableAttributes();
         foreach ($scopables as $scopable) {
             $this->ensureIndexesFromAttribute($scopable);
         }
@@ -119,7 +102,7 @@ class IndexCreator
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
 
-        $localizables = $this->getLocalizableAttributes();
+        $localizables = $this->namingUtility->getLocalizableAttributes();
         foreach ($localizables as $localizable) {
             $this->ensureIndexesFromAttribute($localizable);
         }
@@ -135,7 +118,7 @@ class IndexCreator
      */
     public function ensureIndexesFromCurrency(Currency $currency)
     {
-        $pricesAttributes = $this->getPricesAttributes();
+        $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
             $this->ensureIndexesFromAttribute($pricesAttribute);
         }
@@ -150,11 +133,11 @@ class IndexCreator
      */
     protected function getCompletenessNormFields(Channel $channel = null)
     {
-        $normFields = array();
-        $channels = array();
+        $normFields = [];
+        $channels = [];
 
         if (null === $channel) {
-            $channels = $this->getChannels();
+            $channels = $this->namingUtility->getChannels();
         } else {
             $channels[] = $channel;
         }
@@ -174,61 +157,17 @@ class IndexCreator
     }
 
     /**
-     * Get the attribute fields name for normalizedData
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @return string[]
-     */
-    protected function getAttributeNormFields(AbstractAttribute $attribute)
-    {
-        $attributeField = ProductQueryUtility::NORMALIZED_FIELD . '.' . $attribute->getCode();
-        $fields = [$attributeField];
-
-        if ($attribute->isLocalizable()) {
-            $updatedFields = array();
-            foreach ($fields as $field) {
-                foreach ($this->getLocales() as $locale) {
-                    $updatedFields[] = $field.'-'.$locale->getCode();
-                }
-            }
-            $fields = $updatedFields;
-        }
-
-        if ($attribute->isScopable()) {
-            $updatedFields = array();
-            foreach ($fields as $field) {
-                foreach ($this->getChannels() as $channel) {
-                    $updatedFields[] = $field.'-'.$channel->getCode();
-                }
-            }
-            $fields = $updatedFields;
-        }
-
-        return $fields;
-    }
-
-    /**
      * Get the attribute fields name for prices
      *
-     * @param array             $fields
-     * @param AbstractAttribute $attribute
+     * @param array $fields
      *
      * @return array
      */
-    protected function addFieldsFromPrices(array $fields, AbstractAttribute $attribute)
+    protected function addFieldsFromPrices(array $fields)
     {
-        $updatedFields = array();
-
-        foreach ($fields as $field) {
-            foreach ($this->getCurrencies() as $currency) {
-                $updatedFields[] = sprintf(
-                    "%s.%s.data",
-                    $field,
-                    $currency->getCode()
-                );
-            }
-        }
+        $currencyCodes = $this->namingUtility->getCurrencyCodes();
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, $currencyCodes, '.');
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['data'], '.');
 
         return $updatedFields;
     }
@@ -236,18 +175,13 @@ class IndexCreator
     /**
      * Get the attribute fields name for option
      *
-     * @param array             $fields
-     * @param AbstractAttribute $attribute
+     * @param array $fields
      *
      * @return array
      */
-    protected function addFieldsFromOption(array $fields, AbstractAttribute $attribute)
+    protected function addFieldsFromOption(array $fields)
     {
-        $updatedFields = array();
-
-        foreach ($fields as $field) {
-            $updatedFields[] = sprintf("%s.id", $field);
-        }
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['id'], '.');
 
         return $updatedFields;
     }
@@ -286,89 +220,5 @@ class IndexCreator
         $documentManager = $this->managerRegistry->getManagerForClass($this->productClass);
 
         return $documentManager->getDocumentCollection($this->productClass);
-    }
-
-    /**
-     * Get all channels
-     *
-     * @return Channel[]
-     */
-    protected function getChannels()
-    {
-        $channelManager = $this->managerRegistry->getManagerForClass($this->channelClass);
-        $channelRepository = $channelManager->getRepository($this->channelClass);
-
-        return $channelRepository->findAll();
-    }
-
-    /**
-     * Get active currencies
-     *
-     * @return Currency[]
-     */
-    protected function getCurrencies()
-    {
-        $currencyManager = $this->managerRegistry->getManagerForClass($this->currencyClass);
-        $currencyRepository = $currencyManager->getRepository($this->currencyClass);
-
-        return $currencyRepository->getActivatedCurrencies();
-    }
-
-    /**
-     * Get active locales
-     *
-     * @return Locale[]
-     */
-    protected function getLocales()
-    {
-        $localeManager = $this->managerRegistry->getManagerForClass($this->localeClass);
-        $localeRepository = $localeManager->getRepository($this->localeClass);
-
-        return $localeRepository->getActivatedLocales();
-    }
-
-    /**
-     * Get filterable prices backend type attribute
-     *
-     * @return AbstractAttribute[]
-     */
-    protected function getPricesAttributes()
-    {
-        $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
-        $attributeRepository = $attributeManager->getRepository($this->attributeClass);
-
-        $attributes = $attributeRepository->findBy(['backendType' => 'prices', 'useableAsGridFilter' => true]);
-
-        return $attributes;
-    }
-
-    /**
-     * Get filterable scopable attributes
-     *
-     * @return AbstractAttribute[]
-     */
-    protected function getScopableAttributes()
-    {
-        $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
-        $attributeRepository = $attributeManager->getRepository($this->attributeClass);
-
-        $attributes = $attributeRepository->findBy(['scopable' => true, 'useableAsGridFilter' => true]);
-
-        return $attributes;
-    }
-
-    /**
-     * Get filterable localizable attributes
-     *
-     * @return AbstractAttribute[]
-     */
-    protected function getLocalizableAttributes()
-    {
-        $attributeManager = $this->managerRegistry->getManagerForClass($this->attributeClass);
-        $attributeRepository = $attributeManager->getRepository($this->attributeClass);
-
-        $attributes = $attributeRepository->findBy(['localizable' => true, 'useableAsGridFilter' => true]);
-
-        return $attributes;
     }
 }
