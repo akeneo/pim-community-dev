@@ -3,16 +3,16 @@
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
 class AttributeAsLabelUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
-    function let(AttributeNamingUtility $attributeNamingUtility)
+    function let(NamingUtility $namingUtility)
     {
-        $this->beConstructedWith($attributeNamingUtility, 'Pim\Bundle\CatalogBundle\Model\AbstractAttribute', 'attributeAsLabel');
+        $this->beConstructedWith($namingUtility, 'Pim\Bundle\CatalogBundle\Model\AbstractAttribute', 'attributeAsLabel');
     }
 
     function it_filters_updates_on_attribute_class_and_attribute_as_label_field(AbstractAttribute $price, Channel $mobile)
