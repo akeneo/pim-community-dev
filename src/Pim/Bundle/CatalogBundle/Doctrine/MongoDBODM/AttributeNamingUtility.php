@@ -48,8 +48,8 @@ class AttributeNamingUtility
 
     /**
      * Append given suffixes to codes
-     * @param array $codes
-     * @param array $suffixes
+     * @param array  $codes
+     * @param array  $suffixes
      * @param string $separator
      *
      * @return array
@@ -128,6 +128,7 @@ class AttributeNamingUtility
      * Get the attribute fields codes for normalizedData
      *
      * @param AbstractAttribute $attribute
+     * @param string            $prefix
      *
      * @return string[]
      */
