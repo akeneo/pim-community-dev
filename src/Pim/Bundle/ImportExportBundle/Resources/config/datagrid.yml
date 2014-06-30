@@ -142,23 +142,9 @@ datagrid:
 
     job-execution-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - e.id
-                    - e.status as status
-                    - CONCAT('pim_import_export.batch_status.', e.status) as statusLabel
-                    - e.startTime as date
-                    - j.code as jobCode
-                    - j.label as jobLabel
-                    - j.alias as jobAlias
-                from:
-                    - { table: AkeneoBatchBundle:JobExecution, alias: e }
-                join:
-                    inner:
-                        jobInstance:
-                            join: e.jobInstance
-                            alias: j
+            type: pim_orm
+            entity: %akeneo_batch.entity.job_execution.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -237,10 +223,6 @@ datagrid:
             entityHint: export report
         source:
             acl_resource: pim_importexport_export_execution_index
-            query:
-                where:
-                    and:
-                        - j.type = 'export'
         properties:
             show_link:
                 route: pim_importexport_export_execution_show
@@ -257,10 +239,6 @@ datagrid:
             entityHint: import report
         source:
             acl_resource: pim_importexport_import_execution_index
-            query:
-                where:
-                    and:
-                        - j.type = 'import'
         properties:
             show_link:
                 route: pim_importexport_import_execution_show

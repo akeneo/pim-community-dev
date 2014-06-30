@@ -93,10 +93,7 @@ class OrmSelectorExtension extends AbstractExtension
     protected function matchDatasource(DatagridConfiguration $config)
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-
-        if (PimOrmDatasource::TYPE === $datasourceType) {
-            return true;
-        } elseif (ProductDatasource::TYPE === $datasourceType) {
+        if (ProductDatasource::TYPE === $datasourceType) {
             if ($config->offsetGetByPath('[source][product_storage]') == 'doctrine/orm') {
                 return true;
             }

@@ -81,11 +81,17 @@ class LoadUserData extends AbstractInstallerFixture
             ->setOwner($owner)
             ->addBusinessUnit($owner);
 
+        if (!isset($data['roles'])) {
+            throw new \Exception(sprintf('user %s must have defined roles', $data['username']));
+        }
         foreach ($data['roles'] as $code) {
             $role = $this->getRole($code);
             $user->addRole($role);
         }
 
+        if (!isset($data['groups'])) {
+            throw new \Exception(sprintf('user %s must have defined groups', $data['username']));
+        }
         foreach ($data['groups'] as $code) {
             $group = $this->getGroup($code);
             $user->addGroup($group);
