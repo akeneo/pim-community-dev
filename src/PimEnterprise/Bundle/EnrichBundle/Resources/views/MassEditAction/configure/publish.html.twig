@@ -29,19 +29,19 @@
     {% if nbGranted == 0 %}
         <div class="alert alert-error">
             <div class="message">
-                <ul><li>{{ "You're not the owner of the selected products, you can't publish them" | trans }}</li></ul>
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.error'|trans }}</li></ul>
             </div>
         </div>
     {% elseif nbNotGranted > 0 %}
         <div class="alert alert-warning">
             <div class="message">
-                <ul><li>{{ "You're not the owner of all the selected products, you can't publish the following %notGranted%"|trans({'%notGranted%': notGrantedIdentifiers}) }}</li></ul>
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.warning'|trans({'%notGranted%': notGrantedIdentifiers}) }}</li></ul>
             </div>
         </div>
     {% else %}
         <div class="alert alert-info">
             <div class="message">
-                <ul><li>{{ "The %nbProducts% selected products will be published"|trans({'%nbProducts%': productCount}) }}</li></ul>
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.info'|trans({'%nbProducts%': productCount}) }}</li></ul>
             </div>
         </div>
     {% endif %}

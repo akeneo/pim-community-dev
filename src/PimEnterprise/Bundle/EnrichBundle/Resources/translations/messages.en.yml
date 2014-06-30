@@ -18,3 +18,7 @@ btn.save draft: Save draft
 pim_enrich.mass_edit_action.publish.label: Publish products
 pim_enrich.mass_edit_action.publish.description: Publish the selected products, the current published data will be erased by the current working copy.
 pim_enrich.mass_edit_action.publish.success_flash: Selected products have been successfully published
+
+pim_enrich.mass_edit_action.publish.message.error: You're not the owner of the selected products, you can't publish them
+pim_enrich.mass_edit_action.publish.message.warning: You're not the owner of all the selected products, you can't publish the following %notGranted%"
+pim_enrich.mass_edit_action.publish.message.info: The %nbProducts% selected products will be published
