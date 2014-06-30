@@ -48,9 +48,9 @@ class AttributeNamingUtility
 
     /**
      * Append given suffixes to codes
-     * @param  array $codes
-     * @param  array $suffixes
-     * @param  array $separator
+     * @param array $codes
+     * @param array $suffixes
+     * @param string $separator
      *
      * @return array
      */
@@ -71,7 +71,8 @@ class AttributeNamingUtility
     }
 
     /**
-     * Get all locale prefixes
+     * Get all locale codes
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
@@ -89,7 +90,8 @@ class AttributeNamingUtility
     }
 
     /**
-     * Get all channel prefixes
+     * Get all channel codes
+     * @param AbstractAttribute $attribute
      *
      * @return array
      */
@@ -107,7 +109,7 @@ class AttributeNamingUtility
     }
 
     /**
-     * Get all currency
+     * Get all currency codes
      *
      * @return array
      */
@@ -123,7 +125,7 @@ class AttributeNamingUtility
     }
 
     /**
-     * Get the attribute fields name for normalizedData
+     * Get the attribute fields codes for normalizedData
      *
      * @param AbstractAttribute $attribute
      *
@@ -136,8 +138,11 @@ class AttributeNamingUtility
 
 
         $normFields = [
-            (null === $prefix ? ProductQueryUtility::NORMALIZED_FIELD . '.' : $prefix) .
-            $attribute->getCode()
+            (
+                null === $prefix ?
+                ProductQueryUtility::NORMALIZED_FIELD . '.' :
+                $prefix
+            ) . $attribute->getCode()
         ];
 
         $normFields = $this->appendSuffixes($normFields, $localeCodes, '-');
@@ -187,6 +192,7 @@ class AttributeNamingUtility
 
     /**
      * Get filterable prices backend type attribute
+     * @param bool $onlyInGrid
      *
      * @return AbstractAttribute[]
      */
@@ -208,6 +214,7 @@ class AttributeNamingUtility
 
     /**
      * Get filterable scopable attributes
+     * @param bool $onlyInGrid
      *
      * @return AbstractAttribute[]
      */
@@ -229,6 +236,7 @@ class AttributeNamingUtility
 
     /**
      * Get filterable localizable attributes
+     * @param bool $onlyInGrid
      *
      * @return AbstractAttribute[]
      */

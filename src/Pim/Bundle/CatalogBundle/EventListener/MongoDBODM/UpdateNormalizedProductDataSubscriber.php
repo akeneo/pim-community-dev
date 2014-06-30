@@ -17,9 +17,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  */
 class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 {
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $queryGenerator = [];
 
     /**
@@ -85,9 +83,10 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
     }
 
     /**
-     * Schedule products related to the entity for normalized data recalculation
+     * Schedule queries related to the entity for normalized data recalculation
      *
      * @param object $entity
+     * @param array  $changes
      */
     protected function scheduleQueriesAfterUpdate($entity, $changes)
     {
@@ -124,6 +123,10 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 
     /**
      * Get queries for the given entity and updated field
+     * @param object $entity
+     * @param string $field
+     * @param string $oldValue
+     * @param string $newValue
      *
      * @return array|null
      */
@@ -138,13 +141,17 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         return null;
     }
 
+    /**
+     * Inject query generator
+     * @param NormalizedDataQueryGeneratorInterface $queryGenerator
+     */
     public function addQueryGenerator(NormalizedDataQueryGeneratorInterface $queryGenerator)
     {
         $this->queryGenerators[] = $queryGenerator;
     }
 
     /**
-     *
+     * Execute all scheduled queries
      */
     protected function executeQueries()
     {
@@ -153,7 +160,6 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
             ->getDocumentCollection($this->productClass);
 
         foreach ($this->scheduledQueries as $query) {
-            error_log(print_r($query, true));
             list($query, $compObject, $options) = $query;
 
             $collection->update($query, $compObject, $options);
