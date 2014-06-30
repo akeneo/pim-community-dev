@@ -4,6 +4,7 @@ services:
         arguments:
             - '@pimee_security.repository.job_profile_access'
             - '@security.context'
+            - 'EXECUTE_JOB_PROFILE'
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }
