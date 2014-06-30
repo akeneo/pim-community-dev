@@ -1,4 +1,52 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
+{% block head_script %}
+    {{ parent() }}
+
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore'],
+            function($, _){
+                'use strict';
+                $(function() {
+                    var $nextBtn = $('a.next');
+/*                    if ($('#{{ form.operation.notGrantedIdentifiers.vars.id }}').val().length > 0) {
+                        $nextBtn.hide();
+                    }*/
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
 {% block formContent %}
+    {% set notGrantedIdentifiers = form.operation.notGrantedIdentifiers.vars.value %}
+    {% set nbNotGranted = notGrantedIdentifiers|split(',')|length %}
+    {% set nbGranted = productCount - nbNotGranted %}
+
+    {% if nbGranted == 0 %}
+    <div class="errors">
+        <div class="alert alert-error">
+            <div class="message">
+                <ul><li>{{ "You're not the owner of the selected products, you can't publish them" | trans }}</li></ul>
+            </div>
+        </div>
+    </div>
+    {% elseif nbNotGranted > 0 %}
+    <div class="errors">
+        <div class="alert alert-warning">
+            <div class="message">
+                <ul><li>{{ "You're not the owner of all the selected products, you can't publish the following %notGranted%"|trans({'%notGranted%': notGrantedIdentifiers}) }}</li></ul>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="errors">
+        <div class="alert alert-info">
+            <div class="message">
+                <ul><li>{{ "The %nbProducts% selected products will be published"|trans({'%nbProducts%': productCount}) }}</li></ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
 {% endblock %}
