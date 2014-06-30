@@ -153,6 +153,7 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
             ->getDocumentCollection($this->productClass);
 
         foreach ($this->scheduledQueries as $query) {
+            error_log(print_r($query, true));
             list($query, $compObject, $options) = $query;
 
             $collection->update($query, $compObject, $options);

@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 /**
 * Option deleted query generator
 */
-class MultipleOptionDeletedQueryGenerator extends AbstractQueryGenerator
+class MultipleOptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
 {
     /**
      * {@inheritdoc}
@@ -18,8 +18,8 @@ class MultipleOptionDeletedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField => [ '$elemMatch' => ['code' => $entity->getCode()] ]],
-                ['$pull' => [$attributeNormField => ['code' => $entity->getCode()]]],
+                [$attributeNormField => [ '$elemMatch' => ['code' => $oldValue] ]],
+                ['$set' => [$attributeNormField . '.$.code' => $newValue]],
                 ['multiple' => true]
             ];
         }

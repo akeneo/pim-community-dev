@@ -43,6 +43,6 @@ class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect';
+            $entity->getOption()->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect';
     }
 }

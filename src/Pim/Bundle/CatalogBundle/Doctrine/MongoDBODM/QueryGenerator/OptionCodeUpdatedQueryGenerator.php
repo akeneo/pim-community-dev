@@ -26,4 +26,13 @@ class OptionCodeUpdatedQueryGenerator extends AbstractQueryGenerator
 
         return $queries;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($entity, $field)
+    {
+        return parent::supports($entity, $field) &&
+            $entity->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect';
+    }
 }

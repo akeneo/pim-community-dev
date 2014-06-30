@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
-class OptionDeletedQueryGeneratorSpec extends ObjectBehavior
+class MultipleOptionCodeUpdatedQueryGeneratorSpec extends ObjectBehavior
 {
     function let(AttributeNamingUtility $attributeNamingUtility)
     {
@@ -21,15 +21,15 @@ class OptionDeletedQueryGeneratorSpec extends ObjectBehavior
         $attributeNamingUtility->getAttributeNormFields($color)->willReturn(['normalizedData.color-fr_FR', 'normalizedData.color-en_US']);
 
         $blue->getCode()->willReturn('blue');
-        $this->generateQuery($blue, 'code', '', '')->shouldReturn([
+        $this->generateQuery($blue, 'code', 'blue', 'bluee')->shouldReturn([
             [
-                ['normalizedData.color-fr_FR.code' => 'blue'],
-                ['$unset' => ['normalizedData.color-fr_FR' => '']],
+                ['normalizedData.color-fr_FR' => ['$elemMatch' => ['code' => 'blue']]],
+                ['$set' => ['normalizedData.color-fr_FR.$.code' => 'bluee']],
                 ['multiple' => true]
             ],
             [
-                ['normalizedData.color-en_US.code' => 'blue'],
-                ['$unset' => ['normalizedData.color-en_US' => '']],
+                ['normalizedData.color-en_US' => ['$elemMatch' => ['code' => 'blue']]],
+                ['$set' => ['normalizedData.color-en_US.$.code' => 'bluee']],
                 ['multiple' => true]
             ]
         ]);

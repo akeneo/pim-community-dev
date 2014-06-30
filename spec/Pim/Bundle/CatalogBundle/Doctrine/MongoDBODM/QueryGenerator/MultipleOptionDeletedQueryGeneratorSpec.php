@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Prophecy\Argument;
 
-class OptionDeletedQueryGeneratorSpec extends ObjectBehavior
+class MultipleOptionDeletedQueryGeneratorSpec extends ObjectBehavior
 {
     function let(AttributeNamingUtility $attributeNamingUtility)
     {
@@ -23,13 +23,13 @@ class OptionDeletedQueryGeneratorSpec extends ObjectBehavior
         $blue->getCode()->willReturn('blue');
         $this->generateQuery($blue, 'code', '', '')->shouldReturn([
             [
-                ['normalizedData.color-fr_FR.code' => 'blue'],
-                ['$unset' => ['normalizedData.color-fr_FR' => '']],
+                ['normalizedData.color-fr_FR' => ['$elemMatch' => ['code' => 'blue']]],
+                ['$pull' => ['normalizedData.color-fr_FR' => ['code' => 'blue']]],
                 ['multiple' => true]
             ],
             [
-                ['normalizedData.color-en_US.code' => 'blue'],
-                ['$unset' => ['normalizedData.color-en_US' => '']],
+                ['normalizedData.color-en_US' => ['$elemMatch' => ['code' => 'blue']]],
+                ['$pull' => ['normalizedData.color-en_US' => ['code' => 'blue']]],
                 ['multiple' => true]
             ]
         ]);

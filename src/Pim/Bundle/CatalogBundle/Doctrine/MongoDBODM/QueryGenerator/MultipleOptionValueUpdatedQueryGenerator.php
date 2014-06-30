@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 /**
 * Option value updated query generator
 */
-class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
+class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
 {
     /**
      * {@inheritdoc}
@@ -20,11 +20,13 @@ class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
 
         foreach ($attributeNormFields as $attributeNormField) {
             $queries[] = [
-                [$attributeNormField . '.code' => $entity->getOption()->getCode()],
+                [
+                    $attributeNormField => ['$elemMatch' => ['code' => $entity->getOption()->getCode()]]
+                ],
                 [
                     '$set' => [
                         sprintf(
-                            '%s.optionValues.%s.value',
+                            '%s.$.optionValues.%s.value',
                             $attributeNormField,
                             $entity->getLocale()
                         ) => $newValue
@@ -43,6 +45,6 @@ class OptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
     public function supports($entity, $field)
     {
         return parent::supports($entity, $field) &&
-            $entity->getAttribute()->getAttributeType() === 'pim_catalog_multiselect';
+            $entity->getOption()->getAttribute()->getAttributeType() === 'pim_catalog_multiselect';
     }
 }
