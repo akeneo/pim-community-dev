@@ -9,6 +9,6 @@ attribute_groups_accesses:
         edit: [administrator]
         view: [manager]
     media:
-        edit: [administrator]
+        edit: [administrator, user]
     other:
         edit: [administrator, manager, user]

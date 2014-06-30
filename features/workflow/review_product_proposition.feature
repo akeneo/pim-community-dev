@@ -4,9 +4,11 @@ Feature: Review a product changes proposition
   As a product manager
   I need to be able to review product changes proposition
 
-  # TODO Change Julia when contributor and owner roles have been introduce
-  Scenario: Successfully accept an identifier attribute product changes proposition
+  Background:
     Given a "footwear" catalog configuration
+    And Julia has the ownership of products in category "
+
+  Scenario: Successfully accept an identifier attribute product changes proposition
     And the following product:
       | sku        | family  |
       | my-sandals | sandals |
