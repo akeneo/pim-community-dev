@@ -39,6 +39,7 @@
 - Dispatch events on view/download job execution actions
 - Allow to install custom user roles and groups from installer fixtures
 - Display the code of import/export profiles on the edit and show views
+- Related entities' edition and deletion doesn't reload all the products' normalized data
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
