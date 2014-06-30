@@ -45,5 +45,5 @@ services:
     pim_serializer.normalizer.mongodb.generic:
         class: %pim_serializer.normalizer.mongodb.generic.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 20 }
+            - { name: pim_serializer.normalizer, priority: 80 }
 
