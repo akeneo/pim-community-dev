@@ -49,4 +49,30 @@ class JobExecutionRepository extends EntityRepository
 
         return $qb;
     }
+
+    /**
+     * Create datagrid query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $qb = $this->createQueryBuilder('e');
+        $qb
+            ->addSelect('e.id')
+            ->addSelect('e.status AS status')
+            ->addSelect(
+                "CONCAT('pim_import_export.batch_status.', e.status) as statusLabel"
+            )
+            ->addSelect('e.startTime as date')
+            ->addSelect('j.code AS jobCode')
+            ->addSelect('j.label AS jobLabel')
+            ->addSelect('j.alias AS jobAlias');
+
+        $qb->innerJoin('e.jobInstance', 'j');
+
+        $qb->andWhere('j.type = :jobType');
+
+        return $qb;
+    }
 }

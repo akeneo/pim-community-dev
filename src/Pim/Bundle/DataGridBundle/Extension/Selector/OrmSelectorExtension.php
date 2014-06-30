@@ -9,7 +9,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as PimOrmDatasource;
 use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 
@@ -93,10 +92,7 @@ class OrmSelectorExtension extends AbstractExtension
     protected function matchDatasource(DatagridConfiguration $config)
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-
-        if (PimOrmDatasource::TYPE === $datasourceType) {
-            return true;
-        } elseif (ProductDatasource::TYPE === $datasourceType) {
+        if (ProductDatasource::TYPE === $datasourceType) {
             if ($config->offsetGetByPath('[source][product_storage]') == 'doctrine/orm') {
                 return true;
             }

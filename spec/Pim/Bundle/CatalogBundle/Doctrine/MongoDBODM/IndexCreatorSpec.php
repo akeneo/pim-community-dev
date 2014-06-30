@@ -2,18 +2,19 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use PhpSpec\ObjectBehavior;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\ORM\EntityRepository;
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Currency;
-use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CurrencyRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * @require Doctrine\ODM\MongoDB\DocumentManager
@@ -24,6 +25,7 @@ class IndexCreatorSpec extends ObjectBehavior
     function let(
         ManagerRegistry $managerRegistry,
         DocumentManager $documentManager,
+        NamingUtility $namingUtility,
         Collection $collection
     ) {
         $managerRegistry->getManagerForClass('Product')->willReturn($documentManager);
@@ -31,25 +33,19 @@ class IndexCreatorSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $managerRegistry,
-            'Product',
-            'Channel',
-            'Locale',
-            'Currency',
-            'Attribute'
+            $namingUtility,
+            'Product'
         );
     }
 
     function it_generates_scopable_indexes_when_creating_channel(
         $collection,
-        $managerRegistry,
+        $namingUtility,
         AbstractAttribute $title,
         Locale $en_US,
         Locale $de_DE,
         Channel $ecommerce,
-        Channel $mobile,
-        EntityManager $entityManager,
-        EntityRepository $channelRepo,
-        EntityRepository $attributeRepo
+        Channel $mobile
     ) {
         $title->getCode()->willReturn('title');
         $title->getBackendType()->willReturn('varchar');
@@ -68,15 +64,8 @@ class IndexCreatorSpec extends ObjectBehavior
         $mobile->getCode()->willReturn('mobile');
         $mobile->getLocales()->willReturn([$en_US]);
 
-        $managerRegistry->getManagerForClass('Attribute')->willReturn($entityManager);
-        $entityManager->getRepository('Attribute')->willReturn($attributeRepo);
-        $attributeRepo
-            ->findBy(['scopable' => true, 'useableAsGridFilter' => true])
-            ->willReturn([$title]);
-
-        $managerRegistry->getManagerForClass('Channel')->willReturn($entityManager);
-        $entityManager->getRepository('Channel')->willReturn($channelRepo);
-        $channelRepo->findAll()->willReturn([$ecommerce, $mobile]);
+        $namingUtility->getScopableAttributes()->willReturn([$title]);
+        $namingUtility->getAttributeNormFields($title)->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
 
         $options =  [
             'background' => true,
@@ -92,16 +81,12 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_localizable_indexes_when_saving_enabled_locale(
-        $managerRegistry,
         $collection,
+        $namingUtility,
         AbstractAttribute $description,
         Locale $en_US,
         Locale $de_DE,
-        Channel $ecommerce,
-        EntityRepository $channelRepo,
-        LocaleRepository $localeRepo,
-        EntityManager $entityManager,
-        EntityRepository $attributeRepo
+        Channel $ecommerce
     ) {
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
@@ -118,19 +103,9 @@ class IndexCreatorSpec extends ObjectBehavior
         $ecommerce->getCode()->willReturn('ecommerce');
         $ecommerce->getLocales()->willReturn([$en_US, $de_DE]);
 
-        $managerRegistry->getManagerForClass('Channel')->willReturn($entityManager);
-        $entityManager->getRepository('Channel')->willReturn($channelRepo);
-        $channelRepo->findAll()->willReturn([$ecommerce]);
-
-        $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
-        $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
-
-        $managerRegistry->getManagerForClass('Attribute')->willReturn($entityManager);
-        $entityManager->getRepository('Attribute')->willReturn($attributeRepo);
-        $attributeRepo
-            ->findBy(['localizable' => true, 'useableAsGridFilter' => true])
-            ->willReturn([$description]);
+        $namingUtility->getChannels()->willReturn([$ecommerce]);
+        $namingUtility->getLocalizableAttributes()->willReturn([$description]);
+        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
 
         $options =  [
             'background' => true,
@@ -146,25 +121,13 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_prices_indexes_when_saving_enabled_currency(
-        $managerRegistry,
-        $entityManager,
-        $attributeRepo,
         $collection,
-        Currency $usd,
+        $namingUtility,
         Currency $eur,
-        AbstractAttribute $price,
-        CurrencyRepository $currencyRepo,
-        EntityManager $entityManager,
-        EntityRepository $attributeRepo
+        AbstractAttribute $price
     ) {
-        $managerRegistry->getManagerForClass('Currency')->willReturn($entityManager);
-        $entityManager->getRepository('Currency')->willReturn($currencyRepo);
-        $currencyRepo->getActivatedCurrencies()->willReturn([$eur, $usd]);
-
         $eur->getCode()->willReturn('EUR');
         $eur->isActivated()->willReturn(true);
-        $usd->getCode()->willReturn('USD');
-        $usd->isActivated()->willReturn(true);
 
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -173,11 +136,12 @@ class IndexCreatorSpec extends ObjectBehavior
         $price->isUseableAsGridFilter()->willReturn(true);
         $price->getAttributeType()->willReturn('pim_catalog_price_collection');
 
-        $managerRegistry->getManagerForClass('Attribute')->willReturn($entityManager);
-        $entityManager->getRepository('Attribute')->willReturn($attributeRepo);
-        $attributeRepo
-            ->findBy(['backendType' => 'prices', 'useableAsGridFilter' => true])
-            ->willReturn([$price]);
+
+        $namingUtility->getPricesAttributes()->willReturn([$price]);
+        $namingUtility->getCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
+        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
+        $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
 
         $options =  [
             'background' => true,
@@ -191,6 +155,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
     function it_generates_attribute_indexes_when_saving_filterable_attribute(
         $collection,
+        $namingUtility,
         AbstractAttribute $name
     ) {
         $name->getCode()->willReturn('name');
@@ -205,6 +170,8 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($name)->willReturn(['normalizedData.name']);
+
         $collection->ensureIndex(['normalizedData.name' => 1], $options)->shouldBeCalled();
 
         $this->ensureIndexesFromAttribute($name);
@@ -212,6 +179,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
     function it_generates_attribute_indexes_when_saving_unique_attribute(
         $collection,
+        $namingUtility,
         AbstractAttribute $ean
     ) {
         $ean->getCode()->willReturn('ean');
@@ -227,6 +195,8 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($ean)->willReturn(['normalizedData.ean']);
+
         $collection->ensureIndex(['normalizedData.ean' => 1], $options)->shouldBeCalled();
 
         $this->ensureIndexesFromAttribute($ean);
@@ -234,6 +204,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
     function it_generates_attribute_indexes_when_saving_identifier_attribute(
         $collection,
+        $namingUtility,
         AbstractAttribute $sku
     ) {
         $sku->getCode()->willReturn('sku');
@@ -248,28 +219,23 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($sku)->willReturn(['normalizedData.sku']);
+
         $collection->ensureIndex(['normalizedData.sku' => 1], $options)->shouldBeCalled();
 
         $this->ensureIndexesFromAttribute($sku);
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_price_attribute(
-        $managerRegistry,
+        $namingUtility,
         $collection,
-        Currency $usd,
-        Currency $eur,
-        AbstractAttribute $price,
-        CurrencyRepository $currencyRepo,
-        EntityManager $entityManager
+        AbstractAttribute $price
     ) {
-        $managerRegistry->getManagerForClass('Currency')->willReturn($entityManager);
-        $entityManager->getRepository('Currency')->willReturn($currencyRepo);
-        $currencyRepo->getActivatedCurrencies()->willReturn([$eur, $usd]);
-
-        $eur->getCode()->willReturn('EUR');
-        $eur->isActivated()->willReturn(true);
-        $usd->getCode()->willReturn('USD');
-        $usd->isActivated()->willReturn(true);
+        $namingUtility->getPricesAttributes()->willReturn([$price]);
+        $namingUtility->getAttributeNormFields($price)->willReturn(['normalizedData.price', 'normalizedData.price']);
+        $namingUtility->getCurrencyCodes()->willReturn(['EUR', 'USD']);
+        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['EUR', 'USD'], '.')->willReturn(['normalizedData.price.EUR', 'normalizedData.price.USD']);
+        $namingUtility->appendSuffixes(['normalizedData.price', 'normalizedData.price'], ['data'], '.')->willReturn(['normalizedData.price.EUR.data', 'normalizedData.price.USD.data']);
 
         $price->getCode()->willReturn('price');
         $price->getBackendType()->willReturn('prices');
@@ -291,6 +257,7 @@ class IndexCreatorSpec extends ObjectBehavior
 
     function it_generates_attribute_indexes_when_saving_filterable_option_attribute(
         $collection,
+        $namingUtility,
         AbstractAttribute $color
     ) {
         $color->getCode()->willReturn('color');
@@ -305,27 +272,20 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($color)->willReturn(['normalizedData.color']);
+        $namingUtility->appendSuffixes(['normalizedData.color'], ['id'], '.')->willReturn(['normalizedData.color.id']);
         $collection->ensureIndex(['normalizedData.color.id' => 1], $options)->shouldBeCalled();
 
         $this->ensureIndexesFromAttribute($color);
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_scopable_attribute(
-        $managerRegistry,
+        $namingUtility,
         $collection,
         AbstractAttribute $title,
         Channel $ecommerce,
-        Channel $mobile,
-        EntityRepository $channelRepo,
-        EntityManager $entityManager
+        Channel $mobile
     ) {
-        $ecommerce->getCode()->willReturn('ecommerce');
-        $mobile->getCode()->willReturn('mobile');
-
-        $managerRegistry->getManagerForClass('Channel')->willReturn($entityManager);
-        $entityManager->getRepository('Channel')->willReturn($channelRepo);
-        $channelRepo->findAll()->willReturn([$ecommerce, $mobile]);
-
         $title->getCode()->willReturn('title');
         $title->getBackendType()->willReturn('varchar');
         $title->isLocalizable()->willReturn(false);
@@ -338,6 +298,7 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($title)->willReturn(['normalizedData.title-ecommerce', 'normalizedData.title-mobile']);
         $collection->ensureIndex(['normalizedData.title-ecommerce' => 1], $options)->shouldBeCalled();
         $collection->ensureIndex(['normalizedData.title-mobile' => 1], $options)->shouldBeCalled();
 
@@ -345,25 +306,10 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_localizable_attribute(
-        $managerRegistry,
         $collection,
-        Locale $en_US,
-        Locale $de_DE,
-        Channel $ecommerce,
-        AbstractAttribute $description,
-        EntityRepository $channelRepo,
-        LocaleRepository $localeRepo,
-        EntityManager $entityManager
+        $namingUtility,
+        AbstractAttribute $description
     ) {
-        $en_US->getCode()->willReturn('en_US');
-        $en_US->isActivated()->willReturn(true);
-        $de_DE->getCode()->willReturn('de_DE');
-        $de_DE->isActivated()->willReturn(true);
-
-        $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
-        $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
-
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
         $description->isLocalizable()->willReturn(true);
@@ -376,6 +322,7 @@ class IndexCreatorSpec extends ObjectBehavior
             'w'          => 0
         ];
 
+        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US', 'normalizedData.description-de_DE']);
         $collection->ensureIndex(['normalizedData.description-en_US' => 1], $options)->shouldBeCalled();
         $collection->ensureIndex(['normalizedData.description-de_DE' => 1], $options)->shouldBeCalled();
 
@@ -383,43 +330,18 @@ class IndexCreatorSpec extends ObjectBehavior
     }
 
     function it_generates_attribute_indexes_when_saving_filterable_scopable_and_localizable_attribute(
-        $managerRegistry,
         $collection,
-        AbstractAttribute $description,
-        Channel $ecommerce,
-        Channel $mobile,
-        Locale $en_US,
-        Locale $de_DE,
-        AbstractAttribute $description,
-        EntityRepository $channelRepo,
-        LocaleRepository $localeRepo,
-        EntityManager $entityManager
+        $namingUtility,
+        AbstractAttribute $description
     ) {
-        $en_US->getCode()->willReturn('en_US');
-        $en_US->isActivated()->willReturn(true);
-        $de_DE->getCode()->willReturn('de_DE');
-        $de_DE->isActivated()->willReturn(true);
-
-        $ecommerce->getCode()->willReturn('ecommerce');
-        $ecommerce->getLocales()->willReturn([$en_US, $de_DE]);
-
-        $mobile->getCode()->willReturn('mobile');
-        $mobile->getLocales()->willReturn([$en_US]);
-
-        $managerRegistry->getManagerForClass('Locale')->willReturn($entityManager);
-        $entityManager->getRepository('Locale')->willReturn($localeRepo);
-        $localeRepo->getActivatedLocales()->willReturn([$en_US, $de_DE]);
-
-        $managerRegistry->getManagerForClass('Channel')->willReturn($entityManager);
-        $entityManager->getRepository('Channel')->willReturn($channelRepo);
-        $channelRepo->findAll()->willReturn([$ecommerce, $mobile]);
-
         $description->getCode()->willReturn('description');
         $description->getBackendType()->willReturn('varchar');
         $description->isLocalizable()->willReturn(true);
         $description->isScopable()->willReturn(true);
         $description->isUseableAsGridFilter()->willReturn(true);
         $description->getAttributeType()->willReturn('pim_catalog_simpleselect');
+
+        $namingUtility->getAttributeNormFields($description)->willReturn(['normalizedData.description-en_US-ecommerce', 'normalizedData.description-de_DE-ecommerce', 'normalizedData.description-en_US-mobile']);
 
         $this->ensureIndexesFromAttribute($description);
     }

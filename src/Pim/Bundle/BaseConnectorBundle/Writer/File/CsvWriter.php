@@ -240,7 +240,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     /**
      * Merge the keys in arrays
      *
-     * @param $uniqueKeys
+     * @param array $uniqueKeys
      *
      * @return array
      */
