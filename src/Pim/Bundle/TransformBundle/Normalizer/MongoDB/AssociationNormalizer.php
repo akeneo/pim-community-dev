@@ -6,8 +6,8 @@ use Pim\Bundle\CatalogBundle\Model\Association;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-
 use MongoId;
+use MongoDBRef;
 
 /**
  * Normalize a product association into a MongoDB Document
@@ -31,13 +31,16 @@ class AssociationNormalizer implements NormalizerInterface
      */
     public function normalize($assoc, $format = null, array $context = [])
     {
+        $productId = $context[ProductNormalizer::MONGO_ID];
+        $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
+
         $data = [];
         $data['_id'] = new MongoId;
         $data['associationType'] = $assoc->getAssociationType()->getId();
-        $data['owner'] = MongoDBRef::create($context[ProductNormalizer::MONGO_ID]);
+        $data['owner'] = MongoDBRef::create($productId, $productCollection);
 
-        $data['products'] = $this->normalizeProducts($association->getProducts());
-        $data['groupIds'] = $this->normalizeGroups($assocation->getGroups());
+        $data['products'] = $this->normalizeProducts($assoc->getProducts());
+        $data['groupIds'] = $this->normalizeGroups($assoc->getGroups());
 
         return $data;
     }
@@ -53,7 +56,7 @@ class AssociationNormalizer implements NormalizerInterface
         $data = [];
 
         foreach ($products as $product) {
-            $data[] = MongoDBRef::create($group->getId());
+            $data[] = MongoDBRef::create($product->getId());
         }
 
         return $data;
