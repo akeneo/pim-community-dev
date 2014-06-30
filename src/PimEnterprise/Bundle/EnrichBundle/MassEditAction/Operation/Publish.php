@@ -59,7 +59,19 @@ class Publish extends ProductMassEditOperation
             }
         }
 
-        return implode(',', $notGranted);
+        return implode(', ', $notGranted);
+    }
+
+    /**
+     * Allows to set the form but we don't use not granted data from it
+     *
+     * @param string $notGranted
+     *
+     * @return Publish
+     */
+    public function setNotGrantedIdentifiers($notGranted)
+    {
+        return $this;
     }
 
     /**
