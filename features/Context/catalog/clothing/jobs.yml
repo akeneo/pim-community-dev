@@ -2,7 +2,7 @@ jobs:
     clothing_product_import:
         connector: Akeneo CSV Connector
         alias:     csv_product_import
-        label:     Footwear product import
+        label:     Clothing product import
         type:      import
         configuration:
             uploadAllowed:      true
@@ -17,7 +17,7 @@ jobs:
     clothing_product_export:
         connector: Akeneo CSV Connector
         alias:     csv_product_export
-        label:     Footwear product export
+        label:     Clothing product export
         type:      export
         configuration:
             channel:    mobile
@@ -27,7 +27,7 @@ jobs:
     clothing_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import
-        label:     Footwear category import
+        label:     Clothing category import
         type:      import
         configuration:
             uploadAllowed:       true
@@ -38,7 +38,7 @@ jobs:
     clothing_category_export:
         connector: Akeneo CSV Connector
         alias:     csv_category_export
-        label:     Footwear category export
+        label:     Clothing category export
         type:      export
         configuration:
             delimiter:  ;
@@ -47,7 +47,7 @@ jobs:
     clothing_association_type_import:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_import
-        label:     Footwear association type import
+        label:     Clothing association type import
         type:      import
         configuration:
             uploadAllowed: true
@@ -57,7 +57,7 @@ jobs:
     clothing_association_type_export:
         connector: Akeneo CSV Connector
         alias:     csv_association_type_export
-        label:     Footwear association type export
+        label:     Clothing association type export
         type:      export
         configuration:
             delimiter:  ;
@@ -66,7 +66,7 @@ jobs:
     clothing_group_import:
         connector: Akeneo CSV Connector
         alias:     csv_group_import
-        label:     Footwear group import
+        label:     Clothing group import
         type:      import
         configuration:
             uploadAllowed: true
@@ -76,7 +76,7 @@ jobs:
     clothing_group_export:
         connector: Akeneo CSV Connector
         alias:     csv_group_export
-        label:     Footwear group export
+        label:     Clothing group export
         type:      export
         configuration:
             delimiter:  ;
@@ -85,7 +85,7 @@ jobs:
     clothing_attribute_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_import
-        label:     Footwear attribute import
+        label:     Clothing attribute import
         type:      import
         configuration:
             uploadAllowed: true
@@ -95,7 +95,7 @@ jobs:
     clothing_attribute_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_export
-        label:     Footwear attribute export
+        label:     Clothing attribute export
         type:      export
         configuration:
             delimiter:  ;
@@ -104,7 +104,7 @@ jobs:
     clothing_option_import:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_import
-        label:     Footwear option import
+        label:     Clothing option import
         type:      import
         configuration:
             uploadAllowed: true
@@ -114,7 +114,7 @@ jobs:
     clothing_option_export:
         connector: Akeneo CSV Connector
         alias:     csv_attribute_option_export
-        label:     Footwear option export
+        label:     Clothing option export
         type:      export
         configuration:
             delimiter:  ;
