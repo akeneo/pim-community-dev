@@ -2,9 +2,11 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Batch operation to publish products
@@ -20,11 +22,18 @@ class Publish extends ProductMassEditOperation
     protected $manager;
 
     /**
-     * @param PublishedProductManager $manager
+     * @var SecurityContextInterface
      */
-    public function __construct(PublishedProductManager $manager)
+    protected $securityContext;
+
+    /**
+     * @param PublishedProductManager  $manager
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(PublishedProductManager $manager, SecurityContextInterface $securityContext)
     {
-        $this->manager = $manager;
+        $this->manager         = $manager;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -36,10 +45,30 @@ class Publish extends ProductMassEditOperation
     }
 
     /**
+     * The list of not granted product identifiers
+     *
+     * @return string
+     */
+    public function getNotGrantedIdentifiers()
+    {
+        $products   = $this->getObjectsToMassEdit();
+        $notGranted = [];
+        foreach ($products as $product) {
+            if ($this->securityContext->isGranted(Attributes::OWNER, $product) === false) {
+                $notGranted[]= (string) $product->getIdentifier();
+            }
+        }
+
+        return implode(',', $notGranted);
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function doPerform(ProductInterface $product)
     {
-        $this->manager->publish($product);
+        if ($this->securityContext->isGranted(Attributes::OWNER, $product)) {
+            $this->manager->publish($product);
+        }
     }
 }
