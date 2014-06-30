@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
@@ -73,4 +74,22 @@ class AssociationRepository extends EntityRepository implements
     {
         return array('owner', 'associationType');
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByProductIdAndOwnerIds($productId, array $ownerIds)
+    {
+        $qb = $this->createQueryBuilder('pa');
+
+        $qb
+            ->join('pa.products', 'pap', Join::WITH, 'pap.id = :productId')
+            ->where($qb->expr()->in('pa.owner', $ownerIds))
+            ->setParameter(':productId', $productId)
+        ;
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 }

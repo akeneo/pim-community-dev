@@ -623,4 +623,14 @@ class ProductRepository extends DocumentRepository implements
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByProductIdAndOwnerIds($productId, array $ownerIds)
+    {
+
+    }
+
+
 }
