@@ -11,4 +11,6 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - Administrators
         enable: true
