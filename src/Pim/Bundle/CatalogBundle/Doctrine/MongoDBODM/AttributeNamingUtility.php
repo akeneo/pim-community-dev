@@ -48,9 +48,9 @@ class AttributeNamingUtility
 
     /**
      * Append given suffixes to codes
-     * @param array  $codes
-     * @param array  $suffixes
-     * @param string $separator
+     * @param string[] $codes
+     * @param string[] $suffixes
+     * @param string   $separator
      *
      * @return array
      */
@@ -141,13 +141,13 @@ class AttributeNamingUtility
         $normFields = [
             (
                 null === $prefix ?
-                ProductQueryUtility::NORMALIZED_FIELD . '.' :
+                ProductQueryUtility::NORMALIZED_FIELD . ProductQueryUtility::ELEMENT_TOKEN_SEPARATOR :
                 $prefix
             ) . $attribute->getCode()
         ];
 
-        $normFields = $this->appendSuffixes($normFields, $localeCodes, '-');
-        $normFields = $this->appendSuffixes($normFields, $channelCodes, '-');
+        $normFields = $this->appendSuffixes($normFields, $localeCodes);
+        $normFields = $this->appendSuffixes($normFields, $channelCodes);
 
         return $normFields;
     }
