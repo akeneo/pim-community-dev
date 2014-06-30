@@ -35,5 +35,5 @@ parameters:
     mass_edit_limit:      1000
 
     ## Uncomment to configure mongodb
-    mongodb_server: 'mongodb://localhost:27017'
-    mongodb_database: akeneo_pim
+    # mongodb_server: 'mongodb://localhost:27017'
+    # mongodb_database: akeneo_pim
