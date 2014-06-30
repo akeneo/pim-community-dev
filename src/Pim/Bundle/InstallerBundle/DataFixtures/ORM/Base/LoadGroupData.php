@@ -48,7 +48,7 @@ class LoadGroupData extends AbstractInstallerFixture
      */
     public function getOrder()
     {
-        return 105;
+        return 16;
     }
 
     /**

@@ -198,7 +198,7 @@ class AddVersionListener implements EventSubscriber
     protected function addPendingVersioning($versionable)
     {
         $oid = spl_object_hash($versionable);
-        if (!isset($this->versionableEntities[$oid]) and !in_array($oid, $this->versionedEntities)) {
+        if (!isset($this->versionableEntities[$oid]) && !in_array($oid, $this->versionedEntities)) {
             $this->versionableEntities[$oid] = $versionable;
         }
     }
