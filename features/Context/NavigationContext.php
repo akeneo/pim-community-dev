@@ -367,11 +367,12 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param JobInstance $job
      *
-     * @When /^I launch the ("([^"]*)" export job)$/
+     * @When /^I launch the ("([^"]*)" (import|export) job)$/
      */
     public function iLaunchTheExportJob(JobInstance $job)
     {
-        $this->openPage('Export launch', array('id' => $job->getId()));
+        $jobType = ucfirst($job->getType());
+        $this->openPage(sprintf('%s launch', $jobType), array('id' => $job->getId()));
     }
 
     /**
