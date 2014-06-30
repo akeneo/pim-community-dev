@@ -74,7 +74,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data['groupIds']       = $this->normalizeGroups($product->getGroups());
         $data['categoryIds']    = $this->normalizeCategories($product->getCategories());
-        $data['associations']   = $this->normalizeAssociations($product->getAssociations());
+        $data['associations']   = $this->normalizeAssociations($product->getAssociations(), $context);
         $data['values']         = $this->normalizeValues($product->getValues(), $context);
         $data['normalizedData'] = $this->normalizer->normalize($product, 'mongodb_json');
         $data['completenesses'] = [];
@@ -92,7 +92,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeValues($values, array $context = [])
+    protected function normalizeValues($values, array $context)
     {
         $data = [];
 
@@ -113,7 +113,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeAssociations($associations, array $context = [])
+    protected function normalizeAssociations($associations, array $context)
     {
         $data = [];
 
