@@ -26,22 +26,25 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function createProduct($data)
     {
-        $product = parent::createProduct($data);
-
-        $skipAddRootCategory = false;
-        if (is_array($data) && array_key_exists('categories', $data)) {
-            $skipAddRootCategory = true;
-        } elseif ($this->productHasARootCategory($product)) {
-            $skipAddRootCategory = true;
+        $defaultCategory = null;
+        foreach ($this->getCategoryRepository()->findAll() as $category) {
+            if ($category->isRoot()) {
+                $defaultCategory = $category->getCode();
+            }
         }
 
-        if (!$skipAddRootCategory) {
-            $this->addRootCategoryToProduct($product);
+        if (!$defaultCategory) {
+            throw new \LogicException(
+                'Cannot find the default category in which to put all the products non associated to any category'
+            );
         }
 
-        $this->getProductManager()->getObjectManager()->flush();
-
-        return $product;
+        parent::createProduct(
+            array_merge(
+                ['categories' => $defaultCategory],
+                $data
+            )
+        );
     }
 
 
