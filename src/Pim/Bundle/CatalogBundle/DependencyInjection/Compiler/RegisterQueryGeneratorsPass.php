@@ -26,7 +26,7 @@ class RegisterQueryGeneratorsPass implements CompilerPassInterface
 
         $service = $container->getDefinition('pim_catalog.event_listener.mongodb.update_normalized_product_data');
 
-        $taggedServices = $container->findTaggedServiceIds('pim_catalog.query_generator');
+        $taggedServices = $container->findTaggedServiceIds('pim_catalog.mongodb_odm_query_generator');
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('addQueryGenerator', array(new Reference($id)));
