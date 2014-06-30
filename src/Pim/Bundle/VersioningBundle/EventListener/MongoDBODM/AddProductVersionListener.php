@@ -150,7 +150,7 @@ class AddProductVersionListener implements EventSubscriber
     {
         if ($versionable instanceof ProductInterface) {
             $oid = spl_object_hash($versionable);
-            if (!isset($this->versionableObjects[$oid]) and !in_array($oid, $this->versionedObjects)) {
+            if (!isset($this->versionableObjects[$oid]) && !in_array($oid, $this->versionedObjects)) {
                 $this->versionableObjects[$oid] = $versionable;
             }
         }

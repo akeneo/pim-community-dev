@@ -69,7 +69,7 @@ users:
         catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
-        role:
+        roles:
             - ROLE_ADMINISTRATOR
         groups:
             - Administrators
