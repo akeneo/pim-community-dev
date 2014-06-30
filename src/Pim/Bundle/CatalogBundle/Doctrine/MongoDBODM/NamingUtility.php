@@ -3,8 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Provides util methods to get attributes codes
@@ -54,7 +52,8 @@ class NamingUtility
      *
      * @return array
      */
-    public function appendSuffixes($codes, $suffixes, $separator = '-') {
+    public function appendSuffixes($codes, $suffixes, $separator = '-')
+    {
         $result = $codes;
 
         if (count($suffixes) > 0) {
@@ -136,7 +135,6 @@ class NamingUtility
     {
         $localeCodes  = $this->getLocaleCodes($attribute);
         $channelCodes = $this->getChannelCodes($attribute);
-
 
         $normFields = [
             (

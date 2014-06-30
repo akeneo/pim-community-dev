@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 
 /**
@@ -25,8 +24,8 @@ abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInt
 
     /**
      * @param NamingUtility $namingUtility
-     * @param string                 $entityClass
-     * @param string                 $field
+     * @param string        $entityClass
+     * @param string        $field
      */
     public function __construct(
         NamingUtility $namingUtility,
