@@ -21,6 +21,9 @@ class AddPermissionsToGridListener
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var string */
+    protected $accessLevel;
+
     /**
      * @param AccessRepositoryInterface         $accessRepository
      * @param SecurityContextInterface $securityContext
