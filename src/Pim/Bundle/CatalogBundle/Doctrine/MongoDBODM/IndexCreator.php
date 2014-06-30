@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
-use Doctrine\MongoDB\Collection;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
-use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Entity\Currency;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\MongoDB\Collection;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
+use Pim\Bundle\CatalogBundle\Entity\Channel;
+use Pim\Bundle\CatalogBundle\Entity\Currency;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Create index for different entity requirements
@@ -21,25 +22,25 @@ class IndexCreator
     /** @var ManagerRegistry */
     protected $managerRegistry;
 
-    /** @var ProductQueryUtility */
-    protected $attributeNamingUtility;
+    /** @var NamingUtility */
+    protected $namingUtility;
 
     /** @var string */
     protected $productClass;
 
     /**
-     * @param ManagerRegistry     $managerRegistry
-     * @param ProductQueryUtility $attributeNamingUtility
-     * @param string              $productClass
+     * @param ManagerRegistry $managerRegistry
+     * @param NamingUtility   $namingUtility
+     * @param string          $productClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
-        AttributeNamingUtility $attributeNamingUtility,
+        NamingUtility $namingUtility,
         $productClass
     ) {
-        $this->managerRegistry        = $managerRegistry;
-        $this->attributeNamingUtility = $attributeNamingUtility;
-        $this->productClass           = $productClass;
+        $this->managerRegistry = $managerRegistry;
+        $this->namingUtility   = $namingUtility;
+        $this->productClass    = $productClass;
     }
 
     /**
@@ -51,7 +52,7 @@ class IndexCreator
      */
     public function ensureIndexesFromAttribute(AbstractAttribute $attribute)
     {
-        $attributeFields = $this->attributeNamingUtility->getAttributeNormFields($attribute);
+        $attributeFields = $this->namingUtility->getAttributeNormFields($attribute);
 
         switch ($attribute->getBackendType()) {
             case "prices":
@@ -81,7 +82,7 @@ class IndexCreator
         $completenessFields = $this->getCompletenessNormFields($channel);
         $this->ensureIndexes($completenessFields);
 
-        $scopables = $this->attributeNamingUtility->getScopableAttributes();
+        $scopables = $this->namingUtility->getScopableAttributes();
         foreach ($scopables as $scopable) {
             $this->ensureIndexesFromAttribute($scopable);
         }
@@ -101,7 +102,7 @@ class IndexCreator
         $completenessFields = $this->getCompletenessNormFields();
         $this->ensureIndexes($completenessFields);
 
-        $localizables = $this->attributeNamingUtility->getLocalizableAttributes();
+        $localizables = $this->namingUtility->getLocalizableAttributes();
         foreach ($localizables as $localizable) {
             $this->ensureIndexesFromAttribute($localizable);
         }
@@ -117,7 +118,7 @@ class IndexCreator
      */
     public function ensureIndexesFromCurrency(Currency $currency)
     {
-        $pricesAttributes = $this->attributeNamingUtility->getPricesAttributes();
+        $pricesAttributes = $this->namingUtility->getPricesAttributes();
         foreach ($pricesAttributes as $pricesAttribute) {
             $this->ensureIndexesFromAttribute($pricesAttribute);
         }
@@ -136,7 +137,7 @@ class IndexCreator
         $channels = [];
 
         if (null === $channel) {
-            $channels = $this->attributeNamingUtility->getChannels();
+            $channels = $this->namingUtility->getChannels();
         } else {
             $channels[] = $channel;
         }
@@ -164,9 +165,9 @@ class IndexCreator
      */
     protected function addFieldsFromPrices(array $fields)
     {
-        $currencyCodes = $this->attributeNamingUtility->getCurrencyCodes();
-        $updatedFields = $this->attributeNamingUtility->appendSuffixes($fields, $currencyCodes, '.');
-        $updatedFields = $this->attributeNamingUtility->appendSuffixes($fields, ['data'], '.');
+        $currencyCodes = $this->namingUtility->getCurrencyCodes();
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, $currencyCodes, '.');
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['data'], '.');
 
         return $updatedFields;
     }
@@ -180,7 +181,7 @@ class IndexCreator
      */
     protected function addFieldsFromOption(array $fields)
     {
-        $updatedFields = $this->attributeNamingUtility->appendSuffixes($fields, ['id'], '.');
+        $updatedFields = $this->namingUtility->appendSuffixes($fields, ['id'], '.');
 
         return $updatedFields;
     }

@@ -16,7 +16,7 @@ class MultipleOptionValueUpdatedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->attributeNamingUtility->getAttributeNormFields(
+        $attributeNormFields = $this->namingUtility->getAttributeNormFields(
             $entity->getOption()->getAttribute()
         );
 

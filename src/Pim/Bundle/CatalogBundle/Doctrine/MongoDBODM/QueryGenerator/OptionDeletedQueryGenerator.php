@@ -16,7 +16,7 @@ class OptionDeletedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributeNormFields = $this->attributeNamingUtility->getAttributeNormFields($entity->getAttribute());
+        $attributeNormFields = $this->namingUtility->getAttributeNormFields($entity->getAttribute());
 
         $queries = [];
 

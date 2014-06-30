@@ -18,7 +18,7 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
      */
     public function generateQuery($entity, $field, $oldValue, $newValue)
     {
-        $attributes = $this->attributeNamingUtility->getScopableAttributes(false);
+        $attributes = $this->namingUtility->getScopableAttributes(false);
         $queries = [];
 
         foreach ($attributes as $attribute) {
@@ -30,9 +30,9 @@ class ChannelDeletedQueryGenerator extends AbstractQueryGenerator
                 )
             ];
 
-            $localeCodes = $this->attributeNamingUtility->getLocaleCodes();
-            $attributeNormFields = $this->attributeNamingUtility->appendSuffixes($attributeNormFields, $localeCodes);
-            $attributeNormFields = $this->attributeNamingUtility->appendSuffixes(
+            $localeCodes = $this->namingUtility->getLocaleCodes();
+            $attributeNormFields = $this->namingUtility->appendSuffixes($attributeNormFields, $localeCodes);
+            $attributeNormFields = $this->namingUtility->appendSuffixes(
                 $attributeNormFields,
                 [$entity->getCode()]
             );

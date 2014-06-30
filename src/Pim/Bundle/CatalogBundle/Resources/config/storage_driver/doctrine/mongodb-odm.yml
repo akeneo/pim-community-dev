@@ -6,7 +6,7 @@ parameters:
     pim_catalog.doctrine.completeness_generator.class:      Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\CompletenessGenerator
     pim_catalog.doctrine.index_creator.class:               Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexCreator
     pim_catalog.doctrine.index_purger.class:                Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\IndexPurger
-    pim_catalog.doctrine.attribute_naming_utility.class:    Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility
+    pim_catalog.doctrine.naming_utility.class:              Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility
     pim_catalog.event_listener.mongodb.entities_type.class: Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
     pim_catalog.event_listener.mongodb.entity_type.class:   Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntityTypeSubscriber
     pim_catalog.mongodb.normalizer.family.class:            Pim\Bundle\CatalogBundle\MongoDB\Normalizer\FamilyNormalizer
@@ -62,11 +62,11 @@ services:
         class: %pim_catalog.doctrine.index_creator.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.doctrine.attribute_naming_utility'
+            - '@pim_catalog.doctrine.naming_utility'
             - %pim_catalog.entity.product.class%
 
-    pim_catalog.doctrine.attribute_naming_utility:
-        class: %pim_catalog.doctrine.attribute_naming_utility.class%
+    pim_catalog.doctrine.naming_utility:
+        class: %pim_catalog.doctrine.naming_utility.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.channel.class%
@@ -260,7 +260,7 @@ services:
         abstract: true
         class: %pim_catalog.query_generator.abstract_normalized_data.class%
         arguments:
-            - '@pim_catalog.doctrine.attribute_naming_utility'
+            - '@pim_catalog.doctrine.naming_utility'
 
     pim_catalog.query_generator.attribute_as_label_updated:
         class: %pim_catalog.query_generator.attribute_as_label_updated.class%

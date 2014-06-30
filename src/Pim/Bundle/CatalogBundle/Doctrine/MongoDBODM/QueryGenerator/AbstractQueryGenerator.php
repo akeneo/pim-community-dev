@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\NamingUtility;
 
 /**
 * Abstract query generator
@@ -14,8 +14,8 @@ use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\AttributeNamingUtility;
  */
 abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInterface
 {
-    /** @var AttributeNamingUtility */
-    protected $attributeNamingUtility;
+    /** @var NamingUtility */
+    protected $namingUtility;
 
     /** @var string */
     protected $entityClass;
@@ -24,18 +24,18 @@ abstract class AbstractQueryGenerator implements NormalizedDataQueryGeneratorInt
     protected $field;
 
     /**
-     * @param AttributeNamingUtility $attributeNamingUtility
+     * @param NamingUtility $namingUtility
      * @param string                 $entityClass
      * @param string                 $field
      */
     public function __construct(
-        AttributeNamingUtility $attributeNamingUtility,
+        NamingUtility $namingUtility,
         $entityClass,
         $field = ''
     ) {
-        $this->attributeNamingUtility = $attributeNamingUtility;
-        $this->entityClass            = $entityClass;
-        $this->field                  = $field;
+        $this->namingUtility = $namingUtility;
+        $this->entityClass   = $entityClass;
+        $this->field         = $field;
     }
 
     /**
