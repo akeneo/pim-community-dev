@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\ImportExportBundle\Normalizer;
 
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 /**
@@ -60,7 +61,7 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes DateTime object
      *
-     * @param null|DateTime $datetime
+     * @param null|\DateTime $datetime
      *
      * @return null|string
      */
@@ -76,18 +77,18 @@ class StepExecutionNormalizer implements NormalizerInterface
     /**
      * Normalizes the warnings
      *
-     * @param array $warnings
+     * @param Collection $warnings
      *
      * @return array
      */
-    protected function normalizeWarnings(array $warnings)
+    protected function normalizeWarnings(Collection $warnings)
     {
         $result = [];
         foreach ($warnings as $warning) {
             $result[] =  [
-                'label'  => $this->translator->trans($warning['name']),
-                'reason' => $this->translator->trans($warning['reason'], $warning['reasonParameters']),
-                'item'   => $warning['item'],
+                'label'  => $this->translator->trans($warning->getName()),
+                'reason' => $this->translator->trans($warning->getReason(), $warning->getReasonParameters()),
+                'item'   => $warning->getItem(),
             ];
         }
 
