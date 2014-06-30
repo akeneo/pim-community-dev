@@ -45,7 +45,7 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($field);
         foreach ($icons as $icon) {
-            if (false !== strpos($icon->getAttribute('class'), 'icon-file-text-alt')) {
+            if ($icon->hasClass('icon-file-text-alt')) {
                 return true;
             }
         }
