@@ -57,6 +57,15 @@ class Operation extends Wizard
 
     /**
      * @param string $operation
+     * @param string $page
+     */
+    public function addStep($operation, $page)
+    {
+        $this->steps[$operation]= $page;
+    }
+
+    /**
+     * @param string $operation
      *
      * @throws \InvalidArgumentException
      * @return string
