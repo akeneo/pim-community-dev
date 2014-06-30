@@ -1,0 +1,49 @@
+parameters:
+    pim_serializer.normalizer.mongodb.product.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer
+    pim_serializer.normalizer.mongodb.product_value.class: Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductValueNormalizer
+    pim_serializer.normalizer.mongodb.metric.class:        Pim\Bundle\TransformBundle\Normalizer\MongoDB\MetricNormalizer
+    pim_serializer.normalizer.mongodb.price.class:         Pim\Bundle\TransformBundle\Normalizer\MongoDB\PriceNormalizer
+    pim_serializer.normalizer.mongodb.datetime.class:      Pim\Bundle\TransformBundle\Normalizer\MongoDB\DateTimeNormalizer
+    pim_serializer.normalizer.mongodb.association.class:   Pim\Bundle\TransformBundle\Normalizer\MongoDB\AssociationNormalizer
+    pim_serializer.normalizer.mongodb.generic.class:       Pim\Bundle\TransformBundle\Normalizer\MongoDB\GenericNormalizer
+
+services:
+    # Object to MongoDB document normalizers
+    pim_serializer.normalizer.mongodb.product:
+        class: %pim_serializer.normalizer.mongodb.product.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.product_value:
+        class: %pim_serializer.normalizer.mongodb.product_value.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.metric:
+        class: %pim_serializer.normalizer.mongodb.metric.class%
+        arguments:
+            - '@akeneo_measure.measure_converter'
+            - '@akeneo_measure.manager'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.price:
+        class: %pim_serializer.normalizer.mongodb.price.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.datetime:
+        class: %pim_serializer.normalizer.mongodb.datetime.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.association:
+        class: %pim_serializer.normalizer.mongodb.association.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 100 }
+
+    pim_serializer.normalizer.mongodb.generic:
+        class: %pim_serializer.normalizer.mongodb.generic.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 20 }
+
