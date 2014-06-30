@@ -48,7 +48,7 @@ class Edit extends Form
     {
         $elements = $this
             ->getElement('Container')
-            ->findAll('css', sprintf('div.access_level_value_link a:contains(%s)', $permission));
+            ->findAll('css', sprintf('div.access_level_value_link a:contains("%s")', $permission));
 
         $resources = array();
         foreach ($elements as $element) {

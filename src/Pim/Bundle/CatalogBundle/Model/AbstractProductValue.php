@@ -216,7 +216,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setLocale($locale)
     {
-        if ($locale and $this->getAttribute() and $this->getAttribute()->isLocalizable() === false) {
+        if ($locale && $this->getAttribute() && $this->getAttribute()->isLocalizable() === false) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
                 "This value '".$this->getId()."' can't be localized, see attribute '".$attributeCode."' configuration"
@@ -241,7 +241,7 @@ abstract class AbstractProductValue implements ProductValueInterface
      */
     public function setScope($scope)
     {
-        if ($scope and $this->getAttribute() and $this->getAttribute()->isScopable() === false) {
+        if ($scope && $this->getAttribute() && $this->getAttribute()->isScopable() === false) {
             $attributeCode = $this->getAttribute()->getCode();
             throw new \LogicException(
                 "This value '".$this->getId()."' can't be scopped, see attribute '".$attributeCode."' configuration"

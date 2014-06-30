@@ -571,7 +571,7 @@ class ProductRepository extends EntityRepository implements
         }
 
         // use doctrine paginator to avoid count problem with left join of values
-        if (!is_null($offset) and !is_null($limit)) {
+        if (!is_null($offset) && !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
             $paginator = new Paginator($qb->getQuery());
 

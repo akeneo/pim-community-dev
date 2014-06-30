@@ -1,12 +1,12 @@
 @javascript
 Feature: Create an import
   In order to use my PIM data into my front applications
-  As a user
+  As an administrator
   I need to be able to create import jobs
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the imports page
 
   Scenario: Successfully create an import

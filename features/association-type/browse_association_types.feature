@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse association types
   In order to list the existing association types in the catalog
-  As a user
+  As a product manager
   I need to be able to see association types
 
   Scenario: Successfully view, sort and filter association types
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the association types page
     Then the grid should contain 4 elements
     And I should see the columns Code and Label

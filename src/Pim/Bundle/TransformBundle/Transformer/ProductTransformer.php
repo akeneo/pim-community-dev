@@ -120,6 +120,7 @@ class ProductTransformer extends EntityTransformer
         if (!$this->identifierAttribute) {
             throw new MissingIdentifierException;
         }
+
         return $this->productManager->getProductRepository()->findByReference(
             $data[$this->identifierAttribute->getCode()]
         );

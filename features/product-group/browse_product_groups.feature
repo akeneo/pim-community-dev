@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse product groups
   In order to list the existing product groups for the catalog
-  As a user
+  As a product manager
   I need to be able to see product groups
 
   Scenario: Successfully view, sort and filter product groups
@@ -17,7 +17,7 @@ Feature: Browse product groups
       | mug_akeneo    | Akeneo Mug     | color       | VARIANT |
       | CROSS_SELL_1  | Cross Sell     |             | X_SELL  |
       | CROSS_SELL_2  | Relational     |             | X_SELL  |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the product groups page
     Then the grid should contain 2 elements
     And I should see the columns Code, Label and Type

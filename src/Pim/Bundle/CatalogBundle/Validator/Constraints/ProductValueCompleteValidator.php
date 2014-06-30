@@ -22,7 +22,7 @@ class ProductValueCompleteValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value === null or $value === false) {
+        if ($value === null || $value === false) {
             $this->context->addViolation($constraint->messageNotNull);
         }
 
@@ -50,7 +50,7 @@ class ProductValueCompleteValidator extends ConstraintValidator
         }
 
         if ($data === ''
-            || ($data instanceof Collection and count($data) === 0)) {
+            || ($data instanceof Collection && count($data) === 0)) {
             $this->context->addViolation($constraint->messageComplete);
 
             return;

@@ -1,13 +1,13 @@
 @javascript
 Feature: Define user rights
   In order to assign or remove some rights to a group of users
-  As an admin
+  As an administrator
   I need to be able to assign/remove rights
 
   Background:
     Given a "footwear" catalog configuration
     And a "boot" product
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   @skip
   Scenario: Successfully edit and apply user rights

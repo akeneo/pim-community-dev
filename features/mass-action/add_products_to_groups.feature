@@ -1,7 +1,7 @@
 @javascript
 Feature: Add products to many groups at once
   In order to easily organize products into groups
-  As Julia
+  As a product manager
   I need to be able to add products to many groups at once
 
   Scenario: Add products to a none variant group

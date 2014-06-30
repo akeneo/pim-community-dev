@@ -1,7 +1,7 @@
 @javascript
 Feature: Product creation
   In order to add a non-imported product
-  As a user
+  As a product manager
   I need to be able to manually create a product
 
   Background:
@@ -10,8 +10,7 @@ Feature: Product creation
     | sku     | family  |
     | sandals | sandals |
     | boots   |         |
-
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the products page
 
   Scenario: Successfully create a product

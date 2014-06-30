@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per family
   In order to enrich my catalog
-  As a user
+  As a regular user
   I need to be able to manually filter products per family
 
   Background:
@@ -20,7 +20,7 @@ Feature: Filter products per family
       | Whirlpool  | washing_machines |
       | Electrolux | washing_machines |
       | Mug        |                  |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products by a single family
     Given I am on the products page

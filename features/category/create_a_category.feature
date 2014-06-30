@@ -1,11 +1,11 @@
 Feature: Create a category
   In order to provide a tree of my product categories
-  As a user
+  As a product manager
   I need to be able to create a new category tree or a node of a category tree
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Create a category tree
     Given I am on the category tree creation page

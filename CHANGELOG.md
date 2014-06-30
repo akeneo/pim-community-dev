@@ -35,6 +35,10 @@
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
+- Dispatch events on show/edit/execute job profile actions
+- Dispatch events on view/download job execution actions
+- Allow to install custom user roles and groups from installer fixtures
+- Display the code of import/export profiles on the edit and show views
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -78,6 +82,7 @@
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
+- Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

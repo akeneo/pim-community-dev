@@ -1,7 +1,7 @@
 @javascript
 Feature: Edit common attributes of many products at once
   In order to update many products with the same information
-  As Julia
+  As a product manager
   I need to be able to edit common attributes of many products at once
 
   Background:

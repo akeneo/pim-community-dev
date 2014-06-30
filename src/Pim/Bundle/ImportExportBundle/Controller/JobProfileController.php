@@ -171,6 +171,8 @@ class JobProfileController extends AbstractDoctrineController
             return $this->redirectToIndexView();
         }
 
+        $this->eventDispatcher->dispatch(JobEvents::PRE_SHOW_JOB_PROFILE, new GenericEvent($jobInstance));
+
         $form = $this->createForm($this->jobInstanceType, $jobInstance, ['disabled' => true]);
         $uploadAllowed = false;
         $uploadForm = null;
