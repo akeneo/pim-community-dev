@@ -58,6 +58,7 @@ class JobExecutionController extends AbstractDoctrineController
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
      * @param ManagerRegistry          $doctrine
+     * @param EventDispatcherInterface $eventDispatcher
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
