@@ -1,6 +1,11 @@
 Pim\Bundle\CatalogBundle\Entity\AttributeOptionValue:
     type: entity
     table: pim_catalog_attribute_option_value
+    uniqueConstraints:
+        searchunique_idx:
+            columns:
+                - locale_code
+                - option_id
     fields:
         id:
             type: integer
