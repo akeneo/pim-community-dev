@@ -52,7 +52,17 @@ final class JobEvents
     const POST_EXECUTE_JOB_PROFILE = 'pim_enrich.job_profile.post_execute';
 
     /**
-     * This event is thrown each a job profile has been shown
+     * This event is thrown before a job profile is removed
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_JOB_PROFILE = 'pim_enrich.job_profile.pre_remove';
+
+    /**
+     * This event is thrown before a job profile is shown
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.

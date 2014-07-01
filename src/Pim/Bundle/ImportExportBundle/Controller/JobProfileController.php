@@ -277,6 +277,8 @@ class JobProfileController extends AbstractDoctrineController
             }
         }
 
+        $this->eventDispatcher->dispatch(JobEvents::PRE_REMOVE_JOB_PROFILE, new GenericEvent($jobInstance));
+
         $this->remove($jobInstance);
 
         if ($request->isXmlHttpRequest()) {
