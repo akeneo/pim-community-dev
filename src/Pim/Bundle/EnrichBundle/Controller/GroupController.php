@@ -3,7 +3,6 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
