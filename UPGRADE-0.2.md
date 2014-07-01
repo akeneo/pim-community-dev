@@ -1,11 +1,11 @@
-UPGRADE FROM 0.1.5 to 0.1.6
+UPGRADE FROM 0.1.5 TO 0.1.6
 ===========================
 
 Run the following SQL commands in your database :
 
     ALTER TABLE akeneo_batch_job_execution ADD pid INT DEFAULT NULL;
 
-UPGRADE FROM 0.1.6+ to 0.2
+UPGRADE FROM 0.1.6+ TO 0.2
 ==========================
 
 Run the following SQL commands in your database :
