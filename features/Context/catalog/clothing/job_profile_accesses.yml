@@ -1,6 +1,6 @@
 job_profile_accesses:
     clothing_association_type_export:
-        execute: [administrator, manager, user]
+        execute: [administrator, user]
         edit: [administrator]
     clothing_attribute_export:
         execute: [administrator, manager, user]
@@ -12,26 +12,26 @@ job_profile_accesses:
         execute: [administrator, manager, user]
         edit: [administrator]
     clothing_option_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [administrator, user]
+        edit: []
     clothing_product_export:
         execute: [administrator, manager, user]
         edit: [administrator]
 
     clothing_association_type_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [administrator, user]
+        edit: []
     clothing_attribute_import:
         execute: [administrator, manager, user]
         edit: [administrator]
     clothing_category_import:
-        execute: [administrator, manager, user]
+        execute: [administrator, user]
         edit: [administrator]
     clothing_group_import:
         execute: [administrator, manager, user]
         edit: [administrator]
     clothing_option_import:
-        execute: [administrator, manager, user]
+        execute: [administrator, user]
         edit: [administrator]
     clothing_product_import:
         execute: [administrator, manager, user]
