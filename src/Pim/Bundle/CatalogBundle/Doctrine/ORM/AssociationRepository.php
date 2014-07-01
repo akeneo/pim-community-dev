@@ -90,6 +90,4 @@ class AssociationRepository extends EntityRepository implements
 
         return $qb->getQuery()->getResult();
     }
-
-
 }

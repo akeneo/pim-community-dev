@@ -632,6 +632,4 @@ class ProductRepository extends DocumentRepository implements
         //TODO: make MongoDB ODM support
         return [];
     }
-
-
 }
