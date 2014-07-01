@@ -71,7 +71,7 @@ class FilePresenter implements PresenterInterface
     protected function createFileElement($filename, $originalFilename)
     {
         return sprintf(
-            '<i class="icon-file"></i> <a href="%s">%s</a>',
+            '<i class="icon-file"></i> <a class="no-hash" href="%s">%s</a>',
             $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
             $originalFilename
         );
