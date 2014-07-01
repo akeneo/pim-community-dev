@@ -17,11 +17,10 @@ class EnterpriseWebUser extends BaseWebUser
      */
     public function iChooseTheOperation($operation)
     {
-        $page = $this->getNavigationContext()->currentPage = $this
-            ->getPage('Batch Operation');
-        $page->addStep('Publish products', 'Batch Publish');
-
-        $page->chooseOperation($operation)
+        $this->getNavigationContext()->currentPage = $this
+            ->getPage('Batch Operation')
+            ->addStep('Publish products', 'Batch Publish')
+            ->chooseOperation($operation)
             ->next();
 
         $this->wait();
