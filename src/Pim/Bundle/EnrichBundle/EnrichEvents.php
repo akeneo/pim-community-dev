@@ -50,4 +50,14 @@ final class EnrichEvents
      * @staticvar string
      */
     const PRE_RENDER_PRODUCT_EDIT = 'pim_enrich.product.pre_render';
+
+    /**
+     * This event is dispatched before a product is removed
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_PRODUCT = 'pim_enrich.product.pre_remove';
 }
