@@ -24,7 +24,6 @@ services:
         class: %pim_versioning.event_listener.mongodb.product_addversion.class%
         arguments:
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.doctrine.smart_manager_registry'
             - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }

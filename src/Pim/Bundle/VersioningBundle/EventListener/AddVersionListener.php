@@ -109,17 +109,16 @@ class AddVersionListener implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $em = $args->getEntityManager();
-        $this->processVersionableEntities($em);
+        $this->processVersionableEntities();
     }
 
     /**
-     * @param EntityManager $em
+     * Process the entities to be versioned
      */
-    protected function processVersionableEntities(EntityManager $em)
+    protected function processVersionableEntities()
     {
         foreach ($this->versionableEntities as $versionable) {
-            $this->createVersion($em, $versionable);
+            $this->createVersion($versionable);
             $this->versionedEntities[] = spl_object_hash($versionable);
         }
 
@@ -127,15 +126,14 @@ class AddVersionListener implements EventSubscriber
         $this->versionableEntities = array();
 
         if ($versionedCount) {
-            $em->flush();
+            $this->versionManager->getObjectManager()->flush();
         }
     }
 
     /**
-     * @param EntityManager $em
-     * @param object        $versionable
+     * @param object $versionable
      */
-    protected function createVersion(EntityManager $em, $versionable)
+    protected function createVersion($versionable)
     {
         $changeset = [];
         if (!$this->versionManager->isRealTimeVersioning()) {
@@ -144,7 +142,7 @@ class AddVersionListener implements EventSubscriber
         $versions = $this->versionManager->buildVersion($versionable, $changeset);
 
         foreach ($versions as $version) {
-            $this->computeChangeSet($em, $version);
+            $this->computeChangeSet($version);
         }
     }
 
@@ -206,16 +204,16 @@ class AddVersionListener implements EventSubscriber
     /**
      * Compute version change set
      *
-     * @param EntityManager $em
-     * @param Version       $version
+     * @param Version $version
      */
-    protected function computeChangeSet(EntityManager $em, Version $version)
+    protected function computeChangeSet(Version $version)
     {
+        $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
-            $em->persist($version);
-            $em->getUnitOfWork()->computeChangeSet($em->getClassMetadata(get_class($version)), $version);
+            $om->persist($version);
+            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
         } else {
-            $em->remove($version);
+            $om->remove($version);
         }
     }
 }

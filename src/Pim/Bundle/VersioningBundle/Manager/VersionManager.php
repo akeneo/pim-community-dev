@@ -145,6 +145,16 @@ class VersionManager
     }
 
     /**
+     * Get object manager for Version
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->registry->getManagerForClass('Pim\\Bundle\\VersioningBundle\\Model\\Version');
+    }
+
+    /**
      * @return VersionRepositoryInterface
      */
     public function getVersionRepository()

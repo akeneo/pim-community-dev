@@ -9,7 +9,6 @@ use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
@@ -39,11 +38,6 @@ class AddProductVersionListener implements EventSubscriber
     protected $versionManager;
 
     /**
-     * @var SmartManagerRegistry
-     */
-    protected $registry;
-
-    /**
      * @var NormalizerInterface
      */
     protected $normalizer;
@@ -52,16 +46,11 @@ class AddProductVersionListener implements EventSubscriber
      * Constructor
      *
      * @param VersionManager       $versionManager
-     * @param SmartManagerRegistry $registry
      * @param NormalizerInterface  $normalizer
      */
-    public function __construct(
-        VersionManager $versionManager,
-        SmartManagerRegistry $registry,
-        NormalizerInterface $normalizer
-    ) {
+    public function __construct(VersionManager $versionManager, NormalizerInterface $normalizer)
+    {
         $this->versionManager = $versionManager;
-        $this->registry       = $registry;
         $this->normalizer     = $normalizer;
     }
 
@@ -117,11 +106,7 @@ class AddProductVersionListener implements EventSubscriber
         $this->versionableObjects = array();
 
         if ($versionedCount) {
-            foreach ($this->registry->getManagers() as $manager) {
-                if ($manager instanceof EntityManager) {
-                    $manager->flush();
-                }
-            }
+            $this->versionManager->getObjectManager()->flush();
         }
     }
 
@@ -163,13 +148,12 @@ class AddProductVersionListener implements EventSubscriber
      */
     protected function computeChangeSet(Version $version)
     {
-        $manager = $this->registry->getManagerForClass(get_class($version));
-
+        $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
-            $manager->persist($version);
-            $manager->getUnitOfWork()->computeChangeSet($manager->getClassMetadata(get_class($version)), $version);
+            $om->persist($version);
+            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
         } else {
-            $manager->remove($version);
+            $om->remove($version);
         }
     }
 }

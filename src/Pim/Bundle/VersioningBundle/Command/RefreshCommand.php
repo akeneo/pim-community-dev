@@ -57,7 +57,7 @@ class RefreshCommand extends ContainerAwareCommand
             $logger->pushHandler(new StreamHandler('php://stdout'));
         }
 
-        $em = $this->getEntityManager();
+        $om = $this->getVersionManager()->getObjectManager();
         $pendingVersions = $this->getVersionManager()->getVersionRepository()->getPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
@@ -82,15 +82,15 @@ class RefreshCommand extends ContainerAwareCommand
 
                 $ind++;
                 if (($ind % $batchSize) == 0) {
-                    $em->flush();
-                    $em->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+                    $om->flush();
+                    $om->clear('Pim\\Bundle\\VersioningBundle\\Model\\Version');
                     $previousVersions = [];
                 }
                 $progress->advance();
             }
             $progress->finish();
             $output->writeln(sprintf('<info>%d created versions.</info>', $nbPendings));
-            $em->flush();
+            $om->flush();
         }
     }
 
@@ -105,11 +105,11 @@ class RefreshCommand extends ContainerAwareCommand
         $version = $this->getVersionManager()->buildPendingVersion($version, $previousVersion);
 
         if ($version->getChangeset()) {
-            $this->getEntityManager()->persist($version);
+            $this->getVersionManager()->getObjectManager()->persist($version);
 
             return $version;
         } else {
-            $this->getEntityManager()->remove($version);
+            $this->getVersionManager()->getObjectManager()->remove($version);
         }
     }
 
@@ -122,10 +122,15 @@ class RefreshCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return EntityManager
+     * @return ObjectManager
      */
-    protected function getEntityManager()
+    protected function getObjectManager()
     {
-        return $this->getContainer()->get('doctrine')->getManager();
+        $versionClass = $this->getContainer()->getParameter('pim_versioning.entity.version.class');
+
+        return $this
+            ->getContainer()
+            ->get('pim_catalog.doctrine.smart_manager_registry')
+            ->getManagerForClass($versionClass);
     }
 }
