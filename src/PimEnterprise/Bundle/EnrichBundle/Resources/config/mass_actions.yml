@@ -1,5 +1,6 @@
 parameters:
     pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pimee_enrich.mass_edit_action.publish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
 
 services:
     pim_enrich.mass_edit_action.classify:
@@ -13,4 +14,17 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: classify
                 acl: pim_enrich_product_categories_view
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    pimee_enrich.mass_edit_action.publish:
+        public: false
+        class: %pimee_enrich.mass_edit_action.publish.class%
+        arguments:
+            - '@pimee_workflow.manager.published_product'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: publish
+                acl: pimee_workflow_published_product_publish
                 operator: pim_enrich.mass_edit_action.operator.product

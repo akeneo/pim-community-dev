@@ -1,3 +1,6 @@
 pimee_workflow_published_product_index:
     type: action
     label: pimee_workflow.acl.publishedproduct.index
+pimee_workflow_published_product_publish:
+    type: action
+    label: pimee_workflow.acl.publishedproduct.publish

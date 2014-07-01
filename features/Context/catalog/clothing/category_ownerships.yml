@@ -1,11 +1,13 @@
 category_ownerships:
     2014_collection:
-        roles: [administrator, manager, user]
+        roles: [administrator, manager]
     summer_collection:
-        roles: [administrator, manager, user]
+        roles: [administrator, manager]
     winter_collection:
-        roles: [administrator, manager, user]
+        roles: [administrator, manager]
     winter_top:
         roles: [administrator]
     tees:
         roles: [administrator]
+    jackets:
+        roles: [administrator, manager]

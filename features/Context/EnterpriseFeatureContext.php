@@ -19,7 +19,7 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $this->useContext('fixtures', new EnterpriseFixturesContext());
         $this->useContext('catalogConfiguration', new CatalogConfigurationContext());
-        $this->useContext('webUser', new WebUser($parameters['window_width'], $parameters['window_height']));
+        $this->useContext('webUser', new EnterpriseWebUser($parameters['window_width'], $parameters['window_height']));
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
