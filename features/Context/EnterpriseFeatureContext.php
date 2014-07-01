@@ -52,4 +52,22 @@ class EnterpriseFeatureContext extends FeatureContext
 
         throw $this->createExpectationException('Modified value icon was not found');
     }
+
+    /**
+     * @Then /^its status should be "([^"]*)"$/
+     */
+    public function itsStatusShouldBe($status)
+    {
+        $info = $this->getSession()->getPage()->find('css', '.navbar-content li:contains("Status")');
+
+        if (false === strpos($info->getText(), $status)) {
+            throw new \LogicException(
+                sprintf(
+                    'Expecting product status "%s", actually is "%s"',
+                    $status,
+                    $info->getText()
+                )
+            );
+        }
+    }
 }
