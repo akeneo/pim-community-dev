@@ -25,19 +25,14 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
     /** @var AssociationRepositoryInterface */
     protected $associationRepository;
 
-    /** @var  ObjectManager */
-    protected $objectManager;
-
     public function __construct(
         PublishedProductRepositoryInterface $publishedRepository,
         PublishedAssociationRepositoryInterface $publishedAssociationRepository,
-        AssociationRepositoryInterface $associationRepository,
-        ObjectManager $objectManager
+        AssociationRepositoryInterface $associationRepository
     ) {
         $this->publishedRepository = $publishedRepository;
         $this->publishedAssociationRepository = $publishedAssociationRepository;
         $this->associationRepository = $associationRepository;
-        $this->objectManager = $objectManager;
     }
 
 
@@ -46,14 +41,11 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        /** @var PublishedProductInterface $publishedProduct */
-        $publishedProduct = $object;
-
         $productIds = $this->publishedRepository->getProductIdsMapping();
-        unset($productIds[$publishedProduct->getOriginalProductId()]);
+        unset($productIds[$object->getOriginalProductId()]);
 
         $associations = $this->associationRepository->findByProductIdAndOwnerIds(
-            $publishedProduct->getOriginalProductId(),
+            $object->getOriginalProductId(),
             array_keys($productIds)
         );
 
@@ -64,12 +56,9 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
             );
 
             if (null !== $publishedAssociation) {
-                $publishedAssociation->addProduct($publishedProduct);
-//                $this->objectManager->persist($publishedAssociation);
+                $publishedAssociation->addProduct($object);
             }
         }
-
-//        $this->objectManager->flush();
     }
 
     /**

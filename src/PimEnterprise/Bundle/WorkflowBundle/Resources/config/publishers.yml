@@ -79,7 +79,6 @@ services:
             - @pimee_workflow.repository.published_product
             - @pimee_workflow.repository.published_association
             - @pim_catalog.repository.association
-            - @doctrine.orm.default_entity_manager
         tags:
             - { name: pimee_workflow.publisher }
 
