@@ -19,7 +19,7 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_EDIT_JOB_PROFILE       = 'pim_import_export.job_profile.pre_edit';
+    const PRE_EDIT_JOB_PROFILE = 'pim_import_export.job_profile.pre_edit';
 
     /**
      * This event is thrown after a job profile has been edited
