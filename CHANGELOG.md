@@ -40,6 +40,7 @@
 - Allow to install custom user roles and groups from installer fixtures
 - Display the code of import/export profiles on the edit and show views
 - Related entities' edition and deletion doesn't reload all the products' normalized data
+- Inject event dispatcher inside AbstractController
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -84,6 +85,7 @@
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
+- Inject EventDispatcher inside AbstractController
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

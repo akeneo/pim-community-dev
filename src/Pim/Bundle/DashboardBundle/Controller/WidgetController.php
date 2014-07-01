@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DashboardBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -34,6 +35,7 @@ class WidgetController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param Registry                 $widgetRegistry
      */
     public function __construct(
@@ -44,9 +46,19 @@ class WidgetController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         Registry $widgetRegistry
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $eventDispatcher
+        );
 
         $this->widgetRegistry = $widgetRegistry;
     }
