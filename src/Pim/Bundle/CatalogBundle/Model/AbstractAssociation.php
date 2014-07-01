@@ -159,6 +159,18 @@ abstract class AbstractAssociation implements ReferableInterface
     }
 
     /**
+     * Has a product
+     *
+     * @param ProductInterface $product
+     *
+     * @return boolean
+     */
+    public function hasProduct(ProductInterface $product)
+    {
+        return $this->products->contains($product);
+    }
+
+    /**
      * Remove a product
      *
      * @param ProductInterface $product
