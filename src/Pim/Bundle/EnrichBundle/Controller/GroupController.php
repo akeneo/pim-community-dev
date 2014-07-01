@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -58,6 +60,7 @@ class GroupController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
@@ -70,6 +73,7 @@ class GroupController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
         GroupHandler $groupHandler,
         Form $groupForm
@@ -81,7 +85,8 @@ class GroupController extends AbstractController
             $securityContext,
             $formFactory,
             $validator,
-            $translator
+            $translator,
+            $eventDispatcher
         );
 
         $this->groupManager = $groupManager;

@@ -75,11 +75,6 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
-     * @var EventDispatcherInterface
-     */
-    protected $eventDispatcher;
-
-    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -101,6 +96,7 @@ class ProductController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param ProductManager           $productManager
      * @param CategoryManager          $categoryManager
@@ -108,7 +104,6 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         Request $request,
@@ -118,14 +113,14 @@ class ProductController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         ProductManager $productManager,
         CategoryManager $categoryManager,
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager,
-        EventDispatcherInterface $eventDispatcher
+        ProductCategoryManager $prodCatManager
     ) {
         parent::__construct(
             $request,
@@ -135,6 +130,7 @@ class ProductController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
@@ -144,7 +140,6 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
-        $this->eventDispatcher   = $eventDispatcher;
     }
 
     /**
