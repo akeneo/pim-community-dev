@@ -10,7 +10,11 @@ category.permissions:
     edit.label: Permissions to edit products in the current category
     no_access_to_products: You don't have access to products in any tree, please contact your administrator
 
-pimee_enrich.acl.product_ownership.title: Ownership
+pimee_enrich
+    acl.product_ownership.title: Ownership
+    roles:
+        label: owner roles
+        empty: none
 
 btn:
     save working copy: Save working copy
