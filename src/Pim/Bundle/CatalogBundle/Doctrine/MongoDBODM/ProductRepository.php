@@ -629,7 +629,8 @@ class ProductRepository extends DocumentRepository implements
      */
     public function findByProductIdAndOwnerIds($productId, array $ownerIds)
     {
-
+        //TODO: make MongoDB ODM support
+        return [];
     }
 
 

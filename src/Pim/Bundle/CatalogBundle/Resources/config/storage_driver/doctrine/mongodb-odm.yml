@@ -172,6 +172,9 @@ services:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
 
+    pim_catalog.repository.association:
+        alias: pim_catalog.repository.product
+
     pim_catalog.manager.association:
         class: %pim_catalog.manager.association.class%
         arguments:
