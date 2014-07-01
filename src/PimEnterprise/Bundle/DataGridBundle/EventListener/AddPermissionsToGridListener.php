@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface;
 
 /**
  * Add permissions to datagrid listener
@@ -15,22 +15,27 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  */
 class AddPermissionsToGridListener
 {
-    /** @var EntityRepository */
+    /** @var AccessRepositoryInterface */
     protected $accessRepository;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var string */
+    protected $accessLevel;
+
     /**
-     * @param EntityRepository         $accessRepository
+     * @param AccessRepositoryInterface         $accessRepository
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
-        $accessRepository,
-        SecurityContextInterface $securityContext
+        AccessRepositoryInterface $accessRepository,
+        SecurityContextInterface $securityContext,
+        $accessLevel
     ) {
         $this->accessRepository = $accessRepository;
         $this->securityContext  = $securityContext;
+        $this->accessLevel      = $accessLevel;
     }
 
     /**
@@ -45,7 +50,7 @@ class AddPermissionsToGridListener
 
             // Prepare subquery
             $user  = $this->securityContext->getUser();
-            $subQB = $this->accessRepository->getGrantedJobsQB($user, JobProfileVoter::EXECUTE_JOB_PROFILE);
+            $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
             $datasource->getRepository()->addGridAccessQB(
                 $datasource->getQueryBuilder(),

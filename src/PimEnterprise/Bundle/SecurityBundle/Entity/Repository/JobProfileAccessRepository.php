@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobProfileAccessRepository extends EntityRepository
+class JobProfileAccessRepository extends EntityRepository implements AccessRepositoryInterface
 {
     /**
      * @var TableNameBuilder
@@ -88,6 +88,14 @@ class JobProfileAccessRepository extends EntityRepository
             ->select('jp.id');
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGrantedEntitiesQB(User $user, $accessLevel)
+    {
+        return $this->getGrantedJobsQB($user, $accessLevel);
     }
 
     /**
