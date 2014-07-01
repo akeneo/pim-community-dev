@@ -409,7 +409,7 @@ class Form extends Base
         $label = $this->find('css', sprintf('label:contains("%s")', $name));
 
         if (!$label) {
-            throw new ElementNotFoundException($this->getSession(), 'form label ', 'value', $name);
+            throw new ElementNotFoundException($this->getSession(), 'form label', 'value', $name);
         }
 
         $labels = $label->getParent()->findAll('css', '.currency-label');
@@ -423,7 +423,7 @@ class Form extends Base
         }
 
         if ($fieldNum === null) {
-            throw new ElementNotFoundException($this->getSession(), 'form field ', 'id|name|label|value', $name);
+            throw new ElementNotFoundException($this->getSession(), 'price field', 'id|name|label|value', $currency);
         }
 
         $fields = $label->getParent()->findAll('css', 'input[type="text"]');
