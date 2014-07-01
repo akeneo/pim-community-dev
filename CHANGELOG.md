@@ -1,10 +1,26 @@
-CHANGELOG for 0.1.x
-===================
+CHANGELOG 
+=========
+
+0.2.0
+-----
+
+### Improvements
+
+ - Warnings are stored in their own entities, to avoid excessive serialization
+
+### BC Breaks
+
+ - Warnings are now objects of the Akeneo\BatchBundle\Entity\Warning type
+ - Database schema has changed. Please read UPGRADE-0.2.md
+
 
 0.1.8 (2014-06-24)
 ------------------
 
+### Improvements
+
  - Added precise error messages for failures on jobs.
+
 
 0.1.7 (2014-06-24)
 ------------------
