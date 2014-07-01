@@ -196,7 +196,7 @@ class Warning
     /**
      * Sets the item over which the warning is set
      *
-     * @param type $item
+     * @param array $item
      *
      * @return $this
      */
@@ -208,6 +208,8 @@ class Warning
     }
 
     /**
+     * Returns a representation of the warning as an array
+     * 
      * @return array
      */
     public function toArray()
