@@ -2,7 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
@@ -14,33 +17,36 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class GroupManager
 {
-    /**
-     * @var RegistryInterface
-     */
+    /** @var RegistryInterface */
     protected $doctrine;
 
-    /**
-     * @var string
-     */
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
-     * @param string            $productClass
-     * @param string            $attributeClass
+     * @param RegistryInterface        $doctrine
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $productClass
+     * @param string                   $attributeClass
      */
-    public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
-    {
-        $this->doctrine = $doctrine;
-        $this->productClass  = $productClass;
-        $this->attributeClass = $attributeClass;
+    public function __construct(
+        RegistryInterface $doctrine,
+        EventDispatcherInterface $eventDispatcher,
+        $productClass,
+        $attributeClass
+    ) {
+        $this->doctrine        = $doctrine;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->productClass    = $productClass;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -135,6 +141,8 @@ class GroupManager
      */
     public function remove(Group $group)
     {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_GROUP, new GenericEvent($group));
+
         $em = $this->doctrine->getManager();
         $em->remove($group);
         $em->flush();

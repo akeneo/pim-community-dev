@@ -98,6 +98,7 @@ services:
         class: %pim_catalog.manager.group.class%
         arguments:
             - '@doctrine'
+            - '@event_dispatcher'
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.attribute.class%
 
