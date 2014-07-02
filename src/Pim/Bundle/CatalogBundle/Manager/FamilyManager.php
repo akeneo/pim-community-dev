@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
@@ -20,16 +24,30 @@ class FamilyManager
     /** @var UserContext */
     protected $userContext;
 
+    /** @var ObjectManager */
+    protected $objectManager;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
     /**
      * Constructor
      *
-     * @param FamilyRepository $repository
-     * @param UserContext      $userContext
+     * @param FamilyRepository         $repository
+     * @param UserContext              $userContext
+     * @param ObjectManager            $objectManager
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(FamilyRepository $repository, UserContext $userContext)
-    {
-        $this->repository  = $repository;
-        $this->userContext = $userContext;
+    public function __construct(
+        FamilyRepository $repository,
+        UserContext $userContext,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->repository      = $repository;
+        $this->userContext     = $userContext;
+        $this->objectManager   = $objectManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -42,5 +60,18 @@ class FamilyManager
         return $this->repository->getChoices(
             ['localeCode' => $this->userContext->getCurrentLocaleCode()]
         );
+    }
+
+    /**
+     * Remove a family
+     *
+     * @param Family $family
+     */
+    public function remove(Family $family)
+    {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_FAMILY, new GenericEvent($family));
+
+        $this->objectManager->remove($family);
+        $this->objectManager->flush();
     }
 }

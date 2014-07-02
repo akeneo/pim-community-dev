@@ -50,4 +50,14 @@ final class CatalogEvents
      * @staticvar string
      */
     const PRE_REMOVE_ATTRIBUTE = 'pim_catalog.pre_remove.attribute';
+
+    /**
+     * This event is thrown before a family is removed.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_FAMILY = 'pim_catalog.pre_remove.family';
 }
