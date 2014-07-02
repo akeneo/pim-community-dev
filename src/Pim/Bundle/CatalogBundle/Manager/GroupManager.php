@@ -175,7 +175,8 @@ class GroupManager
             ->setMaxResults($maxResults + 1)
             ->execute();
 
-        if (count($products) > $maxResults) {
+        $count = count($products);
+        if ($count > $maxResults) {
             array_pop($products);
             $count = $manager->createQueryBuilder()
                 ->select('COUNT(p)')
@@ -184,8 +185,6 @@ class GroupManager
                 ->setParameter('group', $group)
                 ->getQuery()
                 ->getSingleScalarResult();
-        } else {
-            $count = count($products);
         }
 
         return array(
