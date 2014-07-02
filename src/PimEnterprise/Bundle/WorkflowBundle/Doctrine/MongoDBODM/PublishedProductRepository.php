@@ -14,7 +14,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
-    PublishedAssociationRepositoryInterface
+ PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}
