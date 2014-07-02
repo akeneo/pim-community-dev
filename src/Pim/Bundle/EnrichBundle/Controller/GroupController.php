@@ -34,19 +34,13 @@ class GroupController extends AbstractController
     /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
 
-    /**
-     * @var GroupManager
-     */
+    /** @var GroupManager */
     protected $groupManager;
 
-    /**
-     * @var GroupHandler
-     */
+    /** @var GroupHandler */
     protected $groupHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $groupForm;
 
     /**
