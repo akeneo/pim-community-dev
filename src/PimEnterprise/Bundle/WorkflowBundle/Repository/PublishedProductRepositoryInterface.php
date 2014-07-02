@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
  * Published product repository interface
@@ -29,4 +30,12 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * @return PublishedProductInterface[]
      */
     public function findByOriginalProductIds(array $originalIds);
+
+
+    /**
+     * Get the ID's of all published products. * The keys of the array are the ID of the original product.
+     *
+     * @return array [ original product ID => published product ID ]
+     */
+    public function getProductIdsMapping();
 }

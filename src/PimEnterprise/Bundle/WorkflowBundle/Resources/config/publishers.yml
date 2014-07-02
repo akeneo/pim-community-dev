@@ -1,14 +1,15 @@
 parameters:
-    pimee_workflow.publisher.chained.class:              PimEnterprise\Bundle\WorkflowBundle\Publisher\ChainedPublisher
-    pimee_workflow.publisher.product.class:              PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher
-    pimee_workflow.publisher.product_value.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductValuePublisher
-    pimee_workflow.publisher.product_association.class:  PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductAssociationPublisher
-    pimee_workflow.publisher.product_completeness.class: PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductCompletenessPublisher
-    pimee_workflow.publisher.product_metric.class:       PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMetricPublisher
-    pimee_workflow.publisher.product_media.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMediaPublisher
-    pimee_workflow.publisher.product_price.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPricePublisher
-    pimee_workflow.publisher.datetime.class:             PimEnterprise\Bundle\WorkflowBundle\Publisher\DateTimePublisher
-    pimee_workflow.publisher.attribute_option.class:     PimEnterprise\Bundle\WorkflowBundle\Publisher\AttributeOptionPublisher
+    pimee_workflow.publisher.chained.class:                     PimEnterprise\Bundle\WorkflowBundle\Publisher\ChainedPublisher
+    pimee_workflow.publisher.product.class:                     PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher
+    pimee_workflow.publisher.product_value.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductValuePublisher
+    pimee_workflow.publisher.product_association.class:         PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductAssociationPublisher
+    pimee_workflow.publisher.product_completeness.class:        PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductCompletenessPublisher
+    pimee_workflow.publisher.product_metric.class:              PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMetricPublisher
+    pimee_workflow.publisher.product_media.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductMediaPublisher
+    pimee_workflow.publisher.product_price.class:               PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPricePublisher
+    pimee_workflow.publisher.datetime.class:                    PimEnterprise\Bundle\WorkflowBundle\Publisher\DateTimePublisher
+    pimee_workflow.publisher.attribute_option.class:            PimEnterprise\Bundle\WorkflowBundle\Publisher\AttributeOptionPublisher
+    pimee_workflow.publisher.product_related_association.class: PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductRelatedAssociationPublisher
 
 services:
     pimee_workflow.publisher.chained:
@@ -19,6 +20,7 @@ services:
         arguments:
             - %pimee_workflow.entity.published_product.class%
             - @pimee_workflow.publisher.chained
+            - @pimee_workflow.publisher.product_related_association
             - @pim_versioning.manager.version
         tags:
             - { name: pimee_workflow.publisher }
@@ -68,6 +70,15 @@ services:
         arguments:
             - %pimee_workflow.entity.published_product_association.class%
             - @pimee_workflow.repository.published_product
+        tags:
+            - { name: pimee_workflow.publisher }
+
+    pimee_workflow.publisher.product_related_association:
+        class: %pimee_workflow.publisher.product_related_association.class%
+        arguments:
+            - @pimee_workflow.repository.published_product
+            - @pimee_workflow.repository.published_association
+            - @pim_catalog.repository.association
         tags:
             - { name: pimee_workflow.publisher }
 
