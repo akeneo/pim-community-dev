@@ -30,6 +30,8 @@ class IntegerTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
-        return $value == floor($value) ? floor($value) : $value;
+        return (is_numeric($value) && $value == floor($value))
+            ? floor($value)
+            : $value;
     }
 }

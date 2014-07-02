@@ -19,6 +19,13 @@ interface ProductValueInterface
     public function getAttribute();
 
     /**
+     * Get entity
+     *
+     * @return ProductInterface
+     */
+    public function getEntity();
+
+    /**
      * Get data
      *
      * @return mixed

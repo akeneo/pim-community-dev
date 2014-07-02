@@ -626,10 +626,39 @@ class ProductRepository extends DocumentRepository implements
 
     /**
      * {@inheritdoc}
+     *
+     * TODO: find a way to do it efficiently
      */
     public function findByProductIdAndOwnerIds($productId, array $ownerIds)
     {
-        //TODO: make MongoDB ODM support
-        return [];
+        $product = $this->find($productId);
+
+        $ownerIds = array_map(
+            function ($id) {
+                return new \MongoId($id);
+            },
+            $ownerIds
+        );
+
+        // retrieve products whom associations are concerned
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('associations')
+            ->field('_id')->in($ownerIds)
+            ->field('associations.products.$id')->equals(new \MongoId($productId));
+
+        $products = $qb->getQuery()->execute();
+        $associations = [];
+
+        // filter associations
+        foreach ($products as $dummyProduct) {
+            foreach ($dummyProduct->getAssociations() as $association) {
+                if ($association->hasProduct($product)) {
+                    $associations[] = $association;
+                }
+            }
+        }
+
+        return $associations;
     }
 }

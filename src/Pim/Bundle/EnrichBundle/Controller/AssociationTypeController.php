@@ -57,6 +57,7 @@ class AssociationTypeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param AssociationManager       $assocManager
      * @param AssociationTypeHandler   $assocTypeHandler

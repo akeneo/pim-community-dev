@@ -53,6 +53,8 @@
 - Fixed a bug with image upload on product with a "\" or "/" in their sku
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fixed a bug with timestampable listener which doesn't change the updated date of a product
+- Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -86,6 +88,7 @@
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
 - Inject EventDispatcher inside AbstractController
+- Add missing getEntity() method in product value interface
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
