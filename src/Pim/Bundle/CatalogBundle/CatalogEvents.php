@@ -42,7 +42,7 @@ final class CatalogEvents
     const PRE_REMOVE_PRODUCT = 'pim_catalog.pre_remove.product';
 
     /**
-     * This event is thrown before an associationt type is removed.
+     * This event is thrown before an association type is removed.
      *
      * The event listener receives an
      * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
@@ -80,4 +80,14 @@ final class CatalogEvents
      * @staticvar string
      */
     const PRE_REMOVE_FAMILY = 'pim_catalog.pre_remove.family';
+
+    /**
+     * This event is thrown before a group is removed.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_GROUP = 'pim_catalog.pre_remove.group';
 }
