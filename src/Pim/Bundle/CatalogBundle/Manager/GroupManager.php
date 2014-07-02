@@ -102,7 +102,7 @@ class GroupManager
     public function getTypeChoices($isVariant)
     {
         $types = $this->doctrine
-            ->getRepository('PimCatalogBundle:GroupType')
+            ->getGroupTypeRepository()
             ->findBy(array('variant' => $isVariant));
 
         $choices = array();
