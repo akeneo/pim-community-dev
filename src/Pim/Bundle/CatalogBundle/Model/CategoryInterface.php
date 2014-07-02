@@ -110,9 +110,7 @@ interface CategoryInterface
      *
      * @param CategoryInterface $child
      *
-     * @return boolean
-     *
-     * @see \Doctrine\Common\Collections\Collection
+     * @return CategoryInterface
      */
     public function removeChild(CategoryInterface $child);
 
