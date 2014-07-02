@@ -127,7 +127,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->save($product);
     }
 
-    function it_dispatch_an_event_when_remove_a_product(
+    function it_should_dispatch_an_event_when_remove_a_product(
         $eventDispatcher,
         $objectManager,
         ProductInterface $product
