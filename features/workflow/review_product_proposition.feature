@@ -1,117 +1,117 @@
-@javascript @skip
+@javascript
 Feature: Review a product changes proposition
   In order to control which data should be applied to a product
   As a product manager
   I need to be able to review product changes proposition
 
+  Background:
+    Given a "clothing" catalog configuration
+    And the product:
+      | family                    | jackets           |
+      | categories                | winter_top        |
+      | sku                       | my-jacket         |
+      | name-en_US                | Jacket            |
+      | description-en_US-mobile  | An awesome jacket |
+      | number_in_stock-ecommerce | 2                 |
+      | number_in_stock-mobile    | 4                 |
+      | number_in_stock-print     | 5                 |
+      | number_in_stock-tablet    | 20                |
+      | price-USD                 | 45                |
+      | manufacturer              | Volcom            |
+      | weather_conditions        | dry, wet          |
+      | handmade                  | no                |
+      | release_date-ecommerce    | 2014-05-14        |
+      | length                    | 60 CENTIMETER     |
+
   Scenario: Successfully accept an identifier attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  |
-      | my-sandals | sandals |
+    Given Mary proposed the following change to "my-jacket":
+      | field | value        |
+      | SKU   | your-jacket  |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "SKU" to "your-sandals"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "SKU"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product SKU should be "your-sandals"
+    But the field SKU should contain "your-jacket"
 
   Scenario: Successfully accept a text attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | name-en_US |
-      | my-sandals | sandals | Sandals    |
+    Given Mary proposed the following change to "my-jacket":
+      | field | value |
+      | Name  | Coat  |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "Name" to "Tong"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Name"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Name should be "Tong"
+    Then the product Name should be "Coat"
 
   Scenario: Successfully accept a textarea attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | description-en_US-mobile |
-      | my-sandals | sandals | Some awesome sandals     |
+    Given Mary proposed the following change to "my-jacket":
+      | field              | value           |
+      | mobile Description | An awesome coat |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "mobile Description" to "Some awesome baskets"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
-    And I click on the "approve" action of the row which contains "mobile - Description"
+    And I click on the "approve" action of the row which contains "Description"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product mobile Description should be "Some awesome baskets"
+    Then the product mobile Description should be "An awesome coat"
 
   Scenario: Successfully accept a number attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 2                         | 5                     | 20                     |
+    Given Mary proposed the following scopable change to "my-jacket":
+      | tab       | field                     | value |
+      | Marketing | ecommerce Number in stock | 20    |
+      | Marketing | mobile Number in stock    | 40    |
+      | Marketing | print Number in stock     | 50    |
+      | Marketing | tablet Number in stock    | 200   |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Internal" group
-    And I expand the "Number in stock" attribute
-    And I change the "ecommerce Number in stock" to "4"
-    And I change the "print Number in stock" to "8"
-    And I change the "tablet Number in stock" to "15"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Number in stock"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product ecommerce Number in stock should be "4"
-    Then the product print Number in stock should be "8"
-    Then the product tablet Number in stock should be "15"
+    And I visit the "Marketing" group
+    And I expand the "Number in stock" attribute
+    Then the product ecommerce Number in stock should be "20"
+    Then the product mobile Number in stock should be "40"
+    And the product print Number in stock should be "50"
+    And the product tablet Number in stock should be "200"
 
   Scenario: Successfully accept a prices attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | price-USD |
-      | my-sandals | sandals | 45        |
+    Given Mary proposed the following change to "my-jacket":
+      | tab       | field   | value |
+      | Marketing | $ Price | 90    |
+      | Marketing | € Price | 150   |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I visit the "Marketing" group
-    And I change the "$ Price" to "90"
-    And I change the "€ Price" to "150"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Price"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
+    And I visit the "Marketing" group
     Then the product Price in $ should be "90.00"
     Then the product Price in € should be "150.00"
 
   Scenario: Successfully accept a simpleselect attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | manufacturer |
-      | my-sandals | sandals | Converse     |
+    Given Mary proposed the following change to "my-jacket":
+      | field        | value |
+      | Manufacturer | Nike  |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "Manufacturer" to "TimberLand"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Manufacturer"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Manufacturer should be "TimberLand"
+    Then the product Manufacturer should be "Nike"
 
   Scenario: Successfully accept a multiselect attribute product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | weather_conditions |
-      | my-sandals | sandals | dry, wet           |
+    Given Mary proposed the following change to "my-jacket":
+      | field              | value     |
+      | Weather conditions | Hot, Cold |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "Weather conditions" to "Hot, Cold"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Weather conditions"
     Then the grid should contain 0 element
@@ -119,51 +119,37 @@ Feature: Review a product changes proposition
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
 
   Scenario: Successfully accept a file attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 2                         | 5                     | 20                     |
+    Given Mary proposed the following change to "my-jacket":
+      | tab   | field     | value            |
+      | Media | Datasheet | file(akeneo.txt) |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Internal" group
-    And I expand the "Number in stock" attribute
-    And I change the "ecommerce Number in stock" to "1"
-    And I change the "print Number in stock" to "1"
-    And I change the "tablet Number in stock" to "1"
-    And I attach file "akeneo.txt" to "Datasheet"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Datasheet"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
+    And I visit the "Media" group
     Then I should see "akeneo.txt"
 
   Scenario: Successfully accept an image attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 2                         | 5                     | 20                     |
+    Given Mary proposed the following change to "my-jacket":
+      | tab   | field     | value            |
+      | Media | Side view | file(akeneo.jpg) |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Media" group
-    And I attach file "akeneo.jpg" to "Thumbnail"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
-    And I click on the "approve" action of the row which contains "Thumbnail"
+    And I click on the "approve" action of the row which contains "Side view"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
+    And I visit the "Media" group
     Then I should see "akeneo.jpg"
 
   Scenario: Successfully accept a boolean attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 2                         | 5                     | 20                     |
+    Given Mary proposed the following change to "my-jacket":
+      | field    | value      |
+      | Handmade | state(yes) |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Additional information" group
-    And I check the "Handmade" switch
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "Handmade"
     Then the grid should contain 0 element
@@ -171,15 +157,11 @@ Feature: Review a product changes proposition
     Then the product Handmade should be "1"
 
   Scenario: Successfully accept a date attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | release_date-ecommerce | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 2014-05-14             | 2                         | 5                     | 20                     |
+    Given Mary proposed the following scopable change to "my-jacket":
+      | field                  | value      |
+      | ecommerce Release date | 2014-05-20 |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Sales" group
-    And I change the "ecommerce Release date" to "2014-05-20"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "approve" action of the row which contains "ecommerce - Release date"
     Then the grid should contain 0 element
@@ -187,32 +169,41 @@ Feature: Review a product changes proposition
     Then the product ecommerce Release date should be "2014-05-20"
 
   Scenario: Successfully accept a metric attribute product changes proposition
-    Given an "apparel" catalog configuration
-    And the following product:
-      | sku       | family  | washing_temperature | number_in_stock-ecommerce | number_in_stock-print | number_in_stock-tablet |
-      | my-tshirt | tshirts | 60 CELSIUS          | 2                         | 5                     | 20                     |
+    Given Mary proposed the following scopable change to "my-jacket":
+      | tab   | field  | value |
+      | Sizes | Length | 40    |
     And I am logged in as "Julia"
-    And I edit the "my-tshirt" product
-    And I visit the "Additional information" group
-    And I change the "Washing temperature" to "40"
-    And I save the product
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
-    And I click on the "approve" action of the row which contains "Washing temperature"
+    And I click on the "approve" action of the row which contains "Length"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Washing temperature should be "40"
+    And I visit the "Sizes" group
+    Then the product Length should be "40"
 
-  Scenario: Successfully refuse a product changes proposition
-    Given a "footwear" catalog configuration
-    And the following product:
-      | sku        | family  | name-en_US |
-      | my-sandals | sandals | Sandals    |
+  Scenario: Successfully refuse a waiting for approval proposition
+    Given Mary proposed the following change to "my-jacket":
+      | field | value |
+      | Name  | Coat  |
     And I am logged in as "Julia"
-    And I edit the "my-sandals" product
-    And I change the "Name" to "Tong"
-    And I save the product
+    And I edit the "my-jacket" product
+    When I visit the "Propositions" tab
+    And I click on the "refuse" action of the row which contains "Name"
+    Then the grid should contain 1 element
+    And the row "Mary" should contain:
+      | column | value       |
+      | Status | In progress |
+    When I visit the "Attributes" tab
+    Then the product Name should be "Jacket"
+
+  Scenario: Successfully remove an in progress proposition
+    Given Mary started to propose the following change to "my-jacket":
+      | field | value |
+      | Name  | Coat  |
+    And I am logged in as "Julia"
+    And I edit the "my-jacket" product
     When I visit the "Propositions" tab
     And I click on the "refuse" action of the row which contains "Name"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
-    Then the product Name should be "Sandals"
+    Then the product Name should be "Jacket"

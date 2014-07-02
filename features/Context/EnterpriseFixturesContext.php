@@ -12,6 +12,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use Behat\Behat\Context\Step;
 
 /**
  * A context for creating entities
@@ -87,6 +88,68 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $manager->persist($proposition);
         }
         $manager->flush();
+    }
+
+    /**
+     * @Given /^(\w+) proposed the following change to "([^"]*)":$/
+     */
+    public function someoneProposedTheFollowingChangeTo($username, $product, TableNode $table, $scopable = false, $ready = true)
+    {
+        $steps = [
+            new Step\Given(sprintf('I am logged in as "%s"', $username)),
+            new Step\Given(sprintf('I edit the "%s" product', $product)),
+        ];
+
+        foreach ($table->getHash() as $data) {
+            $data = array_merge(
+                ['tab' => ''],
+                $data
+            );
+            if ('' !== $data['tab']) {
+                $steps[] = new Step\Given(sprintf('I visit the "%s" group', $data['tab']));
+            }
+            if ($scopable) {
+                $steps[] = new Step\Given(sprintf('I expand the "%s" attribute', substr(strstr($data['field'], ' '), 1)));
+            }
+            switch (true)
+            {
+                case 0 === strpos($data['value'], 'file('):
+                    $file = strtr($data['value'], ['file(' => '', ')' => '']);
+                    $steps[] = new Step\Given(sprintf('I attach file "%s" to "%s"', $file, $data['field']));
+                    break;
+
+                case 0 === strpos($data['value'], 'state('):
+                    $steps[] = new Step\Given(sprintf('I check the "%s" switch', $data['field']));
+                    break;
+
+                default:
+                    $steps[] = new Step\Given(sprintf('I change the "%s" to "%s"', $data['field'], $data['value']));
+            }
+        }
+
+        $steps[] = new Step\Given('I save the product');
+        if ($ready) {
+            $steps[] = new Step\Given('I press the "Send for approval" button');
+        }
+        $steps[] = new Step\Given('I logout');
+
+        return $steps;
+    }
+
+    /**
+     * @Given /^(\w+) proposed the following scopable change to "([^"]*)":$/
+     */
+    public function someoneProposedTheFollowingScopableChangeTo($username, $product, TableNode $table)
+    {
+        return $this->someoneProposedTheFollowingChangeTo($username, $product, $table, true);
+    }
+
+    /**
+     * @Given /^(\w+) started to propose the following change to "([^"]*)":$/
+     */
+    public function someoneStartedToProposeTheFollowingChangeTo($username, $product, TableNode $table)
+    {
+        return $this->someoneProposedTheFollowingChangeTo($username, $product, $table, false, false);
     }
 
     /**
