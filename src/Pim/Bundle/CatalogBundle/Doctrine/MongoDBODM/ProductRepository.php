@@ -634,7 +634,7 @@ class ProductRepository extends DocumentRepository implements
         $product = $this->find($productId);
 
         $ownerIds = array_map(
-            function($id) {
+            function ($id) {
                 return new \MongoId($id);
             },
             $ownerIds
