@@ -317,9 +317,8 @@ class CategoryProcessorTest extends TransformerProcessorTestCase
 
     protected function getCategoryMock($data)
     {
-        $category = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\CategoryInterface')
-            ->setMethods(array('getParent', 'setParent', 'getCode'))
-            ->getMock();
+        $category = $this->getMockForAbstractClass('Pim\Bundle\CatalogBundle\Model\CategoryInterface');
+
         $category->parent = null;
         foreach ($data as $key => $value) {
             $category->$key = $value;
