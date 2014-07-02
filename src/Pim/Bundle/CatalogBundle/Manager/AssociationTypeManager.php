@@ -50,4 +50,20 @@ class AssociationTypeManager
     {
         return $this->repository->findAll();
     }
+
+    /**
+     * Remove an association type
+     *
+     * @param AssociationType $associationType
+     */
+    public function remove(AssociationType $associationType)
+    {
+        $this->eventDispatcher->dispatch(
+            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE,
+            new GenericEvent($associationType)
+        );
+
+        $this->objectManager->remove($associationType);
+        $this->objectManager->flush();
+    }
 }

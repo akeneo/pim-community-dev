@@ -42,6 +42,16 @@ final class CatalogEvents
     const PRE_REMOVE_PRODUCT = 'pim_catalog.pre_remove.product';
 
     /**
+     * This event is thrown before an associationt type is removed.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_ASSOCIATION_TYPE = 'pim_catalog.pre_remove.association_type';
+
+    /**
      * This event is thrown before an attribute is removed.
      *
      * The event listener receives an
