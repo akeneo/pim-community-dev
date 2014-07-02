@@ -2,16 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Prophecy\Argument;
-
-use Pim\Bundle\CatalogBundle\CatalogEvents;
-
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 class AttributeManagerSpec extends ObjectBehavior
 {
@@ -57,6 +54,13 @@ class AttributeManagerSpec extends ObjectBehavior
     function it_should_return_the_attribute_option_class_used()
     {
         $this->getAttributeOptionClass()->shouldReturn(self::OPTION_CLASS);
+    }
+
+    function it_should_return_list_of_attribute_types($factory)
+    {
+        $factory->getAttributeTypes(self::PRODUCT_CLASS)->willReturn(['foo', 'bar']);
+
+        $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
     }
 
     function it_should_dispatch_an_event_when_remove_a_product(
