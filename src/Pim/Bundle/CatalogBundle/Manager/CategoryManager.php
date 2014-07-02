@@ -2,8 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -15,28 +18,27 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  */
 class CategoryManager
 {
-    /**
-     * @var ObjectManager $om
-     */
+    /** @var ObjectManager */
     protected $om;
 
-    /**
-     * Class name for managed category
-     *
-     * @var string $categoryClass
-     */
+    /** @var string */
     protected $categoryClass;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $om
-     * @param string        $categoryClass
+     * @param ObjectManager            $om
+     * @param string                   $categoryClass
+     * @param EventDispatcherInterface $eventDispatcher
      */
-    public function __construct(ObjectManager $om, $categoryClass)
+    public function __construct(ObjectManager $om, $categoryClass, EventDispatcherInterface $eventDispatcher)
     {
         $this->om = $om;
         $this->categoryClass = $categoryClass;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -218,6 +220,8 @@ class CategoryManager
      */
     public function remove(CategoryInterface $category)
     {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_CATEGORY, new GenericEvent($category));
+
         foreach ($category->getProducts() as $product) {
             $product->removeCategory($category);
         }
