@@ -2,17 +2,13 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-
-use Prophecy\Argument;
-
-use Pim\Bundle\CatalogBundle\CatalogEvents;
-
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 
 class CategoryManagerSpec extends ObjectBehavior
