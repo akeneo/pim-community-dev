@@ -54,6 +54,7 @@
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
 - Fixed a bug with timestampable listener which doesn't change the updated date of a product
+- Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
 
 ## BC breaks
 - Remove FlexibleEntityBundle
