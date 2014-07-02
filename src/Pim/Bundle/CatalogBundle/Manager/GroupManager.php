@@ -55,6 +55,8 @@ class GroupManager
     ) {
         $this->doctrine        = $doctrine;
         $this->eventDispatcher = $eventDispatcher;
+        $this->groupClass      = $groupClass;
+        $this->groupTypeClass  = $groupTypeClass;
         $this->productClass    = $productClass;
         $this->attributeClass  = $attributeClass;
     }
