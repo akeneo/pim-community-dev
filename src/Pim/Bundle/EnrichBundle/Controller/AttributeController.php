@@ -302,7 +302,7 @@ class AttributeController extends AbstractDoctrineController
         $attribute = $this->findAttributeOr404($id);
         $this->validateRemoval($attribute);
 
-        $this->remove($attribute);
+        $this->attributeManager->remove($attribute);
 
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
