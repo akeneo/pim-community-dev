@@ -30,4 +30,14 @@ final class CatalogEvents
      * @staticvar string
      */
     const CREATE_PRODUCT_VALUE = 'pim_catalog.create_product_value';
+
+    /**
+     * This event is thrown before a product is removed.
+     *
+     * The event listener receives an
+     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_REMOVE_PRODUCT = 'pim_catalog.pre_remove.product';
 }
