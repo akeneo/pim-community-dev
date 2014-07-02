@@ -2,12 +2,14 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
+use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
@@ -29,6 +31,9 @@ class PropositionChangesApplier
     /** @var array */
     protected $modifiedValues = [];
 
+    /** @var array */
+    protected $errors = [];
+
     /**
      * @param FormFactoryInterface     $formFactory
      * @param EventDispatcherInterface $dispatcher
@@ -46,6 +51,8 @@ class PropositionChangesApplier
      *
      * @param ProductInterface $product
      * @param Proposition      $proposition
+     *
+     * @throws ValidatorException
      */
     public function apply(ProductInterface $product, Proposition $proposition)
     {
@@ -56,9 +63,10 @@ class PropositionChangesApplier
             );
         }
 
-        $this
+        /** @var Form $form */
+        $form = $this
             ->formFactory
-            ->createBuilder('form', $product)
+            ->createBuilder('form', $product, ['csrf_protection' => false])
             ->add(
                 'values',
                 'pim_enrich_localized_collection',
@@ -86,8 +94,13 @@ class PropositionChangesApplier
                     }
                 }
             )
-            ->getForm()
-            ->submit($proposition->getChanges(), false);
+            ->getForm();
+
+        $form->submit($proposition->getChanges(), false);
+
+        if (null !== $error = $this->getFormErrorsAsString($form)) {
+            throw new ValidatorException($error);
+        }
     }
 
     /**
@@ -143,5 +156,46 @@ class PropositionChangesApplier
         }
 
         $this->modifiedValues[$key] = $options;
+    }
+
+    /**
+     * Check all children of the form to get the errors.
+     * Errors are stored in $this->errors.
+     *
+     * @param Form $form
+     * @param Form $parent
+     */
+    protected function checkFormErrors(Form $form, Form $parent= null)
+    {
+        if (null !== $parent) {
+            foreach ($form->getErrors() as $error) {
+                $this->errors[$parent->getName()][] = $error->getMessage();
+            }
+        }
+
+        foreach ($form->all() as $child) {
+            $this->checkFormErrors($child, $form);
+        }
+    }
+
+    /**
+     * Get the errors of the form as a string.
+     *
+     * @param Form $form
+     *
+     * @return null|string
+     */
+    protected function getFormErrorsAsString(Form $form)
+    {
+        $error = '';
+        $this->checkFormErrors($form);
+
+        foreach ($this->errors as $field => $errors) {
+            foreach ($errors as $message) {
+                $error .= sprintf('%s: %s ', ucfirst($field), $message);
+            }
+        }
+
+        return '' === $error ? null : $error;
     }
 }
