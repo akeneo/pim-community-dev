@@ -63,7 +63,7 @@ class AttributeManagerSpec extends ObjectBehavior
         $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
     }
 
-    function it_should_dispatch_an_event_when_remove_a_product(
+    function it_should_dispatch_an_event_when_remove_an_attribute(
         $eventDispatcher,
         $objectManager,
         AbstractAttribute $attribute
