@@ -2,9 +2,8 @@
 
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
-use Prophecy\Argument;
-
 use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
