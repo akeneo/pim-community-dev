@@ -129,7 +129,7 @@ class GroupManager
      */
     public function getRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:Group');
+        return $this->doctrine->getRepository($this->groupClass);
     }
 
     /**
@@ -139,7 +139,7 @@ class GroupManager
      */
     public function getGroupTypeRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:GroupType');
+        return $this->doctrine->getRepository($this->groupTypeClass);
     }
 
     /**
