@@ -41,6 +41,7 @@
 - Display the code of import/export profiles on the edit and show views
 - Related entities' edition and deletion doesn't reload all the products' normalized data
 - Inject event dispatcher inside AbstractController
+- Csv reader and Yaml readers are now reseted between each steps
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
