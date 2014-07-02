@@ -71,3 +71,9 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - remove
                 - persist
                 - refresh
+    oneToOne:
+        version:
+          targetEntity: Pim\Bundle\VersioningBundle\Entity\Version
+          joinColumns:
+            version_id:
+                referencedColumnName: id

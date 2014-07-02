@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Published product interface
@@ -23,4 +24,16 @@ interface PublishedProductInterface extends ProductInterface
      * @return PublishedProduct
      */
     public function setOriginalProductId($productId);
+
+    /**
+     * @return Version
+     */
+    public function getVersion();
+
+    /**
+     * @param Version $version
+     *
+     * @return PublishedProductInterface
+     */
+    public function setVersion(Version $version);
 }
