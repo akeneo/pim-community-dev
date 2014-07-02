@@ -179,7 +179,7 @@ class AssociationTypeController extends AbstractDoctrineController
      */
     public function removeAction(AssociationType $associationType)
     {
-        $this->remove($associationType);
+        $this->assocManager->remove($associationType);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
