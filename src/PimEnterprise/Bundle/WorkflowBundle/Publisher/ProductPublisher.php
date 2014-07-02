@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
@@ -20,14 +21,19 @@ class ProductPublisher implements PublisherInterface
     /** @var PublisherInterface */
     protected $publisher;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
     /**
      * @param string             $publishClassName
      * @param PublisherInterface $publisher
+     * @param VersionManager     $versionManager
      */
-    public function __construct($publishClassName, PublisherInterface $publisher)
+    public function __construct($publishClassName, PublisherInterface $publisher, VersionManager $versionManager)
     {
         $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -43,6 +49,7 @@ class ProductPublisher implements PublisherInterface
         $this->copyAssociations($object, $published);
         $this->copyCompletenesses($object, $published);
         $this->copyValues($object, $published);
+        $this->setVersion($object, $published);
 
         return $published;
     }
@@ -128,6 +135,23 @@ class ProductPublisher implements PublisherInterface
             $publishedValue = $this->publisher->publish($originalValue);
             $published->addValue($publishedValue);
         }
+    }
+
+    /**
+     * Set the version of the published product
+     *
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
+     */
+    protected function setVersion(ProductInterface $product, PublishedProductInterface $published)
+    {
+        $version = $this->versionManager->getNewestLogEntry($product, null);
+
+        if ($version->isPending()) {
+            $this->versionManager->buildPendingVersion($version);
+        }
+
+        $published->setVersion($version);
     }
 
     /**
