@@ -26,4 +26,4 @@ class PublishedAssociationRepository extends EntityRepository implements Publish
             ]
         );
     }
-} 
+}
