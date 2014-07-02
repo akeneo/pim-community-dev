@@ -5,9 +5,10 @@ pimee_workflow:
         changes: Changes
         locale:  Locale context
         status:
-            label: Status
-            in_progress: In progress
-            ready: Waiting for approval
+            label: status
+            working_copy: working copy
+            in_progress: in progress
+            ready: waiting for approval
         action:
             approve: Approve
             refuse:  Refuse
