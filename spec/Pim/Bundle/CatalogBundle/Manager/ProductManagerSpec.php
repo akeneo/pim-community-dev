@@ -7,6 +7,7 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
@@ -19,6 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 
 class ProductManagerSpec extends ObjectBehavior
 {
@@ -123,5 +125,59 @@ class ProductManagerSpec extends ObjectBehavior
         $persister->persist($product, ['recalculate' => true, 'flush' => true, 'schedule' => true])->shouldBeCalled();
 
         $this->save($product);
+    }
+
+    function it_dispatch_an_event_when_remove_a_product(
+        $eventDispatcher,
+        $objectManager,
+        ProductInterface $product
+    ) {
+        $eventDispatcher->dispatch(
+            CatalogEvents::PRE_REMOVE_PRODUCT,
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+        )->shouldBeCalled();
+
+        $objectManager->remove($product)->shouldBeCalled();
+        $objectManager->flush()->shouldBeCalled();
+
+        $this->remove($product);
+    }
+
+    function it_should_not_flush_if_i_do_not_want_when_remove_a_product(
+        $eventDispatcher,
+        $objectManager,
+        ProductInterface $product
+    ) {
+        $eventDispatcher->dispatch(
+            CatalogEvents::PRE_REMOVE_PRODUCT,
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+        )->shouldBeCalled();
+
+        $objectManager->remove($product)->shouldBeCalled();
+        $objectManager->flush()->shouldNotBeCalled();
+
+        $this->remove($product, false);
+    }
+
+    function it_should_dispatch_an_event_per_product_removed(
+        $eventDispatcher,
+        $objectManager,
+        $productRepository,
+        ProductInterface $product1,
+        ProductInterface $product2
+    ) {
+        $productRepository->findByIds([1, 2])->willReturn([$product1, $product2]);
+
+        $eventDispatcher->dispatch(
+            CatalogEvents::PRE_REMOVE_PRODUCT,
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+        )->shouldBeCalledTimes(2);
+
+        $objectManager
+            ->remove(Argument::type('Pim\Bundle\CatalogBundle\Model\ProductInterface'))
+            ->shouldBeCalledTimes(2);
+        $objectManager->flush()->shouldBeCalledTimes(1);
+
+        $this->removeAll([1, 2]);
     }
 }
