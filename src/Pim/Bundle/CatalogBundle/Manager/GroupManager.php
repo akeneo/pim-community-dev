@@ -66,9 +66,7 @@ class GroupManager
      */
     public function getAvailableAxis()
     {
-        $repo = $this->getAttributeRepository();
-
-        return $repo->findAllAxis();
+        return $this->getAttributeRepository()->findAllAxis();
     }
 
     /**
