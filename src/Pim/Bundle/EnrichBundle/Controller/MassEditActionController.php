@@ -211,7 +211,7 @@ class MassEditActionController extends AbstractDoctrineController
 
         $operator->initializeOperation();
         $form = $this->getOperatorForm($operator);
-        $form->submit($this->request);
+        $form->submit($this->request, false);
 
         // Binding does not actually perform the operation, thus form errors can miss some constraints
         $operator->performOperation();
