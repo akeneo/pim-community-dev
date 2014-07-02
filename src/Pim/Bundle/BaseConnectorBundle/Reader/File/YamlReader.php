@@ -160,4 +160,14 @@ class YamlReader extends FileReader implements ItemReaderInterface
             ],
         ];
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null !== $this->yaml) {
+            $this->yaml->rewind();
+        }
+    }
 }
