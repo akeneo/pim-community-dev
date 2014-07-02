@@ -13,8 +13,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositor
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PublishedProductRepository extends ProductRepository
-    implements PublishedProductRepositoryInterface, PublishedAssociationRepositoryInterface
+class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
+    PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}

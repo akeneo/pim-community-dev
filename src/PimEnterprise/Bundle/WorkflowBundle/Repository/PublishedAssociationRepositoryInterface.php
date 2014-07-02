@@ -22,4 +22,4 @@ interface PublishedAssociationRepositoryInterface
      * @return PublishedProductAssociation|null
      */
     public function findOneByTypeAndOwner(AssociationType $type, $ownerId);
-} 
+}
