@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductValueChangesCollectorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -15,7 +16,9 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CollectProductValuesSubscriber implements EventSubscriberInterface
+class CollectProductValuesSubscriber implements
+    ProductValueChangesCollectorInterface,
+    EventSubscriberInterface
 {
     /** @var ComparatorInterface */
     protected $comparator;
@@ -75,9 +78,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Get the collected changes sent to the product values
-     *
-     * @return array
+     * {@inheritdoc}
      */
     public function getChanges()
     {

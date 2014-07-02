@@ -17,6 +17,8 @@ services:
         arguments:
             - '@pimee_workflow.form.comparator.chained'
             - '@security.context'
+        tags:
+            - { name: pimee_workflow.collector, priority: 128 }
 
     pimee_workflow.form.subscriber.unmap_product_values:
         public: false

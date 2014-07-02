@@ -37,8 +37,8 @@ class PropositionPersister implements ProductPersister
     /** @var PropositionFactory */
     protected $factory;
 
-    /** @var CollectProductValuesSubscriber */
-    protected $collector;
+    /** @var ProductValueChangesCollectorInterface[] */
+    protected $collectors = [];
 
     /** @var PropositionRepositoryInterface */
     protected $repository;
@@ -51,7 +51,6 @@ class PropositionPersister implements ProductPersister
      * @param CompletenessManager            $completenessManager
      * @param SecurityContextInterface       $securityContext
      * @param PropositionFactory             $factory
-     * @param CollectProductValuesSubscriber $collector
      * @param PropositionRepositoryInterface $repository
      * @param EventDispatcherInterface       $dispatcher
      */
@@ -60,7 +59,6 @@ class PropositionPersister implements ProductPersister
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
-        CollectProductValuesSubscriber $collector,
         PropositionRepositoryInterface $repository,
         EventDispatcherInterface $dispatcher
     ) {
@@ -68,9 +66,18 @@ class PropositionPersister implements ProductPersister
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
-        $this->collector = $collector;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
+    }
+
+    /**
+     * Set the changes collectors
+     *
+     * @param ProductValueChangesCollectorInterface[] $collectors
+     */
+    public function setCollectors(array $collectors)
+    {
+        $this->collectors = $collectors;
     }
 
     /**
@@ -143,7 +150,7 @@ class PropositionPersister implements ProductPersister
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
-        $changes = $this->collector->getChanges();
+        $changes = $this->getCollectedChanges();
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
         $proposition = $this->repository->findUserProposition($product, $username, $locale);
@@ -189,5 +196,23 @@ class PropositionPersister implements ProductPersister
         }
 
         return $user;
+    }
+
+    /**
+     * Get the changes from the first collector that actually collected something
+     *
+     * @return array
+     */
+    protected function getCollectedChanges()
+    {
+        $changes = [];
+        foreach ($this->collectors as $collector) {
+            $changes = $collector->getChanges();
+            if (!empty($changes)) {
+                break;
+            }
+        }
+
+        return $changes;
     }
 }

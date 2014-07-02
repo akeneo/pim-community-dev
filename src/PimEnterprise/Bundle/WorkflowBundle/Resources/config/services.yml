@@ -35,7 +35,6 @@ services:
             - '@pim_catalog.manager.completeness'
             - '@security.context'
             - '@pimee_workflow.factory.proposition'
-            - '@pimee_workflow.form.subscriber.collect_product_value_changes'
             - '@pimee_workflow.repository.proposition'
             - '@event_dispatcher'
 
