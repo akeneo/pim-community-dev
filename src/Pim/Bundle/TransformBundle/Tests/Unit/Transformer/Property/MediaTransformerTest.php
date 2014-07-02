@@ -80,7 +80,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     protected function getValue($hasFile, $mediaExists)
     {
         $productValue = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('getMedia', 'setMedia', '__toString', 'setData', 'getData', 'getAttribute'))
+            ->setMethods(array('getMedia', 'setMedia', '__toString', 'setData', 'getData', 'getAttribute', 'getEntity'))
             ->getMock();
         if ($hasFile) {
             $productValue

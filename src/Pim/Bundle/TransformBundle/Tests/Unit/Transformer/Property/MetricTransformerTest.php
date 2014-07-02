@@ -46,7 +46,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('metric_family'));
 
         $object = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Model\ProductValueInterface')
-            ->setMethods(array('getMetric', 'setMetric', '__toString', 'setData', 'getData', 'getAttribute'))
+            ->setMethods(array('getMetric', 'setMetric', '__toString', 'setData', 'getData', 'getAttribute', 'getEntity'))
             ->getMock();
 
         $metric = null;
