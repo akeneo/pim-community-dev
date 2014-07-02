@@ -2,6 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 
 /**
@@ -13,19 +17,28 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
  */
 class AssociationTypeManager
 {
-    /**
-     * @var AssociationTypeRepository $repository
-     */
+    /** @var AssociationTypeRepository $repository */
     protected $repository;
+
+    /** @var ObjectManager */
+    protected $objectManager;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * Constructor
      *
      * @param AssociationTypeRepository $repository
      */
-    public function __construct(AssociationTypeRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        AssociationTypeRepository $repository,
+        ObjectManager $objectManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->repository      = $repository;
+        $this->objectManager   = $objectManager;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**

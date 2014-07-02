@@ -122,3 +122,5 @@ services:
         class: %pim_catalog.manager.association_type.class%
         arguments:
             - '@pim_catalog.repository.association_type'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
