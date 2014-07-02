@@ -39,9 +39,6 @@ class JobProfileController extends AbstractDoctrineController
     /** @var ConnectorRegistry */
     protected $connectorRegistry;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /** @var string */
     protected $jobType;
 
@@ -67,9 +64,9 @@ class JobProfileController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param ConnectorRegistry        $connectorRegistry
-     * @param EventDispatcherInterface $eventDispatcher
      * @param string                   $jobType
      * @param string                   $rootDir
      * @param string                   $environment
@@ -84,9 +81,9 @@ class JobProfileController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         ConnectorRegistry $connectorRegistry,
-        EventDispatcherInterface $eventDispatcher,
         $jobType,
         $rootDir,
         $environment,
@@ -101,11 +98,11 @@ class JobProfileController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
         $this->connectorRegistry = $connectorRegistry;
-        $this->eventDispatcher   = $eventDispatcher;
         $this->jobType           = $jobType;
         $this->rootDir           = $rootDir;
         $this->environment       = $environment;
@@ -276,6 +273,8 @@ class JobProfileController extends AbstractDoctrineController
                 return $this->redirectToIndexView();
             }
         }
+
+        $this->eventDispatcher->dispatch(JobEvents::PRE_REMOVE_JOB_PROFILE, new GenericEvent($jobInstance));
 
         $this->remove($jobInstance);
 

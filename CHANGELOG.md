@@ -35,10 +35,12 @@
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
-- Dispatch events on show/edit/execute job profile actions
+- Dispatch events on show/edit/execute/remove job profile actions
 - Dispatch events on view/download job execution actions
 - Allow to install custom user roles and groups from installer fixtures
 - Display the code of import/export profiles on the edit and show views
+- Related entities' edition and deletion doesn't reload all the products' normalized data
+- Inject event dispatcher inside AbstractController
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -51,6 +53,7 @@
 - Fixed a bug with image upload on product with a "\" or "/" in their sku
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fixed a bug with timestampable listener which doesn't change the updated date of a product
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -83,6 +86,8 @@
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
+- Inject EventDispatcher inside AbstractController
+- Add missing getEntity() method in product value interface
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

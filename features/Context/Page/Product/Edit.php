@@ -182,11 +182,12 @@ class Edit extends Form
      */
     public function findFieldIcons($name)
     {
-        if ($field = $this->findField($name)) {
-            return $field->getParent()->findAll('css', '.icons-container i');
-        }
+        $controls = $this->findField($name);
+        do {
+            $controls = $controls->getParent();
+        } while (null !== $controls && !$controls->hasClass('controls'));
 
-        return [];
+        return $controls->findAll('css', '.icons-container i');
     }
 
     /**

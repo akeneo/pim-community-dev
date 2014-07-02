@@ -28,7 +28,7 @@ class IndexPurger
     protected $productClass;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry $managerRegistry
      * @param string          $productClass
      */
     public function __construct(ManagerRegistry $managerRegistry, $productClass)
