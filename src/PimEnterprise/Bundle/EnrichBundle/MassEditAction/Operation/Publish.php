@@ -55,7 +55,7 @@ class Publish extends ProductMassEditOperation
         $notGranted = [];
         foreach ($products as $product) {
             if ($this->securityContext->isGranted(Attributes::OWNER, $product) === false) {
-                $notGranted[]= (string) $product->getIdentifier();
+                $notGranted[] = (string) $product->getIdentifier();
             }
         }
 

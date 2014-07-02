@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,6 +37,7 @@ class PropositionController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ObjectRepository         $repository
      * @param PropositionManager       $manager
      */
@@ -47,6 +49,7 @@ class PropositionController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ObjectRepository $repository,
         PropositionManager $manager
     ) {
@@ -57,7 +60,8 @@ class PropositionController extends AbstractController
             $securityContext,
             $formFactory,
             $validator,
-            $translator
+            $translator,
+            $eventDispatcher
         );
         $this->repository = $repository;
         $this->manager    = $manager;
