@@ -260,6 +260,8 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     public function removeChild(CategoryInterface $children)
     {
         $this->children->removeElement($children);
+
+        return $this;
     }
 
     /**
@@ -342,6 +344,8 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
                 $product->addCategory($this);
             }
         }
+
+        return $this;
     }
 
     /**
