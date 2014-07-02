@@ -645,8 +645,7 @@ class ProductRepository extends DocumentRepository implements
         $qb
             ->select('associations')
             ->field('_id')->in($ownerIds)
-            ->field('associations.products.$id')->equals(new \MongoId($productId))
-        ;
+            ->field('associations.products.$id')->equals(new \MongoId($productId));
 
         $products = $qb->getQuery()->execute();
         $associations = [];
