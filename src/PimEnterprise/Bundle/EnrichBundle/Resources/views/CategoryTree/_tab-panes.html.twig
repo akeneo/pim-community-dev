@@ -12,11 +12,9 @@
 
 {% if form.vars.value.id %}
 
-    {% if form.vars.value.isRoot() %}
-        <div class="tab-pane" id="permissions">
-            {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
-        </div>
-    {% endif %}
+    <div class="tab-pane" id="permissions">
+        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+    </div>
 
     <div class="tab-pane" id="history">
         {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}

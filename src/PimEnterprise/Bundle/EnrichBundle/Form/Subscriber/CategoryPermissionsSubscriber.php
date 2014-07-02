@@ -52,9 +52,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getData()->isRoot()) {
-            $event->getForm()->add('permissions', 'pimee_enrich_category_permissions');
-        }
+        $event->getForm()->add('permissions', 'pimee_enrich_category_permissions');
     }
 
     /**
@@ -103,8 +101,6 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     protected function isValidTree(FormEvent $event)
     {
-        return null !== $event->getData()
-            && null !== $event->getData()->getId()
-            && false !== $event->getData()->isRoot();
+        return null !== $event->getData() && null !== $event->getData()->getId();
     }
 }
