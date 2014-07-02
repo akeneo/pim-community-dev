@@ -70,6 +70,7 @@ services:
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.factory.attribute_type'
+            - '@event_dispatcher'
 
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%
