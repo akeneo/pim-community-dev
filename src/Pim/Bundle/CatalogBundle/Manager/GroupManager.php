@@ -24,6 +24,12 @@ class GroupManager
     protected $eventDispatcher;
 
     /** @var string */
+    protected $groupClass;
+
+    /** @var string */
+    protected $groupTypeClass;
+
+    /** @var string */
     protected $productClass;
 
     /** @var string */
@@ -34,12 +40,16 @@ class GroupManager
      *
      * @param RegistryInterface        $doctrine
      * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $groupClass
+     * @param string                   $groupTypeClass
      * @param string                   $productClass
      * @param string                   $attributeClass
      */
     public function __construct(
         RegistryInterface $doctrine,
         EventDispatcherInterface $eventDispatcher,
+        $groupClass,
+        $groupTypeClass,
         $productClass,
         $attributeClass
     ) {
@@ -101,9 +111,7 @@ class GroupManager
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->doctrine
-            ->getGroupTypeRepository()
-            ->findBy(array('variant' => $isVariant));
+        $types = $this->getGroupTypeRepository()->findBy(array('variant' => $isVariant));
 
         $choices = array();
         foreach ($types as $type) {
