@@ -21,27 +21,27 @@ class ProductPublisher implements PublisherInterface
     /** @var PublisherInterface */
     protected $publisher;
 
-    /** @var PublisherInterface */
-    protected $relatedAssociationPublisher;
+    /** @var ProductRelatedAssociationPublisher */
+    protected $associationPublisher;
 
     /** @var VersionManager */
     protected $versionManager;
 
     /**
-     * @param string             $publishClassName
-     * @param PublisherInterface $publisher
-     * @param PublisherInterface $relatedAssociationPublisher
-     * @param VersionManager     $versionManager
+     * @param string                             $publishClassName
+     * @param PublisherInterface                 $publisher
+     * @param ProductRelatedAssociationPublisher $associationPublisher
+     * @param VersionManager                     $versionManager
      */
     public function __construct(
         $publishClassName,
         PublisherInterface $publisher,
-        PublisherInterface $relatedAssociationPublisher,
+        ProductRelatedAssociationPublisher $associationPublisher,
         VersionManager $versionManager
     ) {
         $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
-        $this->relatedAssociationPublisher = $relatedAssociationPublisher;
+        $this->associationPublisher = $associationPublisher;
         $this->versionManager = $versionManager;
     }
 
@@ -152,7 +152,7 @@ class ProductPublisher implements PublisherInterface
      */
     protected function updateRelatedAssociations(PublishedProductInterface $published)
     {
-        $this->relatedAssociationPublisher->publish($published);
+        $this->associationPublisher->publish($published);
     }
 
     /**
