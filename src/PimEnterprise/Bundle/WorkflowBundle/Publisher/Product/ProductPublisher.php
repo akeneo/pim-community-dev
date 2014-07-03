@@ -1,11 +1,13 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product publisher
@@ -21,7 +23,7 @@ class ProductPublisher implements PublisherInterface
     /** @var PublisherInterface */
     protected $publisher;
 
-    /** @var ProductRelatedAssociationPublisher */
+    /** @var RelatedAssociationPublisher */
     protected $associationPublisher;
 
     /** @var VersionManager */
@@ -30,13 +32,13 @@ class ProductPublisher implements PublisherInterface
     /**
      * @param string                             $publishClassName
      * @param PublisherInterface                 $publisher
-     * @param ProductRelatedAssociationPublisher $associationPublisher
+     * @param RelatedAssociationPublisher $associationPublisher
      * @param VersionManager                     $versionManager
      */
     public function __construct(
         $publishClassName,
         PublisherInterface $publisher,
-        ProductRelatedAssociationPublisher $associationPublisher,
+        RelatedAssociationPublisher $associationPublisher,
         VersionManager $versionManager
     ) {
         $this->publishClassName = $publishClassName;

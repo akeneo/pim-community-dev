@@ -1,9 +1,10 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractAssociation;
 
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -12,7 +13,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductAssociationPublisher implements PublisherInterface
+class AssociationPublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;
