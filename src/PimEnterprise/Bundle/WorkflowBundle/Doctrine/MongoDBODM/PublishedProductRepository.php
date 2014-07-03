@@ -2,8 +2,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 
 /**
  * Published products repository
@@ -11,7 +13,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
+class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface,
+ PublishedAssociationRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -36,5 +39,42 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $products = $qb->getQuery()->execute();
 
         return $products->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsMapping()
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->select('originalProductId', '_id');
+        $qb->hydrate(false);
+
+        $ids = [];
+        foreach ($qb->getQuery()->execute() as $row) {
+            $ids[$row['originalProductId']] = $row['_id']->{'$id'};
+        }
+
+        return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO; find a way to do it efficiently
+     */
+    public function findOneByTypeAndOwner(AssociationType $type, $ownerId)
+    {
+        // retrieve the product that owns our published association
+        $product = $this->find($ownerId);
+
+        // find the right association
+        foreach ($product->getAssociations() as $association) {
+            if ($association->getAssociationType() === $type) {
+                return $association;
+            }
+        }
+
+        return null;
     }
 }

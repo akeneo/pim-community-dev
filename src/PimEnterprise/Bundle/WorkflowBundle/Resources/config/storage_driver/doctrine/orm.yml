@@ -1,6 +1,7 @@
 parameters:
     pimee_workflow.repository.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM\PropositionRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository
+    pimee_workflow.repository.published_association.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedAssociationRepository
 
 services:
     pimee_workflow.object_manager.proposition:
@@ -22,3 +23,12 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pimee_workflow.entity.published_product.class%
+
+    pimee_workflow.repository.published_association:
+        class: %pimee_workflow.repository.published_association.class%
+        factory_service: doctrine.orm.entity_manager
+        factory_method: getRepository
+        arguments:
+            - %pimee_workflow.entity.published_product_association.class%
+        tags:
+            - { name: 'pim_repository' }
