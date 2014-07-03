@@ -75,12 +75,12 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
-                try {
-                    $this->applier->apply($product, $proposition);
-                } catch (ValidatorException $e) {
-                    // Do nothing here at the moment
-                    //TODO: remove this try catch and load the form directly with the potential errors
-                }
+            try {
+                $this->applier->apply($product, $proposition);
+            } catch (ValidatorException $e) {
+                // Do nothing here at the moment
+                //TODO: remove this try catch and load the form directly with the potential errors
+            }
         }
     }
 
