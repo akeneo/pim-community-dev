@@ -354,7 +354,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
     /**
      * @param integer $parentId
-     * @param integer $selectNodeId
+     * @param boolean $selectNodeId
      *
      * @return CategoryInterface[]
      */
