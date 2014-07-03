@@ -1160,7 +1160,7 @@ datagrid:
 
     history-grid:
         source:
-            type: mongodb
+            type: pim_orm
             entity: %pim_versioning.entity.version.class%
             repository_method: createDatagridQueryBuilder
         columns:

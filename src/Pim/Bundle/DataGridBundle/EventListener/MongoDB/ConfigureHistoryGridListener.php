@@ -2,12 +2,13 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener\MongoDB;
 
+use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Symfony\Component\HttpFoundation\Request;
+use Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource;
 
 /**
  * History grid listener to reconfigure it for MongoDB
@@ -52,6 +53,8 @@ class ConfigureHistoryGridListener
     public function onBuildBefore(BuildBefore $event)
     {
         $config = $event->getConfig();
+
+        $config->offsetSetByPath('[source][type]', MongoDBDatasource::TYPE);
 
         $sortersPath = sprintf('%s[%s]', SorterConfiguration::SORTERS_PATH, Configuration::COLUMNS_KEY);
         $sorters = $config->offsetGetByPath($sortersPath);

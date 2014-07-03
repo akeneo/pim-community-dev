@@ -62,7 +62,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
         $authorExpr = sprintf('CONCAT(%s, %s)', $userExpr, $contextExpr);
 
         $qb = $this->getEntityManager()->createQueryBuilder()
-            ->select('v.id, v.changeset as changeset, v.loggedAt, v.version')
+            ->select('v.id, v.changeset as changeset, v.loggedAt as loggedAt, v.version as version')
             ->from($this->_entityName, 'v', 'v.id');
 
         $qb
