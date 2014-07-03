@@ -31,6 +31,8 @@ class AssociationTypeManager
      * Constructor
      *
      * @param AssociationTypeRepository $repository
+     * @param ObjectManager             $objectManager
+     * @param EventDispatcherInterface  $eventDispatcher
      */
     public function __construct(
         AssociationTypeRepository $repository,
