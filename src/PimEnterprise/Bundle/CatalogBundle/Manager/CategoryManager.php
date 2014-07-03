@@ -27,11 +27,16 @@ class CategoryManager extends BaseCategoryManager
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
+     * @param EventDispatcherInterface $eventDispatcherInterface
      * @param CategoryAccessRepository $categoryAccessRepo
      */
-    public function __construct(ObjectManager $om, $categoryClass, CategoryAccessRepository $categoryAccessRepo)
-    {
-        parent::__construct($om, $categoryClass);
+    public function __construct(
+        ObjectManager $om,
+        $categoryClass,
+        EventDispatcherInterface $eventDispatcher,
+        CategoryAccessRepository $categoryAccessRepo
+    ) {
+        parent::__construct($om, $categoryClass, $eventDispatcher);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
     }
