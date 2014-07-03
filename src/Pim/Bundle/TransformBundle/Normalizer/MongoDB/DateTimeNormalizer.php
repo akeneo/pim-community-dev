@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 use \MongoDate;
@@ -15,6 +17,18 @@ use \MongoDate;
  */
 class DateTimeNormalizer implements NormalizerInterface
 {
+
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
+    /**
+     * @param MongoObjectsFactory $mongoFactory
+     */
+    public function __construct(MongoObjectsFactory $mongoFactory)
+    {
+        $this->mongoFactory = $mongoFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -28,6 +42,6 @@ class DateTimeNormalizer implements NormalizerInterface
      */
     public function normalize($dateTime, $format = null, array $context = [])
     {
-        return new MongoDate($dateTime->getTimeStamp());
+        return $this->mongoFactory->createMongoDate($dateTime->getTimestamp());
     }
 }

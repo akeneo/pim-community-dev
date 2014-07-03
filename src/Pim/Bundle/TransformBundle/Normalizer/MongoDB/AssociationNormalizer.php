@@ -3,11 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\CatalogBundle\Model\Association;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-
-use MongoId;
 
 /**
  * Normalize a product association into a MongoDB Document
@@ -18,6 +16,18 @@ use MongoId;
  */
 class AssociationNormalizer implements NormalizerInterface
 {
+
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
+    /**
+     * @param MongoObjectsFactory $mongoFactory
+     */
+    public function __construct(MongoObjectsFactory $mongoFactory)
+    {
+        $this->mongoFactory = $mongoFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -31,13 +41,16 @@ class AssociationNormalizer implements NormalizerInterface
      */
     public function normalize($assoc, $format = null, array $context = [])
     {
-        $data = [];
-        $data['_id'] = new MongoId;
-        $data['associationType'] = $assoc->getAssociationType()->getId();
-        $data['owner'] = MongoDBRef::create($context[ProductNormalizer::MONGO_ID]);
+        $productId = $context[ProductNormalizer::MONGO_ID];
+        $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
 
-        $data['products'] = $this->normalizeProducts($association->getProducts());
-        $data['groupIds'] = $this->normalizeGroups($assocation->getGroups());
+        $data = [];
+        $data['_id'] = $this->mongoFactory->createMongoId();
+        $data['associationType'] = $assoc->getAssociationType()->getId();
+        $data['owner'] = $this->mongoFactory->createMongoDBRef($productId, $productCollection);
+
+        $data['products'] = $this->normalizeProducts($assoc->getProducts(), $productCollection);
+        $data['groupIds'] = $this->normalizeGroups($assoc->getGroups());
 
         return $data;
     }
@@ -46,14 +59,15 @@ class AssociationNormalizer implements NormalizerInterface
      * Get the products ids as an array of MongoDBRef
      *
      * @param ProductInterface[] $products
+     * @param Collection         $productCollection
      *
      * @return array
      */
-    protected function normalizeProducts($products) {
+    protected function normalizeProducts($products, $productCollection) {
         $data = [];
 
         foreach ($products as $product) {
-            $data[] = MongoDBRef::create($group->getId());
+            $data[] = $this->mongoFactory->createMongoDBRef($product->getId(), $productCollection);
         }
 
         return $data;
