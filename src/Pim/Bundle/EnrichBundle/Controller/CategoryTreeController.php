@@ -196,10 +196,10 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         if ($selectNode !== null) {
-            $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
+            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
             $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
-            $categories = $this->categoryManager->getChildren($parent->getId());
+            $categories = $this->getChildren($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
 
@@ -350,5 +350,16 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(CategoryInterface $category)
     {
         return array();
+    }
+
+    /**
+     * @param integer $parentId
+     * @param mixed   $selectNodeId
+     *
+     * @return CategoryInterface[]
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        return $this->categoryManager->getChildren($parentId, $selectNodeId);
     }
 }
