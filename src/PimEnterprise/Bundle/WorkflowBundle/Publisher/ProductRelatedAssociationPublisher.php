@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -35,7 +34,6 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
         $this->associationRepository = $associationRepository;
     }
 
-
     /**
      * {@inheritdoc}
      */
@@ -44,19 +42,21 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
         $productIds = $this->publishedRepository->getProductIdsMapping();
         unset($productIds[$object->getOriginalProductId()]);
 
-        $associations = $this->associationRepository->findByProductIdAndOwnerIds(
-            $object->getOriginalProductId(),
-            array_keys($productIds)
-        );
-
-        foreach ($associations as $association) {
-            $publishedAssociation = $this->publishedAssociationRepository->findOneByTypeAndOwner(
-                $association->getAssociationType(),
-                $productIds[$association->getOwner()->getId()]
+        if (0 !== count($productIds)) {
+            $associations = $this->associationRepository->findByProductIdAndOwnerIds(
+                $object->getOriginalProductId(),
+                array_keys($productIds)
             );
 
-            if (null !== $publishedAssociation) {
-                $publishedAssociation->addProduct($object);
+            foreach ($associations as $association) {
+                $publishedAssociation = $this->publishedAssociationRepository->findOneByTypeAndOwner(
+                    $association->getAssociationType(),
+                    $productIds[$association->getOwner()->getId()]
+                );
+
+                if (null !== $publishedAssociation) {
+                    $publishedAssociation->addProduct($object);
+                }
             }
         }
     }

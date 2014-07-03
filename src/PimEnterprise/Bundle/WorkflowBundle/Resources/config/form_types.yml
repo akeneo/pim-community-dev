@@ -1,5 +1,4 @@
 parameters:
-    pimee_workflow.form.type.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Form\Type\PropositionType
     pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
     pimee_workflow.form.subscriber.unmap_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\UnmapProductValuesSubscriber
     pimee_workflow.form.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ChainedComparator
@@ -12,11 +11,6 @@ parameters:
     pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
 
 services:
-    pimee_workflow.form.type.proposition:
-        class: %pimee_workflow.form.type.proposition.class%
-        tags:
-            - { name: form.type, alias: pimee_workflow_proposition }
-
     pimee_workflow.form.subscriber.collect_product_value_changes:
         public: false
         class: %pimee_workflow.form.subscriber.collect_product_value_changes.class%

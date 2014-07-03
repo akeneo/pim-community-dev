@@ -10,51 +10,6 @@
     ) }}
 {% endif %}
 
-{# BEGIN Proposition button #}
-{{ form_widget(propositionForm.status) }}
-{% set label_in_progress %}
-{% spaceless %}
-    <i class="icon-check-empty"></i> {{ 'pimee_workflow.proposition.status.in_progress'|trans }}
-{% endspaceless %}
-{% endset %}
-
-{% set label_ready %}
-{% spaceless %}
-    <i class="icon-check"></i> {{ 'pimee_workflow.proposition.status.ready'|trans }}
-{% endspaceless %}
-{% endset %}
-
-{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
-    {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'cloud-upload'}) }}
-{% else %}
-<div class="btn-group">
-    <button id="switch_proposition_status" type="button" class="btn">
-        {{ propositionForm.status.vars.value ? label_ready : label_in_progress }}
-    </button>
-</div>
-<script type="text/javascript">
-    require(
-        ['jquery'],
-        function ($) {
-            'use strict';
-            $(function () {
-                $('#switch_proposition_status').on('click', function () {
-                    var $field = $('#{{ propositionForm.status.vars.id }}');
-                    if (+$field.val()) {
-                        $field.val(0).trigger('change');
-                        $(this).html('{{ label_in_progress }}');
-                    } else {
-                        $field.val(1).trigger('change');
-                        $(this).html('{{ label_ready }}');
-                    }
-                });
-            });
-        }
-    );
-</script>
-{# END Proposition button #}
-{% endif %}
-
 {{ elements.submitDropdownBtn(
     is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) ? 'btn.save working copy' : 'btn.save draft',
     {
@@ -62,3 +17,11 @@
         'BackGrid': { 'text': 'btn.save and back' }
     }
 ) }}
+
+{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
+    {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id}), {icon: 'cloud-upload'}) }}
+{% elseif proposition.inProgress and proposition.id is not null %}
+    {{ elements.link('btn.send for approval', path('pimee_workflow_proposition_ready', { id: proposition.id })) }}
+{% elseif not proposition.inProgress %}
+    <span href="#" class="btn disabled">{{ 'btn.sent for approval'|trans }}</span>
+{% endif %}

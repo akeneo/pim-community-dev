@@ -39,23 +39,18 @@ class AddPropositionFormViewParameterSubscriberSpec extends ObjectBehavior
         $formFactory,
         GenericEvent $event,
         ProductInterface $product,
-        Proposition $proposition,
-        FormInterface $form,
-        FormView $view
+        Proposition $proposition
     ) {
         $event->getArgument('parameters')->willReturn([
             'product' => $product,
         ]);
 
-
         $manager->findOrCreate($product)->willReturn($proposition);
-        $formFactory->create('pimee_workflow_proposition', $proposition)->willReturn($form);
-        $form->createView()->willReturn($view);
 
         $event
             ->setArgument('parameters', [
                 'product' => $product,
-                'propositionForm' => $view,
+                'proposition' => $proposition,
             ])
             ->shouldBeCalled();
 

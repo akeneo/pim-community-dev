@@ -5,3 +5,7 @@ pimee_workflow_proposition_approve:
 pimee_workflow_proposition_refuse:
     path: /{id}/refuse
     defaults: { _controller: pimee_workflow.controller.proposition:refuseAction }
+
+pimee_workflow_proposition_ready:
+    path: /{id}/ready
+    defaults: { _controller: pimee_workflow.controller.proposition:readyAction }

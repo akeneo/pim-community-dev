@@ -1,6 +1,8 @@
-<dl>
-    {% for attribute, change in value['values'] %}
-        <dt>{{ present_proposition_attribute(change, attribute) }}</dt>
-        <dd>{{ present_proposition_change(change) }}</dd>
-    {% endfor %}
-</dl>
+{% if value['values'] is defined %}
+    <dl>
+        {% for attribute, change in value['values'] %}
+            <dt>{{ present_proposition_attribute(change, attribute) }}</dt>
+            <dd>{{ present_proposition_change(change) }}</dd>
+        {% endfor %}
+    </dl>
+{% endif %}

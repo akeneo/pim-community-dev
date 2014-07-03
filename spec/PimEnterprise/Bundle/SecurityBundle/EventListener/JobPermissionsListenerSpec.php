@@ -35,7 +35,9 @@ class JobPermissionsListenerSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn([
             JobEvents::PRE_EDIT_JOB_PROFILE             => 'checkEditPermission',
+            JobEvents::PRE_REMOVE_JOB_PROFILE           => 'checkEditPermission',
             JobEvents::PRE_EXECUTE_JOB_PROFILE          => 'checkExecutePermission',
+            JobEvents::PRE_SHOW_JOB_PROFILE             => 'checkShowPermission',
             JobEvents::PRE_SHOW_JOB_EXECUTION           => 'checkJobExecutionPermission',
             JobEvents::PRE_DOWNLOAD_FILES_JOB_EXECUTION => 'checkJobExecutionPermission',
             JobEvents::PRE_DOWNLOAD_LOG_JOB_EXECUTION   => 'checkJobExecutionPermission'
@@ -68,6 +70,32 @@ class JobPermissionsListenerSpec extends ObjectBehavior
         $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(false);
 
         $this->shouldThrow(new AccessDeniedException())->during('checkExecutePermission', [$event]);
+    }
+
+    function it_does_not_throw_exception_when_a_job_permission_is_granted($securityContext, $event, $job)
+    {
+        $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(true);
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(false);
+
+        $this->checkShowPermission($event);
+
+        $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(false);
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(true);
+
+        $this->checkShowPermission($event);
+
+        $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(true);
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(true);
+
+        $this->checkShowPermission($event);
+    }
+
+    function it_throws_access_denied_exception_when_no_permission($securityContext, $event, $job)
+    {
+        $securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $job)->willReturn(false);
+        $securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $job)->willReturn(false);
+
+        $this->shouldThrow(new AccessDeniedException())->during('checkShowPermission', [$event]);
     }
 
     function it_does_not_throw_exception_when_job_execute_permission_is_granted_on_job_execution(
