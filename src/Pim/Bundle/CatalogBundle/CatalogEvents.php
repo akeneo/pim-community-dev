@@ -1,4 +1,3 @@
-
 <?php
 
 namespace Pim\Bundle\CatalogBundle;
