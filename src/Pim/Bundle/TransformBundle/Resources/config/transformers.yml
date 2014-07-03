@@ -149,6 +149,8 @@ services:
     # Object to MongoDB document transformers
     pim_transform.transformer.mongodb.datetime:
         class: %pim_transform.transformer.mongodb.datetime.class%
+        arguments:
+            - '@pim_catalog.mongodb.mongo_objects_factory'
 
     pim_transform.transformer.mongodb.metric:
         class: %pim_transform.transformer.mongodb.metric.class%
