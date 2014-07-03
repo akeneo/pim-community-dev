@@ -4,10 +4,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
@@ -46,6 +48,8 @@ class PropositionChangesApplier
      *
      * @param ProductInterface $product
      * @param Proposition      $proposition
+     *
+     * @throws ValidatorException
      */
     public function apply(ProductInterface $product, Proposition $proposition)
     {
@@ -56,9 +60,10 @@ class PropositionChangesApplier
             );
         }
 
-        $this
+        /** @var FormInterface $form */
+        $form = $this
             ->formFactory
-            ->createBuilder('form', $product)
+            ->createBuilder('form', $product, ['csrf_protection' => false])
             ->add(
                 'values',
                 'pim_enrich_localized_collection',
@@ -86,8 +91,13 @@ class PropositionChangesApplier
                     }
                 }
             )
-            ->getForm()
-            ->submit($proposition->getChanges(), false);
+            ->getForm();
+
+        $form->submit($proposition->getChanges(), false);
+
+        if (null !== $error = $this->getFormErrorsAsString($form)) {
+            throw new ValidatorException($error);
+        }
     }
 
     /**
@@ -143,5 +153,53 @@ class PropositionChangesApplier
         }
 
         $this->modifiedValues[$key] = $options;
+    }
+
+    /**
+     * Get all errors of the form by scanning children. The returned array is like this :
+     * [
+     *      field 1 => [FormError 1, FormError 2]
+     *      field 2 => [FormError 1, FormError 2, FormError3]
+     * ]
+     *
+     * @param FormInterface $form
+     * @param FormInterface $parent
+     * @param array         $errors
+     *
+     * @return array
+     */
+    protected function getFormErrors(FormInterface $form, FormInterface $parent = null, array &$errors = [])
+    {
+        if (null !== $parent) {
+            foreach ($form->getErrors() as $error) {
+                $errors[$parent->getName()][] = $error;
+            }
+        }
+
+        foreach ($form->all() as $child) {
+            $this->getFormErrors($child, $form, $errors);
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Get the errors of the form as a string.
+     *
+     * @param FormInterface $form
+     *
+     * @return null|string
+     */
+    protected function getFormErrorsAsString(FormInterface $form)
+    {
+        $errorAsString = '';
+
+        foreach ($this->getFormErrors($form) as $field => $errors) {
+            foreach ($errors as $error) {
+                $errorAsString .= sprintf('%s: %s ', ucfirst($field), $error->getMessage());
+            }
+        }
+
+        return '' === $errorAsString ? null : $errorAsString;
     }
 }
