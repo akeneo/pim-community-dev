@@ -70,11 +70,6 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected $commonAttributes = array();
 
     /**
-     * @var ArrayCollection
-     */
-    protected $displayedAttributes;
-
-    /**
      * Collection of the attributes for each family code
      * @var array $familiesAttributes
      */
@@ -107,7 +102,6 @@ class EditCommonAttributes extends ProductMassEditOperation
         $this->userContext         = $userContext;
         $this->currencyManager     = $currencyManager;
         $this->values              = new ArrayCollection();
-        $this->displayedAttributes = new ArrayCollection();
         $this->catalogContext      = $catalogContext;
         $this->productBuilder      = $productBuilder;
         $this->massActionManager   = $massActionManager;
@@ -195,30 +189,6 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function getCommonAttributes()
     {
         return $this->commonAttributes;
-    }
-
-    /**
-     * Set displayed attributes
-     *
-     * @param Collection $displayedAttributes
-     *
-     * @return EditCommonAttributes
-     */
-    public function setDisplayedAttributes(Collection $displayedAttributes)
-    {
-        $this->displayedAttributes = $displayedAttributes;
-
-        return $this;
-    }
-
-    /**
-     * Get displayed attributes
-     *
-     * @return Collection
-     */
-    public function getDisplayedAttributes()
-    {
-        return $this->displayedAttributes;
     }
 
     /**
@@ -311,9 +281,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-            if ($this->displayedAttributes->contains($value->getAttribute())) {
-                $this->setProductValue($product, $value);
-            }
+            $this->setProductValue($product, $value);
         }
     }
 

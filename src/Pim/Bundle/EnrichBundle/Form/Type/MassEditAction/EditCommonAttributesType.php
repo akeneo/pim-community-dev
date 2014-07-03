@@ -59,7 +59,8 @@ class EditCommonAttributesType extends AbstractType
                 'values',
                 'collection',
                 array(
-                    'type' => 'pim_product_value'
+                    'type' => 'pim_product_value',
+                    'allow_delete' => true,
                 )
             )
             ->add(
@@ -84,6 +85,7 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'group.label',
+                    'mapped'   => false,
                 )
             );
     }
