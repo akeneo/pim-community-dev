@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category manager
