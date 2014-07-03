@@ -2,11 +2,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Applier;
 
-use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Exception\ValidatorException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
@@ -30,9 +30,6 @@ class PropositionChangesApplier
 
     /** @var array */
     protected $modifiedValues = [];
-
-    /** @var array */
-    protected $errors = [];
 
     /**
      * @param FormFactoryInterface     $formFactory
@@ -63,7 +60,7 @@ class PropositionChangesApplier
             );
         }
 
-        /** @var Form $form */
+        /** @var FormInterface $form */
         $form = $this
             ->formFactory
             ->createBuilder('form', $product, ['csrf_protection' => false])
@@ -159,43 +156,50 @@ class PropositionChangesApplier
     }
 
     /**
-     * Check all children of the form to get the errors.
-     * Errors are stored in $this->errors.
+     * Get all errors of the form by scanning children. The returned array is like this :
+     * [
+     *      field 1 => [FormError 1, FormError 2]
+     *      field 2 => [FormError 1, FormError 2, FormError3]
+     * ]
      *
-     * @param Form $form
-     * @param Form $parent
+     * @param FormInterface $form
+     * @param FormInterface $parent
+     * @param array         $errors
+     *
+     * @return array
      */
-    protected function checkFormErrors(Form $form, Form $parent= null)
+    protected function getFormErrors(FormInterface $form, FormInterface $parent = null, array &$errors = [])
     {
         if (null !== $parent) {
             foreach ($form->getErrors() as $error) {
-                $this->errors[$parent->getName()][] = $error->getMessage();
+                $errors[$parent->getName()][] = $error;
             }
         }
 
         foreach ($form->all() as $child) {
-            $this->checkFormErrors($child, $form);
+            $this->getFormErrors($child, $form, $errors);
         }
+
+        return $errors;
     }
 
     /**
      * Get the errors of the form as a string.
      *
-     * @param Form $form
+     * @param FormInterface $form
      *
      * @return null|string
      */
-    protected function getFormErrorsAsString(Form $form)
+    protected function getFormErrorsAsString(FormInterface $form)
     {
-        $error = '';
-        $this->checkFormErrors($form);
+        $errorAsString = '';
 
-        foreach ($this->errors as $field => $errors) {
-            foreach ($errors as $message) {
-                $error .= sprintf('%s: %s ', ucfirst($field), $message);
+        foreach ($this->getFormErrors($form) as $field => $errors) {
+            foreach ($errors as $error) {
+                $errorAsString .= sprintf('%s: %s ', ucfirst($field), $error->getMessage());
             }
         }
 
-        return '' === $error ? null : $error;
+        return '' === $errorAsString ? null : $errorAsString;
     }
 }
