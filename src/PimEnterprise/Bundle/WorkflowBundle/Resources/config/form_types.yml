@@ -9,6 +9,7 @@ parameters:
     pimee_workflow.form.comparator.option.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionComparator
     pimee_workflow.form.comparator.options.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionsComparator
     pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
+    pim_enrich.form.type.edit_common_attributes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Type\MassEditAction\EditCommonAttributesType
 
 services:
     pimee_workflow.form.subscriber.collect_product_value_changes:
@@ -18,6 +19,16 @@ services:
             - '@pimee_workflow.form.comparator.chained'
             - '@security.context'
         tags:
+            - { name: pimee_workflow.collector }
+
+    pim_enrich.form.type.edit_common_attributes:
+        class: %pim_enrich.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
             - { name: pimee_workflow.collector }
 
     pimee_workflow.form.subscriber.unmap_product_values:
