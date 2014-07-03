@@ -2,15 +2,9 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Type\MassEditAction;
 
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\FormView;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType as BaseEditCommonAttributesType;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
@@ -46,8 +40,7 @@ class EditCommonAttributesType extends BaseEditCommonAttributesType implements C
 
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
-            function(FormEvent $event)
-            {
+            function(FormEvent $event) {
                 $data = $event->getData();
                 $form = $event->getForm();
 
