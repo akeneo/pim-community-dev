@@ -20,14 +20,14 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         $this->beConstructedWith($repository, $objectManager, $eventDispatcher);
     }
 
-    function it_should_get_all_association_types($repository)
+    function it_provides_all_association_types($repository)
     {
         $repository->findAll()->willReturn(['foo', 'bar']);
 
         $this->getAssociationTypes()->shouldReturn(['foo', 'bar']);
     }
 
-    function it_should_dispatch_an_event_when_remove_an_association_type(
+    function it_dispatches_an_event_when_removing_an_association_type(
         $eventDispatcher,
         $objectManager,
         AssociationType $associationType

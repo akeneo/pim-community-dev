@@ -27,7 +27,7 @@ class FamilyManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_should_return_a_choice_list($userContext, $repository)
+    function it_provides_a_choice_list($userContext, $repository)
     {
         $userContext->getCurrentLocaleCode()->willReturn('foo');
         $repository->getChoices(['localeCode' => 'foo'])->willReturn(['foo' => 'foo']);
@@ -35,7 +35,7 @@ class FamilyManagerSpec extends ObjectBehavior
         $this->getChoices()->shouldReturn(['foo' => 'foo']);
     }
 
-    function it_should_dispatch_an_event_when_remove_a_family(
+    function it_dispatches_an_event_when_removing_a_family(
         $eventDispatcher,
         $objectManager,
         Family $family

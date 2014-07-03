@@ -25,47 +25,47 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
     }
 
-    function it_should_return_object_manager($objectManager)
+    function it_provides_object_manager($objectManager)
     {
         $this->getObjectManager()->shouldReturn($objectManager);
     }
 
-    function it_should_return_category_instance()
+    function it_instanciates_a_category()
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 
-    function it_should_return_a_tree_instance(CategoryInterface $tree)
+    function it_instanciates_a_tree(CategoryInterface $tree)
     {
         $this->getCategoryInstance()->shouldReturnAnInstanceOf(self::CATEGORY_CLASS);
     }
 
-    function it_should_return_category_class_name()
+    function it_provides_the_category_class_name()
     {
         $this->getCategoryClass()->shouldReturn(self::CATEGORY_CLASS);
     }
 
-    function it_should_return_category_repository($objectManager, $categoryRepository)
+    function it_provides_the_category_repository($objectManager, $categoryRepository)
     {
         $objectManager->getRepository(self::CATEGORY_CLASS)->willReturn($categoryRepository);
         $this->getEntityRepository()->shouldReturn($categoryRepository);
     }
 
-    function it_should_return_category_by_code($categoryRepository, CategoryInterface $category)
+    function it_provides_a_category_from_his_code($categoryRepository, CategoryInterface $category)
     {
         $categoryRepository->findOneBy(['code' => 'bar'])->willReturn($category);
 
         $this->getCategoryByCode('bar');
     }
 
-    function it_should_return_tree_by_code($categoryRepository, CategoryInterface $tree)
+    function it_provides_a_tree_from_his_code($categoryRepository, CategoryInterface $tree)
     {
         $categoryRepository->findOneBy(['code' => 'foo', 'parent' => null])->willReturn($tree);
 
         $this->getTreeByCode('foo')->shouldReturn($tree);
     }
 
-    function it_should_dispatch_an_event_when_remove_a_category(
+    function it_dispatches_an_event_when_removing_a_category(
         $eventDispatcher,
         $objectManager,
         CategoryInterface $category,

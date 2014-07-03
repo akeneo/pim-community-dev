@@ -33,37 +33,37 @@ class AttributeManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_should_create_an_attribute() {
+    function it_instanciates_an_attribute() {
         $this->createAttribute()->shouldReturnAnInstanceOf(self::ATTRIBUTE_CLASS);
     }
 
-    function it_should_create_an_attribute_option() {
+    function it_instanciates_an_attribute_option() {
         $this->createAttributeOption()->shouldReturnAnInstanceOf(self::OPTION_CLASS);
     }
 
-    function it_should_create_an_attribute_option_value()
+    function it_instanciates_an_attribute_option_value()
     {
         $this->createAttributeOptionValue()->shouldReturnAnInstanceOf(self::OPT_VALUE_CLASS);
     }
 
-    function it_should_return_the_attribute_class_used()
+    function it_provides_the_attribute_class_used()
     {
         $this->getAttributeClass()->shouldReturn(self::ATTRIBUTE_CLASS);
     }
 
-    function it_should_return_the_attribute_option_class_used()
+    function it_provides_the_attribute_option_class_used()
     {
         $this->getAttributeOptionClass()->shouldReturn(self::OPTION_CLASS);
     }
 
-    function it_should_return_list_of_attribute_types($factory)
+    function it_provides_the_list_of_attribute_types($factory)
     {
         $factory->getAttributeTypes(self::PRODUCT_CLASS)->willReturn(['foo', 'bar']);
 
         $this->getAttributeTypes()->shouldReturn(['bar' => 'bar', 'foo' => 'foo']);
     }
 
-    function it_should_dispatch_an_event_when_remove_an_attribute(
+    function it_dispatches_an_event_when_removing_an_attribute(
         $eventDispatcher,
         $objectManager,
         AbstractAttribute $attribute

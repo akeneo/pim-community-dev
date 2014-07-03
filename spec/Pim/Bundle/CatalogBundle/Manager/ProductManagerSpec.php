@@ -127,7 +127,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->save($product);
     }
 
-    function it_should_dispatch_an_event_when_remove_a_product(
+    function it_dispatches_an_event_when_removing_a_product(
         $eventDispatcher,
         $objectManager,
         ProductInterface $product
@@ -143,7 +143,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->remove($product);
     }
 
-    function it_should_not_flush_if_i_do_not_want_when_remove_a_product(
+    function it_does_not_flush_if_i_do_not_want_when_removing_a_product(
         $eventDispatcher,
         $objectManager,
         ProductInterface $product
@@ -159,7 +159,7 @@ class ProductManagerSpec extends ObjectBehavior
         $this->remove($product, false);
     }
 
-    function it_should_dispatch_an_event_per_product_removed(
+    function it_dispatches_an_event_per_product_removed(
         $eventDispatcher,
         $objectManager,
         $productRepository,

@@ -35,7 +35,7 @@ class GroupManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_should_dispatch_an_event_when_remove_a_group(
+    function it_dispatches_an_event_when_removing_a_group(
         $eventDispatcher,
         $registry,
         ObjectManager $objectManager,
@@ -53,7 +53,7 @@ class GroupManagerSpec extends ObjectBehavior
         $this->remove($group);
     }
 
-    function it_should_find_available_axis(
+    function it_provides_available_axis(
         $registry,
         AttributeRepository $attRepository,
         AbstractAttribute $attribute1,
@@ -65,7 +65,7 @@ class GroupManagerSpec extends ObjectBehavior
         $this->getAvailableAxis()->shouldReturn([$attribute1, $attribute2]);
     }
 
-    function it_should_returns_available_axis_as_a_sorted_choice(
+    function it_provides_available_axis_as_a_sorted_choice(
         $registry,
         AttributeRepository $attRepository,
         AbstractAttribute $attribute1,
@@ -83,14 +83,14 @@ class GroupManagerSpec extends ObjectBehavior
         $this->getAvailableAxisChoices()->shouldReturn([2 => 'Bar', 1 => 'Foo']);
     }
 
-    function it_should_returns_a_group_repository($registry, GroupRepository $groupRepository)
+    function it_provides_the_group_repository($registry, GroupRepository $groupRepository)
     {
         $registry->getRepository(self::GROUP_CLASS)->willReturn($groupRepository);
 
         $this->getRepository()->shouldReturn($groupRepository);
     }
 
-    function it_should_returns_a_group_type_repository(
+    function it_provides_the_group_type_repository(
         $registry,
         GroupTypeRepository $groupTypeRepository
     ) {
