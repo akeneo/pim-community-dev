@@ -110,10 +110,10 @@
                             var $field = $(this);
                             if (_.contains(checked, $field.data('attribute-id'))) {
                                 $field.removeClass('hide');
-                                $field.find('input, select, textarea').removeAttr('disabled');
+                                $field.find('input, select, textarea').prop('disabled', false);
                             } else {
                                 $field.addClass('hide');
-                                $field.find('input, select, textarea').attr('disabled', 'disabled');
+                                $field.find('input, select, textarea').prop('disabled', true);
                             }
                         });
                         $('div.group-container').each(function() {
