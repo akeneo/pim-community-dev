@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCatego
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
  * Product category manager
@@ -53,5 +54,31 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         return $trees;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductsCountInCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
+    {
+        if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+            return 0;
+        }
+        // TODO : deal with children
+
+        return parent::getProductsCountInCategory($category, $inChildren, $inProvided);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsInCategory(CategoryInterface $category, $inChildren = false)
+    {
+        if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+            return [];
+        }
+        // TODO : deal with children
+
+        return parent::getProductIdsInCategory($category, $inChildren);
     }
 }
