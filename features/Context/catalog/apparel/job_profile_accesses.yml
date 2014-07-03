@@ -1,44 +1,44 @@
 job_profile_accesses:
     association_type_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     attribute_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     category_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     group_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     option_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     ecommerce_product_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     print_product_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     tablet_product_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
 
     association_type_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     attribute_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     category_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     group_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     option_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     product_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
