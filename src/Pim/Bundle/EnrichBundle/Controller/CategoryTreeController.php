@@ -306,9 +306,6 @@ class CategoryTreeController extends AbstractDoctrineController
         $parent = $category->getParent();
         $params = ($parent !== null) ? array('node' => $parent->getId()) : array();
 
-        if (count($category->getChannels())) {
-            throw new DeleteException($this->getTranslator()->trans('flash.tree.not removable'));
-        }
         $this->categoryManager->remove($category);
         foreach ($this->doctrine->getManagers() as $manager) {
             $manager->flush();
