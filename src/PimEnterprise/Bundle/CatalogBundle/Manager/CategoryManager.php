@@ -54,7 +54,6 @@ class CategoryManager extends BaseCategoryManager
         $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
         $trees = [];
-
         foreach ($this->getTrees() as $tree) {
             if (in_array($tree->getId(), $grantedCategoryIds)) {
                 $trees[] = $tree;
