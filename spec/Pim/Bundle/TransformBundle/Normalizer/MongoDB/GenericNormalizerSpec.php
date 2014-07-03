@@ -6,11 +6,6 @@ use PhpSpec\ObjectBehavior;
 
 class GenericNormalizerSpec extends ObjectBehavior
 {
-    function let()
-    {
-        $this->beConstructedWith();
-    }
-                        
     function it_is_a_normalizer()
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');

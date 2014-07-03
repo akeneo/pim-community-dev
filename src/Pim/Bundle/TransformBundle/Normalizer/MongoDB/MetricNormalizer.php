@@ -3,13 +3,12 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use MongoId;
 
 /**
  * Normalize a metric entity into an MongoDB Document
@@ -20,26 +19,28 @@ use MongoId;
  */
 class MetricNormalizer implements NormalizerInterface
 {
-    /**
-     * @var MeasureConverter
-     */
+    /** @var MeasureConverter */
     protected $converter;
 
-    /**
-     * @var MeasureManager
-     */
+    /** @var MeasureManager */
     protected $manager;
 
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
     /**
-     * Constructor
-     *
-     * @param MeasureConverter $converter the measure converter
-     * @param MeasureManager   $manager   the measure manager
+     * @param MongoObjectsFactory $mongoFactory
+     * @param MeasureConverter    $converter
+     * @param MeasureManager      $manager
      */
-    public function __construct(MeasureConverter $converter, MeasureManager $manager)
-    {
-        $this->converter = $converter;
-        $this->manager   = $manager;
+    public function __construct(
+        MongoObjectsFactory $mongoFactory,
+        MeasureConverter $converter,
+        MeasureManager $manager
+    ) {
+        $this->mongoFactory = $mongoFactory;
+        $this->converter    = $converter;
+        $this->manager      = $manager;
     }
 
     /**
@@ -47,7 +48,7 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return ($data instanceof ProductPrice && ProductNormalizer::FORMAT === $format);
+        return ($data instanceof Metric && ProductNormalizer::FORMAT === $format);
     }
 
     /**
@@ -55,19 +56,17 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function normalize($metric, $format = null, array $context = [])
     {
-        $data = [];
-        $data['_id'] = new MongoId;
-        $data['unit'] = $metric->getUnit();
-        $data['data'] = $metric->getData();
-
         $this->createMetricBaseValues($metric);
 
+        $data = [];
+        $data['_id']      = $this->mongoFactory->createMongoId();
+        $data['unit']     = $metric->getUnit();
+        $data['data']     = $metric->getData();
         $data['baseUnit'] = $metric->getBaseUnit();
         $data['baseData'] = $metric->getBaseData();
+        $data['family']   = $metric->getFamily();
 
-        $doc->family = $metric->getFamily();
-
-        return $doc;
+        return $data;
     }
 
     /**
