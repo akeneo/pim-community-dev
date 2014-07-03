@@ -94,3 +94,5 @@ services:
 
     pimee_workflow.collector.changes:
         class: %pimee_workflow.collector.changes.class%
+        arguments:
+            - '@pim_catalog.manager.media'
