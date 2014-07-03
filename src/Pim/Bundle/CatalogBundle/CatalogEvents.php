@@ -1,3 +1,4 @@
+
 <?php
 
 namespace Pim\Bundle\CatalogBundle;
@@ -35,7 +36,7 @@ final class CatalogEvents
      * This event is thrown before a product is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
@@ -45,7 +46,7 @@ final class CatalogEvents
      * This event is thrown before an association type is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
@@ -55,7 +56,7 @@ final class CatalogEvents
      * This event is thrown before an attribute is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
@@ -65,7 +66,7 @@ final class CatalogEvents
      * This event is thrown before a category is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
@@ -75,7 +76,7 @@ final class CatalogEvents
      * This event is thrown before a family is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
@@ -85,7 +86,7 @@ final class CatalogEvents
      * This event is thrown before a group is removed.
      *
      * The event listener receives an
-     * Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent instance.
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
