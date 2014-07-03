@@ -2,11 +2,13 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\FilterableNormalizerInterface;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Entity\Channel;
 
 /**
  * A normalizer to transform a product entity into an array
@@ -15,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
+class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface, FilterableNormalizerInterface
 {
     /** @staticvar string */
     const FIELD_FAMILY = 'family';
@@ -36,11 +38,12 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     const FIELD_VALUES = 'values';
 
     /** @var SerializerInterface */
-    protected $serializer;
+    protected $valuesSerializer;
 
-    /**
-     * @var string[] $supportedFormats
-     */
+    /** @var  NormalizerFilterInterface[] */
+    protected $valuesFilters;
+
+    /** @var string[] $supportedFormats */
     protected $supportedFormats = ['json', 'xml'];
 
     /**
@@ -48,7 +51,17 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function setSerializer(SerializerInterface $serializer)
     {
-        $this->serializer = $serializer;
+        $this->valuesSerializer = $serializer;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFilters(array $filters)
+    {
+        $this->valuesFilters = $filters;
+
+        return $this;
     }
 
     /**
@@ -56,7 +69,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      */
     public function normalize($product, $format = null, array $context = [])
     {
-        if (!$this->serializer instanceof NormalizerInterface) {
+        if (!$this->valuesSerializer instanceof NormalizerInterface) {
             throw new \LogicException('Serializer must be a normalizer');
         }
 
@@ -96,45 +109,19 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return ArrayCollection
      */
-    protected function normalizeValues($values, $format, array $context = [])
+    protected function normalizeValues(ArrayCollection $values, $format, array $context = [])
     {
-        $locales  = isset($context['locales'])  ? $context['locales']  : [];
-        $channels = isset($context['channels']) ? $context['channels'] : [];
-        $values   = $this->filterValues($values, $channels, $locales);
+        foreach ($this->valuesFilters as $filter) {
+            $values = $filter->filter($values, $context);
+        }
 
         $data = [];
 
         foreach ($values as $value) {
-            $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
+            $data[$value->getAttribute()->getCode()][] = $this->valuesSerializer->normalize($value, $format, $context);
         }
 
         return $data;
-    }
-
-    /**
-     * Returns a subset of values that match the channel and locale requirements
-     *
-     * @param ArrayCollection $values
-     * @param string[]        $channels
-     * @param string[]        $locales
-     *
-     * @return ArrayCollection
-     */
-    protected function filterValues($values, array $channels = [], array $locales = [])
-    {
-        $values = $values->filter(
-            function ($value) use ($channels) {
-                return (!$value->getAttribute()->isScopable() || in_array($value->getScope(), $channels));
-            }
-        );
-
-        $values = $values->filter(
-            function ($value) use ($locales) {
-                return (!$value->getAttribute()->isLocalizable() || in_array($value->getLocale(), $locales));
-            }
-        );
-
-        return $values;
     }
 
     /**

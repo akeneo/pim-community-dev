@@ -2,13 +2,17 @@
 
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
+use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * A normalizer to transform a product entity into a flat array
@@ -31,11 +35,11 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @staticvar string */
     const ITEM_SEPARATOR = ',';
 
-    /** @var Pim\Bundle\CatalogBundle\Manager\MediaManager */
+    /** @var MediaManager */
     protected $mediaManager;
 
     /** @var array */
-    protected $supportedFormats = array('csv');
+    protected $supportedFormats = array('csv', 'flat');
 
     /** @var array */
     protected $results = array();
@@ -43,14 +47,27 @@ class FlatProductNormalizer implements NormalizerInterface
     /** @var array $fields */
     protected $fields = array();
 
+    /** @var NormalizerFilterInterface[] */
+    protected $valuesFilters = [];
+
     /**
      * Constructor
      *
-     * @param Pim\Bundle\CatalogBundle\Manager\MediaManager $mediaManager
+     * @param MediaManager $mediaManager
      */
     public function __construct(MediaManager $mediaManager)
     {
         $this->mediaManager = $mediaManager;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setFilters(array $filters)
+    {
+        $this->valuesFilters = $filters;
+
+        return $this;
     }
 
     /**
@@ -120,28 +137,21 @@ class FlatProductNormalizer implements NormalizerInterface
     protected function normalizeValues(ProductInterface $product, $scopeCode, $localeCodes)
     {
         if (empty($this->fields)) {
-            $identifier = $product->getIdentifier();
 
-            $filteredValues = $product->getValues()->filter(
-                function ($value) use ($identifier, $scopeCode, $localeCodes) {
-                    return (
-                        ($value !== $identifier) &&
-                        (
-                            ($scopeCode == null) ||
-                            (!$value->getAttribute()->isScopable()) ||
-                            ($value->getAttribute()->isScopable() && $value->getScope() == $scopeCode)
-                        ) &&
-                        (
-                            (count($localeCodes) == 0) ||
-                            (!$value->getAttribute()->isLocalizable()) ||
-                            ($value->getAttribute()->isLocalizable() && in_array($value->getLocale(), $localeCodes))
-
-                        )
-                    );
-                }
-            );
-
+            $filteredValues = array();
             $normalizedValues = array();
+
+            foreach ($this->valuesFilters as $filter) {
+                $filteredValues = $filter->filter(
+                    $product->getValues(),
+                    array(
+                        'identifier'  => $product->getIdentifier(),
+                        'scopeCode'   => $scopeCode,
+                        'localeCodes' => $localeCodes,
+                    )
+                );
+            }
+
             foreach ($filteredValues as $value) {
                 $normalizedValues = array_merge(
                     $normalizedValues,
@@ -176,15 +186,15 @@ class FlatProductNormalizer implements NormalizerInterface
             $data = ($data) ? 1 : 0;
         } elseif ($data instanceof \DateTime) {
             $data = $data->format('m/d/Y');
-        } elseif ($data instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
+        } elseif ($data instanceof AttributeOption) {
             $data = $data->getCode();
         } elseif ($value->getAttribute()->getAttributeType() == 'pim_catalog_price_collection') {
             return $this->normalizePriceCollection($value);
-        } elseif ($data instanceof \Doctrine\Common\Collections\Collection) {
+        } elseif ($data instanceof Collection) {
             $data = $this->normalizeCollectionData($data);
-        } elseif ($data instanceof Media) {
+        } elseif ($data instanceof AbstractMedia) {
             $data = $this->mediaManager->getExportPath($data);
-        } elseif ($data instanceof Metric) {
+        } elseif ($data instanceof AbstractMetric) {
             if (empty($this->fields)) {
                 $fieldName = $this->getFieldValue($value);
 
@@ -256,7 +266,7 @@ class FlatProductNormalizer implements NormalizerInterface
         foreach ($data as $item) {
             if ($item instanceof \Pim\Bundle\CatalogBundle\Entity\AttributeOption) {
                 $result[] = $item->getCode();
-            } elseif ($item instanceof \Pim\Bundle\CatalogBundle\Model\ProductPrice) {
+            } elseif ($item instanceof AbstractProductPrice) {
                 if ($item->getData() !== null) {
                     $result[] = (string) $item;
                 }

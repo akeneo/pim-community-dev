@@ -3,17 +3,18 @@ Thank you to read and sign the following contributor agreement http://www.akeneo
 Every PR should start with:
 
 ```
-| Q                   | A
-| ------------------- | ---
-| Bug fix?            |
-| New feature?        |
-| BC breaks?          |
-| Tests pass?         |
-| Scenarios pass?     |
-| Checkstyle issues?  |
-| Changelog updated?  |
-| Fixed tickets       |
-| Doc PR              |
+| Q                    | A
+| -------------------- | ---
+| Bug fix?             |
+| New feature?         |
+| BC breaks?           |
+| CI currently passes? |
+| Tests pass?          |
+| Scenarios pass?      |
+| Checkstyle issues?   |
+| Changelog updated?   |
+| Fixed tickets        |
+| Doc PR               |
 ```
 
 *Use http://cs.sensiolabs.org/

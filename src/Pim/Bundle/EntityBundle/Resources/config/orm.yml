@@ -1,0 +1,8 @@
+parameters:
+    oro_entity.orm.entity_class_resolver.class: Pim\Bundle\EntityBundle\ORM\EntityClassResolver
+
+services:
+    oro_entity.orm.entity_class_resolver:
+        class: %oro_entity.orm.entity_class_resolver.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'

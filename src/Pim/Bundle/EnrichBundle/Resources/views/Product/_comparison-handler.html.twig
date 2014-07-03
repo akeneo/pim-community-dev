@@ -113,6 +113,16 @@
                 };
 
                 mediator.on('scopablefield:rendered', addCheckboxes);
+
+                // Remove checkboxes for disabled fields
+                $('.comparison .no-label .attribute-field.localizable').each(function() {
+                    var $target = $('#' + $(this).find('[id]').eq(0).attr('id').replace('{{ comparisonLocale }}', '{{ dataLocale }}'));
+                    var $fields = $target.find('textarea, input[type=text], input[type=checkbox], input[type=file], select').filter('[disabled]');
+
+                    if ($fields.length) {
+                        $(this).find('input.comparisonSelection').remove();
+                    }
+                });
             });
         }
     );

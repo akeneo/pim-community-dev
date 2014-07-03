@@ -153,8 +153,18 @@ class FamilyFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($attribute));
 
         $requirement->expects($this->any())
+            ->method('getAttributeCode')
+            ->will($this->returnValue($attribute->getCode()));
+
+        $requirement->expects($this->any())
             ->method('getChannel')
             ->will($this->returnValue($channel));
+
+        if ($channel) {
+            $requirement->expects($this->any())
+                ->method('getChannelCode')
+                ->will($this->returnValue($channel->getCode()));
+        }
 
         return $requirement;
     }

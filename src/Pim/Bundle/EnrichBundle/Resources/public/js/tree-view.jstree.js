@@ -3,13 +3,14 @@ define(
     function ($, _, __, Routing) {
         'use strict';
 
-        var unclassified = -1,
-            all          = -2,
-            selectedNode = 0,
-            selectedTree = 0,
-            includeSub   = true,
-            dataLocale   = null,
-            $el          = null,
+        var unclassified  = -1,
+            all           = -2,
+            selectedNode  = 0,
+            selectedTree  = 0,
+            includeSub    = true,
+            dataLocale    = null,
+            relatedEntity = null,
+            $el           = null,
 
             getActiveNode = function(skipVirtual) {
                 if (skipVirtual) {
@@ -30,7 +31,8 @@ define(
                         _format:        'json',
                         dataLocale:     dataLocale,
                         select_node_id: getActiveNode(true),
-                        include_sub:    +includeSub
+                        include_sub:    +includeSub,
+                        related_entity: relatedEntity
                     }
                 );
             },
@@ -40,7 +42,8 @@ define(
                     'pim_enrich_categorytree_children',
                     {
                         _format:    'json',
-                        dataLocale: dataLocale
+                        dataLocale: dataLocale,
+                        related_entity: relatedEntity
                     }
                 );
             },
@@ -202,11 +205,12 @@ define(
                     throw new Error('Unable to instantiate tree on this element');
                 }
 
-                $el          = $element;
-                dataLocale   = $el.attr('data-datalocale');
-                selectedNode = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
-                selectedTree = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
-                includeSub   = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
+                $el           = $element;
+                dataLocale    = $el.attr('data-datalocale');
+                relatedEntity = $el.attr('data-relatedentity');
+                selectedNode  = _.has(state, 'selectedNode') ? state.selectedNode : selectedNode;
+                selectedTree  = _.has(state, 'selectedTree') ? state.selectedTree : selectedTree;
+                includeSub    = _.has(state, 'includeSub')   ? state.includeSub   : includeSub;
 
                 initTree();
             },

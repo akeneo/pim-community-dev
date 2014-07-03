@@ -70,6 +70,9 @@ define(
              */
             _getCriteriaHint: function () {
                 var value = this._getDisplayValue();
+                if (value.type === 'empty' && value.currency) {
+                    return this._getChoiceOption(value.type).label + ': ' + value.currency;
+                }
                 if (!value.value) {
                     return this.placeholder;
                 } else {
@@ -91,7 +94,7 @@ define(
                             '</button>' +
                             '<ul class="dropdown-menu">' +
                                 '<% _.each(choices, function (option) { %>' +
-                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>"><%= option.label %></a></li>' +
+                                    '<li><a class="choice_value" href="#" data-value="<%= option.value %>" data-input-toggle="true"><%= option.label %></a></li>' +
                                 '<% }); %>' +
                             '</ul>' +
                             '<input class="name_input" type="hidden" name="currency_type" value=""/>' +
@@ -144,7 +147,8 @@ define(
              */
             _isValueValid: function(value) {
                 return (value.currency && value.type && value.value) ||
-                       (!value.currency && !value.type && !value.value);
+                       (!value.currency && !value.type && !value.value) ||
+                       (value.type === 'empty' && value.currency);
             },
 
             /**
@@ -176,6 +180,11 @@ define(
                         item.closest('.btn-group').find('button').html(item.html() + '<span class="caret"></span>');
                     }
                 });
+                if (newValue.type === 'empty') {
+                    this.$(this.criteriaValueSelectors.value).hide();
+                } else {
+                    this.$(this.criteriaValueSelectors.value).show();
+                }
 
                 this._triggerUpdate(newValue, oldValue);
                 this._updateCriteriaHint();
@@ -195,6 +204,21 @@ define(
                     }
                 }
                 return this;
+            },
+
+            /**
+             * @inheritDoc
+             */
+            _onClickChoiceValue: function(e) {
+                NumberFilter.prototype._onClickChoiceValue.apply(this, arguments);
+                if ($(e.currentTarget).attr('data-input-toggle')) {
+                    var parentDiv = $(e.currentTarget).parent().parent().parent().parent();
+                    if ($(e.currentTarget).attr('data-value') === 'empty') {
+                        parentDiv.find('input[name="value"]').hide();
+                    } else {
+                        parentDiv.find('input[name="value"]').show();
+                    }
+                }
             }
         });
     }

@@ -23,7 +23,7 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
     function it_is_a_serializer_aware_normalizer()
     {
         $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer');
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
     function it_supports_normalization_of_job_execution(JobExecution $jobExecution)
@@ -76,7 +76,12 @@ class JobExecutionNormalizerSpec extends ObjectBehavior
         $jobExecution->getFailureExceptions()->willReturn([]);
         $jobExecution->getLabel()->willReturn('My Job');
 
-        $exception = new \RuntimeException('Cannot normalize job execution of "My Job" because injected serializer is not a normalizer');
-        $this->shouldThrow($exception)->duringNormalize($jobExecution, 'any');
+        $this
+            ->shouldThrow(
+                new \RuntimeException(
+                    'Cannot normalize job execution of "My Job" because injected serializer is not a normalizer'
+                )
+            )
+            ->duringNormalize($jobExecution, 'any');
     }
 }

@@ -7,8 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Monolog\Handler\StreamHandler;
-use Pim\Bundle\VersioningBundle\Entity\Pending;
-use Pim\Bundle\VersioningBundle\Manager\PendingManager;
+use Pim\Bundle\VersioningBundle\Entity\Version;
 
 /**
  * Refresh versioning data
@@ -59,22 +58,33 @@ class RefreshCommand extends ContainerAwareCommand
         }
 
         $em = $this->getEntityManager();
-        $pendingVersions = $this->getPendingManager()->getAllPendingVersions();
+        $pendingVersions = $this->getVersionManager()->getVersionRepository()->getPendingVersions();
         $nbPendings = count($pendingVersions);
         if ($nbPendings === 0) {
-            $output->writeln(sprintf('<info>Versioning is already up to date.</info>'));
+            $output->writeln('<info>Versioning is already up to date.</info>');
 
         } else {
             $progress = $this->getHelperSet()->get('progress');
             $ind = 0;
             $batchSize = $input->getOption('batch-size');
             $progress->start($output, $nbPendings);
+
+            $previousVersions = [];
             foreach ($pendingVersions as $pending) {
-                $this->createVersion($pending);
+                $key = sprintf('%s_%s', $pending->getResourceName(), $pending->getResourceId());
+
+                $previousVersion = isset($previousVersions[$key]) ? $previousVersions[$key] : null;
+                $version = $this->createVersion($pending, $previousVersion);
+
+                if ($version) {
+                    $previousVersions[$key] = $version;
+                }
+
                 $ind++;
                 if (($ind % $batchSize) == 0) {
                     $em->flush();
                     $em->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+                    $previousVersions = [];
                 }
                 $progress->advance();
             }
@@ -85,30 +95,22 @@ class RefreshCommand extends ContainerAwareCommand
     }
 
     /**
-     * @param Pending $pending
+     * @param Version $version
+     * @param Version $previousVersion
      *
-     * @return null
+     * @return Version|null
      */
-    protected function createVersion(Pending $pending)
+    protected function createVersion(Version $version, Version $previousVersion = null)
     {
-        $em = $this->getEntityManager();
-        $user = $em->getRepository('OroUserBundle:User')->findOneBy(array('username' => $pending->getUsername()));
-        $versionable = $this->getPendingManager()->getRelatedVersionable($pending);
-        $versionManager = $this->getVersionManager();
-        $versionManager->setUser($user);
-        if (!in_array(spl_object_hash($versionable), $this->versionedEntities)) {
-            $versionManager->buildVersion($versionable);
-            $this->versionedEntities[] = spl_object_hash($versionable);
-        }
-        $em->remove($pending);
-    }
+        $version = $this->getVersionManager()->buildPendingVersion($version, $previousVersion);
 
-    /**
-     * @return PendingManager
-     */
-    protected function getPendingManager()
-    {
-        return $this->getContainer()->get('pim_versioning.manager.pending');
+        if ($version->getChangeset()) {
+            $this->getEntityManager()->persist($version);
+
+            return $version;
+        } else {
+            $this->getEntityManager()->remove($version);
+        }
     }
 
     /**

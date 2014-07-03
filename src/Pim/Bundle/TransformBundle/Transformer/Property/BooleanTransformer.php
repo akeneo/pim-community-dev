@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
+use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
+
 /**
  * Boolean attribute transformer
  *
@@ -11,6 +13,17 @@ namespace Pim\Bundle\TransformBundle\Transformer\Property;
  */
 class BooleanTransformer implements PropertyTransformerInterface
 {
+    /** @var mixed */
+    protected $default;
+
+    /**
+     * @param mixed $default
+     */
+    public function __construct($default = null)
+    {
+        $this->default = $default;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -20,15 +33,23 @@ class BooleanTransformer implements PropertyTransformerInterface
             return $value;
         }
 
-        $value = trim($value);
-        if ('' === $value) {
-            return null;
-        } elseif ('0' === $value) {
+        if (is_string($value) && '' === $value = trim($value)) {
+            return $this->default;
+        }
+
+        if (in_array($value, ['0', 'false', 'no'])) {
             return false;
-        } elseif ('1' === $value) {
+        }
+
+        if (in_array($value, ['1', 'true', 'yes'])) {
             return true;
         }
 
-        return $value;
+        throw new PropertyTransformerException(
+            'Cannot transform "%value%" into boolean',
+            [
+                '%value%' => is_object($value) ? get_class($value) : gettype($value) . '( ' . $value . ' )',
+            ]
+        );
     }
 }

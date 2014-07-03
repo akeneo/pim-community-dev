@@ -16,8 +16,8 @@
     <logging>
         <level>warn</level>
         <paths>
-            <default>app/logs/phpdoc/{DATE}.log</default>
-            <errors>app/logs/phpdoc/{DATE}.errors.log</errors>
+            <default>app/build/logs/phpdoc/{DATE}.log</default>
+            <errors>app/build/logs/phpdoc/{DATE}.errors.log</errors>
         </paths>
     </logging>
 </phpdoc>

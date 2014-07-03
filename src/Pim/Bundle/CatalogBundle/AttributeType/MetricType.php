@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\AttributeType;
 use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
 
 /**
@@ -43,7 +44,7 @@ class MetricType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = array_merge(
             parent::prepareValueFormOptions($value),
@@ -58,6 +59,21 @@ class MetricType extends AbstractAttributeType
         $options['default_unit'] = array($options['default_unit']);
 
         return $options;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepareValueFormData(ProductValueInterface $value)
+    {
+        if (!is_null($value->getData())) {
+            return $value->getData();
+        };
+
+        $data = new Metric();
+        $data->setData($value->getAttribute()->getDefaultValue());
+
+        return $data;
     }
 
     /**

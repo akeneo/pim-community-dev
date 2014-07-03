@@ -5,7 +5,7 @@ require(['jquery', 'routing'],
 
         var accessLevelLinkSelector = '.access_level_value a';
         var selectDivSelector = '.access_level_value_choice';
-        var linkDivSelector = 'access_level_value_link';
+        var linkDivSelector = '.access_level_value_link';
 
         var accessLevelRoute = 'oro_security_access_levels';
 

@@ -1,0 +1,25 @@
+<li>
+    {{ 'Family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
+    {% if resource_granted('pim_enrich_product_change_family') %}
+        <i id="edit-family" class="icon-pencil"></i>
+    {% endif %}
+</li>
+
+{% if form.vars.value.groups|length != 0 %}
+    <li>
+        {{ 'Groups'|trans|capitalize }}:
+        {% for group in form.vars.value.groups %}
+            <a id="group-products-{{ group.id }}" href="#"
+            {% if group.type.isVariant %}
+                data-toggle="tooltip" data-placement="bottom" data-html="true"
+                data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
+            {% endif %}
+            >
+                {{ group.label }}</a>{% if not loop.last %}, {% endif %}
+            </a>
+        {% endfor %}
+    </li>
+{% endif %}
+
+<li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+<li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>

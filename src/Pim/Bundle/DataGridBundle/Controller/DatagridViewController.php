@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -40,6 +41,7 @@ class DatagridViewController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param DatagridViewManager      $datagridViewManager
      */
@@ -51,6 +53,7 @@ class DatagridViewController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         DatagridViewManager $datagridViewManager
     ) {
@@ -62,6 +65,7 @@ class DatagridViewController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
@@ -95,7 +99,13 @@ class DatagridViewController extends AbstractDoctrineController
                 $form->remove('label');
             }
             $form->submit($request);
-            $violations = $this->validator->validate($view, $creation ? ['Default', 'Creation'] : ['Default']);
+
+            // If the view was created based on the default view, set the default columns
+            if (!$view->getColumns()) {
+                $view->setColumns(array_keys($this->datagridViewManager->getColumnChoices($alias, true)));
+            }
+
+            $violations = $this->validator->validate($view);
             if ($violations->count()) {
                 $messages = [];
                 foreach ($violations as $violation) {
@@ -150,7 +160,7 @@ class DatagridViewController extends AbstractDoctrineController
      */
     public function removeAction(Request $request, DatagridView $view)
     {
-        if ($view->getOwner() !== $this->getUser() || $view->isDefault()) {
+        if ($view->getOwner() !== $this->getUser()) {
             throw new DeleteException($this->getTranslator()->trans('flash.datagrid view.not removable'));
         }
 

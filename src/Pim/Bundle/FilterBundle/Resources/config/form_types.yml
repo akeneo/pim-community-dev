@@ -4,6 +4,7 @@ parameters:
     pim_filter.form.type.filter.metric_class:      Pim\Bundle\FilterBundle\Form\Type\Filter\MetricFilterType
     pim_filter.form.type.filter.price_class:       Pim\Bundle\FilterBundle\Form\Type\Filter\PriceFilterType
     pim_filter.form.type.filter.ajax_choice_class: Pim\Bundle\FilterBundle\Form\Type\Filter\AjaxChoiceFilterType
+    pim_filter.form.type.filter.boolean_class:     Pim\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType
 
     pim_filter.form.type.category_class:           Pim\Bundle\FilterBundle\Form\Type\CategoryType
 
@@ -47,3 +48,10 @@ services:
         class: %pim_filter.form.type.category_class%
         tags:
             - { name: form.type, alias: pim_type_category }
+
+    pim_filter.form.type.boolean:
+        class: %pim_filter.form.type.filter.boolean_class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: form.type, alias: pim_type_boolean_filter }

@@ -11,9 +11,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue;
  */
 class TwigProperty extends FieldProperty
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TEMPLATE_KEY = 'template';
 
     /** @var \Twig_Environment */

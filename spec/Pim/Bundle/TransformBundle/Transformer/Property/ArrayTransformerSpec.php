@@ -8,7 +8,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class ArrayTransformerSpec extends ObjectBehavior
 {
-    public function let(PropertyAccessorInterface $propertyAccessor)
+    function let(PropertyAccessorInterface $propertyAccessor)
     {
         $this->beConstructedWith($propertyAccessor);
     }
@@ -18,11 +18,8 @@ class ArrayTransformerSpec extends ObjectBehavior
         $this->shouldHaveType('Pim\Bundle\TransformBundle\Transformer\Property\ArrayTransformer');
     }
 
-    function it_should_call_the_property_accessor(
-        PropertyAccessorInterface $propertyAccessor,
-        \stdClass $object,
-        ColumnInfoInterface $columnInfo
-    ) {
+    function it_calls_the_property_accessor($propertyAccessor, \stdClass $object, ColumnInfoInterface $columnInfo)
+    {
         $propertyAccessor->setValue($object, 'property_path[suffix]', 'value')->shouldBeCalled();
         $columnInfo->getPropertyPath()->willReturn('property_path');
         $columnInfo->getSuffixes()->willReturn(array('suffix'));

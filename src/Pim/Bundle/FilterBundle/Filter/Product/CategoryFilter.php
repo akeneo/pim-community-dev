@@ -18,20 +18,14 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
  */
 class CategoryFilter extends NumberFilter
 {
-    /**
-     * @staticvar integer
-     */
+    /** @staticvar integer */
     const UNCLASSIFIED_CATEGORY = -1;
 
-    /**
-     * @staticvar integer
-     */
+    /** @staticvar integer */
     const ALL_CATEGORY = -2;
 
-    /**
-     * @var ProductCategoryManager $productCategoryManager
-     */
-    protected $productCategoryManager;
+    /** @var ProductCategoryManager $manager */
+    protected $manager;
 
     /**
      * Constructor
@@ -44,7 +38,7 @@ class CategoryFilter extends NumberFilter
     {
         parent::__construct($factory, $util);
 
-        $this->productCategoryManager = $manager;
+        $this->manager = $manager;
     }
 
     /**
@@ -57,16 +51,16 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $categoryRepository = $this->productCategoryManager->getCategoryRepository();
-        $productRepository  = $this->productCategoryManager->getProductCategoryRepository();
-        $qb         = $ds->getQueryBuilder();
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
 
         if ($data['categoryId'] === self::ALL_CATEGORY) {
             return true;
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
             $tree = $categoryRepository->find($data['treeId']);
             if ($tree) {
-                $productIds = $this->productCategoryManager->getProductIdsInCategory($tree, true);
+                $productIds = $this->manager->getProductIdsInCategory($tree, true);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $productRepository->applyFilterByIds($qb, $productIds, false);
 
@@ -78,7 +72,7 @@ class CategoryFilter extends NumberFilter
                 $category = $categoryRepository->find($data['treeId']);
             }
             if ($category) {
-                $productIds = $this->productCategoryManager->getProductIdsInCategory($category, $data['includeSub']);
+                $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
                 $productIds = (empty($productIds)) ? array(0) : $productIds;
                 $productRepository->applyFilterByIds($qb, $productIds, true);
 

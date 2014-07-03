@@ -23,7 +23,7 @@ class ProductHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($qb, $options)
+    public function hydrate($qb, array $options = [])
     {
         $locale  = $options['locale_code'];
         $scope   = $options['scope_code'];

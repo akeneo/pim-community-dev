@@ -1,25 +1,128 @@
+# 1.2.0
+
+## Features
+- Add an option to automatically sort the choices of simple and multi select attributes
+- Add a mass family edition operation to allow adding or changing attribute requirements on many families at once
+- Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
+- Add an option to filter products by a list of identifier values
+- Don't allow editing the default datagrid view
+
+## Improvements
+- Group datagrid filters by attribute groups
+- Ease the adding of new filters and sorters in ProductQueryBuilder
+- All grids can now benefit from the multistep mass edition wizard (this was reserved to the the product grid before)
+- Ease the adding of subscribers in ProductEditType, JobInstanceType and AttributeGroupType with addEventSubscriber methods
+- Introduce a ProductValueFormFactory which dispatch a EnrichEvents::CREATE_PRODUCT_VALUE_FORM to ease the product value form customization
+- MongoDB completeness calculation performances
+- Introduce Abstract models for Association, Media, Metric, Price, Completeness to ease the overriding/re-using of theses classes
+- Allow to override of a repository avoiding to redefine the entity mapping
+- Introduce a datagrid choice filter that loads attribute option choices based on the search query to enhance performance with a large number of attribute options
+- Apply "Remove product" permission to hide mass delete and delete row action
+- Change "launch" button by "view" on job profile datagrids
+- Create a `JobInstanceRepository`
+- Automatic creation and purge of indexes for MongoDB
+- Dispatch event before rendering the product edit template
+- Fixed asymetric enable product button
+- Remove qb definition from job profile grid configs
+- Create repositories for JobInstance and JobExecution
+- Create manager for JobInstance
+- Clean LastOperationsWidget architecture
+- New readers for export improve memory usage loading small batches of products instead of all products in same time
+- Update BatchBundle to 0.1.6 in order to get updated summary information during the execution of the process (and not only at the end)
+- Allow values 'true', 'false', 'yes' and 'no' to be converted into boolean during import
+- Create a job instance factory to create job instances
+- Allow to add hidden row actions in grids
+- Make optional the generation of missing completenesses in product reader
+- Update install to be able to define email address/name used for system emailing
+- Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
+- Dispatch events on show/edit/execute/remove job profile actions
+- Dispatch events on view/download job execution actions
+- Allow to install custom user roles and groups from installer fixtures
+- Display the code of import/export profiles on the edit and show views
+- Related entities' edition and deletion doesn't reload all the products' normalized data
+- Inject event dispatcher inside AbstractController
+- Dispatch events when removing some entities
+- Add method remove in Category, Group, Attribute, Association type and family managers.
+- Call manager's method remove from these entity controllers
+
+## Bug fixes
+- Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
+- Added missing translation keys for "manage filters", "all", "records", etc
+- Images import from fixtures now works
+- Fixed versions not being properly generated when real-time versioning is disabled (in imports/exports)
+- Deleted completeness when a locale of a channel is deleted
+- Displayed flags in the completenesses grid
+- Fixed a memory leak on product import when using MongoDB
+- Fixed a bug with image upload on product with a "\" or "/" in their sku
+- Fixed a bug that silently failed when uploading file that does not comply with server configuration
+- Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fixed a bug with timestampable listener which doesn't change the updated date of a product
+- Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
+
+## BC breaks
+- Remove FlexibleEntityBundle
+- Remove CategoryWriter and use the generic doctrine writer instead
+- Remove entity argument from FiltersConfigurator constructor
+- Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
+- The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
+- Mass edit operator has been moved to an Operator sub-namespace
+- Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
+- Changed the HydratorInterface::hydrate() method signature
+- Avoid to store null values in Product::normalizedData (MongoDB support)
+- Remove redundant 'getActiveCodeChoices' method in CurrencyManager (use CurrencyManager::getActiveCodes())
+- Remove AbstractAttributeType::buildValueFormType, change visibility of prepareValueFormName, prepareValueFormAlias, prepareValueFormOptions, prepareValueFormConstraints, prepareValueFormData to public
+- Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
+- Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
+- InstallerBundle/LoaderInterface has been changed to pass ProductManager to manage media (loading images from fixtures)
+- Refactor VersioningBundle - a lot of API changes.
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` and use only the family repository
+- Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator` and use only the entity manager
+- Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
+- Add a dependency to the completeness manager on `Pim\Bundle\EnrichBundle\Form\Handler\ChannelHandler`
+- Add a dependency to the channel repository on `Pim\Bundle\CatalogBundle\Manager\CompletenessManager`
+- Remove deprecated ConfigureGroupProductGridListener and add parameter in method ConfiguratorInterface::configure(DatagridConfiguration $configuration)
+- Category and CategoryRepository no longer extend AbstractSegment and SegmentRepository, previously inherited methods are now in these classes
+- Change constructor of ProductExportController to remove CurrencyManager and AssociationTypeManager args
+- Change constructor of `Pim\Bundle\EnrichBundle\Controller\ProductController` and `Pim\Bundle\ImportExportController\JobProfileController` (inject event dispatcher)
+- Add parameters to load datagrids in job profiles index twig templates
+- Remove WidgetRepository to replace it by `Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository`
+- Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
+- Remove injection of WidgetRepository from LastOperationsWidget
+- Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
+- Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
+- Inject EventDispatcher inside AbstractController
+- Add missing getEntity() method in product value interface
+- Add methods inside CategoryInterface
+- Inject `Symfony\Component\EventDispatcher\EventDispatcherInterface` inside Attribute, AssociationType, Category, Family and Group managers
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\FamilyManager`
+- Inject group and group types classes in `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+
+
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
 ## Features
 - Implement creating, updating, applying and removing datagrid views
-- Default product datagrid sorting is done descending on updated property
+- MongoDB storage support
 
 ## Improvements
-- Removed useless ```app/entities``` directory
-- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
-- Introduced custom ODM types to map document to one or many entities
-- Define specific route and configuration for datagrid quick exports
-- MongoDB support
 - Allow to add many quick export on datagrids
-- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Optimize products mass deletion
 - Improve get product REST API
 - Improve entity history context display for entities updated during import jobs
+- Add a 'properties' field to the Attribute entity to allow easily adding new attribute type dependent properties
+- Introduced custom ODM types to map document to one or many entities
+- Define specific route and configuration for datagrid quick exports
+- Add a parameter to ProductManager::save() and ProductManager::saveAll() to allow saving products without completeness recalculation
 - Dispatch event pre/post handler for each mass action
 - Enhance the error message displayed when a related entity doesn't exist during an import (for instance we import products and a family doesn't exist)
+- Default product datagrid sorting is done descending on updated property
 
 ## Bug fixes
-- Fixed verbose option always used
+- Fixed the verbose option always used in the install command
 - Fixed issue on attribute option removal
 - Fixed identifier is required attribute
 - Fixed get common attributes with common values
@@ -30,7 +133,28 @@
 - Fixed the CSV import of attribute option to throw exception when the attribute is not known
 - Fixed the CSV export of attributes to avoid to export the virtual group 'Other'
 - Prevent considering 0 as a null value when importing metric data
-- Ensured attribute option validation
+- Ensured the attribute option validation when edit an option
+- Fixed the product CSV export when a metric attribute is exported without unit
+- Fixed the missed 'there are unsaved changes' message when I delete an option
+- Ensured the ability to change the user catalog locale from user fixtures
+- Fixed mass delete and pagination
+- Fixed the CSV import of family when an attribute does not exist
+- Fixed the CSV import of option when an attribute does not exist
+- Fixed the erroneous message on completeness tab to display "not yet calculated" instead of "locale non associated to this channel"
+- Fixed the 'null' displayed after a dynamic option creation
+- Fixed the quick Export to be able to export all the products
+- Ensured that we're able to configure the email to use in monolog handler
+- Fixed the missing translation keys
+- Fixed the route exception for less/address in prod.log
+- Fixed the categories tree get cut off on a long list on categiry management
+- Fixed the deletion of an attribute option
+- Remove the deprecated fallback property in locale and in locales.yml file
+- Avoid to recalculate the completeness when I add some products to one or more group with the mass-edit wizard
+- Fixed the unique attributes validation during product CSV imports
+- Fixed the exception on file_get_content if the image doesn't exist anymore
+- Ensure the required property for an identifier when importing attributes
+- Fixed the error message when the family is not known when importing products
+- Removed useless ```app/entities``` directory
 
 ## BC breaks
 - Add an argument HydratorInterface in ProductDatasource constructor (MongoDBODM support)
@@ -104,6 +228,9 @@
 - Move prepareDBALQuery from ProductRepository to QueryBuilderUtility
 - Add a ProductCategoryManager and move here the methods getProductsCountInCategory, getProductIdsInCategory from the ProductManager
 - Renamed service writer ids `pim_base_connector.writer.orm.*` -> `pim_base_connector.writer.doctrine.*`
+- Replace `@security.context` by `@pim_user.context.user` in `ContextConfigurator`
+- Delete the attribute virtual group and the `getVirtualGroup` method of the class `Pim\Bundle\CatalogBundle\Model\AbstractAttribute`
+- Render the attribute group mandatory for the creation and the edition of an attribute
 
 # 1.0.2
 ## Bug Fixes

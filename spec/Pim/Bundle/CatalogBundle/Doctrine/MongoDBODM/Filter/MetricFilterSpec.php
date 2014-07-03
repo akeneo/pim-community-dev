@@ -22,7 +22,7 @@ class MetricFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
@@ -58,7 +58,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '>=', '22.5');
     }
 
-    function it_adds_a_lesser_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);
@@ -69,7 +69,7 @@ class MetricFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($metric, '<', '22.5');
     }
 
-    function it_adds_a_lesser_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
+    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $metric)
     {
         $metric->getCode()->willReturn('weight');
         $metric->isLocalizable()->willReturn(true);

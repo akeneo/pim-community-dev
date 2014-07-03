@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Converter;
 
 use Akeneo\Bundle\MeasureBundle\Convert\MeasureConverter;
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -41,7 +41,7 @@ class MetricConverter
         foreach ($product->getValues() as $value) {
             $data = $value->getData();
             $attribute = $value->getAttribute();
-            if ($data instanceof Metric && isset($channelUnits[$attribute->getCode()])) {
+            if ($data instanceof AbstractMetric && isset($channelUnits[$attribute->getCode()])) {
                 $channelUnit = $channelUnits[$attribute->getCode()];
                 $this->converter->setFamily($data->getFamily());
                 $data->setData(

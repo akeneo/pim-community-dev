@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Abstract product
@@ -17,8 +18,11 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
- TimestampableInterface
+ TimestampableInterface, VersionableInterface
 {
+    /** @staticvar string */
+    const IDENTIFIER_TYPE = 'pim_catalog_identifier';
+
     /** @var mixed $id */
     protected $id;
 
@@ -473,18 +477,13 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getIdentifier()
     {
-        $values = array_filter(
-            $this->getValues()->toArray(),
-            function ($value) {
-                return $value->getAttribute()->getAttributeType() === 'pim_catalog_identifier';
+        foreach ($this->values as $value) {
+            if (self::IDENTIFIER_TYPE === $value->getAttribute()->getAttributeType()) {
+                return $value;
             }
-        );
-
-        if (false === $identifier = reset($values)) {
-            throw new MissingIdentifierException($this);
         }
 
-        return $identifier;
+        throw new MissingIdentifierException($this);
     }
 
     /**
@@ -494,12 +493,13 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getAttributes()
     {
-        return array_map(
-            function ($value) {
-                return $value->getAttribute();
-            },
-            $this->getValues()->toArray()
-        );
+        $attributes = array();
+
+        foreach ($this->values as $value) {
+            $attributes[] = $value->getAttribute();
+        }
+
+        return $attributes;
     }
 
     /**
@@ -529,32 +529,24 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get ordered group
      *
-     * Group with negative sort order (Other) will be put at the end
-     *
      * @return array
      */
     public function getOrderedGroups()
     {
-        $firstGroups = array();
-        $lastGroups = array();
+        $groups = array();
 
         foreach ($this->getAttributes() as $attribute) {
-            $group = $attribute->getVirtualGroup();
-            if ($group->getSortOrder() < 0) {
-                $lastGroups[$group->getId()] = $group;
-            } else {
-                $firstGroups[$group->getId()] = $group;
-            }
+            $group = $attribute->getGroup();
+            $groups[$group->getId()] = $group;
         }
 
         $sortGroup = function (AttributeGroup $fst, AttributeGroup $snd) {
             return $fst->getSortOrder() - $snd->getSortOrder();
         };
 
-        @usort($firstGroups, $sortGroup);
-        @usort($lastGroups, $sortGroup);
+        @usort($groups, $sortGroup);
 
-        return array_merge($firstGroups, $lastGroups);
+        return $groups;
     }
 
     /**
@@ -620,6 +612,24 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         $this->categories->removeElement($category);
 
         return $this;
+    }
+
+    /**
+     * Get the product root category ids
+     *
+     * @return array
+     */
+    public function getTreeIds()
+    {
+        $roots = [];
+
+        foreach ($this->categories as $category) {
+            if (!in_array($category->getRoot(), $roots)) {
+                $roots[] = $category->getRoot();
+            }
+        }
+
+        return $roots;
     }
 
     /**
@@ -775,11 +785,11 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Add product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function addAssociation(Association $association)
+    public function addAssociation(AbstractAssociation $association)
     {
         if (!$this->associations->contains($association)) {
             $association->setOwner($this);
@@ -792,11 +802,11 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Remove product association
      *
-     * @param Association $association
+     * @param AbstractAssociation $association
      *
      * @return Product
      */
-    public function removeAssociation(Association $association)
+    public function removeAssociation(AbstractAssociation $association)
     {
         $this->associations->removeElement($association);
 
@@ -806,7 +816,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get the product associations
      *
-     * @return Association[]|null
+     * @return AbstractAssociation[]|null
      */
     public function getAssociations()
     {
@@ -818,7 +828,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param AssociationType $type
      *
-     * @return Association|null
+     * @return AbstractAssociation|null
      */
     public function getAssociationForType(AssociationType $type)
     {
@@ -832,7 +842,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Set product associations
      *
-     * @param Association[] $associations
+     * @param AbstractAssociation[] $associations
      *
      * @return Product
      */

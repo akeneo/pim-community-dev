@@ -48,3 +48,10 @@ attribute_groups:
             en_GB: Internal
             fr_FR: Interne
             de_DE: Intern
+    other:
+        sort_order: 100
+        labels:
+            en_US: Other
+            en_GB: Other
+            fr_FR: Autre
+            de_DE: Ander

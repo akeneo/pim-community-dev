@@ -44,6 +44,35 @@ table.grid {
   }
 }
 
+@media all and (max-width: 1600px) {
+  .grid-toolbar {
+    .pagination-centered, .page-size label {
+      width: auto;
+    }
+  }
+}
+
+.grid .action-cell {
+  vertical-align: top;
+  a.action {
+    display: table-cell;
+    i {
+      opacity: 0;
+      margin: 0 2px;
+      padding: 0px 5px;
+      border: 1px solid #ccc;
+      .border-radius(3px);
+    }
+  }
+}
+tr:hover>.action-cell a.action>i {
+  opacity: 1;
+  background-color: @backgroundColor-white;
+  &:hover {
+    background-color: @color-light_grey;
+  }
+}
+
 .ui-multiselect-menu.select-filter-widget .ui-multiselect-checkboxes label {
   &.ui-state-hover, &.ui-state-active {
     background-color: @color-purple_light;
@@ -77,6 +106,13 @@ table.grid {
     color: @textColor + #555;
     background: @backgroundColor-white;
   }
+  &.select2-search-choice a {
+    padding: 0;
+    color: @textColor + #333;
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 
 /* Tree */
@@ -85,7 +121,7 @@ table.grid {
   overflow: auto;
 }
 
-.jstree-root > a > .jstree-checkbox {
+.root-unselectable .jstree-root > a > .jstree-checkbox {
   display: none;
 }
 
@@ -286,11 +322,6 @@ a[data-toggle-channel] {
   }
 }
 
-.accordion-inner-unbuffered {
-  padding: 0;
-  border-top: 1px solid #e5e5e5;
-}
-
 tr.warning, tr.error {
   .title {
     font-weight: bold;
@@ -316,4 +347,28 @@ span.link-label {
 
 .btn-mini {
   padding: 0 6px;
+}
+
+.diff {
+  list-style-type: none;
+  .file {
+    display: inline-block;
+    padding: 15px;
+    margin: 0 5px;
+  }
+  .base {
+    background-color: @color-base_diff;
+    del {
+      background-color: darken(@color-base_diff, 10%);
+    }
+  }
+  .changed {
+    background-color: @color-changed_diff;
+    ins {
+      background-color: darken(@color-changed_diff, 10%);
+    }
+  }
+  ins {
+    text-decoration: none;
+  }
 }

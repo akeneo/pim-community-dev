@@ -50,6 +50,13 @@ class LoaderFactoryTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('Pim\Bundle\InstallerBundle\FixtureLoader\Loader'));
 
         $eventSubscriber = $this->getMock('Symfony\Component\EventDispatcher\EventDispatcherInterface');
+        $productManager = $this->getMockBuilder('Pim\Bundle\CatalogBundle\Manager\ProductManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $configurationRegistry->expects($this->once())
+            ->method('getProductManager')
+            ->will($this->returnValue($productManager));
 
         $factory = new LoaderFactory(
             $doctrineCache,

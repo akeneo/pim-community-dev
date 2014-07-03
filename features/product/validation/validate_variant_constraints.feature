@@ -11,7 +11,7 @@ Feature:
       | sku               | family | color | size | groups            |
       | black_boots       | boots  | black | 41   | caterpillar_boots |
       | other_black_boots | boots  | black |      | caterpillar_boots |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     When I am on the "other_black_boots" product page
     And I visit the "Sizes" group
     And I change the "Size" to "41"

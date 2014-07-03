@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\Completeness;
+use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
 
 /**
  * Completeness normalizer
@@ -31,6 +31,6 @@ class CompletenessNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Completeness && 'mongodb_json' === $format;
+        return $data instanceof AbstractCompleteness && 'mongodb_json' === $format;
     }
 }

@@ -4,6 +4,7 @@ namespace Pim\Bundle\UserBundle\Context;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
@@ -195,7 +196,7 @@ class UserContext
     /**
      * Get user category tree
      *
-     * @return Category
+     * @return CategoryInterface
      */
     public function getUserTree()
     {
@@ -287,5 +288,23 @@ class UserContext
         }
 
         return null;
+    }
+
+    /**
+     * Get authenticated user
+     *
+     * @return User|null
+     */
+    public function getUser()
+    {
+        if (null === $token = $this->securityContext->getToken()) {
+            return null;
+        }
+
+        if (!is_object($user = $token->getUser())) {
+            return null;
+        }
+
+        return $user;
     }
 }

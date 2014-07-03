@@ -323,24 +323,6 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Get channel mock with code
-     *
-     * @param string $code
-     *
-     * @return Pim\Bundle\CatalogBundle\Entity\Channel
-     */
-    protected function getChannelMock($code)
-    {
-        $channel = $this->getMock('Pim\Bundle\CatalogBundle\Entity\Channel');
-
-        $channel->expects($this->any())
-                  ->method('getCode')
-                  ->will($this->returnValue($code));
-
-        return $channel;
-    }
-
-    /**
      * Get attribute requirement mock with channel and attribute codes
      *
      * @param string $channelCode
@@ -353,12 +335,12 @@ class FamilyTest extends \PHPUnit_Framework_TestCase
         $requirement = $this->getMock('Pim\Bundle\CatalogBundle\Entity\AttributeRequirement');
 
         $requirement->expects($this->any())
-            ->method('getChannel')
-            ->will($this->returnValue($this->getChannelMock($channelCode)));
+            ->method('getChannelCode')
+            ->will($this->returnValue($channelCode));
 
         $requirement->expects($this->any())
-            ->method('getAttribute')
-            ->will($this->returnValue($this->getAttributeMock('pim_catalog_text', $attributeCode)));
+            ->method('getAttributeCode')
+            ->will($this->returnValue($attributeCode));
 
         return $requirement;
     }

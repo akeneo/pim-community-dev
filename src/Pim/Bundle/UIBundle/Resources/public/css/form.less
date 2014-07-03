@@ -513,9 +513,13 @@ div.btn-group > .has-switch {
   }
 }
 
-/* Translated data **************************************************************************************************/
+/* Accordion ********************************************************************************************************/
 .accordion-inner {
   td { border: none; }
+}
+.accordion-inner-unbuffered {
+  padding: 0;
+  border-top: 1px solid #e5e5e5;
 }
 
 /* Dialog ***********************************************************************************************************/
@@ -850,7 +854,7 @@ table.comparison .no-label .attribute-field.scopable {
       .control-label.add-on {
         position: absolute;
         height: 100%;
-        font-size; 15px;
+        font-size: 15px;
         &[style] {
           text-shadow: none;
         }
@@ -1050,26 +1054,27 @@ div.dropdown-menu.channel {
       }
     }
   }
-  .flag-language {
-    color: @textColor;
-    background-color: transparent;
-    border: none;
-    .flag {
-      display: inline-block;
-      margin-bottom: 5px;
-      vertical-align: bottom;
-    }
-    .language {
-      display: inline-block;
-      width: 30px;
-      padding-left: 5px;
-      font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
-      font-size: 12px;
-      color: @textColor + #333;
-      vertical-align: bottom;
-    }
-  }
 }
+
+.flag-language {
+  color: @textColor;
+  background-color: transparent;
+  border: none;
+}
+
+.flag {
+  display: inline-block;
+}
+
+.language {
+  display: inline-block;
+  padding-left: 5px;
+  font-family: Monaco,Menlo,Consolas,"Courier New",monospace;
+  font-size: 12px;
+  color: @textColor + #333;
+  vertical-align: bottom;
+}
+
 #comparison-switcher .dropdown-toggle .flag-language {
   .flag {
     margin-top: 2px;
@@ -1367,17 +1372,6 @@ table#progress-table {
 }
 
 /** datagrid views ***************************************************************************************************/
-input.input-invisible {
-  background-color: transparent;
-  border: none;
-  outline: none;
-  .box-shadow(inset 0 0 0 transparent);
-  &:focus,
-  &:focus:invalid:focus {
-    .box-shadow(none);
-  }
-}
-
 .highlight-hover li {
   &:hover {
     background-color: @color-purple_light;
@@ -1390,8 +1384,10 @@ input.input-invisible {
 
 button.view-button {
   margin-top: -6px;
-  display: none;
   font-size: 13px;
+  &.hide {
+  display: none;
+  }
 }
 #remove-view {
   cursor: pointer;

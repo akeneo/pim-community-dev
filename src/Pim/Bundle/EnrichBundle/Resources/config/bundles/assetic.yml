@@ -7,7 +7,6 @@ assetic:
         - OroNavigationBundle
         - OroWindowsBundle
         - OroEntityExtendBundle
-        - OroSegmentationTreeBundle
         - OroSecurityBundle
         - PimUIBundle
         - PimCatalogBundle

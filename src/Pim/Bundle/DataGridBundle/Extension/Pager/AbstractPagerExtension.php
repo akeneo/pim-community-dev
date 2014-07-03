@@ -20,9 +20,7 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
  */
 abstract class AbstractPagerExtension extends AbstractExtension
 {
-    /**
-     * Query params
-     */
+    /** @staticvar string Query params */
     const PAGER_ROOT_PARAM = '_pager';
     const PAGE_PARAM       = '_page';
     const PER_PAGE_PARAM   = '_per_page';

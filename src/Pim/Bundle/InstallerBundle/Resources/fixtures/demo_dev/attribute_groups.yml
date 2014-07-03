@@ -24,3 +24,8 @@ attribute_groups:
         labels:
             en_US: Colors
             fr_FR: Couleurs
+    other:
+        sort_order: 100
+        labels:
+            en_US: Other
+            fr_FR: Autre

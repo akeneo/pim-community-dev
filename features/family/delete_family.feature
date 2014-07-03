@@ -1,12 +1,12 @@
 @javascript
 Feature: Delete a family
   In order to manage families in the catalog
-  As a user
+  As an administrator
   I need to be able to delete families
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully delete a family from the grid
     Given I am on the families page

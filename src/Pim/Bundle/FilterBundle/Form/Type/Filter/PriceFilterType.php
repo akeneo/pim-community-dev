@@ -19,9 +19,7 @@ use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
  */
 class PriceFilterType extends AbstractType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_price_filter';
 
     /**
@@ -88,12 +86,12 @@ class PriceFilterType extends AbstractType
     {
         parent::setDefaultOptions($resolver);
 
-        $currencyChoices = $this->currencyManager->getActiveCodeChoices();
+        $currencyChoices = $this->currencyManager->getActiveCodes();
 
         $resolver->replaceDefaults(array('data_type' => NumberFilterType::DATA_DECIMAL));
         $resolver->setDefaults(
             array(
-                'currency_choices' => $currencyChoices,
+                'currency_choices' => array_combine($currencyChoices, $currencyChoices),
                 'currency_options' => array()
             )
         );

@@ -1,7 +1,7 @@
 <div class="tab-content container-fluid">
     <table id="progress-table" class="table table-bordered groups">
         <thead>
-            <th width="8%">{{ 'Locales'|trans|upper }}</th>
+            <th width="200">{{ 'Locales'|trans|upper }}</th>
             {% for channel in channels %}
                 <th class="channel" width="150">{{ channel.label|upper }}</th>
             {% endfor %}
@@ -11,7 +11,7 @@
         <tbody>
             {% for locale in locales %}
             <tr>
-                <td>{{ locale.code|flag(true) }}</td>
+                <td>{{ locale.code|flag(false) }}</td>
                 {% for channel in channels %}
                 <td>
                     {% include 'PimEnrichBundle:Completeness:_healthbar.html.twig'

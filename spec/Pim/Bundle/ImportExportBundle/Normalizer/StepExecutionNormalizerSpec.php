@@ -10,14 +10,14 @@ use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
-    public function let(TranslatorInterface $translator)
+    function let(TranslatorInterface $translator)
     {
         $this->beConstructedWith($translator);
     }
 
     function it_is_a_normalizer()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
+        $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
     function it_supports_normalization_of_step_execution(StepExecution $stepExecution)

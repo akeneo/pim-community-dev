@@ -1,11 +1,11 @@
 Feature: Edit an import
   In order to manage existing import jobs
-  As a user
+  As an administrator
   I need to be able to edit an import job
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit an import job
     Given I am on the "footwear_product_import" import job edit page
@@ -44,12 +44,18 @@ Feature: Edit an import
     And I should see "Groups column grp"
 
   @javascript
+  Scenario: Successfully display a dialog when we quit a page with unsaved changes
+    Given I am on the "footwear_product_import" import job edit page
+    When I fill in the following information:
+      | Label | My import |
+    When I click on the Akeneo logo
+    Then I should see a confirm dialog with the following content:
+      | title   | Are you sure you want to leave this page?                           |
+      | content | You will lose changes to the import profile if you leave this page. |
+
+  @javascript @skip
   Scenario: Successfully display a message when there are unsaved changes
     Given I am on the "footwear_product_import" import job edit page
     When I fill in the following information:
       | Label | My import |
     Then I should see "There are unsaved changes."
-    When I click on the Akeneo logo
-    Then I should see a confirm dialog with the following content:
-      | title   | Are you sure you want to leave this page?                           |
-      | content | You will lose changes to the import profile if you leave this page. |

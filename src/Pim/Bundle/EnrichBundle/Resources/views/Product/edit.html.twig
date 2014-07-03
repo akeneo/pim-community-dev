@@ -18,7 +18,7 @@
 
     {{ JSFV(form) }}
     {{ form_start(form, {
-        'action': path('pim_enrich_product_edit', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
+        'action': path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }),
         'attr': {
             'class': 'product-edit',
             'data-updated-title': 'confirmation.leave'|trans,
@@ -29,24 +29,7 @@
         {% set title = 'product.title'|trans %}
 
         {% set buttons %}
-            {{ elements.backLink(path('pim_enrich_product_index')) }}
-            {{ elements.enabledSwitch(form) }}
-            {% if resource_granted("pim_enrich_product_remove") %}
-                {{ elements.deleteLink(
-                    path('pim_enrich_product_remove', { id: form.vars.value.id }),
-                    'pim_enrich_product_remove',
-                    path('pim_enrich_product_index'),
-                    'confirmation.remove.product'|trans({ '%name%': product.label }),
-                    'flash.product.removed'|trans
-                ) }}
-            {% endif %}
-            {{ elements.submitDropdownBtn(
-                'btn.save',
-                {
-                    'Create': { 'text': 'btn.save and create' },
-                    'BackGrid': { 'text': 'btn.save and back' }
-                }
-            ) }}
+            {% include 'PimEnrichBundle:Product:_buttons.html.twig' %}
         {% endset %}
 
         {% set subtitle %}
@@ -79,32 +62,8 @@
 
         {% set left %}
             <ul class="inline">
-                <li>
-                    {{ 'Family'|trans|capitalize }}: {{ form.vars.value.family|capitalize|default('N/A'|trans) }}
-                    {% if resource_granted('pim_enrich_product_change_family') %}
-                        <i id="edit-family" class="icon-pencil"></i>
-                    {% endif %}
-                </li>
-
-                {% if form.vars.value.groups|length != 0 %}
-                <li>
-                    {{ 'Groups'|trans|capitalize }}:
-                    {% for group in form.vars.value.groups %}
-                        <a id="group-products-{{ group.id }}" href="#"
-                        {% if group.type.isVariant %}
-                            data-toggle="tooltip" data-placement="bottom" data-html="true"
-                            data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
-                        {% endif %}
-                        >
-                            {{ group.label }}</a>{% if not loop.last %}, {% endif %}
-                        </a>
-                    {% endfor %}
-                </li>
-                {% endif %}
-
-                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.user.username : 'N/A'|trans }}</li>
-                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.user.username : 'N/A'|trans }}</li>
-           </ul>
+                {% include 'PimEnrichBundle:Product:_left-details.html.twig' %}
+            </ul>
         {% endset %}
 
         {{ elements.page_header(title, buttons, subtitle, left, elements.updated(form.vars.id)) }}

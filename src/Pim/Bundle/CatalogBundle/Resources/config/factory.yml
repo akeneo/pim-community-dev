@@ -2,7 +2,6 @@ parameters:
     pim_catalog.factory.family.class:                Pim\Bundle\CatalogBundle\Factory\FamilyFactory
     pim_catalog.factory.attribute_requirement.class: Pim\Bundle\CatalogBundle\Factory\AttributeRequirementFactory
     pim_catalog.factory.referenced_collection.class: Pim\Bundle\CatalogBundle\Doctrine\ReferencedCollectionFactory
-    pim_catalog.factory.completeness.class:          Pim\Bundle\CatalogBundle\Factory\CompletenessFactory
     pim_catalog.factory.attribute_type.class:        Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory
 
 services:
@@ -20,9 +19,6 @@ services:
         class: %pim_catalog.factory.referenced_collection.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-
-    pim_catalog.factory.completeness:
-        class: %pim_catalog.factory.completeness.class%
 
     pim_catalog.factory.attribute_type:
         class: %pim_catalog.factory.attribute_type.class%

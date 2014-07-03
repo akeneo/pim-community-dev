@@ -40,27 +40,12 @@ abstract class CategoryView extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }
 
         return $elt;
-    }
-
-    /**
-     * Find input node in tree
-     * @return NodeElement
-     */
-    public function findInputNodeInTree()
-    {
-        $elt = $this->getElement('Category tree')->find('css', 'input.jstree-rename-input');
-        if (!$elt) {
-            throw new \InvalidArgumentException('Unable to find category input node in the tree');
-        }
-
-        return $elt;
-
     }
 
     /**
@@ -72,7 +57,7 @@ abstract class CategoryView extends Form
      */
     public function rightClickAction($action)
     {
-        $elt = $this->getElement('Right click menu')->find('css', sprintf('li a:contains(%s)', $action));
+        $elt = $this->getElement('Right click menu')->find('css', sprintf('li a:contains("%s")', $action));
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find action "%s" in the menu', $action));
         }

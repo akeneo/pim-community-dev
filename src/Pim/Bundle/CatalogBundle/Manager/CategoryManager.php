@@ -2,21 +2,45 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\SegmentationTreeBundle\Manager\SegmentManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Oro\Bundle\SegmentationTreeBundle\Entity\AbstractSegment;
 
 /**
- * Extends SegmentManager for category tree
+ * Category manager
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CategoryManager extends SegmentManager
+class CategoryManager
 {
+    /** @var ObjectManager */
+    protected $om;
+
+    /** @var string */
+    protected $categoryClass;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /**
+     * Constructor
+     *
+     * @param ObjectManager            $om
+     * @param string                   $categoryClass
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(ObjectManager $om, $categoryClass, EventDispatcherInterface $eventDispatcher)
+    {
+        $this->om = $om;
+        $this->categoryClass = $categoryClass;
+        $this->eventDispatcher = $eventDispatcher;
+    }
+
     /**
      * Return object manager
      *
@@ -24,7 +48,39 @@ class CategoryManager extends SegmentManager
      */
     public function getObjectManager()
     {
-        return $this->storageManager;
+        return $this->om;
+    }
+
+    /**
+     * Get a new category instance
+     *
+     * @return CategoryInterface
+     */
+    public function getCategoryInstance()
+    {
+        return new $this->categoryClass;
+    }
+
+    /**
+     * Return category class name (mainly used in Doctrine context)
+     *
+     * @return string category class name
+     */
+    public function getCategoryClass()
+    {
+        return $this->categoryClass;
+    }
+
+    /**
+     * Return the entity repository reponsible for the category
+     *
+     * @return CategoryRepository
+     *
+     * TODO: Inject CategoryRepository
+     */
+    public function getEntityRepository()
+    {
+        return $this->om->getRepository($this->getCategoryClass());
     }
 
     /**
@@ -34,7 +90,7 @@ class CategoryManager extends SegmentManager
      */
     public function getTreeInstance()
     {
-        $tree = $this->getSegmentInstance();
+        $tree = $this->getCategoryInstance();
         $tree->setParent(null);
 
         return $tree;
@@ -46,6 +102,31 @@ class CategoryManager extends SegmentManager
     public function getTrees()
     {
         return $this->getEntityRepository()->getChildren(null, true, 'created', 'DESC');
+    }
+
+    /**
+     * Get all direct children for a parent category id.
+     * If the $selectNodeId is provided, all the children
+     * level needed to provides the selectNode are returned
+     *
+     * @param integer $parentId
+     * @param integer $selectNodeId
+     *
+     * @return ArrayCollection
+     */
+    public function getChildren($parentId, $selectNodeId = false)
+    {
+        $children = array();
+
+        $entityRepository = $this->getEntityRepository();
+
+        if ($selectNodeId === false) {
+            $children = $entityRepository->getChildrenByParentId($parentId);
+        } else {
+            $children = $entityRepository->getChildrenTreeByParentId($parentId, $selectNodeId);
+        }
+
+        return $children;
     }
 
     /**
@@ -133,16 +214,72 @@ class CategoryManager extends SegmentManager
     }
 
     /**
-     * {@inheritdoc}
+     * Remove a category
+     *
+     * @param CategoryInterface $category
      */
-    public function remove(AbstractSegment $segment)
+    public function remove(CategoryInterface $category)
     {
-        if ($segment instanceof CategoryInterface) {
-            foreach ($segment->getProducts() as $product) {
-                $product->removeCategory($segment);
-            }
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_CATEGORY, new GenericEvent($category));
+
+        foreach ($category->getProducts() as $product) {
+            $product->removeCategory($category);
         }
 
-        parent::remove($segment);
+        $this->getObjectManager()->remove($category);
+    }
+
+    /**
+     * Move a category to another parent
+     * If $prevSiblingId is provided, the category will be positioned after this
+     * category, otherwise if will be the first child of the parent categpry
+     *
+     * @param integer $categoryId
+     * @param integer $parentId
+     * @param integer $prevSiblingId
+     */
+    public function move($categoryId, $parentId, $prevSiblingId)
+    {
+        $repo     = $this->getEntityRepository();
+        $category = $repo->find($categoryId);
+        $parent   = $repo->find($parentId);
+        $prevSibling = null;
+
+        $category->setParent($parent);
+
+        if (!empty($prevSiblingId)) {
+            $prevSibling = $repo->find($prevSiblingId);
+        }
+
+        if (is_object($prevSibling)) {
+            $repo->persistAsNextSiblingOf($category, $prevSibling);
+        } else {
+            $repo->persistAsFirstChildOf($category, $parent);
+        }
+    }
+
+    /**
+     * Check if a parent node is an ancestor of a child node
+     *
+     * @param CategoryInterface $parentNode
+     * @param CategoryInterface $childNode
+     *
+     * @return boolean
+     */
+    public function isAncestor(CategoryInterface $parentNode, CategoryInterface $childNode)
+    {
+        $childPath = $this->getEntityRepository()->getPath($childNode);
+        //Removing last part of the path as it's the node itself
+        //which cannot be is own ancestor
+        array_pop($childPath);
+        $childCount = 0;
+        $parentFound = false;
+
+        while ($childCount < count($childPath) && (!$parentFound)) {
+            $parentFound = ($childPath[$childCount]->getId() === $parentNode->getId());
+            $childCount++;
+        }
+
+        return $parentFound;
     }
 }

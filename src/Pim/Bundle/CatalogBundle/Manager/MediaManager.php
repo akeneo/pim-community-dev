@@ -5,8 +5,11 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Gaufrette\Filesystem;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Gedmo\Sluggable\Util\Urlizer;
+use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Exception\MediaManagementException;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
  * Media Manager actually implements with Gaufrette Bundle and Local adapter
@@ -36,12 +39,12 @@ class MediaManager
     }
 
     /**
-     * @param Media  $media
-     * @param string $filenamePrefix
+     * @param AbstractMedia $media
+     * @param string        $filenamePrefix
      *
      * @throws MediaManagementException
      */
-    public function handle(Media $media, $filenamePrefix)
+    public function handle(AbstractMedia $media, $filenamePrefix)
     {
         try {
             if ($file = $media->getFile()) {
@@ -61,11 +64,11 @@ class MediaManager
     /**
      * Duplicate a media information into another one
      *
-     * @param Media  $source
-     * @param Media  $target
-     * @param string $filenamePrefix
+     * @param AbstractMedia $source
+     * @param AbstractMedia $target
+     * @param string        $filenamePrefix
      */
-    public function duplicate(Media $source, Media $target, $filenamePrefix)
+    public function duplicate(AbstractMedia $source, AbstractMedia $target, $filenamePrefix)
     {
         $target->setFile(new File($source->getFilePath()));
         $this->upload(
@@ -79,12 +82,12 @@ class MediaManager
     }
 
     /**
-     * @param Media  $media
-     * @param string $targetDir
+     * @param AbstractMedia $media
+     * @param string        $targetDir
      *
      * @return boolean true on success, false on failure
      */
-    public function copy(Media $media, $targetDir)
+    public function copy(AbstractMedia $media, $targetDir)
     {
         if ($media->getFilePath() === null) {
             return false;
@@ -108,11 +111,11 @@ class MediaManager
      *   - files/sku-003/back_view/en_US
      *   - files/sku-004/insurance
      *
-     * @param Media $media
+     * @param AbstractMedia $media
      *
      * @return string
      */
-    public function getExportPath(Media $media)
+    public function getExportPath(AbstractMedia $media)
     {
         if ($media->getFilePath() === null) {
             return '';
@@ -137,6 +140,25 @@ class MediaManager
     }
 
     /**
+     * @param ProductInterface      $product
+     * @param ProductValueInterface $value
+     *
+     * @return string
+     */
+    public function generateFilenamePrefix(ProductInterface $product, ProductValueInterface $value)
+    {
+        return sprintf(
+            '%s-%s-%s-%s-%s-%s',
+            $product->getId(),
+            Urlizer::urlize($product->getIdentifier(), '_'),
+            $value->getAttribute()->getCode(),
+            $value->getLocale(),
+            $value->getScope(),
+            time()
+        );
+    }
+
+    /**
      * @param File   $filename
      * @param string $filenamePrefix
      *
@@ -149,25 +171,31 @@ class MediaManager
 
     /**
      * Upload file
-     * @param Media   $media     Media entity
-     * @param string  $filename  Filename
-     * @param boolean $overwrite Overwrite file or not
+     * @param AbstractMedia $media     AbstractMedia entity
+     * @param string        $filename  Filename
+     * @param boolean       $overwrite Overwrite file or not
      */
-    protected function upload(Media $media, $filename, $overwrite = false)
+    protected function upload(AbstractMedia $media, $filename, $overwrite = false)
     {
-        $file = $media->getFile();
-        $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
+        if (($file = $media->getFile())) {
+            if ($file instanceof UploadedFile && UPLOAD_ERR_OK !== $file->getError()) {
+                return;
+            }
 
-        $media->setOriginalFilename(
-            $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
-        );
-        $media->setFilename($filename);
-        $media->setFilepath($this->getFilePath($media));
-        $media->setMimeType($file->getMimeType());
+            $this->write($filename, file_get_contents($file->getPathname()), $overwrite);
+
+            $media->setOriginalFilename(
+                $file instanceof UploadedFile ?  $file->getClientOriginalName() : $file->getFilename()
+            );
+            $media->setFilename($filename);
+            $media->setFilepath($this->getFilePath($media));
+            $media->setMimeType($file->getMimeType());
+        }
     }
 
     /**
      * Write file in filesystem
+     *
      * @param string  $filename  Filename
      * @param string  $content   File content
      * @param boolean $overwrite Overwrite file or not
@@ -179,11 +207,11 @@ class MediaManager
 
     /**
      * Read a file
-     * @param Media $media
+     * @param AbstractMedia $media
      *
      * @return content
      */
-    protected function getFilePath(Media $media)
+    protected function getFilePath(AbstractMedia $media)
     {
         if ($this->fileExists($media)) {
             return $this->uploadDirectory . DIRECTORY_SEPARATOR . $media->getFilename();
@@ -192,11 +220,11 @@ class MediaManager
 
     /**
      * Delete a file
-     * @param Media $media
+     * @param AbstractMedia $media
      */
-    protected function delete(Media $media)
+    protected function delete(AbstractMedia $media)
     {
-        if (($media->getFilename() != "") && $this->fileExists($media)) {
+        if (($media->getFilename() !== "") && $this->fileExists($media)) {
             $this->filesystem->delete($media->getFilename());
         }
 
@@ -209,22 +237,22 @@ class MediaManager
     /**
      * Predicate to know if file exists physically
      *
-     * @param Media $media
+     * @param AbstractMedia $media
      *
      * @return boolean
      */
-    protected function fileExists(Media $media)
+    protected function fileExists(AbstractMedia $media)
     {
         return $this->filesystem->has($media->getFilename());
     }
 
     /**
      * Get the media, base64 encoded
-     * @param Media $media
+     * @param AbstractMedia $media
      *
      * @return string
      */
-    public function getBase64(Media $media)
+    public function getBase64(AbstractMedia $media)
     {
         return base64_encode(file_get_contents($this->getFilePath($media)));
     }

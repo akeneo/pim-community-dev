@@ -24,17 +24,33 @@ class MetricFilter extends BaseFilter
 
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
-            $joinAlias,
-            'WITH',
-            $condition
-        );
 
-        $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+        if ($operator === 'EMPTY') {
+            $this->qb->leftJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
+
+            $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
+            $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+            $this->qb->leftJoin($joinAlias.'.'.$backendType, $joinAliasOpt);
+            $this->qb->andWhere($condition);
+        } else {
+            $this->qb->innerJoin(
+                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $joinAlias,
+                'WITH',
+                $condition
+            );
+
+            $joinAliasOpt = 'filterM'.$attribute->getCode().$this->aliasCounter;
+            $backendField = sprintf('%s.%s', $joinAliasOpt, 'baseData');
+            $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
+            $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
+        }
 
         return $this;
     }

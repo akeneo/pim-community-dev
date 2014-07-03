@@ -1,6 +1,6 @@
 Feature: Export categories
   In order to be able to access and modify category data outside PIM
-  As Julia
+  As a product manager
   I need to be able to import and export categories
 
   @javascript

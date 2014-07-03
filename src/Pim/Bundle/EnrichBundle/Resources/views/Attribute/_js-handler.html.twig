@@ -119,6 +119,30 @@ require(
                         return $helper;
                     }
                 });
+
+                var disableOptionSorting = function() {
+                    $optionList.find('tbody').sortable('disable').find('.handle').addClass('hide');
+                    $optionList.find('thead th').eq(0).addClass('hide');
+                };
+
+                var enableOptionSorting = function() {
+                    $optionList.find('tbody').sortable('enable').find('.handle').removeClass('hide');
+                    $optionList.find('thead th').eq(0).removeClass('hide');
+                };
+
+                $(formName+'_autoOptionSorting').closest('.control-group').insertBefore($optionList).removeClass('hide');
+
+                $(formName+'_autoOptionSorting').closest('.has-switch').on('switch-change', function (e, data) {
+                    if (data.value) {
+                        disableOptionSorting();
+                    } else {
+                        enableOptionSorting();
+                    }
+                });
+
+                if ($(formName+'_autoOptionSorting').closest('.has-switch').bootstrapSwitch('status')) {
+                    disableOptionSorting();
+                }
             }
 
             function addOption() {

@@ -6,7 +6,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
 
 /**
- * Columns configurator for flexible grid, first column is identifier, then properties then ordered attributes
+ * Columns configurator for product grid, first column is identifier, then properties then ordered attributes
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -60,22 +60,21 @@ class ColumnsConfigurator implements ConfiguratorInterface
     protected $displayedColumns;
 
     /**
-     * @param DatagridConfiguration $configuration the grid config
-     * @param ConfigurationRegistry $registry      the config registry
+     * @param ConfigurationRegistry $registry the config registry
      *
      * @throws \LogicException
      */
-    public function __construct(DatagridConfiguration $configuration, ConfigurationRegistry $registry)
+    public function __construct(ConfigurationRegistry $registry)
     {
-        $this->configuration = $configuration;
-        $this->registry      = $registry;
+        $this->registry = $registry;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->preparePropertiesColumns();
         $this->prepareAttributesColumns();
         $this->sortColumns();
@@ -115,6 +114,7 @@ class ColumnsConfigurator implements ConfiguratorInterface
     {
         $path = sprintf('[source][%s]', ContextConfigurator::USEABLE_ATTRIBUTES_KEY);
         $attributes = $this->configuration->offsetGetByPath($path);
+        $attributes = ($attributes === null) ? [] : $attributes;
         $this->identifierColumn  = array();
         $this->attributesColumns = array();
 
@@ -178,7 +178,8 @@ class ColumnsConfigurator implements ConfiguratorInterface
             }
 
         } else {
-            $this->displayedColumns = $this->availableColumns;
+            $this->displayedColumns = $this->editableColumns + $this->primaryColumns + $this->identifierColumn
+                + $this->propertiesColumns;
         }
     }
 

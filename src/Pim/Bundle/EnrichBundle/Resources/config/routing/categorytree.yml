@@ -4,6 +4,12 @@ pim_enrich_categorytree_listtree:
     requirements:
         _format: json
 
+pim_enrich_categorytree_managetree:
+    path: /manage-tree.{_format}
+    defaults: { _controller: pim_enrich.controller.category_tree:manageTreeAction }
+    requirements:
+        _format: json
+
 pim_enrich_categorytree_movenode:
     path: /move-node
     defaults: { _controller: pim_enrich.controller.category_tree:moveNodeAction }

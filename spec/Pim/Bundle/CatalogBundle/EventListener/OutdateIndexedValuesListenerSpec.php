@@ -20,24 +20,24 @@ class OutdateIndexedValuesListenerSpec extends ObjectBehavior
         $this->getSubscribedEvents()->shouldReturn(['postLoad']);
     }
 
-    function it_marks_flexible_value_entity_outdated(
+    function it_marks_indexed_product_values_outdated_after_loading_a_product(
         LifecycleEventArgs $args,
-        AbstractProductValue $value,
         AbstractProduct $entity
     ) {
-        $args->getObject()->willReturn($value);
-        $value->getEntity()->willReturn($entity);
+        $args->getObject()->willReturn($entity);
 
         $entity->markIndexedValuesOutdated()->shouldBeCalled();
 
         $this->postLoad($args);
     }
 
-    function it_marks_flexible_entity_outdated(
+    function it_marks_indexed_product_values_outdated_after_loading_a_value(
         LifecycleEventArgs $args,
+        AbstractProductValue $value,
         AbstractProduct $entity
     ) {
-        $args->getObject()->willReturn($entity);
+        $args->getObject()->willReturn($value);
+        $value->getEntity()->willReturn($entity);
 
         $entity->markIndexedValuesOutdated()->shouldBeCalled();
 

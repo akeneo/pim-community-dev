@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Abstract product attribute
@@ -19,7 +20,7 @@ use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 abstract class AbstractAttribute implements TimestampableInterface, TranslatableInterface,
- GroupSequenceProviderInterface, ReferableInterface
+ GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
 {
     /**
      * Attribute id
@@ -692,26 +693,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     public function getGroup()
     {
         return $this->group;
-    }
-
-    /**
-     * Get virtual group
-     * Returns a group named 'Other' if entity doesn't belong to a group
-     *
-     * @return AttributeGroup
-     */
-    public function getVirtualGroup()
-    {
-        if ($this->group) {
-            return $this->group;
-        }
-
-        $group = new AttributeGroup();
-        $group->setId(0);
-        $group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
-        $group->setSortOrder(-1);
-
-        return $group;
     }
 
     /**

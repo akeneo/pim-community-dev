@@ -37,9 +37,8 @@ class AppKernel extends OroKernel
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
             'Oro\Bundle\CronBundle\OroCronBundle',
-            'Oro\Bundle\ImportExportBundle\OroImportExportBundle',
             'Oro\Bundle\SearchBundle\OroSearchBundle',
-            'Oro\Bundle\TagBundle\OroTagBundle',
+            'Oro\Bundle\TagBundle\OroTagBundle'
         );
         foreach ($oroBundles as $bundleIndex => $bundle) {
             if (in_array(get_class($bundle), $exclude)) {
@@ -64,12 +63,12 @@ class AppKernel extends OroKernel
             new Pim\Bundle\FilterBundle\PimFilterBundle(),
             new Pim\Bundle\UserBundle\PimUserBundle(),
             new Pim\Bundle\JsFormValidationBundle\PimJsFormValidationBundle(),
+            new Pim\Bundle\EntityBundle\PimEntityBundle(),
 
             // PIM bundles
             new Pim\Bundle\DashboardBundle\PimDashboardBundle(),
             new Pim\Bundle\InstallerBundle\PimInstallerBundle(),
             new Pim\Bundle\UIBundle\PimUIBundle(),
-            new Pim\Bundle\FlexibleEntityBundle\PimFlexibleEntityBundle(),
             new Pim\Bundle\CatalogBundle\PimCatalogBundle(),
             new Pim\Bundle\DataGridBundle\PimDataGridBundle(),
             new Pim\Bundle\TranslationBundle\PimTranslationBundle(),

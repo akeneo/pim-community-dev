@@ -383,13 +383,11 @@ class ProductBuilder
                     }
                 }
 
-                $prices->forAll(
-                    function ($key, $price) use ($activeCurrencies, $value) {
-                        if (!in_array($price->getCurrency(), $activeCurrencies)) {
-                            $value->removePrice($price);
-                        }
+                foreach ($prices as $price) {
+                    if (!in_array($price->getCurrency(), $activeCurrencies)) {
+                        $value->removePrice($price);
                     }
-                );
+                }
             }
         }
     }

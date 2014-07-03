@@ -81,7 +81,7 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function remove($key)
     {
@@ -95,7 +95,7 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function removeElement($element)
     {
@@ -109,7 +109,7 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function set($key, $value)
     {
@@ -120,7 +120,7 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function add($element)
     {
@@ -132,7 +132,7 @@ class ReferencedCollection extends AbstractLazyCollection
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function clear()
     {

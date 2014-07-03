@@ -14,9 +14,6 @@ use Oro\Bundle\UserBundle\Entity\User;
 class DatagridView
 {
     /** @staticvar string */
-    const TYPE_DEFAULT = 'default';
-
-    /** @staticvar string */
     const TYPE_PUBLIC = 'public';
 
     /** @var integer */
@@ -26,9 +23,6 @@ class DatagridView
     protected $label;
 
     /**
-     * - self::TYPE_DEFAULT for the default user's view
-     * - self::TYPE_PUBLIC for a public view
-     *
      * @var string
      */
     protected $type = self::TYPE_PUBLIC;
@@ -44,16 +38,6 @@ class DatagridView
 
     /** @var string */
     protected $filters;
-
-    /**
-     * Indicates whether the view is the default view of the user
-     *
-     * @return boolean
-     */
-    public function isDefault()
-    {
-        return $this->type === self::TYPE_DEFAULT;
-    }
 
     /**
      * Indicates whether a view can be seen by users who don't own it

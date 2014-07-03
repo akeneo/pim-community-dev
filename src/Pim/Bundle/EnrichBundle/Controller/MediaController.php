@@ -2,21 +2,14 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Imagine\Image\ImagineInterface;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Liip\ImagineBundle\Imagine\Filter\FilterManager;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Gaufrette\Filesystem;
 
 /**
  * Media controller
@@ -25,65 +18,38 @@ use Doctrine\Common\Persistence\ObjectRepository;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class MediaController extends AbstractDoctrineController
+class MediaController
 {
-    /** @var \Imagine\Image\ImagineInterface */
+    /** @var ImagineInterface */
     protected $imagine;
 
-    /** @var \Liip\ImagineBundle\Imagine\Filter\FilterManager */
+    /** @var FilterManager */
     protected $filterManager;
 
-    /** @var \Liip\ImagineBundle\Imagine\Cache\CacheManager */
+    /** @var CacheManager */
     protected $cacheManager;
 
-    /** @var ObjectRepository */
-    protected $mediaRepository;
+    /** @var Filesystem */
+    protected $filesystem;
 
     /**
      * Constructor
      *
-     * @param Request                  $request
-     * @param EngineInterface          $templating
-     * @param RouterInterface          $router
-     * @param SecurityContextInterface $securityContext
-     * @param FormFactoryInterface     $formFactory
-     * @param ValidatorInterface       $validator
-     * @param TranslatorInterface      $translator
-     * @param ManagerRegistry          $doctrine
-     * @param ImagineInterface         $imagine
-     * @param FilterManager            $filterManager
-     * @param CacheManager             $cacheManager
-     * @param ObjectRepository         $mediaRepository
+     * @param ImagineInterface $imagine
+     * @param FilterManager    $filterManager
+     * @param CacheManager     $cacheManager
+     * @param Filesystem       $filesystem
      */
     public function __construct(
-        Request $request,
-        EngineInterface $templating,
-        RouterInterface $router,
-        SecurityContextInterface $securityContext,
-        FormFactoryInterface $formFactory,
-        ValidatorInterface $validator,
-        TranslatorInterface $translator,
-        ManagerRegistry $doctrine,
         ImagineInterface $imagine,
         FilterManager $filterManager,
         CacheManager $cacheManager,
-        ObjectRepository $mediaRepository
+        Filesystem $filesystem
     ) {
-        parent::__construct(
-            $request,
-            $templating,
-            $router,
-            $securityContext,
-            $formFactory,
-            $validator,
-            $translator,
-            $doctrine
-        );
-
-        $this->imagine         = $imagine;
-        $this->filterManager   = $filterManager;
-        $this->cacheManager    = $cacheManager;
-        $this->mediaRepository = $mediaRepository;
+        $this->imagine = $imagine;
+        $this->filterManager = $filterManager;
+        $this->cacheManager = $cacheManager;
+        $this->filesystem = $filesystem;
     }
 
     /**
@@ -91,32 +57,26 @@ class MediaController extends AbstractDoctrineController
      * @param string  $filename
      *
      * @return Response
+     * @throws NotFoundHttpException If media is not found
      */
     public function showAction(Request $request, $filename)
     {
-        $media = $this->mediaRepository->findOneBy(['filename' => $filename]);
-
-        if (!$media) {
-            throw $this->createNotFoundException(sprintf('Media "%s" not found', $filename));
+        if (!$this->filesystem->has($filename)) {
+            throw new NotFoundHttpException(sprintf('Media "%s" not found', $filename));
         }
 
-        $path = $media->getFilePath();
+        $response = new Response($content = $this->filesystem->read($filename));
 
-        if (!file_exists($path)) {
-            return new Response('', 404);
-        }
-
-        $response = new Response(file_get_contents($path));
-
-        if (($filter = $request->query->get('filter')) && 0 === strpos($media->getMimeType(), 'image')) {
+        $mime = $this->filesystem->mimeType($filename);
+        if (($filter = $request->query->get('filter')) && null !== $mime && 0 === strpos($mime, 'image')) {
             try {
-                $cachePath = $this->cacheManager->resolve($request, $media->getFilename(), $filter);
+                $cachePath = $this->cacheManager->resolve($request, $filename, $filter);
 
                 if ($cachePath instanceof Response) {
                     $response = $cachePath;
                 } else {
-                    $image = $this->imagine->open($path);
-                    $response = $this->filterManager->get($request, $filter, $image, $path);
+                    $image = $this->imagine->load($content);
+                    $response = $this->filterManager->get($request, $filter, $image, $filename);
                     $response = $this->cacheManager->store($response, $cachePath, $filter);
                 }
             } catch (\RuntimeException $e) {
@@ -127,7 +87,9 @@ class MediaController extends AbstractDoctrineController
             }
         }
 
-        $response->headers->set('Content-Type', $media->getMimeType());
+        if ($mime) {
+            $response->headers->set('Content-Type', $mime);
+        }
 
         return $response;
     }

@@ -16,14 +16,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const PARENT_TYPE_KEY = 'parent_type';
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
     /**

@@ -20,7 +20,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
     /** @var ObjectRepository */
     protected $repository;
 
-    /** @var Boolean */
+    /** @var boolean */
     protected $multiple;
 
     /**
@@ -36,7 +36,7 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      * Constructor
      *
      * @param ObjectRepository          $repository
-     * @param Boolean                   $multiple
+     * @param boolean                   $multiple
      * @param PropertyAccessorInterface $propertyAccessor
      * @param string                    $delimiter
      */

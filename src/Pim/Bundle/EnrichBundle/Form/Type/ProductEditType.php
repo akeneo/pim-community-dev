@@ -7,7 +7,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 
@@ -20,7 +21,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
  */
 class ProductEditType extends AbstractType
 {
-    /** @var ProductFormView $productFormView */
+    /** @var ProductFormViewInterface */
     protected $productFormView;
 
     /** @var FamilyRepository */
@@ -29,15 +30,21 @@ class ProductEditType extends AbstractType
     /** @var string */
     protected $categoryClass;
 
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
     /**
      * Constructor
      *
-     * @param ProductFormView  $productFormView
-     * @param FamilyRepository $repository
-     * @param string           $categoryClass
+     * @param ProductFormViewInterface $productFormView
+     * @param FamilyRepository         $repository
+     * @param string                   $categoryClass
      */
-    public function __construct(ProductFormView $productFormView, FamilyRepository $repository, $categoryClass)
-    {
+    public function __construct(
+        ProductFormViewInterface $productFormView,
+        FamilyRepository $repository,
+        $categoryClass
+    ) {
         $this->productFormView = $productFormView;
         $this->repository      = $repository;
         $this->categoryClass   = $categoryClass;
@@ -101,6 +108,10 @@ class ProductEditType extends AbstractType
                     'multiple' => true,
                 )
             );
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -122,5 +133,15 @@ class ProductEditType extends AbstractType
     public function finishView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['groups'] = $this->productFormView->getView();
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 }

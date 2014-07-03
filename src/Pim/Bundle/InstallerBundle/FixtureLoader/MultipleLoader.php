@@ -44,6 +44,8 @@ class MultipleLoader
      * @param ObjectManager       $objectManager
      * @param ReferenceRepository $referenceRepository
      * @param array               $paths
+     *
+     * @throws FixtureLoaderException
      */
     public function load(ObjectManager $objectManager, ReferenceRepository $referenceRepository, array $paths)
     {

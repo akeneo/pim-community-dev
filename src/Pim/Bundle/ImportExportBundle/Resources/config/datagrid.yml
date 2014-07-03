@@ -1,18 +1,9 @@
 datagrid:
     job-profile-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - j.id
-                    - j.code
-                    - j.label
-                    - j.alias as jobAlias
-                    - j.status
-                    - j.connector
-                    - CONCAT('pim_import_export.status.', j.status) as statusLabel
-                from:
-                    - { table: AkeneoBatchBundle:JobInstance, alias: j }
+            type: pim_orm
+            entity: %akeneo_batch.entity.job_instance.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -37,11 +28,17 @@ datagrid:
                 type: url
                 params:
                     - id
-            launch_link:
+            show_link:
                 type: url
                 params:
                     - id
         actions:
+            view:
+                type:      navigate
+                label:     pim.grid.action.show.title
+                icon:      eye-open
+                link:      show_link
+                rowAction: true
             edit:
                 type:  navigate
                 label: Edit
@@ -52,12 +49,6 @@ datagrid:
                 label: Delete
                 icon:  trash
                 link:  delete_link
-            launch:
-                type:      navigate
-                label:     pim.grid.action.launch.title
-                icon:      play
-                link:      launch_link
-                rowAction: true
         sorters:
             columns:
                 code:
@@ -107,16 +98,12 @@ datagrid:
             entityHint: export profile
         source:
             acl_resource: pim_importexport_export_profile_index
-            query:
-                where:
-                    and:
-                        - j.type = 'export'
         properties:
             edit_link:
                 route: pim_importexport_export_profile_edit
             delete_link:
                 route: pim_importexport_export_profile_remove
-            launch_link:
+            show_link:
                 route: pim_importexport_export_profile_show
         filters:
             columns:
@@ -135,16 +122,12 @@ datagrid:
             entityHint: import profile
         source:
             acl_resource: pim_importexport_import_profile_index
-            query:
-                where:
-                    and:
-                        - j.type = 'import'
         properties:
             edit_link:
                 route: pim_importexport_import_profile_edit
             delete_link:
                 route: pim_importexport_import_profile_remove
-            launch_link:
+            show_link:
                 route: pim_importexport_import_profile_show
         filters:
             columns:
@@ -159,23 +142,9 @@ datagrid:
 
     job-execution-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - e.id
-                    - e.status as status
-                    - CONCAT('pim_import_export.batch_status.', e.status) as statusLabel
-                    - e.startTime as date
-                    - j.code as jobCode
-                    - j.label as jobLabel
-                    - j.alias as jobAlias
-                from:
-                    - { table: AkeneoBatchBundle:JobExecution, alias: e }
-                join:
-                    inner:
-                        jobInstance:
-                            join: e.jobInstance
-                            alias: j
+            type: pim_orm
+            entity: %akeneo_batch.entity.job_execution.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             code:
                 label: Code
@@ -254,10 +223,6 @@ datagrid:
             entityHint: export report
         source:
             acl_resource: pim_importexport_export_execution_index
-            query:
-                where:
-                    and:
-                        - j.type = 'export'
         properties:
             show_link:
                 route: pim_importexport_export_execution_show
@@ -274,10 +239,6 @@ datagrid:
             entityHint: import report
         source:
             acl_resource: pim_importexport_import_execution_index
-            query:
-                where:
-                    and:
-                        - j.type = 'import'
         properties:
             show_link:
                 route: pim_importexport_import_execution_show

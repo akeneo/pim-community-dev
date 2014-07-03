@@ -115,7 +115,8 @@ class UserLoader extends LoadUserData
 
         if (!$role) {
             $role = new Role($code);
-            $this->persist($role);
+            $this->om->persist($role);
+            $this->om->flush();
         }
 
         return $role;

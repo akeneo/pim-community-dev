@@ -36,6 +36,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('colors.yml');
         $loader->load('attribute_icons.yml');
         $loader->load('mass_actions.yml');
+        $loader->load('factories.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
@@ -74,6 +75,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             'LexikMaintenanceBundle'         => 'lexik_maintenance',
             'OroRequireJSBundle'             => 'oro_require_js',
             'OroHelpBundle'                  => 'oro_help',
+            'OroUserBundle'                  => 'oro_user',
         );
 
         foreach ($prependConfig as $bundle => $alias) {

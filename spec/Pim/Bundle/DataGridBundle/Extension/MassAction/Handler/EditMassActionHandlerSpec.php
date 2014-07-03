@@ -13,14 +13,12 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 
 class EditMassActionHandlerSpec extends ObjectBehavior
 {
-    function let(
-        HydratorInterface $hydrator,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    function let(HydratorInterface $hydrator, EventDispatcherInterface $eventDispatcher)
+    {
         $this->beConstructedWith($hydrator, $eventDispatcher);
     }
 
-    function it_should_handle_edit_mass_action(
+    function it_handles_edit_mass_action(
         $eventDispatcher,
         $hydrator,
         DatagridInterface $datagrid,

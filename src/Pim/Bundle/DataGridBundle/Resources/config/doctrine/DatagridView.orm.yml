@@ -11,7 +11,7 @@ Pim\Bundle\DataGridBundle\Entity\DatagridView:
             type:     string
             length:   100
             unique:   true
-            nullable: true
+            nullable: false
         type:
             type:     string
             length:   10

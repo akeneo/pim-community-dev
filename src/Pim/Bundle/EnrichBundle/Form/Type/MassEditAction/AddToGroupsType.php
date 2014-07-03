@@ -39,10 +39,10 @@ class AddToGroupsType extends AbstractType
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(
-            array(
-                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\AddToGroups',
-                'groups'     => array(),
-            )
+            [
+                'data_class' => 'Pim\\Bundle\\EnrichBundle\\MassEditAction\\Operation\\AddToGroups',
+                'groups' => array(),
+            ]
         );
     }
 

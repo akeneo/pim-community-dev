@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 /**
  * Normalize a product price into an array
@@ -35,6 +35,6 @@ class ProductPriceNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof ProductPrice && in_array($format, $this->supportedFormats);
+        return $data instanceof AbstractProductPrice && in_array($format, $this->supportedFormats);
     }
 }

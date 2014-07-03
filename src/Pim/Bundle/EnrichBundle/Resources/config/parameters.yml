@@ -50,8 +50,11 @@ parameters:
     pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
     pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
 
-    pim_enrich.form.type.edit_common_attributes.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
-    pim_enrich.form.type.add_to_groups.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
-    pim_enrich.form.type.change_family.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
-    pim_enrich.form.type.change_status.class:          Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
-    pim_enrich.form.type.classify.class:               Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
+    pim_enrich.form.type.edit_common_attributes.class:     Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
+    pim_enrich.form.type.add_to_groups.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\AddToGroupsType
+    pim_enrich.form.type.change_family.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeFamilyType
+    pim_enrich.form.type.change_status.class:              Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ChangeStatusType
+    pim_enrich.form.type.classify.class:                   Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\ClassifyType
+    pim_enrich.form.type.set_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\SetAttributeRequirementsType
+
+    pim_enrich.form.factory.product_value_form_factory: Pim\Bundle\EnrichBundle\Form\Factory\ProductValueFormFactory

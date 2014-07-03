@@ -15,7 +15,7 @@ use Doctrine\ORM\EntityManager;
 class CompletenessRepository implements CompletenessRepositoryInterface
 {
     /**
-     * @var EntityManagaer
+     * @var EntityManager
      */
     protected $entityManager;
 

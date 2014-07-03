@@ -16,7 +16,7 @@ class ObjectIdHydrator implements HydratorInterface
     /**
      * {@inheritdoc}
      */
-    public function hydrate($qb, $options)
+    public function hydrate($qb, array $options = [])
     {
         $rootAlias = current($qb->getRootAliases());
         $rootIdExpr = sprintf('%s.id', $rootAlias);

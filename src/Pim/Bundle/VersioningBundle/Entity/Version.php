@@ -3,7 +3,6 @@
 namespace Pim\Bundle\VersioningBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Resource version entity
@@ -30,12 +29,11 @@ class Version
     protected $id;
 
     /**
-     * @var User $user
+     * @var string $author
      *
-     * @ORM\ManyToOne(targetEntity="Oro\Bundle\UserBundle\Entity\User", cascade={"persist"})
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
+     * @ORM\Column(type="string")
      */
-    protected $user;
+    protected $author;
 
     /**
      * @ORM\Column(name="resource_name", type="string")
@@ -48,12 +46,12 @@ class Version
     protected $resourceId;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=true)
      */
-    protected $data;
+    protected $snapshot;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="array")
      */
     protected $changeset;
 
@@ -63,7 +61,8 @@ class Version
     protected $context;
 
     /**
-     * @ORM\Column(type="integer") */
+     * @ORM\Column(type="integer", nullable=true)
+     */
     protected $version;
 
     /**
@@ -72,47 +71,42 @@ class Version
     protected $loggedAt;
 
     /**
+     * @ORM\Column(name="pending", type="boolean")
+     */
+    protected $pending;
+
+    /**
      * Constructor
      *
      * @param string      $resourceName
      * @param string      $resourceId
-     * @param integer     $version
-     * @param array       $data
-     * @param array       $changeset
-     * @param User        $user
+     * @param string      $author
      * @param string|null $context
      */
-    public function __construct(
-        $resourceName,
-        $resourceId,
-        $version,
-        array $data,
-        array $changeset,
-        User $user,
-        $context = null
-    ) {
+    public function __construct($resourceName, $resourceId, $author, $context = null)
+    {
         $this->resourceName = $resourceName;
         $this->resourceId   = $resourceId;
-        $this->version      = $version;
-        $this->data         = $data;
-        $this->changeset    = $changeset;
-        $this->user         = $user;
+        $this->author       = $author;
         $this->context      = $context;
-        $this->loggedAt     = new \DateTime("now");
+        $this->loggedAt     = new \DateTime('now');
+        $this->pending      = true;
     }
 
     /**
-     * Get user
+     * Get author
      *
-     * @return User
+     * @return string
      */
-    public function getUser()
+    public function getAuthor()
     {
-        return $this->user;
+        return $this->author;
     }
 
     /**
-     * @return integer
+     * Get resource id
+     *
+     * @return string
      */
     public function getResourceId()
     {
@@ -120,6 +114,8 @@ class Version
     }
 
     /**
+     * Get resource name
+     *
      * @return string
      */
     public function getResourceName()
@@ -128,7 +124,9 @@ class Version
     }
 
     /**
-     * @return array
+     * Get version
+     *
+     * @return integer
      */
     public function getVersion()
     {
@@ -136,14 +134,50 @@ class Version
     }
 
     /**
-     * @return array
+     * Set version
+     *
+     * @param integer $version
+     *
+     * @return Version
      */
-    public function getData()
+    public function setVersion($version)
     {
-        return $this->data;
+        $this->version = $version;
+
+        return $this;
     }
 
     /**
+     * Get snapshot
+     *
+     * @return array
+     */
+    public function getSnapshot()
+    {
+        return $this->snapshot;
+    }
+
+    /**
+     * Set snapshot
+     *
+     * @param array $snapshot
+     *
+     * @return Version
+     */
+    public function setSnapshot(array $snapshot)
+    {
+        if (!empty($snapshot)) {
+            $this->pending = false;
+        }
+
+        $this->snapshot = $snapshot;
+
+        return $this;
+    }
+
+    /**
+     * Get changeset
+     *
      * @return array
      */
     public function getChangeset()
@@ -152,6 +186,22 @@ class Version
     }
 
     /**
+     * Set changeset
+     *
+     * @param array $changeset
+     *
+     * @return Version
+     */
+    public function setChangeset(array $changeset)
+    {
+        $this->changeset = $changeset;
+
+        return $this;
+    }
+
+    /**
+     * Get context
+     *
      * @return string|null
      */
     public function getContext()
@@ -165,5 +215,13 @@ class Version
     public function getLoggedAt()
     {
         return $this->loggedAt;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isPending()
+    {
+        return $this->pending;
     }
 }

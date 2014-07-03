@@ -16,25 +16,25 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
-    /** @const string */
+    /** @staticvar string */
     const FAMILY_FIELD = 'family';
 
-    /** @const string */
+    /** @staticvar string */
     const GROUPS_FIELD = 'groups';
 
-    /** @const string */
+    /** @staticvar string */
     const IN_GROUP_FIELD = 'in_group';
 
-    /** @const string */
+    /** @staticvar string */
     const COMPLETENESSES_FIELD = 'completenesses';
 
-    /** @const string */
+    /** @staticvar string */
     const ENABLED_FIELD = 'enabled';
 
-    /** @const string */
+    /** @staticvar string */
     const CREATED_FIELD = 'created';
 
-    /** @const string */
+    /** @staticvar string */
     const UPDATED_FIELD = 'updated';
 
     /** @var SerializerInterface */
@@ -67,10 +67,10 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
             $data[self::UPDATED_FIELD] = $this->serializer->normalize($object->getUpdated(), $format, $context);
         }
         foreach ($object->getValues() as $value) {
-            $data = array_merge(
-                $data,
-                $this->serializer->normalize($value, $format, $context)
-            );
+            $normalizedData = $this->serializer->normalize($value, $format, $context);
+            if (null !== $normalizedData) {
+                $data = array_merge($data, $normalizedData);
+            }
         }
 
         $completenesses = array();

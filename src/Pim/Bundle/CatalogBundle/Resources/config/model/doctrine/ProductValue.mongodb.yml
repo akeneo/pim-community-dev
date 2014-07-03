@@ -4,7 +4,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         id:
             id: true
         varchar:
-            index: true
             type: string
         integer:
             type: int
@@ -48,8 +47,6 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
             embedded: true
             type: many
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductPrice
-#            orderBy:
-#                currency: ASC
     referenceOne:
         media:
             simple: true

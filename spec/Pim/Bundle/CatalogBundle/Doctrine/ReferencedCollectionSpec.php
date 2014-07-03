@@ -66,8 +66,13 @@ class ReferencedCollectionSpec extends ObjectBehavior
     ) {
         $classMetadata->getIdentifier()->willReturn(['id', 'code']);
 
-        $exception = new \LogicException('The configured entity uses a composite key which is not supported by the collection');
-        $this->shouldThrow($exception)->duringToArray();
+        $this
+            ->shouldThrow(
+                new \LogicException(
+                    'The configured entity uses a composite key which is not supported by the collection'
+                )
+            )
+            ->duringToArray();
     }
 
     function it_schedules_owning_document_for_update_when_adding_element_to_the_collection(

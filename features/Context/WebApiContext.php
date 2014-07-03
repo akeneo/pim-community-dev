@@ -88,7 +88,7 @@ class WebApiContext extends BehatWebApiContext
      * @param string $apiKey
      * @param string $salt
      */
-    private function generateWsseHeader($username, $apiKey, $salt)
+    protected function generateWsseHeader($username, $apiKey, $salt)
     {
         $nonce   = uniqid();
         $created = date('c');
@@ -113,7 +113,7 @@ class WebApiContext extends BehatWebApiContext
      *
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

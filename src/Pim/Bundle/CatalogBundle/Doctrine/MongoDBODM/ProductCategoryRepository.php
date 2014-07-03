@@ -189,7 +189,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
      *
      * @param array $categoriesIds
      *
-     * @return int $productsCount
+     * @return integer $productsCount
      */
     public function getProductsCountInCategories(array $categoriesIds)
     {

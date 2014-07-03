@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Twig;
 
+use Symfony\Component\Translation\TranslatorInterface;
+
 /**
  * Twig extension to normalize configuration values
  *
@@ -11,6 +13,19 @@ namespace Pim\Bundle\ImportExportBundle\Twig;
  */
 class NormalizeConfigurationExtension extends \Twig_Extension
 {
+    /**
+     * @var TranslatorInterface
+     */
+    protected $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -78,7 +93,10 @@ class NormalizeConfigurationExtension extends \Twig_Extension
 
         foreach ($violations as $violation) {
             if (preg_match(sprintf('/[.]%s$/', $element), $violation->getPropertyPath())) {
-                $messages[] = sprintf('<span class="label label-important">%s</span>', $violation->getMessage());
+                $messages[] = sprintf(
+                    '<span class="label label-important">%s</span>',
+                    $this->translator->trans($violation->getMessage())
+                );
             }
         }
 

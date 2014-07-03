@@ -36,8 +36,12 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_two_datetime_objects(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
@@ -45,23 +49,27 @@ class DateRangeFilterSpec extends ObjectBehavior
             'value' => [
                 'start' => $start,
                 'end'   => $end,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => '2014-01-23',
-            'type'       => 1,
+            'type'       => 1
         ]);
     }
 
     function it_parses_one_start_date(\DateTime $start)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
 
         $this->parseData([
             'value' => [
                 'start' => $start,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => '1987-05-14',
             'date_end'   => null,
@@ -71,13 +79,16 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_one_end_date(\DateTime $end)
     {
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
             'value' => [
                 'end'   => $end,
-            ]
+            ],
+            'type' => 1
         ])->shouldReturn([
             'date_start' => null,
             'date_end'   => '2014-01-23',
@@ -87,9 +98,13 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_between_type_range(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
@@ -107,9 +122,13 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_not_between_type_range(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
@@ -127,9 +146,13 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_more_than_type_range(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
@@ -147,9 +170,13 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_parses_less_than_type_range(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
@@ -167,9 +194,13 @@ class DateRangeFilterSpec extends ObjectBehavior
 
     function it_fallbacks_on_between_type_range(\DateTime $start, \DateTime $end)
     {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
         $this->parseData([
@@ -198,24 +229,29 @@ class DateRangeFilterSpec extends ObjectBehavior
         $this->parseData([])->shouldReturn(false);
     }
 
+    function it_does_not_parse_array_without_type_key()
+    {
+        $this->parseData(['value' => ['start' => '1987-05-14']])->shouldReturn(false);
+    }
+
     function it_does_not_parse_array_without_value_key_of_type_array()
     {
-        $this->parseData(['value' => true])->shouldReturn(false);
+        $this->parseData(['value' => true, 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_without_start_and_end_values()
     {
-        $this->parseData(['value' => []])->shouldReturn(false);
+        $this->parseData(['value' => [], 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_with_not_datetime_type_start()
     {
-        $this->parseData(['value' => ['start' => 'yesterday']])->shouldReturn(false);
+        $this->parseData(['value' => ['start' => 'yesterday'], 'type' => 1])->shouldReturn(false);
     }
 
     function it_does_not_parse_array_with_not_datetime_type_end()
     {
-        $this->parseData(['value' => ['end' => 'tomorrow']])->shouldReturn(false);
+        $this->parseData(['value' => ['end' => 'tomorrow'], 'type' => 1])->shouldReturn(false);
     }
 
     function it_applies_between_date_range_filter(
@@ -224,12 +260,18 @@ class DateRangeFilterSpec extends ObjectBehavior
         \DateTime $end,
         $utility
     ) {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')->shouldBeCalled();
+        $utility
+            ->applyFilterByAttribute($datasource, 'data_name_key', array('1987-05-14', '2014-01-23'), 'BETWEEN')
+            ->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -249,12 +291,23 @@ class DateRangeFilterSpec extends ObjectBehavior
         \DateTime $end,
         $utility
     ) {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
-        $utility->applyFilterByAttribute($datasource, 'data_name_key', ['from' => '1987-05-14', 'to' => '2014-01-23'], ['from' => '<', 'to' => '>'])->shouldBeCalled();
+        $utility
+            ->applyFilterByAttribute(
+                $datasource,
+                'data_name_key',
+                ['from' => '1987-05-14', 'to' => '2014-01-23'],
+                ['from' => '<', 'to' => '>']
+            )
+            ->shouldBeCalled();
 
         $this->apply(
             $datasource,
@@ -274,8 +327,12 @@ class DateRangeFilterSpec extends ObjectBehavior
         \DateTime $end,
         $utility
     ) {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 
@@ -299,8 +356,12 @@ class DateRangeFilterSpec extends ObjectBehavior
         \DateTime $end,
         $utility
     ) {
-        $start->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
-        $end->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))->shouldBeCalled();
+        $start
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
+        $end
+            ->setTimezone(Argument::allOf(Argument::type('\DateTimeZone'), Argument::which('getName', 'UTC')))
+            ->shouldBeCalled();
         $start->format('Y-m-d')->willReturn('1987-05-14');
         $end->format('Y-m-d')->willReturn('2014-01-23');
 

@@ -74,6 +74,15 @@ class ProductImportValidator extends ImportValidator
     }
 
     /**
+     * Reset the stete of the validator
+     */
+    public function reset()
+    {
+        $this->identifiers  = [];
+        $this->uniqueValues = [];
+    }
+
+    /**
      * Checks the uniqueness of product values that should be unique
      * As the uniqueness check is normally executed against the database
      * and imported products have not been persisted yet, this effectively
@@ -94,11 +103,14 @@ class ProductImportValidator extends ImportValidator
                 if ($value->getAttribute()->isUnique()) {
                     $code      = $value->getAttribute()->getCode();
                     $valueData = (string) $value->getData();
-                    $this->uniqueValues[$code] = isset($this->uniqueValues[$code]) ? $this->uniqueValues[$code] : [];
-                    if (in_array($valueData, $this->uniqueValues[$code])) {
-                        throw new DuplicateProductValueException($code, $valueData, $data);
-                    } else {
-                        $this->uniqueValues[$code][] = $valueData;
+                    if ($valueData !== '') {
+                        $this->uniqueValues[$code] =
+                            isset($this->uniqueValues[$code]) ? $this->uniqueValues[$code] : [];
+                        if (in_array($valueData, $this->uniqueValues[$code])) {
+                            throw new DuplicateProductValueException($code, $valueData, $data);
+                        } else {
+                            $this->uniqueValues[$code][] = $valueData;
+                        }
                     }
                 }
             }

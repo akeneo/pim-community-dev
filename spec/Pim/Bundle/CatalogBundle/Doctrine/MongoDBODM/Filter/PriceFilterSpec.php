@@ -22,7 +22,7 @@ class PriceFilterSpec extends ObjectBehavior
 
     function it_is_a_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
     }
 
     function it_adds_a_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
@@ -58,7 +58,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '>=', '22.5 EUR');
     }
 
-    function it_adds_a_lesser_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);
@@ -69,7 +69,7 @@ class PriceFilterSpec extends ObjectBehavior
         $this->addAttributeFilter($price, '<', '22.5 EUR');
     }
 
-    function it_adds_a_lesser_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
+    function it_adds_a_less_than_or_equals_filter_in_the_query(Builder $queryBuilder, AbstractAttribute $price)
     {
         $price->getCode()->willReturn('price');
         $price->isLocalizable()->willReturn(true);

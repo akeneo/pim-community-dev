@@ -38,7 +38,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -61,7 +61,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -93,7 +93,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $nameAttr = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -111,7 +111,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $colorAttr = $this->getAttributeMock(
             array(
                 'id'           => 1337,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
@@ -133,7 +133,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -143,7 +143,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
                         'id'                 => 42,
                         'locale'             => null,
                     ),
-                    'color_' => array(
+                    'color' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'color',
@@ -175,7 +175,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -209,7 +209,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'name_' => array(
+                    'name' => array(
                         'isRemovable'        => true,
                         'allowValueCreation' => false,
                         'code'               => 'name',
@@ -247,7 +247,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'            => 42,
-                'virtualGroup'  => $group,
+                'group'         => $group,
                 'code'          => 'price',
                 'label'         => 'Price',
                 'sortOrder'     => 0,
@@ -271,7 +271,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             1 => array(
                 'label'      => 'General',
                 'attributes' => array(
-                    'price_' => array(
+                    'price' => array(
                         'isRemovable'        => false,
                         'allowValueCreation' => false,
                         'code'               => 'price',
@@ -312,7 +312,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $nameAttr = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 10,
@@ -329,7 +329,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $colorAttr = $this->getAttributeMock(
             array(
                 'id'           => 1337,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'color',
                 'label'        => 'Color',
                 'sortOrder'    => 0,
@@ -346,7 +346,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $priceAttr = $this->getAttributeMock(
             array(
                 'id'           => 14,
-                'virtualGroup' => $generalGroup,
+                'group'        => $generalGroup,
                 'code'         => 'price',
                 'label'        => 'Price',
                 'sortOrder'    => 20,
@@ -363,7 +363,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $releaseAttr = $this->getAttributeMock(
             array(
                 'id'           => 1987,
-                'virtualGroup' => $otherGroup,
+                'group'        => $otherGroup,
                 'code'         => 'release_date',
                 'label'        => 'Release date',
                 'sortOrder'    => 20,
@@ -380,7 +380,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $weightAttr = $this->getAttributeMock(
             array(
                 'id'           => 73,
-                'virtualGroup' => $otherGroup,
+                'group'        => $otherGroup,
                 'code'         => 'weight',
                 'label'        => 'Weight',
                 'sortOrder'    => 10,
@@ -407,8 +407,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $this->formView->addChildren($weightValue, $weightView);
 
         $result = $this->formView->getView();
-        $this->assertEquals(array('color_', 'name_', 'price_'), array_keys($result[1]['attributes']));
-        $this->assertEquals(array('weight_', 'release_date_'), array_keys($result[2]['attributes']));
+        $this->assertEquals(array('color', 'name', 'price'), array_keys($result[1]['attributes']));
+        $this->assertEquals(array('weight', 'release_date'), array_keys($result[2]['attributes']));
     }
 
     public function testAddLocalizableChildren()
@@ -423,7 +423,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $attribute = $this->getAttributeMock(
             array(
                 'id'           => 42,
-                'virtualGroup' => $group,
+                'group'        => $group,
                 'code'         => 'name',
                 'label'        => 'Name',
                 'sortOrder'    => 0,
@@ -532,7 +532,7 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
         $options = array_merge(
             array(
                 'id'            => null,
-                'virtualGroup'  => null,
+                'group'         => null,
                 'code'          => null,
                 'label'         => null,
                 'sortOrder'     => null,
@@ -549,8 +549,8 @@ class ProductFormViewTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($options['id']));
 
         $attribute->expects($this->any())
-            ->method('getVirtualGroup')
-            ->will($this->returnValue($options['virtualGroup']));
+            ->method('getGroup')
+            ->will($this->returnValue($options['group']));
 
         $attribute->expects($this->any())
             ->method('getCode')

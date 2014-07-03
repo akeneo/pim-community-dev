@@ -1,7 +1,7 @@
 @javascript
 Feature: Display the product history
   In order to know who, when and what changes has been made to a product
-  As Julia
+  As a product manager
   I need to have access to a product history
 
   Scenario: Display product updates

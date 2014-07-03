@@ -12,11 +12,6 @@ namespace Pim\Bundle\TransformBundle\Exception;
 class UnknownColumnException extends ParametrizedException
 {
     /**
-     * @var array
-     */
-    public $labels;
-
-    /**
      * Constructor
      *
      * @param array  $labels
@@ -24,9 +19,11 @@ class UnknownColumnException extends ParametrizedException
      */
     public function __construct(array $labels, $class)
     {
+        $class = explode('\\', $class);
+
         parent::__construct(
-            'Columns [%labels%] do not exist on class [%class%].',
-            array('%labels%' => implode(', ', $labels), '%class%' => $class)
+            'Properties [%labels%] do not exist in %class%.',
+            array('%labels%' => implode(', ', $labels), '%class%' => end($class))
         );
     }
 }

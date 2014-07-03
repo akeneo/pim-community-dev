@@ -11,6 +11,8 @@ parameters:
     mailer_host:          localhost
     mailer_user:          ~
     mailer_password:      ~
+    mailer_from_address:  no-reply@example.com
+    mailer_from_name:     Akeneo Admin
 
     # WebSocket server config
     websocket_host:       "127.0.0.1"
@@ -31,8 +33,6 @@ parameters:
 
     uservoice_key:        ~
     mass_edit_limit:      1000
-
-    error_reporting_email: ~
 
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'

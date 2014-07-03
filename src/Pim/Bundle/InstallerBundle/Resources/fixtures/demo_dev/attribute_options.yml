@@ -1,0 +1,101 @@
+options:
+    XS:
+        attribute: size
+        labels:
+            fr_FR: XS
+            en_US: XS
+    S:
+        attribute: size
+        labels:
+            fr_FR: S
+            en_US: S
+    M:
+        attribute: size
+        labels:
+            fr_FR: M
+            en_US: M
+    L:
+        attribute: size
+        labels:
+            fr_FR: L
+            en_US: L
+    XL:
+        attribute: size
+        labels:
+            fr_FR: XL
+            en_US: XL
+    Red:
+        attribute: color
+        labels:
+            en_US: Red
+            fr_FR: Rouge
+    Blue:
+        attribute: color
+        labels:
+            en_US: Blue
+            fr_FR: Bleu
+    Green:
+        attribute: color
+        labels:
+            en_US: Green
+            fr_FR: Vert
+    Purple:
+        attribute: color
+        labels:
+            en_US: Purple
+            fr_FR: Violet
+    Orange:
+        attribute: color
+        labels:
+            en_US: Orange
+            fr_FR: Orange
+    MyMug:
+        attribute: manufacturer
+        labels:
+            en_US: MyMug
+            en_US: MyMug
+    MugStore:
+        attribute: manufacturer
+        labels:
+            en_US: MugStore
+            en_US: MugStore
+    uc_black:
+        attribute: unique_color
+        labels:
+            en_US: Black
+            fr_FR: Noir
+    uc_blue:
+        attribute: unique_color
+        labels:
+            en_US: Blue
+            fr_FR: Bleu
+    uc_green:
+        attribute: unique_color
+        labels:
+            en_US: Green
+            fr_FR: Vert
+    uc_orange:
+        attribute: unique_color
+        labels:
+            en_US: Orange
+            fr_FR: Orange
+    uc_purple:
+        attribute: unique_color
+        labels:
+            en_US: Purple
+            fr_FR: Violet
+    uc_red:
+        attribute: unique_color
+        labels:
+            en_US: Red
+            fr_FR: Rouge
+    uc_yellow:
+        attribute: unique_color
+        labels:
+            en_US: Yellow
+            fr_FR: Jaune
+    uc_white:
+        attribute: unique_color
+        labels:
+            en_US: White
+            fr_FR: Blanc

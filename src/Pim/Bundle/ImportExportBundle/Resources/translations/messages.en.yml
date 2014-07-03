@@ -139,10 +139,10 @@ execution details: execution details
 
 job_execution.summary:
     read:   read
-    write:  write
-    skip:   skip
-    create: create
-    update: update
+    write:  written
+    skip:   skipped
+    create: created
+    update: updated
 
 Step:    Step
 Status:  Status

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -30,24 +31,16 @@ use Pim\Bundle\CatalogBundle\Manager\GroupManager;
  */
 class GroupController extends AbstractController
 {
-    /**
-     * @staticvar integer The maximum number of group products to be displayed
-     */
+    /** @staticvar integer The maximum number of group products to be displayed */
     const MAX_PRODUCTS = 5;
 
-    /**
-     * @var GroupManager
-     */
+    /** @var GroupManager */
     protected $groupManager;
 
-    /**
-     * @var GroupHandler
-     */
+    /** @var GroupHandler */
     protected $groupHandler;
 
-    /**
-     * @var Form
-     */
+    /** @var Form */
     protected $groupForm;
 
     /**
@@ -60,6 +53,7 @@ class GroupController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param GroupManager             $groupManager
      * @param GroupHandler             $groupHandler
      * @param Form                     $groupForm
@@ -72,6 +66,7 @@ class GroupController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         GroupManager $groupManager,
         GroupHandler $groupHandler,
         Form $groupForm
@@ -83,7 +78,8 @@ class GroupController extends AbstractController
             $securityContext,
             $formFactory,
             $validator,
-            $translator
+            $translator,
+            $eventDispatcher
         );
 
         $this->groupManager = $groupManager;

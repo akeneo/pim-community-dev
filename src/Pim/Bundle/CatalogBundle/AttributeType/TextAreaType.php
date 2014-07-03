@@ -17,7 +17,7 @@ class TextAreaType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormAlias(ProductValueInterface $value)
+    public function prepareValueFormAlias(ProductValueInterface $value)
     {
         if ($value->getAttribute()->isWysiwygEnabled()) {
             return 'pim_wysiwyg';

@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
+
 /**
  * Configurator interface
  *
@@ -13,6 +15,8 @@ interface ConfiguratorInterface
 {
     /**
      * Configure the grid
+     *
+     * @param DatagridConfiguration $configuration
      */
-    public function configure();
+    public function configure(DatagridConfiguration $configuration);
 }

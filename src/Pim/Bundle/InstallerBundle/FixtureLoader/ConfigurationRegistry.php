@@ -255,4 +255,14 @@ class ConfigurationRegistry implements ConfigurationRegistryInterface
 
         return $config;
     }
+
+    /**
+     * Return the ProductManager
+     *
+     * @return ProductManager
+     */
+    public function getProductManager()
+    {
+        return $this->container->get('pim_catalog.manager.product');
+    }
 }

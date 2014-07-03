@@ -18,7 +18,7 @@ class RegisterWidgetsPassSpec extends ObjectBehavior
 
     function it_is_a_compiler_pass()
     {
-        $this->shouldBeAnInstanceOf('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
+        $this->shouldImplement('Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface');
     }
 
     function it_add_tagged_widgets_to_the_widget_registry(

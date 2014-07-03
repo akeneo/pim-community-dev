@@ -1,7 +1,7 @@
 @javascript
 Feature: Delete a product group
   In order to manager product groups for the catalog
-  As a user
+  As a product manager
   I need to be able to delete groups
 
   Background:
@@ -9,7 +9,7 @@ Feature: Delete a product group
     And the following product groups:
       | code | label      | type   |
       | MUG  | MUG Akeneo | X_SELL |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully delete a product group from the grid
     Given I am on the product groups page

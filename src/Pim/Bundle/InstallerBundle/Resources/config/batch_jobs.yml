@@ -1,0 +1,157 @@
+connector:
+    name: Data fixtures
+    jobs:
+
+        fixtures_category_csv:
+            title: pim_installer.jobs.fixtures_category_csv.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_category_csv.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_category
+                        processor: pim_base_connector.processor.category
+                        writer:    pim_base_connector.writer.doctrine.category
+
+        fixtures_category_yml:
+            title: pim_installer.jobs.fixtures_category_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_category_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.category
+                        writer:    pim_base_connector.writer.doctrine.category
+
+        fixtures_attribute_group_yml:
+            title: pim_installer.jobs.fixtures_attribute_group_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_attribute_group_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.attribute_group
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_channel_yml:
+            title: pim_installer.jobs.fixtures_channel_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_channel_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.channel
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_group_type_yml:
+            title: pim_installer.jobs.fixtures_group_type_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_group_type_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.group_type
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_association_type_yml:
+            title: pim_installer.jobs.fixtures_association_type_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_association_type_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.association_type
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_attribute_yml:
+            title: pim_installer.jobs.fixtures_attribute_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_attribute_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.attribute
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_attribute_options_yml:
+            title: pim_installer.jobs.fixtures_attribute_options_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_attribute_options_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.attribute_option
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_family_yml:
+            title: pim_installer.jobs.fixtures_family_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_family_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.family
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_group_yml:
+            title: pim_installer.jobs.fixtures_group_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_group_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.group
+                        writer:    pim_base_connector.writer.doctrine
+
+        fixtures_product_yml:
+            title: pim_installer.jobs.fixtures_product_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_product_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml_product
+                        processor: pim_base_connector.processor.product
+                        writer:    pim_base_connector.writer.doctrine.product
+
+        fixtures_product_csv:
+            title: pim_installer.jobs.fixtures_product_csv.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_product_csv.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.csv_product
+                        processor: pim_base_connector.processor.product
+                        writer:    pim_base_connector.writer.doctrine.product
+
+        fixtures_association_yml:
+            title: pim_installer.jobs.fixtures_association_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_association_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml_associations
+                        processor: pim_base_connector.processor.association
+                        writer:    pim_base_connector.writer.doctrine.association
+
+        fixtures_job_yml:
+            title: pim_installer.jobs.fixtures_job_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_job_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pim_base_connector.processor.job_instance
+                        writer:    pim_base_connector.writer.doctrine

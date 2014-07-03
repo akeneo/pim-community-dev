@@ -4,6 +4,7 @@ namespace Pim\Bundle\FilterBundle\Form\Type\Filter;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
 
 /**
@@ -15,9 +16,7 @@ use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
  */
 class MetricFilterType extends AbstractType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const NAME = 'pim_type_metric_filter';
 
     /**
@@ -34,6 +33,20 @@ class MetricFilterType extends AbstractType
     public function getParent()
     {
         return NumberFilterType::NAME;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        parent::setDefaultOptions($resolver);
+
+        $resolver->replaceDefaults(
+            array(
+                'data_type' => NumberFilterType::DATA_DECIMAL
+            )
+        );
     }
 
     /**

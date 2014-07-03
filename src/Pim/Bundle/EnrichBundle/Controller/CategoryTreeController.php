@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +54,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
@@ -65,6 +67,7 @@ class CategoryTreeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
         UserContext $userContext
@@ -77,6 +80,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
@@ -88,13 +92,32 @@ class CategoryTreeController extends AbstractDoctrineController
      * List category trees. The select_node_id request parameter
      * allow to send back the tree where the node belongs with a selected
      * attribute
+     *
      * @param Request $request
+     *
+     * @return array
      *
      * @Template
      * @AclAncestor("pim_enrich_category_list")
-     * @return array
      */
     public function listTreeAction(Request $request)
+    {
+        return $this->manageTreeAction($request);
+    }
+
+    /**
+     * List category trees for management.The select_node_id request parameter
+     * allow to send back the tree where the node belongs with a selected
+     * attribute
+     *
+     * @param Request $request
+     *
+     * @return array
+     *
+     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
+     * @AclAncestor("pim_enrich_category_list")
+     */
+    public function manageTreeAction(Request $request)
     {
         $selectNodeId = $request->get('select_node_id', -1);
         try {
@@ -107,6 +130,8 @@ class CategoryTreeController extends AbstractDoctrineController
             'trees'          => $this->categoryManager->getTrees(),
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
+            'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
+            'related_entity' => $this->getRequest()->get('related_entity', 'product'),
         );
     }
 
@@ -119,14 +144,14 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function moveNodeAction(Request $request)
     {
-        $segmentId     = $request->get('id');
+        $categoryId    = $request->get('id');
         $parentId      = $request->get('parent');
         $prevSiblingId = $request->get('prev_sibling');
 
         if ($request->get('copy') == 1) {
-            $this->categoryManager->copy($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->copy($categoryId, $parentId, $prevSiblingId);
         } else {
-            $this->categoryManager->move($segmentId, $parentId, $prevSiblingId);
+            $this->categoryManager->move($categoryId, $parentId, $prevSiblingId);
         }
         $this->categoryManager->getObjectManager()->flush();
 
@@ -158,6 +183,7 @@ class CategoryTreeController extends AbstractDoctrineController
         $withProductsCount = (bool) $this->getRequest()->get('with_products_count', false);
         $includeParent     = (bool) $this->getRequest()->get('include_parent', false);
         $includeSub        = (bool) $this->getRequest()->get('include_sub', false);
+        $relatedEntity     = $this->getRequest()->get('related_entity', 'product');
 
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -170,21 +196,22 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         if ($selectNode !== null) {
-            $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
+            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
             $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
-            $categories = $this->categoryManager->getChildren($parent->getId());
+            $categories = $this->getChildren($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
 
         return $this->render(
             $view,
             array(
-                'categories'    => $categories,
-                'parent'        => ($includeParent) ? $parent : null,
-                'include_sub'   => $includeSub,
-                'product_count' => $withProductsCount,
-                'select_node'   => $selectNode
+                'categories'     => $categories,
+                'parent'         => ($includeParent) ? $parent : null,
+                'include_sub'    => $includeSub,
+                'product_count'  => $withProductsCount,
+                'select_node'    => $selectNode,
+                'related_entity' => $relatedEntity
             ),
             new JsonResponse()
         );
@@ -203,7 +230,7 @@ class CategoryTreeController extends AbstractDoctrineController
     {
         if ($parent) {
             $parent = $this->findCategory($parent);
-            $category = $this->categoryManager->getSegmentInstance();
+            $category = $this->categoryManager->getCategoryInstance();
             $category->setParent($parent);
         } else {
             $category = $this->categoryManager->getTreeInstance();
@@ -300,6 +327,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param integer $categoryId
      *
      * @return CategoryInterface
+     * @throws NotFoundHttpException
      */
     protected function findCategory($categoryId)
     {
@@ -322,5 +350,16 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(CategoryInterface $category)
     {
         return array();
+    }
+
+    /**
+     * @param integer $parentId
+     * @param mixed   $selectNodeId
+     *
+     * @return CategoryInterface[]
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        return $this->categoryManager->getChildren($parentId, $selectNodeId);
     }
 }

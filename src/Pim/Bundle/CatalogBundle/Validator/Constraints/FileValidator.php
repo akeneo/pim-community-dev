@@ -6,7 +6,7 @@ use Symfony\Component\Validator\Constraints\FileValidator as BaseFileValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\HttpFoundation\File\File as FileObject;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 
 /**
  * Constraint
@@ -22,7 +22,7 @@ class FileValidator extends BaseFileValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        if ($value instanceof Media) {
+        if ($value instanceof AbstractMedia) {
             $value = $value->getFile();
         }
 

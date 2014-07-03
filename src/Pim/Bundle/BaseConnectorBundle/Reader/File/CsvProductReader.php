@@ -38,6 +38,45 @@ class CsvProductReader extends CsvReader
     }
 
     /**
+     * Set the media attributes
+     *
+     * @param array $mediaAttributes
+     *
+     * @return CsvProductReader
+     */
+    public function setMediaAttributes(array $mediaAttributes)
+    {
+        $this->mediaAttributes = $mediaAttributes;
+
+        return $this;
+    }
+
+    /**
+     * Get the media attributes
+     *
+     * @return array
+     */
+    public function getMediaAttributes()
+    {
+        return $this->mediaAttributes;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getConfigurationFields()
+    {
+        return array_merge(
+            parent::getConfigurationFields(),
+            [
+                'mediaAttributes' => [
+                    'system' => true
+                ]
+            ]
+        );
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function read()

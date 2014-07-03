@@ -22,15 +22,15 @@ use Doctrine\Common\DataFixtures\Purger\MongoDBPurger;
  */
 class FeatureContext extends MinkContext implements KernelAwareInterface
 {
-    private $kernel;
+    protected $kernel;
 
-    private static $errorMessages = [];
+    protected static $errorMessages = [];
 
     /**
      * Path of the yaml file containing tables that should be excluded from database purge
      * @var string
      */
-    private $excludedTablesFile = 'excluded_tables.yml';
+    protected $excludedTablesFile = 'excluded_tables.yml';
 
     /**
      * Register contexts

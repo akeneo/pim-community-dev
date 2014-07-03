@@ -14,20 +14,8 @@ monolog:
         main:
             type:         fingers_crossed
             action_level: critical
-            handler:      grouped
-        grouped:
-            type:    group
-            members: [streamed, buffered]
-        streamed:
-           type:  stream
-           path:  "%kernel.logs_dir%/%kernel.environment%.log"
-           level: debug
-        buffered:
-            type:    buffer
-            handler: swift
-        swift:
-            type:       native_mailer
-            from_email: %error_reporting_email%
-            to_email:   %error_reporting_email%
-            subject:    An Error Occurred!
-            level:      debug
+            handler:      nested
+        nested:
+            type: stream
+            path: %kernel.logs_dir%/%kernel.environment%.log
+            level: debug

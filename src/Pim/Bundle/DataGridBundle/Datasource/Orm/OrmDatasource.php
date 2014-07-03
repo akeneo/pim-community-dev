@@ -4,10 +4,11 @@ namespace Pim\Bundle\DataGridBundle\Datasource\Orm;
 
 use Oro\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource as OroOrmDatasource;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ParameterizableInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
+use Doctrine\ORM\EntityManager;
+use Oro\Bundle\SecurityBundle\ORM\Walker\AclHelper;
 
 /**
  * Basic PIM data source, allow to prepare query builder from repository
@@ -18,15 +19,14 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
  */
 class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, ParameterizableInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const TYPE = 'pim_orm';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ENTITY_PATH = '[source][entity]';
+
+    /** @var HydratorInterface */
+    protected $hydrator;
 
     /** @var array */
     protected $parameters = array();
@@ -36,6 +36,18 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
 
     /** @var EntityRepository $repository */
     protected $repository;
+
+    /**
+     * @param EntityManager     $em
+     * @param AclHelper         $aclHelper
+     * @param HydratorInterface $hydrator
+     */
+    public function __construct(EntityManager $em, AclHelper $aclHelper, HydratorInterface $hydrator)
+    {
+        parent::__construct($em, $aclHelper);
+
+        $this->hydrator = $hydrator;
+    }
 
     /**
      * {@inheritdoc}
@@ -58,15 +70,7 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     public function getResults()
     {
-        $query = $this->qb->getQuery();
-
-        $results = $query->execute();
-        $rows    = [];
-        foreach ($results as $result) {
-            $rows[] = new ResultRecord($result);
-        }
-
-        return $rows;
+        return $this->hydrator->hydrate($this->qb);
     }
 
     /**
@@ -82,8 +86,8 @@ class OrmDatasource extends OroOrmDatasource implements DatasourceInterface, Par
      */
     public function setParameters($parameters)
     {
-        $this->parameters = $parameters;
-        $this->qb->setParameters($parameters);
+        $this->parameters += $parameters;
+        $this->qb->setParameters($this->parameters);
 
         return $this;
     }

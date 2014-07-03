@@ -13,6 +13,14 @@ pim_enrich_product_edit:
     defaults: { _controller: pim_enrich.controller.product:editAction }
     requirements:
         id: '[0-9a-f]+'
+    methods: [GET, POST]
+
+pim_enrich_product_update:
+    path: /{id}
+    defaults: { _controller: pim_enrich.controller.product:updateAction }
+    requirements:
+        id: '[0-9a-f]+'
+    methods: [POST]
 
 pim_enrich_product_addattributes:
     path: /{id}/attributes
@@ -55,12 +63,6 @@ pim_enrich_product_completeness:
     defaults: { _controller: pim_enrich.controller.completeness:completenessAction }
     requirements:
         id: '[0-9a-f]+'
-
-pim_enrich_product_configure_mass_edit_action:
-    path: /batch
-    defaults: { _controller: PimEnrichBundle:Product:configureMassEditAction }
-    requirements:
-        _method: GET
 
 pim_enrich_product_history:
     path: /{id}/history.{_format}

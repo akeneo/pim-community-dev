@@ -43,7 +43,9 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->isEnabled()->willReturn(true);
 
         $serializer->normalize($family, 'mongodb_json', [])->willReturn('family normalization');
-        $serializer->normalize($completeness, 'mongodb_json', [])->willReturn(array('completenessCode' => 'completeness normalization'));
+        $serializer
+            ->normalize($completeness, 'mongodb_json', [])
+            ->willReturn(['completenessCode' => 'completeness normalization']);
 
         $this->normalize($product, 'mongodb_json', [])->shouldReturn([
             ProductNormalizer::FAMILY_FIELD => 'family normalization',

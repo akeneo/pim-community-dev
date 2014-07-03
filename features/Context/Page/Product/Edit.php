@@ -144,14 +144,16 @@ class Edit extends Form
     public function findField($name)
     {
         $currency = null;
-        if (false !== strpos($name, ' in ')) {
+        if (1 === preg_match('/in ((?:.){1,3})$/', $name)) {
             // Price in EUR
             list($name, $currency) = explode(' in ', $name);
 
             return $this->findPriceField($name, $currency);
-        } elseif (2 === str_word_count($name)) {
+        } elseif (1 < str_word_count($name)) {
             // mobile Description
-            list($scope, $name) = str_word_count($name, 1);
+            $words = explode(' ', $name);
+            $scope = array_shift($words);
+            $name = implode(' ', $words);
 
             // Check that it is really a scoped field, not a field with a two word label
             if (strtolower($scope) === $scope) {
@@ -171,6 +173,21 @@ class Edit extends Form
         }
 
         return $field;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return NodeElement[]
+     */
+    public function findFieldIcons($name)
+    {
+        $controls = $this->findField($name);
+        do {
+            $controls = $controls->getParent();
+        } while (null !== $controls && !$controls->hasClass('controls'));
+
+        return $controls->findAll('css', '.icons-container i');
     }
 
     /**
@@ -335,7 +352,7 @@ class Edit extends Form
                     sprintf('Message %s not found for %s:%s', $info, $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif ($info !== "none") {
             $infoPassed = ($info === 'Complete')
                 ? ($completenessCell->getText() === $info)
                 : $completenessCell->find('css', sprintf('span.progress-info:contains("%s")', $info));
@@ -367,7 +384,7 @@ class Edit extends Form
                     sprintf('Ratio should not be found for %s:%s', $channelCode, $localeCode)
                 );
             }
-        } else {
+        } elseif ($ratio !== 'none') {
             $title = $completenessCell
                 ->find('css', 'div.progress')
                 ->getAttribute('data-original-title');
@@ -403,8 +420,10 @@ class Edit extends Form
      */
     public function selectTree($category)
     {
-        $link = $this->getElement('Category pane')
-            ->find('css', sprintf('#trees-list li a:contains(%s)', $category));
+        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
+        if (!$link) {
+            throw new\InvalidArgumentException(sprintf('Tree "%s" not found', $category));
+        }
         $link->click();
 
         return $this;
@@ -417,8 +436,10 @@ class Edit extends Form
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
+        $category = $this->findCategoryInTree($category)->getParent();
+        if ($category->hasClass('jstree-closed')) {
+            $category->getParent()->find('css', 'ins')->click();
+        }
 
         return $this;
     }
@@ -432,7 +453,7 @@ class Edit extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }

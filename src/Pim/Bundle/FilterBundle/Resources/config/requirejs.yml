@@ -6,3 +6,4 @@ config:
         oro/datafilter/product_category-filter:     pimfilter/js/datafilter/filter/product_category-filter
         oro/datafilter/product_completeness-filter: pimfilter/js/datafilter/filter/product_completeness-filter
         oro/datafilter/ajax-choice-filter:          pimfilter/js/datafilter/filter/ajax-choice-filter
+        oro/datafilter/select2-choice-filter:       pimfilter/js/datafilter/filter/select2-choice-filter

@@ -32,22 +32,22 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @var string $username
      */
-    private $username = null;
+    protected $username = null;
 
     /**
      * @var string $password
      */
-    private $password = null;
+    protected $password = null;
 
     /**
      * @var PageFactory $pageFactory
      */
-    private $pageFactory = null;
+    protected $pageFactory = null;
 
     /**
      * @var array $pageMapping
      */
-    private $pageMapping = array(
+    protected $pageMapping = array(
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
         'categories'               => 'Category tree creation',
@@ -100,6 +100,16 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     {
         $this->username = $username;
         $this->password = $username;
+
+        $this->getMainContext()->getSubcontext('fixtures')->setUsername($username);
+    }
+
+    /**
+     * @Given /^I logout$/
+     */
+    public function iLogout()
+    {
+        $this->getSession()->visit($this->locatePath('/user/logout'));
     }
 
     /**
@@ -136,6 +146,44 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @param string $not
+     * @param string $action
+     * @param string $identifier
+     * @param string $page
+     *
+     * @return null|Then
+     * @Given /^I should( not)? be able to (\w+) the "([^"]*)" (\w+)$/
+     * @Given /^I should( not)? be able to access the (\w+) "([^"]*)" (\w+) page$/
+     */
+    public function iShouldNotBeAbleToAccessTheEntityEditPage($not, $action, $identifier, $page)
+    {
+        if (null === $action) {
+            $action = 'edit';
+        }
+
+        if (!$not) {
+            if ('edit' === $action) {
+                $this->iAmOnTheEntityEditPage($identifier, $page);
+            } elseif ('show' === $action) {
+                $this->iAmOnTheEntityShowPage($identifier, $page);
+            } else {
+                throw new \Exception('Action "%s" is not handled yet.');
+            }
+
+            return null;
+        }
+
+        $page = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+
+        $this->currentPage = sprintf('%s %s', $page, $action);
+        $this->getCurrentPage()->open(['id' => $entity->getId()]);
+
+        return new Step\Then('I should see "403 Forbidden"');
+    }
+
+    /**
      * @param string $identifier
      * @param string $page
      *
@@ -148,6 +196,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $getter = sprintf('get%s', $page);
         $entity = $this->getFixturesContext()->$getter($identifier);
         $this->openPage(sprintf('%s edit', $page), array('id' => $entity->getId()));
+    }
+
+    /**
+     * @param string $identifier
+     * @param string $page
+     *
+     * @Given /^I show the "([^"]*)" (\w+)$/
+     * @Given /^I am on the "([^"]*)" (\w+) show page$/
+     */
+    public function iAmOnTheEntityShowPage($identifier, $page)
+    {
+        $page = ucfirst($page);
+        $getter = sprintf('get%s', $page);
+        $entity = $this->getFixturesContext()->$getter($identifier);
+        $this->openPage(sprintf('%s show', $page), array('id' => $entity->getId()));
     }
 
     /**
@@ -312,11 +375,27 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param JobInstance $job
      *
-     * @When /^I launch the ("([^"]*)" export job)$/
+     * @When /^I launch the ("([^"]*)" (import|export) job)$/
      */
     public function iLaunchTheExportJob(JobInstance $job)
     {
-        $this->openPage('Export launch', array('id' => $job->getId()));
+        $jobType = ucfirst($job->getType());
+        $this->openPage(sprintf('%s launch', $jobType), array('id' => $job->getId()));
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @return \Behat\Behat\Context\Step\Then
+     *
+     * @When /^I should not be able to (launch|edit) the ("([^"]*)" (export|import) job)$/
+     */
+    public function iShouldNotBeAbleToAccessTheJob($action, JobInstance $job)
+    {
+        $this->currentPage = sprintf("%s %s", ucfirst($job->getType()), $action);
+        $page = $this->getCurrentPage()->open(['id' => $job->getId()]);
+
+        return new Step\Then('I should see "403 Forbidden"');
     }
 
     /**
@@ -353,6 +432,18 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function iShouldBeOnTheAttributeGroupPage(AttributeGroup $group)
     {
         $expectedAddress = $this->getPage('AttributeGroup edit')->getUrl(array('id' => $group->getId()));
+        $this->assertAddress($expectedAddress);
+    }
+
+    /**
+     * @param JobInstance $job
+     *
+     * @Given /^I should be on the ("([^"]*)" (import|export) job) page$/
+     */
+    public function iShouldBeOnTheJobPage(JobInstance $job)
+    {
+        $jobPage = sprintf('%s show', ucfirst($job->getType()));
+        $expectedAddress = $this->getPage($jobPage)->getUrl(array('id' => $job->getId()));
         $this->assertAddress($expectedAddress);
     }
 
@@ -478,7 +569,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @param string $expected
      */
-    private function assertAddress($expected)
+    protected function assertAddress($expected)
     {
         $actual = $this->getSession()->getCurrentUrl();
         $result = strpos($actual, $expected) !== false;
@@ -488,7 +579,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * A method that logs the user in with the previously provided credentials if required by the page
      */
-    private function loginIfRequired()
+    protected function loginIfRequired()
     {
         $loginForm = $this->getCurrentPage()->find('css', '.form-signin');
         if ($loginForm) {
@@ -504,7 +595,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      *
      * @return void
      */
-    private function wait($time = 10000, $condition = null)
+    protected function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }
@@ -512,7 +603,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }

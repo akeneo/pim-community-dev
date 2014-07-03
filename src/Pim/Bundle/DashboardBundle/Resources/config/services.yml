@@ -1,6 +1,5 @@
 parameters:
     pim_dashboard.controller.widget.class:      Pim\Bundle\DashboardBundle\Controller\WidgetController
-    pim_dashboard.repository.orm.widget.class:  Pim\Bundle\DashboardBundle\Entity\Repository\WidgetRepository
     pim_dashboard.widget.registry.class:        Pim\Bundle\DashboardBundle\Widget\Registry
     pim_dashboard.widget.completeness.class:    Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
     pim_dashboard.widget.links.class:           Pim\Bundle\DashboardBundle\Widget\LinksWidget
@@ -13,11 +12,6 @@ services:
         parent: pim_enrich.controller.abstract
         arguments:
             - '@pim_dashboard.widget.registry'
-
-    pim_dashboard.repository.orm.widget:
-        class: %pim_dashboard.repository.orm.widget.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
 
     pim_dashboard.widget.registry:
         class: %pim_dashboard.widget.registry.class%
@@ -40,7 +34,6 @@ services:
     pim_dashboard.widget.last_operations:
         class: %pim_dashboard.widget.last_operations.class%
         arguments:
-            - '@oro_security.security_facade'
-            - '@pim_dashboard.repository.orm.widget'
+            - '@pim_import_export.manager.job_execution'
         tags:
             - { name: pim_dashboard.widget, alias: last_operations }

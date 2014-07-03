@@ -2,15 +2,15 @@
 
 namespace Pim\Bundle\DataGridBundle\Datagrid\Product;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Doctrine\ORM\EntityRepository;
 
 /**
- * Context configurator for flexible grid, it allows to inject all dynamic configuration as user grid config,
+ * Context configurator for product grid, it allows to inject all dynamic configuration as user grid config,
  * attributes config, current locale
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
@@ -19,69 +19,43 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
  */
 class ContextConfigurator implements ConfiguratorInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const SOURCE_PATH = '[source][%s]';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const PRODUCT_STORAGE_KEY = 'product_storage';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_LOCALE_KEY = 'locale_code';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_SCOPE_KEY = 'scope_code';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_COLUMNS_KEY = 'displayed_columns';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const DISPLAYED_ATTRIBUTES_KEY = 'displayed_attribute_ids';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const USEABLE_ATTRIBUTES_KEY = 'attributes_configuration';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const CURRENT_GROUP_ID_KEY = 'current_group_id';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ASSOCIATION_TYPE_ID_KEY = 'association_type_id';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const CURRENT_PRODUCT_KEY = 'current_product';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const AVAILABLE_COLUMNS_KEY = 'available_columns';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const USER_CONFIG_ALIAS_KEY = 'user_config_alias';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
 
     /**
@@ -100,9 +74,9 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $requestParams;
 
     /**
-     * @var SecurityContextInterface
+     * @var UserContext
      */
-    protected $securityContext;
+    protected $userContext;
 
     /**
      * @var Request
@@ -110,31 +84,34 @@ class ContextConfigurator implements ConfiguratorInterface
     protected $request;
 
     /**
-     * @param DatagridConfiguration    $configuration   the grid config
-     * @param ProductManager           $productManager  product manager
-     * @param RequestParameters        $requestParams   request parameters
-     * @param Request                  $request         request
-     * @param SecurityContextInterface $securityContext the security context
+     * @var EntityRepository
+     */
+    protected $gridViewRepository;
+
+    /**
+     * @param ProductManager    $productManager
+     * @param RequestParameters $requestParams
+     * @param UserContext       $userContext
+     * @param EntityRepository  $gridViewRepository
      */
     public function __construct(
-        DatagridConfiguration $configuration,
         ProductManager $productManager,
         RequestParameters $requestParams,
-        Request $request,
-        SecurityContextInterface $securityContext
+        UserContext $userContext,
+        EntityRepository $gridViewRepository
     ) {
-        $this->configuration   = $configuration;
-        $this->productManager  = $productManager;
-        $this->requestParams   = $requestParams;
-        $this->request         = $request;
-        $this->securityContext = $securityContext;
+        $this->productManager     = $productManager;
+        $this->requestParams      = $requestParams;
+        $this->userContext        = $userContext;
+        $this->gridViewRepository = $gridViewRepository;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function configure()
+    public function configure(DatagridConfiguration $configuration)
     {
+        $this->configuration = $configuration;
         $this->addProductStorage();
         $this->addLocaleCode();
         $this->addScopeCode();
@@ -145,6 +122,14 @@ class ContextConfigurator implements ConfiguratorInterface
         $this->addDisplayedColumnCodes();
         $this->addAttributesIds();
         $this->addAttributesConfig();
+    }
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
     }
 
     /**
@@ -163,15 +148,25 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function addAttributesIds()
     {
         $attributeCodes = $this->getUserGridColumns();
-        $repository     = $this->productManager->getAttributeRepository();
-        $attributeIds   = ($attributeCodes) ? $repository->getAttributeIds($attributeCodes) : null;
-
-        if (!$attributeIds) {
-            $attributeIds = $repository->getAttributeIdsUseableInGrid();
-        }
+        $attributeIds = $this->getAttributeIds($attributeCodes);
 
         $path = $this->getSourcePath(self::DISPLAYED_ATTRIBUTES_KEY);
         $this->configuration->offsetSetByPath($path, $attributeIds);
+    }
+
+    /**
+     * Return useable attribute ids
+     *
+     * @param string[] $attributeCodes
+     *
+     * @return integer[]
+     */
+    protected function getAttributeIds($attributeCodes = null)
+    {
+        $repository   = $this->productManager->getAttributeRepository();
+        $attributeIds = $repository->getAttributeIdsUseableInGrid($attributeCodes);
+
+        return $attributeIds;
     }
 
     /**
@@ -305,7 +300,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if (!$dataLocale) {
             $dataLocale = $this->request->get('dataLocale', null);
         }
-        if (!$dataLocale && $locale = $this->getUser()->getCatalogLocale()) {
+        if (!$dataLocale && $locale = $this->userContext->getUser()->getCatalogLocale()) {
             $dataLocale = $locale->getCode();
         }
 
@@ -323,7 +318,7 @@ class ContextConfigurator implements ConfiguratorInterface
         if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {
-            $channel = $this->getUser()->getCatalogScope();
+            $channel = $this->userContext->getUser()->getCatalogScope();
 
             return $channel->getCode();
         }
@@ -336,9 +331,13 @@ class ContextConfigurator implements ConfiguratorInterface
      */
     protected function getAttributesConfig()
     {
-        $repository     = $this->productManager->getAttributeRepository();
-        $attributeIds  = $repository->getAttributeIdsUseableInGrid();
+        $attributeIds  = $this->getAttributeIds();
+        if (empty($attributeIds)) {
+            return [];
+        }
+
         $currentLocale = $this->getCurrentLocaleCode();
+        $repository    = $this->productManager->getAttributeRepository();
         $configuration = $repository->getAttributesAsArray(true, $currentLocale, $attributeIds);
 
         return $configuration;
@@ -352,42 +351,10 @@ class ContextConfigurator implements ConfiguratorInterface
     protected function getUserGridColumns()
     {
         $params = $this->requestParams->get(RequestParameters::ADDITIONAL_PARAMETERS);
-
         if (isset($params['view']) && isset($params['view']['columns'])) {
             return explode(',', $params['view']['columns']);
         }
 
-        $path  = $this->getSourcePath(self::USER_CONFIG_ALIAS_KEY);
-        $alias = $this->configuration->offsetGetByPath($path);
-        if (!$alias) {
-            $alias = $this->configuration->offsetGetByPath(sprintf('[%s]', DatagridConfiguration::NAME_KEY));
-        }
-
-        $view = $this->productManager
-            ->getEntityManager()
-            ->getRepository('PimDataGridBundle:DatagridView')
-            ->findOneBy(['datagridAlias' => $alias, 'type' => DatagridView::TYPE_DEFAULT, 'owner' => $this->getUser()]);
-
-        if ($view) {
-            return $view->getColumns();
-        }
-    }
-
-    /**
-     * Get the user from the security context
-     *
-     * @return null|User
-     */
-    protected function getUser()
-    {
-        if (null === $token = $this->securityContext->getToken()) {
-            return;
-        }
-
-        if (!is_object($user = $token->getUser())) {
-            return;
-        }
-
-        return $user;
+        return null;
     }
 }

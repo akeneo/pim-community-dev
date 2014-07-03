@@ -30,7 +30,7 @@ class BulkProductReaderSpec extends ObjectBehavior
 
     function it_is_a_product_reader()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ObsoleteProductReader');
     }
 
     function it_has_a_channel()
@@ -101,8 +101,6 @@ class BulkProductReaderSpec extends ObjectBehavior
 
         $this->setChannel('foobar');
         $this->read();
-        $this->read();
-        $this->read();
     }
 
     function it_increments_read_count_each_time_it_reads(
@@ -123,8 +121,6 @@ class BulkProductReaderSpec extends ObjectBehavior
         $stepExecution->incrementSummaryInfo('read')->shouldBeCalledTimes(2);
 
         $this->setChannel('foobar');
-        $this->read();
-        $this->read();
         $this->read();
     }
 

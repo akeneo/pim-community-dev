@@ -8,7 +8,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormView;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -31,19 +31,19 @@ class ProductValueType extends AbstractType
     protected $valueClass;
 
     /**
-     * @var ProductFormView $productFormView
+     * @var ProductFormViewInterface $productFormView
      */
     protected $productFormView;
 
     /**
      * @param string                   $valueClass      the product value class
      * @param EventSubscriberInterface $subscriber      the subscriber
-     * @param ProductFormView          $productFormView the form view
+     * @param ProductFormViewInterface $productFormView the form view
      */
     public function __construct(
         $valueClass,
         EventSubscriberInterface $subscriber,
-        ProductFormView $productFormView
+        ProductFormViewInterface $productFormView
     ) {
         $this->subscriber      = $subscriber;
         $this->valueClass      = $valueClass;

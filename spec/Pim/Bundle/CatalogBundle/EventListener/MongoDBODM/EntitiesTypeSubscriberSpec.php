@@ -28,7 +28,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($factory);
     }
 
-    function it_is_an_event_subsriber()
+    function it_is_an_event_subscriber()
     {
         $this->shouldImplement('Doctrine\Common\EventSubscriber');
     }
@@ -41,7 +41,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
     /**
      * PostLoad
      */
-    function it_transforms_values_of_an_entity_collection_field_into_entities_after_the_loading(
+    function it_transforms_values_of_an_entity_collection_field_into_entities_after_loading(
         LifecycleEventArgs $args,
         ValuesStub $document,
         DocumentManager $dm,
@@ -51,7 +51,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         BarStub $bar4,
         BarStub $bar8,
         BarStub $bar15,
-        ReferencedCollectionFactory $factory,
+        $factory,
         ReferencedCollection $collection
     ) {
         $args->getDocument()->willReturn($document);
@@ -76,7 +76,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->postLoad($args);
     }
 
-    function it_throws_exception_when_entity_collection_field_has_no_target_entity_after_the_loading(
+    function it_throws_exception_when_entity_collection_field_has_no_target_entity_after_loading(
         LifecycleEventArgs $args,
         ValuesStub $document,
         DocumentManager $dm,
@@ -95,7 +95,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         $this->shouldThrow($exception)->duringPostLoad($args);
     }
 
-    function it_throws_exception_when_entity_collection_field_has_no_ids_field_after_the_loading(
+    function it_throws_exception_when_entity_collection_field_has_no_ids_field_after_loading(
         LifecycleEventArgs $args,
         ValuesStub $document,
         DocumentManager $dm,
@@ -124,7 +124,7 @@ class EntitiesTypeSubscriberSpec extends ObjectBehavior
         ClassMetadata $documentMetadata,
         \ReflectionProperty $reflBar,
         Collection $currentValues,
-        ReferencedCollectionFactory $factory,
+        $factory,
         ReferencedCollection $collection
     ) {
         $args->getDocument()->willReturn($document);

@@ -13,19 +13,13 @@ use Doctrine\ORM\EntityManager;
  */
 interface UpdateGuesserInterface
 {
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ACTION_UPDATE_ENTITY = 'update_entity';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ACTION_UPDATE_COLLECTION = 'update_collection';
 
-    /**
-     * @var string
-     */
+    /** @staticvar string */
     const ACTION_DELETE = 'delete';
 
     /**

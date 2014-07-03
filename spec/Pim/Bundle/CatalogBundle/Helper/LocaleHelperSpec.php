@@ -6,20 +6,21 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Intl;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
+use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 
 class LocaleHelperSpec extends ObjectBehavior
 {
-    function let(UserContext $userContext, Locale $en)
+    function let(UserContext $userContext, LocaleManager $localeManager, Locale $en)
     {
         $en->getCode()->willReturn('en_US');
         $userContext->getCurrentLocale()->willReturn($en);
 
-        $this->beConstructedWith($userContext);
+        $this->beConstructedWith($userContext, $localeManager);
     }
 
     function it_provides_current_locale($en)
     {
-        $this->getCurrentLocale()->shouldReturn($en);
+        $this->getCurrentLocaleCode()->shouldReturn('en_US');
     }
 
     function it_provides_translated_locale_label()
@@ -53,7 +54,30 @@ class LocaleHelperSpec extends ObjectBehavior
 
     function it_provides_a_locale_flag()
     {
-        $this->getFlag('en_US')->shouldReturn('<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>');
-        $this->getFlag('en_US', true)->shouldReturn('<span class="flag-language"><i class="flag flag-us"></i><span class="language">English (United States)</span></span>');
+        $this
+            ->getFlag('en_US')
+            ->shouldReturn(
+                '<span class="flag-language"><i class="flag flag-us"></i><span class="language">en</span></span>'
+            );
+
+        $this
+            ->getFlag('en_US', true)
+            ->shouldReturn(
+                sprintf(
+                    '<span class="flag-language"><i class="flag flag-us"></i><span class="language">%s</span></span>',
+                    'English (United States)'
+                )
+            );
+    }
+
+    function it_provides_translated_locales_as_choice($localeManager)
+    {
+        $localeManager->getActiveCodes()->willReturn(['fr_FR', 'en_US']);
+        $this->getActivatedLocaleChoices()->shouldReturn(
+            [
+                'fr_FR' => 'French (France)',
+                'en_US' => 'English (United States)'
+            ]
+        );
     }
 }

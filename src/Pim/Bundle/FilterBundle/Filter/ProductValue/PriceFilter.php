@@ -2,6 +2,9 @@
 
 namespace Pim\Bundle\FilterBundle\Filter\ProductValue;
 
+use Oro\Bundle\FilterBundle\Form\Type\Filter\FilterType;
+use Oro\Bundle\FilterBundle\Form\Type\Filter\NumberFilterType;
+
 use Oro\Bundle\FilterBundle\Filter\NumberFilter as OroNumberFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
@@ -52,7 +55,13 @@ class PriceFilter extends OroNumberFilter
      */
     public function parseData($data)
     {
-        $data = parent::parseData($data);
+        $data['type'] = isset($data['type']) ? $data['type'] : null;
+
+        if (!is_array($data)
+            || !array_key_exists('value', $data)
+            || (!is_numeric($data['value']) && FilterType::TYPE_EMPTY !== $data['type'])) {
+            return false;
+        }
 
         if (!is_array($data) || !array_key_exists('currency', $data) || !is_string($data['currency'])) {
             return false;
@@ -72,5 +81,22 @@ class PriceFilter extends OroNumberFilter
         $metadata['currencies'] = $formView->vars['currency_choices'];
 
         return $metadata;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getOperator($type)
+    {
+        $operatorTypes = array(
+            NumberFilterType::TYPE_EQUAL         => '=',
+            NumberFilterType::TYPE_GREATER_EQUAL => '>=',
+            NumberFilterType::TYPE_GREATER_THAN  => '>',
+            NumberFilterType::TYPE_LESS_EQUAL    => '<=',
+            NumberFilterType::TYPE_LESS_THAN     => '<',
+            FilterType::TYPE_EMPTY               => 'EMPTY'
+        );
+
+        return isset($operatorTypes[$type]) ? $operatorTypes[$type] : '=';
     }
 }

@@ -17,7 +17,7 @@ class OptionSimpleSelectType extends AbstractAttributeType
     /**
      * {@inheritdoc}
      */
-    protected function prepareValueFormOptions(ProductValueInterface $value)
+    public function prepareValueFormOptions(ProductValueInterface $value)
     {
         $options = parent::prepareValueFormOptions($value);
         $attribute = $value->getAttribute();
@@ -42,6 +42,18 @@ class OptionSimpleSelectType extends AbstractAttributeType
             'options' => [
                 'name'      => 'options',
                 'fieldType' => 'pim_enrich_options'
+            ],
+            'autoOptionSorting' => [
+                'name'      => 'autoOptionSorting',
+                'fieldType' => 'switch',
+                'options'   => [
+                    'label'         => 'Automatic option sorting',
+                    'property_path' => 'properties[autoOptionSorting]',
+                    'help'          => 'info.attribute.auto option sorting',
+                    'attr'          => [
+                        'class' => 'hide'
+                    ]
+                ]
             ]
         ];
     }

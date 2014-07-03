@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse variant groups
   In order to list the existing variant groups for the catalog
-  As a user
+  As a product manager
   I need to be able to see variant groups
 
   Scenario: Successfully view, sort and filter variant groups
@@ -18,7 +18,7 @@ Feature: Browse variant groups
       | mug            | Mug            | color       | VARIANT |
       | sticker_akeneo | Akeneo Sticker | dimension   | VARIANT |
       | cross_sell     | Cross Sell     |             | X_SELL  |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the variant groups page
     Then the grid should contain 3 elements
     And I should see the columns Code, Label and Axis

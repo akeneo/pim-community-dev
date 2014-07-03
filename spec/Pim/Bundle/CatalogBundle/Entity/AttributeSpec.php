@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 
 class AttributeSpec extends ObjectBehavior
 {
-    function it_set_attribute_as_required_if_type_is_identifier()
+    function it_sets_attribute_as_required_if_type_is_identifier()
     {
         $this->isRequired()->shouldReturn(false);
         $this->setAttributeType('pim_catalog_identifier');

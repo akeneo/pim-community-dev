@@ -45,8 +45,12 @@ class UserContextListenerSpec extends ObjectBehavior
         $this->onKernelRequest($event);
     }
 
-    function it_does_nothing_if_no_token_is_present_in_the_security_context($securityContext, $event, $listener, $catalogContext)
-    {
+    function it_does_nothing_if_no_token_is_present_in_the_security_context(
+        $securityContext,
+        $event,
+        $listener,
+        $catalogContext
+    ) {
         $securityContext->getToken()->willReturn(null);
 
         $listener->setLocale()->shouldNotBeCalled();

@@ -83,7 +83,7 @@ class EntityTransformerTest extends EntityTransformerTestCase
 
     /**
      * @expectedException Pim\Bundle\TransformBundle\Exception\UnknownColumnException
-     * @expectedExceptionMessage Columns [col1] do not exist on class [stdClass].
+     * @expectedExceptionMessage Properties [col1] do not exist in stdClass.
      */
     public function testMissingTransformer()
     {

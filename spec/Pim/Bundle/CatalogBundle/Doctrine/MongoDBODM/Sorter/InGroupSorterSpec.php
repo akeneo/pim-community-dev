@@ -21,7 +21,7 @@ class InGroupSorterSpec extends ObjectBehavior
 
     function it_is_a_field_sorter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface');
+        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface');
     }
 
     function it_adds_a_order_by_in_group_in_the_query(Builder $queryBuilder)

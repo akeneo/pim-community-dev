@@ -3,16 +3,11 @@
 namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
-use Behat\Mink\Exception\ExpectationException;
 use Behat\Mink\Exception\UnsupportedDriverActionException;
 use Behat\Gherkin\Node\TableNode;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Behat\Context\Step;
-use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use Behat\Mink\Element\Element;
 use Behat\Behat\Exception\BehaviorException;
 
 /**
@@ -24,9 +19,9 @@ use Behat\Behat\Exception\BehaviorException;
  */
 class WebUser extends RawMinkContext
 {
-    private $windowWidth;
+    protected $windowWidth;
 
-    private $windowHeight;
+    protected $windowHeight;
 
     /**
      * Constructor
@@ -196,7 +191,7 @@ class WebUser extends RawMinkContext
         $this->wait(); // Make sure that the tree is loaded
 
         $parentNode = $this->getCurrentPage()->findCategoryInTree($parent);
-        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains(%s)', $child));
+        $childNode = $parentNode->getParent()->find('css', sprintf('li a:contains("%s")', $child));
 
         if ($not && $childNode) {
             throw $this->createExpectationException(
@@ -385,7 +380,7 @@ class WebUser extends RawMinkContext
         $attributes = $this->listToArray($attributes);
         $page->visitGroup($group);
 
-        $group = $this->getFixturesContext()->findAttributeGroup($group) ?: AttributeGroup::DEFAULT_GROUP_CODE;
+        $group = $this->getFixturesContext()->findAttributeGroup($group);
 
         if (count($attributes) !== $actual = $page->getFieldsCountFor($group)) {
             throw $this->createExpectationException(
@@ -441,6 +436,7 @@ class WebUser extends RawMinkContext
      *
      * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
+     * @Then /^the field (.*) should contain "([^"]*)"$/
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
@@ -480,14 +476,20 @@ class WebUser extends RawMinkContext
             sort($expected);
             $actual   = implode(', ', $actual);
             $expected = implode(', ', $expected);
+        } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
+            # We are dealing with an upload field
+            if (null === $filename = $parent->find('css', '.upload-filename')) {
+                throw new \LogicException('Cannot find filename of upload field');
+            }
+            $actual = $filename->getText();
         } else {
             $actual = $field->getValue();
         }
 
-        if ($expected !== $actual) {
+        if ($expected != $actual) {
             throw $this->createExpectationException(
                 sprintf(
-                    'Expected product %s to be "%s", but got "%s".',
+                    'Expected product field "%s" to contain "%s", but got "%s".',
                     $fieldName,
                     $expected,
                     $actual
@@ -957,6 +959,30 @@ class WebUser extends RawMinkContext
     /**
      * @param string $button
      *
+     * @Given /^I should see the "([^"]*)" button$/
+     */
+    public function iShouldSeeTheButton($button)
+    {
+        $this->getCurrentPage()->getButton($button);
+    }
+
+    /**
+     * @param string $button
+     *
+     * @Given /^I should not see the "([^"]*)" button$/
+     */
+    public function iShouldNotSeeTheButton($button)
+    {
+        if (null !== $this->getCurrentPage()->getButton($button)) {
+            throw $this->createExpectationException(
+                sprintf('Button "%s" should not be displayed', $button)
+            );
+        }
+    }
+
+    /**
+     * @param string $button
+     *
      * @Given /^I press the "([^"]*)" button in the popin$/
      */
     public function iPressTheButtonInThePopin($button)
@@ -1121,8 +1147,7 @@ class WebUser extends RawMinkContext
      */
     public function iBlurTheCategoryNode()
     {
-        $elt = $this->getCurrentPage()->findInputNodeInTree();
-        $elt->blur();
+        $this->getCurrentPage()->find('css', '#container')->click();
         $this->wait();
     }
 
@@ -1199,7 +1224,8 @@ class WebUser extends RawMinkContext
             // Get and print the normalized jobexecution to ease debugging
             $this->getSession()->executeScript(
                 sprintf(
-                    '$.get("/spread/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    '$.get("/%s/%s_execution/%d.json", function (resp) { window.executionLog = resp; });',
+                    $jobInstance->getType() === 'import' ? 'collect' : 'spread',
                     $jobInstance->getType(),
                     $jobExecution->getId()
                 )
@@ -1668,7 +1694,7 @@ class WebUser extends RawMinkContext
      */
     public function iSelectTranslations($mode)
     {
-        $this->getCurrentPage()->autoSelectTranslations(ucwords($mode));
+        $this->getCurrentPage()->autoSelectTranslations(ucfirst($mode));
     }
 
     /**
@@ -1746,7 +1772,7 @@ class WebUser extends RawMinkContext
      *
      * @return Page
      */
-    private function openPage($page, array $options = array())
+    protected function openPage($page, array $options = array())
     {
         $page = $this->getNavigationContext()->openPage($page, $options);
         $this->wait();
@@ -1757,7 +1783,7 @@ class WebUser extends RawMinkContext
     /**
      * @return Page
      */
-    private function getCurrentPage()
+    protected function getCurrentPage()
     {
         return $this->getNavigationContext()->getCurrentPage();
     }
@@ -1767,7 +1793,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function getInvalidValueFor($field)
+    protected function getInvalidValueFor($field)
     {
         switch (strtolower($field)) {
             case 'family edit.code':
@@ -1786,7 +1812,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function lorem($length = 100)
+    protected function lorem($length = 100)
     {
         $lorem = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore'
             .'et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut'
@@ -1807,7 +1833,7 @@ class WebUser extends RawMinkContext
      *
      * @return void
      */
-    private function wait($time = 10000, $condition = null)
+    protected function wait($time = 10000, $condition = null)
     {
         $this->getMainContext()->wait($time, $condition);
     }
@@ -1815,7 +1841,7 @@ class WebUser extends RawMinkContext
     /**
      * @return FixturesContext
      */
-    private function getFixturesContext()
+    protected function getFixturesContext()
     {
         return $this->getMainContext()->getSubcontext('fixtures');
     }
@@ -1823,7 +1849,7 @@ class WebUser extends RawMinkContext
     /**
      * @return NavigationContext
      */
-    private function getNavigationContext()
+    protected function getNavigationContext()
     {
         return $this->getMainContext()->getSubcontext('navigation');
     }
@@ -1833,7 +1859,7 @@ class WebUser extends RawMinkContext
      *
      * @return array
      */
-    private function listToArray($list)
+    protected function listToArray($list)
     {
         return $this->getMainContext()->listToArray($list);
     }
@@ -1843,7 +1869,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function getLocaleCode($language)
+    protected function getLocaleCode($language)
     {
         return $this->getFixturesContext()->getLocaleCode($language);
     }
@@ -1853,7 +1879,7 @@ class WebUser extends RawMinkContext
      *
      * @return ExpectationException
      */
-    private function createExpectationException($message)
+    protected function createExpectationException($message)
     {
         return $this->getMainContext()->createExpectationException($message);
     }
@@ -1863,7 +1889,7 @@ class WebUser extends RawMinkContext
      *
      * @return MailRecorder
      */
-    private function getMailRecorder()
+    protected function getMailRecorder()
     {
         return $this->getMainContext()->getMailRecorder();
     }
@@ -1873,7 +1899,7 @@ class WebUser extends RawMinkContext
      *
      * @return string
      */
-    private function replacePlaceholders($value)
+    protected function replacePlaceholders($value)
     {
         return $this->getMainContext()->getSubcontext('fixtures')->replacePlaceholders($value);
     }

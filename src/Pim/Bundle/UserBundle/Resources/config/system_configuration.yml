@@ -1,0 +1,17 @@
+oro_system_configuration:
+
+    fields:
+        oro_locale.locale:
+            acl_resource: 'other_oro_applications'
+
+        oro_locale.country:
+            acl_resource: 'other_oro_applications'
+
+        oro_locale.format_address_by_address_country:
+            acl_resource: 'other_oro_applications'
+
+        oro_locale.timezone:
+            acl_resource: 'other_oro_applications'
+
+        oro_locale.currency:
+            acl_resource: 'other_oro_applications'

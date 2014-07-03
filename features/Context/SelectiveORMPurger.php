@@ -20,17 +20,17 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     /**
      * @var EntityManager
      */
-    private $em;
+    protected $em;
 
     /**
      * @var array Tables to be excluded from the purge
      */
-    private $excludedTables;
+    protected $excludedTables;
 
     /**
      * @var integer
      */
-    private $purgeMode = self::PURGE_MODE_DELETE;
+    protected $purgeMode = self::PURGE_MODE_DELETE;
 
     /**
      * Construct new purger instance.
@@ -92,7 +92,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     /**
      * {@inheritdoc}
      */
-    private function getCommitOrder(EntityManager $em, array $classes)
+    protected function getCommitOrder(EntityManager $em, array $classes)
     {
         $calc = new CommitOrderCalculator();
 
@@ -141,7 +141,7 @@ class SelectiveORMPurger extends ORMPurger implements PurgerInterface
     /**
      * {@inheritdoc}
      */
-    private function getAssociationTables(array $classes)
+    protected function getAssociationTables(array $classes)
     {
         $associationTables = array();
 

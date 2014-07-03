@@ -1,13 +1,13 @@
 @javascript
 Feature: Remove a product
   In order to delete an unnecessary product from my PIM
-  As a user
+  As a product manager
   I need to be able to remove a product
 
   Background:
     Given the "default" catalog configuration
     And a "CD player" product
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully delete a product from the grid
     Given I am on the products page

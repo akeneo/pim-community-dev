@@ -42,8 +42,9 @@ class AttributeOptionRepository extends EntityRepository implements
         }
 
         $qb = $this->createQueryBuilder('o')
-            ->select('o.id, o.code, v.value AS label')
+            ->select('o.id, o.code, v.value AS label, a.properties')
             ->leftJoin('o.optionValues', 'v', 'WITH', 'v.locale=:locale')
+            ->leftJoin('o.attribute', 'a')
             ->where('o.attribute=:attribute')
             ->orderBy('o.sortOrder')
             ->setParameter('locale', $dataLocale)
@@ -53,16 +54,37 @@ class AttributeOptionRepository extends EntityRepository implements
                 ->setParameter('search', "$search%");
         }
 
-        $options = array();
+        if (isset($options['ids'])) {
+            $qb
+                ->andWhere(
+                    $qb->expr()->in('o.id', ':ids')
+                )
+                ->setParameter('ids', $options['ids']);
+        }
+
+        $results = array();
+        $autoSorting = null;
         foreach ($qb->getQuery()->getArrayResult() as $row) {
-            $options[] = array(
+            if (null === $autoSorting && isset($row['properties']['autoOptionSorting'])) {
+                $autoSorting = $row['properties']['autoOptionSorting'];
+            }
+            $results[] = array(
                 'id'   => $row['id'],
                 'text' => $row['label'] ?: sprintf('[%s]', $row['code'])
             );
         }
 
+        if ($autoSorting) {
+            usort(
+                $results,
+                function ($first, $second) {
+                    return strcasecmp($first['text'], $second['text']);
+                }
+            );
+        }
+
         return array(
-            'results' => $options
+            'results' => $results
         );
     }
 

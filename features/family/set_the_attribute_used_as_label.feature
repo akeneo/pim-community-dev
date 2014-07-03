@@ -1,7 +1,7 @@
 @javascript
 Feature: Set the attribute used as label
   In order to let the user which attribute is the most accurate as the product title
-  As a user
+  As an administrator
   I need to be able to set the attribute used as the label
 
   Background:
@@ -15,7 +15,7 @@ Feature: Set the attribute used as label
       | Model       | Bags     | text     |
       | Size        | Bags     | number   |
       | Description | Bags     | textarea |
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Succesfully set a family attribute as the family label
     Given I am on the "Bags" family page

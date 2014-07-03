@@ -1,12 +1,12 @@
 @javascript
 Feature: Group type creation
   In order to create a new type of group
-  As a user
+  As an administrator
   I need to be able to manually create a group type
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the group types page
     And I create a new group type
 

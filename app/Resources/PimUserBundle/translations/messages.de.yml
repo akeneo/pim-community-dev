@@ -19,6 +19,7 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: Name
+user.title: Benutzer
 Users Management: Benutzerverwaltung
 Create user: Benutzer anlegen
 New user: Neuer Benutzer
@@ -38,6 +39,7 @@ Additional emails: Zusätzliche E-Mail Adressen
 Add another email: Weitere E-Mail Adresse hinzufügen
 Catalog locale: Katalog-Gebietsschema
 Catalog scope: Katalog-Gültigkeit
+Default tree: Standardstruktur
 Business Units: Geschäftsbereich
 Email synchronization settings: Einstellungen für E-Mail Synchronisierung
 Host: Host
@@ -79,3 +81,12 @@ oro:
 Create group: Gruppe anlegen
 Has group: hat Gruppe
 Save and Close: Speichern und schließen
+Log in: Anmelden
+Remember me on this computer: Automatisch anmelden
+Forgot your password?: Passwort vergessen?
+Username or Email: Benutzername oder E-Mail
+Forgot Password: Passwort vergessen
+Request: Anfrage
+Check Email: Posteingang überprüfen
+password_reset_email_sent: 'Eine E-Mail wurde an %email% gesendet. Klicken Sie auf den Link darin, um Ihr Passwort zurückzusetzen.'
+Go to homepage: Zurück zur Hauptseite

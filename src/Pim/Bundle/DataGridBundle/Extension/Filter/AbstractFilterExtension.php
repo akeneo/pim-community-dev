@@ -23,9 +23,7 @@ use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
  */
 abstract class AbstractFilterExtension extends AbstractExtension
 {
-    /**
-     * Query param
-     */
+    /** @staticvar string Query param */
     const FILTER_ROOT_PARAM = '_filter';
 
     /**

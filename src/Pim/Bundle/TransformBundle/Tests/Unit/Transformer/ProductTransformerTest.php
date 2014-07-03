@@ -14,7 +14,7 @@ use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 class ProductTransformerTest extends EntityTransformerTestCase
 {
     protected $productManager;
-    protected $flexibleRepository;
+    protected $productRepository;
     protected $attributeCache;
     protected $attributes;
     protected $transformer;
@@ -48,7 +48,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->method('getReference')
             ->will($this->returnValue('id'));
 
-        $this->flexibleRepository = $this->getMock(
+        $this->productRepository = $this->getMock(
             'Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface',
             ['getReferenceProperties', 'findByReference']
         );
@@ -60,7 +60,7 @@ class ProductTransformerTest extends EntityTransformerTestCase
             ->will($this->returnValue($this->product));
         $this->productManager->expects($this->any())
             ->method('getProductRepository')
-            ->will($this->returnValue($this->flexibleRepository));
+            ->will($this->returnValue($this->productRepository));
         $this->productManager->expects($this->any())
             ->method('getProductValueName')
             ->will($this->returnValue('product_value_class'));

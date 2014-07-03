@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -19,6 +20,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
+use Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager;
 use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
@@ -42,6 +44,11 @@ class AttributeGroupController extends AbstractDoctrineController
     protected $form;
 
     /**
+     * @var AttributeGroupManager
+     */
+    protected $manager;
+
+    /**
      * @var string
      */
     protected $attributeClass;
@@ -56,9 +63,11 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
+     * @param AttributeGroupManager    $manager
      * @param string                   $attributeClass
      */
     public function __construct(
@@ -69,9 +78,11 @@ class AttributeGroupController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         AttributeGroupHandler $formHandler,
         Form $form,
+        AttributeGroupManager $manager,
         $attributeClass
     ) {
         parent::__construct(
@@ -82,11 +93,13 @@ class AttributeGroupController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
         $this->formHandler    = $formHandler;
         $this->form           = $form;
+        $this->manager        = $manager;
         $this->attributeClass = $attributeClass;
     }
     /**
@@ -181,11 +194,22 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request        $request
      * @param AttributeGroup $group
      *
+     * @throws \LogicException
+     *
      * @AclAncestor("pim_enrich_attribute_group_remove")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function removeAction(Request $request, AttributeGroup $group)
     {
+        if ($group === $this->getDefaultGroup()) {
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed default'));
+        }
+
+        if (0 !== $group->getAttributes()->count()) {
+            $this->addFlash('error', 'flash.attribute group.not removed attributes');
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed attributes'));
+        }
+
         $this->remove($group);
 
         if ($request->get('_redirectBack')) {
@@ -228,7 +252,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param integer $id      The group id to add attributes to
      *
      * @AclAncestor("pim_enrich_attribute_group_add_attribute")
-     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
     {
@@ -274,8 +298,11 @@ class AttributeGroupController extends AbstractDoctrineController
             );
         }
 
-        $group->removeAttribute($attribute);
-        $this->getManagerForClass('PimCatalogBundle:AttributeGroup')->flush();
+        if ($group === $this->getDefaultGroup()) {
+            throw new \LogicException($this->translator->trans('flash.attribute group.not removed default attributes'));
+        }
+
+        $this->manager->removeAttribute($group, $attribute);
 
         if ($this->getRequest()->isXmlHttpRequest()) {
             return new Response('', 204);
@@ -291,6 +318,14 @@ class AttributeGroupController extends AbstractDoctrineController
      */
     protected function getGroupedAttributes()
     {
-        return $this->getRepository($this->attributeClass)->findAllGrouped();
+        return $this->getRepository($this->attributeClass)->findAllInDefaultGroup();
+    }
+
+    /**
+     * @return AttributeGroup
+     */
+    protected function getDefaultGroup()
+    {
+        return $this->getRepository('PimCatalogBundle:AttributeGroup')->findDefaultAttributeGroup();
     }
 }

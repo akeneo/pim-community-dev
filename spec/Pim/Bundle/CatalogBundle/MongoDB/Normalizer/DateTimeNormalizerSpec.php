@@ -12,14 +12,14 @@ class DateTimeNormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\NormalizerInterface');
     }
 
-    function it_supports_normalization_in_mongodb_json_of_media(\DateTime $time)
+    function it_supports_normalization_in_mongodb_json_of_datetime(\DateTime $time)
     {
         $this->supportsNormalization($time, 'mongodb_json')->shouldBe(true);
         $this->supportsNormalization($time, 'json')->shouldBe(false);
         $this->supportsNormalization($time, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_price(\DateTime $time)
+    function it_normalizes_datetime(\DateTime $time)
     {
         $time->getTimestamp()->willReturn('1331769600');
 

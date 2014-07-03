@@ -21,8 +21,11 @@ class AttributeOptionNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($option, 'xml')->shouldBe(false);
     }
 
-    function it_normalizes_attribute_option(AttributeOption $option, AttributeOptionValue $valueUs, AttributeOptionValue $valueFr)
-    {
+    function it_normalizes_attribute_option(
+        AttributeOption $option,
+        AttributeOptionValue $valueUs,
+        AttributeOptionValue $valueFr
+    ) {
         $option->getId()->willReturn(42);
         $option->getCode()->willReturn('red');
         $valueUs->getLocale()->willReturn('en_US');

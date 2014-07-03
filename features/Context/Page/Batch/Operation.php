@@ -15,11 +15,13 @@ use Behat\Mink\Driver\BrowserKitDriver;
  */
 class Operation extends Wizard
 {
-    private $steps = array(
+    protected $steps = array(
         'Change status (enable / disable)' => 'Batch ChangeStatus',
         'Edit attributes'                  => 'Batch EditCommonAttributes',
         'Change the family of products'    => 'Batch ChangeFamily',
         'Add to groups'                    => 'Batch AddToGroups',
+        'Set attribute requirements'       => 'Batch SetAttributeRequirements',
+        'Classify products in categories'  => 'Batch Classify',
     );
 
     /**
@@ -55,11 +57,24 @@ class Operation extends Wizard
 
     /**
      * @param string $operation
+     * @param string $page
+     *
+     * @return Operation
+     */
+    public function addStep($operation, $page)
+    {
+        $this->steps[$operation] = $page;
+
+        return $this;
+    }
+
+    /**
+     * @param string $operation
      *
      * @throws \InvalidArgumentException
      * @return string
      */
-    private function getStep($operation)
+    protected function getStep($operation)
     {
         if (!array_key_exists($operation, $this->steps)) {
             throw new \InvalidArgumentException(

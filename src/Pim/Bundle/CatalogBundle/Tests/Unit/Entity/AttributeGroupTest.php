@@ -93,11 +93,6 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         // if empty translation, assert the expected code is returned
         $this->group->setLabel('');
         $this->assertEquals($expectedCode, $this->group->getLabel());
-
-        // if default code, assert the code is returned
-        $this->group->setLocale('en_US');
-        $this->group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
-        $this->assertEquals(AttributeGroup::DEFAULT_GROUP_CODE, $this->group->getLabel());
     }
 
     /**
@@ -123,11 +118,6 @@ class AttributeGroupTest extends \PHPUnit_Framework_TestCase
         // if empty translation, assert the expected code is returned
         $this->group->setLabel('');
         $this->assertEquals($expectedCode, $this->group->__toString());
-
-        // if default code, assert the code is returned
-        $this->group->setLocale('en_US');
-        $this->group->setCode(AttributeGroup::DEFAULT_GROUP_CODE);
-        $this->assertEquals(AttributeGroup::DEFAULT_GROUP_CODE, $this->group->__toString());
     }
 
     /**

@@ -4,6 +4,7 @@ namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
 use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
+use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
  * Translation update guesser
@@ -47,7 +48,8 @@ class TranslationsUpdateGuesser implements UpdateGuesserInterface
         $pendings = array();
         if ($entity instanceof AbstractTranslation) {
             $translatedEntity = $entity->getForeignKey();
-            if (in_array(get_class($translatedEntity), $this->versionableEntities)) {
+            if ($translatedEntity instanceof VersionableInterface ||
+                in_array(get_class($translatedEntity), $this->versionableEntities)) {
                 $pendings[] = $translatedEntity;
             }
         }

@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse currencies
   In order to check wether or not a currency is available in the catalog
-  As a user
+  As an administrator
   I need to be able to see active and inactive currencies in the catalog
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the currencies page
 
   Scenario: Successfully view, sort and filter currencies

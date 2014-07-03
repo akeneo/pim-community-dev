@@ -238,6 +238,11 @@ services:
         tags:
             - { name: form.type, alias: pim_enrich_mass_classify }
 
+    pim_enrich.form.type.set_attribute_requirements:
+        class: %pim_enrich.form.type.set_attribute_requirements.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_set_attribute_requirements }
+
     # Subscribers
     pim_enrich.form.subscriber.attribute:
         class: %pim_enrich.form.subscriber.add_attribute_type.class%
@@ -252,5 +257,4 @@ services:
     pim_enrich.form.subscriber.add_value_field_subscriber:
         class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
         arguments:
-            - '@form.factory'
-            - '@pim_catalog.factory.attribute_type'
+            - '@pim_enrich.factory.product_value_form_factory'

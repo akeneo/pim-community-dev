@@ -17,8 +17,8 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
  */
 class ChoiceFilter extends AjaxChoiceFilter
 {
-    /** @var integer */
-    protected $attributeId;
+    /** @var AbstractAttribute */
+    protected $attribute;
 
     /** @var string */
     protected $optionRepoClass;
@@ -73,6 +73,8 @@ class ChoiceFilter extends AjaxChoiceFilter
      */
     public function getForm()
     {
+        $this->loadAttribute();
+
         $options = array_merge(
             $this->getOr('options', []),
             ['csrf_protection' => false]
@@ -81,6 +83,7 @@ class ChoiceFilter extends AjaxChoiceFilter
         $options['field_options']     = isset($options['field_options']) ? $options['field_options'] : [];
         $options['choice_url']        = 'pim_ui_ajaxentity_list';
         $options['choice_url_params'] = $this->getChoiceUrlParams();
+        $options['preload_choices']   = $this->attribute->getMinimumInputLength() < 1;
 
         if (!$this->form) {
             $this->form = $this->formFactory->create($this->getFormType(), [], $options);
@@ -90,12 +93,14 @@ class ChoiceFilter extends AjaxChoiceFilter
     }
 
     /**
-     * @return array
+     * Load the attribute for this filter
+     * Required to prepare choice url params and filter configuration
+     *
      * @throws \LogicException
      */
-    protected function getChoiceUrlParams()
+    protected function loadAttribute()
     {
-        if (null === $this->attributeId) {
+        if (null === $this->attribute) {
             $fieldName = $this->get(ProductFilterUtility::DATA_NAME_KEY);
             $attribute = $this->util->getAttribute($fieldName);
 
@@ -103,13 +108,19 @@ class ChoiceFilter extends AjaxChoiceFilter
                 throw new \LogicException(sprintf('There is no product attribute with code %s.', $fieldName));
             }
 
-            $this->attributeId = $attribute->getId();
+            $this->attribute = $attribute;
         }
+    }
 
+    /**
+     * @return array
+     */
+    protected function getChoiceUrlParams()
+    {
         return [
             'class'        => $this->optionRepoClass,
             'dataLocale'   => $this->userContext->getCurrentLocaleCode(),
-            'collectionId' => $this->attributeId
+            'collectionId' => $this->attribute->getId()
         ];
     }
 }

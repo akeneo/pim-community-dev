@@ -73,4 +73,11 @@ interface ConfigurationRegistryInterface
      * @return \Akeneo\Bundle\BatchBundle\Item\ItemReaderInterface
      */
     public function getReader($name, $extension);
+
+    /**
+     * Return the ProductManager
+     *
+     * @return ProductManager
+     */
+    public function getProductManager();
 }

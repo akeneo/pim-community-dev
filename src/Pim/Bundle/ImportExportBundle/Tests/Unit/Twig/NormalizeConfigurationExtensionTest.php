@@ -18,7 +18,19 @@ class NormalizeConfigurationExtensionTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->extension = new NormalizeConfigurationExtension();
+        $translator = $this->getMock('Symfony\Component\Translation\TranslatorInterface');
+        $translator
+            ->expects($this->any())
+            ->method('trans')
+            ->will(
+                $this->returnCallback(
+                    function ($message, array $parameters = array()) {
+                        return strtr($message, $parameters);
+                    }
+                )
+            );
+
+        $this->extension = new NormalizeConfigurationExtension($translator);
     }
 
     /**

@@ -1,12 +1,12 @@
 @javascript
 Feature: Navigate the application in hash navigation mode
   In order to provide fluid user experience when using the application
-  As a developer
+  As an administrator
   I need to allow users to navigate from page to page without a complete page reload
 
   Scenario: Navigate in hash navigation mode
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the home page
     Then I should be able visit the following pages without errors
       | page                                    |

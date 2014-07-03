@@ -1,12 +1,12 @@
 Feature: Display the category history
   In order to know who, when and what changes has been made to a category
-  As a user
+  As a product manager
   I need to have access to a category history
 
   @javascript @skip-doc
   Scenario: Display category updates
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the category tree creation page
     When I fill in the following information:
       | Code                    | book          |

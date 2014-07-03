@@ -57,7 +57,21 @@ class EntityFilter extends BaseFilter
                 )
             );
         } else {
-            $this->qb->andWhere($this->qb->expr()->in($entityAlias.'.id', $value));
+            if (in_array('empty', $value)) {
+                unset($value[array_search('empty', $value)]);
+                $exprNull = $this->qb->expr()->isNull($entityAlias.'.id');
+
+                if (count($value) > 0) {
+                    $exprIn = $this->qb->expr()->in($entityAlias.'.id', $value);
+                    $expr = $this->qb->expr()->orX($exprNull, $exprIn);
+                } else {
+                    $expr = $exprNull;
+                }
+            } else {
+                $expr = $this->qb->expr()->in($entityAlias.'.id', $value);
+            }
+
+            $this->qb->andWhere($expr);
         }
 
         return $this;

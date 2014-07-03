@@ -1,7 +1,7 @@
 @javascript
 Feature: Validate metric attributes of a product
   In order to keep my data consistent
-  As Julia
+  As a regular user
   I need to be able to see validation errors for metric attributes
 
   Background:
@@ -18,7 +18,7 @@ Feature: Validate metric attributes of a product
     And the following product:
       | sku | family |
       | foo | baz    |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the "foo" product page
 
   Scenario: Validate the negative allowed constraint of metric attribute
@@ -74,5 +74,12 @@ Feature: Validate metric attributes of a product
     Given I change the "ecommerce Speed" to "111.1"
     And I save the product
     Then I should see validation tooltip "This value should be 100.0000 or less."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  Scenario: Validate the type constraint of metric attribute
+    Given I change the Power to "bar"
+    And I save the product
+    Then I should see validation tooltip "This value should be a valid number."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red

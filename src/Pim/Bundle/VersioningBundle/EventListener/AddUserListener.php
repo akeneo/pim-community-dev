@@ -58,7 +58,7 @@ class AddUserListener implements EventSubscriberInterface
 
         $token = $this->securityContext->getToken();
         if (null !== $token && $this->securityContext->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-            $this->versionManager->setUser($token->getUser());
+            $this->versionManager->setUsername($token->getUser()->getUsername());
         }
     }
 }

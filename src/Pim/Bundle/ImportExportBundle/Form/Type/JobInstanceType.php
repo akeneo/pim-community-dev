@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\ImportExportBundle\Form\Type;
 
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -22,15 +23,14 @@ use Pim\Bundle\ImportExportBundle\Form\Subscriber\RemoveDuplicateJobConfiguratio
  */
 class JobInstanceType extends AbstractType
 {
-    /**
-     * @var ConnectorRegistry $connectorRegistry
-     */
+    /** @var ConnectorRegistry $connectorRegistry */
     protected $connectorRegistry;
 
-    /**
-     * @var string $jobType
-     */
+    /** @var string $jobType */
     protected $jobType;
+
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
 
     /**
      * Constructor
@@ -55,6 +55,10 @@ class JobInstanceType extends AbstractType
             ->addJobConfigurationField($builder);
 
         $builder->addEventSubscriber(new JobAliasSubscriber());
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
     }
 
     /**
@@ -204,5 +208,15 @@ class JobInstanceType extends AbstractType
         $this->jobType = $jobType;
 
         return $this;
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 }

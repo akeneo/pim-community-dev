@@ -96,27 +96,6 @@ attributes:
         useableAsGridFilter: true
         sortOrder:           1
         defaultValue:        M
-        options:
-            XS:
-                labels:
-                    fr_FR: XS
-                    en_US: XS
-            S:
-                labels:
-                    fr_FR: S
-                    en_US: S
-            M:
-                labels:
-                    fr_FR: M
-                    en_US: M
-            L:
-                labels:
-                    fr_FR: L
-                    en_US: L
-            XL:
-                labels:
-                    fr_FR: XL
-                    en_US: XL
     color:
         labels:
             en_US: Color
@@ -127,27 +106,6 @@ attributes:
         useableAsGridFilter: true
         sortOrder:           1
         localizable:         true
-        options:
-            Red:
-                labels:
-                    en_US: Red
-                    fr_FR: Rouge
-            Blue:
-                labels:
-                    en_US: Blue
-                    fr_FR: Bleu
-            Green:
-                labels:
-                    en_US: Green
-                    fr_FR: Vert
-            Purple:
-                labels:
-                    en_US: Purple
-                    fr_FR: Violet
-            Orange:
-                labels:
-                    en_US: Orange
-                    fr_FR: Orange
     manufacturer:
         labels:
             en_US: Manufacturer
@@ -158,15 +116,6 @@ attributes:
         useableAsGridFilter: true
         sortOrder:           10
         localizable:         true
-        options:
-            MyMug:
-                labels:
-                    en_US: MyMug
-                    en_US: MyMug
-            MugStore:
-                labels:
-                    en_US: MugStore
-                    en_US: MugStore
     unique_color:
         labels:
             en_US: Unique color
@@ -176,39 +125,6 @@ attributes:
         useableAsGridColumn: true
         useableAsGridFilter: true
         sortOrder:           2
-        options:
-            uc_black:
-                labels:
-                    en_US: Black
-                    fr_FR: Noir
-            uc_blue:
-                labels:
-                    en_US: Blue
-                    fr_FR: Bleu
-            uc_green:
-                labels:
-                    en_US: Green
-                    fr_FR: Vert
-            uc_orange:
-                labels:
-                    en_US: Orange
-                    fr_FR: Orange
-            uc_purple:
-                labels:
-                    en_US: Purple
-                    fr_FR: Violet
-            uc_red:
-                labels:
-                    en_US: Red
-                    fr_FR: Rouge
-            uc_yellow:
-                labels:
-                    en_US: Yellow
-                    fr_FR: Jaune
-            uc_white:
-                labels:
-                    en_US: White
-                    fr_FR: Blanc
     weight:
         labels:
             en_US: Weight

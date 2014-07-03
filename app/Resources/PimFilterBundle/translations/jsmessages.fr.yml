@@ -10,3 +10,6 @@ after: après
 from: De
 to: À
 and: et
+system_filter_group: Système
+oro_filter.filters.manage: Gérer les filtres
+oro_filter.placeholder.all: Tous

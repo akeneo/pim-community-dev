@@ -178,6 +178,9 @@ Pim\Bundle\CatalogBundle\Entity\Attribute:
                 message: This value should not be blank
         translations:
             - Valid: ~
+        group:
+            - NotBlank: ~
+            - Valid: ~
 
 Pim\Bundle\CatalogBundle\Entity\AttributeTranslation:
     properties:

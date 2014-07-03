@@ -1,12 +1,12 @@
 @javascript
 Feature: Family creation
   In order to provide a new family for a new type of product
-  As a user
+  As an administrator
   I need to be able to create a family
 
   Background:
     Given a "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     And I am on the families page
     And I create a new family
 

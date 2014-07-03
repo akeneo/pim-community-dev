@@ -122,20 +122,12 @@ class Base extends Page
      * Overriden for compatibility with links
      *
      * @param string $locator
+     *
+     * @throws ElementNotFoundException
      */
     public function pressButton($locator)
     {
-        // Search with exact name at first
-        $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
-
-        if (!$button) {
-            $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
-        }
-
-        if (!$button) {
-            // Use Mink search, which use "contains" xpath condition
-            $button = $this->findButton($locator);
-        }
+        $button = $this->getButton($locator);
 
         if (!$button) {
             $button =  $this->find(
@@ -152,6 +144,30 @@ class Base extends Page
         }
 
         $button->click();
+    }
+
+    /**
+     * Get button
+     *
+     * @param string $locator
+     *
+     * @return NodeElement
+     */
+    public function getButton($locator)
+    {
+        // Search with exact name at first
+        $button = $this->find('xpath', sprintf("//button[text() = '%s']", $locator));
+
+        if (!$button) {
+            $button = $this->find('xpath', sprintf("//a[text() = '%s']", $locator));
+        }
+
+        if (!$button) {
+            // Use Mink search, which use "contains" xpath condition
+            $button = $this->findButton($locator);
+        }
+
+        return $button;
     }
 
     /**

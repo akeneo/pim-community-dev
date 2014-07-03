@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\Context;
 
 /**
- * Allows to configure the context to use in queries you can execute and to ensure that the expecte
- * configuration is provided
+ * Allows to configure the context to use in queries you can execute and to ensure that
+ * the expected configuration is provided
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

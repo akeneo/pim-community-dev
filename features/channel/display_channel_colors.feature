@@ -1,6 +1,6 @@
 Feature: Display the channel colors
   In order to easily know the channel of scopable values
-  As a user
+  As an administrator
   I need to be able to use colors for channels
 
   @javascript
@@ -20,7 +20,7 @@ Feature: Display the channel colors
       | code   | label  | type   | scopable |
       | mumber | Number | number | yes      |
     And a "foo" product
-    And I am logged in as "Julia"
+    And I am logged in as "Peter"
     And I edit the "foo" product
     And I add available attribute Number
     Then the scopable "Number" field should have the following colors:

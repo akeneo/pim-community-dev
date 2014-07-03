@@ -1,6 +1,6 @@
 Feature: Join an image to a product
   In order to join an image to a product
-  As a user
+  As a regular user
   I need to be able to upload it and preview it
 
   Background:
@@ -9,10 +9,8 @@ Feature: Join an image to a product
     And the following attribute:
       | label  | type  | allowed extensions |
       | Visual | image | jpg                |
-    And the following product value:
-      | product | attribute | value |
-      | Car     | visual    |       |
-    And I am logged in as "admin"
+    And the "Car" product has the "visual" attribute
+    And I am logged in as "Mary"
     And I am on the "Car" product page
 
   Scenario: Succesfully leave the image empty

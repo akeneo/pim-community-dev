@@ -16,9 +16,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
  */
 class PrivilegeCollectionType extends OroPrivilegeCollectionType
 {
-    /**
-     * @staticvar string
-     */
+    /** @staticvar string */
     const LOCALE_ACL_PATTERN = 'action:pim_enrich_locale_';
 
     /**

@@ -15,6 +15,7 @@ services:
             - %kernel.root_dir%
             - %kernel.environment%
             - '@pim_import_export.form.type.job_instance'
+            - '@pim_import_export.factory.job_instance'
 
     pim_import_export.controller.import_profile:
         parent: pim_enrich.controller.abstract_doctrine
@@ -26,6 +27,7 @@ services:
             - %kernel.root_dir%
             - %kernel.environment%
             - '@pim_import_export.form.type.job_instance'
+            - '@pim_import_export.factory.job_instance'
 
     pim_import_export.controller.export_execution:
         parent: pim_enrich.controller.abstract_doctrine

@@ -1,7 +1,7 @@
 @javascript @jira https://akeneo.atlassian.net/browse/PIM-1920
 Feature: Update product history when mass editing products
   In order see what changes have been made to products in mass edit
-  As Julia
+  As a product manager
   I need to be able to see the changes made in mass edit in product history
 
   Background:
@@ -15,6 +15,7 @@ Feature: Update product history when mass editing products
     And I am on the products page
     And I mass-edit products boots, sandals and sneakers
 
+  @skip
   Scenario: Display history when editing product attributes
     Given I choose the "Edit attributes" operation
     And I display the Name attribute
@@ -39,6 +40,7 @@ Feature: Update product history when mass editing products
       | version | property   | value      |
       | 2       | name-en_US | cool boots |
 
+  @skip
   Scenario: Display history when changing product status
     Given I choose the "Change status (enable / disable)" operation
     And I disable the products
@@ -61,6 +63,7 @@ Feature: Update product history when mass editing products
       | version | property | value |
       | 2       | enabled  | 0     |
 
+  @skip
   Scenario: Display history when changing product family
     Given I choose the "Change the family of products" operation
     And I change the Family to "Sandals"
@@ -81,6 +84,7 @@ Feature: Update product history when mass editing products
     And I visit the "History" tab
     Then there should be 1 update
 
+  @skip
   Scenario: Display history when adding products to groups
     Given I choose the "Add to groups" operation
     And I check "Similar boots"

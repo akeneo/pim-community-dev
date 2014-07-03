@@ -20,24 +20,6 @@ class PimCatalogBundle extends Bundle
     const DOCTRINE_MONGODB = '\Doctrine\Bundle\MongoDBBundle\DependencyInjection\Compiler\DoctrineMongoDBMappingsPass';
 
     /** @staticvar string */
-    const VERSION = '1.1.0';
-
-    /** @staticvar string */
-    const VERSION_CODENAME = 'Rabbit Punch';
-
-    /** @staticvar string */
-    const MAJOR_VERSION = '1';
-
-    /** @staticvar string */
-    const MINOR_VERSION = '1';
-
-    /** @staticvar string */
-    const PATCH_VERSION = '0';
-
-    /** @staticvar string */
-    const EXTRA_VERSION = '';
-
-    /** @staticvar string */
     const ODM_ENTITIES_TYPE = 'entities';
 
     /** @staticvar string */
@@ -70,8 +52,10 @@ class PimCatalogBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\ResolveDoctrineOrmTargetEntitiesPass())
+            ->addCompilerPass(new Compiler\ResolveDoctrineTargetRepositoriesPass())
             ->addCompilerPass(new Compiler\RegisterAttributeConstraintGuessersPass())
-            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass());
+            ->addCompilerPass(new Compiler\AddAttributeTypeCompilerPass())
+            ->addCompilerPass(new Compiler\RegisterQueryGeneratorsPass());
 
         $productMappings = array(
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\CatalogBundle\Model'
@@ -94,6 +78,14 @@ class PimCatalogBundle extends Bundle
                     'pim_catalog.storage_driver.doctrine/mongodb-odm'
                 )
             );
+
+            // TODO	(2014-05-09 19:42 by Gildas): Remove service registration when
+            // https://github.com/doctrine/DoctrineMongoDBBundle/pull/197 is merged
+            $definition = $container->register(
+                'doctrine_mongodb.odm.listeners.resolve_target_document',
+                'Doctrine\ODM\MongoDB\Tools\ResolveTargetDocumentListener'
+            );
+            $definition->addTag('doctrine_mongodb.odm.event_listener', array('event' => 'loadClassMetadata'));
         }
     }
 }

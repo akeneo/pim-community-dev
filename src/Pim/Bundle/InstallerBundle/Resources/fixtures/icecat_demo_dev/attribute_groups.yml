@@ -47,3 +47,10 @@ attribute_groups:
             en_US: Media
             fr_FR: Media
             de_DE: Media
+
+    other:
+        sort_order: 100
+        labels:
+            en_US: Other
+            fr_FR: Autre
+            de_DE: Ander

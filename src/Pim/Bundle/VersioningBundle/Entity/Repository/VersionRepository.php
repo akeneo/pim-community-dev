@@ -23,36 +23,65 @@ class VersionRepository extends EntityRepository
     public function getLogEntries($resourceName, $resourceId)
     {
         return $this->findBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
+            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
             ['loggedAt' => 'desc']
         );
     }
 
     /**
-     * @param string $resourceName
-     * @param string $resourceId
+     * @param string    $resourceName
+     * @param string    $resourceId
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($resourceName, $resourceId)
+    public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
     {
-        return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
-            ['loggedAt' => 'asc']
-        );
+        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'asc');
     }
 
     /**
-     * @param string $resourceName
-     * @param string $resourceId
+     * @param string    $resourceName
+     * @param string    $resourceId
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId)
+    public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
     {
+        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'desc');
+    }
+
+    /**
+     * Get pending versions
+     *
+     * @return Version[]
+     */
+    public function getPendingVersions()
+    {
+        return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
+    }
+
+    /**
+     * Get one log entry
+     *
+     * @param string    $resourceName
+     * @param string    $resourceId
+     * @param bool|null $pending
+     * @param string    $sort
+     *
+     * @return Version|null
+     */
+    protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
+    {
+        $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
+        if (null !== $pending) {
+            $criteria['pending'] = $pending;
+        }
+
         return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName],
-            ['loggedAt' => 'desc']
+            $criteria,
+            ['loggedAt' => $sort]
         );
     }
 }
