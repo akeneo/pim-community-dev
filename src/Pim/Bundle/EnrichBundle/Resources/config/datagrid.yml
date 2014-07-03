@@ -1191,10 +1191,10 @@ datagrid:
         sorters:
             columns:
                 version:
-                    data_name: v.version
+                    data_name: version
                 author:
                     data_name: author
                 loggedAt:
-                    data_name: v.loggedAt
+                    data_name: loggedAt
             default:
                 loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
