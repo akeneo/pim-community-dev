@@ -1,38 +1,38 @@
 job_profile_accesses:
     footwear_association_type_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_attribute_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_category_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_group_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_option_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_product_export:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
 
     footwear_association_type_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_attribute_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_category_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_group_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_option_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
     footwear_product_import:
         execute: [administrator, manager, user]
-        edit: [administrator]
+        edit: [administrator, manager, user]
