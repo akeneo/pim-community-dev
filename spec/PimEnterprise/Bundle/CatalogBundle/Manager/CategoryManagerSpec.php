@@ -2,6 +2,7 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
@@ -25,10 +26,16 @@ class CategoryManagerSpec extends ObjectBehavior
     function let(
         CategoryAccessRepository $categoryAccessRepository,
         ObjectManager $om,
+        EventDispatcherInterface $eventDispatcher,
         CategoryRepository $categoryRepository
     ) {
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
-        $this->beConstructedWith($om, Argument::any(), $categoryAccessRepository);
+        $this->beConstructedWith(
+            $om,
+            Argument::any(),
+            $eventDispatcher,
+            $categoryAccessRepository
+        );
     }
 
     function it_gets_accessible_trees_for_display(
