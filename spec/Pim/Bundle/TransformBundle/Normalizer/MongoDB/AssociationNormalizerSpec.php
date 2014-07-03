@@ -31,9 +31,9 @@ class AssociationNormalizerSpec extends ObjectBehavior
         $this->supportsNormalization($object, 'mongodb_document')->shouldReturn(false);
     }
 
-    function it_does_not_support_normalization_into_other_format(\DateTime $dateTime)
+    function it_does_not_support_normalization_of_association_into_other_format(Association $assoc)
     {
-        $this->supportsNormalization($dateTime, 'json')->shouldReturn(false);
+        $this->supportsNormalization($assoc, 'json')->shouldReturn(false);
     }
 
     function it_normalizes_an_association_without_product_or_group(
@@ -74,7 +74,6 @@ class AssociationNormalizerSpec extends ObjectBehavior
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);
-        $assoc->getProducts()->willReturn([]);
         $assoc->getGroups()->willReturn([]);
         $context = ['_id' => '1234abc', 'collection_name' => 'product'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
@@ -107,9 +106,8 @@ class AssociationNormalizerSpec extends ObjectBehavior
         Group $group2
     ) {
         $assocType->getId()->willReturn(8);
-        $assoc->getAssociationType()->willReturn($assocType);
         $assoc->getProducts()->willReturn([]);
-        $assoc->getGroups()->willReturn([]);
+        $assoc->getAssociationType()->willReturn($assocType);
         $context = ['_id' => '1234abc', 'collection_name' => 'product'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
         $mongoFactory->createMongoDBRef('1234abc', 'product')->willReturn($ownerRef);
@@ -144,8 +142,6 @@ class AssociationNormalizerSpec extends ObjectBehavior
     ) {
         $assocType->getId()->willReturn(8);
         $assoc->getAssociationType()->willReturn($assocType);
-        $assoc->getProducts()->willReturn([]);
-        $assoc->getGroups()->willReturn([]);
         $context = ['_id' => '1234abc', 'collection_name' => 'product'];
         $mongoFactory->createMongoId()->willReturn($mongoId);
         $mongoFactory->createMongoDBRef('1234abc', 'product')->willReturn($ownerRef);
