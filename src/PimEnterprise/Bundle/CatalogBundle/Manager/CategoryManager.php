@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category manager
@@ -27,11 +27,16 @@ class CategoryManager extends BaseCategoryManager
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
+     * @param EventDispatcherInterface $eventDispatcherInterface
      * @param CategoryAccessRepository $categoryAccessRepo
      */
-    public function __construct(ObjectManager $om, $categoryClass, CategoryAccessRepository $categoryAccessRepo)
-    {
-        parent::__construct($om, $categoryClass);
+    public function __construct(
+        ObjectManager $om,
+        $categoryClass,
+        EventDispatcherInterface $eventDispatcher,
+        CategoryAccessRepository $categoryAccessRepo
+    ) {
+        parent::__construct($om, $categoryClass, $eventDispatcher);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
     }
@@ -49,7 +54,6 @@ class CategoryManager extends BaseCategoryManager
         $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
         $trees = [];
-
         foreach ($this->getTrees() as $tree) {
             if (in_array($tree->getId(), $grantedCategoryIds)) {
                 $trees[] = $tree;

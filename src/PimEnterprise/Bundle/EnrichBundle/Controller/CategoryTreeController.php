@@ -21,16 +21,6 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 class CategoryTreeController extends BaseCategoryTreeController
 {
     /**
-     * @var UserContext
-     */
-    protected $userContext;
-
-    /**
-     * @var CategoryManager
-     */
-    protected $categoryManager;
-
-    /**
      * Find a category from its id
      *
      * @param integer $categoryId

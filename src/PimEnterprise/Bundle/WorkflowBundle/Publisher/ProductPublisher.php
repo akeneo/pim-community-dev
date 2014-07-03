@@ -21,18 +21,27 @@ class ProductPublisher implements PublisherInterface
     /** @var PublisherInterface */
     protected $publisher;
 
+    /** @var PublisherInterface */
+    protected $relatedAssociationPublisher;
+
     /** @var VersionManager */
     protected $versionManager;
 
     /**
      * @param string             $publishClassName
      * @param PublisherInterface $publisher
+     * @param PublisherInterface $relatedAssociationPublisher
      * @param VersionManager     $versionManager
      */
-    public function __construct($publishClassName, PublisherInterface $publisher, VersionManager $versionManager)
-    {
+    public function __construct(
+        $publishClassName,
+        PublisherInterface $publisher,
+        PublisherInterface $relatedAssociationPublisher,
+        VersionManager $versionManager
+    ) {
         $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
+        $this->relatedAssociationPublisher = $relatedAssociationPublisher;
         $this->versionManager = $versionManager;
     }
 
@@ -49,6 +58,7 @@ class ProductPublisher implements PublisherInterface
         $this->copyAssociations($object, $published);
         $this->copyCompletenesses($object, $published);
         $this->copyValues($object, $published);
+        $this->updateRelatedAssociations($published);
         $this->setVersion($object, $published);
 
         return $published;
@@ -101,9 +111,7 @@ class ProductPublisher implements PublisherInterface
     {
         foreach ($product->getAssociations() as $association) {
             $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
-            if (count($copiedAssociation->getGroups()) > 0 || count($copiedAssociation->getProducts())) {
-                $published->addAssociation($copiedAssociation);
-            }
+            $published->addAssociation($copiedAssociation);
         }
     }
 
@@ -135,6 +143,16 @@ class ProductPublisher implements PublisherInterface
             $publishedValue = $this->publisher->publish($originalValue);
             $published->addValue($publishedValue);
         }
+    }
+
+    /**
+     * Publish related associations
+     *
+     * @param PublishedProductInterface $published
+     */
+    protected function updateRelatedAssociations(PublishedProductInterface $published)
+    {
+        $this->relatedAssociationPublisher->publish($published);
     }
 
     /**

@@ -24,6 +24,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
+            - '@event_dispatcher'
             - '@pimee_security.repository.category_access'
 
     pim_catalog.manager.product_category:

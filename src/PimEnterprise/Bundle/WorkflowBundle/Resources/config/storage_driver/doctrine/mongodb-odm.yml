@@ -26,3 +26,6 @@ services:
             - %pimee_workflow.entity.published_product.class%
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
+
+    pimee_workflow.repository.published_association:
+        alias: pimee_workflow.repository.published_product

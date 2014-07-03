@@ -22,16 +22,20 @@ class ProductPublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function let(PublisherInterface $publisher, VersionManager $versionManager)
-    {
+    function let(
+        PublisherInterface $publisher,
+        PublisherInterface $associationsPublisher,
+        VersionManager $versionManager
+    ) {
         $this->beConstructedWith(
             'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
             $publisher,
+            $associationsPublisher,
             $versionManager
         );
     }
 
-    function it_publishes_product($versionManager,AbstractProduct $product, Version $version)
+    function it_publishes_a_product($versionManager,AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);

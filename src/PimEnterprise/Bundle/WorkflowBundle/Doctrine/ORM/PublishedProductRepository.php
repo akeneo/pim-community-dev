@@ -15,6 +15,8 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 {
     /**
      * Expected by interface but we let ORM entity repository work with its magic here
+     *
+     * {@inheritdoc}
      */
     public function findOneByOriginalProductId($originalId)
     {
@@ -27,5 +29,21 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function findByOriginalProductIds(array $originalIds)
     {
         return parent::findBy(['originalProductId' => $originalIds]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsMapping()
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->select('pp.id, pp.originalProductId');
+
+        $ids = [];
+        foreach ($qb->getQuery()->getScalarResult() as $row) {
+            $ids[intval($row['originalProductId'])] = intval($row['id']);
+        }
+
+        return $ids;
     }
 }
