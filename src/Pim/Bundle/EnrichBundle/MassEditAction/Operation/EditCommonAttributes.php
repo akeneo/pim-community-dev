@@ -349,14 +349,20 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     protected function addValues(AbstractAttribute $attribute)
     {
+        $localeCode = null;
         $locale = $this->getLocale();
+        $key = $attribute->getCode();
+
+        if ($attribute->isLocalizable()) {
+            $localeCode = $locale->getCode();
+            $key .= '_'.$localeCode;
+        }
         if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
-                $key = $attribute->getCode().'_'.$channel->getCode();
-                $this->values[$key] = $this->createValue($attribute, $locale->getCode(), $channel->getCode());
+                $this->values[$key.'_'.$channel->getCode()] = $this->createValue($attribute, $localeCode, $channel->getCode());
             }
         } else {
-            $this->values[$attribute->getCode()] = $this->createValue($attribute, $locale->getCode());
+            $this->values[$key] = $this->createValue($attribute, $localeCode);
         }
     }
 
