@@ -54,6 +54,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
+            - '@event_dispatcher'
 
     pim_catalog.manager.media:
         class: %pim_catalog.manager.media.class%
@@ -70,6 +71,7 @@ services:
             - %pim_catalog.entity.product.class%
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.factory.attribute_type'
+            - '@event_dispatcher'
 
     pim_catalog.manager.attribute_group:
         class: %pim_catalog.manager.attribute_group.class%
@@ -96,6 +98,9 @@ services:
         class: %pim_catalog.manager.group.class%
         arguments:
             - '@doctrine'
+            - '@event_dispatcher'
+            - %pim_catalog.entity.group.class%
+            - %pim_catalog.entity.group_type.class%
             - %pim_catalog.entity.product.class%
             - %pim_catalog.entity.attribute.class%
 
@@ -104,6 +109,8 @@ services:
         arguments:
             - '@pim_catalog.repository.family'
             - '@pim_user.context.user'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'
 
     pim_catalog.manager.completeness:
         class: %pim_catalog.manager.completeness.class%
@@ -120,3 +127,5 @@ services:
         class: %pim_catalog.manager.association_type.class%
         arguments:
             - '@pim_catalog.repository.association_type'
+            - '@doctrine.orm.entity_manager'
+            - '@event_dispatcher'

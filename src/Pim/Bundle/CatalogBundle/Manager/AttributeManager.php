@@ -2,7 +2,11 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 
@@ -15,45 +19,37 @@ use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
  */
 class AttributeManager
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $optionClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $optionValueClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var ObjectManager
-     */
+    /** @var ObjectManager */
     protected $objectManager;
 
-    /**
-     * @var AttributeTypeFactory
-     */
+    /** @var AttributeTypeFactory */
     protected $factory;
+
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
 
     /**
      * Constructor
      *
-     * @param string               $attributeClass   Attribute class
-     * @param string               $optionClass      Option class
-     * @param string               $optionValueClass Option value class
-     * @param string               $productClass     Product class
-     * @param ObjectManager        $objectManager    Object manager
-     * @param AttributeTypeFactory $factory          Attribute type factory
+     * @param string                   $attributeClass   Attribute class
+     * @param string                   $optionClass      Option class
+     * @param string                   $optionValueClass Option value class
+     * @param string                   $productClass     Product class
+     * @param ObjectManager            $objectManager    Object manager
+     * @param AttributeTypeFactory     $factory          Attribute type factory
+     * @param EventDispatcherInterface $eventDispatcher  Event dispatcher
      */
     public function __construct(
         $attributeClass,
@@ -61,7 +57,8 @@ class AttributeManager
         $optionValueClass,
         $productClass,
         ObjectManager $objectManager,
-        AttributeTypeFactory $factory
+        AttributeTypeFactory $factory,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->attributeClass   = $attributeClass;
         $this->optionClass      = $optionClass;
@@ -69,6 +66,7 @@ class AttributeManager
         $this->productClass     = $productClass;
         $this->objectManager    = $objectManager;
         $this->factory          = $factory;
+        $this->eventDispatcher  = $eventDispatcher;
     }
 
     /**
@@ -153,5 +151,18 @@ class AttributeManager
         asort($choices);
 
         return $choices;
+    }
+
+    /**
+     * Remove an attribute
+     *
+     * @param AbstractAttribute $attribute
+     */
+    public function remove(AbstractAttribute $attribute)
+    {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_ATTRIBUTE, new GenericEvent($attribute));
+
+        $this->objectManager->remove($attribute);
+        $this->objectManager->flush();
     }
 }

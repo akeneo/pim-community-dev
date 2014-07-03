@@ -370,7 +370,7 @@ class ProductController extends AbstractDoctrineController
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->remove($product);
+        $this->productManager->remove($product);
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {

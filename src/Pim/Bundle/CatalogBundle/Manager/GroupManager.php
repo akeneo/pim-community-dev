@@ -2,7 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Bridge\Doctrine\RegistryInterface;
+use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 
 /**
@@ -14,33 +17,48 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
  */
 class GroupManager
 {
-    /**
-     * @var RegistryInterface
-     */
+    /** @var RegistryInterface */
     protected $doctrine;
 
-    /**
-     * @var string
-     */
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var string */
+    protected $groupClass;
+
+    /** @var string */
+    protected $groupTypeClass;
+
+    /** @var string */
     protected $productClass;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
     /**
      * Constructor
      *
-     * @param RegistryInterface $doctrine
-     * @param string            $productClass
-     * @param string            $attributeClass
+     * @param RegistryInterface        $doctrine
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param string                   $groupClass
+     * @param string                   $groupTypeClass
+     * @param string                   $productClass
+     * @param string                   $attributeClass
      */
-    public function __construct(RegistryInterface $doctrine, $productClass, $attributeClass)
-    {
-        $this->doctrine = $doctrine;
-        $this->productClass  = $productClass;
-        $this->attributeClass = $attributeClass;
+    public function __construct(
+        RegistryInterface $doctrine,
+        EventDispatcherInterface $eventDispatcher,
+        $groupClass,
+        $groupTypeClass,
+        $productClass,
+        $attributeClass
+    ) {
+        $this->doctrine        = $doctrine;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->groupClass      = $groupClass;
+        $this->groupTypeClass  = $groupTypeClass;
+        $this->productClass    = $productClass;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -50,9 +68,7 @@ class GroupManager
      */
     public function getAvailableAxis()
     {
-        $repo = $this->getAttributeRepository();
-
-        return $repo->findAllAxis();
+        return $this->getAttributeRepository()->findAllAxis();
     }
 
     /**
@@ -95,9 +111,7 @@ class GroupManager
      */
     public function getTypeChoices($isVariant)
     {
-        $types = $this->doctrine
-            ->getRepository('PimCatalogBundle:GroupType')
-            ->findBy(array('variant' => $isVariant));
+        $types = $this->getGroupTypeRepository()->findBy(array('variant' => $isVariant));
 
         $choices = array();
         foreach ($types as $type) {
@@ -115,7 +129,7 @@ class GroupManager
      */
     public function getRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:Group');
+        return $this->doctrine->getRepository($this->groupClass);
     }
 
     /**
@@ -125,7 +139,7 @@ class GroupManager
      */
     public function getGroupTypeRepository()
     {
-        return $this->doctrine->getRepository('PimCatalogBundle:GroupType');
+        return $this->doctrine->getRepository($this->groupTypeClass);
     }
 
     /**
@@ -135,6 +149,8 @@ class GroupManager
      */
     public function remove(Group $group)
     {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_GROUP, new GenericEvent($group));
+
         $em = $this->doctrine->getManager();
         $em->remove($group);
         $em->flush();
@@ -161,7 +177,8 @@ class GroupManager
             ->setMaxResults($maxResults + 1)
             ->execute();
 
-        if (count($products) > $maxResults) {
+        $count = count($products);
+        if ($count > $maxResults) {
             array_pop($products);
             $count = $manager->createQueryBuilder()
                 ->select('COUNT(p)')
@@ -170,8 +187,6 @@ class GroupManager
                 ->setParameter('group', $group)
                 ->getQuery()
                 ->getSingleScalarResult();
-        } else {
-            $count = count($products);
         }
 
         return array(
