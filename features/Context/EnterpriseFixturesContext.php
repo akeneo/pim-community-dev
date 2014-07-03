@@ -96,13 +96,8 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @Given /^(\w+) proposed the following change to "([^"]*)":$/
      */
-    public function someoneProposedTheFollowingChangeTo(
-        $username,
-        $product,
-        TableNode $table,
-        $scopable = false,
-        $ready = true
-    ) {
+    public function someoneProposedTheFollowingChangeTo($username, $product, TableNode $table, $scopable = false, $ready = true)
+    {
         $steps = [
             new Step\Given(sprintf('I am logged in as "%s"', $username)),
             new Step\Given(sprintf('I edit the "%s" product', $product)),
