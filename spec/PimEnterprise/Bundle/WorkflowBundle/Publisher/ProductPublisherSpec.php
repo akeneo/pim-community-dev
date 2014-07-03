@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductRelatedAssociationPublisher;
 use Prophecy\Argument;
 
 class ProductPublisherSpec extends ObjectBehavior
@@ -24,7 +25,7 @@ class ProductPublisherSpec extends ObjectBehavior
 
     function let(
         PublisherInterface $publisher,
-        PublisherInterface $associationsPublisher,
+        ProductRelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager
     ) {
         $this->beConstructedWith(
@@ -35,7 +36,7 @@ class ProductPublisherSpec extends ObjectBehavior
         );
     }
 
-    function it_publishes_a_product($versionManager,AbstractProduct $product, Version $version)
+    function it_publishes_a_product($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
@@ -45,7 +46,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
     }
 
-    function it_sets_the_version_during_publishing($versionManager,AbstractProduct $product, Version $version)
+    function it_sets_the_version_during_publishing($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
@@ -56,7 +57,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->getVersion()->shouldReturn($version);
     }
 
-    function it_builds_the_version_if_needed_during_publishing($versionManager,AbstractProduct $product, Version $version)
+    function it_builds_the_version_if_needed_during_publishing($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
