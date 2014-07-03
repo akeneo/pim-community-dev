@@ -4,5 +4,62 @@ parameters:
     pim_datagrid.datasource.result_record.hydrator.object.class:    Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectHydrator
     pim_filter.datasource.product_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
     pim_datagrid.extension.pager.product.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
+    pim_datagrid.datasource.mongodb.class:                          Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource
+    pim_filter.datasource.mongodb_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
+    pim_datagrid.extension.filter.mongodb_filter.class:             Pim\Bundle\DataGridBundle\Extension\Filter\MongoDBFilterExtension
+    pim_datagrid.extension.sorter.mongodb_sorter.class:             Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDBSorterExtension
+    pim_datagrid.extension.pager.mongodb_pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDBPagerExtension
+    pim_datagrid.extension.pager.mongodb.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
+    pim_datagrid.extension.sorter.mongodb.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter
+    pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener
 
-services: ~
+services:
+    pim_datagrid.datasource.mongodb:
+        class: %pim_datagrid.datasource.mongodb.class%
+        arguments:
+            - '@doctrine.odm.mongodb.document_manager'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: mongodb }
+
+    pim_datagrid.extension.filter.mongodb_filter:
+        class: %pim_datagrid.extension.filter.mongodb_filter.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+            - '@translator'
+            - %pim_filter.datasource.mongodb_adapter.class%
+        tags:
+             - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.sorter.mongodb_sorter:
+        class: %pim_datagrid.extension.sorter.mongodb_sorter.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.pager.mongodb.pager:
+        class: %pim_datagrid.extension.pager.mongodb.pager.class%
+
+    pim_datagrid.extension.pager.mongodb_pager:
+        class: %pim_datagrid.extension.pager.mongodb_pager.class%
+        arguments:
+            - '@pim_datagrid.extension.pager.mongodb.pager'
+            - '@oro_datagrid.datagrid.request_params'
+        tags:
+            - { name: oro_datagrid.extension }
+
+    pim_datagrid.extension.sorter.mongodb.field_sorter:
+        class: %pim_datagrid.extension.sorter.mongodb.field_sorter.class%
+        tags:
+            - { name: pim_datagrid.extension.sorter, type: mongodb_field }
+
+    pim_datagrid.event_listener.configure_history_grid_listener:
+        class: %pim_datagrid.event_listener.configure_history_grid_listener.class%
+        arguments:
+            - '@oro_datagrid.datagrid.request_params'
+        calls:
+            - [setRequest, ['@?request=']]
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }

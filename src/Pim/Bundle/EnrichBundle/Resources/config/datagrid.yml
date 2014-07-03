@@ -1160,54 +1160,9 @@ datagrid:
 
     history-grid:
         source:
-            type: orm
-            query:
-                select:
-                    - v.id
-                    - v.changeset as changeset
-                    - v.loggedAt
-                    - v.version
-                    - >
-                      CONCAT(
-                        CASE WHEN u IS NOT NULL THEN
-                            CONCAT(
-                                CONCAT(u.firstName, ' '),
-                                CONCAT(u.lastName, ' ')
-                            )
-                        ELSE
-                            v.author
-                        END,
-                        CONCAT(
-                            CONCAT(
-                                ' - ',
-                                CASE WHEN u IS NOT NULL THEN
-                                    u.email
-                                ELSE
-                                    'Removed user'
-                                END
-                            ),
-                            CASE WHEN v.context IS NOT NULL THEN
-                                CONCAT(
-                                    CONCAT(' (', v.context),
-                                    ')'
-                                )
-                            ELSE
-                                ''
-                            END
-                        )
-                      ) as author
-                from:
-                    - { table: PimVersioningBundle:Version, alias: v }
-                join:
-                    left:
-                        user:
-                            join: %oro_user.entity.class%
-                            alias: u
-                            conditionType: WITH
-                            condition: u.username = v.author
-                where:
-                    and:
-                        - v.resourceName = :objectClass AND v.resourceId = :objectId AND v.pending = false
+            type: mongodb
+            entity: %pim_versioning.entity.version.class%
+            repository_method: createDatagridQueryBuilder
         columns:
             version:
                 label: Version

@@ -54,4 +54,21 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
     }
+
+    /**
+     * @param array $params
+     *
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder(array $params = [])
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (!empty($params['objectClass']) && !empty($params['objectId'])) {
+            $qb->field('resourceName')->equals($params['objectClass']);
+            $qb->field('resourceId')->equals($params['objectId']);
+        }
+
+        return $qb;
+    }
 }

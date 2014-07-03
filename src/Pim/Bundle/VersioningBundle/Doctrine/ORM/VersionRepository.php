@@ -54,4 +54,39 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
     }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $userNameExpr = "CONCAT(CONCAT(CONCAT(u.firstName, ' '), CONCAT(u.lastName, ' - ')), u.email)";
+        $removedUserNameExpr = "CONCAT(v.author, ' - Removed user')";
+        $userExpr = sprintf('CASE WHEN u IS NOT NULL THEN %s ELSE %s END', $userNameExpr, $removedUserNameExpr);
+        $contextExpr = "CASE WHEN v.context IS NOT NULL THEN CONCAT(CONCAT(' (', v.context), ')') ELSE '' END";
+
+        $authorExpr = sprintf('CONCAT(%s, %s)', $userExpr, $contextExpr);
+
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('v.id, v.changeset as changeset, v.loggedAt, v.version')
+            ->from($this->_entityName, 'v', 'v.id');
+
+        $qb
+            ->addSelect(sprintf('%s as author', $authorExpr))
+            ->leftJoin(
+                'OroUserBundle:User',
+                'u',
+                'WITH',
+                'u.username = v.author'
+            )
+            ->where('v.pending = false')
+            ->andWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('v.resourceName', ':objectClass'),
+                    $qb->expr()->eq('v.resourceId', ':objectId')
+                )
+            );
+
+        return $qb;
+    }
 }
