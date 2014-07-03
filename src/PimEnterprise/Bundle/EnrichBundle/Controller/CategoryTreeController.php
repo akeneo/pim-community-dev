@@ -65,4 +65,13 @@ class CategoryTreeController extends BaseCategoryTreeController
             'related_entity' => $this->getRequest()->get('related_entity', 'product'),
         );
     }
+    /**
+     * {@inheritdoc}
+     *
+     * Override parent to use only granted categories
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
+    }
 }
