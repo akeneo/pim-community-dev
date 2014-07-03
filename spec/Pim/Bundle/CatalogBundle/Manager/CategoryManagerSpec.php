@@ -72,6 +72,7 @@ class CategoryManagerSpec extends ObjectBehavior
         ProductInterface $product1,
         ProductInterface $product2
     ) {
+        $category->isRoot()->willReturn(false);
         $category->getProducts()->willReturn([$product1, $product2]);
         $product1->removeCategory($category)->shouldBeCalled();
         $product2->removeCategory($category)->shouldBeCalled();
@@ -84,5 +85,23 @@ class CategoryManagerSpec extends ObjectBehavior
         $objectManager->remove($category)->shouldBeCalled();
 
         $this->remove($category);
+    }
+
+    function it_dispatches_an_event_when_removing_a_tree(
+        $eventDispatcher,
+        $objectManager,
+        CategoryInterface $tree
+    ) {
+        $tree->isRoot()->willReturn(true);
+        $tree->getProducts()->willReturn([]);
+
+        $eventDispatcher->dispatch(
+            CatalogEvents::PRE_REMOVE_TREE,
+            Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
+        )->shouldBeCalled();
+
+        $objectManager->remove($tree)->shouldBeCalled();
+
+        $this->remove($tree);
     }
 }

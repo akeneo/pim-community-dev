@@ -220,7 +220,8 @@ class CategoryManager
      */
     public function remove(CategoryInterface $category)
     {
-        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_CATEGORY, new GenericEvent($category));
+        $eventName = $category->isRoot() ? CatalogEvents::PRE_REMOVE_TREE : CatalogEvents::PRE_REMOVE_CATEGORY;
+        $this->eventDispatcher->dispatch($eventName, new GenericEvent($category));
 
         foreach ($category->getProducts() as $product) {
             $product->removeCategory($category);
