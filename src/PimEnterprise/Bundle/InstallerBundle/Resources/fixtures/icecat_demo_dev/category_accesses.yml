@@ -11,3 +11,411 @@ category_accesses:
     home_appliances:
         view: [administrator, manager]
         edit: [administrator, manager]
+    tvs_projectors:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    pc_monitors:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    led_tvs:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    cameras:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    digital_cameras:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    camcorders:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    webcams:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    audio_video:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    headphones:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    mp3_players:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    loudspeakers:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    print_scan:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    multifunctionals:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    laser_led_printers:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    scanners:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    tvs_projectors_sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    cameras_sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    audio_video_sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    print_scan_sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    3go:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    3m:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    a4tech:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    aoc:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    asus:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    acer:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    adapt:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    approx:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    avision:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    belkin:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    brother:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    canon:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    cisco:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    conceptronic:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    d_link:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    dell:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    dymo:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    devolo:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    dicota:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    eminent:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    emtec:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ewent:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    fujifilm:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    fujitsu:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    g_cube:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    gear4:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    gigabyte:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    hp:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    hamlet:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    hiper:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ibm:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    icidu:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ion:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ion_audio:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    kensington:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    kodak:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    kyocera:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    lg:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    lacie:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    lenco:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    lenovo:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    levelone:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    lexmark:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    logitech:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    macally:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    magnavox:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    medion:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    microsoft:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    nec:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ngs:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    noxon:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    oki:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ovislink:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    philips:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    razer:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ricatech:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ricoh:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    spcinternet:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    salora:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    samsung:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    sandberg:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    sitecom:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    sony:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    speed_link:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    spire:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    sweex:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    tdk:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    tacens:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    targus:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    techly:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    teufel:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    thrustmaster:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    toshiba:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    trust:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    v7:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    value:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    verbatim:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    viewsonic:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    vogel_s:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    woxter:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    xerox:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    xtrememac:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    yarvik:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    iiyama:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    takems:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    clothes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    pants:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    shoes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    clothes_accessories:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    sweat:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    coats:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    underwear:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    tshirts:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    jeans:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    caps:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    ties:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    gloves:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    belts:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    office:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    office_furnitures:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    desk_chairs:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    office_tables:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    paper:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    desk_supplies:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    goodies:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    stickers:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    casino_chips:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    mugs:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    notebooks:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    cards:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    markers:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    erasers:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    pens:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    postit_notes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    stamps:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    adhesives:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]
+    envelopes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager]

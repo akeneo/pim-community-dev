@@ -65,7 +65,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
             return 0;
         }
         // TODO : deal with children
-
         return parent::getProductsCountInCategory($category, $inChildren, $inProvided);
     }
 
@@ -78,7 +77,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
             return [];
         }
         // TODO : deal with children
-
         return parent::getProductIdsInCategory($category, $inChildren);
     }
 }
