@@ -6,7 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductValueChangesCollectorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -17,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class CollectProductValuesSubscriber implements
-    ProductValueChangesCollectorInterface,
+    ChangesCollectorAwareInterface,
     EventSubscriberInterface
 {
     /** @var ComparatorInterface */
@@ -29,6 +30,9 @@ class CollectProductValuesSubscriber implements
     /** @var SecurityContextInterface */
     protected $securityContext;
 
+    /** @var ChangesCollectorInterface */
+    protected $collector;
+
     /**
      * @param ComparatorInterface      $comparator
      * @param SecurityContextInterface $securityContext
@@ -39,6 +43,14 @@ class CollectProductValuesSubscriber implements
     ) {
         $this->comparator = $comparator;
         $this->securityContext = $securityContext;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setCollector(ChangesCollectorInterface $collector)
+    {
+        $this->collector = $collector;
     }
 
     /**
@@ -68,20 +80,13 @@ class CollectProductValuesSubscriber implements
         }
 
         $currentValues = $form->get('values')->getViewData();
-        foreach ($data['values'] as $key => $value) {
+        foreach ($data['values'] as $key => $data) {
             if ($currentValues->containsKey($key)) {
-                if (null !== $changes = $this->comparator->getChanges($currentValues->get($key), $value)) {
-                    $this->changes['values'][$key] = $changes;
+                $value = $currentValues->get($key);
+                if (null !== $changes = $this->comparator->getChanges($value, $data)) {
+                    $this->collector->add($key, $changes, $value);
                 }
             }
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChanges()
-    {
-        return $this->changes;
     }
 }

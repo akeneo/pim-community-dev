@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Media;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaComparator extends AbstractComparator
+class MediaComparator implements ComparatorInterface
 {
     /** @var MediaManager */
     protected $mediaManager;
@@ -41,7 +41,7 @@ class MediaComparator extends AbstractComparator
     /**
      * {@inheritdoc}
      */
-    public function getDataChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(AbstractProductValue $value, $submittedData)
     {
         $changes = [];
 

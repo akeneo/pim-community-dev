@@ -16,6 +16,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositor
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
 
 /**
  * Store product through propositions
@@ -46,6 +47,9 @@ class PropositionPersister implements ProductPersister
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
+    /** @var ChangesCollectorInterface */
+    protected $collector;
+
     /**
      * @param ManagerRegistry                $registry
      * @param CompletenessManager            $completenessManager
@@ -53,6 +57,7 @@ class PropositionPersister implements ProductPersister
      * @param PropositionFactory             $factory
      * @param PropositionRepositoryInterface $repository
      * @param EventDispatcherInterface       $dispatcher
+     * @param ChangesCollectorInterface      $collector
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -60,7 +65,8 @@ class PropositionPersister implements ProductPersister
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
         PropositionRepositoryInterface $repository,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        ChangesCollectorInterface $collector
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -68,16 +74,7 @@ class PropositionPersister implements ProductPersister
         $this->factory = $factory;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * Set the changes collectors
-     *
-     * @param ProductValueChangesCollectorInterface[] $collectors
-     */
-    public function setCollectors(array $collectors)
-    {
-        $this->collectors = $collectors;
+        $this->collector = $collector;
     }
 
     /**
@@ -150,7 +147,7 @@ class PropositionPersister implements ProductPersister
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
-        $changes = $this->getCollectedChanges();
+        $changes = $this->collector->getChanges();
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
         $proposition = $this->repository->findUserProposition($product, $username, $locale);
@@ -196,23 +193,5 @@ class PropositionPersister implements ProductPersister
         }
 
         return $user;
-    }
-
-    /**
-     * Get the changes from the first collector that actually collected something
-     *
-     * @return array
-     */
-    protected function getCollectedChanges()
-    {
-        $changes = [];
-        foreach ($this->collectors as $collector) {
-            $changes = $collector->getChanges();
-            if (!empty($changes)) {
-                break;
-            }
-        }
-
-        return $changes;
     }
 }
