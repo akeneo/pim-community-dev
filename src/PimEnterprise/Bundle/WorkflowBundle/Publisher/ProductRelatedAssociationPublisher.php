@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
-use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -34,7 +33,6 @@ class ProductRelatedAssociationPublisher implements PublisherInterface
         $this->publishedAssociationRepository = $publishedAssociationRepository;
         $this->associationRepository = $associationRepository;
     }
-
 
     /**
      * {@inheritdoc}

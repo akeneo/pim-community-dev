@@ -31,7 +31,6 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      */
     public function findByOriginalProductIds(array $originalIds);
 
-
     /**
      * Get the ID's of all published products. * The keys of the array are the ID of the original product.
      *
