@@ -15,6 +15,11 @@ families:
             - size
             - main_color
             - secondary_color
+            - number_in_stock
+            - handmade
+            - release_date
+            - datasheet
+            - side_view
         attributeAsLabel: name
         requirements:
             tablet:

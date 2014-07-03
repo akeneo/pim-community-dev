@@ -11,10 +11,10 @@ Feature: Filter proposals
       | black-boots | boots  |
       | white-boots | boots  |
     And the following propositions:
-      | product     | status      | author | locale |
-      | black-boots | in progress | Sandra | fr_FR  |
-      | black-boots | ready       | Mary   | en_US  |
-      | white-boots | ready       | Sandra | en_US  |
+      | product     | status      | author |
+      | black-boots | in progress | Sandra |
+      | black-boots | ready       | Mary   |
+      | white-boots | ready       | Sandra |
     And I am logged in as "Julia"
 
   Scenario: Successfully filter propositions
@@ -23,6 +23,6 @@ Feature: Filter proposals
     Then the grid should contain 2 elements
     And I should see entities Sandra and Mary
     And I should be able to use the following filters:
-      | filter         | value       | result |
-      | Status         | In progress | Sandra |
-      | Status         | Ready       | Mary   |
+      | filter | value                | result |
+      | Status | In progress          | Sandra |
+      | Status | Waiting for approval | Mary   |

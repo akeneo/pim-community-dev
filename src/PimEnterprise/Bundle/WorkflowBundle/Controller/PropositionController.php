@@ -11,9 +11,11 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Proposition controller
@@ -79,6 +81,10 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
         $this->manager->approve($proposition);
 
         return $this->redirect(
@@ -103,7 +109,40 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
         $this->manager->refuse($proposition);
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_product_edit',
+                [
+                    'id' => $proposition->getProduct()->getId()
+                ]
+            )
+        );
+    }
+
+    /**
+     * @param integer|string $id
+     *
+     * @return RedirectResponse
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
+     */
+    public function readyAction($id)
+    {
+        if (null === $proposition = $this->repository->find($id)) {
+            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+        }
+
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->markAsReady($proposition);
 
         return $this->redirect(
             $this->generateUrl(

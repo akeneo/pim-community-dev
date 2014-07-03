@@ -45,11 +45,29 @@ class EnterpriseFeatureContext extends FeatureContext
     {
         $icons = $this->getSubcontext('navigation')->getCurrentPage()->findFieldIcons($field);
         foreach ($icons as $icon) {
-            if (false !== strpos($icon->getAttribute('class'), 'icon-file-text-alt')) {
+            if ($icon->hasClass('icon-file-text-alt')) {
                 return true;
             }
         }
 
         throw $this->createExpectationException('Modified value icon was not found');
+    }
+
+    /**
+     * @Then /^its status should be "([^"]*)"$/
+     */
+    public function itsStatusShouldBe($status)
+    {
+        $info = $this->getSession()->getPage()->find('css', '.navbar-content li:contains("Status")');
+
+        if (false === strpos($info->getText(), $status)) {
+            throw new \LogicException(
+                sprintf(
+                    'Expecting product status "%s", actually is "%s"',
+                    $status,
+                    $info->getText()
+                )
+            );
+        }
     }
 }

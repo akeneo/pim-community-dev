@@ -48,6 +48,7 @@ datagrid:
                 label: pimee_workflow.proposition.action.refuse
                 icon: remove
                 link: refuse_link
+        action_configuration: '@pimee_workflow.datagrid.proposition_grid_helper->getActionConfigurationClosure'
         filters:
             columns:
                 status:

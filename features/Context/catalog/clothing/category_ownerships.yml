@@ -6,7 +6,7 @@ category_ownerships:
     winter_collection:
         roles: [administrator, manager]
     winter_top:
-        roles: [administrator]
+        roles: [administrator, manager]
     tees:
         roles: [administrator]
     jackets:

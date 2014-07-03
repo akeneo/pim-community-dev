@@ -58,10 +58,7 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
 
         $proposition = $this->manager->findOrCreate($parameters['product']);
 
-        $parameters['propositionForm'] = $this
-            ->formFactory
-            ->create('pimee_workflow_proposition', $proposition)
-            ->createView();
+        $parameters['proposition'] = $proposition;
 
         $event->setArgument('parameters', $parameters);
     }
