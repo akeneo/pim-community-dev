@@ -8,6 +8,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 
 /**
  * Category manager
@@ -17,10 +18,11 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
  */
 class CategoryManager extends BaseCategoryManager
 {
-    /**
-     * @var CategoryAccessRepository
-     */
+    /** @var CategoryAccessRepository */
     protected $categoryAccessRepo;
+
+    /* @var SecurityContextInterface */
+    protected $securityContext;
 
     /**
      * Constructor
@@ -29,16 +31,19 @@ class CategoryManager extends BaseCategoryManager
      * @param string                   $categoryClass
      * @param EventDispatcherInterface $eventDispatcherInterface
      * @param CategoryAccessRepository $categoryAccessRepo
+     * @param SecurityContextInterface $securityContext
      */
     public function __construct(
         ObjectManager $om,
         $categoryClass,
         EventDispatcherInterface $eventDispatcher,
-        CategoryAccessRepository $categoryAccessRepo
+        CategoryAccessRepository $categoryAccessRepo,
+        SecurityContextInterface $securityContext
     ) {
         parent::__construct($om, $categoryClass, $eventDispatcher);
 
         $this->categoryAccessRepo = $categoryAccessRepo;
+        $this->securityContext = $securityContext;
     }
 
     /**
@@ -61,5 +66,26 @@ class CategoryManager extends BaseCategoryManager
         }
 
         return $trees;
+    }
+
+    /**
+     * Get only the granted direct children for a parent category id.
+     *
+     * @param integer $parentId
+     * @param integer $selectNodeId
+     *
+     * @return ArrayCollection
+     */
+    public function getGrantedChildren($parentId, $selectNodeId = false)
+    {
+        $children = $this->getChildren($parentId, $selectNodeId);
+        foreach ($children as $indChild => $child) {
+            $category = (is_object($child)) ? $child : $child['item'];
+            if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+                unset($children[$indChild]);
+            }
+        }
+
+        return $children;
     }
 }
