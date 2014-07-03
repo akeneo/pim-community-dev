@@ -27,6 +27,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
      */
     public function createProduct($data)
     {
+        if (!is_array($data)) {
+            $data = ['sku' => $data];
+        }
         $defaultCategory = null;
         foreach ($this->getCategoryRepository()->findAll() as $category) {
             if ($category->isRoot()) {
