@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
  * Form type of the EditCommonAttributes operation
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class EditCommonAttributesType extends BaseEditCommonAttributesType implements ChangesCollectorAwareInterface
 {
