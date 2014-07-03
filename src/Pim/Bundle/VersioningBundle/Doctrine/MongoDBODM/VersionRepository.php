@@ -28,23 +28,17 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     /**
      * {@inheritdoc}
      */
-    public function getOldestLogEntry($resourceName, $resourceId)
+    public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
     {
-        return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['loggedAt' => 'asc']
-        );
+        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'asc');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getNewestLogEntry($resourceName, $resourceId)
+    public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
     {
-        return $this->findOneBy(
-            ['resourceId' => $resourceId, 'resourceName' => $resourceName, 'pending' => false],
-            ['loggedAt' => 'desc']
-        );
+        return $this->getOneLogEntry($resourceName, $resourceId, $pending, 'desc');
     }
 
     /**
@@ -70,5 +64,28 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
         }
 
         return $qb;
+    }
+
+    /**
+     * Get one log entry
+     *
+     * @param string    $resourceName
+     * @param string    $resourceId
+     * @param bool|null $pending
+     * @param string    $sort
+     *
+     * @return Version|null
+     */
+    protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
+    {
+        $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
+        if (null !== $pending) {
+            $criteria['pending'] = $pending;
+        }
+
+        return $this->findOneBy(
+            $criteria,
+            ['loggedAt' => $sort]
+        );
     }
 }

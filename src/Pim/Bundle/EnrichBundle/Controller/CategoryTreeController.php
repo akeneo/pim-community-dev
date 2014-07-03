@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,6 +54,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
@@ -65,6 +67,7 @@ class CategoryTreeController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
         UserContext $userContext
@@ -77,6 +80,7 @@ class CategoryTreeController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
@@ -192,10 +196,10 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         if ($selectNode !== null) {
-            $categories = $this->categoryManager->getChildren($parent->getId(), $selectNode->getId());
+            $categories = $this->getChildren($parent->getId(), $selectNode->getId());
             $view = 'PimEnrichBundle:CategoryTree:children-tree.json.twig';
         } else {
-            $categories = $this->categoryManager->getChildren($parent->getId());
+            $categories = $this->getChildren($parent->getId());
             $view = 'PimEnrichBundle:CategoryTree:children.json.twig';
         }
 
@@ -346,5 +350,16 @@ class CategoryTreeController extends AbstractDoctrineController
     protected function getFormOptions(CategoryInterface $category)
     {
         return array();
+    }
+
+    /**
+     * @param integer $parentId
+     * @param mixed   $selectNodeId
+     *
+     * @return CategoryInterface[]
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        return $this->categoryManager->getChildren($parentId, $selectNodeId);
     }
 }

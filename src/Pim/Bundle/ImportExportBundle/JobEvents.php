@@ -12,54 +12,64 @@ namespace Pim\Bundle\ImportExportBundle;
 final class JobEvents
 {
     /**
-     * This event is thrown each a job profile is being edited
+     * This event is thrown before a job profile is edited
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_EDIT_JOB_PROFILE       = 'pim_enrich.job_profile.pre_edit';
+    const PRE_EDIT_JOB_PROFILE = 'pim_import_export.job_profile.pre_edit';
 
     /**
-     * This event is thrown each a job profile has been edited
+     * This event is thrown after a job profile has been edited
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const POST_EDIT_JOB_PROFILE = 'pim_enrich.job_profile.post_edit';
+    const POST_EDIT_JOB_PROFILE = 'pim_import_export.job_profile.post_edit';
 
     /**
-     * This event is thrown each a job profile is being executed
+     * This event is thrown before a job profile is executed
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_EXECUTE_JOB_PROFILE = 'pim_enrich.job_profile.pre_execute';
+    const PRE_EXECUTE_JOB_PROFILE = 'pim_import_export.job_profile.pre_execute';
 
     /**
-     * This event is thrown each a job profile has been executed
+     * This event is thrown after a job profile has been executed
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const POST_EXECUTE_JOB_PROFILE = 'pim_enrich.job_profile.post_execute';
+    const POST_EXECUTE_JOB_PROFILE = 'pim_import_export.job_profile.post_execute';
 
     /**
-     * This event is thrown each a job profile has been shown
+     * This event is thrown before a job profile is removed
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_SHOW_JOB_PROFILE = 'pim_enrich.job_profile.pre_show';
+    const PRE_REMOVE_JOB_PROFILE = 'pim_import_export.job_profile.pre_remove';
+
+    /**
+     * This event is thrown before a job profile is shown
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_SHOW_JOB_PROFILE = 'pim_import_export.job_profile.pre_show';
 
     /**
      * This event is thrown each a job execution is being shown
@@ -69,25 +79,25 @@ final class JobEvents
      *
      * @staticvar string
      */
-    const PRE_SHOW_JOB_EXECUTION = 'pim_enrich.job_execution.pre_show';
+    const PRE_SHOW_JOB_EXECUTION = 'pim_import_export.job_execution.pre_show';
 
     /**
-     * This event is thrown each the log of a job execution is being downloaded
+     * This event is thrown before the log of a job execution is downloaded
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_DOWNLOAD_LOG_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_log';
+    const PRE_DOWNLOAD_LOG_JOB_EXECUTION = 'pim_import_export.job_execution.pre_dl_log';
 
     /**
-     * This event is thrown each the files of a job execution is being downloaded
+     * This event is thrown before the files of a job execution is downloaded
      *
      * The event listener receives an
      * Symfony\Component\EventDispatcher\GenericEvent instance.
      *
      * @staticvar string
      */
-    const PRE_DOWNLOAD_FILES_JOB_EXECUTION = 'pim_enrich.job_execution.pre_dl_files';
+    const PRE_DOWNLOAD_FILES_JOB_EXECUTION = 'pim_import_export.job_execution.pre_dl_files';
 }

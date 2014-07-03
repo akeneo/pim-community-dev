@@ -76,3 +76,11 @@ Feature: Validate price attributes of a product
     Then I should see validation tooltip "This value should be 100.0000 or less."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red
+
+  Scenario: Validate the type constraint of price attribute
+    Given I change the "$ Tax" to "bar"
+    And I change the "€ Tax" to "qux"
+    And I save the product
+    Then I should see validation tooltip "This value should be a valid number.; This value should be a valid number."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red

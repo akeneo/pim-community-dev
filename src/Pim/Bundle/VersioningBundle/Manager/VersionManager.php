@@ -167,7 +167,7 @@ class VersionManager
      *
      * @param object $versionable
      *
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getLogEntries($versionable)
     {
@@ -178,26 +178,36 @@ class VersionManager
      * Return the oldest log entry. A the log is order by date
      * desc, it means the very last line of the log
      *
-     * @param object $versionable
+     * @param object    $versionable
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($versionable)
+    public function getOldestLogEntry($versionable, $pending = false)
     {
-        return $this->getVersionRepository()->getOldestLogEntry(get_class($versionable), $versionable->getId());
+        return $this->getVersionRepository()->getOldestLogEntry(
+            get_class($versionable),
+            $versionable->getId(),
+            $pending
+        );
     }
 
     /**
      * Return the newest log entry. As the log is order by date
      * desc, it means the first line of the log
      *
-     * @param object $versionable
+     * @param object    $versionable
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($versionable)
+    public function getNewestLogEntry($versionable, $pending = false)
     {
-        return $this->getVersionRepository()->getNewestLogEntry(get_class($versionable), $versionable->getId());
+        return $this->getVersionRepository()->getNewestLogEntry(
+            get_class($versionable),
+            $versionable->getId(),
+            $pending
+        );
     }
 
     /**

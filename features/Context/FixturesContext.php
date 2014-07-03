@@ -299,6 +299,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the product?:$/
+     */
+    public function theProduct(TableNode $table)
+    {
+        $this->createProduct(
+            $table->getRowsHash()
+        );
+    }
+
+    /**
      * @param string $status
      * @param string $sku
      *

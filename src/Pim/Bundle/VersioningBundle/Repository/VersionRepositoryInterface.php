@@ -26,22 +26,24 @@ interface VersionRepositoryInterface
     /**
      * Returns oldest (first) version for a resource
      *
-     * @param string $resourceName
-     * @param string $resourceId
+     * @param string  $resourceName
+     * @param string  $resourceId
+     * @param boolean $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($resourceName, $resourceId);
+    public function getOldestLogEntry($resourceName, $resourceId, $pending);
 
     /**
      * Returns newest (last) version for a resource
      *
-     * @param string $resourceName
-     * @param string $resourceId
+     * @param string  $resourceName
+     * @param string  $resourceId
+     * @param boolean $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($resourceName, $resourceId);
+    public function getNewestLogEntry($resourceName, $resourceId, $pending);
 
     /**
      * Returns pending versions

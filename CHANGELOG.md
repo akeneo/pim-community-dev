@@ -35,11 +35,15 @@
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
-- Dispatch events on show/edit/execute job profile actions
+- Dispatch events on show/edit/execute/remove job profile actions
 - Dispatch events on view/download job execution actions
 - Allow to install custom user roles and groups from installer fixtures
 - Display the code of import/export profiles on the edit and show views
 - Related entities' edition and deletion doesn't reload all the products' normalized data
+- Inject event dispatcher inside AbstractController
+- Dispatch events when removing some entities
+- Add method remove in Category, Group, Attribute, Association type and family managers.
+- Call manager's method remove from these entity controllers
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -52,6 +56,8 @@
 - Fixed a bug with image upload on product with a "\" or "/" in their sku
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fixed a bug with timestampable listener which doesn't change the updated date of a product
+- Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -84,6 +90,17 @@
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
 - Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
+- Inject EventDispatcher inside AbstractController
+- Add missing getEntity() method in product value interface
+- Add methods inside CategoryInterface
+- Inject `Symfony\Component\EventDispatcher\EventDispatcherInterface` inside Attribute, AssociationType, Category, Family and Group managers
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\FamilyManager`
+- Inject group and group types classes in `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

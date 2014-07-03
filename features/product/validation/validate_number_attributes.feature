@@ -12,10 +12,11 @@ Feature: Validate number attributes of a product
       | sold       | Sold        | number | no       | no     | no               | no               |            |            |
       | available  | Available   | number | yes      | no     | no               | no               |            |            |
       | rating     | Rating      | number | no       | no     | no               | no               | 1          | 5          |
+      | quality    | Quality     | number | no       | no     | no               | yes              | 1          | 10         |
       | popularity | Popularity  | number | yes      | no     | no               | no               | 1          | 10         |
     And the following family:
-      | code | label-en_US | attributes                                    |
-      | baz  | Baz         | sku, ref, sold, available, rating, popularity |
+      | code | label-en_US | attributes                                             |
+      | baz  | Baz         | sku, ref, sold, available, rating, popularity, quality |
     And the following products:
       | sku | family | popularity-mobile | popularity-ecommerce | rating |
       | foo | baz    | 4                 | 4                    | 1      |
@@ -86,5 +87,19 @@ Feature: Validate number attributes of a product
     Given I change the "ecommerce Popularity" to "11"
     And I save the product
     Then I should see validation tooltip "This value should be 10.0000 or less."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  Scenario: Validate the type constraint of decimal attribute
+    Given I change the Quality to "qux"
+    And I save the product
+    Then I should see validation tooltip "This value should be a valid number."
+    And I should see validation tooltip "There are errors in this tab!"
+    And the "Attributes" tab should be red
+
+  Scenario: Validate the type constraint of number attribute
+    Given I change the Rating to "qux"
+    And I save the product
+    Then I should see validation tooltip "This value should be a valid number."
     And I should see validation tooltip "There are errors in this tab!"
     And the "Attributes" tab should be red

@@ -14,6 +14,7 @@ Feature: View an export detail page
     Then I should be on the "footwear_product_export" export job page
     And I should see "Export profile - Footwear product export"
 
+  @ce
   Scenario: Successfully display the validation errors
     Given the following job:
       | connector            | alias              | code                | label                       | type   |

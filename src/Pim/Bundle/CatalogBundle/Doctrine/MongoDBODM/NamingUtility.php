@@ -59,7 +59,7 @@ class NamingUtility
         if (count($suffixes) > 0) {
             $result = [];
 
-            foreach ($codes as $key => $code) {
+            foreach ($codes as $code) {
                 foreach ($suffixes as $suffix) {
                     $result[] = $code . $separator . $suffix;
                 }

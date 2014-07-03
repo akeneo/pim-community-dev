@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
 use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
@@ -418,9 +419,25 @@ class ProductManager
     {
         $products = $this->getProductRepository()->findByIds($ids);
         foreach ($products as $product) {
-            $this->objectManager->remove($product);
+            $this->remove($product, false);
         }
         $this->objectManager->flush();
+    }
+
+    /**
+     * Remove a product
+     *
+     * @param ProductInterface $product
+     * @param boolean          $flush
+     */
+    public function remove(ProductInterface $product, $flush = true)
+    {
+        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_PRODUCT, new GenericEvent($product));
+
+        $this->objectManager->remove($product);
+        if (true === $flush) {
+            $this->objectManager->flush();
+        }
     }
 
     /**
