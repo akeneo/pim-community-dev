@@ -42,6 +42,8 @@ class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
      * Check if channels are linked to this tree
      *
      * @param GenericEvent $event
+     * 
+     * @throws ConflictHttpException
      */
     public function checkChannels(GenericEvent $event)
     {
