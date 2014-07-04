@@ -78,7 +78,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {
-        $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
+        $criteria = ['resourceId' => (string) $resourceId, 'resourceName' => $resourceName];
         if (null !== $pending) {
             $criteria['pending'] = $pending;
         }
