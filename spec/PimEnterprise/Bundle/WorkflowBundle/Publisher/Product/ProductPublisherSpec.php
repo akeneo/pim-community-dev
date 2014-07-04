@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
@@ -8,14 +8,14 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductRelatedAssociationPublisher;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use Prophecy\Argument;
 
 class ProductPublisherSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher');
+        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ProductPublisher');
     }
 
     function it_is_a_publisher()
@@ -25,7 +25,7 @@ class ProductPublisherSpec extends ObjectBehavior
 
     function let(
         PublisherInterface $publisher,
-        ProductRelatedAssociationPublisher $associationsPublisher,
+        RelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager
     ) {
         $this->beConstructedWith(

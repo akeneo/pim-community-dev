@@ -1,9 +1,10 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product value publisher
@@ -11,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductValuePublisher implements PublisherInterface
+class ValuePublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;

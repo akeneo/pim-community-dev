@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -13,11 +13,11 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
-class ProductRelatedAssociationPublisherSpec extends ObjectBehavior
+class RelatedAssociationPublisherSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductRelatedAssociationPublisher');
+        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher');
     }
 
     function it_should_be_a_publisher()
