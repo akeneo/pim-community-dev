@@ -85,7 +85,6 @@ class EditCommonAttributesType extends AbstractType
                     'multiple' => true,
                     'expanded' => false,
                     'group_by' => 'group.label',
-                    'mapped'   => false,
                 )
             );
     }
@@ -107,7 +106,6 @@ class EditCommonAttributesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
         $resolver->setDefaults(
             [
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',

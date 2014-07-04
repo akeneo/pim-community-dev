@@ -29,55 +29,34 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class EditCommonAttributes extends ProductMassEditOperation
 {
-    /**
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection */
     protected $values;
 
-    /**
-     * @var Locale
-     */
+    /** @var ArrayCollection */
+    protected $displayedAttributes;
+
+    /** @var Locale */
     protected $locale;
 
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
     protected $productManager;
 
-    /**
-     * @var ProductMassActionManager
-     */
+    /** @var ProductMassActionManager */
     protected $massActionManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
 
-    /**
-     * @var CatalogContext
-     */
+    /** @var CatalogContext */
     protected $catalogContext;
 
-    /**
-     * @var CurrencyManager
-     */
+    /** @var CurrencyManager */
     protected $currencyManager;
 
-    /**
-     * @var array
-     */
+    /** @var array */
     protected $commonAttributes = array();
 
-    /**
-     * Collection of the attributes for each family code
-     * @var array $familiesAttributes
-     */
-    protected $familiesAttributes = array();
-
-    /**
-     * @var ProductBuilder $productBuilder
-     */
+    /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
@@ -98,13 +77,14 @@ class EditCommonAttributes extends ProductMassEditOperation
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager
     ) {
-        $this->productManager      = $productManager;
-        $this->userContext         = $userContext;
-        $this->currencyManager     = $currencyManager;
-        $this->values              = new ArrayCollection();
-        $this->catalogContext      = $catalogContext;
-        $this->productBuilder      = $productBuilder;
-        $this->massActionManager   = $massActionManager;
+        $this->productManager = $productManager;
+        $this->userContext = $userContext;
+        $this->currencyManager = $currencyManager;
+        $this->catalogContext = $catalogContext;
+        $this->productBuilder = $productBuilder;
+        $this->massActionManager = $massActionManager;
+        $this->displayedAttributes = new ArrayCollection();
+        $this->values = new ArrayCollection();
     }
 
     /**
@@ -192,6 +172,30 @@ class EditCommonAttributes extends ProductMassEditOperation
     }
 
     /**
+     * Set displayed attributes
+     *
+     * @param Collection $displayedAttributes
+     *
+     * @return EditCommonAttributes
+     */
+    public function setDisplayedAttributes(Collection $displayedAttributes)
+    {
+        $this->displayedAttributes = $displayedAttributes;
+
+        return $this;
+    }
+
+    /**
+     * Get displayed attributes
+     *
+     * @return Collection
+     */
+    public function getDisplayedAttributes()
+    {
+        return $this->displayedAttributes;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getFormType()
@@ -218,6 +222,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function initialize()
     {
         $productIds = array();
+        $this->values = new ArrayCollection();
         foreach ($this->objects as $object) {
             $productIds[] = $object->getId();
         }
@@ -429,7 +434,12 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
-        $productValue->getOptions()->clear();
+        foreach ($productValue->getOptions() as $option) {
+            if (!$value->getOptions()->contains($option)) {
+                $productValue->removeOption($option);
+            }
+        }
+
         // TODO: Clean this code removing flush for ORM
         if (!class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
             $this->productManager->getObjectManager()->flush();
@@ -438,6 +448,7 @@ class EditCommonAttributes extends ProductMassEditOperation
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
+
     }
 
     /**

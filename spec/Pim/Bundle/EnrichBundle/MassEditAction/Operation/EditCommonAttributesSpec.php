@@ -88,6 +88,16 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getCommonAttributes()->shouldReturn(['foo', 'bar', 'baz']);
     }
 
+    function it_stores_the_attributes_displayed_by_the_user()
+    {
+        $this->getDisplayedAttributes()->shouldBeAnInstanceOf('Doctrine\Common\Collections\ArrayCollection');
+        $this->getDisplayedAttributes()->shouldBeEmpty();
+
+        $displayedAttributes = new ArrayCollection(['foo', 'bar', 'baz']);
+        $this->setDisplayedAttributes($displayedAttributes);
+        $this->getDisplayedAttributes()->shouldReturn($displayedAttributes);
+    }
+
     function it_provides_a_form_type()
     {
         $this->getFormType()->shouldReturn('pim_enrich_mass_edit_common_attributes');
