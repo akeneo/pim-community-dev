@@ -6,7 +6,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
-use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
@@ -45,8 +44,8 @@ class AddProductVersionListener implements EventSubscriber
     /**
      * Constructor
      *
-     * @param VersionManager       $versionManager
-     * @param NormalizerInterface  $normalizer
+     * @param VersionManager      $versionManager
+     * @param NormalizerInterface $normalizer
      */
     public function __construct(VersionManager $versionManager, NormalizerInterface $normalizer)
     {

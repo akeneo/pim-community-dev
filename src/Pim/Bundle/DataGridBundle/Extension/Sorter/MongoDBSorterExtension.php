@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\Extension\Sorter;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * MongoDB odm sorter extension
