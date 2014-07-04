@@ -1,0 +1,10 @@
+parameters:
+    pimee_workflow.event_listener.check_published_product.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
+
+services:
+    pimee_workflow.event_listener.check_published_product:
+        class: %pimee_workflow.event_listener.check_published_product.class%
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+        tags:
+            - { name: kernel.event_subscriber}
