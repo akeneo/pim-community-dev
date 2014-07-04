@@ -7,6 +7,7 @@ use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Finder\SplFileInfo;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -23,7 +24,7 @@ class ConfigurationPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $this->registerConfigFiles($container);
+        $this->registerDatagridFiles($container);
     }
 
     /**
@@ -32,22 +33,20 @@ class ConfigurationPass implements CompilerPassInterface
      *
      * @param ContainerBuilder $container
      */
-    protected function registerConfigFiles(ContainerBuilder $container)
+    protected function registerDatagridFiles(ContainerBuilder $container)
     {
         if ($container->hasDefinition(OroConfigurationPass::PROVIDER_SERVICE_ID)) {
             $config = [];
+            $files = $this->listDatagridFiles($container);
 
-            foreach ($container->getParameter('kernel.bundles') as $bundle) {
-                $reflection = new \ReflectionClass($bundle);
-                $directory = sprintf(
-                    '%s/Resources/config/%s',
-                    dirname($reflection->getFilename()),
-                    OroConfigurationPass::ROOT_PARAMETER
-                );
-
-                if (is_dir($directory)) {
-                    $config = array_merge_recursive($config, $this->fetchBundleConfiguration($container, $directory));
+            foreach ($files as $file) {
+                $gridConfig = Yaml::parse($file->getPathName());
+                if (isset($gridConfig[OroConfigurationPass::ROOT_PARAMETER]) &&
+                    is_array($gridConfig[OroConfigurationPass::ROOT_PARAMETER])
+                ) {
+                    $config = array_merge_recursive($config, $gridConfig[OroConfigurationPass::ROOT_PARAMETER]);
                 }
+                $container->addResource(new FileResource($file->getPathName()));
             }
 
             $configProviderDef = $container->getDefinition(OroConfigurationPass::PROVIDER_SERVICE_ID);
@@ -58,29 +57,50 @@ class ConfigurationPass implements CompilerPassInterface
     }
 
     /**
-     * Get all the datagrid configurations for a bundle.
+     * Get all the datagrid configuration files registered in the Resources/datagrid/ directories.
      *
-     * @param ContainerBuilder $container the container
-     * @param string           $directory the path of the bundle
+     * @param ContainerBuilder $container
      *
-     * @return array
+     * @return SplFileInfo[] array the files (key: name of the file)
      */
-    protected function fetchBundleConfiguration(ContainerBuilder $container, $directory)
+    protected function listDatagridFiles(ContainerBuilder $container)
     {
-        $config = [];
-        $files = new Finder();
-        $files->files()->in($directory)->name('*.yml');
+        $files = [];
 
-        foreach($files as $file) {
-            $gridConfig = Yaml::parse($file->getPathName());
-            if (isset($gridConfig[OroConfigurationPass::ROOT_PARAMETER]) &&
-                is_array($gridConfig[OroConfigurationPass::ROOT_PARAMETER])
-            ) {
-                $config = array_merge_recursive($config, $gridConfig[OroConfigurationPass::ROOT_PARAMETER]);
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $reflection = new \ReflectionClass($bundle);
+            $directory = sprintf(
+                '%s/Resources/config/%s',
+                dirname($reflection->getFilename()),
+                OroConfigurationPass::ROOT_PARAMETER
+            );
+
+            if (is_dir($directory)) {
+                // using array_merge allow to override a file in a child bundle
+                $files = array_merge($files, $this->listDatagridFilesInDirectory($directory));
             }
-            $container->addResource(new FileResource($file));
         }
 
-        return $config;
+        return $files;
+    }
+
+    /**
+     * Get the list of datagrid files in a given directory.
+     *
+     * @param $directory
+     *
+     * @return SplFileInfo[] array the files (key: name of the file)
+     */
+    protected function listDatagridFilesInDirectory($directory)
+    {
+        $files = [];
+        $finder = new Finder();
+        $finder->files()->in($directory)->name('*.yml');
+
+        foreach($finder as $file) {
+            $files[$file->getRelativePathName()] = $file;
+        }
+
+        return $files;
     }
 }
