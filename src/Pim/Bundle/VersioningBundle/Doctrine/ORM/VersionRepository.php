@@ -1,9 +1,9 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Entity\Repository;
+namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
  * Version repository
@@ -12,13 +12,10 @@ use Pim\Bundle\VersioningBundle\Entity\Version;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionRepository extends EntityRepository
+class VersionRepository extends EntityRepository implements VersionRepositoryInterface
 {
     /**
-     * @param string $resourceName
-     * @param string $resourceId
-     *
-     * @return Version[]|null
+     * {@inheritdoc}
      */
     public function getLogEntries($resourceName, $resourceId)
     {
@@ -29,11 +26,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string    $resourceName
-     * @param string    $resourceId
-     * @param null|bool $pending
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
     {
@@ -41,11 +34,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string    $resourceName
-     * @param string    $resourceId
-     * @param null|bool $pending
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
     {
@@ -53,13 +42,46 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * Get pending versions
-     *
-     * @return Version[]
+     * {@inheritdoc}
      */
     public function getPendingVersions()
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
+    }
+
+    /**
+     * @return QueryBuilder
+     */
+    public function createDatagridQueryBuilder()
+    {
+        $userNameExpr = "CONCAT(CONCAT(CONCAT(u.firstName, ' '), CONCAT(u.lastName, ' - ')), u.email)";
+        $removedUserNameExpr = "CONCAT(v.author, ' - Removed user')";
+        $userExpr = sprintf('CASE WHEN u IS NOT NULL THEN %s ELSE %s END', $userNameExpr, $removedUserNameExpr);
+        $contextExpr = "CASE WHEN v.context IS NOT NULL THEN CONCAT(CONCAT(' (', v.context), ')') ELSE '' END";
+
+        $authorExpr = sprintf('CONCAT(%s, %s)', $userExpr, $contextExpr);
+
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('v.id, v.changeset as changeset, v.loggedAt as loggedAt, v.version as version')
+            ->from($this->_entityName, 'v', 'v.id');
+
+        $qb
+            ->addSelect(sprintf('%s as author', $authorExpr))
+            ->leftJoin(
+                'OroUserBundle:User',
+                'u',
+                'WITH',
+                'u.username = v.author'
+            )
+            ->where('v.pending = false')
+            ->andWhere(
+                $qb->expr()->andX(
+                    $qb->expr()->eq('v.resourceName', ':objectClass'),
+                    $qb->expr()->eq('v.resourceId', ':objectId')
+                )
+            );
+
+        return $qb;
     }
 
     /**
