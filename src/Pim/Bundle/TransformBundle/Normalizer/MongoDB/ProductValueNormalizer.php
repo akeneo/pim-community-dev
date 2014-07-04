@@ -29,11 +29,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function setSerializer(SerializerInterface $normalizer)
     {
-        if (!$normalizer instanceof NormalizerInterface) {
-            throw new \LogicException('Serializer must be a normalizer');
-        }
-
-        $this->normalizer = $normalizer;                                                                                                                                   
+        $this->normalizer = $normalizer;
     }
 
     /**
@@ -49,6 +45,10 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
      */
     public function normalize($value, $format = null, array $context = [])
     {
+        if (!$this->normalizer instanceof NormalizerInterface) {
+            throw new \LogicException('Serializer must be a normalizer');
+        }
+
         if (null === $value->getData()) {
             return null;
         }
