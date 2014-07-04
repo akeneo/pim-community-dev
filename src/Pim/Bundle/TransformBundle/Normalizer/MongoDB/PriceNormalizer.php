@@ -3,11 +3,9 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-
-use MongoId;
 
 /**
  * Normalize a product price into a MongoDB Document
@@ -18,6 +16,17 @@ use MongoId;
  */
 class PriceNormalizer implements NormalizerInterface
 {
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
+    /**
+     * @param MongoObjectsFactory $mongoFactory
+     */
+    public function __construct(MongoObjectsFactory $mongoFactory)
+    {
+        $this->mongoFactory = $mongoFactory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,13 +38,13 @@ class PriceNormalizer implements NormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function normalize($object, $format = null, array $context = [])
+    public function normalize($price, $format = null, array $context = [])
     {
         $data = [];
-        $data['_id'] = new MongoId;
-        $data['currency'] = $object->getCurrency();
-        if (null !== $object->getData()) {
-            $data['data'] = (float) $object->getData();
+        $data['_id'] = $this->mongoFactory->createMongoId();
+        $data['currency'] = $price->getCurrency();
+        if (null !== $price->getData()) {
+            $data['data'] = (float) $price->getData();
         }
 
         return $data;
