@@ -40,7 +40,7 @@ class EditCommonAttributesType extends BaseEditCommonAttributesType implements C
 
         $builder->addEventListener(
             FormEvents::PRE_SUBMIT,
-            function(FormEvent $event) {
+            function (FormEvent $event) {
                 $data = $event->getData();
                 $form = $event->getForm();
 
