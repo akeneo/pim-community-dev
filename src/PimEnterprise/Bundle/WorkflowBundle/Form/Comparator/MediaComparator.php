@@ -3,9 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
  * Comparator which calculate change set for medias
@@ -15,21 +13,8 @@ use Pim\Bundle\CatalogBundle\Model\Media;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class MediaComparator extends AbstractComparator
+class MediaComparator implements ComparatorInterface
 {
-    /** @var MediaManager */
-    protected $mediaManager;
-
-    /**
-     * Construct
-     *
-     * @param MediaManager $mediaManager
-     */
-    public function __construct(MediaManager $mediaManager)
-    {
-        $this->mediaManager = $mediaManager;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -41,28 +26,11 @@ class MediaComparator extends AbstractComparator
     /**
      * {@inheritdoc}
      */
-    public function getDataChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        $changes = [];
-
-        if (isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile) {
-            $media = new Media();
-            $media->setFile($submittedData['media']['file']);
-            $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
-
-            $changes['media'] = [
-                'filename' => $media->getFilename(),
-                'originalFilename' => $media->getOriginalFilename(),
-                'filePath' => $media->getFilePath(),
-                'mimeType' => $media->getMimeType(),
-                'size' => $submittedData['media']['file']->getClientSize(),
-            ];
+        if ((isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile)
+            || isset($submittedData['media']['removed'])) {
+            return $submittedData;
         }
-
-        if (isset($submittedData['media']['removed'])) {
-            $changes['media']['removed'] = true;
-        }
-
-        return $changes;
     }
 }

@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PricesComparator extends AbstractComparator
+class PricesComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class PricesComparator extends AbstractComparator
     /**
      * {@inheritdoc}
      */
-    public function getDataChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(AbstractProductValue $value, $submittedData)
     {
         if (!isset($submittedData['prices'])) {
             return;
