@@ -69,6 +69,8 @@ class ConfigureHistoryGridListener
             'objectId'    => $this->requestParams->get('object_id', $this->request->get('object_id', null))
         ];
         $config->offsetSetByPath('[source][repository_parameters]', $repositoryParams);
+
+        $config->offsetSetByPath('[columns][author][type]', 'author_property');
     }
 
     /**
