@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 
-class ProductMetricPublisherSpec extends ObjectBehavior
+class MetricPublisherSpec extends ObjectBehavior
 {
     function let()
     {

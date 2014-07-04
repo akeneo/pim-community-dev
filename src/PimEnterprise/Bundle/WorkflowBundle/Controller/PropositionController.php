@@ -75,6 +75,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function approveAction($id)
     {
@@ -108,6 +109,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function refuseAction($id)
     {
@@ -132,6 +134,8 @@ class PropositionController extends AbstractController
     }
 
     /**
+     * Mark a proposition as ready
+     *
      * @param integer|string $id
      *
      * @return RedirectResponse
