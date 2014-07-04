@@ -5,9 +5,15 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Proposition;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
 class ChangesCollectorSpec extends ObjectBehavior
 {
+    function let(MediaManager $manager)
+    {
+        $this->beConstructedWith($manager);
+    }
+
     function it_collects_values_changes(
         Model\AbstractProductValue $value,
         Model\AbstractAttribute $attribute
