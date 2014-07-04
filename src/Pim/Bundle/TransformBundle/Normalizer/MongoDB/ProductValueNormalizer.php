@@ -3,14 +3,12 @@
 namespace Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 use Doctrine\Common\Collections\Collection;
-
-use \MongoId;
-use \MongoDBRef;
 
 /**
  * Normalize a product value into a MongoDB embedded document
@@ -23,6 +21,17 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
 {
     /** @var NormalizerInterface */
     protected $normalizer;
+
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
+    /**
+     * @param MongoObjectsFactory $mongoFactory
+     */
+    public function __construct(MongoObjectsFactory $mongoFactory)
+    {
+        $this->mongoFactory = $mongoFactory;
+    }
 
     /**
      * {@inheritdoc}
@@ -57,9 +66,9 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         $productCollection = $context[ProductNormalizer::MONGO_COLLECTION_NAME];
 
         $data = [];
-        $data['_id'] = new MongoId();[];
+        $data['_id'] = $this->mongoFactory->createMongoId();
         $data['attribute'] = $value->getAttribute()->getId();
-        $data['entity'] = MongoDBRef::create($productCollection, $productId);
+        $data['entity'] = $this->mongoFactory->createMongoDBRef($productCollection, $productId);
 
         if (null !== $value->getLocale()) {
             $data['locale'] = $value->getLocale();
