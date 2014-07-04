@@ -29,9 +29,7 @@ class FilePresenter implements PresenterInterface
      */
     public function supports($data, array $change)
     {
-        return $data instanceof AbstractProductValue
-            && 'media' === $data->getAttribute()->getBackendType()
-            && array_key_exists('media', $change);
+        return $data instanceof AbstractProductValue && array_key_exists('media', $change);
     }
 
     /**
