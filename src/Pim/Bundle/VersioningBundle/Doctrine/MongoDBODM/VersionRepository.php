@@ -83,9 +83,12 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
             $criteria['pending'] = $pending;
         }
 
-        return $this->findOneBy(
-            $criteria,
-            ['loggedAt' => $sort]
+        return current(
+            $this->findBy(
+                $criteria,
+                ['loggedAt' => $sort],
+                1
+            )
         );
     }
 }
