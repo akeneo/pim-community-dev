@@ -18,6 +18,7 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -34,15 +35,14 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class CategoryTreeController extends AbstractDoctrineController
 {
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * Constructor
@@ -58,6 +58,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         Request $request,
@@ -70,7 +71,8 @@ class CategoryTreeController extends AbstractDoctrineController
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
-        UserContext $userContext
+        UserContext $userContext,
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -86,6 +88,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
         $this->categoryManager = $categoryManager;
         $this->userContext     = $userContext;
+        $this->securityFacade  = $securityFacade;
     }
 
     /**
