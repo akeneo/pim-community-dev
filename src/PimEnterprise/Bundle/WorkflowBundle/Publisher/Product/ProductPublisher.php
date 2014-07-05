@@ -30,10 +30,10 @@ class ProductPublisher implements PublisherInterface
     protected $versionManager;
 
     /**
-     * @param string                             $publishClassName
-     * @param PublisherInterface                 $publisher
+     * @param string                      $publishClassName
+     * @param PublisherInterface          $publisher
      * @param RelatedAssociationPublisher $associationPublisher
-     * @param VersionManager                     $versionManager
+     * @param VersionManager              $versionManager
      */
     public function __construct(
         $publishClassName,
