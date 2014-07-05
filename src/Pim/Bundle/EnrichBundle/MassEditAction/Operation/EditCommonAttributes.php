@@ -364,7 +364,11 @@ class EditCommonAttributes extends ProductMassEditOperation
         }
         if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
-                $this->values[$key.'_'.$channel->getCode()] = $this->createValue($attribute, $localeCode, $channel->getCode());
+                $this->values[$key.'_'.$channel->getCode()] = $this->createValue(
+                    $attribute,
+                    $localeCode,
+                    $channel->getCode()
+                );
             }
         } else {
             $this->values[$key] = $this->createValue($attribute, $localeCode);
