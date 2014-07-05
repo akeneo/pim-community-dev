@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 class PropositionManagerSpec extends ObjectBehavior
 {

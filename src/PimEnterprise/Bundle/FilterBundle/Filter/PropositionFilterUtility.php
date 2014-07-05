@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter;
 
 use Oro\Bundle\FilterBundle\Filter\FilterUtility as BaseFilterUtility;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 /**
  * Proposition filter utility
