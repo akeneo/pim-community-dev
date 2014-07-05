@@ -36,13 +36,12 @@ class CategoryTreeController extends BaseCategoryTreeController
     const CONTEXT_OWNERSHIP = 'ownership';
 
     /**
-     * Find a category from its id, trow exception is not found or not granted
+     * Find a category from its id, trows an exception if not found or not granted
      *
      * @param integer $categoryId the category id
      * @param string  $context    the retrieving context
      *
      * @return CategoryInterface
-     *
      * @throws NotFoundHttpException
      * @throws AccessDeniedException
      */
@@ -71,9 +70,6 @@ class CategoryTreeController extends BaseCategoryTreeController
      * @param string        $context the retrieving context
      *
      * @return CategoryInterface[]
-     *
-     * @throws NotFoundHttpException
-     * @throws AccessDeniedException
      */
     protected function findGrantedTrees(UserInterface $user, $context)
     {
