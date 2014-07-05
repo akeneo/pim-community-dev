@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Published product interface

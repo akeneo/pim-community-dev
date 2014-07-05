@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Published product
