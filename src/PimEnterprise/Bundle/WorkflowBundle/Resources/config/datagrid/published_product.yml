@@ -1,5 +1,5 @@
 datagrid:
-    publishedproduct-grid:
+    published-product-grid:
         options:
             entityHint: product
             requireJSModules:
