@@ -97,7 +97,7 @@ class ConfigurationPass implements CompilerPassInterface
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.yml');
 
-        foreach($finder as $file) {
+        foreach ($finder as $file) {
             $files[$file->getRelativePathName()] = $file;
         }
 
