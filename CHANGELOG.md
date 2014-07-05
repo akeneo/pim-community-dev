@@ -100,7 +100,7 @@
 - Inject group and group types classes in `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
 - Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
-
+- Inject SecurityFacade inside `Pim\Bundle\EnrichBundle\Controller\CategoryController`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
