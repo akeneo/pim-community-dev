@@ -1,5 +1,5 @@
 datagrid:
-    history-grid:
+    product-history-grid:
         source:
             type: pim_orm
             entity: %pim_versioning.entity.version.class%
