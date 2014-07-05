@@ -116,6 +116,12 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function getChildren($parentId, $selectNodeId = false)
     {
-        return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
+        $context = $this->request->get('context', false);
+        $allTrees = ($context === self::CONTEXT_MANAGE || $context === self::CONTEXT_OWNERSHIP);
+        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
+            return $this->categoryManager->getChildren($parentId, $selectNodeId);
+        } else {
+            return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
+        }
     }
 }
