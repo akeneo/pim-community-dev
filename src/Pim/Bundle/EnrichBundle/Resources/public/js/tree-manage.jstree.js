@@ -53,7 +53,7 @@ define(
                 },
                 json_data: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json' }),
+                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json', context: 'manage' }),
                         data: function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = null;

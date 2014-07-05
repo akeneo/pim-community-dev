@@ -43,7 +43,8 @@ define(
                     {
                         _format:    'json',
                         dataLocale: dataLocale,
-                        related_entity: relatedEntity
+                        related_entity: relatedEntity,
+                        context: 'view'
                     }
                 );
             },

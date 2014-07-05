@@ -49,7 +49,7 @@ define(
                                 return Routing.generate('pim_enrich_product_listcategories', { id: id, category_id: currentTree, _format: 'json', dataLocale: dataLocale });
                             }
 
-                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale });
+                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'associate' });
                         },
                         data: function (node) {
                             var data           = {},
