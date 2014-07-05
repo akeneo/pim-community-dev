@@ -54,6 +54,11 @@ datagrid:
                 route: pim_enrich_product_remove
                 params:
                     - id
+            toggle_status_link:
+                type: url
+                route: pim_enrich_product_toggle_status
+                params:
+                    - id
         actions:
             edit:
                 type:      tab-redirect
@@ -74,6 +79,11 @@ datagrid:
                 icon:  trash
                 link:  delete_link
                 acl_resource: pim_enrich_product_remove
+            toggle_status:
+                type:  ajax
+                label: Toggle status
+                icon:  retweet
+                link:  toggle_status_link
         mass_actions:
             delete:
                 type: delete
