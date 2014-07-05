@@ -102,23 +102,6 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listTreeAction(Request $request)
     {
-        return $this->manageTreeAction($request);
-    }
-
-    /**
-     * List category trees for management.The select_node_id request parameter
-     * allow to send back the tree where the node belongs with a selected
-     * attribute
-     *
-     * @param Request $request
-     *
-     * @return array
-     *
-     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
-     * @AclAncestor("pim_enrich_category_list")
-     */
-    public function manageTreeAction(Request $request)
-    {
         $selectNodeId = $request->get('select_node_id', -1);
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -131,7 +114,7 @@ class CategoryTreeController extends AbstractDoctrineController
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
-            'related_entity' => $this->getRequest()->get('related_entity', 'product'),
+            'related_entity' => $this->getRequest()->get('related_entity', 'product')
         );
     }
 
