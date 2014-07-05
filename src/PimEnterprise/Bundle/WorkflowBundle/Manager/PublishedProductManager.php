@@ -100,6 +100,7 @@ class PublishedProductManager
         $published = $this->findPublishedProductByOriginalId($product->getId());
         if ($published) {
             $this->getObjectManager()->remove($published);
+            $this->getObjectManager()->flush();
         }
 
         $published = $this->factory->createPublishedProduct($product);

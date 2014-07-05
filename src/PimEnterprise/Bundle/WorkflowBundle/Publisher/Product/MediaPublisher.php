@@ -1,9 +1,10 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product media publisher
@@ -11,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Manager\MediaManager;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductMediaPublisher implements PublisherInterface
+class MediaPublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;

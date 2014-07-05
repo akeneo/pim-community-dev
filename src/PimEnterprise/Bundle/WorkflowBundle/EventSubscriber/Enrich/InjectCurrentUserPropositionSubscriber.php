@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
+use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
  * Inject current user proposition in a product before editing a product
@@ -74,7 +75,12 @@ class InjectCurrentUserPropositionSubscriber implements EventSubscriberInterface
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
-               $this->applier->apply($product, $proposition);
+            try {
+                $this->applier->apply($product, $proposition);
+            } catch (ValidatorException $e) {
+                // Do nothing here at the moment
+                //TODO: remove this try catch and load the form directly with the potential errors
+            }
         }
     }
 

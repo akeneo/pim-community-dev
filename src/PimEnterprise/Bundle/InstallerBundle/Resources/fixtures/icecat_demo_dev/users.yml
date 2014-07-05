@@ -21,11 +21,11 @@ users:
         firstname: Julia
         lastname: Zaro
         owner: Main
-        catalog_locale: de_DE
+        catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_MANAGER
         groups:
             - marketing
         enable: true
@@ -40,7 +40,7 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_USER
         groups:
             - marketing
         enable: true
@@ -55,7 +55,7 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_USER
         groups:
             - marketing
         enable: true

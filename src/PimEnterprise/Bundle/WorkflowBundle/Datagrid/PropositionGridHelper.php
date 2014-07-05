@@ -29,7 +29,7 @@ class PropositionGridHelper
         };
     }
 
-   /**
+    /**
      * Returns available proposition status choices
      *
      * @return array

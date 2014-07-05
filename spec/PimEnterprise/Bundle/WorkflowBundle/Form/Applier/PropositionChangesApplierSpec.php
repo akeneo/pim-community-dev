@@ -28,7 +28,7 @@ class PropositionChangesApplierSpec extends ObjectBehavior
         Model\AbstractProduct $product,
         Proposition $proposition
     ) {
-        $formFactory->createBuilder('form', $product)->willReturn($formBuilder);
+        $formFactory->createBuilder('form', $product, ['csrf_protection' => false])->willReturn($formBuilder);
         $valuesFieldOptions = [
             'type'               => 'pim_product_value',
             'allow_add'          => false,
@@ -41,6 +41,7 @@ class PropositionChangesApplierSpec extends ObjectBehavior
         $formBuilder->add('values', 'pim_enrich_localized_collection', $valuesFieldOptions)->willReturn($formBuilder);
         $formBuilder->addEventListener(FormEvents::PRE_SUBMIT, Argument::any())->willReturn($formBuilder);
         $formBuilder->getForm()->willReturn($form);
+        $form->all()->willReturn([]);
 
         $proposition->getChanges()->willReturn(['foo' => 'bar']);
         $form->submit(['foo' => 'bar'], false)->shouldBeCalled();

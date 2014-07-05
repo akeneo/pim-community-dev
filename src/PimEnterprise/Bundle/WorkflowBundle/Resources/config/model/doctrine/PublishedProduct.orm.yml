@@ -73,7 +73,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - refresh
     oneToOne:
         version:
-          targetEntity: Pim\Bundle\VersioningBundle\Entity\Version
+          targetEntity: Pim\Bundle\VersioningBundle\Model\Version
           joinColumns:
             version_id:
                 referencedColumnName: id

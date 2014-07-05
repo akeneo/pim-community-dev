@@ -1,20 +1,21 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use Prophecy\Argument;
 
 class ProductPublisherSpec extends ObjectBehavior
 {
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\ProductPublisher');
+        $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\ProductPublisher');
     }
 
     function it_is_a_publisher()
@@ -24,7 +25,7 @@ class ProductPublisherSpec extends ObjectBehavior
 
     function let(
         PublisherInterface $publisher,
-        PublisherInterface $associationsPublisher,
+        RelatedAssociationPublisher $associationsPublisher,
         VersionManager $versionManager
     ) {
         $this->beConstructedWith(
@@ -35,7 +36,7 @@ class ProductPublisherSpec extends ObjectBehavior
         );
     }
 
-    function it_publishes_a_product($versionManager,AbstractProduct $product, Version $version)
+    function it_publishes_a_product($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
@@ -45,7 +46,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
     }
 
-    function it_sets_the_version_during_publishing($versionManager,AbstractProduct $product, Version $version)
+    function it_sets_the_version_during_publishing($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
@@ -56,7 +57,7 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->getVersion()->shouldReturn($version);
     }
 
-    function it_builds_the_version_if_needed_during_publishing($versionManager,AbstractProduct $product, Version $version)
+    function it_builds_the_version_if_needed_during_publishing($versionManager, AbstractProduct $product, Version $version)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);

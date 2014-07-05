@@ -10,6 +10,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\Common\Persistence\ObjectRepository;
@@ -74,6 +75,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function approveAction($id)
     {
@@ -85,7 +87,12 @@ class PropositionController extends AbstractController
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->approve($proposition);
+        try {
+            $this->manager->approve($proposition);
+            $this->addFlash('success', 'flash.propositon.approve.success');
+        } catch (ValidatorException $e) {
+            $this->addFlash('error', 'flash.propositon.approve.error', ['%error%' => $e->getMessage()]);
+        }
 
         return $this->redirect(
             $this->generateUrl(
@@ -102,6 +109,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function refuseAction($id)
     {
@@ -126,6 +134,8 @@ class PropositionController extends AbstractController
     }
 
     /**
+     * Mark a proposition as ready
+     *
      * @param integer|string $id
      *
      * @return RedirectResponse

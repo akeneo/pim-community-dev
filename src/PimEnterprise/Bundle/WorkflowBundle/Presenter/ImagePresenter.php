@@ -31,7 +31,6 @@ class ImagePresenter implements PresenterInterface
     public function supports($data, array $change)
     {
         return $data instanceof AbstractProductValue
-            && 'media' === $data->getAttribute()->getBackendType()
             && array_key_exists('media', $change)
             && (
                 $this->isImageMimeType($data->getMedia()) || $this->isImageMimeType($change['media'])

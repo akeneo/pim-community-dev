@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 
-class ProductMediaPublisherSpec extends ObjectBehavior
+class MediaPublisherSpec extends ObjectBehavior
 {
     function let(MediaManager $mediaManager)
     {
