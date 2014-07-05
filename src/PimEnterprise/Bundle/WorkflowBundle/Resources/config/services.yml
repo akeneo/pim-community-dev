@@ -12,7 +12,7 @@ services:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.propositions-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposition-grid, method: onBuildAfter }
 
     pimee_workflow.controller.proposition:
         class: %pimee_workflow.controller.proposition.class%

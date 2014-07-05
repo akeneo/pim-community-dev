@@ -1,5 +1,5 @@
 datagrid:
-    propositions-grid:
+    proposition-grid:
         options:
             entityHint: proposition
         source:
