@@ -273,7 +273,7 @@ class AttributeGroupAccessRepository extends EntityRepository
     /**
      * Get table name of entity defined
      *
-     * @param string      $entityParameter
+     * @param string      $classParam
      * @param string|null $targetEntity
      *
      * @return string

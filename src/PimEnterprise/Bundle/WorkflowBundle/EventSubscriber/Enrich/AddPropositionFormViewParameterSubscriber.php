@@ -22,12 +22,14 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
     /** @var PropositionManager */
     protected $manager;
 
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        PropositionManager $manager
-    ) {
+    /**
+     * @param FormFactoryInterface $formFactory
+     * @param PropositionManager   $manager
+     */
+    public function __construct(FormFactoryInterface $formFactory, PropositionManager $manager)
+    {
         $this->formFactory = $formFactory;
-        $this->manager = $manager;
+        $this->manager     = $manager;
     }
 
     /**

@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
@@ -30,10 +29,10 @@ class ProductPublisher implements PublisherInterface
     protected $versionManager;
 
     /**
-     * @param string                             $publishClassName
-     * @param PublisherInterface                 $publisher
+     * @param string                      $publishClassName
+     * @param PublisherInterface          $publisher
      * @param RelatedAssociationPublisher $associationPublisher
-     * @param VersionManager                     $versionManager
+     * @param VersionManager              $versionManager
      */
     public function __construct(
         $publishClassName,

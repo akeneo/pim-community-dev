@@ -56,7 +56,7 @@ class CategoryAccessProcessor extends TransformerProcessor
      *      'viewProducts': true,
      *      'editProducts': false,
      * ]
-     * @param $data
+     * @param array $data
      *
      * @return array usable items
      */

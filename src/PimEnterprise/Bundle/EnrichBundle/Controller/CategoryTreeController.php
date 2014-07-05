@@ -15,6 +15,8 @@ use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 /**
+ * Overriden CategoryTreeController
+ *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */

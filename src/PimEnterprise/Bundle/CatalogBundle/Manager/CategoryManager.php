@@ -27,7 +27,7 @@ class CategoryManager extends BaseCategoryManager
      *
      * @param ObjectManager            $om
      * @param string                   $categoryClass
-     * @param EventDispatcherInterface $eventDispatcherInterface
+     * @param EventDispatcherInterface $eventDispatcher
      * @param CategoryAccessRepository $categoryAccessRepo
      */
     public function __construct(

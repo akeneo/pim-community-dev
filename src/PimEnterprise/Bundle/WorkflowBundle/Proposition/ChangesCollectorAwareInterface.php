@@ -13,7 +13,7 @@ interface ChangesCollectorAwareInterface
     /**
      * Set the collector
      *
-     * @param ChangesCollectorInterface
+     * @param ChangesCollectorInterface $collector
      */
     public function setCollector(ChangesCollectorInterface $collector);
 }

@@ -15,6 +15,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
+ * Overriden EditCommonAttributes operation to check permissions
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

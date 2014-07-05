@@ -143,6 +143,8 @@ class PropositionPersister implements ProductPersister
      *
      * @param ObjectManager    $manager
      * @param ProductInterface $product
+     *
+     * @return null
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {

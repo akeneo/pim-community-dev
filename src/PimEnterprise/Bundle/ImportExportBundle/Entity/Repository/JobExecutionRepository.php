@@ -16,12 +16,12 @@ class JobExecutionRepository extends PimJobExecutionRepository
     /**
      * Get last operations
      *
-     * @see JobExecutionRepository::getLastOperationsData()
-     *
      * @param array        $types
      * @param QueryBuilder $subQB
      *
      * @return array
+     *
+     * @see JobExecutionRepository::getLastOperationsData()
      */
     public function getLastOperations(array $types, QueryBuilder $subQB)
     {

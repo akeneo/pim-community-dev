@@ -18,7 +18,6 @@ class PropositionFactory
      *
      * @param ProductInterface $product
      * @param string           $username
-     * @param array            $changes
      *
      * @return Proposition
      */

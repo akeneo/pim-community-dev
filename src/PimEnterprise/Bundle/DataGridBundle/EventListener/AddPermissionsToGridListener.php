@@ -27,6 +27,7 @@ class AddPermissionsToGridListener
     /**
      * @param AccessRepositoryInterface $accessRepository
      * @param SecurityContextInterface  $securityContext
+     * @param string                    $accessLevel
      */
     public function __construct(
         AccessRepositoryInterface $accessRepository,

@@ -31,7 +31,6 @@ class ChangesCollector implements ChangesCollectorInterface
         $this->mediaManager = $mediaManager;
     }
 
-
     /**
      * {@inheritdoc}
      */

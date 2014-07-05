@@ -15,7 +15,7 @@ interface TwigAwareInterface
     /**
      * Set the twig environment
      *
-     * @param RendererInterface $renderer
+     * @param RendererInterface $twig
      */
     public function setTwig(\Twig_Environment $twig);
 }
