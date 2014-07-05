@@ -18,3 +18,7 @@ categories:
         labels:
             en_US: Tees
         parent: summer_collection
+    jackets:
+        labels:
+            en_US: Jackets
+        parent: summer_collection

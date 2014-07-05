@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid;
 
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 /**
  * Helper for proposition datagrid
@@ -12,6 +13,22 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
  */
 class PropositionGridHelper
 {
+
+    /**
+     * Returns callback that will disable approve and refuse buttons
+     * given proposition status
+     *
+     * @return callable
+     */
+    public function getActionConfigurationClosure()
+    {
+        return function (ResultRecordInterface $record) {
+            if (Proposition::IN_PROGRESS === $record->getValue('status')) {
+                return ['approve' => false, 'refuse' => true];
+            }
+        };
+    }
+
     /**
      * Returns available proposition status choices
      *

@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
 /**
  * Factory of uploaded file
@@ -22,10 +23,13 @@ class UploadedFileFactory
      * @param integer $error        The error constant of the upload (one of PHP's UPLOAD_ERR_XXX constants)
      * @param Boolean $test         Whether the test mode is active
      *
-     * @return UploadedFile
+     * @return UploadedFile|null
      */
     public function create($path, $originalName, $mimeType = null, $size = null, $error = null, $test = false)
     {
-        return new UploadedFile($path, $originalName, $mimeType, $size, $error, $test);
+        try {
+            return new UploadedFile($path, $originalName, $mimeType, $size, $error, $test);
+        } catch (FileNotFoundException $e) {
+        }
     }
 }

@@ -1,10 +1,13 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product publisher
@@ -20,14 +23,28 @@ class ProductPublisher implements PublisherInterface
     /** @var PublisherInterface */
     protected $publisher;
 
+    /** @var RelatedAssociationPublisher */
+    protected $associationPublisher;
+
+    /** @var VersionManager */
+    protected $versionManager;
+
     /**
-     * @param string             $publishClassName
-     * @param PublisherInterface $publisher
+     * @param string                             $publishClassName
+     * @param PublisherInterface                 $publisher
+     * @param RelatedAssociationPublisher $associationPublisher
+     * @param VersionManager                     $versionManager
      */
-    public function __construct($publishClassName, PublisherInterface $publisher)
-    {
+    public function __construct(
+        $publishClassName,
+        PublisherInterface $publisher,
+        RelatedAssociationPublisher $associationPublisher,
+        VersionManager $versionManager
+    ) {
         $this->publishClassName = $publishClassName;
         $this->publisher = $publisher;
+        $this->associationPublisher = $associationPublisher;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -43,6 +60,8 @@ class ProductPublisher implements PublisherInterface
         $this->copyAssociations($object, $published);
         $this->copyCompletenesses($object, $published);
         $this->copyValues($object, $published);
+        $this->updateRelatedAssociations($published);
+        $this->setVersion($object, $published);
 
         return $published;
     }
@@ -94,9 +113,7 @@ class ProductPublisher implements PublisherInterface
     {
         foreach ($product->getAssociations() as $association) {
             $copiedAssociation = $this->publisher->publish($association, ['published' => $published]);
-            if (count($copiedAssociation->getGroups()) > 0 || count($copiedAssociation->getProducts())) {
-                $published->addAssociation($copiedAssociation);
-            }
+            $published->addAssociation($copiedAssociation);
         }
     }
 
@@ -128,6 +145,33 @@ class ProductPublisher implements PublisherInterface
             $publishedValue = $this->publisher->publish($originalValue);
             $published->addValue($publishedValue);
         }
+    }
+
+    /**
+     * Publish related associations
+     *
+     * @param PublishedProductInterface $published
+     */
+    protected function updateRelatedAssociations(PublishedProductInterface $published)
+    {
+        $this->associationPublisher->publish($published);
+    }
+
+    /**
+     * Set the version of the published product
+     *
+     * @param ProductInterface          $product
+     * @param PublishedProductInterface $published
+     */
+    protected function setVersion(ProductInterface $product, PublishedProductInterface $published)
+    {
+        $version = $this->versionManager->getNewestLogEntry($product, null);
+
+        if ($version->isPending()) {
+            $this->versionManager->buildPendingVersion($version);
+        }
+
+        $published->setVersion($version);
     }
 
     /**

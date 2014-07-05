@@ -13,10 +13,6 @@ class MetricComparatorSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
-        $value->getId()->willReturn(713705);
-        $value->getScope()->willReturn('ecommerce');
-        $value->getLocale()->willReturn('fr_FR');
-        $attribute->getId()->willReturn(1337);
     }
 
     function it_is_a_comparator()
@@ -55,12 +51,6 @@ class MetricComparatorSpec extends ObjectBehavior
                 'data' => '100',
                 'unit' => 'KILOGRAM',
             ],
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-                'locale' => 'fr_FR',
-            ],
         ]);
     }
 
@@ -84,12 +74,6 @@ class MetricComparatorSpec extends ObjectBehavior
             'metric' => [
                 'data' => '100',
                 'unit' => 'GRAM',
-            ],
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-                'locale' => 'fr_FR',
             ],
         ]);
     }
@@ -134,12 +118,6 @@ class MetricComparatorSpec extends ObjectBehavior
                 'data' => '',
                 'unit' => 'KILOGRAM',
             ],
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-                'locale' => 'fr_FR',
-            ],
         ]);
     }
 
@@ -179,12 +157,6 @@ class MetricComparatorSpec extends ObjectBehavior
             'metric' => [
                 'data' => '100',
                 'unit' => 'KILOGRAM',
-            ],
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-                'locale' => 'fr_FR',
             ],
         ]);
     }

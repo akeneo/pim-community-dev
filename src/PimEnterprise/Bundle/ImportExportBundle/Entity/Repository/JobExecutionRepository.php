@@ -32,4 +32,18 @@ class JobExecutionRepository extends PimJobExecutionRepository
 
         return $qb->getQuery()->getArrayResult();
     }
+
+    /**
+     * Inject subquery to filter jobs depending on permissions
+     *
+     * @param QueryBuilder $qb
+     * @param QueryBuilder $subQB
+     */
+    public function addGridAccessQB(QueryBuilder $qb, QueryBuilder $subQB)
+    {
+        $qb
+            ->andWhere(
+                $qb->expr()->in('j.id', $subQB->getDQL())
+            );
+    }
 }

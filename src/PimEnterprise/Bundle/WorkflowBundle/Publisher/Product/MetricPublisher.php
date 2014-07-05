@@ -1,8 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product metric publisher
@@ -10,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductMetricPublisher implements PublisherInterface
+class MetricPublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;

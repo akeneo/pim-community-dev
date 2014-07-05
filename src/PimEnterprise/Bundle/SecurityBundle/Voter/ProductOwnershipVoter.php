@@ -9,6 +9,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepos
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
+ * Voter of the product ownership attribute
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

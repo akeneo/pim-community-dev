@@ -1,5 +1,7 @@
 parameters:
     pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pimee_enrich.mass_edit_action.publish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
+    pim_enrich.mass_edit_action.edit_common_attributes.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
 
 services:
     pim_enrich.mass_edit_action.classify:
@@ -13,4 +15,35 @@ services:
                 name: pim_enrich.mass_edit_action
                 alias: classify
                 acl: pim_enrich_product_categories_view
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    pimee_enrich.mass_edit_action.publish:
+        public: false
+        class: %pimee_enrich.mass_edit_action.publish.class%
+        arguments:
+            - '@pimee_workflow.manager.published_product'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: publish
+                acl: pimee_workflow_published_product_publish
+                operator: pim_enrich.mass_edit_action.operator.product
+
+    pim_enrich.mass_edit_action.edit_common_attributes:
+        public: false
+        class: %pim_enrich.mass_edit_action.edit_common_attributes.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.currency'
+            - '@pim_catalog.context.catalog'
+            - '@pim_catalog.builder.product'
+            - '@pim_catalog.manager.product_mass_action'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: edit-common-attributes
+                acl: pim_enrich_product_edit
                 operator: pim_enrich.mass_edit_action.operator.product

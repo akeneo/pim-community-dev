@@ -1,8 +1,9 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product completeness publisher
@@ -10,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractCompleteness;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductCompletenessPublisher implements PublisherInterface
+class CompletenessPublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;

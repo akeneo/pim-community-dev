@@ -1,9 +1,10 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
+namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
  * Product price publisher
@@ -11,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductPricePublisher implements PublisherInterface
+class PricePublisher implements PublisherInterface
 {
     /** @var string */
     protected $publishClassName;

@@ -1,4 +1,4 @@
-{% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label %}
+{% set title = (entityName ~ '.title')|trans ~ ' - ' ~ jobInstance.label ~ ' [' ~ jobInstance.code ~ ']'  %}
 
 {% set left %}
     <ul class="inline">

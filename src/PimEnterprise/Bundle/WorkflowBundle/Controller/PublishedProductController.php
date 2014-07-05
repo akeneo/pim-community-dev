@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -40,6 +41,7 @@ class PublishedProductController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param UserContext              $userContext
      * @param PublishedProductManager  $manager
      */
@@ -51,6 +53,7 @@ class PublishedProductController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager
     ) {
@@ -61,7 +64,8 @@ class PublishedProductController extends AbstractController
             $securityContext,
             $formFactory,
             $validator,
-            $translator
+            $translator,
+            $eventDispatcher
         );
         $this->userContext    = $userContext;
         $this->manager        = $manager;

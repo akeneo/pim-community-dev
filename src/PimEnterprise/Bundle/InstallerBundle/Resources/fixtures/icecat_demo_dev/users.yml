@@ -11,6 +11,8 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - administrators
         enable: true
     julia:
         username: julia
@@ -19,11 +21,13 @@ users:
         firstname: Julia
         lastname: Zaro
         owner: Main
-        catalog_locale: de_DE
+        catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_MANAGER
+        groups:
+            - marketing
         enable: true
     mary:
         username: mary
@@ -36,7 +40,9 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_USER
+        groups:
+            - marketing
         enable: true
     sandra:
         username: sandra
@@ -49,7 +55,9 @@ users:
         catalog_scope: ecommerce
         default_tree: master
         roles:
-            - ROLE_ADMINISTRATOR
+            - ROLE_USER
+        groups:
+            - marketing
         enable: true
     peter:
         username: peter
@@ -63,4 +71,6 @@ users:
         default_tree: master
         roles:
             - ROLE_ADMINISTRATOR
+        groups:
+            - administrators
         enable: true

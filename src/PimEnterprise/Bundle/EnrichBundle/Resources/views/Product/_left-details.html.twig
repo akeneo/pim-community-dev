@@ -23,8 +23,25 @@
 
     <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
     <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
-    <li>{{ 'Owner roles'|trans }}:
+    <li>{{ 'pimee_enrich.roles.label'|trans|capitalize }}:
         {% for role in ownerRoles %}
             {{ role['label'] }}{% if not loop.last %}, {% endif %}
+        {% else %}
+            {{ 'pimee_enrich.roles.empty'|trans|capitalize }}
         {% endfor %}
+    </li>
+    <li>{{ 'Status'|trans }}:
+        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
+            {{ 'pimee_workflow.proposition.status.working_copy'|trans|capitalize }}
+        {% else %}
+            {% if proposition.inProgress %}
+                {% if proposition.id is not null %}
+                    {{ 'pimee_workflow.proposition.status.in_progress'|trans|capitalize }}
+                {% else %}
+                    {{ 'pimee_workflow.proposition.status.working_copy'|trans|capitalize }}
+                {% endif %}
+            {% else %}
+                {{ 'pimee_workflow.proposition.status.ready'|trans|capitalize }}
+            {% endif %}
+        {% endif %}
     </li>
