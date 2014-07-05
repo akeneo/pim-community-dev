@@ -249,13 +249,16 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $product->setEnabled(!$product->isEnabled());
+        $toggledStatus = !$product->isEnabled();
+        $product->setEnabled($toggledStatus);
         $this->productManager->saveProduct($product);
+
+        $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse([
                 'successful' => true,
-                'message' => $this->translator->trans('Product status has been toggled')
+                'message' => $this->translator->trans($successMessage)
             ]);
         } else {
             return $this->redirectToRoute('pim_enrich_product_index');
