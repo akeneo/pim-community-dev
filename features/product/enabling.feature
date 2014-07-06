@@ -21,3 +21,25 @@ Feature: Enable and disable a product
     And I enable the product
     Then I should see flash message "Product successfully updated"
     And product "boat" should be enabled
+
+  Scenario: Successfully disable a product from the grid
+    Given the following products:
+      | sku             | enabled |
+      | glass           | yes     |
+    Given I am on the products page
+    When I click on the "Toggle status" action of the row which contains "glass"
+    Then the row "glass" should contain:
+      | column        | value    |
+      | SKU           | glass    |
+      | status        | Disabled |
+
+  Scenario: Successfully enable a product from the grid
+    Given the following products:
+      | sku             | enabled |
+      | glass           | no      |
+    Given I am on the products page
+    When I click on the "Toggle status" action of the row which contains "glass"
+    Then the row "glass" should contain:
+      | column        | value   |
+      | SKU           | glass   |
+      | status        | Enabled |
