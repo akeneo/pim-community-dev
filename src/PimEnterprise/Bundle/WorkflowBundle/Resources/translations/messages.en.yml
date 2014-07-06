@@ -12,9 +12,9 @@ pimee_workflow:
         action:
             approve: Approve
             refuse:  Refuse
-    publishedproduct:
+    published_product:
         index: Published Products
-    acl.publishedproduct:
+    acl.published_product:
         index: Manage published products
         publish: Publish product
 btn.publish: Publish
@@ -23,9 +23,9 @@ flash.propositon.approve.success: The proposition has been applied successfully.
 flash.propositon.approve.error: The proposition can't be applied due to the following error. %error%
 pim_menu:
     item:
-        publishedproduct: Published products
+        published_product: Published products
 pim_title:
-    publishedproduct:
+    published_product:
         index:  Published products
         view: Published product
 btn.editworkingcopy: Edit working copy
