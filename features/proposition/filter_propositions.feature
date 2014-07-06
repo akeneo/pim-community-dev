@@ -1,5 +1,5 @@
 @javascript
-Feature: Filter proposals
+Feature: Filter propositions
   In order to easily find propositions for the product
   As a product manager
   I need to be able to filter them

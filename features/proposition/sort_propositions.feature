@@ -1,5 +1,5 @@
 @javascript
-Feature: Sort proposals
+Feature: Sort propositions
   In order to easily manage propositions for a specific product
   As a product manager
   I need to be able to sort propositions by several columns
