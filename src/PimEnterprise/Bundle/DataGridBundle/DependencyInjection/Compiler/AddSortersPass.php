@@ -18,7 +18,7 @@ class AddSortersPass implements CompilerPassInterface
     const SORTER_PROPOSITION_EXTENSION_ID = 'pimee_datagrid.extension.sorter.proposition_sorter';
 
     /** @staticvar string */
-    const TAG_NAME = 'pim_datagrid.extension.sorter';
+    const TAG_NAME = 'pimee_datagrid.extension.sorter';
 
     /**
      * {@inheritdoc}
