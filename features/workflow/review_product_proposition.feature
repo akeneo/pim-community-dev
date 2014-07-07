@@ -203,7 +203,7 @@ Feature: Review a product changes proposition
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     When I visit the "Propositions" tab
-    And I click on the "refuse" action of the row which contains "Name"
+    And I click on the "remove" action of the row which contains "Name"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
     Then the product Name should be "Jacket"
