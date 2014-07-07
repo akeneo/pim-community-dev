@@ -58,5 +58,5 @@ services:
         arguments:
             - '@pim_catalog.mongodb.mongo_objects_factory'
         tags:
-            - { name: pim_serializer.normalizer, priority: 20 }
+            - { name: pim_serializer.normalizer, priority: 90 }
 

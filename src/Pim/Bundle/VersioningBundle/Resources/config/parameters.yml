@@ -1,4 +1,5 @@
 parameters:
+    pim_versioning.entity.product.class:                   Pim\Bundle\VersioningBundle\Entity\Version
     pim_versioning.versionable_entities:                   ~
     pim_versioning.manager.version.class:                  Pim\Bundle\VersioningBundle\Manager\VersionManager
     pim_versioning.builder.version.class:                  Pim\Bundle\VersioningBundle\Builder\VersionBuilder
