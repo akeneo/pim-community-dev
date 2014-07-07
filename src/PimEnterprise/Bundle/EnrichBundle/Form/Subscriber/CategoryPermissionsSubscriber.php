@@ -79,6 +79,8 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $editRoles = $this->accessManager->getEditRoles($event->getData());
         $form->get('edit')->setData($editRoles);
         $this->precedentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+        // TODO: to delete, for testing purpose !
+        //$this->accessManager->addChildrenAccess($event->getData(), $viewRoles, $editRoles);
     }
 
     /**
@@ -106,7 +108,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
-            if ($updateChildren && count($addedViewRoles) > 0 && count($addedEditRoles) > 0) {
+            if ($updateChildren && (count($addedViewRoles) > 0 || count($addedEditRoles) > 0)) {
                 $this->accessManager->addChildrenAccess($event->getData(), $addedViewRoles, $addedEditRoles);
             }
         }

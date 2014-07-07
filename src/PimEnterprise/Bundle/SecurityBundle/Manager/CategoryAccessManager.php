@@ -4,8 +4,11 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
@@ -29,15 +32,22 @@ class CategoryAccessManager
     protected $categoryAccessClass;
 
     /**
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
      * Constructor
      *
      * @param ManagerRegistry $registry
      * @param string          $categoryAccessClass
+     * @param string          $categoryClass
      */
-    public function __construct(ManagerRegistry $registry, $categoryAccessClass)
+    public function __construct(ManagerRegistry $registry, $categoryAccessClass, $categoryClass)
     {
         $this->registry            = $registry;
         $this->categoryAccessClass = $categoryAccessClass;
+        $this->categoryClass       = $categoryClass;
     }
 
     /**
@@ -49,7 +59,7 @@ class CategoryAccessManager
      */
     public function getViewRoles(CategoryInterface $category)
     {
-        return $this->getRepository()->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS);
     }
 
     /**
@@ -61,7 +71,7 @@ class CategoryAccessManager
      */
     public function getEditRoles(CategoryInterface $category)
     {
-        return $this->getRepository()->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS);
     }
 
     /**
@@ -99,7 +109,30 @@ class CategoryAccessManager
      */
     public function addChildrenAccess(CategoryInterface $parent, $viewRoles, $editRoles)
     {
-        // TODO : to implement
+        $categoryRepo = $this->getCategoryRepository();
+        $categoryQb = $categoryRepo->getAllChildrenQueryBuilder($parent);
+        $rootAlias  = current($categoryQb->getRootAliases());
+        $rootEntity = current($categoryQb->getRootEntities());
+        $categoryQb->select($rootAlias.'.id');
+        $categoryQb->resetDQLPart('from');
+        $categoryQb->from($rootEntity, $rootAlias, $rootAlias.'.id');
+        $childrenIds = array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
+
+        // TODO : how to deal with view but not edit ? if a row exist already for view ?
+        $role = current($viewRoles);
+        $accessRepo = $this->getAccessRepository();
+        $grantedIds = $accessRepo->getGrantedCategoryIdsByRoles([$role], CategoryVoter::VIEW_PRODUCTS, $childrenIds);
+
+        $toGrantIds = array_diff($childrenIds, $grantedIds);
+        $categories = $categoryRepo->findBy(['id' => $toGrantIds]);
+        foreach ($categories as $category) {
+            $access = new $this->categoryAccessClass();
+            $access->setCategory($category)->setRole($role);
+            $access->setViewProducts(true);
+            $access->setEditProducts(true);
+            $this->getObjectManager()->persist($access);
+        }
+        $this->getObjectManager()->flush();
     }
 
     /**
@@ -129,7 +162,7 @@ class CategoryAccessManager
      */
     protected function getCategoryAccess(CategoryInterface $category, Role $role)
     {
-        $access = $this->getRepository()
+        $access = $this->getAccessRepository()
             ->findOneBy(
                 [
                     'category' => $category,
@@ -158,15 +191,25 @@ class CategoryAccessManager
      */
     protected function revokeAccess(CategoryInterface $category, array $excludedRoles = [])
     {
-        return $this->getRepository()->revokeAccess($category, $excludedRoles);
+        return $this->getAccessRepository()->revokeAccess($category, $excludedRoles);
     }
 
     /**
-     * Get repository
+     * Get category repository
+     *
+     * @return CategoryRepository
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->registry->getRepository($this->categoryClass);
+    }
+
+    /**
+     * Get category access repository
      *
      * @return CategoryAccessRepository
      */
-    protected function getRepository()
+    protected function getAccessRepository()
     {
         return $this->registry->getRepository($this->categoryAccessClass);
     }
