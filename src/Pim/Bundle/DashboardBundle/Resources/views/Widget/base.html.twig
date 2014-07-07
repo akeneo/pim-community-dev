@@ -1,0 +1,16 @@
+{% block widget_outer %}
+    <div class="quick-launchpad-widget span6">
+        <div class="clearfix">
+            {% block widget_inner %}
+                {% if widgetTitle is defined %}
+                    <div class="widget-header">
+                        {{ widgetTitle }}
+                    </div>
+                {% endif %}
+                {% if widgetContent is defined %}
+                    {{ widgetContent }}
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+{% endblock %}

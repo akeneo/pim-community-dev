@@ -101,6 +101,7 @@
 - Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
 - Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
 - Inject SecurityFacade inside `Pim\Bundle\EnrichBundle\Controller\CategoryController`
+- Each dashboard widget has to define its full template, nothing is rendered automatically
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
