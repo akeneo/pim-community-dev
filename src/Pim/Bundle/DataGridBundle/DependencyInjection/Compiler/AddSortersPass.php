@@ -5,7 +5,7 @@ namespace Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Pim\Bundle\CatalogBundle\PimCatalogBundle;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Add grid sorters
@@ -37,7 +37,8 @@ class AddSortersPass implements CompilerPassInterface
         $productExtension = $container->getDefinition(self::SORTER_PRODUCT_EXTENSION_ID);
 
         $mongoDBExtension = null;
-        if (class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
+
+        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $container->getParameter('pim_catalog.storage_driver')) {
             $mongoDBExtension = $container->getDefinition(self::SORTER_MONGODB_EXTENSION_ID);
         }
 
