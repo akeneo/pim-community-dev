@@ -12,6 +12,7 @@ pimee_workflow:
         action:
             approve: Approve
             refuse:  Refuse
+            remove:  Remove
     published_product:
         index: Published Products
     acl.published_product:

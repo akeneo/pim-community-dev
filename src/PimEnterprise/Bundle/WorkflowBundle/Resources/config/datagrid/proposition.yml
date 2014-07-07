@@ -46,6 +46,11 @@ datagrid:
             refuse:
                 type: navigate
                 label: pimee_workflow.proposition.action.refuse
+                icon: remove
+                link: refuse_link
+            remove:
+                type: navigate
+                label: pimee_workflow.proposition.action.remove
                 icon: trash
                 link: refuse_link
         action_configuration: '@pimee_workflow.datagrid.proposition_grid_helper->getActionConfigurationClosure'
