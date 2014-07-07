@@ -139,6 +139,10 @@ class PendingVersionMassPersister
             $fieldValue = $metadata->getFieldValue($version, $fieldName);
             if (is_array($fieldValue)) {
                 $fieldValue = serialize($fieldValue);
+            } elseif ($fieldValue instanceof \DateTime) {
+                $date = new \DateTime($fieldValue->format(\DateTime::ISO8601));
+                $date->setTimezone(new \DateTimeZone('UTC'));
+                $fieldValue = $date->format('Y-m-d H:i:s');
             }
             $params[] = $fieldValue;
         }

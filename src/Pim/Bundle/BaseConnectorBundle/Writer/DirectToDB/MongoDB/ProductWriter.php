@@ -71,7 +71,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
-        $this->pendingPersister = $pendingPersister
+        $this->pendingPersister = $pendingPersister;
         $this->normalizer       = $normalizer;
     }
 
@@ -118,6 +118,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $doc = $this->normalizer->normalize($product, ProductNormalizer::FORMAT, $context);
 
             if (null === $product->getId()) {
+                $product->setId($doc['_id']);
                 $insertDocs[] = $doc;
             } else {
                 $updateDocs[] = $doc;
@@ -137,7 +138,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     {
         $this->collection->batchInsert($docs);
 
-        for ($i = 0; $i < count($docs; $i++) {
+        for ($i = 0; $i < count($docs); $i++) {
             $this->stepExecution->incrementSummaryInfo('created');
         }
     }
