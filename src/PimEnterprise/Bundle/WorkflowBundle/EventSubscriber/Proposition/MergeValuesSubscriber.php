@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 
 /**
  * Merge values to keep previous proposition changes that

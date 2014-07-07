@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
     type: entity
     table: pimee_workflow_proposition
-    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\ORM\PropositionRepository
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PropositionRepository
     id:
         id:
             type: integer
@@ -17,10 +17,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
         author:
             type: string
             nullalble: false
-        locale:
-            type: string
-            length: 20
-            nullable: false
         status:
             type: integer
             nullable: false
@@ -34,4 +30,4 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
                 onDelete: CASCADE
     uniqueConstraints:
         unique_idx:
-            columns: [ author, locale, product_id ]
+            columns: [ author, product_id ]

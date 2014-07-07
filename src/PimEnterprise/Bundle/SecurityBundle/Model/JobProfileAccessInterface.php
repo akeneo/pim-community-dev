@@ -15,7 +15,7 @@ interface JobProfileAccessInterface extends AccessInterface
     /**
      * Set a job profile
      *
-     * @param JobInstance $jobInstance
+     * @param JobInstance $jobProfile
      *
      * @return ProfileAccessInterface
      */

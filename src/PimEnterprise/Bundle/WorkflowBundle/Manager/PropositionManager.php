@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 /**
  * Manage product propositions
@@ -72,7 +72,10 @@ class PropositionManager
 
         $this->applier->apply($product, $proposition);
 
-        $this->remove($proposition);
+        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager->remove($proposition);
+        $manager->flush();
+
         $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_proposition' => true]);
     }
@@ -91,12 +94,17 @@ class PropositionManager
      * Remove a persisted proposition
      *
      * @param Proposition $proposition
-     *
      */
     public function remove(Proposition $proposition)
     {
         $manager = $this->registry->getManagerForClass(get_class($proposition));
-        $manager->remove($proposition);
+
+        if (!$proposition->isInProgress()) {
+            $proposition->setStatus(Proposition::IN_PROGRESS);
+        } else {
+            $manager->remove($proposition);
+        }
+
         $manager->flush();
     }
 
@@ -104,25 +112,38 @@ class PropositionManager
      * Find or create a proposition
      *
      * @param ProductInterface $product
-     * @param string           $locale
      *
      * @return Proposition
      *
-     * @throw \LogicException
+     * @throws \LogicException
+     *
+     * TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
      */
-    // TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
-    public function findOrCreate(ProductInterface $product, $locale)
+    public function findOrCreate(ProductInterface $product)
     {
         if (null === $this->userContext->getUser()) {
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $proposition = $this->repository->findUserProposition($product, $username, $locale);
+        $proposition = $this->repository->findUserProposition($product, $username);
 
         if (null === $proposition) {
-            $proposition = $this->factory->createProposition($product, $username, $locale);
+            $proposition = $this->factory->createProposition($product, $username);
         }
 
         return $proposition;
+    }
+
+    /**
+     * Mark a proposition as ready
+     *
+     * @param Proposition $proposition
+     */
+    public function markAsReady(Proposition $proposition)
+    {
+        $proposition->setStatus(Proposition::READY);
+
+        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager->flush();
     }
 }

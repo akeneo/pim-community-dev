@@ -1,0 +1,15 @@
+connector:
+    name: Akeneo CSV Connector
+    jobs:
+        csv_published_product_export:
+            title: pimee_base_connector.jobs.csv_published_product_export.title
+            type:  export
+            steps:
+                export:
+                    title:     pim_base_connector.jobs.csv_product_export.export.title
+                    services:
+                        reader:    pimee_base_connector.reader.doctrine.published_product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_base_connector.writer.file.csv
+                    parameters:
+                        batch_size: 10

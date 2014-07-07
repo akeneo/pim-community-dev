@@ -56,7 +56,7 @@ class JobProfileAccessProcessor extends TransformerProcessor
      *      'executeJobProfile': true,
      *      'editJobProfile': false,
      * ]
-     * @param $data
+     * @param array $data
      *
      * @return array usable items
      */

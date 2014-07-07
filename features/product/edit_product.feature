@@ -24,8 +24,6 @@ Feature: Edit a product I have access
       | rangers | vintage, classy | rangers |
       | boots   | boots           | boots   |
 
-  #TODO: remove the skip tag when product ownership has been done
-  @skip
   Scenario: Successfully create, edit and save a product I have access
     Given I am on the "rangers" product page
     And I fill in the following information:
@@ -42,6 +40,7 @@ Feature: Edit a product I have access
     And I should be able to view the "Classify the product" action of the row which contains "boots"
     And I should be able to view the "Delete the product" action of the row which contains "boots"
 
+  @skip
   Scenario: Not being able to edit a product I have not access
     Given I am on the products page
     Then I should not be able to access the "boots" product page

@@ -1,0 +1,50 @@
+{% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'underscore'],
+            function($, _){
+                'use strict';
+                $(function() {
+                    var $nextBtn = $('a.next');
+                    if ($('#mass_publish_nb_granted').val() == 0) {
+                        $nextBtn.hide();
+                    }
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% block formContent %}
+
+    {% set notGrantedIdentifiers = form.operation.notGrantedIdentifiers.vars.value %}
+    {% set nbNotGranted = notGrantedIdentifiers|trim|length == 0 ? 0 : notGrantedIdentifiers|split(', ')|length %}
+    {% set nbGranted = productCount - nbNotGranted %}
+    <input type="hidden" id="mass_publish_nb_granted" value="{{nbGranted}}"/>
+
+    <div class="errors">
+    {% if nbGranted == 0 %}
+        <div class="alert alert-error">
+            <div class="message">
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.error'|trans }}</li></ul>
+            </div>
+        </div>
+    {% elseif nbNotGranted > 0 %}
+        <div class="alert alert-warning">
+            <div class="message">
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.warning'|trans({'%notGranted%': notGrantedIdentifiers}) }}</li></ul>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <div class="message">
+                <ul><li>{{ 'pim_enrich.mass_edit_action.publish.message.info'|trans({'%nbProducts%': productCount}) }}</li></ul>
+            </div>
+        </div>
+    {% endif %}
+    </div>
+
+{% endblock %}

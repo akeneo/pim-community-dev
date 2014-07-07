@@ -15,9 +15,6 @@ class OptionsComparatorSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
-        $value->getId()->willReturn(713705);
-        $value->getScope()->willReturn('ecommerce');
-        $attribute->getId()->willReturn(1337);
     }
 
     function it_is_a_comparator()
@@ -61,11 +58,6 @@ class OptionsComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn([
             'options' => '24,42,76',
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-            ],
         ]);
     }
 

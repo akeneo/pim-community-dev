@@ -10,8 +10,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributePresenter implements PresenterInterface
+class AttributePresenter implements PresenterInterface, TwigAwareInterface
 {
+    use TwigAware;
+
     /**
      * {@inheritdoc}
      */
@@ -25,16 +27,25 @@ class AttributePresenter implements PresenterInterface
      */
     public function present($data, array $change)
     {
-        $result = (string) $data;
+        $parts = [];
 
         if ($data->isLocalizable()) {
-            $result .= ' <i class="icon-globe"></i>';
+            $parts[] = $this
+                ->twig
+                ->getExtension('pim_locale_extension')
+                ->flag(
+                    $this->twig,
+                    $change['__context__']['locale'],
+                    false
+                );
         }
 
         if ($data->isScopable() && isset($change['__context__']['scope'])) {
-            $result = $change['__context__']['scope'] . ' - ' . $result;
+            $parts[] = $change['__context__']['scope'];
         }
 
-        return $result;
+        $parts[] = (string) $data;
+
+        return join(' - ', $parts);
     }
 }

@@ -5,8 +5,8 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 
 /**
  * Update the proposition with the current request data

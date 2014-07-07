@@ -6,22 +6,27 @@ pimee_workflow:
         locale:  Locale context
         status:
             label: Status
+            working_copy: Working copy
             in_progress: In progress
-            ready: Ready
+            ready: Waiting for approval
         action:
             approve: Approve
             refuse:  Refuse
-    publishedproduct:
+            remove:  Remove
+    published_product:
         index: Published Products
-    acl.publishedproduct:
+    acl.published_product:
         index: Manage published products
+        publish: Publish product
 btn.publish: Publish
-flash.product.published: The product has been successfully published
+flash.product.published: The product has been successfully published.
+flash.propositon.approve.success: The proposition has been applied successfully.
+flash.propositon.approve.error: The proposition can't be applied due to the following error. %error%
 pim_menu:
     item:
-        publishedproduct: Published products
+        published_product: Published products
 pim_title:
-    publishedproduct:
+    published_product:
         index:  Published products
         view: Published product
 btn.editworkingcopy: Edit working copy

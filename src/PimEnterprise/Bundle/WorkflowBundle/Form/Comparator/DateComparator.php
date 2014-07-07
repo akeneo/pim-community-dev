@@ -7,12 +7,12 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Comparator which calculate change set for dates
  *
- * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class DateComparator extends AbstractComparator
+class DateComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -25,7 +25,7 @@ class DateComparator extends AbstractComparator
     /**
      * {@inheritdoc}
      */
-    public function getDataChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(AbstractProductValue $value, $submittedData)
     {
         if (!isset($submittedData['date'])) {
             return;

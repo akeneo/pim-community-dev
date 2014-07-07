@@ -1,3 +1,4 @@
 parameters:
     pim_datagrid.event_listener.configure_product_grid_listener.class: PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureProductGridListener
     pimee_datagrid.event_listener.add_permissions_to_grid.class:       PimEnterprise\Bundle\DataGridBundle\EventListener\AddPermissionsToGridListener
+    pimee_datagrid.event_listener.configure_job_profile_grid_listener.class: PimEnterprise\Bundle\DataGridBundle\EventListener\ConfigureJobProfileGridListener

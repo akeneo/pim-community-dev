@@ -4,13 +4,6 @@ parameters:
     pim_catalog.manager.product_category.class: PimEnterprise\Bundle\CatalogBundle\Manager\ProductCategoryManager
 
 services:
-    pim_catalog.manager.category:
-        class: %pim_catalog.manager.category.class%
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - %pim_catalog.entity.category.class%
-            - '@security.context'
-
     pim_catalog.manager.product_mass_action:
         class: %pim_catalog.manager.product_mass_action.class%
         arguments:
@@ -24,6 +17,7 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.category.class%
+            - '@event_dispatcher'
             - '@pimee_security.repository.category_access'
 
     pim_catalog.manager.product_category:

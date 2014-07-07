@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 
 /**
@@ -52,14 +52,16 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
 
         foreach ($changes['values'] as $key => $change) {
             if (isset($change['media']) && $this->isUploadingMedia($change['media'])) {
-                $changes['values'][$key]['media'] = [
-                    'file' => $this->factory->create(
-                        $change['media']['filePath'],
-                        $change['media']['originalFilename'],
-                        $change['media']['mimeType'],
-                        $change['media']['size']
-                    )
-                ];
+                if ($file = $this->factory->create(
+                    $change['media']['filePath'],
+                    $change['media']['originalFilename'],
+                    $change['media']['mimeType'],
+                    $change['media']['size']
+                )) {
+                    $changes['values'][$key]['media'] = [
+                        'file' => $file,
+                    ];
+                }
             }
         }
 

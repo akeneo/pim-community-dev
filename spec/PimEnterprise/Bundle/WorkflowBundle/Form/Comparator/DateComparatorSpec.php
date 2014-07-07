@@ -13,9 +13,6 @@ class DateComparatorSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
-        $value->getId()->willReturn(713705);
-        $value->getScope()->willReturn('ecommerce');
-        $attribute->getId()->willReturn(1337);
     }
 
     function it_is_a_comparator()
@@ -44,11 +41,6 @@ class DateComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn([
             'date' => '1987-05-14',
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-            ],
         ]);
     }
 
@@ -75,11 +67,6 @@ class DateComparatorSpec extends ObjectBehavior
 
         $this->getChanges($value, $submittedData)->shouldReturn([
             'date' => '1987-05-14',
-            '__context__' => [
-                'attribute_id' => 1337,
-                'value_id' => 713705,
-                'scope' => 'ecommerce',
-            ],
         ]);
     }
 

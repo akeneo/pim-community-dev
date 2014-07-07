@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,10 +10,13 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Proposition controller
@@ -36,6 +40,7 @@ class PropositionController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ObjectRepository         $repository
      * @param PropositionManager       $manager
      */
@@ -47,6 +52,7 @@ class PropositionController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ObjectRepository $repository,
         PropositionManager $manager
     ) {
@@ -57,7 +63,8 @@ class PropositionController extends AbstractController
             $securityContext,
             $formFactory,
             $validator,
-            $translator
+            $translator,
+            $eventDispatcher
         );
         $this->repository = $repository;
         $this->manager    = $manager;
@@ -68,6 +75,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function approveAction($id)
     {
@@ -75,7 +83,16 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        $this->manager->approve($proposition);
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
+        try {
+            $this->manager->approve($proposition);
+            $this->addFlash('success', 'flash.propositon.approve.success');
+        } catch (ValidatorException $e) {
+            $this->addFlash('error', 'flash.propositon.approve.error', ['%error%' => $e->getMessage()]);
+        }
 
         return $this->redirect(
             $this->generateUrl(
@@ -92,6 +109,7 @@ class PropositionController extends AbstractController
      *
      * @return RedirectResponse
      * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
      */
     public function refuseAction($id)
     {
@@ -99,7 +117,42 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+            throw new AccessDeniedHttpException();
+        }
+
         $this->manager->refuse($proposition);
+
+        return $this->redirect(
+            $this->generateUrl(
+                'pim_enrich_product_edit',
+                [
+                    'id' => $proposition->getProduct()->getId()
+                ]
+            )
+        );
+    }
+
+    /**
+     * Mark a proposition as ready
+     *
+     * @param integer|string $id
+     *
+     * @return RedirectResponse
+     * @throws NotFoundHttpException
+     * @throws AccessDeniedHttpException
+     */
+    public function readyAction($id)
+    {
+        if (null === $proposition = $this->repository->find($id)) {
+            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+        }
+
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition)) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $this->manager->markAsReady($proposition);
 
         return $this->redirect(
             $this->generateUrl(

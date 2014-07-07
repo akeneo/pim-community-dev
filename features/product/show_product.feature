@@ -20,9 +20,9 @@ Feature: Show a product
       | shoes           | Manager | edit   |
       | boots           | Manager | view   |
     And the following products:
-      | sku     | categories      | name-en |
-      | rangers | vintage, classy | rangers |
-      | boots   | boots           | boots   |
+      | sku     | categories | name-en |
+      | rangers | shoes      | rangers |
+      | boots   | boots      | boots   |
 
   Scenario: Seeing the view actions on the product grid
     Given I am on the products page
@@ -32,8 +32,9 @@ Feature: Show a product
     And I should not be able to view the "Classify the product" action of the row which contains "rangers"
     And I should not be able to view the "Delete the product" action of the row which contains "rangers"
 
-  @skip
   Scenario: Being able to view a product I can not edit
     Given I am on the products page
-    Then I should not be able to access the "rangers" product page
-    Then I should be able to access the "rangers" product show page
+    And I should be able to access the show "boots" product page
+    Then I should not be able to access the edit "boots" product page
+    And I should be able to access the edit "rangers" product page
+

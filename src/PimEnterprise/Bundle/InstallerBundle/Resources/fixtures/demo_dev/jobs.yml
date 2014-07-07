@@ -26,6 +26,17 @@ jobs:
             enclosure:  '"'
             withHeader: true
             filePath:   /tmp/product.csv
+    csv_published_product_export:
+        connector: Akeneo CSV Connector
+        alias:     csv_published_product_export
+        label:     Demo published product export
+        type:      export
+        configuration:
+            channel:    mobile
+            delimiter:  ;
+            enclosure:  '"'
+            withHeader: true
+            filePath:   /tmp/published-product.csv
     csv_category_import:
         connector: Akeneo CSV Connector
         alias:     csv_category_import

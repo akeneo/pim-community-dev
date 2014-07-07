@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -22,14 +23,22 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
+    /** @var RoleRepository */
+    protected $roleRepository;
+
     /**
      * @param JobProfileAccessManager $accessManager
      * @param SecurityFacade          $securityFacade
+     * @param RoleRepository          $roleRepository
      */
-    public function __construct(JobProfileAccessManager $accessManager, SecurityFacade $securityFacade)
-    {
+    public function __construct(
+        JobProfileAccessManager $accessManager,
+        SecurityFacade $securityFacade,
+        RoleRepository $roleRepository
+    ) {
         $this->accessManager  = $accessManager;
         $this->securityFacade = $securityFacade;
+        $this->roleRepository = $roleRepository;
     }
 
     /**
@@ -63,15 +72,15 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
+        $jobInstance = $event->getData();
+        if (null === $jobInstance || null === $jobInstance->getId()) {
             return;
         }
 
+        $executeRoles = $this->accessManager->getExecuteRoles($jobInstance);
+        $editRoles    = $this->accessManager->getEditRoles($jobInstance);
+
         $form = $event->getForm()->get('permissions');
-
-        $executeRoles = $this->accessManager->getExecuteRoles($event->getData());
-        $editRoles    = $this->accessManager->getEditRoles($event->getData());
-
         $form->get('execute')->setData($executeRoles);
         $form->get('edit')->setData($editRoles);
     }
@@ -79,23 +88,33 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /**
      * Persist the permissions defined in the form
      *
+     * Permissions are updated only if user has rights in edit mode
+     * When user creates a job instance, all user are automatically added
+     *
      * @param FormEvent $event
      */
     public function postSubmit(FormEvent $event)
     {
-        $form = $event->getForm();
-        $data = $event->getData();
-        if (null === $data || null === $data->getId()) {
+        $jobInstance = $event->getData();
+        if (null === $jobInstance) {
             return;
         }
 
-        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $data->getType());
+        $form = $event->getForm();
+        if ($form->isValid()) {
+            $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $jobInstance->getType());
 
-        if ($form->isValid() && $this->securityFacade->isGranted($resource)) {
-            $executeRoles = $form->get('permissions')->get('execute')->getData();
-            $editRoles    = $form->get('permissions')->get('edit')->getData();
+            if ($this->securityFacade->isGranted($resource) && null !== $jobInstance->getId()) {
+                $executeRoles = $form->get('permissions')->get('execute')->getData();
+                $editRoles    = $form->get('permissions')->get('edit')->getData();
+            } elseif (null === $jobInstance->getId()) {
+                $editRoles    = $this->roleRepository->findAll();
+                $executeRoles = $editRoles;
+            } else {
+                return;
+            }
 
-            $this->accessManager->setAccess($event->getData(), $executeRoles, $editRoles);
+            $this->accessManager->setAccess($jobInstance, $executeRoles, $editRoles);
         }
     }
 }

@@ -110,7 +110,7 @@
                     'use strict';
                     $(function () {
                         new CategoryOwnership(
-                            {{ entityId }},
+                            {{ entityId|number_format }},
                             '#{{ form.ownership.appendCategories.vars.id }}',
                             '#{{ form.ownership.removeCategories.vars.id }}',
                             '{{ locale_code() }}'

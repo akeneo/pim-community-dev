@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\DataGridBundle\Datasource\PropositionDatasource;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 class FieldSorterSpec extends ObjectBehavior
 {

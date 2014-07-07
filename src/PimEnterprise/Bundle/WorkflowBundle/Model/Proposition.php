@@ -33,9 +33,6 @@ class Proposition
     /** @var array */
     protected $changes = [];
 
-    /** @var string */
-    protected $locale;
-
     /** @var integer */
     protected $status;
 
@@ -136,30 +133,6 @@ class Proposition
     }
 
     /**
-     * Set locale
-     *
-     * @param string $locale
-     *
-     * @return Proposition
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * Get locale
-     *
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
      * Set status
      *
      * @param integer $status
@@ -177,5 +150,15 @@ class Proposition
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Wether or not proposition is in progress
+     *
+     * @return boolean
+     */
+    public function isInProgress()
+    {
+        return self::IN_PROGRESS === $this->status;
     }
 }

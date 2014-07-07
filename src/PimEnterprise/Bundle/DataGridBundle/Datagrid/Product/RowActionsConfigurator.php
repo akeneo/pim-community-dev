@@ -54,7 +54,36 @@ class RowActionsConfigurator implements ConfiguratorInterface
     public function configure(DatagridConfiguration $configuration)
     {
         $this->configuration = $configuration;
+        $this->addDispatchAction();
         $this->checkEditActions();
+    }
+
+    /**
+     * Add a dispatch action to redirect on granted action (view or edit)
+     *
+     * @return null
+     */
+    protected function addDispatchAction()
+    {
+        $properties = $this->configuration->offsetGetByPath('[properties]');
+        $properties['row_action_link']= [
+            'type'  => 'url',
+            'route' => 'pimee_enrich_product_dispatch',
+            'params' => ['id', 'dataLocale']
+        ];
+        $this->configuration->offsetSetByPath('[properties]', $properties);
+
+        $actions = $this->configuration->offsetGetByPath('[actions]');
+        unset($actions['edit']['rowAction']);
+        $actions['row_action']= [
+            'type'      => 'tab-redirect',
+            'label'     => 'Dispatch a product',
+            'tab'       => 'attributes',
+            'link'      => 'row_action_link',
+            'rowAction' => true,
+            'hidden'    => true
+        ];
+        $this->configuration->offsetSetByPath('[actions]', $actions);
     }
 
     /**

@@ -3,18 +3,19 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\Event;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
 
 /**
  * Store product through propositions
@@ -36,8 +37,8 @@ class PropositionPersister implements ProductPersister
     /** @var PropositionFactory */
     protected $factory;
 
-    /** @var CollectProductValuesSubscriber */
-    protected $collector;
+    /** @var ProductValueChangesCollectorInterface[] */
+    protected $collectors = [];
 
     /** @var PropositionRepositoryInterface */
     protected $repository;
@@ -45,34 +46,39 @@ class PropositionPersister implements ProductPersister
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
+    /** @var ChangesCollectorInterface */
+    protected $collector;
+
     /**
      * @param ManagerRegistry                $registry
      * @param CompletenessManager            $completenessManager
      * @param SecurityContextInterface       $securityContext
      * @param PropositionFactory             $factory
-     * @param CollectProductValuesSubscriber $collector
      * @param PropositionRepositoryInterface $repository
      * @param EventDispatcherInterface       $dispatcher
+     * @param ChangesCollectorInterface      $collector
      */
     public function __construct(
         ManagerRegistry $registry,
         CompletenessManager $completenessManager,
         SecurityContextInterface $securityContext,
         PropositionFactory $factory,
-        CollectProductValuesSubscriber $collector,
         PropositionRepositoryInterface $repository,
-        EventDispatcherInterface $dispatcher
+        EventDispatcherInterface $dispatcher,
+        ChangesCollectorInterface $collector
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
         $this->securityContext = $securityContext;
         $this->factory = $factory;
-        $this->collector = $collector;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
+        $this->collector = $collector;
     }
 
     /**
+     * TODO: do not check the context here. PropositionPersister should only persist propostions.
+     *
      * {@inheritdoc}
      */
     public function persist(ProductInterface $product, array $options)
@@ -81,7 +87,18 @@ class PropositionPersister implements ProductPersister
 
         $manager = $this->registry->getManagerForClass(get_class($product));
 
-        if ($options['bypass_proposition'] || !$manager->contains($product)) {
+        if (null === $product->getId()) {
+            $isOwner = true;
+        } else {
+            try {
+                $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+            } catch (AuthenticationCredentialsNotFoundException $e) {
+                // We are probably on a CLI context
+                $isOwner = true;
+            }
+        }
+
+        if ($isOwner || $options['bypass_proposition'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
             $this->persistProposition($manager, $product);
@@ -126,6 +143,8 @@ class PropositionPersister implements ProductPersister
      *
      * @param ObjectManager    $manager
      * @param ProductInterface $product
+     *
+     * @return null
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {

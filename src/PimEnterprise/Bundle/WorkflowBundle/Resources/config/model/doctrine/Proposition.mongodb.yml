@@ -1,7 +1,7 @@
 PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
     type: document
     collection: pimee_workflow_proposition
-    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\MongoDBODM\PropositionRepository
+    repositoryClass: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PropositionRepository
     fields:
         id:
             id: true
@@ -17,15 +17,12 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
             targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
         author:
             type: string
-        locale:
-            type: string
         status:
             type: int
     indexes:
         unique_idx:
             keys:
                 author: asc
-                locale: asc
                 product: asc
             options:
                 unique: true

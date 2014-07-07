@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobProfileAccessRepository extends EntityRepository
+class JobProfileAccessRepository extends EntityRepository implements AccessRepositoryInterface
 {
     /**
      * @var TableNameBuilder
@@ -21,10 +21,10 @@ class JobProfileAccessRepository extends EntityRepository
     protected $tableNameBuilder;
 
     /**
-     * Get roles that have the specified access to a category
+     * Get roles that have the specified access to a job instance
      *
-     * @param CategoryInterface $category
-     * @param string            $accessLevel
+     * @param JobInstance $jobProfile
+     * @param string      $accessLevel
      *
      * @return Role[]
      */
@@ -88,6 +88,14 @@ class JobProfileAccessRepository extends EntityRepository
             ->select('jp.id');
 
         return $qb;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGrantedEntitiesQB(User $user, $accessLevel)
+    {
+        return $this->getGrantedJobsQB($user, $accessLevel);
     }
 
     /**

@@ -1,7 +1,7 @@
 @javascript
 Feature: Display proposition widget
   In order to easily see which products have pending propositions
-  As Julia
+  As a product manager
   I need to be able to see a widget with pending propositions on the dashboard
 
   Scenario: Display proposition widget
@@ -11,7 +11,7 @@ Feature: Display proposition widget
     Then I should see "Propositions to review"
     And I should see "No propositions to review"
 
-  Scenario: Succesfully display current user propositions to review
+  Scenario: Successfully display all opened propositions
     Given the "footwear" catalog configuration
     And the following product:
       | sku        | family  |
@@ -26,3 +26,9 @@ Feature: Display proposition widget
     And I should the following proposition:
       | product    | author |
       | my-sandals | mary   |
+
+  Scenario: Successfully hide the widget if the current user is not the owner of any categories
+    Given the "clothing" catalog configuration
+    And I am logged in as "Sandra"
+    When I am on the dashboard page
+    Then I should not see "Propositions to review"

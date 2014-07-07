@@ -8,12 +8,12 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 /**
  * Comparator which calculate change set for metrics
  *
- * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
-class MetricComparator extends AbstractComparator
+class MetricComparator implements ComparatorInterface
 {
     /**
      * {@inheritdoc}
@@ -26,7 +26,7 @@ class MetricComparator extends AbstractComparator
     /**
      * {@inheritdoc}
      */
-    public function getDataChanges(AbstractProductValue $value, $submittedData)
+    public function getChanges(AbstractProductValue $value, $submittedData)
     {
         // Submitted metric is invalid (data was read only for example)
         if (!isset($submittedData['metric']['data']) || !isset($submittedData['metric']['unit'])) {

@@ -13,7 +13,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 class PropositionManagerSpec extends ObjectBehavior
 {
@@ -49,13 +49,27 @@ class PropositionManagerSpec extends ObjectBehavior
         $this->approve($proposition);
     }
 
-    function it_closes_proposition_when_refusing_it(
+    function it_marks_as_in_progress_proposition_which_is_ready_when_refusing_it(
         $registry,
         Proposition $proposition,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
+        $proposition->isInProgress()->willReturn(false);
+        $proposition->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $this->refuse($proposition);
+    }
+    function it_removes_in_progress_proposition_when_refusing_it(
+        $registry,
+        Proposition $proposition,
+        ObjectManager $manager
+    ) {
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+
+        $proposition->isInProgress()->willReturn(true);
         $manager->remove($proposition)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
@@ -71,9 +85,9 @@ class PropositionManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter', 'fr_FR')->willReturn($proposition);
+        $repository->findUserProposition($product, 'peter')->willReturn($proposition);
 
-        $this->findOrCreate($product, 'fr_FR');
+        $this->findOrCreate($product);
     }
 
     function it_creates_a_proposition_when_it_does_not_exist(
@@ -86,10 +100,10 @@ class PropositionManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter', 'fr_FR')->willReturn(null);
-        $factory->createProposition($product, 'peter', 'fr_FR')->willReturn($proposition);
+        $repository->findUserProposition($product, 'peter')->willReturn(null);
+        $factory->createProposition($product, 'peter')->willReturn($proposition);
 
-        $this->findOrCreate($product, 'fr_FR')->shouldReturn($proposition);
+        $this->findOrCreate($product)->shouldReturn($proposition);
     }
 
     function it_throws_exception_when_find_proposition_and_current_cannot_be_resolved(
@@ -99,5 +113,18 @@ class PropositionManagerSpec extends ObjectBehavior
         $userContext->getUser()->willReturn(null);
 
         $this->shouldThrow(new \LogicException('Current user cannot be resolved'))->duringFindOrCreate($product, 'fr_FR');
+    }
+
+    function it_marks_proposition_as_ready(
+        $registry,
+        Proposition $proposition,
+        ObjectManager $manager
+    ) {
+        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+
+        $proposition->setStatus(Proposition::READY)->shouldBeCalled();
+        $manager->flush()->shouldBeCalled();
+
+        $this->markAsReady($proposition);
     }
 }

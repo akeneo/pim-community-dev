@@ -50,8 +50,8 @@ class FilePresenterSpec extends ObjectBehavior
 
         $this->present($value, $change)->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><i class="icon-file"></i> <a href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
-            '<li class="changed file"><i class="icon-file"></i> <a href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
+            '<li class="base file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
+            '<li class="changed file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
             '</ul>'
         );
     }
@@ -73,7 +73,7 @@ class FilePresenterSpec extends ObjectBehavior
 
         $this->present($value, $change)->shouldReturn(
             '<ul class="diff">' .
-            '<li class="changed file"><i class="icon-file"></i> <a href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
+            '<li class="changed file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_foo.pdf">foo.pdf</a></li>' .
             '</ul>'
         );
     }
@@ -91,7 +91,7 @@ class FilePresenterSpec extends ObjectBehavior
 
         $this->present($value, ['media' => []])->shouldReturn(
             '<ul class="diff">' .
-            '<li class="base file"><i class="icon-file"></i> <a href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
+            '<li class="base file"><i class="icon-file"></i> <a class="no-hash" href="/media/uploaded_bar.pdf">bar.pdf</a></li>' .
             '</ul>'
         );
     }

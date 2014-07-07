@@ -8,6 +8,8 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\ResolvedFormTypeInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Unmap product value fields so they are not changed during submission
@@ -17,6 +19,16 @@ use Symfony\Component\Form\ResolvedFormTypeInterface;
  */
 class UnmapProductValuesSubscriber implements EventSubscriberInterface
 {
+    protected $securityContext;
+
+    /**
+     * @param SecurityContextInterface $securityContext
+     */
+    public function __construct(SecurityContextInterface $securityContext)
+    {
+        $this->securityContext = $securityContext;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -35,7 +47,9 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
     public function unmapAll(FormEvent $event)
     {
         $form = $event->getForm();
-        if ('pim_product_edit' !== $form->getName()) {
+
+        if ('pim_product_edit' !== $form->getName()
+            || $this->securityContext->isGranted(Attributes::OWNER, $form->getData())) {
             return;
         }
 
@@ -92,7 +106,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
      *
      * @param ResolvedFormTypeInterface $type
      *
-     * return boolean
+     * @return boolean
      */
     protected function isACollectionType(ResolvedFormTypeInterface $type)
     {

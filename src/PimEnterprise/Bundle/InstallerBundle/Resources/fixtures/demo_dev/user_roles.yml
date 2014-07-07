@@ -1,0 +1,7 @@
+user_roles:
+    ROLE_ADMINISTRATOR:
+        label: Administrator
+    ROLE_MANAGER:
+        label: Manager
+    ROLE_USER:
+        label: User

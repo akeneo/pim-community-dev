@@ -1,7 +1,7 @@
 @javascript
 Feature: Enforce read-only permissions for an attribute group
   In order to be able to prevent some users from editing some product data
-  As Peter
+  As an administrator
   I need to be able to enforce read-only permissions for attribute groups
 
   Background:
@@ -10,7 +10,7 @@ Feature: Enforce read-only permissions for an attribute group
       | sku | family |
       | foo | boots  |
     And role "administrator" has the permission to view the attribute group "info"
-    And I am logged in as "Julia"
+    And I am logged in as "Peter"
 
   Scenario: Successfully disable read-only fields for an attribute group in the product edit form
     Given I edit the "foo" product

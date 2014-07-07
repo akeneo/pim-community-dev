@@ -39,25 +39,18 @@ class AddPropositionFormViewParameterSubscriberSpec extends ObjectBehavior
         $formFactory,
         GenericEvent $event,
         ProductInterface $product,
-        Proposition $proposition,
-        FormInterface $form,
-        FormView $view
+        Proposition $proposition
     ) {
         $event->getArgument('parameters')->willReturn([
             'product' => $product,
-            'dataLocale' => 'en_US',
         ]);
 
-
-        $manager->findOrCreate($product, 'en_US')->willReturn($proposition);
-        $formFactory->create('pimee_workflow_proposition', $proposition)->willReturn($form);
-        $form->createView()->willReturn($view);
+        $manager->findOrCreate($product)->willReturn($proposition);
 
         $event
             ->setArgument('parameters', [
                 'product' => $product,
-                'dataLocale' => 'en_US',
-                'propositionForm' => $view,
+                'proposition' => $proposition,
             ])
             ->shouldBeCalled();
 
@@ -76,21 +69,7 @@ class AddPropositionFormViewParameterSubscriberSpec extends ObjectBehavior
     function it_does_nothing_if_parameters_does_not_have_a_product(
         GenericEvent $event
     ) {
-        $event->getArgument('parameters')->willReturn([
-            'dataLocale' => 'en_US',
-        ]);
-        $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
-
-        $this->addPropositionFormView($event);
-    }
-
-    function it_does_nothing_if_parameters_does_not_have_a_dataLocale(
-        GenericEvent $event,
-        ProductInterface $product
-    ) {
-        $event->getArgument('parameters')->willReturn([
-            'product' => $product,
-        ]);
+        $event->getArgument('parameters')->willReturn([]);
         $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
 
         $this->addPropositionFormView($event);

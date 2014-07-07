@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 
 class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
 {

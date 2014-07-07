@@ -37,6 +37,7 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         Role $user,
         Role $admin
     ) {
+        $jobProfile->getId()->willReturn(1);
         $repository->findOneBy(Argument::any())->willReturn(array());
         $repository->revokeAccess($jobProfile, [$admin, $user])->shouldBeCalled();
 
@@ -46,5 +47,24 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $objectManager->flush()->shouldBeCalled();
 
         $this->setAccess($jobProfile, [$user, $admin], [$admin]);
+    }
+
+    function it_should_not_revoke_access_to_a_job_profile_on_creation(
+        JobInstance $jobProfile,
+        $repository,
+        $objectManager,
+        Role $user,
+        Role $admin
+    ) {
+            $jobProfile->getId()->willReturn(null);
+            $repository->findOneBy(Argument::any())->willReturn(array());
+            $repository->revokeAccess($jobProfile, Argument::any())->shouldNotBeCalled();
+
+            $objectManager
+                ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess'))
+                ->shouldBeCalledTimes(2);
+            $objectManager->flush()->shouldBeCalled();
+
+            $this->setAccess($jobProfile, [$user, $admin], [$admin]);
     }
 }

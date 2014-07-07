@@ -32,12 +32,12 @@ define(
                 json_data: {
                     ajax: {
                         url: function (node) {
-                            if ((!node || (node === -1))) {
+                            if (roleId && (!node || (node === -1))) {
                                 // First load of the tree: get the checked categories
-                                return Routing.generate('pimee_security_role_listcategories', { id: roleId, tree_id: selectedTree, _format: 'json', dataLocale: dataLocale });
+                                return Routing.generate('pimee_security_role_listcategories', { id: roleId, tree_id: selectedTree, _format: 'json', dataLocale: dataLocale, context: 'ownership' });
                             }
 
-                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale });
+                            return Routing.generate('pim_enrich_categorytree_children', { _format: 'json', dataLocale: dataLocale, context: 'ownership' });
                         },
                         data: function (node) {
                             var data = {};
@@ -135,7 +135,8 @@ define(
                 {
                     _format: 'json',
                     dataLocale: dataLocale,
-                    'with_products_count': 0
+                    'with_products_count': 0,
+                    context: 'ownership'
                 }
             );
             $.get(treeUrl, function(trees) {

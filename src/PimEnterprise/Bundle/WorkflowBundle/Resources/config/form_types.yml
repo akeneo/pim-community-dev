@@ -1,5 +1,4 @@
 parameters:
-    pimee_workflow.form.type.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Form\Type\PropositionType
     pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
     pimee_workflow.form.subscriber.unmap_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\UnmapProductValuesSubscriber
     pimee_workflow.form.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ChainedComparator
@@ -10,22 +9,33 @@ parameters:
     pimee_workflow.form.comparator.option.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionComparator
     pimee_workflow.form.comparator.options.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionsComparator
     pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
+    pim_enrich.form.type.edit_common_attributes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Type\MassEditAction\EditCommonAttributesType
 
 services:
-    pimee_workflow.form.type.proposition:
-        class: %pimee_workflow.form.type.proposition.class%
-        tags:
-            - { name: form.type, alias: pimee_workflow_proposition }
-
     pimee_workflow.form.subscriber.collect_product_value_changes:
         public: false
         class: %pimee_workflow.form.subscriber.collect_product_value_changes.class%
         arguments:
             - '@pimee_workflow.form.comparator.chained'
+            - '@security.context'
+        tags:
+            - { name: pimee_workflow.collector }
+
+    pim_enrich.form.type.edit_common_attributes:
+        class: %pim_enrich.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
+            - { name: pimee_workflow.collector }
 
     pimee_workflow.form.subscriber.unmap_product_values:
         public: false
         class: %pimee_workflow.form.subscriber.unmap_product_values.class%
+        arguments:
+            - '@security.context'
 
     ##
     # Comparators of product values
@@ -36,8 +46,6 @@ services:
 
     pimee_workflow.form.comparator.media:
         class: %pimee_workflow.form.comparator.media.class%
-        arguments:
-            - '@pim_catalog.manager.media'
         tags:
             - { name: pimee_workflow.form.comparator }
 

@@ -16,12 +16,12 @@ class JobExecutionRepository extends PimJobExecutionRepository
     /**
      * Get last operations
      *
-     * @see JobExecutionRepository::getLastOperationsData()
-     *
      * @param array        $types
      * @param QueryBuilder $subQB
      *
      * @return array
+     *
+     * @see JobExecutionRepository::getLastOperationsData()
      */
     public function getLastOperations(array $types, QueryBuilder $subQB)
     {
@@ -31,5 +31,19 @@ class JobExecutionRepository extends PimJobExecutionRepository
             ->setParameters($subQB->getParameters());
 
         return $qb->getQuery()->getArrayResult();
+    }
+
+    /**
+     * Inject subquery to filter jobs depending on permissions
+     *
+     * @param QueryBuilder $qb
+     * @param QueryBuilder $subQB
+     */
+    public function addGridAccessQB(QueryBuilder $qb, QueryBuilder $subQB)
+    {
+        $qb
+            ->andWhere(
+                $qb->expr()->in('j.id', $subQB->getDQL())
+            );
     }
 }

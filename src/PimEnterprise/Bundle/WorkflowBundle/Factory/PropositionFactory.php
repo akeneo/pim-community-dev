@@ -18,18 +18,16 @@ class PropositionFactory
      *
      * @param ProductInterface $product
      * @param string           $username
-     * @param array            $changes
      *
      * @return Proposition
      */
-    public function createProposition(ProductInterface $product, $username, $locale = null)
+    public function createProposition(ProductInterface $product, $username)
     {
         $proposition = new Proposition();
         $proposition
             ->setProduct($product)
             ->setAuthor($username)
-            ->setCreatedAt(new \DateTime())
-            ->setLocale($locale ?: $product->getLocale());
+            ->setCreatedAt(new \DateTime());
 
         return $proposition;
     }

@@ -22,12 +22,14 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
     /** @var PropositionManager */
     protected $manager;
 
-    public function __construct(
-        FormFactoryInterface $formFactory,
-        PropositionManager $manager
-    ) {
+    /**
+     * @param FormFactoryInterface $formFactory
+     * @param PropositionManager   $manager
+     */
+    public function __construct(FormFactoryInterface $formFactory, PropositionManager $manager)
+    {
         $this->formFactory = $formFactory;
-        $this->manager = $manager;
+        $this->manager     = $manager;
     }
 
     /**
@@ -49,22 +51,16 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
     {
         try {
             $parameters = $event->getArgument('parameters');
-            if (!array_key_exists('product', $parameters) || !array_key_exists('dataLocale', $parameters)) {
+            if (!array_key_exists('product', $parameters)) {
                 throw new \InvalidArgumentException();
             }
         } catch (\InvalidArgumentException $e) {
             return;
         }
 
-        $proposition = $this->manager->findOrCreate(
-            $parameters['product'],
-            $parameters['dataLocale']
-        );
+        $proposition = $this->manager->findOrCreate($parameters['product']);
 
-        $parameters['propositionForm'] = $this
-            ->formFactory
-            ->create('pimee_workflow_proposition', $proposition)
-            ->createView();
+        $parameters['proposition'] = $proposition;
 
         $event->setArgument('parameters', $parameters);
     }
