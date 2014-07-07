@@ -7,8 +7,7 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@doctrine.odm.mongodb.document_manager'
-            - '@pim_versioning.manager.version'
+            - '@pim_versioning.doctrine.orm.pending_version_mass_persister'
             - '@pim_serializer'
-            - '@database_connection'
 
 

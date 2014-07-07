@@ -4,11 +4,9 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-use Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener;
 
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
+use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
+
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
@@ -19,9 +17,6 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
-use Doctrine\DBAL\Driver\Connection;
-
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -39,11 +34,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     StepExecutionAwareInterface
 {
     /**
-     * @var ProductTransformer
-     */
-     protected $productTransformer;
-
-    /**
      * @var ProductManager
      */
      protected $productManager;
@@ -54,9 +44,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      protected $documentManager;
 
     /**
-     * @var VersionManager
+     * @var PendingVersionMassPersister
      */
-     protected $versionManager;
+     protected $pendingPersister;
 
     /**
      * @var NormalizerInterface
@@ -64,32 +54,25 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $normalizer;
 
     /**
-     * @var Connection
-     */
-    protected $connection;
-
-    /**
      * Collection
      */
     protected $collection;
-    
+
     /**
-     * @param ProductTransformer $productTransformer
-     * @param ProductManager     $productManager
-     * @param DocumentManager    $documentManager
+     * @param ProductManager              $productManager
+     * @param DocumentManager             $documentManager
+     * @param PendingVersionMassPersister $pendingPersister
      */
     public function __construct(
         ProductManager $productManager,
         DocumentManager $documentManager,
-        VersionManager $versionManager,
-        NormalizerInterface $normalizer,
-        Connection $connection
+        PendingVersionMassPersister $pendingPersister,
+        NormalizerInterface $normalizer
     ) {
-        $this->productManager     = $productManager;
-        $this->documentManager    = $documentManager;
-        $this->versionManager     = $versionManager;
-        $this->normalizer         = $normalizer;
-        $this->connection         = $connection;
+        $this->productManager   = $productManager;
+        $this->documentManager  = $documentManager;
+        $this->pendingPersister = $pendingPersister
+        $this->normalizer       = $normalizer;
     }
 
     /**
@@ -111,7 +94,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $this->updateDocuments($updateDocs);
         }
 
-        $this->createPendingVersions($products);
+        $this->pendingPersister->persistPendingVersions($products);
         $this->documentManager->clear();
     }
 
@@ -135,32 +118,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $doc = $this->normalizer->normalize($product, ProductNormalizer::FORMAT, $context);
 
             if (null === $product->getId()) {
-                $product->setId($doc['_id']);
                 $insertDocs[] = $doc;
             } else {
                 $updateDocs[] = $doc;
             }
-            // TODO: increment write count only for write and update count for update
-            $this->incrementCount($product);
         }
 
         return [$insertDocs, $updateDocs];
-    }
-
-    /**
-     * Create the pending versions for the products provided
-     *
-     * @param ProductInterface[] $products
-     */
-    protected function createPendingVersions(array $products)
-    {
-        $pendingVersions = [];
-        foreach ($products as $product) {
-            $pendingVersions[] = $this->addPendingVersion($product);
-        }
-        if (count($pendingVersions) > 0) {
-            $this->batchInsertPendingVersions($pendingVersions);
-        }
     }
 
     /**
@@ -172,6 +136,10 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected function insertDocuments($docs)
     {
         $this->collection->batchInsert($docs);
+
+        for ($i = 0; $i < count($docs; $i++) {
+            $this->stepExecution->incrementSummaryInfo('created');
+        }
     }
 
     /**
@@ -182,59 +150,12 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected function updateDocuments($docs)
     {
         foreach ($docs as $doc) {
-            $criteria = ['_id' => $doc['_id']];
+            $criteria = [
+                '_id' => $doc['_id']
+            ];
             $this->collection->update($criteria, $doc);
+            $this->stepExecution->incrementSummaryInfo('updated');
         }
-    }
-
-    /**
-     * Create the pending version for the product
-     *
-     * @param ProductInterface $product
-     * @return array
-     */
-    protected function addPendingVersion(ProductInterface $product)
-    {
-        $now = new \DateTime('now', new \DateTimeZone('UTC'));
-
-        $version = [];
-        $version['author'] = $this->versionManager->getUsername();
-        $version['changeset'] = serialize($this->normalizer->normalize($product, 'csv', ['versioning' => true]));
-        $version['snapshot'] = serialize(null);
-        $version['resource_name'] = get_class($product);
-        $version['resource_id'] = $product->getId();
-        $version['context'] = $this->versionManager->getContext();
-        $version['logged_at'] = $now->format('Y-m-d H:i:s');
-        $version['pending'] = true;
-
-        return $version;
-    }
-
-    /**
-     * Insert into pending versions
-     *
-     * @param array $pendingVersions
-     */
-    protected function batchInsertPendingVersions(array $pendingVersions)
-    {
-        $insert = 'INSERT INTO pim_versioning_version';
-
-        $columns = array_keys($pendingVersions[0]);
-        $placeholders = array_fill(0, count($columns), '?');
-
-        $params = [];
-        $rawPlaceHolders = [];
-
-        foreach ($pendingVersions as $pendingVersion) {
-            $params = array_merge($params, array_values($pendingVersion));
-
-            $rawPlaceholders[] = sprintf('(%s)', implode(',' , $placeholders));
-        }
-        $values = implode(',', $rawPlaceholders);
-
-        $query = sprintf('%s(%s) VALUES %s', $insert, implode(',', $columns), $values);
-
-        $this->connection->executeQuery($query, $params);
     }
 
     /**
@@ -251,17 +172,5 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     public function getConfigurationFields()
     {
         return array();
-    }
-
-    /**
-     * @param ProductInterface $product
-     */
-    protected function incrementCount(ProductInterface $product)
-    {
-        if ($product->getId()) {
-            $this->stepExecution->incrementSummaryInfo('update');
-        } else {
-            $this->stepExecution->incrementSummaryInfo('create');
-        }
     }
 }
