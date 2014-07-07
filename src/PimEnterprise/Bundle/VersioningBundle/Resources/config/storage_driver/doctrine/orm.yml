@@ -1,0 +1,2 @@
+parameters:
+    pim_versioning.repository.version.class: PimEnterprise\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
