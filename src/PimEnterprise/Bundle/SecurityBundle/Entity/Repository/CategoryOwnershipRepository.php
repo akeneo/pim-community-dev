@@ -7,6 +7,7 @@ use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Category ownership repository
@@ -69,5 +70,29 @@ class CategoryOwnershipRepository extends EntityRepository
         $roles = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
         return $roles;
+    }
+
+    /**
+     * Indicates whether a user is the owner of any categories
+     *
+     * @param User $user
+     *
+     * @return boolean
+     */
+    public function isOwner(User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->select('o.id')
+            ->where(
+                $qb->expr()->in('o.role', ':roles')
+            )
+            ->setParameter('roles', $user->getRoles())
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SCALAR);
+
+        return (bool) count($result);
     }
 }
