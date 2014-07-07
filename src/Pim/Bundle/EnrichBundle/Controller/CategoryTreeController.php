@@ -226,7 +226,6 @@ class CategoryTreeController extends AbstractDoctrineController
 
         $category->setCode($request->get('label'));
         $this->eventDispatcher->dispatch(EnrichEvents::PRE_CREATE_CATEGORY, new GenericEvent($category));
-
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -234,9 +233,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
             if ($form->isValid()) {
                 $this->persist($category, true);
-
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
-
                 $this->eventDispatcher->dispatch(EnrichEvents::POST_CREATE_CATEGORY, new GenericEvent($category));
 
                 return $this->redirectToRoute('pim_enrich_categorytree_edit', array('id' => $category->getId()));
@@ -263,9 +260,7 @@ class CategoryTreeController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $category = $this->findCategory($id);
-
         $this->eventDispatcher->dispatch(EnrichEvents::PRE_EDIT_CATEGORY, new GenericEvent($category));
-
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -273,9 +268,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
             if ($form->isValid()) {
                 $this->persist($category, true);
-
                 $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
-
                 $this->eventDispatcher->dispatch(EnrichEvents::POST_EDIT_CATEGORY, new GenericEvent($category));
             }
         }
