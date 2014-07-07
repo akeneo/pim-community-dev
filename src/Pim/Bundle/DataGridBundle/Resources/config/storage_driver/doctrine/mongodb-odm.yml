@@ -64,6 +64,8 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-history-grid, method: onBuildAfter }
 
     pim_datagrid.extension.formatter.property.version.author_property:
         class: %pim_datagrid.extension.formatter.property.version.author_property.class%

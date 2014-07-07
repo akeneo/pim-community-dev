@@ -52,7 +52,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     /**
      * @param array $params
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder
      */
     public function createDatagridQueryBuilder(array $params = [])
     {
@@ -74,7 +74,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return Version|null
+     * @return \Pim\Bundle\VersioningBundle\Model\Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {
