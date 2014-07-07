@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\VersioningBundle\Repository;
 
-use Pim\Bundle\VersioningBundle\Model\Version;
-
 /**
  * Version repository interface
  *

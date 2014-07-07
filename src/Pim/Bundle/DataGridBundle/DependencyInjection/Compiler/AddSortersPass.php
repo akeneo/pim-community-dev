@@ -37,7 +37,6 @@ class AddSortersPass implements CompilerPassInterface
         $productExtension = $container->getDefinition(self::SORTER_PRODUCT_EXTENSION_ID);
 
         $mongoDBExtension = null;
-        $container->getDefinition(self::SORTER_ORM_EXTENSION_ID);
         if (class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
             $mongoDBExtension = $container->getDefinition(self::SORTER_MONGODB_EXTENSION_ID);
         }

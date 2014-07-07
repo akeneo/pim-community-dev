@@ -137,7 +137,7 @@ class VersionManager
             $createdVersions[] = $this->versionBuilder
                 ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $createdVersions[] = $this ->versionBuilder
+            $createdVersions[] = $this->versionBuilder
                 ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
 
