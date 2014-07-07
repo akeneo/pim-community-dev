@@ -4,7 +4,7 @@ Feature: Ensure that a published product is safe
   As a product manager
   I need to forbid to remove structural part of a published product
 
-  Scenario: Fail to remove a product that have been published
+  Scenario: Fail to remove a product that has been published
     Given a "clothing" catalog configuration
     And the following published products:
       | sku       |
