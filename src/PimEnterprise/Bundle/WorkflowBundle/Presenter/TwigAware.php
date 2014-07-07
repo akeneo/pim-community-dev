@@ -16,7 +16,7 @@ trait TwigAware
     /**
      * Set the twig environment
      *
-     * @param \Twig_Environment $renderer
+     * @param \Twig_Environment $twig
      */
     public function setTwig(\Twig_Environment $twig)
     {

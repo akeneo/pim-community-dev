@@ -15,9 +15,9 @@ interface ChangesCollectorInterface
     /**
      * Store a collected change
      *
-     * @param string               $key
+     * @param string               $key     The form field key
      * @param array                $changes This data is structured so it can be submitted against a product form
-     * @param AbstractProductValue $value
+     * @param AbstractProductValue $value   The value
      */
     public function add($key, $changes, AbstractProductValue $value);
 

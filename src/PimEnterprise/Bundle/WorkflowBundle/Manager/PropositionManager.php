@@ -94,7 +94,6 @@ class PropositionManager
      * Remove a persisted proposition
      *
      * @param Proposition $proposition
-     *
      */
     public function remove(Proposition $proposition)
     {
@@ -116,9 +115,10 @@ class PropositionManager
      *
      * @return Proposition
      *
-     * @throw \LogicException
+     * @throws \LogicException
+     *
+     * TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
      */
-    // TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
     public function findOrCreate(ProductInterface $product)
     {
         if (null === $this->userContext->getUser()) {

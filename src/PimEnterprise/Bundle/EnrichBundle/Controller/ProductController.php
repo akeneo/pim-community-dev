@@ -49,6 +49,10 @@ class ProductController extends BaseProductController
      *
      * @param integer $id
      *
+     * @return RedirectResponse
+     *
+     * @throws AccessDeniedException
+     *
      * @AclAncestor("pim_enrich_product_edit")
      */
     public function dispatchAction($id)
@@ -86,7 +90,7 @@ class ProductController extends BaseProductController
     /**
      * Show a product value
      *
-     * @param Request $requset
+     * @param Request $request
      * @param string  $productId
      * @param string  $attributeCode
      *

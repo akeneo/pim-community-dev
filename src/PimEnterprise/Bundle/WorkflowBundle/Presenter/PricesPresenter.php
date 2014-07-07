@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 /**
+ * Present changes on prices
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

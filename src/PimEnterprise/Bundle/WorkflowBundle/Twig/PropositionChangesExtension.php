@@ -46,6 +46,7 @@ class PropositionChangesExtension extends \Twig_Extension
 
     /**
      * @param ObjectRepository    $valueRepository
+     * @param ObjectRepository    $attributeRepository
      * @param RendererInterface   $renderer
      * @param TranslatorInterface $translator
      * @param ProductManager      $productManager

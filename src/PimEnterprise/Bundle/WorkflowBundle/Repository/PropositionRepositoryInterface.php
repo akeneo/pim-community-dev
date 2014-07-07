@@ -23,8 +23,8 @@ interface PropositionRepositoryInterface extends ObjectRepository
     /**
      * Apply the context of the datagrid to the query
      *
-     * @param QueryBuilder $qb
-     * @param integer      $product
+     * @param QueryBuilder   $qb
+     * @param integer|string $productId
      *
      * @return PropositionRepositoryInterface
      */

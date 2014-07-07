@@ -66,7 +66,7 @@ class ImagePresenter implements PresenterInterface
     /**
      * Create an HTML Image element
      *
-     * @param string $source
+     * @param string $filename
      * @param string $title
      *
      * @return string

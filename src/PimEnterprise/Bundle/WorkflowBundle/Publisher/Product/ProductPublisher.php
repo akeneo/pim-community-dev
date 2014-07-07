@@ -6,7 +6,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**

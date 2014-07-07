@@ -7,10 +7,10 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * A comparator that delegates comparison to a chain of comparators
  *
- * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class ChainedComparator implements ComparatorInterface
 {

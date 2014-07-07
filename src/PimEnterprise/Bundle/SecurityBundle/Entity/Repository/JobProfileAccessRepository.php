@@ -21,10 +21,10 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
     protected $tableNameBuilder;
 
     /**
-     * Get roles that have the specified access to a category
+     * Get roles that have the specified access to a job instance
      *
-     * @param CategoryInterface $category
-     * @param string            $accessLevel
+     * @param JobInstance $jobProfile
+     * @param string      $accessLevel
      *
      * @return Role[]
      */

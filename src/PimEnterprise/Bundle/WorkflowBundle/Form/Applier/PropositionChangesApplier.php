@@ -104,7 +104,7 @@ class PropositionChangesApplier
      * Wether or not a a product value is marked as modified (meaning a proposition has changed its value)
      *
      * @param array  $attribute The attribute as stored in the product form view
-     * @param string $scope
+     * @param string $scope     The scope to check
      *
      * @return boolean
      */
@@ -164,7 +164,7 @@ class PropositionChangesApplier
      *
      * @param FormInterface $form
      * @param FormInterface $parent
-     * @param array         $errors
+     * @param array         &$errors
      *
      * @return array
      */

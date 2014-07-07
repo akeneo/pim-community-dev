@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 
 /**
- * Product form view decorator that adds classes and fields on which proposal value is applied
+ * Product form view decorator that adds classes and fields on which proposition value is applied
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

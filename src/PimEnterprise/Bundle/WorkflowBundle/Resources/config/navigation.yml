@@ -1,7 +1,7 @@
 oro_menu_config:
     items:
         pimee_workflow_published_product:
-            label: pim_menu.item.publishedproduct
+            label: pim_menu.item.published_product
             route: pimee_workflow_published_product_index
             aclResourceId: pimee_workflow_published_product_index
             extras:
@@ -15,4 +15,4 @@ oro_menu_config:
                         pimee_workflow_published_product: ~
 
 oro_titles:
-    pimee_workflow_published_product_index: pim_title.publishedproduct.index
+    pimee_workflow_published_product_index: pim_title.published_product.index

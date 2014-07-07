@@ -56,7 +56,7 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
      *      'viewAttributes': true,
      *      'editAttributes': false,
      * ]
-     * @param $data
+     * @param array $data
      *
      * @return array usable items
      */

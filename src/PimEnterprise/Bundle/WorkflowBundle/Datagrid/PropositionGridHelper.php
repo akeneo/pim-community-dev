@@ -24,7 +24,9 @@ class PropositionGridHelper
     {
         return function (ResultRecordInterface $record) {
             if (Proposition::IN_PROGRESS === $record->getValue('status')) {
-                return ['approve' => false, 'refuse' => true];
+                return ['approve' => false, 'refuse' => false];
+            } else {
+                return ['remove' => false];
             }
         };
     }

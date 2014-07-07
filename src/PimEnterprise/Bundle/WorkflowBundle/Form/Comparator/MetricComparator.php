@@ -8,10 +8,10 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 /**
  * Comparator which calculate change set for metrics
  *
- * @see PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class MetricComparator implements ComparatorInterface
 {

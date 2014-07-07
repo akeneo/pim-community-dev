@@ -21,6 +21,9 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
 {
     protected $securityContext;
 
+    /**
+     * @param SecurityContextInterface $securityContext
+     */
     public function __construct(SecurityContextInterface $securityContext)
     {
         $this->securityContext = $securityContext;
@@ -103,7 +106,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
      *
      * @param ResolvedFormTypeInterface $type
      *
-     * return boolean
+     * @return boolean
      */
     protected function isACollectionType(ResolvedFormTypeInterface $type)
     {
