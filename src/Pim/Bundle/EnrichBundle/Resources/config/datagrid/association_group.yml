@@ -66,4 +66,3 @@ datagrid:
                         field_options:
                             multiple: true
                             choices:  '@pim_catalog.manager.group->getTypeChoices'
-
