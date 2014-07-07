@@ -88,5 +88,4 @@ class MetricNormalizer implements NormalizerInterface
         $metric->setBaseData($baseData);
         $metric->setBaseUnit($baseUnit);
     }
-
 }

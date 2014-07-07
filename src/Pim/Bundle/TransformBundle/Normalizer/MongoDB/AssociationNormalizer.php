@@ -63,7 +63,8 @@ class AssociationNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeProducts($products, $productCollection) {
+    protected function normalizeProducts($products, $productCollection)
+    {
         $data = [];
 
         foreach ($products as $product) {
@@ -80,7 +81,8 @@ class AssociationNormalizer implements NormalizerInterface
      *
      * @return array
      */
-    protected function normalizeGroups($groups) {
+    protected function normalizeGroups($groups)
+    {
         $data = [];
 
         foreach ($groups as $group) {
