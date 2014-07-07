@@ -36,6 +36,9 @@ class MongoObjectsFactory
      */
     public function createMongoDate($seconds = null)
     {
+        if (null === $seconds) {
+            $seconds = time();
+        }
         return new MongoDate($seconds);
     }
 
