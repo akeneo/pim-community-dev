@@ -10,6 +10,9 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require \MongoId
+ */
 class ProductValueNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory, SerializerInterface $serializer)
