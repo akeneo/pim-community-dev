@@ -10,6 +10,9 @@ use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require \MongoId
+ */
 class MetricNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory, MeasureConverter $converter, MeasureManager $manager)

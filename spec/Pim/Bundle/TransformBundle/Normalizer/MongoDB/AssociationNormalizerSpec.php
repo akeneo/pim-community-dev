@@ -9,6 +9,9 @@ use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require \MongoId
+ */
 class AssociationNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory)

@@ -4,6 +4,9 @@ namespace spec\Pim\Bundle\TransformBundle\Normalizer\MongoDB;
 
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require \MongoId
+ */
 class GenericNormalizerSpec extends ObjectBehavior
 {
     function it_is_a_normalizer()

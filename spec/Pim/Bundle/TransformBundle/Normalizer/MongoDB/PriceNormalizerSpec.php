@@ -7,6 +7,9 @@ use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 
 use PhpSpec\ObjectBehavior;
 
+/**
+ * @require \MongoId
+ */
 class PriceNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory)
