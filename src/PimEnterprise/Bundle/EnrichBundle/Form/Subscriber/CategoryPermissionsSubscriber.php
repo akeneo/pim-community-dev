@@ -21,7 +21,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     protected $accessManager;
 
     /** array */
-    protected $precedentRoles = [];
+    protected $precedentRoles = ['view' => [], 'edit' => []];
 
     /**
      * @param CategoryAccessManager $accessManager

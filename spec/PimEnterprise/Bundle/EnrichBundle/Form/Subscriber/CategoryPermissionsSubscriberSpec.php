@@ -77,6 +77,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         Form $form,
         Form $viewForm,
         Form $editForm,
+        Form $applyForm,
         $accessManager
     ) {
         $event->getData()->willReturn($category);
@@ -88,15 +89,47 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
+        $form->get('apply_on_children')->willReturn($applyForm);
 
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
-
+        $applyForm->getData()->willReturn(false);
 
         $accessManager->setAccess($category, ['one', 'two'], ['three'])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
+
+    function it_applies_the_new_permissions_on_children(
+        FormEvent $event,
+        Category $category,
+        Form $form,
+        Form $viewForm,
+        Form $editForm,
+        Form $applyForm,
+        $accessManager
+    ) {
+        $event->getData()->willReturn($category);
+        $category->isRoot()->willReturn(true);
+        $category->getId()->willReturn(1);
+
+        $event->getForm()->willReturn($form);
+        $form->isValid()->willReturn(true);
+        $form->get('permissions')->willReturn($form);
+        $form->get('view')->willReturn($viewForm);
+        $form->get('edit')->willReturn($editForm);
+        $form->get('apply_on_children')->willReturn($applyForm);
+
+        $viewForm->getData()->willReturn(['one', 'two']);
+        $editForm->getData()->willReturn(['three']);
+        $applyForm->getData()->willReturn(true);
+
+        $accessManager->setAccess($category, ['one', 'two'], ['three'])->shouldBeCalled();
+        $accessManager->addChildrenAccess($category, ['one', 'two'], ['three'])->shouldBeCalled();
+
+        $this->postSubmit($event);
+    }
+
 
     function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
         FormEvent $event,
