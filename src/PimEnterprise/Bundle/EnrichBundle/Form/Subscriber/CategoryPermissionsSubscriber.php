@@ -2,11 +2,12 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 /**
  * Subscriber to manage permissions on categories
@@ -16,10 +17,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var CategoryAccessManager
-     */
+    /** @var CategoryAccessManager */
     protected $accessManager;
+
+    /** array */
+    protected $precedentRoles = [];
 
     /**
      * @param CategoryAccessManager $accessManager
@@ -69,8 +71,14 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+
+        $viewRoles = $this->accessManager->getViewRoles($event->getData());
+        $form->get('view')->setData($viewRoles);
+        $this->precedentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+
+        $editRoles = $this->accessManager->getEditRoles($event->getData());
+        $form->get('edit')->setData($editRoles);
+        $this->precedentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
     }
 
     /**
@@ -89,6 +97,18 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+
+            $currentRoles = [];
+            $currentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+            $currentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+
+            $addedViewRoles = array_diff($currentRoles['view'], $this->precedentRoles['view']);
+            $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
+
+            $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
+            if ($updateChildren && count($addedViewRoles) > 0 && count($addedEditRoles) > 0) {
+                $this->accessManager->addChildrenAccess($event->getData(), $addedViewRoles, $addedEditRoles);
+            }
         }
     }
 

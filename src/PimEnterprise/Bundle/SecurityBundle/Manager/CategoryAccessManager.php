@@ -91,6 +91,18 @@ class CategoryAccessManager
     }
 
     /**
+     * Add accesses to all category children to specified roles
+     *
+     * @param CategoryInterface $parent
+     * @param Role[]            $viewRoles
+     * @param Role[]            $editRoles
+     */
+    public function addChildrenAccess(CategoryInterface $parent, $viewRoles, $editRoles)
+    {
+        // TODO : to implement
+    }
+
+    /**
      * Grant specified access on a category for the provided role
      *
      * @param CategoryInterface $category
