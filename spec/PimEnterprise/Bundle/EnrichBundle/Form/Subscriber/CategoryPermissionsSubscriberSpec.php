@@ -130,7 +130,6 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $this->postSubmit($event);
     }
 
-
     function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
         FormEvent $event,
         Category $category,

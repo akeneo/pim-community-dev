@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -165,8 +164,8 @@ class CategoryAccessManager
     /**
      * Delete accesses on categories
      *
-     * @param integer[]    $categoryIds
-     * @param Role         $role
+     * @param integer[] $categoryIds
+     * @param Role      $role
      */
     protected function removeAccesses($categoryIds, Role $role)
     {
