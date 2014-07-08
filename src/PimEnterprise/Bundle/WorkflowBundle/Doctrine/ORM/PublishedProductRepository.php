@@ -85,7 +85,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
     {
-        throw new \Exception('Not yet implemented');
+        $qb = $this->findAllByAttributesQB([$attribute]);
+        $qb->select('COUNT(Entity.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
