@@ -134,6 +134,18 @@ class PublishedProductManager
     }
 
     /**
+     * Un publish a product
+     *
+     * @param PublishedProductInterface $published
+     *
+     * @return bool
+     */
+    public function unpublish(PublishedProductInterface $published)
+    {
+        return true;
+    }
+
+    /**
      * @return ObjectManager
      */
     protected function getObjectManager()

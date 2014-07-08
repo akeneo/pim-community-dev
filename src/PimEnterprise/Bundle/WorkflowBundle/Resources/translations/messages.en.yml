@@ -18,7 +18,9 @@ pimee_workflow:
     acl.published_product:
         index: Manage published products
 btn.publish: Publish
+btn.unpublish: Unpublish
 flash.product.published: The product has been successfully published.
+flash.product.unpublished: The product has been successfully unpublished.
 flash.propositon.approve.success: The proposition has been applied successfully.
 flash.propositon.approve.error: The proposition can't be applied due to the following error. %error%
 pim_menu:
