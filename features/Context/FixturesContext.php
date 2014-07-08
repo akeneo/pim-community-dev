@@ -619,8 +619,10 @@ class FixturesContext extends RawMinkContext
         $channel = $this->getChannel($channel);
 
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
-        $channel->addLocale($this->getLocale($localeCode));
+        $locale = $this->getLocale($localeCode);
+        $channel->addLocale($locale);
         $this->persist($channel);
+        $this->persist($locale);
     }
 
     /**
