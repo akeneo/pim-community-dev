@@ -2,7 +2,7 @@
 
 namespace Context\Page\Published;
 
-use Context\Page\Product\Index;
+use Context\Page\Product\Index as BaseIndex;
 
 /**
  * Published Product index page
@@ -10,7 +10,7 @@ use Context\Page\Product\Index;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class Products extends Index
+class Index extends BaseIndex
 {
     /**
      * @var string $path
