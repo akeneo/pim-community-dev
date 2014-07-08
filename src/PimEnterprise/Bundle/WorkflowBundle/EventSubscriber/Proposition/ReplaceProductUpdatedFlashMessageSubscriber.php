@@ -59,8 +59,7 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
         }
 
         $request = $event->getRequest();
-        if (null === $id = $request->attributes->get('id'))
-        {
+        if (null === $id = $request->attributes->get('id')) {
             return;
         }
 
