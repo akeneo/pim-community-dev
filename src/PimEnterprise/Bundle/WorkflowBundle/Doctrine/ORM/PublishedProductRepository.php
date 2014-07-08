@@ -21,8 +21,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
     /**
-     * Expected by interface but we let ORM entity repository work with its magic here
-     *
      * {@inheritdoc}
      */
     public function findOneByOriginalProduct(ProductInterface $originalProduct)

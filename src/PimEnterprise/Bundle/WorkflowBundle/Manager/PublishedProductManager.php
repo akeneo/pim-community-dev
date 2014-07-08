@@ -137,12 +137,14 @@ class PublishedProductManager
      * Un publish a product
      *
      * @param PublishedProductInterface $published
-     *
-     * @return bool
      */
     public function unpublish(PublishedProductInterface $published)
     {
-        return true;
+        $product = $published->getOriginalProduct();
+        $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
+        $this->getObjectManager()->remove($published);
+        $this->getObjectManager()->flush();
+        $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
     }
 
     /**
