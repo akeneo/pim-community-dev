@@ -9,6 +9,7 @@ parameters:
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
     pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
     pimee_workflow.collector.changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
+    pimee_workflow.proposition.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
 
 services:
     pimee_workflow.factory.proposition:
@@ -46,6 +47,14 @@ services:
 
     pimee_workflow.proposition_subscriber.mark_in_progress:
         class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.proposition.replace_flash_message:
+        class: %pimee_workflow.proposition.replace_flash_message.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.repository.product'
         tags:
             - { name: kernel.event_subscriber }
 
