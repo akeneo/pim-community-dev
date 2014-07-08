@@ -4,9 +4,7 @@ namespace Pim\Bundle\EnrichBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\Translation\TranslatorInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 use Symfony\Component\HttpKernel\Event\KernelEvent;
 
@@ -49,7 +47,7 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
     /**
      * Replace flash messages with their translation
      *
-     * @param FilterResponseEvent $event
+     * @param KernelEvent $event
      */
     public function translate(KernelEvent $event)
     {
