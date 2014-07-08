@@ -87,6 +87,27 @@ class PublishedProductManager
     }
 
     /**
+     * Find a published product by its identifier
+     *
+     * @param string $identifier
+     *
+     * @return PublishedProductInterface
+     */
+    public function findByIdentifier($identifier)
+    {
+        $published = $this->repository->findOneBy(
+            [
+                [
+                    'attribute' => $this->productManager->getIdentifierAttribute(),
+                    'value' => $identifier
+                ]
+            ]
+        );
+
+        return $published;
+    }
+
+    /**
      * Publish a product
      *
      * @param ProductInterface $product
