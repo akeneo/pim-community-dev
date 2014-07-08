@@ -4,10 +4,11 @@ namespace Pim\Bundle\CatalogBundle\Entity\Repository;
 
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\AbstractQuery;
+use Doctrine\ORM\QueryBuilder;
 use Gedmo\Tree\Entity\Repository\NestedTreeRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
-use Doctrine\ORM\QueryBuilder;
 
 /**
  * Category repository
@@ -134,6 +135,25 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
     public function getAllChildrenQueryBuilder(CategoryInterface $category, $includeNode = false)
     {
         return $this->getChildrenQueryBuilder($category, false, null, 'ASC', $includeNode);
+    }
+
+    /**
+     * Shortcut to get all children ids
+     *
+     * @param Category $parent the parent
+     *
+     * @return integer[]
+     */
+    public function getAllChildrenIds(CategoryInterface $parent)
+    {
+        $categoryQb = $this->getAllChildrenQueryBuilder($parent);
+        $rootAlias  = current($categoryQb->getRootAliases());
+        $rootEntity = current($categoryQb->getRootEntities());
+        $categoryQb->select($rootAlias.'.id');
+        $categoryQb->resetDQLPart('from');
+        $categoryQb->from($rootEntity, $rootAlias, $rootAlias.'.id');
+
+        return array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
     }
 
     /**
