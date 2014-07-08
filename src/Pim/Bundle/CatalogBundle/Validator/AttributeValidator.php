@@ -36,13 +36,13 @@ class AttributeValidator
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {
-            if (in_array($option->getCode(), $existingValues)) {
+            if (isset($existingValues[$option->getCode()])) {
                 $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_CODE);
             }
             if ($option->getCode() === null) {
                 $context->addViolation(self::VIOLATION_OPTION_CODE_REQUIRED);
             } else {
-                $existingValues[] = $option->getCode();
+                $existingValues[$option->getCode()] = '';
             }
         }
     }
