@@ -19,10 +19,9 @@ class ChangesCollectorSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
-        $value->getId()->willReturn(713705);
         $value->getScope()->willReturn('ecommerce');
         $value->getLocale()->willReturn('fr_FR');
-        $attribute->getId()->willReturn(1337);
+        $attribute->getCode()->willReturn('description');
 
         $this->add('name', ['foo' => 'bar'], $value);
         $this->getChanges()->shouldReturn([
@@ -30,10 +29,9 @@ class ChangesCollectorSpec extends ObjectBehavior
                 'name' => [
                     'foo' => 'bar',
                     '__context__' => [
-                        'attribute_id' => 1337,
-                        'value_id' => 713705,
-                        'scope' => 'ecommerce',
+                        'attribute' => 'description',
                         'locale' => 'fr_FR',
+                        'scope' => 'ecommerce',
                     ]
                 ]
             ]
@@ -45,10 +43,9 @@ class ChangesCollectorSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute
     ) {
         $value->getAttribute()->willReturn($attribute);
-        $value->getId()->willReturn(713705);
         $value->getScope()->willReturn('ecommerce');
         $value->getLocale()->willReturn('fr_FR');
-        $attribute->getId()->willReturn(1337);
+        $attribute->getCode()->willReturn('description');
 
         $this->add('name', ['foo' => 'bar'], $value);
         $this->add('name', ['foo' => 'baz'], $value);
@@ -57,10 +54,9 @@ class ChangesCollectorSpec extends ObjectBehavior
                 'name' => [
                     'foo' => 'bar',
                     '__context__' => [
-                        'attribute_id' => 1337,
-                        'value_id' => 713705,
-                        'scope' => 'ecommerce',
+                        'attribute' => 'description',
                         'locale' => 'fr_FR',
+                        'scope' => 'ecommerce',
                     ]
                 ]
             ]
