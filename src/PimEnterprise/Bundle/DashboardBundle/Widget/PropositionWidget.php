@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -20,13 +21,20 @@ class PropositionWidget implements WidgetInterface
     protected $registry;
 
     /**
+     * @var UserContext
+     */
+    protected $userContext;
+
+    /**
      * Constructor
      *
      * @param ManagerRegistry $registry
+     * @param UserContext     $userContext
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, UserContext $userContext)
     {
-        $this->registry = $registry;
+        $this->registry    = $registry;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -42,11 +50,25 @@ class PropositionWidget implements WidgetInterface
      */
     public function getParameters()
     {
+        $user    = $this->userContext->getUser();
+        $isOwner = false;
+
+        if (null !== $user) {
+            $isOwner = $this->registry
+                ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership')
+                ->isOwner($user);
+        }
+
+        if (!$isOwner) {
+            return ['show' => false];
+        }
+
         $propositions = $this->registry
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
             ->findBy([], ['createdAt' => 'desc'], 10);
 
         return [
+            'show'   => true,
             'params' => $propositions
         ];
     }
