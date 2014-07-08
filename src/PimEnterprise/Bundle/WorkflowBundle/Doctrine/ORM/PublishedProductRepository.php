@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -60,10 +61,9 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->andWhere('pp.family = :family')
-            ->setParameter('family', $family)
-            ->select('COUNT(pp.id)');
+            ->setParameter('family', $family);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $this->getCountFromQB($qb);
     }
 
     /**
@@ -74,10 +74,9 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->andWhere(':category MEMBER OF pp.categories')
-            ->setParameter('category', $category)
-            ->select('COUNT(pp.id)');
+            ->setParameter('category', $category);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $this->getCountFromQB($qb);
     }
 
     /**
@@ -86,9 +85,8 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
     {
         $qb = $this->findAllByAttributesQB([$attribute]);
-        $qb->select('COUNT(Entity.id)');
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $this->getCountFromQB($qb);
     }
 
     /**
@@ -99,10 +97,9 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->andWhere(':group MEMBER OF pp.groups')
-            ->setParameter('group', $group)
-            ->select('COUNT(pp.id)');
+            ->setParameter('group', $group);
 
-        return $qb->getQuery()->getSingleScalarResult();
+        return $this->getCountFromQB($qb);
     }
 
     /**
@@ -110,6 +107,27 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForAssociationType(AssociationType $associationType)
     {
-        throw new \Exception('Not yet implemented');
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->innerJoin('pp.associations', 'ppa')
+            ->andWhere('ppa.associationType = :association_type')
+            ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * Return the result count from a query builder object
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return mixed
+     */
+    protected function getCountFromQB(QueryBuilder $qb)
+    {
+        $rootAlias = current($qb->getRootAliases());
+        $qb->select(sprintf("COUNT(%s.id)", $rootAlias));
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
