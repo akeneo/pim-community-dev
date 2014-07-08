@@ -5,30 +5,30 @@
             'use strict';
 
             $(function () {
-                $('#{{form.permissions.vars.id}}')
-                    .append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls" id="permissions-changes"></div></div>');
+                $('#{{form.permissions.vars.id}}').append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls"><ul id="permissions-changes"></ul></div></div>');
 
-                $('#{{form.permissions.view.vars.id}}')
+                $('#{{form.permissions.vars.id}} select')
                     .select2()
                     .on('change', function(e) {
+
+                        var permission = $(this).attr('id');
+                        var permissionLabel = $.trim($(this).parents('.control-group').children('label').text()).toLowerCase();
+
                         if (typeof e.added !== 'undefined') {
-                            if ($('#change-'+e.added.id).length > 0) {
-                                $('#change-'+e.added.id).remove();
+                            if ($('#change-'+permission+'-'+e.added.id).length > 0) {
+                                $('#change-'+permission+'-'+e.added.id).remove();
                             } else {
-                                $('#permissions-changes')
-                                    .append("<span id='change-"+e.added.id+"'>{{'Add'|trans}} " + e.added.text + '</span>');
-                            }
-                        }
-                        if (typeof e.removed !== 'undefined') {
-                            if ($('#change-'+e.removed.id).length > 0) {
-                                $('#change-'+e.removed.id).remove();
-                            } else {
-                                $('#permissions-changes')
-                                    .append("<span id='change-"+e.removed.id+"'>{{'Remove'|trans}} " + e.removed.text + '</span>');
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.added.id+"'>{{'The role'|trans}} <strong>"+e.added.text+"</strong> {{'will'|trans}} <strong>"+permissionLabel+"</strong> {{'in this category'|trans}}</li>");
                             }
                         }
 
-                        console.log('change '+e.val + ' added ' + e.added + ' removed '+ e.removed);
+                        if (typeof e.removed !== 'undefined') {
+                            if ($('#change-'+permission+'-'+e.removed.id).length > 0) {
+                                $('#change-'+permission+'-'+e.removed.id).remove();
+                            } else {
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>{{'The role'|trans}} <strong>"+e.removed.text+"</strong> {{'will'|trans}} <strong> {{'not'|trans}} "+permissionLabel+"</strong> {{'in this category'|trans}}</li>");
+                            }
+                        }
                     });
             });
         });
