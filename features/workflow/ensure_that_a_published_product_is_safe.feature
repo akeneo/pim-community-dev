@@ -16,7 +16,6 @@ Feature: Ensure that a published product is safe
     And I press the "Delete" button
     And I confirm the removal
     Then I am on the products page
-    And the grid should contain 1 element
     And I should see product my-jacket
 
   Scenario: Fail to remove a category that is linked to a published product
@@ -30,5 +29,11 @@ Feature: Ensure that a published product is safe
     And I press the "Delete" button
     And I confirm the removal
     Then I am on the families page
-    And the grid should contain 3 element
     And I should see family jackets
+
+  Scenario: Fail to remove a group that is linked to a published product
+    Given I am on the "similar_jackets" product group page
+    And I press the "Delete" button
+    And I confirm the removal
+    Then I am on the product groups page
+    And I should see group similar_jacket
