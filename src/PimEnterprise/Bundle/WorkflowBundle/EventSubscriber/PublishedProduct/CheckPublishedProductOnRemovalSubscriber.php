@@ -33,8 +33,10 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            CatalogEvents::PRE_REMOVE_PRODUCT => 'checkProductHasBeenPublished',
-            CatalogEvents::PRE_REMOVE_FAMILY  => 'checkFamilyLinkedToPublishedProduct'
+            CatalogEvents::PRE_REMOVE_PRODUCT   => 'checkProductHasBeenPublished',
+            CatalogEvents::PRE_REMOVE_FAMILY    => 'checkFamilyLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_ATTRIBUTE => 'checkAttributeLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_CATEGORY  => 'checkCategoryLinkedToPublishedProduct'
         ];
     }
 
@@ -64,11 +66,76 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      */
     public function checkFamilyLinkedToPublishedProduct(GenericEvent $event)
     {
-        $family    = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductForFamily($family);
+        $family = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductsForFamily($family);
 
         if ($publishedCount > 0) {
             throw new ConflictHttpException('Impossible to remove family linked to a published product');
         }
+    }
+
+    /**
+     * Check if the category is linked to a published product
+     *
+     * @param GenericEvent $event
+     *
+     * @throws ConflictHttpException
+     */
+    public function checkCategoryLinkedToPublishedProduct(GenericEvent $event)
+    {
+        $category = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductsForCategory($category);
+
+        if ($publishedCount > 0) {
+            throw new ConflictHttpException('Impossible to remove category linked to a published product');
+        }
+    }
+
+    /**
+     * Check if the attribute is linked to a published product
+     *
+     * @param GenericEvent $event
+     *
+     * @throws ConflictHttpException
+     */
+    public function checkAttributeLinkedToPublishedProduct(GenericEvent $event)
+    {
+        $attribute = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductsForAttribute($attribute);
+
+        if ($publishedCount > 0) {
+            throw new ConflictHttpException('Impossible to remove attribute linked to a published product');
+        }
+    }
+
+    /**
+     * Check if the group is linked to a published product
+     *
+     * @param GenericEvent $event
+     *
+     * @throws ConflictHttpException
+     */
+    public function checkGroupLinkedToPublishedProduct(GenericEvent $event)
+    {
+        $group = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductsForGroup($group);
+
+        if ($publishedCount > 0) {
+            throw new ConflictHttpException('Impossible to remove group linked to a published product');
+        }
+    }
+
+    /**
+     * Check if the association type is linked to a published product
+     *
+     * @param GenericEvent $event
+     *
+     * @throws ConflictHttpException
+     */
+    public function checkAssociationTypeToPublishedProduct(GenericEvent $event)
+    {
+        $associationType = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductsForAssociationType($associationType);
+        throw new \Exception('Not yet implemented');
     }
 }

@@ -2,7 +2,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
@@ -46,5 +50,41 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @return integer
      */
-    public function countPublishedProductForFamily(Family $family);
+    public function countPublishedProductsForFamily(Family $family);
+
+    /**
+     * Count published products for a specific category
+     *
+     * @param CategoryInterface $category
+     *
+     * @return integer
+     */
+    public function countPublishedProductsForCategory(CategoryInterface $category);
+
+    /**
+     * Count published products for a specific attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return integer
+     */
+    public function countPublishedProductsForAttribute(AbstractAttribute $attribute);
+
+    /**
+     * Count published products for a specific group
+     *
+     * @param Group $group
+     *
+     * @return integer
+     */
+    public function countPublishedProductsForGroup(Group $group);
+
+    /**
+     * Count published products for a specific association type
+     *
+     * @param AssociationType $associationType
+     *
+     * @return integer
+     */
+    public function countPublishedProductsForAssociationType(AssociationType $associationType);
 }

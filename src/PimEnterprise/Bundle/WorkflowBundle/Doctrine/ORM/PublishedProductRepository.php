@@ -3,7 +3,11 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -60,5 +64,43 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             ->select('COUNT(pp.id)');
 
         return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForCategory(CategoryInterface $category)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->andWhere(':category MEMBER OF pp.categories')
+            ->setParameter('category', $category)
+            ->select('COUNT(pp.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    {
+        throw new \Exception('Not yet implemented');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForGroup(Group $group)
+    {
+        throw new \Exception('Not yet implemented');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    {
+        throw new \Exception('Not yet implemented');
     }
 }
