@@ -115,29 +115,21 @@ class CategoryAccessManager
         $removeViewRoles,
         $removeEditRoles
     ) {
-        $categoryRepo = $this->getCategoryRepository();
-        $childrenIds = $categoryRepo->getAllChildrenIds($parent);
+        $mergedPermissions = $this->getMergedPermissions(
+            $addViewRoles,
+            $addEditRoles,
+            $removeViewRoles,
+            $removeEditRoles
+        );
 
         $codeToRoles = [];
-        $mergedPermissions = [];
         $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
         foreach ($allRoles as $role) {
-            $mergedPermissions[$role->getRole()]= ['view' => null, 'edit' => null];
             $codeToRoles[$role->getRole()]= $role;
         }
-        foreach ($addViewRoles as $role) {
-            $mergedPermissions[$role->getRole()]['view'] = true;
-        }
-        foreach ($addEditRoles as $role) {
-            $mergedPermissions[$role->getRole()]['edit'] = true;
-            $mergedPermissions[$role->getRole()]['view'] = true;
-        }
-        foreach ($removeViewRoles as $role) {
-            $mergedPermissions[$role->getRole()]['view'] = false;
-        }
-        foreach ($removeEditRoles as $role) {
-            $mergedPermissions[$role->getRole()]['edit'] = false;
-        }
+
+        $categoryRepo = $this->getCategoryRepository();
+        $childrenIds = $categoryRepo->getAllChildrenIds($parent);
 
         foreach ($codeToRoles as $role) {
             $roleCode = $role->getRole();
@@ -159,6 +151,44 @@ class CategoryAccessManager
                 }
             }
         }
+    }
+
+    /**
+     * Get merged permissions
+     *
+     * @param Role[] $addViewRoles
+     * @param Role[] $addEditRoles
+     * @param Role[] $removeViewRoles
+     * @param Role[] $removeEditRoles
+     *
+     * @return array
+     */
+    protected function getMergedPermissions(
+        $addViewRoles,
+        $addEditRoles,
+        $removeViewRoles,
+        $removeEditRoles
+    ) {
+        $mergedPermissions = [];
+        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        foreach ($allRoles as $role) {
+            $mergedPermissions[$role->getRole()]= ['view' => null, 'edit' => null];
+        }
+        foreach ($addViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+        foreach ($addEditRoles as $role) {
+            $mergedPermissions[$role->getRole()]['edit'] = true;
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+        foreach ($removeViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = false;
+        }
+        foreach ($removeEditRoles as $role) {
+            $mergedPermissions[$role->getRole()]['edit'] = false;
+        }
+
+        return $mergedPermissions;
     }
 
     /**
