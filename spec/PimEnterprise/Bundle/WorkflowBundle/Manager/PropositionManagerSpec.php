@@ -14,6 +14,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 
 class PropositionManagerSpec extends ObjectBehavior
 {
@@ -23,15 +25,17 @@ class PropositionManagerSpec extends ObjectBehavior
         UserContext $userContext,
         PropositionFactory $factory,
         PropositionRepositoryInterface $repository,
-        PropositionChangesApplier $applier
+        PropositionChangesApplier $applier,
+        EventDispatcherInterface $dispatcher
     ) {
-        $this->beConstructedWith($registry, $manager, $userContext, $factory, $repository, $applier);
+        $this->beConstructedWith($registry, $manager, $userContext, $factory, $repository, $applier, $dispatcher);
     }
 
     function it_applies_changes_to_the_product_when_approving_a_proposition(
         $registry,
         $manager,
         $applier,
+        $dispatcher,
         Proposition $proposition,
         ProductInterface $product,
         ObjectManager $manager
@@ -40,6 +44,7 @@ class PropositionManagerSpec extends ObjectBehavior
         $proposition->getProduct()->willReturn($product);
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
+        $dispatcher->dispatch(PropositionEvents::PRE_APPROVE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent'))->shouldBeCalled();
         $applier->apply($product, $proposition)->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
         $manager->saveProduct($product, ['bypass_proposition' => true])->shouldBeCalled();
@@ -51,12 +56,14 @@ class PropositionManagerSpec extends ObjectBehavior
 
     function it_marks_as_in_progress_proposition_which_is_ready_when_refusing_it(
         $registry,
+        $dispatcher,
         Proposition $proposition,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
         $proposition->isInProgress()->willReturn(false);
+        $dispatcher->dispatch(PropositionEvents::PRE_REFUSE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent'))->shouldBeCalled();
         $proposition->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
@@ -117,11 +124,13 @@ class PropositionManagerSpec extends ObjectBehavior
 
     function it_marks_proposition_as_ready(
         $registry,
+        $dispatcher,
         Proposition $proposition,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
 
+        $dispatcher->dispatch(PropositionEvents::PRE_READY, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent'))->shouldBeCalled();
         $proposition->setStatus(Proposition::READY)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

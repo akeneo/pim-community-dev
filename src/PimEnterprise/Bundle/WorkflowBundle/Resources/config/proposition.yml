@@ -24,6 +24,7 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.repository.proposition'
             - '@pimee_workflow.applier.proposition_changes_applier'
+            - '@event_dispatcher'
 
     pimee_workflow.applier.proposition_changes_applier:
         public: false
