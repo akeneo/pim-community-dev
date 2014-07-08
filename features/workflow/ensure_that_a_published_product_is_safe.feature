@@ -7,8 +7,8 @@ Feature: Ensure that a published product is safe
   Background:
     Given a "clothing" catalog configuration
     And the following published products:
-      | sku       | categories | family  | groups          |
-      | my-jacket | jackets    | jackets | similar_jackets |
+      | sku       | categories | family  | groups          | handmade |
+      | my-jacket | jackets    | jackets | similar_jackets | yes      |
     And I am logged in as "Julia"
 
   Scenario: Fail to remove a product that has been published
@@ -37,3 +37,10 @@ Feature: Ensure that a published product is safe
     And I confirm the removal
     Then I am on the product groups page
     And I should see group similar_jacket
+
+  Scenario: Fail to remove an attribute that is linked to a published product
+    Given I am on the "handmade" attribute page
+    And I press the "Delete" button
+    And I confirm the removal
+    Then I am on the attributes page
+    And I should see attribute handmade
