@@ -55,7 +55,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductForFamily(Family $family)
+    public function countPublishedProductsForFamily(Family $family)
     {
         $qb = $this->createQueryBuilder('pp');
         $qb
