@@ -106,21 +106,38 @@ class CategoryAccessManager
      * @param CategoryInterface $parent
      * @param Role[]            $addViewRoles
      * @param Role[]            $addEditRoles
+     * @param Role[]            $removeViewRoles
+     * @param Role[]            $removeEditRoles
      */
-    public function addChildrenAccess(CategoryInterface $parent, $addViewRoles, $addEditRoles)
-    {
+    public function addChildrenAccess(
+        CategoryInterface $parent,
+        $addViewRoles,
+        $addEditRoles,
+        $removeViewRoles,
+        $removeEditRoles
+    ) {
         $categoryRepo = $this->getCategoryRepository();
         $childrenIds = $categoryRepo->getAllChildrenIds($parent);
 
         $codeToRoles = [];
         $mergedPermissions = [];
-        foreach ($addViewRoles as $role) {
-            $mergedPermissions[$role->getRole()] = ['view' => true, 'edit' => false];
+        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        foreach ($allRoles as $role) {
+            $mergedPermissions[$role->getRole()]= ['view' => null, 'edit' => null];
             $codeToRoles[$role->getRole()]= $role;
         }
+        foreach ($addViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
         foreach ($addEditRoles as $role) {
-            $mergedPermissions[$role->getRole()] = ['view' => true, 'edit' => true];
-            $codeToRoles[$role->getRole()]= $role;
+            $mergedPermissions[$role->getRole()]['edit'] = true;
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+        foreach ($removeViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = false;
+        }
+        foreach ($removeEditRoles as $role) {
+            $mergedPermissions[$role->getRole()]['edit'] = false;
         }
 
         foreach ($codeToRoles as $role) {
@@ -132,26 +149,48 @@ class CategoryAccessManager
             $toUpdateIds = $accessRepo->getGrantedCategoryIdsByRoles([$role], CategoryVoter::VIEW_PRODUCTS, $childrenIds);
             $toAddIds = array_diff($childrenIds, $toUpdateIds);
 
-            if (count($toAddIds) > 0) {
-                $this->addAccesses($toAddIds, $role, $view, $edit);
-            }
-
-            if (count($toUpdateIds) > 0) {
-                $this->updateAccesses($toUpdateIds, $role, $view, $edit);
+            if ($view === false && $edit === false) {
+                $this->removeAccesses($toUpdateIds, $role);
+            } else {
+                if (count($toAddIds) > 0) {
+                    $this->addAccesses($toAddIds, $role, $view, $edit);
+                }
+                if (count($toUpdateIds) > 0) {
+                    $this->updateAccesses($toUpdateIds, $role, $view, $edit);
+                }
             }
         }
     }
 
     /**
-     * Add accesses on categories
+     * Delete accesses on categories
      *
-     * @param integer[] $categoryIds
-     * @param Role      $role
-     * @param boolean   $view
-     * @param boolean   $edit
+     * @param integer[]    $categoryIds
+     * @param Role         $role
+     */
+    protected function removeAccesses($categoryIds, Role $role)
+    {
+        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
+
+        foreach ($accesses as $access) {
+            $this->getObjectManager()->remove($access);
+        }
+        $this->getObjectManager()->flush();
+
+    }
+
+    /**
+     * Add accesses on categories, a null permission will be resolved as false
+     *
+     * @param integer[]    $categoryIds
+     * @param Role         $role
+     * @param boolean|null $view
+     * @param boolean|null $edit
      */
     protected function addAccesses($categoryIds, Role $role, $view = false, $edit = false)
     {
+        $view = ($view === null) ? false : $view;
+        $edit = ($edit === null) ? false : $edit;
         $categories = $this->getCategoryRepository()->findBy(['id' => $categoryIds]);
 
         foreach ($categories as $category) {
@@ -165,19 +204,24 @@ class CategoryAccessManager
     }
 
     /**
-     * Update accesses on categories
+     * Update accesses on categories, if a permission is null we don't update
      *
-     * @param integer[] $categoryIds
-     * @param Role      $role
-     * @param boolean   $view
-     * @param boolean   $edit
+     * @param integer[]    $categoryIds
+     * @param Role         $role
+     * @param boolean|null $view
+     * @param boolean|null $edit
      */
     protected function updateAccesses($categoryIds, Role $role, $view = false, $edit = false)
     {
         $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
 
         foreach ($accesses as $access) {
-            $access->setViewProducts($view)->setEditProducts($edit);
+            if ($view !== null) {
+                $access->setViewProducts($view);
+            }
+            if ($edit !== null) {
+                $access->setEditProducts($edit);
+            }
             $this->getObjectManager()->persist($access);
         }
         $this->getObjectManager()->flush();
