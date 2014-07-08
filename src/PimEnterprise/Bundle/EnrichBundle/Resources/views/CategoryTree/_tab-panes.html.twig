@@ -1,3 +1,39 @@
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'jquery.select2'],
+        function ($, _) {
+            'use strict';
+
+            $(function () {
+                $('#{{form.permissions.vars.id}}')
+                    .append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls" id="permissions-changes"></div></div>');
+
+                $('#{{form.permissions.view.vars.id}}')
+                    .select2()
+                    .on('change', function(e) {
+                        if (typeof e.added !== 'undefined') {
+                            if ($('#change-'+e.added.id).length > 0) {
+                                $('#change-'+e.added.id).remove();
+                            } else {
+                                $('#permissions-changes')
+                                    .append("<span id='change-"+e.added.id+"'>{{'Add'|trans}} " + e.added.text + '</span>');
+                            }
+                        }
+                        if (typeof e.removed !== 'undefined') {
+                            if ($('#change-'+e.removed.id).length > 0) {
+                                $('#change-'+e.removed.id).remove();
+                            } else {
+                                $('#permissions-changes')
+                                    .append("<span id='change-"+e.removed.id+"'>{{'Remove'|trans}} " + e.removed.text + '</span>');
+                            }
+                        }
+
+                        console.log('change '+e.val + ' added ' + e.added + ' removed '+ e.removed);
+                    });
+            });
+        });
+</script>
+
 <div class="tab-pane active" id="properties">
     {% set generalProperties %}
         {{ form_row(form.code) }}
