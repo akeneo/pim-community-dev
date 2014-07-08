@@ -152,9 +152,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         $categoryQb->select($rootAlias.'.id');
         $categoryQb->resetDQLPart('from');
         $categoryQb->from($rootEntity, $rootAlias, $rootAlias.'.id');
-        $childrenIds = array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
 
-        return $childrenIds;
+        return array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
     }
 
     /**
