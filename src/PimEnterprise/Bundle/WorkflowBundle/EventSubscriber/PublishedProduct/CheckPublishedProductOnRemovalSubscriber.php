@@ -33,10 +33,12 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            CatalogEvents::PRE_REMOVE_PRODUCT   => 'checkProductHasBeenPublished',
-            CatalogEvents::PRE_REMOVE_FAMILY    => 'checkFamilyLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_ATTRIBUTE => 'checkAttributeLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_CATEGORY  => 'checkCategoryLinkedToPublishedProduct'
+            CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
+            CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
         ];
     }
 
@@ -132,10 +134,13 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @throws ConflictHttpException
      */
-    public function checkAssociationTypeToPublishedProduct(GenericEvent $event)
+    public function checkAssociationTypeLinkedToPublishedProduct(GenericEvent $event)
     {
         $associationType = $event->getSubject();
         $publishedCount = $this->publishedRepository->countPublishedProductsForAssociationType($associationType);
-        throw new \Exception('Not yet implemented');
+
+        if ($publishedCount > 0) {
+            throw new ConflictHttpException('Impossible to remove association type linked to a published product');
+        }
     }
 }

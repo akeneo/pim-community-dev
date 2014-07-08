@@ -93,7 +93,13 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function countPublishedProductsForGroup(Group $group)
     {
-        throw new \Exception('Not yet implemented');
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->andWhere(':group MEMBER OF pp.groups')
+            ->setParameter('group', $group)
+            ->select('COUNT(pp.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 
     /**
