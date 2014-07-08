@@ -8,6 +8,7 @@ use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Pim\Bundle\EnrichBundle\Flash\Message;
+use Symfony\Component\HttpKernel\Event\KernelEvent;
 
 /**
  * Translate all flash messages
@@ -32,12 +33,15 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      *
-     * All subscribers to the response event registered with a higher priority will have access to Message instance
-     * inside the flash bag. All others will have access to strings (translated flashes).
+     * Translation of flash messages must have a high priority to be sure that flashes bag is not emptied by any other
+     * subscriber. For example, the symfony view listener will render a template given some parameters returned by
+     * the controller action. If this template peeks all the flash messages before they have been translated, then it's
+     * too late.
      */
     public static function getSubscribedEvents()
     {
         return [
+            KernelEvents::VIEW => ['translate', 128],
             KernelEvents::RESPONSE => ['translate', -128],
         ];
     }
@@ -47,7 +51,7 @@ class TranslateFlashMessagesSubscriber implements EventSubscriberInterface
      *
      * @param FilterResponseEvent $event
      */
-    public function translate(FilterResponseEvent $event)
+    public function translate(KernelEvent $event)
     {
         $bag = $event->getRequest()->getSession()->getFlashBag();
         $messages = [];

@@ -28,6 +28,7 @@ class TranslateFlashMessagesSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_the_response_kernel_event_with_a_low_priority()
     {
         $this->getSubscribedEvents()->shouldReturn([
+            KernelEvents::VIEW => ['translate', 128],
             KernelEvents::RESPONSE => ['translate', -128],
         ]);
     }
