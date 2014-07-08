@@ -18,7 +18,11 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $registry->getManagerForClass(Argument::any())->willReturn($objectManager);
         $registry->getRepository(Argument::any())->willReturn($repository);
 
-        $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess');
+        $this->beConstructedWith(
+            $registry,
+            'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess',
+            'Pim\Bundle\CatalogBundle\Entity\Category'
+        );
     }
 
     function it_provides_roles_that_have_access_to_a_category(Category $category, $repository)
