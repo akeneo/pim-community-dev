@@ -17,7 +17,6 @@ pimee_workflow:
         index: Published Products
     acl.published_product:
         index: Manage published products
-        publish: Publish product
 btn.publish: Publish
 flash.product.published: The product has been successfully published.
 flash.propositon.approve.success: The proposition has been applied successfully.
