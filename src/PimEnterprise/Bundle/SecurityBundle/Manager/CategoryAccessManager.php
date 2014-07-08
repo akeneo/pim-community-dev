@@ -146,7 +146,7 @@ class CategoryAccessManager
             $edit = $mergedPermissions[$roleCode]['edit'];
 
             $accessRepo = $this->getAccessRepository();
-            $toUpdateIds = $accessRepo->getGrantedCategoryIdsByRoles([$role], CategoryVoter::VIEW_PRODUCTS, $childrenIds);
+            $toUpdateIds = $accessRepo->getCategoryIdsWithExistingAccess([$role], $childrenIds);
             $toAddIds = array_diff($childrenIds, $toUpdateIds);
 
             if ($view === false && $edit === false) {

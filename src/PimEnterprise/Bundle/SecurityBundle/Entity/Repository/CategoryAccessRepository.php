@@ -76,27 +76,21 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get granted category query builder
      *
-     * @param Role[] $roles
+     * @param User   $user
      * @param string $accessLevel
-     * @param string $categories
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getGrantedCategoryQB(array $roles, $accessLevel, $categories = [])
+    public function getGrantedCategoryQB(User $user, $accessLevel)
     {
         $qb = $this->createQueryBuilder('ca');
         $qb
             ->andWhere($qb->expr()->in('ca.role', ':roles'))
-            ->setParameter('roles', $roles)
+            ->setParameter('roles', $user->getRoles())
             ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('ca.category', 'c', 'c.id')
             ->select('c.id');
-
-        if (count($categories) > 0) {
-            $qb->andWhere($qb->expr()->in('c.id', ':categories'));
-            $qb->setParameter('categories', $categories);
-        }
 
         return $qb;
     }
@@ -148,11 +142,24 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
-     * TODO Merge with following method ? or at least rename
+     * Get granted category ids
+     *
+     * @param RoleInterface[] $roles
+     * @param integer[]       $categoryIds
+     *
+     * @return integer[]
      */
-    public function getGrantedCategoryIdsByRoles($roles, $accessLevel, $categories)
+    public function getCategoryIdsWithExistingAccess($roles, $categoryIds)
     {
-        $qb = $this->getGrantedCategoryQB($roles, $accessLevel, $categories);
+        $qb = $this->createQueryBuilder('ca');
+        $qb
+            ->andWhere($qb->expr()->in('ca.role', ':roles'))
+            ->setParameter('roles', $roles)
+            ->andWhere($qb->expr()->in('c.id', ':categories'))
+            ->setParameter('categories', $categoryIds)
+            ->resetDQLParts(['select'])
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->select('c.id');
 
         return $this->hydrateAsIds($qb);
     }
@@ -167,7 +174,7 @@ class CategoryAccessRepository extends EntityRepository
      */
     public function getGrantedCategoryIds(User $user, $accessLevel)
     {
-        $qb = $this->getGrantedCategoryQB($user->getRoles(), $accessLevel);
+        $qb = $this->getGrantedCategoryQB($user, $accessLevel);
 
         return $this->hydrateAsIds($qb);
     }
