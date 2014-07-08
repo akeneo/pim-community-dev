@@ -65,13 +65,13 @@ class PublishedProductManager
     /**
      * Find the published product by its original id
      *
-     * @param mixed $productId
+     * @param ProductInterface $product
      *
      * @return PublishedProductInterface
      */
-    public function findPublishedProductByOriginalId($productId)
+    public function findPublishedProductByOriginal(ProductInterface $product)
     {
-        return $this->repository->findOneByOriginalProductId($productId);
+        return $this->repository->findOneByOriginalProduct($product);
     }
 
     /**
@@ -118,7 +118,7 @@ class PublishedProductManager
     {
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
 
-        $published = $this->findPublishedProductByOriginalId($product->getId());
+        $published = $this->findPublishedProductByOriginal($product);
         if ($published) {
             $this->getObjectManager()->remove($published);
             $this->getObjectManager()->flush();

@@ -52,7 +52,7 @@ class ProductPublisher implements PublisherInterface
     public function publish($object, array $options = [])
     {
         $published = new $this->publishClassName();
-        $published->setOriginalProductId($object->getId());
+        $published->setOriginalProduct($object);
         $this->copyFamily($object, $published);
         $this->copyGroups($object, $published);
         $this->copyCategories($object, $published);

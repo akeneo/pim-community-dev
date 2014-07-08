@@ -58,11 +58,12 @@ class AssociationPublisher implements PublisherInterface
      */
     protected function copyProducts(AbstractAssociation $object, AbstractAssociation $copiedAssociation)
     {
-        $productIds = [];
-        foreach ($object->getProducts() as $product) {
-            $productIds[]= $product->getId();
+        $products = $object->getProducts();
+        if (0 === $products->count()) {
+            return;
         }
-        $publishedProducts = $this->repository->findByOriginalProductIds($productIds);
+
+        $publishedProducts = $this->repository->findByOriginalProducts($products->toArray());
         if (count($publishedProducts) > 0) {
             $copiedAssociation->setProducts($publishedProducts);
         }

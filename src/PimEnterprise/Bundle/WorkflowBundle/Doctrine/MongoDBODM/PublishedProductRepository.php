@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -23,10 +24,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function findOneByOriginalProductId($originalId)
+    public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->field('originalProductId')->equals($originalId);
+        $qb->field('originalProduct.$id')->equals(new \MongoId($originalProduct->getId()));
         $result = $qb->getQuery()->execute();
         $product = $result->getNext();
 
@@ -36,10 +37,15 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function findByOriginalProductIds(array $originalIds)
+    public function findByOriginalProducts(array $originalProducts)
     {
+        $originalIds = [];
+        foreach ($originalProducts as $product) {
+            $originalIds[] = new \MongoId($product->getId());
+        }
+
         $qb = $this->createQueryBuilder('p');
-        $qb->field('originalProductId')->in($originalIds);
+        $qb->field('originalProduct.$id')->in($originalIds);
         $products = $qb->getQuery()->execute();
 
         return $products->toArray();
@@ -51,12 +57,13 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function getProductIdsMapping()
     {
         $qb = $this->createQueryBuilder();
-        $qb->select('originalProductId', '_id');
+        $qb->select('originalProduct', '_id');
         $qb->hydrate(false);
 
         $ids = [];
         foreach ($qb->getQuery()->execute() as $row) {
-            $ids[$row['originalProductId']] = $row['_id']->{'$id'};
+            $originalProductId = $row['originalProduct']['$id']->{'$id'};
+            $ids[$originalProductId] = $row['_id']->{'$id'};
         }
 
         return $ids;
