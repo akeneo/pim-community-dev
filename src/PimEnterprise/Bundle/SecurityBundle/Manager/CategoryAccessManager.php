@@ -104,32 +104,80 @@ class CategoryAccessManager
      * Add accesses to all category children to specified roles
      *
      * @param CategoryInterface $parent
-     * @param Role[]            $viewRoles
-     * @param Role[]            $editRoles
+     * @param Role[]            $addViewRoles
+     * @param Role[]            $addEditRoles
      */
-    public function addChildrenAccess(CategoryInterface $parent, $viewRoles, $editRoles)
+    public function addChildrenAccess(CategoryInterface $parent, $addViewRoles, $addEditRoles)
     {
         $categoryRepo = $this->getCategoryRepository();
-        $categoryQb = $categoryRepo->getAllChildrenQueryBuilder($parent);
-        $rootAlias  = current($categoryQb->getRootAliases());
-        $rootEntity = current($categoryQb->getRootEntities());
-        $categoryQb->select($rootAlias.'.id');
-        $categoryQb->resetDQLPart('from');
-        $categoryQb->from($rootEntity, $rootAlias, $rootAlias.'.id');
-        $childrenIds = array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));
+        $childrenIds = $categoryRepo->getAllChildrenIds($parent);
 
-        // TODO : how to deal with view but not edit ? if a row exist already for view ?
-        $role = current($viewRoles);
-        $accessRepo = $this->getAccessRepository();
-        $grantedIds = $accessRepo->getGrantedCategoryIdsByRoles([$role], CategoryVoter::VIEW_PRODUCTS, $childrenIds);
+        $codeToRoles = [];
+        $mergedPermissions = [];
+        foreach ($addViewRoles as $role) {
+            $mergedPermissions[$role->getRole()] = ['view' => true, 'edit' => false];
+            $codeToRoles[$role->getRole()]= $role;
+        }
+        foreach ($addEditRoles as $role) {
+            $mergedPermissions[$role->getRole()] = ['view' => true, 'edit' => true];
+            $codeToRoles[$role->getRole()]= $role;
+        }
 
-        $toGrantIds = array_diff($childrenIds, $grantedIds);
-        $categories = $categoryRepo->findBy(['id' => $toGrantIds]);
+        foreach ($codeToRoles as $role) {
+            $roleCode = $role->getRole();
+            $view = $mergedPermissions[$roleCode]['view'];
+            $edit = $mergedPermissions[$roleCode]['edit'];
+
+            $accessRepo = $this->getAccessRepository();
+            $toUpdateIds = $accessRepo->getGrantedCategoryIdsByRoles([$role], CategoryVoter::VIEW_PRODUCTS, $childrenIds);
+            $toAddIds = array_diff($childrenIds, $toUpdateIds);
+
+            if (count($toAddIds) > 0) {
+                $this->addAccesses($toAddIds, $role, $view, $edit);
+            }
+
+            if (count($toUpdateIds) > 0) {
+                $this->updateAccesses($toUpdateIds, $role, $view, $edit);
+            }
+        }
+    }
+
+    /**
+     * Add accesses on categories
+     *
+     * @param integer[] $categoryIds
+     * @param Role      $role
+     * @param boolean   $view
+     * @param boolean   $edit
+     */
+    protected function addAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    {
+        $categories = $this->getCategoryRepository()->findBy(['id' => $categoryIds]);
+
         foreach ($categories as $category) {
             $access = new $this->categoryAccessClass();
             $access->setCategory($category)->setRole($role);
-            $access->setViewProducts(true);
-            $access->setEditProducts(true);
+            $access->setViewProducts($view);
+            $access->setEditProducts($edit);
+            $this->getObjectManager()->persist($access);
+        }
+        $this->getObjectManager()->flush();
+    }
+
+    /**
+     * Update accesses on categories
+     *
+     * @param integer[] $categoryIds
+     * @param Role      $role
+     * @param boolean   $view
+     * @param boolean   $edit
+     */
+    protected function updateAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    {
+        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
+
+        foreach ($accesses as $access) {
+            $access->setViewProducts($view)->setEditProducts($edit);
             $this->getObjectManager()->persist($access);
         }
         $this->getObjectManager()->flush();
