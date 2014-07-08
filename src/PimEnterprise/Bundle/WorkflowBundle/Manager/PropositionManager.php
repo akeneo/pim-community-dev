@@ -116,8 +116,6 @@ class PropositionManager
      * @return Proposition
      *
      * @throws \LogicException
-     *
-     * TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
      */
     public function findOrCreate(ProductInterface $product)
     {
