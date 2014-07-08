@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -45,5 +46,19 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         }
 
         return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->andWhere('pp.family = :family')
+            ->setParameter('family', $family)
+            ->select('COUNT(pp.id)');
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }

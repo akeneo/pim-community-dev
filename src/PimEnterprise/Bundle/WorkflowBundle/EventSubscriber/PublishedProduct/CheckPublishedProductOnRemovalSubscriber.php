@@ -33,7 +33,8 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            CatalogEvents::PRE_REMOVE_PRODUCT => 'checkProductHasBeenPublished'
+            CatalogEvents::PRE_REMOVE_PRODUCT => 'checkProductHasBeenPublished',
+            CatalogEvents::PRE_REMOVE_FAMILY  => 'checkFamilyLinkedToPublishedProduct'
         ];
     }
 
@@ -51,6 +52,23 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
 
         if ($published) {
             throw new ConflictHttpException('Impossible to remove a published product');
+        }
+    }
+
+    /**
+     * Check if the family is linked to a published product
+     *
+     * @param GenericEvent $event
+     *
+     * @throws ConflictHttpException
+     */
+    public function checkFamilyLinkedToPublishedProduct(GenericEvent $event)
+    {
+        $family    = $event->getSubject();
+        $publishedCount = $this->publishedRepository->countPublishedProductForFamily($family);
+
+        if ($publishedCount > 0) {
+            throw new ConflictHttpException('Impossible to remove family linked to a published product');
         }
     }
 }

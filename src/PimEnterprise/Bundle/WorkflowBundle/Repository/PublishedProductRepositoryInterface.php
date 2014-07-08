@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
+use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
@@ -37,4 +38,13 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * @return array [ original product ID => published product ID ]
      */
     public function getProductIdsMapping();
+
+    /**
+     * Count published products for a specific family
+     *
+     * @param Family $family
+     *
+     * @return integer
+     */
+    public function countPublishedProductForFamily(Family $family);
 }
