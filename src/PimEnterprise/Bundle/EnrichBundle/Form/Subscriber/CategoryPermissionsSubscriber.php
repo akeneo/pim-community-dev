@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 /**
@@ -100,17 +101,42 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $editRoles = $form->get('permissions')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
 
-            $currentRoles = [];
-            $currentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
-            $currentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
-
-            $addedViewRoles = array_diff($currentRoles['view'], $this->precedentRoles['view']);
-            $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
-
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
-            if ($updateChildren && (count($addedViewRoles) > 0 || count($addedEditRoles) > 0)) {
-                $this->accessManager->addChildrenAccess($event->getData(), $addedViewRoles, $addedEditRoles);
+            if ($updateChildren === true) {
+                $this->updateChildren($event->getData(), $viewRoles, $editRoles);
             }
+        }
+    }
+
+    /**
+     * Update children categories
+     *
+     * @param CategoryInterface     $parent
+     * @param array|ArrayCollection $viewRoles
+     * @param array|ArrayCollection $editRoles
+     */
+    protected function updateChildren(CategoryInterface $parent, $viewRoles, $editRoles)
+    {
+        $currentRoles = [];
+        $currentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+        $currentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+
+        $addedViewRoles = array_diff($currentRoles['view'], $this->precedentRoles['view']);
+        $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
+        $removedViewRoles = array_diff($this->precedentRoles['view'], $currentRoles['view']);
+        $removedEditRoles = array_diff($this->precedentRoles['edit'], $currentRoles['edit']);
+
+        $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0
+            || count($removedViewRoles) > 0 || count($removedEditRoles) > 0;
+
+        if ($changedRoles) {
+            $this->accessManager->addChildrenAccess(
+                $parent,
+                $addedViewRoles,
+                $addedEditRoles,
+                $removedViewRoles,
+                $removedEditRoles
+            );
         }
     }
 
