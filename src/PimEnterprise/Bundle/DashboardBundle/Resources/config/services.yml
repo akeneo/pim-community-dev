@@ -5,7 +5,8 @@ services:
     pimee_dashboard.widget.proposition:
         class: %pimee_dashboard.widget.proposition.class%
         arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pimee_security.repository.category_ownership'
+            - '@pimee_workflow.repository.proposition_ownership'
             - '@pim_user.context.user'
         tags:
             - { name: pim_dashboard.widget, alias: propositions }

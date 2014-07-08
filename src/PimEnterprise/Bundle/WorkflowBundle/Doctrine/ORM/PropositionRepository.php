@@ -4,9 +4,11 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -15,7 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PropositionRepository extends EntityRepository implements PropositionRepositoryInterface
+class PropositionRepository extends EntityRepository implements
+    PropositionRepositoryInterface,
+    PropositionOwnershipRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -28,6 +32,33 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
                 'author' => $username,
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findApprovableByUser(User $user, $limit = null)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->join('p.product', 'product')
+            ->leftJoin('product.categories', 'category')
+            ->innerJoin('PimEnterpriseSecurityBundle:CategoryOwnership', 'o', 'WITH', 'o.category = category')
+            ->where(
+                $qb->expr()->in('o.role', ':roles')
+            )
+            ->andWhere(
+                $qb->expr()->eq('p.status', Proposition::READY)
+            )
+            ->orderBy('p.createdAt', 'desc')
+            ->setParameter('roles', $user->getRoles());
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 
     /**

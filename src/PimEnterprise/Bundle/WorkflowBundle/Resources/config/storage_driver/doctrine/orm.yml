@@ -32,3 +32,6 @@ services:
             - %pimee_workflow.entity.published_product_association.class%
         tags:
             - { name: 'pim_repository' }
+
+    pimee_workflow.repository.proposition_ownership:
+        alias: pimee_workflow.repository.proposition

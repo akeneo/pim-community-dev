@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
 
 /**
  * Widget to display product propositions
@@ -16,9 +16,14 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 class PropositionWidget implements WidgetInterface
 {
     /**
-     * @var ManagerRegistry
+     * @var CategoryOwnershipRepository
      */
-    protected $registry;
+    protected $catOwnershipRepo;
+
+    /**
+     * @var PropositionOwnershipRepositoryInterface
+     */
+    protected $propOwnershipRepo;
 
     /**
      * @var UserContext
@@ -28,13 +33,18 @@ class PropositionWidget implements WidgetInterface
     /**
      * Constructor
      *
-     * @param ManagerRegistry $registry
-     * @param UserContext     $userContext
+     * @param CategoryOwnershipRepository             $catOwnershipRepo
+     * @param PropositionOwnershipRepositoryInterface $propOwnershipRepo
+     * @param UserContext                             $userContext
      */
-    public function __construct(ManagerRegistry $registry, UserContext $userContext)
-    {
-        $this->registry    = $registry;
-        $this->userContext = $userContext;
+    public function __construct(
+        CategoryOwnershipRepository $catOwnershipRepo,
+        PropositionOwnershipRepositoryInterface $propOwnershipRepo,
+        UserContext $userContext
+    ) {
+        $this->catOwnershipRepo  = $catOwnershipRepo;
+        $this->propOwnershipRepo = $propOwnershipRepo;
+        $this->userContext       = $userContext;
     }
 
     /**
@@ -54,18 +64,14 @@ class PropositionWidget implements WidgetInterface
         $isOwner = false;
 
         if (null !== $user) {
-            $isOwner = $this->registry
-                ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership')
-                ->isOwner($user);
+            $isOwner = $this->catOwnershipRepo->isOwner($user);
         }
 
         if (!$isOwner) {
             return ['show' => false];
         }
 
-        $propositions = $this->registry
-            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
-            ->findBy(['status' => Proposition::READY], ['createdAt' => 'desc'], 10);
+        $propositions = $this->propOwnershipRepo->findApprovableByUser($user, 10);
 
         return [
             'show'   => true,

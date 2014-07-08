@@ -1,6 +1,7 @@
 parameters:
     pimee_workflow.repository.proposition.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PropositionRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
+    pimee_workflow.repository.proposition_ownership.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PropositionOwnershipRepository
 
 services:
     pimee_workflow.object_manager.proposition:
@@ -29,3 +30,11 @@ services:
 
     pimee_workflow.repository.published_association:
         alias: pimee_workflow.repository.published_product
+
+    pimee_workflow.repository.proposition_ownership:
+        class: %pimee_workflow.repository.proposition_ownership.class%
+        arguments:
+            - '@pimee_workflow.object_manager.proposition'
+            - %pimee_workflow.model.proposition.class%
+            - '@doctrine.orm.entity_manager'
+            - %pimee_security.entity.category_ownership.class%

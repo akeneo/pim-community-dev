@@ -4,33 +4,22 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
 
 class PropositionWidgetSpec extends ObjectBehavior
 {
     function let(
-        ManagerRegistry $registry,
-        EntityRepository $repository,
-        CategoryOwnershipRepository $ownershipRepository,
+        PropositionOwnershipRepositoryInterface $propOwnershipRepo,
+        CategoryOwnershipRepository $catOwnershipRepo,
         UserContext $context,
         User $user
     ) {
-        $registry
-            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
-            ->willReturn($repository);
-        $registry
-            ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership')
-            ->willReturn($ownershipRepository);
-        $repository->findBy(Argument::cetera())->willReturn([]);
-
         $context->getUser()->willReturn($user);
 
-        $this->beConstructedWith($registry, $context);
+        $this->beConstructedWith($catOwnershipRepo, $propOwnershipRepo, $context);
     }
 
     function it_is_a_widget()
@@ -48,22 +37,16 @@ class PropositionWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($ownershipRepository, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($catOwnershipRepo, $user)
     {
-        $ownershipRepository->isOwner($user)->willReturn(false);
+        $catOwnershipRepo->isOwner($user)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
     }
 
-    function it_passes_propositions_from_the_repository_to_the_template($ownershipRepository, $user, $repository)
+    function it_passes_propositions_from_the_repository_to_the_template($catOwnershipRepo, $user, $propOwnershipRepo)
     {
-        $ownershipRepository->isOwner($user)->willReturn(true);
-        $repository
-            ->findBy(
-                ['status' => Proposition::READY],
-                ['createdAt' => 'desc'],
-                10
-            )
-            ->willReturn(['proposition one', 'proposition two']);
+        $catOwnershipRepo->isOwner($user)->willReturn(true);
+        $propOwnershipRepo->findApprovableByUser($user, 10)->willReturn(['proposition one', 'proposition two']);
 
         $this->getParameters()->shouldReturn(['show' => true, 'params' => ['proposition one', 'proposition two']]);
     }
