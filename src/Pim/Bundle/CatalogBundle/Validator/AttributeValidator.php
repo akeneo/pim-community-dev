@@ -18,13 +18,19 @@ class AttributeValidator
      * Violation message for missing code of attribute option
      * @staticvar string
      */
-    const VIOLATION_OPTION_CODE_REQUIRED = 'Code must be specified for all options';
+    const VIOLATION_OPTION_CODE_REQUIRED = 'Code must be specified for all options.';
 
     /**
      * Violation message for duplicate code of attribute option
      * @staticvar string
      */
-    const VIOLATION_DUPLICATE_OPTION_CODE = 'Code must be different for each option';
+    const VIOLATION_DUPLICATE_OPTION_CODE = 'Code must be different for each option.';
+
+    /**
+     * Violation message for non-string code
+     * @staticvar string
+     */
+    const VIOLATION_NON_STRING_CODE = 'Code must be a string.';
 
     /**
      * Validation rule for attribute option values
@@ -36,13 +42,19 @@ class AttributeValidator
     {
         $existingValues = array();
         foreach ($attribute->getOptions() as $option) {
-            if (isset($existingValues[$option->getCode()])) {
+            $code = $option->getCode();
+
+            if (isset($existingValues[$code])) {
                 $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_CODE);
-            }
-            if ($option->getCode() === null) {
-                $context->addViolation(self::VIOLATION_OPTION_CODE_REQUIRED);
+            } elseif ($code === null) {
+                $context->addViolation( self::VIOLATION_OPTION_CODE_REQUIRED);
+            } elseif (!is_string($code)) {
+                $context->addViolation(
+                    self::VIOLATION_NON_STRING_CODE.
+                    sprintf(' Type "%s" found.', gettype($code))
+                );
             } else {
-                $existingValues[$option->getCode()] = '';
+                $existingValues[$code] = '';
             }
         }
     }
