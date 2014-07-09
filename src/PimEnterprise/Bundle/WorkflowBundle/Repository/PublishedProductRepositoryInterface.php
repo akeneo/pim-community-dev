@@ -59,7 +59,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      *
      * @return integer
      */
-    public function countPublishedProductsForCategory(CategoryInterface $category);
+    public function countPublishedProductsForCategoryAndChildren(CategoryInterface $category);
 
     /**
      * Count published products for a specific attribute

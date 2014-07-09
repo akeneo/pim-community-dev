@@ -86,7 +86,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public function checkCategoryLinkedToPublishedProduct(GenericEvent $event)
     {
         $category = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForCategory($category);
+        $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($category);
 
         if ($publishedCount > 0) {
             throw new ConflictHttpException('Impossible to remove category linked to a published product');
