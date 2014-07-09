@@ -87,20 +87,18 @@ class ProductVoter implements VoterInterface
      */
     protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
     {
-        $productTreeIds = $product->getTreeIds();
-
-        // TODO: change this temporary fix and handle a "all products" permission
-        if (0 === count($productTreeIds)) {
-            return true;
-        }
-
         $categoryAttribute = (ProductVoter::PRODUCT_EDIT === $attribute) ?
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
 
-        $grantedTreeIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
+        // TODO : provide this method in product class and remove the getTreeIds method ?
+        $categoryIds = [];
+        foreach ($product->getCategories() as $category) {
+            $categoryIds[] = $category->getId();
+        }
+        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
 
-        $intersection = array_intersect($productTreeIds, $grantedTreeIds);
+        $intersection = array_intersect($categoryIds, $grantedCategoryIds);
         if (count($intersection)) {
             return true;
         }
