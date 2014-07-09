@@ -238,12 +238,12 @@ class ProductController extends AbstractDoctrineController
     /**
      * Toggle product status (enabled/disabled)
      *
-     * @AclAncestor("pim_enrich_product_edit")
-     *
      * @param Request $request
      * @param integer $id
      *
      * @return Response|RedirectResponse
+     *
+     * @AclAncestor("pim_enrich_product_edit")
      */
     public function toggleStatusAction(Request $request, $id)
     {

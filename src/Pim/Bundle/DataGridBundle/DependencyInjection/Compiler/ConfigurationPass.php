@@ -87,7 +87,7 @@ class ConfigurationPass implements CompilerPassInterface
     /**
      * Get the list of datagrid files in a given directory.
      *
-     * @param $directory
+     * @param string $directory
      *
      * @return SplFileInfo[] array the files (key: name of the file)
      */

@@ -24,7 +24,6 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 
