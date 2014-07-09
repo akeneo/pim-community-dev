@@ -29,7 +29,7 @@ class TranslateFlashMessagesSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn([
             KernelEvents::VIEW => ['translate', 128],
-            KernelEvents::RESPONSE => ['translate', -128],
+            KernelEvents::RESPONSE => ['translate', 128],
         ]);
     }
 

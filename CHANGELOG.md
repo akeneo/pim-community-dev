@@ -6,6 +6,7 @@
 - Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
 - Add an option to filter products by a list of identifier values
 - Don't allow editing the default datagrid view
+- Add a enable/disable row action in product grid
 
 ## Improvements
 - Group datagrid filters by attribute groups

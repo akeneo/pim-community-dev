@@ -174,6 +174,8 @@ flash:
         attributes added:         Attributes successfully added to the product
         attribute removed:        Attribute successfully removed from the product
         attribute not removable:  The attribute can not be removed from this product
+        enabled:                  Product has been enabled
+        disabled:                 Product has been disabled
     group:
         created: Group successfully created
         updated: Group successfully updated
