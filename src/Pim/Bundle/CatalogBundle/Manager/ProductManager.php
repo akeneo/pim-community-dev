@@ -238,7 +238,7 @@ class ProductManager
      *
      * @return null
      */
-    public function saveProduct(ProductInterface $product, array $options)
+    public function saveProduct(ProductInterface $product, array $options = [])
     {
         $options = array_merge(
             [

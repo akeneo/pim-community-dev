@@ -5,9 +5,10 @@ namespace Pim\Bundle\FilterBundle\Filter\Product;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Category filter
@@ -60,8 +61,8 @@ class CategoryFilter extends NumberFilter
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
             $tree = $categoryRepository->find($data['treeId']);
             if ($tree) {
-                $productIds = $this->manager->getProductIdsInCategory($tree, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $data['includeSub'] = true;
+                $productIds = $this->getProductIdsInCategory($tree, $data);
                 $productRepository->applyFilterByIds($qb, $productIds, false);
 
                 return true;
@@ -72,8 +73,7 @@ class CategoryFilter extends NumberFilter
                 $category = $categoryRepository->find($data['treeId']);
             }
             if ($category) {
-                $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
+                $productIds = $this->getProductIdsInCategory($category, $data);
                 $productRepository->applyFilterByIds($qb, $productIds, true);
 
                 return true;
@@ -99,6 +99,21 @@ class CategoryFilter extends NumberFilter
             'treeId'     => isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null,
             'categoryId' => isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null
         ];
+    }
+
+    /**
+     * Get product ids in category (and children)
+     *
+     * @param CategoryInterface $category
+     * @param array             $data
+     *
+     * @return integer[]
+     */
+    protected function getProductIdsInCategory(CategoryInterface $category, $data)
+    {
+        $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
+
+        return (empty($productIds)) ? array(0) : $productIds;
     }
 
     /**

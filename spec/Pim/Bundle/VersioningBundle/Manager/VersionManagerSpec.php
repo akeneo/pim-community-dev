@@ -8,13 +8,17 @@ use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 class VersionManagerSpec extends ObjectBehavior
 {
-    function let(SmartManagerRegistry $registry, VersionBuilder $builder, ObjectManager $om, VersionRepository $repo)
-    {
+    function let(
+        SmartManagerRegistry $registry,
+        VersionBuilder $builder,
+        ObjectManager $om,
+        VersionRepositoryInterface $repo
+    ) {
         $this->beConstructedWith($registry, $builder);
 
         $registry->getManagerForClass(Argument::any())->willReturn($om);
@@ -52,7 +56,7 @@ class VersionManagerSpec extends ObjectBehavior
 
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
-        $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Entity\Version');
+        $versions[0]->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
     function it_creates_pending_versions_when_real_time_versioning_is_disabled(AbstractProduct $product, $builder)
@@ -63,7 +67,7 @@ class VersionManagerSpec extends ObjectBehavior
         $versions = $this->buildVersion($product);
         $versions->shouldHaveCount(1);
         $version = $versions[0];
-        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Entity\Version');
+        $version->shouldBeAnInstanceOf('Pim\Bundle\VersioningBundle\Model\Version');
         $version->isPending()->shouldReturn(true);
     }
 

@@ -14,16 +14,19 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\EnrichBundle\EnrichEvents;
 
 /**
  * Category Tree Controller
@@ -34,15 +37,14 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class CategoryTreeController extends AbstractDoctrineController
 {
-    /**
-     * @var CategoryManager
-     */
+    /** @var CategoryManager */
     protected $categoryManager;
 
-    /**
-     * @var UserContext
-     */
+    /** @var UserContext */
     protected $userContext;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * Constructor
@@ -58,6 +60,7 @@ class CategoryTreeController extends AbstractDoctrineController
      * @param ManagerRegistry          $doctrine
      * @param CategoryManager          $categoryManager
      * @param UserContext              $userContext
+     * @param SecurityFacade           $securityFacade
      */
     public function __construct(
         Request $request,
@@ -70,7 +73,8 @@ class CategoryTreeController extends AbstractDoctrineController
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         CategoryManager $categoryManager,
-        UserContext $userContext
+        UserContext $userContext,
+        SecurityFacade $securityFacade
     ) {
         parent::__construct(
             $request,
@@ -86,6 +90,7 @@ class CategoryTreeController extends AbstractDoctrineController
 
         $this->categoryManager = $categoryManager;
         $this->userContext     = $userContext;
+        $this->securityFacade  = $securityFacade;
     }
 
     /**
@@ -102,23 +107,6 @@ class CategoryTreeController extends AbstractDoctrineController
      */
     public function listTreeAction(Request $request)
     {
-        return $this->manageTreeAction($request);
-    }
-
-    /**
-     * List category trees for management.The select_node_id request parameter
-     * allow to send back the tree where the node belongs with a selected
-     * attribute
-     *
-     * @param Request $request
-     *
-     * @return array
-     *
-     * @Template("PimEnrichBundle:CategoryTree:listTree.json.twig")
-     * @AclAncestor("pim_enrich_category_list")
-     */
-    public function manageTreeAction(Request $request)
-    {
         $selectNodeId = $request->get('select_node_id', -1);
         try {
             $selectNode = $this->findCategory($selectNodeId);
@@ -131,7 +119,7 @@ class CategoryTreeController extends AbstractDoctrineController
             'selectedTreeId' => $selectNode->isRoot() ? $selectNode->getId() : $selectNode->getRoot(),
             'include_sub'    => (bool) $this->getRequest()->get('include_sub', false),
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
-            'related_entity' => $this->getRequest()->get('related_entity', 'product'),
+            'related_entity' => $this->getRequest()->get('related_entity', 'product')
         );
     }
 
@@ -237,7 +225,7 @@ class CategoryTreeController extends AbstractDoctrineController
         }
 
         $category->setCode($request->get('label'));
-
+        $this->eventDispatcher->dispatch(EnrichEvents::PRE_CREATE_CATEGORY, new GenericEvent($category));
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -245,8 +233,8 @@ class CategoryTreeController extends AbstractDoctrineController
 
             if ($form->isValid()) {
                 $this->persist($category, true);
-
                 $this->addFlash('success', sprintf('flash.%s.created', $category->getParent() ? 'category' : 'tree'));
+                $this->eventDispatcher->dispatch(EnrichEvents::POST_CREATE_CATEGORY, new GenericEvent($category));
 
                 return $this->redirectToRoute('pim_enrich_categorytree_edit', array('id' => $category->getId()));
             }
@@ -272,6 +260,7 @@ class CategoryTreeController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $category = $this->findCategory($id);
+        $this->eventDispatcher->dispatch(EnrichEvents::PRE_EDIT_CATEGORY, new GenericEvent($category));
         $form = $this->createForm('pim_category', $category, $this->getFormOptions($category));
 
         if ($request->isMethod('POST')) {
@@ -279,8 +268,8 @@ class CategoryTreeController extends AbstractDoctrineController
 
             if ($form->isValid()) {
                 $this->persist($category, true);
-
                 $this->addFlash('success', sprintf('flash.%s.updated', $category->getParent() ? 'category' : 'tree'));
+                $this->eventDispatcher->dispatch(EnrichEvents::POST_EDIT_CATEGORY, new GenericEvent($category));
             }
         }
 

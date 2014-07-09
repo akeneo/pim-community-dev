@@ -1,0 +1,16 @@
+datagrid:
+    import-execution-grid:
+        extend: job-execution-grid
+        options:
+            entityHint: import report
+        source:
+            acl_resource: pim_importexport_import_execution_index
+        properties:
+            show_link:
+                route: pim_importexport_import_execution_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices: '@pim_import_export.datagrid.provider.job->getImportJobChoices'

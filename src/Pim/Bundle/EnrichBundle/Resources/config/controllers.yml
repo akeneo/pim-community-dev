@@ -52,6 +52,7 @@ services:
         arguments:
             - '@pim_catalog.manager.category'
             - '@pim_user.context.user'
+            - '@oro_security.security_facade'
 
     pim_enrich.controller.channel:
         scope: request

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -137,7 +137,7 @@ class VersionManager
             $createdVersions[] = $this->versionBuilder
                 ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $createdVersions[] = $this ->versionBuilder
+            $createdVersions[] = $this->versionBuilder
                 ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
 
@@ -145,11 +145,21 @@ class VersionManager
     }
 
     /**
-     * @return \Pim\Bundle\VersioningBundle\Entity\Repository\VersionRepository
+     * Get object manager for Version
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->registry->getManagerForClass('Pim\\Bundle\\VersioningBundle\\Model\\Version');
+    }
+
+    /**
+     * @return VersionRepositoryInterface
      */
     public function getVersionRepository()
     {
-        return $this->registry->getRepository('PimVersioningBundle:Version');
+        return $this->registry->getRepository('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
     /**

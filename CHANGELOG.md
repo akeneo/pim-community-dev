@@ -6,6 +6,7 @@
 - Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
 - Add an option to filter products by a list of identifier values
 - Don't allow editing the default datagrid view
+- Add a enable/disable row action in product grid
 
 ## Improvements
 - Group datagrid filters by attribute groups
@@ -58,6 +59,7 @@
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
 - Fixed a bug with timestampable listener which doesn't change the updated date of a product
 - Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
+- Attribute Options code validation now more precise on uniqueness (equality instead of similarity)
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -74,7 +76,7 @@
 - Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
 - InstallerBundle/LoaderInterface has been changed to pass ProductManager to manage media (loading images from fixtures)
-- Refactor VersioningBundle - a lot of API changes.
+- Refactor VersioningBundle - a lot of API changes, add MongoDB support.
 - Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` and use only the family repository
 - Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator` and use only the entity manager
 - Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
@@ -100,7 +102,8 @@
 - Inject group and group types classes in `Pim\Bundle\CatalogBundle\Manager\GroupManager`
 - Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
 - Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
-
+- Inject SecurityFacade inside `Pim\Bundle\EnrichBundle\Controller\CategoryController`
+- Each dashboard widget has to define its full template, nothing is rendered automatically
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

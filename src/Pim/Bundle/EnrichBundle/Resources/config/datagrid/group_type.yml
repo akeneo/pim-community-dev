@@ -1,0 +1,21 @@
+datagrid:
+    group-type-grid:
+        extend: translatable-entity-grid
+        options:
+            entityHint: group type
+        source:
+            acl_resource: pim_enrich_group_type_index
+            entity: %pim_catalog.entity.group_type.class%
+        properties:
+            edit_link:
+                route: pim_enrich_group_type_edit
+            delete_link:
+                route: pim_enrich_group_type_remove
+        sorters:
+            columns:
+                code:
+                    data_name: g.code
+        filters:
+            columns:
+                code:
+                    data_name: g.code

@@ -1,0 +1,59 @@
+/** jstree ***********************************************************************************************************/
+.jstree-default {
+  height: 100%;
+  overflow: auto;
+}
+
+.jstree.jstree-default {
+  .jstree-hovered {
+    background: @color-purple_hover;
+    border: 1px solid @color-purple_hover;
+  }
+  .jstree-clicked {
+    background: darken(@color-purple_hover, 5%);
+    border: 1px solid darken(@color-purple_hover, 5%);
+  }
+
+  li.jstree-open > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_standard_opened.png") 0 0 no-repeat;
+  }
+  li.jstree-closed > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_standard_closed.png") 0 0 no-repeat;
+  }
+  li.jstree-leaf > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_leaf.png") 0 0 no-repeat;
+  }
+  li.jstree-unclassified > a:not(.jstree-loading) .jstree-icon {
+    background:url("jstree/folder_unclassified.png") 0 0 no-repeat;
+  }
+}
+
+.root-unselectable .jstree-root > a > .jstree-checkbox {
+  display: none;
+}
+
+#tree_toolbar {
+  display: block;
+  padding: 16px 20px 16px 20px;
+  margin-bottom: 10px;
+  background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
+  border: solid #ccc;
+  border-width: 1px 0;
+}
+
+#nested_switch {
+  position: absolute;
+  bottom: 0;
+  display: block;
+  width: 100%;
+  background: #efefef url("../../oroui/img/bg-gray-box.png") repeat-x;
+  border: solid #ccc;
+  border-width: 1px 0;
+  .has-switch {
+    margin: 5px;
+  }
+  label.control-label {
+    padding-top: 9px;
+    padding-left: 9px;
+  }
+}

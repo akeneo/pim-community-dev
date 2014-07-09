@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 
 /**
  * Base abstract controller
@@ -253,7 +254,7 @@ abstract class AbstractController
      */
     protected function addFlash($type, $message, array $parameters = array())
     {
-        $this->request->getSession()->getFlashBag()->add($type, $this->translator->trans($message, $parameters));
+        $this->request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }
 
     /**
