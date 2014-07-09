@@ -43,7 +43,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             );
         }
 
-        parent::createProduct(
+        return parent::createProduct(
             array_merge(
                 ['categories' => $defaultCategory],
                 $data
@@ -222,6 +222,28 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 );
             }
         }
+    }
+
+    /**
+     * @param TableNode $table
+     *
+     * @Given /^the following published products:$/
+     */
+    public function theFollowingPublishedProduct(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $product = $this->createProduct($data);
+
+            $this->getPublishedManager()->publish($product);
+        }
+    }
+
+    /**
+     * @return PublishedProductManager
+     */
+    protected function getPublishedManager()
+    {
+        return $this->getContainer()->get('pimee_workflow.manager.published_product');
     }
 
     /**
