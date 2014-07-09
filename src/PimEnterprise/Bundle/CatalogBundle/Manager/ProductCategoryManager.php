@@ -67,30 +67,14 @@ class ProductCategoryManager extends BaseProductCategoryManager
             return 0;
         }
 
-        $newQb = null;
+        $grantedQb = null;
         if ($inChildren) {
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
-            $categories = $categoryQb->getQuery()->execute();
-
-            // TODO : get them with another query
-            foreach ($categories as $index => $category) {
-                if (!$this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
-                    unset($categories[$index]);
-                }
-            }
-            $categories[]= $category;
-
-            $rootAlias  = current($categoryQb->getRootAliases());
-            $rootEntity = current($categoryQb->getRootEntities());
-            $newQb = $this->categoryRepository->createQueryBuilder($rootAlias);
-            $newQb->select($rootAlias.'.id');
-            $newQb->where($newQb->expr()->in($rootAlias.'.id', ':categories'));
-            $newQb->setParameter('categories', $categories);
-
+            $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
             // TODO : has an impact on category management, no right = no count, should we hide count here ?
         }
 
-        return $this->productRepository->getProductsCountInCategory($category, $newQb);
+        return $this->productRepository->getProductsCountInCategory($category, $grantedQb);
     }
 
     /**
@@ -102,51 +86,40 @@ class ProductCategoryManager extends BaseProductCategoryManager
             return [];
         }
 
-        $newQb = null;
+        $grantedQb = null;
         if ($inChildren) {
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
-            $rootAlias  = current($categoryQb->getRootAliases());
-            $rootEntity = current($categoryQb->getRootEntities());
-            /*$categoryQb->select($rootAlias.'.id');
-            $categoryQb->resetDQLPart('from');
-            $categoryQb->from($rootEntity, $rootAlias, $rootAlias.'.id');
-            $categoryIds = array_keys($categoryQb->getQuery()->execute([], AbstractQuery::HYDRATE_ARRAY));*/
-            $categories = $categoryQb->getQuery()->execute();
-
-            foreach ($categories as $index => $category) {
-                if (!$this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
-                    unset($categories[$index]);
-                }
-            }
-            $categories[]= $category;
-
-            $newQb = $this->categoryRepository->createQueryBuilder($rootAlias);
-            $newQb->select($rootAlias.'.id');
-            $newQb->where($newQb->expr()->in($rootAlias.'.id', ':categories'));
-            $newQb->setParameter('categories', $categories);
-
-            // TODO issue with unclassified and all products too
+            $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
+            // TODO issue with unclassified and all products
         }
 
-        return $this->productRepository->getProductIdsInCategory($category, $newQb);
+        return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
     }
 
+    /**
+     * Build a new query builder based on children QB to let only granted children
+     *
+     * @param QueryBuilder $childrenQb
+     *
+     * @return QueryBuilder
+     */
     protected function getAllGrantedChildrenQueryBuilder(QueryBuilder $childrenQb)
     {
+        // TODO : could be enhanced with one selection query
         $categories = $childrenQb->getQuery()->execute();
         foreach ($categories as $index => $category) {
             if (!$this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
                 unset($categories[$index]);
             }
         }
-        //TODO parent ? $categories[]= $category;
 
-        $newQb = $this->categoryRepository->createQueryBuilder($rootAlias);
         $rootAlias  = current($childrenQb->getRootAliases());
         $rootEntity = current($childrenQb->getRootEntities());
-        $newQb->select($rootAlias.'.id');
-        $newQb->where($newQb->expr()->in($rootAlias.'.id', ':categories'));
-        $newQb->setParameter('categories', $categories);
+        $grantedQb = $this->categoryRepository->createQueryBuilder($rootAlias);
+        $grantedQb->select($rootAlias.'.id');
+        $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categories'));
+        $grantedQb->setParameter('categories', $categories);
 
+        return $grantedQb;
     }
 }
