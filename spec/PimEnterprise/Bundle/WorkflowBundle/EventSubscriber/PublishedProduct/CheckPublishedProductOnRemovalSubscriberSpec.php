@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
@@ -16,20 +17,20 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 
 class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 {
-    function let(PublishedProductRepositoryInterface $publishedRepository)
+    function let(PublishedProductRepositoryInterface $publishedRepository, CategoryRepository $categoryRepository)
     {
-        $this->beConstructedWith($publishedRepository);
+        $this->beConstructedWith($publishedRepository, $categoryRepository);
     }
 
     function it_subscribes_to_pre_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-                CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
-                CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
+            CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
+            CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
+            CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
         ]);
     }
 
@@ -109,22 +110,29 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
     function it_checks_if_the_category_is_linked_to_a_published_product(
         $publishedRepository,
+        $categoryRepository,
         CategoryInterface $category,
         GenericEvent $event
     ) {
+        $category->getId()->willReturn(1);
         $event->getSubject()->willReturn($category);
-        $publishedRepository->countPublishedProductsForCategory($category)->willReturn(0);
+        $categoryRepository->getAllChildrenIds($category)->willReturn([2, 3]);
+        $publishedRepository->countPublishedProductsForCategoryAndChildren([2, 3, 1])->willReturn(0);
 
         $this->checkCategoryLinkedToPublishedProduct($event);
     }
 
     function it_throws_an_exception_if_the_category_is_linked_to_a_published_product(
         $publishedRepository,
+        $categoryRepository,
         CategoryInterface $category,
         GenericEvent $event
     ) {
+
+        $category->getId()->willReturn(1);
         $event->getSubject()->willReturn($category);
-        $publishedRepository->countPublishedProductsForCategory($category)->willReturn(1);
+        $categoryRepository->getAllChildrenIds($category)->willReturn([2, 3]);
+        $publishedRepository->countPublishedProductsForCategoryAndChildren([2, 3, 1])->willReturn(2);
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove category linked to a published product'))

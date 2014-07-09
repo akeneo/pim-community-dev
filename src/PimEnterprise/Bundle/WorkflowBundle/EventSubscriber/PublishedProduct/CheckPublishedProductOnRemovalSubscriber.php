@@ -95,7 +95,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     {
         $category = $event->getSubject();
         $categoryIds = $this->categoryRepository->getAllChildrenIds($category);
-        $categoryIds += $category->getId();
+        $categoryIds[] = $category->getId() ;
 
         $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($categoryIds);
 
