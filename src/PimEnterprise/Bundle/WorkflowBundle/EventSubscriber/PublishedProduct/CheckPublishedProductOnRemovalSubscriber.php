@@ -55,7 +55,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $published = $this->publishedRepository->findOneByOriginalProductId($product->getId());
 
         if ($published) {
-            throw new ConflictHttpException('Impossible to remove a published product');
+            $this->throwConflictException('Impossible to remove a published product');
         }
     }
 
@@ -72,7 +72,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForFamily($family);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove family linked to a published product');
+            $this->throwConflictException('Impossible to remove family linked to a published product');
         }
     }
 
@@ -89,7 +89,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($category);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove category linked to a published product');
+            $this->throwConflictException('Impossible to remove category linked to a published product');
         }
     }
 
@@ -106,7 +106,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForAttribute($attribute);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove attribute linked to a published product');
+            $this->throwConflictException('Impossible to remove attribute linked to a published product');
         }
     }
 
@@ -123,7 +123,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForGroup($group);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove group linked to a published product');
+            $this->throwConflictException('Impossible to remove group linked to a published product');
         }
     }
 
@@ -140,7 +140,19 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForAssociationType($associationType);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove association type linked to a published product');
+            $this->throwConflictException('Impossible to remove association type linked to a published product');
         }
+    }
+
+    /**
+     * Create a conflict http exception
+     *
+     * @param $message
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\ConflictHttpException
+     */
+    protected function throwConflictException($message)
+    {
+        throw new ConflictHttpException($message);
     }
 }
