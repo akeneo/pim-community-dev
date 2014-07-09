@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
