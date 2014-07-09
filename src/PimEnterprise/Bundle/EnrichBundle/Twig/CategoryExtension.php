@@ -39,7 +39,6 @@ class CategoryExtension extends PimCategoryExtension
         if ($relatedEntity === 'published_product') {
             return $this->publishedManager->getProductsCountInGrantedCategory($category, $includeSub);
         } else {
-            // TODO : use a new method ?
             return $this->manager->getProductsCountInGrantedCategory($category, $includeSub);
         }
     }

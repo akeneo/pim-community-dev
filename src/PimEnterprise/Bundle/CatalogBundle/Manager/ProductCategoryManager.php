@@ -70,7 +70,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
         if ($inChildren) {
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, $inProvided);
             $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
-            // TODO : has an impact on category management, no right = no count, should we hide count here ?
         }
 
         return $this->productRepository->getProductsCountInCategory($category, $grantedQb);
