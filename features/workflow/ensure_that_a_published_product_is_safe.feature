@@ -24,6 +24,13 @@ Feature: Ensure that a published product is safe
     And I confirm the removal
     And I should see the "Jackets" category under the "Summer collection" category
 
+  Scenario: Fail to remove a category if one of these children is linked to a published product
+    Given I am on the "summer_collection" category page
+    And I press the "Delete" button
+    And I confirm the removal
+    And I am on the "jackets" category page
+    And I should see the "Jackets" category under the "Summer collection" category
+
   Scenario: Fail to remove a family that is linked to a published product
     Given I am on the "jackets" family page
     And I press the "Delete" button
