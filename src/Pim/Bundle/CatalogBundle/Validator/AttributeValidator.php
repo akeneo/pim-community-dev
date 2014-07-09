@@ -47,7 +47,7 @@ class AttributeValidator
             if (isset($existingValues[$code])) {
                 $context->addViolation(self::VIOLATION_DUPLICATE_OPTION_CODE);
             } elseif ($code === null) {
-                $context->addViolation( self::VIOLATION_OPTION_CODE_REQUIRED);
+                $context->addViolation(self::VIOLATION_OPTION_CODE_REQUIRED);
             } elseif (!is_string($code)) {
                 $context->addViolation(
                     self::VIOLATION_NON_STRING_CODE.
