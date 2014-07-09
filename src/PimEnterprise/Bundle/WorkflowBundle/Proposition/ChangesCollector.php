@@ -21,6 +21,9 @@ class ChangesCollector implements ChangesCollectorInterface
     /** @var array */
     protected $changes;
 
+    /** @var array */
+    protected $keysToRemove = [];
+
     /**
      * Construct
      *
@@ -67,6 +70,22 @@ class ChangesCollector implements ChangesCollectorInterface
                 ]
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove($key)
+    {
+        $this->keysToRemove[] = $key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getKeysToRemove()
+    {
+        return $this->keysToRemove;
     }
 
     /**

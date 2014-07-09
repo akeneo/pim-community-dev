@@ -22,6 +22,20 @@ interface ChangesCollectorInterface
     public function add($key, $changes, AbstractProductValue $value);
 
     /**
+     * Mark a key as removed
+     *
+     * @param string $key
+     */
+    public function remove($key);
+
+    /**
+     * Get the keys mark as removed
+     *
+     * @return array
+     */
+    public function getKeysToRemove();
+
+    /**
      * Get the collected changes
      *
      * @return array

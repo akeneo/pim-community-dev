@@ -85,6 +85,8 @@ class CollectProductValuesSubscriber implements
                 $value = $currentValues->get($key);
                 if (null !== $changes = $this->comparator->getChanges($value, $data)) {
                     $this->collector->add($key, $changes, $value);
+                } else {
+                    $this->collector->remove($key);
                 }
             }
         }
