@@ -257,8 +257,8 @@ default: Padrão
 Axis: Eixo
 Add attributes: Adicionar atributos
 Translate from: Traduzir do
-"Yes": true
-"No": false
+"Yes": Sim
+"No": Não
 Close: Fechar
 Choose a color: Escolha uma cor
 Create: Criar
