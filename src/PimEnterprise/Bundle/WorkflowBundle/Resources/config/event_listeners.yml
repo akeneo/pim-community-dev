@@ -6,5 +6,6 @@ services:
         class: %pimee_workflow.event_listener.check_published_product.class%
         arguments:
             - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.repository.category'
         tags:
             - { name: kernel.event_subscriber}

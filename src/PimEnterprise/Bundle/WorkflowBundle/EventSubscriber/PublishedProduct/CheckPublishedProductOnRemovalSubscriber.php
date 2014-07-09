@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -19,12 +20,19 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     /** @var PublishedProductRepositoryInterface */
     protected $publishedRepository;
 
+    /** @var \Entity\Repository\CategoryRepository */
+    protected $categoryRepository;
+
     /**
      * @param PublishedProductRepositoryInterface $publishedRepository
+     * @param CategoryRepository                  $categoryRepository
      */
-    public function __construct(PublishedProductRepositoryInterface $publishedRepository)
-    {
+    public function __construct(
+        PublishedProductRepositoryInterface $publishedRepository,
+        CategoryRepository $categoryRepository
+    ) {
         $this->publishedRepository = $publishedRepository;
+        $this->categoryRepository  = $categoryRepository;
     }
 
     /**
@@ -86,7 +94,10 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public function checkCategoryLinkedToPublishedProduct(GenericEvent $event)
     {
         $category = $event->getSubject();
-        $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($category);
+        $categoryIds = $this->categoryRepository->getAllChildrenIds($category);
+        $categoryIds += $category->getId();
+
+        $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($categoryIds);
 
         if ($publishedCount > 0) {
             $this->throwConflictException('Impossible to remove category linked to a published product');

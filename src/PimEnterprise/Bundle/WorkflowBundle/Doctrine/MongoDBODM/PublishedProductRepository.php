@@ -96,10 +96,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function countPublishedProductsForCategoryAndChildren(CategoryInterface $category)
+    public function countPublishedProductsForCategoryAndChildren($categoryIds)
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb->field('categoryIds')->in([$category->getId()]);
+        $qb->field('categoryIds')->in($categoryIds);
 
         return $qb->getQuery()->count();
     }
