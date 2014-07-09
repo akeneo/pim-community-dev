@@ -649,7 +649,7 @@ class ProductRepository extends DocumentRepository implements
      * @param integer|null $limit
      * @param integer|null $offset
      *
-     * @return array|void
+     * @return QueryBuilder
      *
      * @throws \RuntimeException
      */
