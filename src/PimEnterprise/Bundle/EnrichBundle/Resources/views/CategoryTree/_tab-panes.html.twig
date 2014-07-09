@@ -5,6 +5,7 @@
         function ($, _) {
             'use strict';
 
+            {% if form.vars.value.hasChildren() %}
             $(function () {
                 $('#{{form.permissions.vars.id}}').append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls"><ul id="permissions-changes"></ul></div></div>');
 
@@ -32,6 +33,12 @@
                         }
                     });
             });
+
+            {% else %}
+            $(function () {
+                $('#{{form.permissions.apply_on_children.vars.id}}').parent().parent().hide();
+            });
+            {% endif %}
         });
 </script>
 {% endif %}
