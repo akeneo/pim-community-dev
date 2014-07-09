@@ -25,7 +25,7 @@ Feature: Publish many products at once
     And I am on the products page
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Publish products" operation
-    Then I should see "You're not the owner of all the selected products, you can't publish the following "teafortwo"
+    Then I should see "You're not the owner of all the selected products, you can't publish the following \"teafortwo\""
     And I should see "Confirm"
     
   Scenario: Forbid to publish if user is not the owner of at least one product
