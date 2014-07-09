@@ -34,7 +34,5 @@ services:
     pimee_workflow.repository.proposition_ownership:
         class: %pimee_workflow.repository.proposition_ownership.class%
         arguments:
-            - '@pimee_workflow.object_manager.proposition'
-            - %pimee_workflow.model.proposition.class%
-            - '@doctrine.orm.entity_manager'
-            - %pimee_security.entity.category_ownership.class%
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_security.repository.category_ownership'

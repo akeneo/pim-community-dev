@@ -3,10 +3,10 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ORM\AbstractQuery;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\ORM\EntityManager;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -18,47 +18,25 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 class PropositionOwnershipRepository implements PropositionOwnershipRepositoryInterface
 {
     /**
-     * ORM EntityManager to access ORM entities
-     *
-     * @var EntityManager
+     * @var PropositionRepositoryInterface
      */
-    protected $entityManager;
+    protected $propositionRepo;
 
     /**
-     * MongoDBODM Document Manager to access ODM entities
-     *
-     * @var DocumentManager
+     * @var CategoryOwnershipRepository
      */
-    protected $documentManager;
+    protected $catOwnershipRepo;
 
     /**
-     * @var string
-     */
-    protected $documentName;
-
-    /**
-     * CategoryOwnership entity class
-     *
-     * @var string
-     */
-    protected $catOwnershipClass;
-
-    /**
-     * @param DocumentManager $docManager
-     * @param string          $documentName
-     * @param EntityManager   $entManager
-     * @param string          $catOwnershipClass
+     * @param PropositionRepositoryInterface $propositionRepo
+     * @param CategoryOwnershipRepository    $catOwnershipRepo
      */
     public function __construct(
-        DocumentManager $docManager,
-        $documentName,
-        EntityManager $entManager,
-        $catOwnershipClass
+        PropositionRepositoryInterface $propositionRepo,
+        CategoryOwnershipRepository $catOwnershipRepo
     ) {
-        $this->documentManager   = $docManager;
-        $this->entityManager     = $entManager;
-        $this->documentName      = $documentName;
-        $this->catOwnershipClass = $catOwnershipClass;
+        $this->propositionRepo  = $propositionRepo;
+        $this->catOwnershipRepo = $catOwnershipRepo;
     }
 
     /**
@@ -66,7 +44,7 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
      */
     public function findApprovableByUser(User $user, $limit = null)
     {
-        $qb = $this->documentManager->createQueryBuilder($this->documentName);
+        $qb = $this->propositionRepo->createQueryBuilder();
 
         $qb
             ->field('status')->equals(Proposition::READY)
@@ -90,9 +68,7 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
      */
     protected function getGrantedCategoryIds(User $user)
     {
-        $catOwnershipRepo = $this->entityManager->getRepository($this->catOwnershipClass);
-
-        $qb = $catOwnershipRepo->createQueryBuilder('o');
+        $qb = $this->catOwnershipRepo->createQueryBuilder('o');
 
         $qb
             ->join('o.category', 'category')
