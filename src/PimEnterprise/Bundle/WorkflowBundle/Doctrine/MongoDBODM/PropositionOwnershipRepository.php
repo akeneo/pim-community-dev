@@ -66,7 +66,49 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
      */
     public function findApprovableByUser(User $user, $limit = null)
     {
-        // TODO
-        return [];
+        $qb = $this->documentManager->createQueryBuilder($this->documentName);
+
+        $qb
+            ->field('status')->equals(Proposition::READY)
+            // TODO: Return only propositions with products in these categories
+            // ->field('product.categoryIds')->in($this->getGrantedCategoryIds($user))
+            ->sort('createdAt', 'desc');
+
+        if (null !== $limit) {
+            $qb->limit($limit);
+        }
+
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * Get ids of categories the given user has ownership rights to
+     *
+     * @param User $user
+     *
+     * @return integer[]
+     */
+    protected function getGrantedCategoryIds(User $user)
+    {
+        $catOwnershipRepo = $this->entityManager->getRepository($this->catOwnershipClass);
+
+        $qb = $catOwnershipRepo->createQueryBuilder('o');
+
+        $qb
+            ->join('o.category', 'category')
+            ->select('category.id')
+            ->where(
+                $qb->expr()->in('o.role', ':roles')
+            )
+            ->setParameter('roles', $user->getRoles());
+
+        $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
+
+        $grantedCategoryIds = [];
+        foreach ($result as $row) {
+            $grantedCategoryIds[] = $row['id'];
+        }
+
+        return $grantedCategoryIds;
     }
 }
