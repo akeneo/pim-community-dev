@@ -683,5 +683,7 @@ class ProductRepository extends DocumentRepository implements
         if ($offset) {
             throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
         }
+
+        return $qb;
     }
 }
