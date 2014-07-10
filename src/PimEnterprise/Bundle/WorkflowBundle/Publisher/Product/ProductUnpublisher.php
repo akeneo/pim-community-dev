@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
+use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
@@ -17,13 +18,20 @@ class ProductUnpublisher implements UnpublisherInterface
     /** @var PublishedAssociationRepositoryInterface */
     protected $publishedAssociationRepository;
 
+    /** @var AssociationTypeRepository */
+    protected $associationTypeRepository;
+
     /**
      * The constructor
      *
      * @param PublishedAssociationRepositoryInterface $publishedAssociationRepository
      */
-    public function __construct(PublishedAssociationRepositoryInterface $publishedAssociationRepository) {
+    public function __construct(
+        PublishedAssociationRepositoryInterface $publishedAssociationRepository,
+        AssociationTypeRepository $associationTypeRepository
+    ) {
         $this->publishedAssociationRepository = $publishedAssociationRepository;
+        $this->associationTypeRepository = $associationTypeRepository;
     }
 
     /**
@@ -49,6 +57,7 @@ class ProductUnpublisher implements UnpublisherInterface
      */
     protected function updateRelatedAssociations(PublishedProductInterface $published)
     {
-        $this->publishedAssociationRepository->removePublishedProduct($published);
+        $nbAssociationsTypes = $this->associationTypeRepository->countAll();
+        $this->publishedAssociationRepository->removePublishedProduct($published, $nbAssociationsTypes);
     }
 }

@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 
@@ -26,7 +27,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
      */
     public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder();
         $qb->field('originalProduct.$id')->equals(new \MongoId($originalProduct->getId()));
         $result = $qb->getQuery()->execute();
         $product = $result->getNext();
@@ -44,7 +45,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             $originalIds[] = new \MongoId($product->getId());
         }
 
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder();
         $qb->field('originalProduct.$id')->in($originalIds);
         $products = $qb->getQuery()->execute();
 
@@ -87,6 +88,61 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: maybe use normalisation for associations and remove the $nbAssociationTypes parameter
+     */
+    public function removePublishedProduct(PublishedProductInterface $published, $nbAssociationTypes = null)
+    {
+        if (null === $nbAssociationTypes) {
+            throw new \LogicException('The parameter "$nbAssociationTypes" can not be null');
+        }
+
+        $mongoRef = [
+            '$ref' => $this->dm->getClassMetadata(get_class($published))->getCollection(),
+            '$id' => new \MongoId($published->getId()),
+            '$db' => $this->dm->getConfiguration()->getDefaultDB(),
+        ];
+
+        $collection = $this->dm->getDocumentCollection(get_class($published));
+
+        // the query to perform here is
+        /*
+         db.pimee_workflow_published_product.update(
+             { associations: {
+                 $elemMatch : {
+                     products: { $ref:'pimee_workflow_published_product', $id:ObjectId('ID'), $db: 'DB'}
+                 }
+             }},
+             { $pull: {
+                 'associations.$.products': { $ref:'pimee_workflow_published_product', $id:ObjectId('ID'), $db: 'DB'}}
+             },
+             { 'multiple': 1 }
+         );
+        */
+
+        // we iterate over the number of association types because the query removes only the product that
+        // belongs to the first association (instead of removing it in existing associations)
+        for ($i = 0; $i < $nbAssociationTypes; $i++) {
+            $collection->update(
+                [
+                    'associations' => [
+                        '$elemMatch' => [
+                            'products' => $mongoRef
+                        ]
+                    ]
+                ],
+                [
+                    '$pull' => [
+                        'associations.$.products' => $mongoRef
+                    ]
+                ],
+                [ 'multiple' => 1 ]
+            );
+        }
     }
 
     /**

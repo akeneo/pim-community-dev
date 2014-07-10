@@ -31,7 +31,7 @@ class PublishedAssociationRepository extends EntityRepository implements Publish
     /**
      * {@inheritdoc}
      */
-    public function removePublishedProduct(PublishedProductInterface $published)
+    public function removePublishedProduct(PublishedProductInterface $published, $nbAssociationTypes = null)
     {
         $qb = $this->createQueryBuilder('pp');
         $rootEntity = current($qb->getRootEntities());

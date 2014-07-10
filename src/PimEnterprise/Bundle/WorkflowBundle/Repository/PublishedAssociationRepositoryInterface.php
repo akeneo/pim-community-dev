@@ -28,6 +28,7 @@ interface PublishedAssociationRepositoryInterface
      * Remove a published product from all published associations.
      *
      * @param PublishedProductInterface $published
+     * @param int                       $nbAssociationTypes
      */
-    public function removePublishedProduct(PublishedProductInterface $published);
+    public function removePublishedProduct(PublishedProductInterface $published, $nbAssociationTypes = null);
 }

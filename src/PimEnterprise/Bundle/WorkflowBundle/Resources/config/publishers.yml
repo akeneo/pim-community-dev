@@ -94,3 +94,4 @@ services:
         class: %pimee_workflow.unpublisher.product.class%
         arguments:
             - @pimee_workflow.repository.published_association
+            - @pim_catalog.repository.association_type
