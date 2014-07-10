@@ -61,10 +61,9 @@ class ChangesCollector implements ChangesCollectorInterface
             $changes,
             [
                 '__context__' => [
-                    'attribute_id' => $value->getAttribute()->getId(),
-                    'value_id' => $value->getId(),
-                    'scope' => $value->getScope(),
+                    'attribute' => $value->getAttribute()->getCode(),
                     'locale' => $value->getLocale(),
+                    'scope' => $value->getScope(),
                 ]
             ]
         );

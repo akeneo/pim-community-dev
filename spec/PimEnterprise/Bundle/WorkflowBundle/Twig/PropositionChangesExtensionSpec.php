@@ -9,15 +9,17 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class PropositionChangesExtensionSpec extends ObjectBehavior
 {
     function let(
         ObjectRepository $valueRepository,
-        ObjectRepository $attributeRepository,
+        ReferableEntityRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         PresenterInterface $attributePresenter,
@@ -56,12 +58,12 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         Model\AbstractAttribute $attribute,
         Model\AbstractProductValue $value
     ) {
-        $attributeRepository->find(123)->willReturn($attribute);
+        $attributeRepository->findByReference('description')->willReturn($attribute);
 
-        $attributePresenter->supports($attribute, ['__context__' => ['attribute_id' => '123']])->willReturn(true);
-        $attributePresenter->present($attribute, ['__context__' => ['attribute_id' => '123']])->willReturn('Name');
+        $attributePresenter->supports($attribute, ['__context__' => ['attribute' => 'description']])->willReturn(true);
+        $attributePresenter->present($attribute, ['__context__' => ['attribute' => 'description']])->willReturn('Name');
 
-        $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('Name');
+        $this->presentAttribute(['__context__' => ['attribute' => 'description']], 'foo')->shouldReturn('Name');
     }
 
     function it_presents_proposition_change_attribute_using_the_default_value_if_id_is_unavailable()
@@ -81,15 +83,26 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $valueRepository,
         $attributePresenter,
         $valuePresenter,
-        Model\AbstractProductValue $value
+        Model\AbstractProductValue $value,
+        Model\ProductInterface $product,
+        Proposition $proposition
     ) {
-        $valueRepository->find('123')->willReturn($value);
+        $proposition->getProduct()->willReturn($product);
+        $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
 
-        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
-        $valuePresenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
+        $change = [
+            'foo' => 'bar',
+            '__context__' => [
+                'attribute' => 'description',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ]
+        ];
+        $attributePresenter->supports($value, $change)->willReturn(false);
+        $valuePresenter->supports($value, $change)->willReturn(true);
+        $valuePresenter->present($value, $change)->willReturn('<b>changes</b>');
 
-        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']])->shouldReturn('<b>changes</b>');
+        $this->presentChange($change, $proposition)->shouldReturn('<b>changes</b>');
     }
 
     function it_injects_translator_in_translator_aware_presenter(
@@ -98,20 +111,31 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value,
-        PresenterInterface $presenter
+        Model\ProductInterface $product,
+        PresenterInterface $presenter,
+        Proposition $proposition
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
-        $valueRepository->find('123')->willReturn($value);
+        $proposition->getProduct()->willReturn($product);
+        $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $change = [
+            'foo' => 'bar',
+            '__context__' => [
+                'attribute' => 'description',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ]
+        ];
 
-        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
-        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, $change)->willReturn(false);
+        $valuePresenter->supports($value, $change)->willReturn(false);
+        $presenter->supports($value, $change)->willReturn(true);
+        $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setTranslator($translator)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
+        $this->presentChange($change, $proposition);
     }
 
     function it_injects_renderer_in_renderer_aware_presenter(
@@ -120,20 +144,31 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value,
-        PresenterInterface $presenter
+        Model\ProductInterface $product,
+        PresenterInterface $presenter,
+        Proposition $proposition
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
-        $valueRepository->find('123')->willReturn($value);
+        $proposition->getProduct()->willReturn($product);
+        $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $change = [
+            'foo' => 'bar',
+            '__context__' => [
+                'attribute' => 'description',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ]
+        ];
 
-        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
-        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, $change)->willReturn(false);
+        $valuePresenter->supports($value, $change)->willReturn(false);
+        $presenter->supports($value, $change)->willReturn(true);
+        $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setRenderer($renderer)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
+        $this->presentChange($change, $proposition);
     }
 
     function it_injects_twig_in_twig_aware_presenter(
@@ -142,21 +177,32 @@ class PropositionChangesExtensionSpec extends ObjectBehavior
         $attributePresenter,
         $valuePresenter,
         Model\AbstractProductValue $value,
+        Model\ProductInterface $product,
         PresenterInterface $presenter,
-        \Twig_Environment $twig
+        \Twig_Environment $twig,
+        Proposition $proposition
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
-        $valueRepository->find('123')->willReturn($value);
+        $proposition->getProduct()->willReturn($product);
+        $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
+        $change = [
+            'foo' => 'bar',
+            '__context__' => [
+                'attribute' => 'description',
+                'locale' => 'en_US',
+                'scope' => 'ecommerce',
+            ]
+        ];
 
-        $attributePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $valuePresenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(false);
-        $presenter->supports($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn(true);
-        $presenter->present($value, ['foo' => 'bar', '__context__' => ['value_id' => '123']])->willReturn('<b>changes</b>');
+        $attributePresenter->supports($value, $change)->willReturn(false);
+        $valuePresenter->supports($value, $change)->willReturn(false);
+        $presenter->supports($value, $change)->willReturn(true);
+        $presenter->present($value, $change)->willReturn('<b>changes</b>');
 
         $presenter->setTwig($twig)->shouldBeCalled();
 
         $this->initRuntime($twig);
         $this->addPresenter($presenter, 0);
-        $this->presentChange(['foo' => 'bar', '__context__' => ['value_id' => '123']]);
+        $this->presentChange($change, $proposition);
     }
 }
