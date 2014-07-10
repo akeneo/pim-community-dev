@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -20,21 +21,30 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
     /**
-     * Expected by interface but we let ORM entity repository work with its magic here
-     *
      * {@inheritdoc}
      */
-    public function findOneByOriginalProductId($originalId)
+    public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
-        return parent::findOneByOriginalProductId($originalId);
+        return $this->findOneBy(['originalProduct' => $originalProduct->getId()]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByOriginalProductIds(array $originalIds)
+    public function findByOriginalProducts(array $originalProducts)
     {
-        return parent::findBy(['originalProductId' => $originalIds]);
+        $originalIds = [];
+        foreach ($originalProducts as $product) {
+            $originalIds[] = $product->getId();
+        }
+
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->where($qb->expr()->in('pp.originalProduct', ':originalIds'))
+            ->setParameter(':originalIds', $originalIds)
+        ;
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
@@ -43,11 +53,11 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function getProductIdsMapping()
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb->select('pp.id, pp.originalProductId');
+        $qb->select('pp.id AS published_id, IDENTITY(pp.originalProduct) AS original_id');
 
         $ids = [];
         foreach ($qb->getQuery()->getScalarResult() as $row) {
-            $ids[intval($row['originalProductId'])] = intval($row['id']);
+            $ids[intval($row['original_id'])] = intval($row['published_id']);
         }
 
         return $ids;

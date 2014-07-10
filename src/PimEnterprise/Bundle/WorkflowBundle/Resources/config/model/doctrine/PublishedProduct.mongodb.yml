@@ -13,8 +13,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: date
         updated:
             type: date
-        originalProductId:
-            type: string
         family:
             type: entity
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
@@ -45,5 +43,9 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: many
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
             mappedBy: entity
+        originalProduct:
+            reference: true
+            type: one
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductInterface
         normalizedData:
             type: hash

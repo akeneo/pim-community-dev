@@ -22,6 +22,10 @@ use Behat\Behat\Context\Step;
  */
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
+    protected $enterpriseEntities = [
+        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -179,6 +183,35 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getEntities()
+    {
+        return array_merge($this->entities, $this->enterpriseEntities);
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getPublished($sku)
+    {
+        $published = $this->getPublishedProductManager()->findByIdentifier($sku);
+
+        if (!$published) {
+            throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
+        }
+
+        $this->refresh($published);
+
+        return $published;
+    }
+
+
+    /**
      * @Given /^I should the following proposition:$/
      */
     public function iShouldTheFollowingProposition(TableNode $table)
@@ -227,23 +260,25 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following published products:$/
+     * @Given /^the following published products?:$/
      */
     public function theFollowingPublishedProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->createProduct($data);
-
-            $this->getPublishedManager()->publish($product);
+            $this->createPublishedProduct($data);
         }
     }
 
     /**
-     * @return PublishedProductManager
+     * @param $data
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
-    protected function getPublishedManager()
+    protected function createPublishedProduct($data)
     {
-        return $this->getContainer()->get('pimee_workflow.manager.published_product');
+        $product = $this->createProduct($data);
+
+        return $this->getPublishedProductManager()->publish($product);
     }
 
     /**
@@ -270,6 +305,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getCategoryRepository()
     {
         return $this->getContainer()->get('pim_catalog.repository.category');
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+     */
+    protected function getPublishedProductManager()
+    {
+        return $this->getContainer()->get('pimee_workflow.manager.published_product');
     }
 
     /**

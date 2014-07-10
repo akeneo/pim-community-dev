@@ -10,7 +10,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Publisher;
  */
 class ChainedPublisher implements PublisherInterface
 {
-    /** @var PublisherInterface */
+    /** @var PublisherInterface[] */
     protected $publishers;
 
     /**
