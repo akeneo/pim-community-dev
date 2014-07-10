@@ -14,3 +14,6 @@ category_accesses:
     tees:
         edit: [administrator, manager, user]
         view: [administrator, manager, user]
+    jackets:
+        edit: [administrator, manager, user]
+        view: [administrator, manager, user]
