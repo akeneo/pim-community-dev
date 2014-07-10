@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Interface for association repository
@@ -25,10 +26,10 @@ interface AssociationRepositoryInterface
     /**
      * Get the list of associations corresponding to the given owner IDs
      *
-     * @param int   $productId
-     * @param array $ownerIds
+     * @param ProductInterface $product
+     * @param array            $ownerIds
      *
      * @return \Pim\Bundle\CatalogBundle\Model\Association[]
      */
-    public function findByProductIdAndOwnerIds($productId, array $ownerIds);
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds);
 }

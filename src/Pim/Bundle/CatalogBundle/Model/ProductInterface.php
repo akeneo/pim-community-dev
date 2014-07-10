@@ -18,6 +18,13 @@ use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
 interface ProductInterface
 {
     /**
+     * Get the ID of the product
+     *
+     * @return int
+     */
+    public function getId();
+
+    /**
      * Get created datetime
      *
      * @return \DateTime
