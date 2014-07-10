@@ -88,7 +88,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
         if ($inChildren) {
             $categoryQb = $this->categoryRepository->getAllChildrenQueryBuilder($category, true);
             $grantedQb = $this->getAllGrantedChildrenQueryBuilder($categoryQb);
-            // TODO issue with unclassified and all products
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
@@ -103,7 +102,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     protected function getAllGrantedChildrenQueryBuilder(QueryBuilder $childrenQb)
     {
-        // TODO : could be enhanced with one selection query
         $categories = $childrenQb->getQuery()->execute();
         foreach ($categories as $index => $category) {
             if (!$this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {

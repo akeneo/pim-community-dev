@@ -91,7 +91,6 @@ class ProductVoter implements VoterInterface
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
 
-        // TODO : provide this method in product class and remove the getTreeIds method ?
         $categoryIds = [];
         foreach ($product->getCategories() as $category) {
             $categoryIds[] = $category->getId();
