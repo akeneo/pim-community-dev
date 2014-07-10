@@ -77,7 +77,9 @@ class ProductVoter implements VoterInterface
     }
 
     /**
-     * Determine if a product is accessible for the user
+     * Determines if a product is accessible for the user,
+     * - a product is accessible when it's not at least in a category
+     * - then we apply category's permissions
      *
      * @param AbstractProduct $product
      * @param UserInterface   $user
@@ -87,6 +89,10 @@ class ProductVoter implements VoterInterface
      */
     protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
     {
+        if (count($product->getCategories()) === 0) {
+            return true;
+        }
+
         $categoryAttribute = (ProductVoter::PRODUCT_EDIT === $attribute) ?
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
