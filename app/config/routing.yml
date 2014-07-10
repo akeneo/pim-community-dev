@@ -21,6 +21,9 @@ pim_workflow:
 pim_security:
     resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
 
+pim_versioning:
+    resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:

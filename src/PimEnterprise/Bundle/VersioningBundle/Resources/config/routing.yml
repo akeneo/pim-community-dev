@@ -1,0 +1,3 @@
+version:
+    resource: '@PimEnterpriseVersioningBundle/Resources/config/routing/version.yml'
+    prefix: /versioning
