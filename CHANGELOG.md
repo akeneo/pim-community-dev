@@ -42,6 +42,7 @@
 - Display the code of import/export profiles on the edit and show views
 - Related entities' edition and deletion doesn't reload all the products' normalized data
 - Inject event dispatcher inside AbstractController
+- Csv reader and Yaml readers are now reseted between each steps
 - Dispatch events when removing some entities
 - Add method remove in Category, Group, Attribute, Association type and family managers.
 - Call manager's method remove from these entity controllers
