@@ -36,7 +36,7 @@ class Configuration extends OroConfiguration
                 ->end()
                 ->arrayNode('default')
                     ->prototype('enum')
-                        ->values([OrmSorterExtension::DIRECTION_DESC, OrmSorterExtension::DIRECTION_ASC])->end()
+                        ->values([SorterExtension::DIRECTION_DESC, SorterExtension::DIRECTION_ASC])->end()
                     ->end()
                     ->booleanNode('multiple_sorting')->end()
                 ->end()

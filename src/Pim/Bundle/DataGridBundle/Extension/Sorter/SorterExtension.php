@@ -8,13 +8,13 @@ use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 
 /**
- * Abstract sorter extension, storage agnostic
+ * Sorter extension, storage agnostic
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractSorterExtension extends AbstractExtension
+class SorterExtension extends AbstractExtension
 {
     /** @staticvar string Query param */
     const SORTERS_ROOT_PARAM = '_sort_by';
@@ -35,10 +35,9 @@ abstract class AbstractSorterExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        $columns      = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-        $isApplicable = $this->matchDatasource($config) && is_array($columns);
+        $columns = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
 
-        return $isApplicable;
+        return is_array($columns);
     }
 
     /**
@@ -221,11 +220,4 @@ abstract class AbstractSorterExtension extends AbstractExtension
 
         return $this;
     }
-
-    /**
-     * @param DatagridConfiguration $config
-     *
-     * @return boolean
-     */
-    abstract protected function matchDatasource(DatagridConfiguration $config);
 }

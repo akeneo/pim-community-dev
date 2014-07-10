@@ -1,7 +1,6 @@
 parameters:
     pim_datagrid.extension.filter.class:                Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension
-    pim_datagrid.extension.sorter.orm_sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension
-    pim_datagrid.extension.sorter.product_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\ProductSorterExtension
+    pim_datagrid.extension.sorter.class:     Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension
     pim_datagrid.extension.pager.orm_pager.class:       Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension
     pim_datagrid.extension.pager.product_pager.class:   Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension
     pim_datagrid.extension.selector.orm_selector.class: Pim\Bundle\DataGridBundle\Extension\Selector\OrmSelectorExtension
@@ -16,15 +15,8 @@ services:
         tags:
              - { name: oro_datagrid.extension }
 
-    pim_datagrid.extension.sorter.orm_sorter:
-        class: %pim_datagrid.extension.sorter.orm_sorter.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-            - { name: oro_datagrid.extension }
-
-    pim_datagrid.extension.sorter.product_sorter:
-        class: %pim_datagrid.extension.sorter.product_sorter.class%
+    pim_datagrid.extension.sorter:
+        class: %pim_datagrid.extension.sorter.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
