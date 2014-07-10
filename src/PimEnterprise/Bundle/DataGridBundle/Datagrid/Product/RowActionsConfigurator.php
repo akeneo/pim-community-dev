@@ -9,7 +9,6 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-// TODO : should never rely on voters
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
 
 /**
