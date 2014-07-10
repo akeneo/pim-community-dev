@@ -1,1 +1,3 @@
 View the product: View the product
+permissions-changes.grant-{{ permission }}-to-{{ role }}: The role <strong>{{ role }}</strong> will <strong>{{ permission }}</strong> in this category
+permissions-changes.revoke-{{ permission }}-to-{{ role }}: The role <strong>{{ role }}</strong> will <strong> not {{ permission }}</strong> in this category

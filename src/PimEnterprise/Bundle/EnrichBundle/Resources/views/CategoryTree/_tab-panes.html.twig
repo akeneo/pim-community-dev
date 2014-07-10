@@ -20,7 +20,8 @@
                             if ($('#change-'+permission+'-'+e.added.id).length > 0) {
                                 $('#change-'+permission+'-'+e.added.id).remove();
                             } else {
-                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.added.id+"'>{{'The role'|trans}} <strong>"+e.added.text+"</strong> {{'will'|trans}} <strong>"+permissionLabel+"</strong> {{'in this category'|trans}}</li>");
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.added.id+"'>"
+                                    +_.__('permissions-changes.grant-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.added.text})+"</li>");
                             }
                         }
 
@@ -28,7 +29,8 @@
                             if ($('#change-'+permission+'-'+e.removed.id).length > 0) {
                                 $('#change-'+permission+'-'+e.removed.id).remove();
                             } else {
-                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>{{'The role'|trans}} <strong>"+e.removed.text+"</strong> {{'will'|trans}} <strong> {{'not'|trans}} "+permissionLabel+"</strong> {{'in this category'|trans}}</li>");
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>"
+                                    +_.__('permissions-changes.revoke-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.removed.text})+"</li>");
                             }
                         }
                     });
