@@ -1,0 +1,5 @@
+pimee_versioning_version_rollback:
+    path: /{id}/rollback
+    defaults: { _controller: pimee_versioning.controller.version:rollbackAction }
+    requirements:
+        id: '[0-9a-f]+'

@@ -1,0 +1,8 @@
+parameters:
+    pimee_versioning.controller.version.class: PimEnterprise\Bundle\VersioningBundle\Controller\VersionController
+
+services:
+    pimee_versioning.controller.version:
+        scope: request
+        class: %pimee_versioning.controller.version.class%
+        parent: pim_enrich.controller.abstract_doctrine
