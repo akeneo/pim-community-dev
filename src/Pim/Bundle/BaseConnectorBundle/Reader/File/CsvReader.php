@@ -397,4 +397,14 @@ class CsvReader extends FileReader implements
             $this->filePath = current($csvFiles);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null !== $this->csv) {
+            $this->csv->rewind();
+        }
+    }
 }

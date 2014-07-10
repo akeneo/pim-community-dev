@@ -13,6 +13,7 @@ Feature: Join an image to a product
     And I am logged in as "Mary"
     And I am on the "Car" product page
 
+  @ce
   Scenario: Succesfully leave the image empty
     When I save the product
     Then I should see "Product successfully updated"
