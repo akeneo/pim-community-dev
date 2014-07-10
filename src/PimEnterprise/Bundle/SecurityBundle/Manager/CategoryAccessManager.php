@@ -205,7 +205,6 @@ class CategoryAccessManager
             $this->getObjectManager()->remove($access);
         }
         $this->getObjectManager()->flush();
-
     }
 
     /**

@@ -21,8 +21,8 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessManager */
     protected $accessManager;
 
-    /** array */
-    protected $precedentRoles = ['view' => [], 'edit' => []];
+    /** @var array store the previous roles to be able to do a diff of added/removed */
+    protected $previousRoles = ['view' => [], 'edit' => []];
 
     /**
      * @param CategoryAccessManager $accessManager
@@ -75,11 +75,11 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
 
         $viewRoles = $this->accessManager->getViewRoles($event->getData());
         $form->get('view')->setData($viewRoles);
-        $this->precedentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+        $this->previousRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
 
         $editRoles = $this->accessManager->getEditRoles($event->getData());
         $form->get('edit')->setData($editRoles);
-        $this->precedentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+        $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
     }
 
     /**
@@ -119,10 +119,10 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $currentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
         $currentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
 
-        $addedViewRoles = array_diff($currentRoles['view'], $this->precedentRoles['view']);
-        $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
-        $removedViewRoles = array_diff($this->precedentRoles['view'], $currentRoles['view']);
-        $removedEditRoles = array_diff($this->precedentRoles['edit'], $currentRoles['edit']);
+        $addedViewRoles = array_diff($currentRoles['view'], $this->previousRoles['view']);
+        $addedEditRoles = array_diff($currentRoles['edit'], $this->previousRoles['edit']);
+        $removedViewRoles = array_diff($this->previousRoles['view'], $currentRoles['view']);
+        $removedEditRoles = array_diff($this->previousRoles['edit'], $currentRoles['edit']);
 
         $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0
             || count($removedViewRoles) > 0 || count($removedEditRoles) > 0;
