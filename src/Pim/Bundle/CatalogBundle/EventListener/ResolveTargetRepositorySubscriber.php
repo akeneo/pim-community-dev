@@ -15,9 +15,9 @@ use Doctrine\Common\Persistence\Event\LoadClassMetadataEventArgs;
 class ResolveTargetRepositorySubscriber implements EventSubscriber
 {
     /**
-     * @var array
+     * @staticvar array
      */
-    protected $resolveTargetRepo = array();
+    protected static $resolveTargetRepo = array();
 
     /**
      * {@inheritdoc}
@@ -37,7 +37,7 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
      */
     public function addResolveTargetRepository($object, $newRepository)
     {
-        $this->resolveTargetRepo[ltrim($object)] = $newRepository;
+        static::$resolveTargetRepo[ltrim($object)] = $newRepository;
     }
 
     /**
@@ -49,8 +49,9 @@ class ResolveTargetRepositorySubscriber implements EventSubscriber
     {
         $classMetadata = $args->getClassMetadata();
         $className = $classMetadata->getName();
-        if (isset($this->resolveTargetRepo[ltrim($className)])) {
-            $classMetadata->customRepositoryClassName = $this->resolveTargetRepo[ltrim($className)];
+
+        if (isset(static::$resolveTargetRepo[ltrim($className)])) {
+            $classMetadata->customRepositoryClassName = static::$resolveTargetRepo[ltrim($className)];
         }
     }
 }

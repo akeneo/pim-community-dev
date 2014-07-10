@@ -62,6 +62,7 @@
 - Fixed a bug with timestampable listener which doesn't change the updated date of a product
 - Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
 - Attribute Options code validation now more precise on uniqueness (equality instead of similarity)
+- Fixed a bug with repository resolver on ODM implementation
 
 ## BC breaks
 - Remove FlexibleEntityBundle
