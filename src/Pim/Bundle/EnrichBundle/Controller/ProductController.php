@@ -256,10 +256,9 @@ class ProductController extends AbstractDoctrineController
         $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse([
-                'successful' => true,
-                'message' => $this->translator->trans($successMessage)
-            ]);
+            return new JsonResponse(
+                ['successful' => true, 'message' => $this->translator->trans($successMessage)]
+            );
         } else {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
