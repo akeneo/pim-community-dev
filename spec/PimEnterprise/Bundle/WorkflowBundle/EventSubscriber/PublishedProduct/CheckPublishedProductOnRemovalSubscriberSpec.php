@@ -29,6 +29,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
                 CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
                 CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
                 CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
+                CatalogEvents::PRE_REMOVE_TREE             => 'checkCategoryLinkedToPublishedProduct',
                 CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
                 CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
             ]);
