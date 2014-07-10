@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -42,7 +43,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
-        $publishedRepository->findOneByOriginalProductId(1)->willReturn(false);
+        $publishedRepository->findOneByOriginalProduct($product)->willReturn(null);
 
         $this->checkProductHasBeenPublished($event);
     }
@@ -50,11 +51,12 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_product_is_published(
         $publishedRepository,
         AbstractProduct $product,
+        PublishedProductInterface $published,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
-        $publishedRepository->findOneByOriginalProductId(1)->willReturn(true);
+        $publishedRepository->findOneByOriginalProduct($product)->willReturn($published);
 
         $this
             ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))

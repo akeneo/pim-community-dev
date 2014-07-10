@@ -27,5 +27,5 @@ Feature: Publish a product
     And I press the "Unpublish" button
     Then I am on the published index page
     And the grid should contain 1 elements
-    And I should see product my-jacket-leather
+    And I should see product my-leather-jacket
     And I should not see product my-jacket

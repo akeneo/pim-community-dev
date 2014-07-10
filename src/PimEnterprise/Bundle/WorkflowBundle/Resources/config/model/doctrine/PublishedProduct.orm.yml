@@ -80,4 +80,3 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             joinColumns:
                 original_product_id:
                     referencedColumnName: id
-

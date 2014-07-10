@@ -61,7 +61,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public function checkProductHasBeenPublished(GenericEvent $event)
     {
         $product   = $event->getSubject();
-        $published = $this->publishedRepository->findOneByOriginalProductId($product->getId());
+        $published = $this->publishedRepository->findOneByOriginalProduct($product);
 
         if ($published) {
             throw new PublishedProductConsistencyException('Impossible to remove a published product');

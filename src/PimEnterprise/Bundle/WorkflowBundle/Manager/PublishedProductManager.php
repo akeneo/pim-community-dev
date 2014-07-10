@@ -11,7 +11,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -42,7 +41,7 @@ class PublishedProductManager
      * @param PublishedProductRepositoryInterface $repository      the published repository
      * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
      * @param PublisherInterface                  $publisher       the product publisher
-     * @param UnpublisherInterface                $unpublisher      the product unpublisher
+     * @param UnpublisherInterface                $unpublisher     the product unpublisher
      */
     public function __construct(
         ProductManager $manager,
@@ -103,7 +102,7 @@ class PublishedProductManager
      */
     public function findByIdentifier($identifier)
     {
-        $published = $this->repository->findOneBy(
+        return $this->repository->findOneBy(
             [
                 [
                     'attribute' => $this->productManager->getIdentifierAttribute(),
@@ -111,8 +110,6 @@ class PublishedProductManager
                 ]
             ]
         );
-
-        return $published;
     }
 
     /**
