@@ -142,6 +142,29 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
+     * Get granted category ids
+     *
+     * @param RoleInterface[] $roles
+     * @param integer[]       $categoryIds
+     *
+     * @return integer[]
+     */
+    public function getCategoryIdsWithExistingAccess($roles, $categoryIds)
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb
+            ->andWhere($qb->expr()->in('ca.role', ':roles'))
+            ->setParameter('roles', $roles)
+            ->andWhere($qb->expr()->in('c.id', ':categories'))
+            ->setParameter('categories', $categoryIds)
+            ->resetDQLParts(['select'])
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->select('c.id');
+
+        return $this->hydrateAsIds($qb);
+    }
+
+    /**
      * Returns granted categories ids
      *
      * @param User   $user
@@ -201,34 +224,6 @@ class CategoryAccessRepository extends EntityRepository
             },
             $qb->execute()->fetchAll()
         );
-    }
-
-    /**
-     * Get granted category ids for a user
-     * If $filterableIds is provided, the returned ids will consist of these ids
-     * filtered by the given access level
-     *
-     * @param User      $user
-     * @param string    $accessLevel
-     * @param integer[] $filterableIds
-     *
-     * @return integer[]
-     */
-    public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
-    {
-        $qb = $this->getGrantedCategoryQB($user, $accessLevel);
-        $qb
-            ->select('a.id')
-            ->innerJoin('ca.products', 'a')
-            ->groupBy('a.id');
-
-        if (null !== $filterableIds) {
-            $qb->andWhere(
-                $qb->expr()->in('a.id', $filterableIds)
-            );
-        }
-
-        return $this->hydrateAsIds($qb);
     }
 
     /**

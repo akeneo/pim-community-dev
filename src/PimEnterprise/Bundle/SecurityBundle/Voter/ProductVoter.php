@@ -77,7 +77,9 @@ class ProductVoter implements VoterInterface
     }
 
     /**
-     * Determine if a product is accessible for the user
+     * Determines if a product is accessible for the user,
+     * - a product is accessible when it's not at least in a category
+     * - then we apply category's permissions
      *
      * @param AbstractProduct $product
      * @param UserInterface   $user
@@ -87,10 +89,7 @@ class ProductVoter implements VoterInterface
      */
     protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
     {
-        $productTreeIds = $product->getTreeIds();
-
-        // TODO: change this temporary fix and handle a "all products" permission
-        if (0 === count($productTreeIds)) {
+        if (count($product->getCategories()) === 0) {
             return true;
         }
 
@@ -98,9 +97,13 @@ class ProductVoter implements VoterInterface
             CategoryVoter::EDIT_PRODUCTS :
             CategoryVoter::VIEW_PRODUCTS;
 
-        $grantedTreeIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
+        $categoryIds = [];
+        foreach ($product->getCategories() as $category) {
+            $categoryIds[] = $category->getId();
+        }
+        $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $categoryAttribute);
 
-        $intersection = array_intersect($productTreeIds, $grantedTreeIds);
+        $intersection = array_intersect($categoryIds, $grantedCategoryIds);
         if (count($intersection)) {
             return true;
         }

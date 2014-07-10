@@ -1,3 +1,4 @@
 category_accesses:
     default:
         edit: [administrator, manager, user]
+        view: [administrator, manager, user]

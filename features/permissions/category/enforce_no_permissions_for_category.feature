@@ -12,8 +12,8 @@ Feature: Enforce no permissions for a category
     Given I am on the "2014_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to view products in the current category | User |
-      | Permissions to edit products in the current category | User |
+      | View products | User |
+      | Edit products | User |
     And I save the category
     And I am on the products page
     Then I should be on the homepage

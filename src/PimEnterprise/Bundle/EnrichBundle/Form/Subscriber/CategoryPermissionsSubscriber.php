@@ -2,11 +2,13 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 /**
  * Subscriber to manage permissions on categories
@@ -16,10 +18,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class CategoryPermissionsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var CategoryAccessManager
-     */
+    /** @var CategoryAccessManager */
     protected $accessManager;
+
+    /** @var array store the previous roles to be able to do a diff of added/removed */
+    protected $previousRoles = ['view' => [], 'edit' => []];
 
     /**
      * @param CategoryAccessManager $accessManager
@@ -52,9 +55,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if ($event->getData()->isRoot()) {
-            $event->getForm()->add('permissions', 'pimee_enrich_category_permissions');
-        }
+        $event->getForm()->add('permissions', 'pimee_enrich_category_permissions');
     }
 
     /**
@@ -71,8 +72,14 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+
+        $viewRoles = $this->accessManager->getViewRoles($event->getData());
+        $form->get('view')->setData($viewRoles);
+        $this->previousRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+
+        $editRoles = $this->accessManager->getEditRoles($event->getData());
+        $form->get('edit')->setData($editRoles);
+        $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
     }
 
     /**
@@ -91,6 +98,43 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+
+            $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
+            if ($updateChildren === true) {
+                $this->updateChildren($event->getData(), $viewRoles, $editRoles);
+            }
+        }
+    }
+
+    /**
+     * Update children categories
+     *
+     * @param CategoryInterface     $parent
+     * @param array|ArrayCollection $viewRoles
+     * @param array|ArrayCollection $editRoles
+     */
+    protected function updateChildren(CategoryInterface $parent, $viewRoles, $editRoles)
+    {
+        $currentRoles = [];
+        $currentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+        $currentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+
+        $addedViewRoles = array_diff($currentRoles['view'], $this->previousRoles['view']);
+        $addedEditRoles = array_diff($currentRoles['edit'], $this->previousRoles['edit']);
+        $removedViewRoles = array_diff($this->previousRoles['view'], $currentRoles['view']);
+        $removedEditRoles = array_diff($this->previousRoles['edit'], $currentRoles['edit']);
+
+        $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0
+            || count($removedViewRoles) > 0 || count($removedEditRoles) > 0;
+
+        if ($changedRoles) {
+            $this->accessManager->updateChildrenAccesses(
+                $parent,
+                $addedViewRoles,
+                $addedEditRoles,
+                $removedViewRoles,
+                $removedEditRoles
+            );
         }
     }
 
@@ -103,8 +147,6 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     protected function isValidTree(FormEvent $event)
     {
-        return null !== $event->getData()
-            && null !== $event->getData()->getId()
-            && false !== $event->getData()->isRoot();
+        return null !== $event->getData() && null !== $event->getData()->getId();
     }
 }

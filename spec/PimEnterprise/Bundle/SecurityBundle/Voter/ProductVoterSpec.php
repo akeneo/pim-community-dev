@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Voter;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
@@ -46,10 +47,14 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryAccessRepository,
         $token,
         $user,
-        AbstractProduct $product
+        AbstractProduct $product,
+        CategoryInterface $categoryFive,
+        CategoryInterface $categorySix
     ) {
         $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
-        $product->getTreeIds()->willReturn([5, 6]);
+        $product->getCategories()->willReturn([$categoryFive, $categorySix]);
+        $categoryFive->getId()->willReturn(5);
+        $categorySix->getId()->willReturn(6);
 
         $this
             ->vote($token, $product, [ProductVoter::PRODUCT_EDIT])
@@ -60,10 +65,14 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryAccessRepository,
         $token,
         $user,
-        AbstractProduct $product
+        AbstractProduct $product,
+        CategoryInterface $categoryOne,
+        CategoryInterface $categorySix
     ) {
         $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
-        $product->getTreeIds()->willReturn([1, 6]);
+        $product->getCategories()->willReturn([$categoryOne, $categorySix]);
+        $categoryOne->getId()->willReturn(1);
+        $categorySix->getId()->willReturn(6);
 
         $this
             ->vote($token, $product, [ProductVoter::PRODUCT_EDIT])

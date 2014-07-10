@@ -6,6 +6,8 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
@@ -29,15 +31,22 @@ class CategoryAccessManager
     protected $categoryAccessClass;
 
     /**
+     * @var string
+     */
+    protected $categoryClass;
+
+    /**
      * Constructor
      *
      * @param ManagerRegistry $registry
      * @param string          $categoryAccessClass
+     * @param string          $categoryClass
      */
-    public function __construct(ManagerRegistry $registry, $categoryAccessClass)
+    public function __construct(ManagerRegistry $registry, $categoryAccessClass, $categoryClass)
     {
         $this->registry            = $registry;
         $this->categoryAccessClass = $categoryAccessClass;
+        $this->categoryClass       = $categoryClass;
     }
 
     /**
@@ -49,7 +58,7 @@ class CategoryAccessManager
      */
     public function getViewRoles(CategoryInterface $category)
     {
-        return $this->getRepository()->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS);
     }
 
     /**
@@ -61,7 +70,7 @@ class CategoryAccessManager
      */
     public function getEditRoles(CategoryInterface $category)
     {
-        return $this->getRepository()->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS);
     }
 
     /**
@@ -87,6 +96,162 @@ class CategoryAccessManager
         }
 
         $this->revokeAccess($category, $grantedRoles);
+        $this->getObjectManager()->flush();
+    }
+
+    /**
+     * Update accesses to all category children to specified roles
+     *
+     * @param CategoryInterface $parent
+     * @param Role[]            $addViewRoles
+     * @param Role[]            $addEditRoles
+     * @param Role[]            $removeViewRoles
+     * @param Role[]            $removeEditRoles
+     */
+    public function updateChildrenAccesses(
+        CategoryInterface $parent,
+        $addViewRoles,
+        $addEditRoles,
+        $removeViewRoles,
+        $removeEditRoles
+    ) {
+        $mergedPermissions = $this->getMergedPermissions(
+            $addViewRoles,
+            $addEditRoles,
+            $removeViewRoles,
+            $removeEditRoles
+        );
+
+        $codeToRoles = [];
+        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        foreach ($allRoles as $role) {
+            $codeToRoles[$role->getRole()] = $role;
+        }
+
+        $categoryRepo = $this->getCategoryRepository();
+        $childrenIds = $categoryRepo->getAllChildrenIds($parent);
+
+        foreach ($codeToRoles as $role) {
+            $roleCode = $role->getRole();
+            $view = $mergedPermissions[$roleCode]['view'];
+            $edit = $mergedPermissions[$roleCode]['edit'];
+
+            $accessRepo = $this->getAccessRepository();
+            $toUpdateIds = $accessRepo->getCategoryIdsWithExistingAccess([$role], $childrenIds);
+            $toAddIds = array_diff($childrenIds, $toUpdateIds);
+
+            if ($view === false && $edit === false) {
+                $this->removeAccesses($toUpdateIds, $role);
+            } else {
+                if (count($toAddIds) > 0) {
+                    $this->addAccesses($toAddIds, $role, $view, $edit);
+                }
+                if (count($toUpdateIds) > 0) {
+                    $this->updateAccesses($toUpdateIds, $role, $view, $edit);
+                }
+            }
+        }
+    }
+
+    /**
+     * Get merged permissions
+     *
+     * @param Role[] $addViewRoles
+     * @param Role[] $addEditRoles
+     * @param Role[] $removeViewRoles
+     * @param Role[] $removeEditRoles
+     *
+     * @return array
+     */
+    protected function getMergedPermissions(
+        $addViewRoles,
+        $addEditRoles,
+        $removeViewRoles,
+        $removeEditRoles
+    ) {
+        $mergedPermissions = [];
+        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        foreach ($allRoles as $role) {
+            $mergedPermissions[$role->getRole()] = ['view' => null, 'edit' => null];
+        }
+        foreach ($addViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+        foreach ($addEditRoles as $role) {
+            $mergedPermissions[$role->getRole()]['edit'] = true;
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+        foreach ($removeViewRoles as $role) {
+            $mergedPermissions[$role->getRole()]['view'] = false;
+        }
+        foreach ($removeEditRoles as $role) {
+            $mergedPermissions[$role->getRole()]['edit'] = false;
+        }
+
+        return $mergedPermissions;
+    }
+
+    /**
+     * Delete accesses on categories
+     *
+     * @param integer[] $categoryIds
+     * @param Role      $role
+     */
+    protected function removeAccesses($categoryIds, Role $role)
+    {
+        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
+
+        foreach ($accesses as $access) {
+            $this->getObjectManager()->remove($access);
+        }
+        $this->getObjectManager()->flush();
+    }
+
+    /**
+     * Add accesses on categories, a null permission will be resolved as false
+     *
+     * @param integer[]    $categoryIds
+     * @param Role         $role
+     * @param boolean|null $view
+     * @param boolean|null $edit
+     */
+    protected function addAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    {
+        $view = ($view === null) ? false : $view;
+        $edit = ($edit === null) ? false : $edit;
+        $categories = $this->getCategoryRepository()->findBy(['id' => $categoryIds]);
+
+        foreach ($categories as $category) {
+            $access = new $this->categoryAccessClass();
+            $access->setCategory($category)->setRole($role);
+            $access->setViewProducts($view);
+            $access->setEditProducts($edit);
+            $this->getObjectManager()->persist($access);
+        }
+        $this->getObjectManager()->flush();
+    }
+
+    /**
+     * Update accesses on categories, if a permission is null we don't update
+     *
+     * @param integer[]    $categoryIds
+     * @param Role         $role
+     * @param boolean|null $view
+     * @param boolean|null $edit
+     */
+    protected function updateAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    {
+        $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
+
+        foreach ($accesses as $access) {
+            if ($view !== null) {
+                $access->setViewProducts($view);
+            }
+            if ($edit !== null) {
+                $access->setEditProducts($edit);
+            }
+            $this->getObjectManager()->persist($access);
+        }
         $this->getObjectManager()->flush();
     }
 
@@ -117,7 +282,7 @@ class CategoryAccessManager
      */
     protected function getCategoryAccess(CategoryInterface $category, Role $role)
     {
-        $access = $this->getRepository()
+        $access = $this->getAccessRepository()
             ->findOneBy(
                 [
                     'category' => $category,
@@ -146,15 +311,25 @@ class CategoryAccessManager
      */
     protected function revokeAccess(CategoryInterface $category, array $excludedRoles = [])
     {
-        return $this->getRepository()->revokeAccess($category, $excludedRoles);
+        return $this->getAccessRepository()->revokeAccess($category, $excludedRoles);
     }
 
     /**
-     * Get repository
+     * Get category repository
+     *
+     * @return CategoryRepository
+     */
+    protected function getCategoryRepository()
+    {
+        return $this->registry->getRepository($this->categoryClass);
+    }
+
+    /**
+     * Get category access repository
      *
      * @return CategoryAccessRepository
      */
-    protected function getRepository()
+    protected function getAccessRepository()
     {
         return $this->registry->getRepository($this->categoryAccessClass);
     }

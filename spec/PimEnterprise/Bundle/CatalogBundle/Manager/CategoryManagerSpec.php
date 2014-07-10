@@ -27,14 +27,16 @@ class CategoryManagerSpec extends ObjectBehavior
         CategoryAccessRepository $categoryAccessRepository,
         ObjectManager $om,
         EventDispatcherInterface $eventDispatcher,
-        CategoryRepository $categoryRepository
+        CategoryRepository $categoryRepository,
+        SecurityContextInterface $context
     ) {
         $om->getRepository(Argument::any())->willReturn($categoryRepository);
         $this->beConstructedWith(
             $om,
             Argument::any(),
             $eventDispatcher,
-            $categoryAccessRepository
+            $categoryAccessRepository,
+            $context
         );
     }
 

@@ -1,12 +1,19 @@
 category_accesses:
     2014_collection:
         edit: [administrator, manager, user]
+        view: [administrator, manager, user]
     summer_collection:
         edit: [administrator, manager, user]
+        view: [administrator, manager, user]
     winter_collection:
         edit: [administrator, manager, user]
+        view: [administrator, manager, user]
     winter_top:
-        edit: [administrator]
-        view: [manager]
+        edit: [administrator, manager, user]
+        view: [administrator, manager, user]
     tees:
-        edit: [administrator]
+        edit: [administrator, manager, user]
+        view: [administrator, manager, user]
+    jackets:
+        edit: [administrator, manager, user]
+        view: [administrator, manager, user]
