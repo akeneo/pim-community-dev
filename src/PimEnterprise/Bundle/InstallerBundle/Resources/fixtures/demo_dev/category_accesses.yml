@@ -4,10 +4,61 @@ category_accesses:
         edit: [administrator, manager, user]
     collections:
         view: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator, manager,user]
     books:
         view: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator, manager, user]
     computers:
-        view: [administrator, manager]
-        edit: [administrator, manager]
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    colors:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    europe_sales:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    desktops:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    laptops:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    notebooks:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    accessories:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    games:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    software:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    apparels_shoes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shirts:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    jeans:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes_male:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes_female:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes_eu:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes_male_eu:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+    shoes_female_eu:
+        view: [administrator, manager, user]
+        edit: [administrator, manager, user]
