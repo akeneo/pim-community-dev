@@ -18,6 +18,9 @@ Feature: Edit a product I have access
       | category        | role    | access |
       | 2014_collection | Manager |        |
       | shoes           | Manager | edit   |
+      | vintage         | Manager | edit   |
+      | trendy          | Manager | edit   |
+      | classy          | Manager | edit   |
       | boots           | Manager | view   |
     And the following products:
       | sku     | categories      | name-en |
