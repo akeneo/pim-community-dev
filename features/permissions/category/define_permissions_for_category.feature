@@ -10,8 +10,25 @@ Feature: Define permissions for a category
 
   Scenario: Create category keeps the parent's permissions
     Given I am on the category "2014_collection" node creation page
-    When I fill in the following information:
+    And I fill in the following information:
       | Code | newcategory |
-    And I save the category
+    When I save the category
     And I visit the "Permissions" tab
     Then I should see the permission View products with roles Administrator, Manager and User
+    And I should see the permission Edit products with roles Administrator, Manager and User
+
+  Scenario: By default, update children when the parent's permissions are changed
+    Given the following categories:
+      | code         | label-en_US   | parent    |
+      | shoes        | Shoes         |           |
+      | vintage      | Vintage       | shoes     |
+      | trendy       | Trendy        | shoes     |
+      | classy       | Classy        | shoes     |
+    And I edit the "shoes" category
+    And I visit the "Permissions" tab
+    And I fill in the following information:
+      | View products | Manager |
+    And I save the category
+    When I edit the "classy" category
+    And I visit the "Permissions" tab
+    Then I should see the permission View products with roles Manager
