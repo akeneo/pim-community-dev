@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
 use Symfony\Component\Translation\TranslatorInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
@@ -15,13 +16,13 @@ use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
 
 /**
- * Abstract filter extension, storage agnostic
+ * Filter extension, storage agnostic
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractFilterExtension extends AbstractExtension
+class FilterExtension extends AbstractExtension
 {
     /** @staticvar string Query param */
     const FILTER_ROOT_PARAM = '_filter';
@@ -37,20 +38,20 @@ abstract class AbstractFilterExtension extends AbstractExtension
     protected $translator;
 
     /**
-     * @var string
+     * @var DatasourceAdapterResolver
      */
-    protected $adapterClass;
+    protected $adapterResolver;
 
     /**
-     * @param RequestParameters   $requestParams
-     * @param TranslatorInterface $translator
-     * @param string              $adapterClass
+     * @param RequestParameters         $requestParams
+     * @param TranslatorInterface       $translator
+     * @param DatasourceAdapterResolver $adapterLoader
      */
-    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator, $adapterClass)
+    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator, DatasourceAdapterResolver $adapterLoader)
     {
         $this->translator = $translator;
+        $this->adapterResolver = $adapterLoader;
         parent::__construct($requestParams);
-        $this->adapterClass = $adapterClass;
     }
 
     /**
@@ -64,7 +65,8 @@ abstract class AbstractFilterExtension extends AbstractExtension
             return false;
         }
 
-        return $this->matchDatasource($config);
+        // ORO grids have a datasource of type ORM, do not apply our filters on these grids
+        return 'orm' !== $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
     }
 
     /**
@@ -86,7 +88,9 @@ abstract class AbstractFilterExtension extends AbstractExtension
     {
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
-        $datasourceAdapter = new $this->adapterClass($datasource->getQueryBuilder());
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $datasourceAdapterClass = $this->adapterResolver->getDatasourceClass($datasourceType);
+        $datasourceAdapter = new $datasourceAdapterClass($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
@@ -231,11 +235,4 @@ abstract class AbstractFilterExtension extends AbstractExtension
 
         return clone $filter;
     }
-
-    /**
-     * @param DatagridConfiguration $config
-     *
-     * @return boolean
-     */
-    abstract protected function matchDatasource(DatagridConfiguration $config);
 }

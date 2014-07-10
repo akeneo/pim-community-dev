@@ -2,11 +2,9 @@ parameters:
     pim_datagrid.datasource.result_record.hydrator.product.class:   Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ProductHydrator
     pim_datagrid.datasource.result_record.hydrator.object_id.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectIdHydrator
     pim_datagrid.datasource.result_record.hydrator.object.class:    Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectHydrator
-    pim_filter.datasource.product_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
     pim_datagrid.extension.pager.product.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
     pim_datagrid.datasource.mongodb.class:                          Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource
     pim_filter.datasource.mongodb_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
-    pim_datagrid.extension.filter.mongodb_filter.class:             Pim\Bundle\DataGridBundle\Extension\Filter\MongoDBFilterExtension
     pim_datagrid.extension.sorter.mongodb_sorter.class:             Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDBSorterExtension
     pim_datagrid.extension.pager.mongodb_pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDBPagerExtension
     pim_datagrid.extension.pager.mongodb.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
@@ -22,15 +20,6 @@ services:
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: mongodb }
-
-    pim_datagrid.extension.filter.mongodb_filter:
-        class: %pim_datagrid.extension.filter.mongodb_filter.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-            - %pim_filter.datasource.mongodb_adapter.class%
-        tags:
-             - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter.mongodb_sorter:
         class: %pim_datagrid.extension.sorter.mongodb_sorter.class%
