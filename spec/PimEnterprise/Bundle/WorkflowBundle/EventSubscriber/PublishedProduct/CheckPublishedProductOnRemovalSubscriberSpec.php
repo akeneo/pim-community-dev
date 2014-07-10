@@ -25,13 +25,13 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_pre_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
-            CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
-        ]);
+                CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
+                CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
+                CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
+                CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
+                CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
+                CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
+            ]);
     }
 
     function it_checks_if_a_product_is_not_published(
@@ -57,7 +57,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove a published product'))
-            ->during('checkProductHasBeenPublished', [$event]);
+            ->duringCheckProductHasBeenPublished($event);
     }
 
     function it_checks_if_the_family_is_linked_to_a_published_product(
@@ -81,7 +81,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove family linked to a published product'))
-            ->during('checkFamilyLinkedToPublishedProduct', [$event]);
+            ->duringCheckFamilyLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_attribute_is_linked_to_a_published_product(
@@ -105,7 +105,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove attribute linked to a published product'))
-            ->during('checkAttributeLinkedToPublishedProduct', [$event]);
+            ->duringCheckAttributeLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_category_is_linked_to_a_published_product(
@@ -136,7 +136,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove category linked to a published product'))
-            ->during('checkCategoryLinkedToPublishedProduct', [$event]);
+            ->duringCheckCategoryLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_group_is_linked_to_a_published_product(
@@ -160,7 +160,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
 
         $this
             ->shouldThrow(new ConflictHttpException('Impossible to remove group linked to a published product'))
-            ->during('checkGroupLinkedToPublishedProduct', [$event]);
+            ->duringCheckGroupLinkedToPublishedProduct($event);
     }
 
     function it_checks_if_the_association_type_is_linked_to_a_published_product(
@@ -186,6 +186,6 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
             ->shouldThrow(
                 new ConflictHttpException('Impossible to remove association type linked to a published product')
             )
-            ->during('checkAssociationTypeLinkedToPublishedProduct', [$event]);
+            ->duringCheckAssociationTypeLinkedToPublishedProduct($event);
     }
 }
