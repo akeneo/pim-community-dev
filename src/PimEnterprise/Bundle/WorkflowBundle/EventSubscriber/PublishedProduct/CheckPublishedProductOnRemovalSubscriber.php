@@ -4,9 +4,9 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Pim\Bundle\CatalogBundle\CatalogEvents;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -55,7 +55,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkProductHasBeenPublished(GenericEvent $event)
     {
@@ -63,7 +63,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $published = $this->publishedRepository->findOneByOriginalProductId($product->getId());
 
         if ($published) {
-            throw new ConflictHttpException('Impossible to remove a published product');
+            throw new PublishedProductConsistencyException('Impossible to remove a published product');
         }
     }
 
@@ -72,7 +72,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkFamilyLinkedToPublishedProduct(GenericEvent $event)
     {
@@ -80,7 +80,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForFamily($family);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove family linked to a published product');
+            throw new PublishedProductConsistencyException(
+                'Impossible to remove family linked to a published product'
+            );
         }
     }
 
@@ -89,7 +91,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkCategoryLinkedToPublishedProduct(GenericEvent $event)
     {
@@ -100,7 +102,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($categoryIds);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove category linked to a published product');
+            throw new PublishedProductConsistencyException(
+                'Impossible to remove category linked to a published product'
+            );
         }
     }
 
@@ -109,7 +113,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkAttributeLinkedToPublishedProduct(GenericEvent $event)
     {
@@ -117,7 +121,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForAttribute($attribute);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove attribute linked to a published product');
+            throw new PublishedProductConsistencyException(
+                'Impossible to remove attribute linked to a published product'
+            );
         }
     }
 
@@ -126,7 +132,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkGroupLinkedToPublishedProduct(GenericEvent $event)
     {
@@ -134,7 +140,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForGroup($group);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove group linked to a published product');
+            throw new PublishedProductConsistencyException(
+                'Impossible to remove group linked to a published product'
+            );
         }
     }
 
@@ -143,7 +151,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
      *
      * @param GenericEvent $event
      *
-     * @throws ConflictHttpException
+     * @throws PublishedProductConsistencyException
      */
     public function checkAssociationTypeLinkedToPublishedProduct(GenericEvent $event)
     {
@@ -151,7 +159,9 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
         $publishedCount = $this->publishedRepository->countPublishedProductsForAssociationType($associationType);
 
         if ($publishedCount > 0) {
-            throw new ConflictHttpException('Impossible to remove association type linked to a published product');
+            throw new PublishedProductConsistencyException(
+                'Impossible to remove association type linked to a published product'
+            );
         }
     }
 }
