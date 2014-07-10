@@ -128,7 +128,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
             || count($removedViewRoles) > 0 || count($removedEditRoles) > 0;
 
         if ($changedRoles) {
-            $this->accessManager->addChildrenAccess(
+            $this->accessManager->updateChildrenAccesses(
                 $parent,
                 $addedViewRoles,
                 $addedEditRoles,

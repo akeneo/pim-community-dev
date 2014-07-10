@@ -100,7 +100,7 @@ class CategoryAccessManager
     }
 
     /**
-     * Add accesses to all category children to specified roles
+     * Update accesses to all category children to specified roles
      *
      * @param CategoryInterface $parent
      * @param Role[]            $addViewRoles
@@ -108,7 +108,7 @@ class CategoryAccessManager
      * @param Role[]            $removeViewRoles
      * @param Role[]            $removeEditRoles
      */
-    public function addChildrenAccess(
+    public function updateChildrenAccesses(
         CategoryInterface $parent,
         $addViewRoles,
         $addEditRoles,
