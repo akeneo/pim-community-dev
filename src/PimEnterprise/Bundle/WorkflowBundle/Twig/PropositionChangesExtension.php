@@ -6,11 +6,13 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\PresenterInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
  * Twig extension to present proposition changes
@@ -23,7 +25,7 @@ class PropositionChangesExtension extends \Twig_Extension
     /** @var ObjectRepository */
     protected $valueRepository;
 
-    /** @var ObjectRepository */
+    /** @var ReferableEntityRepositoryInterface */
     protected $attributeRepository;
 
     /** @var \Diff_Renderer_Html_Array */
@@ -45,16 +47,16 @@ class PropositionChangesExtension extends \Twig_Extension
     protected $twig;
 
     /**
-     * @param ObjectRepository    $valueRepository
-     * @param ObjectRepository    $attributeRepository
-     * @param RendererInterface   $renderer
-     * @param TranslatorInterface $translator
-     * @param ProductManager      $productManager
-     * @param AttributeManager    $attributeManager
+     * @param ObjectRepository                   $valueRepository
+     * @param ReferableEntityRepositoryInterface $attributeRepository
+     * @param RendererInterface                  $renderer
+     * @param TranslatorInterface                $translator
+     * @param ProductManager                     $productManager
+     * @param AttributeManager                   $attributeManager
      */
     public function __construct(
         ObjectRepository $valueRepository,
-        ObjectRepository $attributeRepository,
+        ReferableEntityRepositoryInterface $attributeRepository,
         RendererInterface $renderer,
         TranslatorInterface $translator,
         ProductManager $productManager,
@@ -113,8 +115,8 @@ class PropositionChangesExtension extends \Twig_Extension
      */
     public function presentAttribute(array $change, $default)
     {
-        if (isset($change['__context__']['attribute_id'])
-            && null !== $attribute = $this->attributeRepository->find($change['__context__']['attribute_id'])) {
+        if (isset($change['__context__']['attribute'])
+            && null !== $attribute = $this->attributeRepository->findByReference($change['__context__']['attribute'])) {
             return $this->present($attribute, $change);
         }
 
@@ -131,10 +133,22 @@ class PropositionChangesExtension extends \Twig_Extension
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function presentChange(array $change)
+    public function presentChange(array $change, Proposition $proposition)
     {
-        if (!isset($change['__context__']['value_id'])
-            || null === $value = $this->valueRepository->find($change['__context__']['value_id'])) {
+        $change['__context__'] = array_merge(
+            [
+                'attribute' => null,
+                'locale' => null,
+                'scope' => null,
+            ],
+            $change['__context__']
+        );
+
+        $attribute = $change['__context__']['attribute'];
+        $locale = $change['__context__']['locale'];
+        $scope = $change['__context__']['scope'];
+
+        if (null === $value = $proposition->getProduct()->getValue($attribute, $locale, $scope)) {
             $value = $this->createFakeValue();
         }
 
