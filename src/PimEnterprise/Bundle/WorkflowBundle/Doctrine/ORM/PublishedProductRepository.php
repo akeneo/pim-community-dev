@@ -2,7 +2,13 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
+use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -45,5 +51,83 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         }
 
         return $ids;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->andWhere('pp.family = :family')
+            ->setParameter('family', $family);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForCategoryAndChildren($categoryIds)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->innerJoin('pp.categories', 'c')
+            ->andWhere($qb->expr()->in('c.id', $categoryIds));
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    {
+        $qb = $this->findAllByAttributesQB([$attribute]);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForGroup(Group $group)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->andWhere(':group MEMBER OF pp.groups')
+            ->setParameter('group', $group);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->innerJoin('pp.associations', 'ppa')
+            ->andWhere('ppa.associationType = :association_type')
+            ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * Return the result count from a query builder object
+     *
+     * @param QueryBuilder $qb
+     *
+     * @return mixed
+     */
+    protected function getCountFromQB(QueryBuilder $qb)
+    {
+        $rootAlias = current($qb->getRootAliases());
+        $qb->select(sprintf("COUNT(%s.id)", $rootAlias));
+
+        return $qb->getQuery()->getSingleScalarResult();
     }
 }
