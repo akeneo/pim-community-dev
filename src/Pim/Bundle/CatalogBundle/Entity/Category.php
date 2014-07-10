@@ -255,19 +255,17 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Remove children
-     *
-     * @param CategoryInterface $children
+     * {@inheritdoc}
      */
     public function removeChild(CategoryInterface $children)
     {
         $this->children->removeElement($children);
+
+        return $this;
     }
 
     /**
-     * Has children
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasChildren()
     {
@@ -275,9 +273,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Get children
-     *
-     * @return Doctrine\Common\Collections\Collection
+     * {@inheritdoc}
      */
     public function getChildren()
     {
@@ -285,10 +281,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * If a node is a tree root, it's the tree starting point and therefore
-     * defines the tree itself.
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function isRoot()
     {
@@ -296,11 +289,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Add product to this category node
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function addProduct(ProductInterface $product)
     {
@@ -313,9 +302,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Predicate to know if a category has product(s) linked
-     *
-     * @return boolean
+     * {@inheritdoc}
      */
     public function hasProducts()
     {
@@ -323,11 +310,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Remove product for this category node
-     *
-     * @param ProductInterface $product
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function removeProduct(ProductInterface $product)
     {
@@ -338,9 +321,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Get products for this category node
-     *
-     * @return ArrayCollection
+     * {@inheritdoc}
      */
     public function getProducts()
     {
@@ -348,11 +329,7 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
-     * Set products for this category node
-     *
-     * @param mixed $products Traversable object or array
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function setProducts($products)
     {
@@ -367,6 +344,8 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
                 $product->addCategory($this);
             }
         }
+
+        return $this;
     }
 
     /**

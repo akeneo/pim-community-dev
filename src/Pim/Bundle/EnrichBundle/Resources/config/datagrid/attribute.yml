@@ -1,0 +1,60 @@
+datagrid:
+    attribute-grid:
+        extend: translatable-entity-grid
+        options:
+            entityHint: attribute
+        source:
+            acl_resource: pim_enrich_attribute_index
+            entity: %pim_catalog.entity.attribute.class%
+        columns:
+            attributeType:
+                label: Type
+                type: translateable
+            scopable:
+                label:         Scopable
+                frontend_type: boolean
+            localizable:
+                label:         Localizable
+                frontend_type: boolean
+            group:
+                label:     Group
+                data_name: groupLabel
+        properties:
+            edit_link:
+                route: pim_enrich_attribute_edit
+            delete_link:
+                route: pim_enrich_attribute_remove
+        sorters:
+            columns:
+                code:
+                    data_name: a.code
+                scopable:
+                    data_name: a.scopable
+                localizable:
+                    data_name: a.localizable
+                group:
+                    data_name: groupLabel
+        filters:
+            columns:
+                code:
+                    data_name: a.code
+                attributeType:
+                    type:      choice
+                    data_name: a.attributeType
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_catalog.manager.attribute->getAttributeTypes'
+                scopable:
+                    type:      boolean
+                    data_name: a.scopable
+                localizable:
+                    type:      boolean
+                    data_name: a.localizable
+                group:
+                    type:      choice
+                    data_name: attributeGroup.code
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_catalog.repository.attribute_group->getAttributeGroupChoices'

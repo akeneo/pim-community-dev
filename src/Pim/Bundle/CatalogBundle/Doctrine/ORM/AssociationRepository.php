@@ -85,8 +85,7 @@ class AssociationRepository extends EntityRepository implements
         $qb
             ->join('pa.products', 'pap', Join::WITH, 'pap.id = :productId')
             ->where($qb->expr()->in('pa.owner', $ownerIds))
-            ->setParameter(':productId', $productId)
-        ;
+            ->setParameter(':productId', $productId);
 
         return $qb->getQuery()->getResult();
     }

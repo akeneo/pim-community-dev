@@ -59,7 +59,8 @@ class EditCommonAttributesType extends AbstractType
                 'values',
                 'collection',
                 array(
-                    'type' => 'pim_product_value'
+                    'type' => 'pim_product_value',
+                    'allow_delete' => true,
                 )
             )
             ->add(
@@ -105,7 +106,6 @@ class EditCommonAttributesType extends AbstractType
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-
         $resolver->setDefaults(
             [
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',

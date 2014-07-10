@@ -1,24 +1,21 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\Entity\Repository;
+namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
-use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Doctrine\ODM\MongoDB\DocumentRepository;
+use Pim\Bundle\VersioningBundle\Repository\VersionRepositoryInterface;
 
 /**
- * Version repository
+ * MongoDB version repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @author    Filips Alpe <filips@akeneo.com>
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class VersionRepository extends EntityRepository
+class VersionRepository extends DocumentRepository implements VersionRepositoryInterface
 {
     /**
-     * @param string $resourceName
-     * @param string $resourceId
-     *
-     * @return Version[]|null
+     * {@inheritdoc}
      */
     public function getLogEntries($resourceName, $resourceId)
     {
@@ -29,11 +26,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string    $resourceName
-     * @param string    $resourceId
-     * @param null|bool $pending
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getOldestLogEntry($resourceName, $resourceId, $pending = false)
     {
@@ -41,11 +34,7 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * @param string    $resourceName
-     * @param string    $resourceId
-     * @param null|bool $pending
-     *
-     * @return Version|null
+     * {@inheritdoc}
      */
     public function getNewestLogEntry($resourceName, $resourceId, $pending = false)
     {
@@ -53,13 +42,28 @@ class VersionRepository extends EntityRepository
     }
 
     /**
-     * Get pending versions
-     *
-     * @return Version[]
+     * {@inheritdoc}
      */
     public function getPendingVersions()
     {
         return $this->findBy(['pending' => true], ['loggedAt' => 'asc']);
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function createDatagridQueryBuilder(array $params = [])
+    {
+        $qb = $this->createQueryBuilder();
+
+        if (!empty($params['objectClass']) && !empty($params['objectId'])) {
+            $qb->field('resourceName')->equals($params['objectClass']);
+            $qb->field('resourceId')->equals($params['objectId']);
+        }
+
+        return $qb;
     }
 
     /**
@@ -70,18 +74,21 @@ class VersionRepository extends EntityRepository
      * @param bool|null $pending
      * @param string    $sort
      *
-     * @return Version|null
+     * @return \Pim\Bundle\VersioningBundle\Model\Version|null
      */
     protected function getOneLogEntry($resourceName, $resourceId, $pending, $sort)
     {
-        $criteria = ['resourceId' => $resourceId, 'resourceName' => $resourceName];
+        $criteria = ['resourceId' => (string) $resourceId, 'resourceName' => $resourceName];
         if (null !== $pending) {
             $criteria['pending'] = $pending;
         }
 
-        return $this->findOneBy(
+        $results = $this->findBy(
             $criteria,
-            ['loggedAt' => $sort]
+            ['loggedAt' => $sort],
+            1
         );
+
+        return !empty($results) ? current($results) : null;
     }
 }

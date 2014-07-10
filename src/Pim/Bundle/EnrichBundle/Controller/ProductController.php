@@ -9,6 +9,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
@@ -234,6 +236,35 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * Toggle product status (enabled/disabled)
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return Response|RedirectResponse
+     *
+     * @AclAncestor("pim_enrich_product_edit")
+     */
+    public function toggleStatusAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        $toggledStatus = !$product->isEnabled();
+        $product->setEnabled($toggledStatus);
+        $this->productManager->saveProduct($product);
+
+        $successMessage = $toggledStatus ? 'flash.product.enabled' : 'flash.product.disabled';
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                ['successful' => true, 'message' => $this->translator->trans($successMessage)]
+            );
+        } else {
+            return $this->redirectToRoute('pim_enrich_product_index');
+        }
+    }
+
+    /**
      * Update product
      *
      * @param Request $request
@@ -338,7 +369,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id      The product id to which add attributes
      *
      * @AclAncestor("pim_enrich_product_add_attribute")
-     * @return Symfony\Component\HttpFoundation\RedirectResponse
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function addAttributesAction(Request $request, $id)
     {
@@ -370,7 +401,7 @@ class ProductController extends AbstractDoctrineController
     public function removeAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        $this->remove($product);
+        $this->productManager->remove($product);
         if ($request->isXmlHttpRequest()) {
             return new Response('', 204);
         } else {
@@ -478,9 +509,9 @@ class ProductController extends AbstractDoctrineController
      *
      * @param integer $id the product id
      *
-     * @return Pim\Bundle\CatalogBundle\Model\ProductInterface
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
-     * @throws Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */
     protected function findProductOr404($id)
     {
@@ -501,7 +532,7 @@ class ProductController extends AbstractDoctrineController
      * @param array               $attributes          The attributes
      * @param AvailableAttributes $availableAttributes The available attributes container
      *
-     * @return Symfony\Component\Form\Form
+     * @return \Symfony\Component\Form\Form
      */
     protected function getAvailableAttributesForm(
         array $attributes = array(),
