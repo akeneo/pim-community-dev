@@ -125,7 +125,7 @@ class CategoryAccessManager
         $codeToRoles = [];
         $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
         foreach ($allRoles as $role) {
-            $codeToRoles[$role->getRole()]= $role;
+            $codeToRoles[$role->getRole()] = $role;
         }
 
         $categoryRepo = $this->getCategoryRepository();
@@ -172,7 +172,7 @@ class CategoryAccessManager
         $mergedPermissions = [];
         $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
         foreach ($allRoles as $role) {
-            $mergedPermissions[$role->getRole()]= ['view' => null, 'edit' => null];
+            $mergedPermissions[$role->getRole()] = ['view' => null, 'edit' => null];
         }
         foreach ($addViewRoles as $role) {
             $mergedPermissions[$role->getRole()]['view'] = true;

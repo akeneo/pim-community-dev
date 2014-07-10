@@ -75,11 +75,11 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
 
         $viewRoles = $this->accessManager->getViewRoles($event->getData());
         $form->get('view')->setData($viewRoles);
-        $this->precedentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+        $this->precedentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
 
         $editRoles = $this->accessManager->getEditRoles($event->getData());
         $form->get('edit')->setData($editRoles);
-        $this->precedentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+        $this->precedentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
     }
 
     /**
@@ -116,8 +116,8 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     protected function updateChildren(CategoryInterface $parent, $viewRoles, $editRoles)
     {
         $currentRoles = [];
-        $currentRoles['view']= ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
-        $currentRoles['edit']= ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+        $currentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
+        $currentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
 
         $addedViewRoles = array_diff($currentRoles['view'], $this->precedentRoles['view']);
         $addedEditRoles = array_diff($currentRoles['edit'], $this->precedentRoles['edit']);
