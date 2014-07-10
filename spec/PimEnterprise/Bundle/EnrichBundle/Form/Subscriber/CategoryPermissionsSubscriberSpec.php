@@ -125,7 +125,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $applyForm->getData()->willReturn(true);
 
         $accessManager->setAccess($category, ['one', 'two'], ['three'])->shouldBeCalled();
-        $accessManager->addChildrenAccess($category, ['one', 'two'], ['three'], [], [])->shouldBeCalled();
+        $accessManager->updateChildrenAccesses($category, ['one', 'two'], ['three'], [], [])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
