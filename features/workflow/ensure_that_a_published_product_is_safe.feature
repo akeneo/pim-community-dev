@@ -1,8 +1,8 @@
 @javascript
 Feature: Ensure that a published product is safe
-  In order to forbid to remove part of a product
+  In order to keep published product consistent
   As a product manager
-  I need to forbid to remove structural part of a published product
+  I need to be forbidden from removing structural part of a published product
 
   Background:
     Given a "clothing" catalog configuration
@@ -22,13 +22,13 @@ Feature: Ensure that a published product is safe
     Given I am on the "jackets" category page
     And I press the "Delete" button
     And I confirm the removal
-    And I should see the "Jackets" category under the "Summer collection" category
+    Then I should see the "Jackets" category under the "Summer collection" category
 
   Scenario: Fail to remove a category if one of these children is linked to a published product
     Given I am on the "summer_collection" category page
     And I press the "Delete" button
     And I confirm the removal
-    And I am on the "jackets" category page
+    Then I am on the "jackets" category page
     And I should see the "Jackets" category under the "Summer collection" category
 
   Scenario: Fail to remove a family that is linked to a published product
