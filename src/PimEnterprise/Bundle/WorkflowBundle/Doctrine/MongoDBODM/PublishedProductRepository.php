@@ -4,6 +4,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 
@@ -76,5 +80,59 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         }
 
         return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForFamily(Family $family)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->field('family')->equals($family->getId());
+
+        return $qb->getQuery()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForCategoryAndChildren($categoryIds)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->field('categoryIds')->in($categoryIds);
+
+        return $qb->getQuery()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttribute(AbstractAttribute $attribute)
+    {
+        $qb = $this->findAllByAttributesQB([$attribute]);
+
+        return $qb->getQuery()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForGroup(Group $group)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->field('groupIds')->in([$group->getId()]);
+
+        return $qb->getQuery()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAssociationType(AssociationType $associationType)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->field('associations.associationType')->equals($associationType->getId());
+
+        return $qb->getQuery()->count();
     }
 }
