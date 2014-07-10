@@ -65,4 +65,19 @@ class AssociationTypeRepository extends ReferableEntityRepository
 
         return $qb;
     }
+
+    /**
+     * Return the number of association types
+     *
+     * @return integer
+     */
+    public function countAll()
+    {
+        $qb = $this->createQueryBuilder('a');
+
+        return (int) $qb
+            ->select('count(a.id)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
