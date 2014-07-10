@@ -81,7 +81,6 @@ class RowActionsConfigurator implements ConfiguratorInterface
                     'delete' => false,
                     'toggle_status' => false
                 ];
-
             }
         };
     }
