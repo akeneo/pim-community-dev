@@ -19,7 +19,10 @@ Feature: Classify many products at once for the tree I have access
       | boots        | Boots         |           |
     And the following category accesses:
       | category        | role    | access |
-      | shoes           | Manager | edit   |
+      | shoes           | Manager | view   |
+      | vintage         | Manager | view   |
+      | trendy          | Manager | view   |
+      | classy          | Manager | view   |
     And I am logged in as "Julia"
     And I am on the products page
 
