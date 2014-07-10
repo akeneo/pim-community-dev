@@ -6,3 +6,5 @@ services:
         scope: request
         class: %pimee_versioning.controller.version.class%
         parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@pim_versioning.manager.version'
