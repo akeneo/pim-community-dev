@@ -9,7 +9,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class JobProfileAccessManagerSpec extends ObjectBehavior
 {
@@ -23,8 +23,8 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
 
     function it_provides_roles_that_have_access_to_a_job_profile(JobInstance $jobProfile, $repository)
     {
-        $repository->getGrantedRoles($jobProfile, JobProfileVoter::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
-        $repository->getGrantedRoles($jobProfile, JobProfileVoter::EDIT_JOB_PROFILE)->willReturn(['bar']);
+        $repository->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
+        $repository->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE)->willReturn(['bar']);
 
         $this->getExecuteRoles($jobProfile)->shouldReturn(['foo', 'bar']);
         $this->getEditRoles($jobProfile)->shouldReturn(['bar']);

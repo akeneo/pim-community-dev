@@ -7,7 +7,7 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as PimJobExecutionManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override job execution manager to introduce permissions
@@ -59,7 +59,7 @@ class JobExecutionManager extends PimJobExecutionManager
 
         $subQB = $this->accessRepository->getGrantedJobsQB(
             $this->securityContext->getUser(),
-            JobProfileVoter::EXECUTE_JOB_PROFILE
+            Attributes::EXECUTE_JOB_PROFILE
         );
 
         return $this->repository->getLastOperations($types, $subQB);
