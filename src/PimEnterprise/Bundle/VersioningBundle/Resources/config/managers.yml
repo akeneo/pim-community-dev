@@ -1,2 +1,0 @@
-parameters:
-    pim_versioning.manager.version.class: PimEnterprise\Bundle\VersioningBundle\Manager\VersionManager

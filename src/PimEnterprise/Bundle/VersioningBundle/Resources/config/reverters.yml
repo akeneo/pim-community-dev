@@ -1,0 +1,9 @@
+parameters:
+    pimee_versioning.reverter.version.class: PimEnterprise\Bundle\VersioningBundle\Reverter\VersionReverter
+
+services:
+    pimee_versioning.reverter.version:
+        class: %pimee_versioning.reverter.version.class%
+        arguments:
+            - '@pim_catalog.manager.product'
+            - '@pim_transform.transformer.product'
