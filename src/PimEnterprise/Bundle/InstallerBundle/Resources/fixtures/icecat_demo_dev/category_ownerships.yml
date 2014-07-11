@@ -1,6 +1,6 @@
 category_ownerships:
     master:
-        roles: [administrator, manager, user]
+        roles: [administrator, manager]
     sales:
         roles: [administrator, manager]
     brands:

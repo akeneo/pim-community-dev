@@ -1,6 +1,6 @@
 category_ownerships:
     master:
-        roles: [administrator, manager, user]
+        roles: [administrator, manager]
     collections:
         roles: [administrator, manager]
     books:
