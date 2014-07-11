@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Proposition;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\Media;
 
 /**
@@ -39,7 +40,8 @@ class ChangesCollector implements ChangesCollectorInterface
      */
     public function add($key, $changes, AbstractProductValue $value)
     {
-        if (isset($this->changes['values'][$key])) {
+        $id = $value->getEntity()->getId();
+        if (isset($this->changes[$id]['values'][$key])) {
             // Someone has already defined the changes applied to $key
             return;
         }
@@ -75,24 +77,13 @@ class ChangesCollector implements ChangesCollectorInterface
     /**
      * {@inheritdoc}
      */
-    public function remove($key)
+    public function getChanges(ProductInterface $product)
     {
-        $this->keysToRemove[] = $key;
-    }
+        $id = $product->getId();
+        if (isset($this->changes[$id])) {
+            return $this->changes[$id];
+        }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getKeysToRemove()
-    {
-        return $this->keysToRemove;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getChanges()
-    {
-        return $this->changes;
+        return [];
     }
 }

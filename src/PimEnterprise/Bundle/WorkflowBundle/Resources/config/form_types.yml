@@ -9,7 +9,6 @@ parameters:
     pimee_workflow.form.comparator.option.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionComparator
     pimee_workflow.form.comparator.options.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\OptionsComparator
     pimee_workflow.form.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ScalarComparator
-    pim_enrich.form.type.edit_common_attributes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Type\MassEditAction\EditCommonAttributesType
 
 services:
     pimee_workflow.form.subscriber.collect_product_value_changes:

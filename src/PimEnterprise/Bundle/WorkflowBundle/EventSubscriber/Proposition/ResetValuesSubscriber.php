@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 
 /**
  * Merge values to keep previous proposition changes that
@@ -33,7 +34,7 @@ class ResetValuesSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PropositionEvents::PRE_UPDATE => ['reset', 128],
+            PropositionEvents::PRE_UPDATE => ['reset', -128],
         ];
     }
 
@@ -50,9 +51,8 @@ class ResetValuesSubscriber implements EventSubscriberInterface
             return;
         }
 
-        foreach ($this->collector->getKeysToRemove() as $key) {
-            // File is the only field type that is not resent on every request
-            if (isset($changes['values'][$key]) && !isset($changes['values'][$key]['media'])) {
+        foreach ($changes['values'] as $key => $value) {
+            if (null === $value) {
                 unset($changes['values'][$key]);
             }
         }

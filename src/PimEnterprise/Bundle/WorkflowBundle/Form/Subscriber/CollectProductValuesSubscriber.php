@@ -83,11 +83,11 @@ class CollectProductValuesSubscriber implements
         foreach ($data['values'] as $key => $data) {
             if ($currentValues->containsKey($key)) {
                 $value = $currentValues->get($key);
-                if (null !== $changes = $this->comparator->getChanges($value, $data)) {
-                    $this->collector->add($key, $changes, $value);
-                } else {
-                    $this->collector->remove($key);
-                }
+                $this->collector->add(
+                    $key,
+                    $this->comparator->getChanges($value, $data),
+                    $value
+                );
             }
         }
     }
