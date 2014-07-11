@@ -43,7 +43,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
-     * TODO : use a dedicated method (not override) ?
+     * TODO : use a dedicated method (not override) / merge with getProductCountByGrantedTree ?
      */
     public function getProductCountByTree(ProductInterface $product)
     {
@@ -64,37 +64,19 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     public function getProductCountByGrantedTree(ProductInterface $product)
     {
-        $trees = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
-        $treesCount = [];
+        $count     = $this->getProductCountWithFullGrantedPath($product);
+        $trees     = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
+        $treeCount = [];
         foreach ($trees as $tree) {
-//            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
-                $treesCount[$tree->getId()]= ['tree' => $tree, 'productCount' => 0];
-//            }
-        }
-
-        $categories = $product->getCategories();
-        foreach ($categories as $category) {
-            $path = $this->categoryRepository->getPath($category);
-            $fullPathGranted = true;
-            foreach ($path as $pathItem) {
-                if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
-                    $fullPathGranted = false;
-                    break;
-                }
-            }
-            if ($fullPathGranted) {
-                $treeId = $category->getRoot();
-                $treesCount[$treeId]['productCount']++;
+            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
+                $treeCount[] = [
+                    'tree' => $tree,
+                    'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
+                ];
             }
         }
 
-        /*
-        foreach (array_keys($treesCount) as $treeId) {
-            $tree = $this->categoryRepository->find($treeId);
-            $treesCount[$treeId]['tree'] = $tree;
-        }*/
-
-        return $treesCount;
+        return $treeCount;
     }
 
     /**
@@ -133,6 +115,38 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
+    }
+
+    /**
+     * Count only product with a full accessible path
+     *
+     * @param ProductInterface $product
+     *
+     * @return [] with format [treeId => productCount]
+     */
+    protected function getProductCountWithFullGrantedPath(ProductInterface $product)
+    {
+        $categories = $product->getCategories();
+        $treesCount = [];
+        foreach ($categories as $category) {
+            $path = $this->categoryRepository->getPath($category);
+            $fullPathGranted = true;
+            foreach ($path as $pathItem) {
+                if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                    $fullPathGranted = false;
+                    break;
+                }
+            }
+            if ($fullPathGranted) {
+                $treeId = $category->getRoot();
+                if (!isset($treesCount[$treeId])) {
+                    $treesCount[$treeId] = 0;
+                }
+                $treesCount[$treeId]++;
+            }
+        }
+
+        return $treesCount;
     }
 
     /**
