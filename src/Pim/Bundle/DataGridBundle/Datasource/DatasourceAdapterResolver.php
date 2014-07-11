@@ -3,6 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
  * Resolver for datasource adapters
@@ -25,24 +26,25 @@ class DatasourceAdapterResolver
     /**
      * @param $storageDriver
      * @param $ormAdapterClass
-     * @param $odmAdapterClass
      */
-    public function __construct($storageDriver, $ormAdapterClass, $odmAdapterClass)
+    public function __construct($storageDriver, $ormAdapterClass)
     {
         $this->storageDriver = $storageDriver;
         $this->ormAdapterClass = $ormAdapterClass;
-        $this->odmAdapterClass = $odmAdapterClass;
     }
 
     /**
      * @param $datasourceType
      *
      * @return string
+     * @throws InvalidConfigurationException
      */
     public function getDatasourceClass($datasourceType)
     {
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             return $this->ormAdapterClass;
+        } elseif (null === $this->odmAdapterClass) {
+            throw new InvalidConfigurationException('The Mongo DB adapter class should be registered.');
         }
 
         if ('pim_version' === $datasourceType || 'pim_product' === $datasourceType) {
@@ -50,5 +52,13 @@ class DatasourceAdapterResolver
         }
 
         return $this->ormAdapterClass;
+    }
+
+    /**
+     * @param string $odmAdapterClass
+     */
+    public function setOdmAdapterClass($odmAdapterClass)
+    {
+        $this->odmAdapterClass = $odmAdapterClass;
     }
 }

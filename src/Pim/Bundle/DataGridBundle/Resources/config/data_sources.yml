@@ -28,4 +28,3 @@ services:
         arguments:
             - %pim_catalog.storage_driver%
             - %pim_filter.datasource.orm_adapter.class%
-            - %pim_filter.datasource.mongodb_adapter.class%

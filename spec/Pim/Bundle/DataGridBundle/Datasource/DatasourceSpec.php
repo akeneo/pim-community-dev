@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\DataGridBundle\Datasource;
 
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -10,7 +11,7 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository;
 
-class ProductDatasourceSpec extends ObjectBehavior
+class DatasourceSpec extends ObjectBehavior
 {
     function let(ObjectManager $manager, HydratorInterface $hydrator, ProductMassActionRepository $massActionRepo)
     {
@@ -62,7 +63,7 @@ class ProductDatasourceSpec extends ObjectBehavior
             'entity' => 'Product'
         ];
         $manager->getRepository('Product')->willReturn($repository);
-        $repository->createQueryBuilder('o')->shouldBeCalled();
+        $repository->createQueryBuilder()->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }
@@ -79,7 +80,7 @@ class ProductDatasourceSpec extends ObjectBehavior
         $this
             ->shouldThrow(
                 new \Exception(
-                    '"Pim\Bundle\DataGridBundle\Datasource\ProductDatasource" expects to be configured with "entity"'
+                    '"Pim\Bundle\DataGridBundle\Datasource\Datasource" expects to be configured with "entity"'
                 )
             )
             ->duringProcess($grid, $config);
