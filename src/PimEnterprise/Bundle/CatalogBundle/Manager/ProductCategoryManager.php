@@ -43,6 +43,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     * TODO : use a dedicated method (not override) ?
      */
     public function getProductCountByTree(ProductInterface $product)
     {
@@ -59,6 +60,46 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     * @see getProductCountByTree same logic but here we apply permisions and count only visible category (full path)
+     */
+    public function getProductCountByGrantedTree(ProductInterface $product)
+    {
+        $trees = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
+        $treesCount = [];
+        foreach ($trees as $tree) {
+//            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
+                $treesCount[$tree->getId()]= ['tree' => $tree, 'productCount' => 0];
+//            }
+        }
+
+        $categories = $product->getCategories();
+        foreach ($categories as $category) {
+            $path = $this->categoryRepository->getPath($category);
+            $fullPathGranted = true;
+            foreach ($path as $pathItem) {
+                if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                    $fullPathGranted = false;
+                    break;
+                }
+            }
+            if ($fullPathGranted) {
+                $treeId = $category->getRoot();
+                $treesCount[$treeId]['productCount']++;
+            }
+        }
+
+        /*
+        foreach (array_keys($treesCount) as $treeId) {
+            $tree = $this->categoryRepository->find($treeId);
+            $treesCount[$treeId]['tree'] = $tree;
+        }*/
+
+        return $treesCount;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @see getProductsCountInCategory same logic with applying permissions
      */
     public function getProductsCountInGrantedCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
     {
@@ -77,6 +118,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     * @see getProductIdsInCategory same logic with applying permissions
      */
     public function getProductIdsInGrantedCategory(CategoryInterface $category, $inChildren = false)
     {
@@ -117,35 +159,5 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $grantedQb->setParameter('categories', $categories);
 
         return $grantedQb;
-    }
-
-    /**
-     * Return the number of times the product is present in each tree
-     *
-     * @param ProductInterface $product The product to look for in the trees
-     *
-     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
-     */
-    public function getProductCountByGrantedTree(ProductInterface $product)
-    {
-        $categories = $product->getCategories();
-        $trees      = [];
-        foreach ($categories as $category) {
-            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
-                $treeId = $category->getRoot();
-                if (!isset($trees[$treeId])) {
-                    $trees[$treeId]['productCount'] = 1;
-                } else {
-                    $trees[$treeId]['productCount']++;
-                }
-            }
-        }
-
-        foreach (array_keys($trees) as $treeId) {
-            $tree = $this->categoryRepository->find($treeId);
-            $trees[$treeId]['tree'] = $tree;
-        }
-
-        return $trees;
     }
 }
