@@ -8,6 +8,7 @@
             {% if form.vars.value.hasChildren() %}
             $(function () {
                 $('#{{form.permissions.vars.id}}').append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls"><ul id="permissions-changes"></ul></div></div>');
+                $('#permissions-changes').parent().parent().children('label').hide();
 
                 $('#{{form.permissions.vars.id}} select')
                     .select2()
@@ -32,6 +33,12 @@
                                 $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>"
                                     +_.__('permissions-changes.revoke-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.removed.text})+"</li>");
                             }
+                        }
+
+                        if ($('#permissions-changes').children().size() > 0) {
+                            $('#permissions-changes').parent().parent().children('label').show();
+                        } else {
+                            $('#permissions-changes').parent().parent().children('label').hide();
                         }
                     });
             });
