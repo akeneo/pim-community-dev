@@ -47,7 +47,8 @@ class DatasourceAdapterResolver
             throw new InvalidConfigurationException('The Mongo DB adapter class should be registered.');
         }
 
-        if ('pim_version' === $datasourceType || 'pim_product' === $datasourceType) {
+        if (DatasourceInterface::DATASOURCE_DUAL === $datasourceType ||
+            DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType) {
             return $this->odmAdapterClass;
         }
 

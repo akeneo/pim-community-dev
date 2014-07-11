@@ -19,7 +19,7 @@ services:
             - '@pim_datagrid.datasource.result_record.hydrator.product'
             - '@pim_catalog.repository.product_mass_action'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_product }
+            - { name: oro_datagrid.datasource, type: pim_datasource_product }
 
     pim_datagrid.datasource.adapter_resolver:
         class: %pim_datagrid.datasource.adapter_resolver.class%

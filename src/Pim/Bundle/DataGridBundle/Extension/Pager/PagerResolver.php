@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
@@ -48,7 +49,8 @@ class PagerResolver
             throw new InvalidConfigurationException('The Mongo DB pager should be registered.');
         }
 
-        if ('pim_version' === $gridType || 'pim_product' === $gridType) {
+        if (DatasourceInterface::DATASOURCE_DUAL === $gridType ||
+            DatasourceInterface::DATASOURCE_PRODUCT === $gridType) {
             return $this->mongoPager;
         }
 

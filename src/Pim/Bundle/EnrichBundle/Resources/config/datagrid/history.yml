@@ -1,7 +1,7 @@
 datagrid:
     history-grid:
         source:
-            type: pim_orm
+            type: pim_datasource_dual
             entity: %pim_versioning.entity.version.class%
             repository_method: createDatagridQueryBuilder
         columns:
