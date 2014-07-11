@@ -3,7 +3,7 @@ datagrid:
         options:
             locale_parameter: localeCode
         source:
-            type:              pim_orm
+            type: pim_datasource_default
             repository_method: createDatagridQueryBuilder
         columns:
             code:

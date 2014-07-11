@@ -19,7 +19,7 @@ interface ParameterizableInterface
     /**
      * @param array $parameters
      *
-     * @return ParametrableInterface
+     * @return ParameterizableInterface
      */
     public function setParameters($parameters);
 }
