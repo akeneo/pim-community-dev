@@ -8,8 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Behat\Behat\Context\Step;
@@ -327,11 +326,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
         if ('attribute group' === $type) {
-            return ($action === 'edit') ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
+            return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
         if ('category' === $type) {
-            return ($action === 'edit') ? CategoryVoter::EDIT_PRODUCTS : CategoryVoter::VIEW_PRODUCTS;
+            return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
         throw new \Exception('Undefined access type');
