@@ -9,7 +9,7 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContext
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override context configurator to apply permissions on attribute groups
@@ -90,7 +90,7 @@ class ContextConfigurator extends PimContextConfigurator
     {
         if (!$this->grantedGroupIds) {
             $result = $this->accessRepository
-                ->getGrantedAttributeGroupQB($this->userContext->getUser(), AttributeGroupVoter::VIEW_ATTRIBUTES)
+                ->getGrantedAttributeGroupQB($this->userContext->getUser(), Attributes::VIEW_ATTRIBUTES)
                 ->getQuery()
                 ->getArrayResult();
 

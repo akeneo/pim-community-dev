@@ -12,4 +12,10 @@ final class Attributes
 {
     /** @staticvar string */
     const OWNER = 'OWNER';
+
+    /** @staticvar string */
+    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
+
+    /** @staticvar string */
+    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
 }

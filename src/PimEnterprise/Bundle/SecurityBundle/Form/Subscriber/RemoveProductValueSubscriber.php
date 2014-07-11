@@ -6,8 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Subscriber to remove product value when user has no right to at least see it
@@ -52,7 +51,7 @@ class RemoveProductValueSubscriber implements EventSubscriberInterface
             $productValue = $formValue->getData();
             $attribute = $productValue->getAttribute();
             $attributeGroup = $attribute->getGroup();
-            if (false === $this->securityContext->isGranted(AttributeGroupVoter::VIEW_ATTRIBUTES, $attributeGroup)) {
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
                 $formValueName = $formValue->getName();
                 $formValues->remove($formValueName);
             }

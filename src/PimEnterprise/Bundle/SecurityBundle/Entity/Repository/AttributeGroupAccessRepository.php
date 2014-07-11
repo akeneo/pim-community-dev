@@ -8,7 +8,7 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Attribute group access repository
@@ -28,7 +28,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(AttributeGroup $group, $accessLevel)
     {
-        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
+        $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -100,7 +100,7 @@ class AttributeGroupAccessRepository extends EntityRepository
     public function getRevokedAttributeGroupQB(User $user, $accessLevel)
     {
         // prepare access field depending on access level
-        $accessField = ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
+        $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES)
             ? 'aga.edit_attributes'
             : 'aga.view_attributes';
 
@@ -234,7 +234,7 @@ class AttributeGroupAccessRepository extends EntityRepository
      */
     protected function getAccessField($accessLevel)
     {
-        return ($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES)
+        return ($accessLevel === Attributes::EDIT_ATTRIBUTES)
             ? 'aga.editAttributes'
             : 'aga.viewAttributes';
     }
