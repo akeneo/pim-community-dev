@@ -15,7 +15,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 
 class ProductVoterSpec extends ObjectBehavior
 {
-    protected $attributes = [ Attributes::VIEW, Attributes::EDIT ];
+    protected $attributes = [ Attributes::VIEW_PRODUCT, Attributes::EDIT_PRODUCT ];
 
     function it_is_initializable()
     {
@@ -39,7 +39,7 @@ class ProductVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, ProductVoter $wrongClass)
     {
         $this
-            ->vote($token, $wrongClass, [Attributes::VIEW])
+            ->vote($token, $wrongClass, [Attributes::VIEW_PRODUCT])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -57,7 +57,7 @@ class ProductVoterSpec extends ObjectBehavior
         $categorySix->getId()->willReturn(6);
 
         $this
-            ->vote($token, $product, [Attributes::EDIT])
+            ->vote($token, $product, [Attributes::EDIT_PRODUCT])
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -75,7 +75,7 @@ class ProductVoterSpec extends ObjectBehavior
         $categorySix->getId()->willReturn(6);
 
         $this
-            ->vote($token, $product, [Attributes::EDIT])
+            ->vote($token, $product, [Attributes::EDIT_PRODUCT])
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

@@ -6,7 +6,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -36,7 +36,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT]);
+        return in_array($attribute, [Attributes::VIEW_PRODUCT, Attributes::EDIT_PRODUCT]);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof AbstractProduct;
+        return $class instanceof ProductInterface;
     }
 
     /**
@@ -76,19 +76,19 @@ class ProductVoter implements VoterInterface
      * - a product is accessible when it's not at least in a category
      * - then we apply category's permissions
      *
-     * @param AbstractProduct $product
-     * @param UserInterface   $user
-     * @param string          $attribute
+     * @param ProductInterface $product
+     * @param UserInterface    $user
+     * @param string           $attribute
      *
      * @return bool
      */
-    protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
+    protected function isProductAccessible(ProductInterface $product, UserInterface $user, $attribute)
     {
         if (count($product->getCategories()) === 0) {
             return true;
         }
 
-        $categoryAttribute = (Attributes::EDIT === $attribute) ?
+        $categoryAttribute = (Attributes::EDIT_PRODUCT === $attribute) ?
             Attributes::EDIT_PRODUCTS :
             Attributes::VIEW_PRODUCTS;
 

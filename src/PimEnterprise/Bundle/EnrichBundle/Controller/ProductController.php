@@ -58,10 +58,10 @@ class ProductController extends BaseProductController
     public function dispatchAction($id)
     {
         $product = $this->findProductOr404($id);
-        if ($this->securityContext->isGranted(Attributes::EDIT, $product)) {
+        if ($this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)) {
             return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
 
-        } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
+        } elseif ($this->securityContext->isGranted(Attributes::VIEW_PRODUCT, $product)) {
             return $this->redirectToRoute('pimee_enrich_product_show', array('id' => $id));
         }
 

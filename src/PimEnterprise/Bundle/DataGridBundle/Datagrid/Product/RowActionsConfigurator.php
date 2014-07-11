@@ -65,7 +65,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
-            if ($this->securityContext->isGranted(Attributes::EDIT, $product)) {
+            if ($this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)) {
                 return [
                     'show' => false,
                     'edit' => true,

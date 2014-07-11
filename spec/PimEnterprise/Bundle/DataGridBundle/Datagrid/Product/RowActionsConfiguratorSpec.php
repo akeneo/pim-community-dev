@@ -51,7 +51,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $method = $this->getActionConfigurationClosure();
         $record->getValue('id')->willReturn(42);
         $productRepository->findOneBy(['id' => 42])->willReturn($product);
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(false);
         $method($record)->shouldReturn(
             [
                 'show' => true,
@@ -68,7 +68,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $method = $this->getActionConfigurationClosure();
         $record->getValue('id')->willReturn(42);
         $productRepository->findOneBy(['id' => 42])->willReturn($product);
-        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
         $method($record)->shouldReturn(
             [
                 'show' => false,

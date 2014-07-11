@@ -14,10 +14,10 @@ final class Attributes
     const OWNER = 'OWNER';
 
     /** @staticvar string */
-    const VIEW = 'VIEW';
+    const VIEW_PRODUCT = 'VIEW_PRODUCT';
 
     /** @staticvar string */
-    const EDIT = 'EDIT';
+    const EDIT_PRODUCT = 'EDIT_PRODUCT';
 
     /** @staticvar string */
     const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
