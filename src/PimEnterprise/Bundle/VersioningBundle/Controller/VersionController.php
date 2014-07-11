@@ -3,9 +3,6 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Controller;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\VersioningBundle\Model\Version;
-use PimEnterprise\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +11,9 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\VersioningBundle\Model\Version;
+use PimEnterprise\Bundle\VersioningBundle\Reverter\VersionReverter;
 
 /**
  * Version controller
@@ -23,8 +23,8 @@ use Symfony\Component\Validator\ValidatorInterface;
  */
 class VersionController extends AbstractDoctrineController
 {
-    /** @var VersionManager */
-    protected $manager;
+    /** @var VersionReverter */
+    protected $reverter;
 
     /**
      * @param Request                  $request
@@ -36,7 +36,7 @@ class VersionController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
-     * @param VersionManager           $manager
+     * @param VersionReverter          $reverter
      */
     public function __construct(
         Request $request,
@@ -48,7 +48,7 @@ class VersionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
-        VersionManager $manager
+        VersionReverter $reverter
     ) {
         parent::__construct(
             $request,
@@ -62,15 +62,17 @@ class VersionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->manager = $manager;
+        $this->reverter = $reverter;
     }
 
     /**
-     * Rollback the entity to the current version
+     * Revert the entity to the current version
      *
      * @param Version $version
      */
-    public function rollbackAction(Version $version)
+    public function revertAction(Version $version)
     {
+        $this->reverter->revert($version);
+        die;
     }
 }

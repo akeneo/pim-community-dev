@@ -1,5 +1,5 @@
-pimee_versioning_version_rollback:
-    path: /{id}/rollback
-    defaults: { _controller: pimee_versioning.controller.version:rollbackAction }
+pimee_versioning_version_revert:
+    path: /{id}/revert
+    defaults: { _controller: pimee_versioning.controller.version:revertAction }
     requirements:
         id: '[0-9a-f]+'
