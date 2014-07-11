@@ -40,6 +40,11 @@ class CategoryAccess implements CategoryAccessInterface
     protected $editProducts;
 
     /**
+     * @var boolean $ownProducts
+     */
+    protected $ownProducts;
+
+    /**
      * {@inheritdoc}
      */
     public function getId()
@@ -117,5 +122,23 @@ class CategoryAccess implements CategoryAccessInterface
     public function isViewProducts()
     {
         return $this->viewProducts;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setOwnProducts($ownProducts)
+    {
+        $this->ownProducts = $ownProducts;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isOwnProducts()
+    {
+        return $this->ownProducts;
     }
 }
