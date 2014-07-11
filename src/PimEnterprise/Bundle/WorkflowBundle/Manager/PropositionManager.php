@@ -85,7 +85,6 @@ class PropositionManager
             new PropositionEvent($proposition)
         );
 
-
         $manager = $this->registry->getManagerForClass(get_class($proposition));
         $manager->remove($proposition);
         $manager->flush();
