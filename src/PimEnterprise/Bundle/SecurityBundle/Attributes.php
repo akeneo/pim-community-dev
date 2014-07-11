@@ -32,6 +32,9 @@ final class Attributes
     const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
 
     /** @staticvar string */
+    const OWN_PRODUCTS = 'CATEGORY_OWN_PRODUCTS';
+
+    /** @staticvar string */
     const EXECUTE_JOB_PROFILE = 'EXECUTE_JOB_PROFILE';
 
     /** @staticvar string */
