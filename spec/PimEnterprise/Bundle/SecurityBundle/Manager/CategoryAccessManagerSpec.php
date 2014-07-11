@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class CategoryAccessManagerSpec extends ObjectBehavior
 {
@@ -29,8 +29,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
     function it_provides_roles_that_have_access_to_a_category(Category $category, $accessRepository)
     {
-        $accessRepository->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS)->willReturn(['foo', 'bar']);
-        $accessRepository->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS)->willReturn(['bar']);
+        $accessRepository->getGrantedRoles($category, Attributes::VIEW_PRODUCTS)->willReturn(['foo', 'bar']);
+        $accessRepository->getGrantedRoles($category, Attributes::EDIT_PRODUCTS)->willReturn(['bar']);
 
         $this->getViewRoles($category)->shouldReturn(['foo', 'bar']);
         $this->getEditRoles($category)->shouldReturn(['bar']);

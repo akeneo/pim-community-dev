@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
@@ -16,12 +17,6 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
  */
 class AttributeGroupVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
-
-    /** @staticvar string */
-    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
-
     /**
      * @var AttributeGroupAccessManager
      */
@@ -40,7 +35,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(self::VIEW_ATTRIBUTES, self::EDIT_ATTRIBUTES));
+        return in_array($attribute, array(Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES));
     }
 
     /**
@@ -86,7 +81,7 @@ class AttributeGroupVoter implements VoterInterface
      */
     protected function extractRoles($attribute, $object)
     {
-        if ($attribute === self::EDIT_ATTRIBUTES) {
+        if ($attribute === Attributes::EDIT_ATTRIBUTES) {
             $grantedRoles = $this->accessManager->getEditRoles($object);
         } else {
             $grantedRoles = $this->accessManager->getViewRoles($object);

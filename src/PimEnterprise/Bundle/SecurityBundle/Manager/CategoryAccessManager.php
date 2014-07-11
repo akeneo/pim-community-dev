@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category access manager
@@ -58,7 +58,7 @@ class CategoryAccessManager
      */
     public function getViewRoles(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::VIEW_PRODUCTS);
     }
 
     /**
@@ -70,7 +70,7 @@ class CategoryAccessManager
      */
     public function getEditRoles(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedRoles($category, CategoryVoter::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::EDIT_PRODUCTS);
     }
 
     /**
@@ -84,13 +84,13 @@ class CategoryAccessManager
     {
         $grantedRoles = [];
         foreach ($editRoles as $role) {
-            $this->grantAccess($category, $role, CategoryVoter::EDIT_PRODUCTS);
+            $this->grantAccess($category, $role, Attributes::EDIT_PRODUCTS);
             $grantedRoles[] = $role;
         }
 
         foreach ($viewRoles as $role) {
             if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($category, $role, CategoryVoter::VIEW_PRODUCTS);
+                $this->grantAccess($category, $role, Attributes::VIEW_PRODUCTS);
                 $grantedRoles[] = $role;
             }
         }
@@ -267,7 +267,7 @@ class CategoryAccessManager
         $access = $this->getCategoryAccess($category, $role);
         $access
             ->setViewProducts(true)
-            ->setEditProducts($accessLevel === CategoryVoter::EDIT_PRODUCTS);
+            ->setEditProducts($accessLevel === Attributes::EDIT_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
     }

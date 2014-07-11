@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -59,7 +59,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $accessibleCategoryIds = array(1, 3);
 
         $categoryAccessRepository
-            ->getGrantedCategoryIds($user, CategoryVoter::VIEW_PRODUCTS)
+            ->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS)
             ->willReturn($accessibleCategoryIds);
 
         $this->getAccessibleTrees($user)->shouldReturn([$firstTree, $thirdTree]);
@@ -84,9 +84,9 @@ class CategoryManagerSpec extends ObjectBehavior
         $accessibleCategoryIds = array(1);
 
         $categoryAccessRepository
-            ->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)
+            ->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)
             ->willReturn($accessibleCategoryIds);
 
-        $this->getAccessibleTrees($user, CategoryVoter::EDIT_PRODUCTS)->shouldReturn([$firstTree]);
+        $this->getAccessibleTrees($user, Attributes::EDIT_PRODUCTS)->shouldReturn([$firstTree]);
     }
 }
