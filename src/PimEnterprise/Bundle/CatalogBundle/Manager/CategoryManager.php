@@ -4,11 +4,11 @@ namespace PimEnterprise\Bundle\CatalogBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
-use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category manager
@@ -54,7 +54,7 @@ class CategoryManager extends BaseCategoryManager
      *
      * @return array
      */
-    public function getAccessibleTrees(UserInterface $user, $accessLevel = CategoryVoter::VIEW_PRODUCTS)
+    public function getAccessibleTrees(UserInterface $user, $accessLevel = Attributes::VIEW_PRODUCTS)
     {
         $grantedCategoryIds = $this->categoryAccessRepo->getGrantedCategoryIds($user, $accessLevel);
 
@@ -81,7 +81,7 @@ class CategoryManager extends BaseCategoryManager
         $children = $this->getChildren($parentId, $selectNodeId);
         foreach ($children as $indChild => $child) {
             $category = (is_object($child)) ? $child : $child['item'];
-            if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($children[$indChild]);
             }
         }

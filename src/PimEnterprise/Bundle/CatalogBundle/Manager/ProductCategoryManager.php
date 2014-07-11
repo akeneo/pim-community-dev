@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCatego
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Product category manager
@@ -49,7 +50,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
         $trees =  $this->productRepository->getProductCountByTree($product);
 
         foreach ($trees as $key => $tree) {
-            if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $tree['tree'])) {
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree['tree'])) {
                 unset($trees[$key]);
             }
         }
@@ -62,7 +63,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     public function getProductsCountInGrantedCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
     {
-        if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             return 0;
         }
 
@@ -80,7 +81,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     public function getProductIdsInGrantedCategory(CategoryInterface $category, $inChildren = false)
     {
-        if (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+        if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             return [];
         }
 
@@ -104,7 +105,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
     {
         $categories = $childrenQb->getQuery()->execute();
         foreach ($categories as $index => $category) {
-            if (!$this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+            if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
                 unset($categories[$index]);
             }
         }

@@ -18,4 +18,10 @@ final class Attributes
 
     /** @staticvar string */
     const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+
+    /** @staticvar string */
+    const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
+
+    /** @staticvar string */
+    const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
 }

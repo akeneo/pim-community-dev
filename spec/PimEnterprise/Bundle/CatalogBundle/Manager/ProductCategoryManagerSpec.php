@@ -6,13 +6,13 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class ProductCategoryManagerSpec extends ObjectBehavior
 {
@@ -61,9 +61,9 @@ class ProductCategoryManagerSpec extends ObjectBehavior
             ->shouldBeCalled()
             ->willReturn($trees);
 
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $trees[0]['tree'])->shouldBeCalled()->willReturn(false);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $trees[1]['tree'])->shouldBeCalled()->willReturn(true);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $trees[2]['tree'])->shouldBeCalled()->willReturn(false);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[0]['tree'])->shouldBeCalled()->willReturn(false);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[1]['tree'])->shouldBeCalled()->willReturn(true);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[2]['tree'])->shouldBeCalled()->willReturn(false);
 
         unset($trees[0]);
         unset($trees[2]);

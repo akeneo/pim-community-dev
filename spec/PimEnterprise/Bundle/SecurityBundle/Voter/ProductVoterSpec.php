@@ -7,7 +7,8 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -51,7 +52,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryFive,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
+        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)->willReturn([1, 3]);
         $product->getCategories()->willReturn([$categoryFive, $categorySix]);
         $categoryFive->getId()->willReturn(5);
         $categorySix->getId()->willReturn(6);
@@ -69,7 +70,7 @@ class ProductVoterSpec extends ObjectBehavior
         CategoryInterface $categoryOne,
         CategoryInterface $categorySix
     ) {
-        $categoryAccessRepository->getGrantedCategoryIds($user, CategoryVoter::EDIT_PRODUCTS)->willReturn([1, 3]);
+        $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::EDIT_PRODUCTS)->willReturn([1, 3]);
         $product->getCategories()->willReturn([$categoryOne, $categorySix]);
         $categoryOne->getId()->willReturn(1);
         $categorySix->getId()->willReturn(6);

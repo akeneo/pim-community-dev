@@ -8,13 +8,13 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
 {
@@ -42,7 +42,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $securityContext,
         ProductRepository $productRepository
     ) {
-        $securityContext->isGranted(CategoryVoter::EDIT_PRODUCTS, Argument::any())->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
     }

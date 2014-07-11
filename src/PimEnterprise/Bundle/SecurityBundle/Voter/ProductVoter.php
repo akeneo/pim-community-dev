@@ -2,11 +2,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Product voter, allows to know if products can be edited or consulted by a
@@ -94,8 +95,8 @@ class ProductVoter implements VoterInterface
         }
 
         $categoryAttribute = (ProductVoter::PRODUCT_EDIT === $attribute) ?
-            CategoryVoter::EDIT_PRODUCTS :
-            CategoryVoter::VIEW_PRODUCTS;
+            Attributes::EDIT_PRODUCTS :
+            Attributes::VIEW_PRODUCTS;
 
         $categoryIds = [];
         foreach ($product->getCategories() as $category) {

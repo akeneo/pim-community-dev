@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category access repository
@@ -34,7 +34,7 @@ class CategoryAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(CategoryInterface $category, $accessLevel)
     {
-        $accessField = ($accessLevel === CategoryVoter::EDIT_PRODUCTS) ? 'editProducts' : 'viewProducts';
+        $accessField = ($accessLevel === Attributes::EDIT_PRODUCTS) ? 'editProducts' : 'viewProducts';
 
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -106,7 +106,7 @@ class CategoryAccessRepository extends EntityRepository
     public function getRevokedCategoryQB(User $user, $accessLevel)
     {
         // prepare access field depending on access level
-        $accessField = ($accessLevel === CategoryVoter::EDIT_PRODUCTS)
+        $accessField = ($accessLevel === Attributes::EDIT_PRODUCTS)
             ? 'ca.edit_products'
             : 'ca.view_products';
 
@@ -235,7 +235,7 @@ class CategoryAccessRepository extends EntityRepository
      */
     protected function getAccessField($accessLevel)
     {
-        return ($accessLevel === CategoryVoter::EDIT_PRODUCTS)
+        return ($accessLevel === Attributes::EDIT_PRODUCTS)
             ? 'ca.editProducts'
             : 'ca.viewProducts';
     }
