@@ -2,10 +2,8 @@ parameters:
     pim_datagrid.datasource.result_record.hydrator.product.class:   Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ProductHydrator
     pim_datagrid.datasource.result_record.hydrator.object_id.class: Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectIdHydrator
     pim_datagrid.datasource.result_record.hydrator.object.class:    Pim\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm\ObjectHydrator
-    pim_datagrid.extension.pager.product.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
     pim_datagrid.datasource.mongodb.class:                          Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource
     pim_filter.datasource.mongodb_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
-    pim_datagrid.extension.pager.mongodb_pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDBPagerExtension
     pim_datagrid.extension.pager.mongodb.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
     pim_datagrid.extension.sorter.mongodb.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter
     pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener
@@ -22,14 +20,6 @@ services:
 
     pim_datagrid.extension.pager.mongodb.pager:
         class: %pim_datagrid.extension.pager.mongodb.pager.class%
-
-    pim_datagrid.extension.pager.mongodb_pager:
-        class: %pim_datagrid.extension.pager.mongodb_pager.class%
-        arguments:
-            - '@pim_datagrid.extension.pager.mongodb.pager'
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-            - { name: oro_datagrid.extension }
 
     pim_datagrid.extension.sorter.mongodb.field_sorter:
         class: %pim_datagrid.extension.sorter.mongodb.field_sorter.class%

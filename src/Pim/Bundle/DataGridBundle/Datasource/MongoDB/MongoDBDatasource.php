@@ -24,7 +24,7 @@ class MongoDBDatasource implements DatasourceInterface, ParameterizableInterface
     /** @staticvar string */
     const REPOSITORY_PARAMETERS_KEY = 'repository_parameters';
 
-    /** @var Doctrine\ODM\MongoDB\Query\Builder */
+    /** @var \Doctrine\ODM\MongoDB\Query\Builder */
     protected $qb;
 
     /** @var ObjectManager */
