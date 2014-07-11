@@ -18,12 +18,6 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  */
 class ProductVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const PRODUCT_VIEW = 'PRODUCT_VIEW';
-
-    /** @staticvar string */
-    const PRODUCT_EDIT = 'PRODUCT_EDIT';
-
     /**
      * @var CategoryAccessRepository
      */
@@ -42,7 +36,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [ProductVoter::PRODUCT_VIEW, ProductVoter::PRODUCT_EDIT]);
+        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT]);
     }
 
     /**
@@ -94,7 +88,7 @@ class ProductVoter implements VoterInterface
             return true;
         }
 
-        $categoryAttribute = (ProductVoter::PRODUCT_EDIT === $attribute) ?
+        $categoryAttribute = (Attributes::EDIT === $attribute) ?
             Attributes::EDIT_PRODUCTS :
             Attributes::VIEW_PRODUCTS;
 

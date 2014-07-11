@@ -13,7 +13,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
@@ -52,7 +51,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $method = $this->getActionConfigurationClosure();
         $record->getValue('id')->willReturn(42);
         $productRepository->findOneBy(['id' => 42])->willReturn($product);
-        $securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(false);
         $method($record)->shouldReturn(
             [
                 'show' => true,
@@ -69,7 +68,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $method = $this->getActionConfigurationClosure();
         $record->getValue('id')->willReturn(42);
         $productRepository->findOneBy(['id' => 42])->willReturn($product);
-        $securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
         $method($record)->shouldReturn(
             [
                 'show' => false,

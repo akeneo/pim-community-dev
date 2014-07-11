@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Row actions configurator for product grid
@@ -65,7 +65,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
-            if ($this->securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)) {
+            if ($this->securityContext->isGranted(Attributes::EDIT, $product)) {
                 return [
                     'show' => false,
                     'edit' => true,

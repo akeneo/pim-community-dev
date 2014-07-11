@@ -14,6 +14,12 @@ final class Attributes
     const OWNER = 'OWNER';
 
     /** @staticvar string */
+    const VIEW = 'VIEW';
+
+    /** @staticvar string */
+    const EDIT = 'EDIT';
+
+    /** @staticvar string */
     const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
 
     /** @staticvar string */

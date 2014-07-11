@@ -9,7 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Product Controller
@@ -58,10 +58,10 @@ class ProductController extends BaseProductController
     public function dispatchAction($id)
     {
         $product = $this->findProductOr404($id);
-        if ($this->securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)) {
+        if ($this->securityContext->isGranted(Attributes::EDIT, $product)) {
             return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
 
-        } elseif ($this->securityContext->isGranted(ProductVoter::PRODUCT_VIEW, $product)) {
+        } elseif ($this->securityContext->isGranted(Attributes::VIEW, $product)) {
             return $this->redirectToRoute('pimee_enrich_product_show', array('id' => $id));
         }
 
