@@ -118,4 +118,34 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
         return $grantedQb;
     }
+
+    /**
+     * Return the number of times the product is present in each tree
+     *
+     * @param ProductInterface $product The product to look for in the trees
+     *
+     * @return array Each row of the array has the format:'tree'=>treeObject, 'productCount'=>integer
+     */
+    public function getProductCountByGrantedTree(ProductInterface $product)
+    {
+        $categories = $product->getCategories();
+        $trees      = [];
+        foreach ($categories as $category) {
+            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+                $treeId = $category->getRoot();
+                if (!isset($trees[$treeId])) {
+                    $trees[$treeId]['productCount'] = 1;
+                } else {
+                    $trees[$treeId]['productCount']++;
+                }
+            }
+        }
+
+        foreach (array_keys($trees) as $treeId) {
+            $tree = $this->categoryRepository->find($treeId);
+            $trees[$treeId]['tree'] = $tree;
+        }
+
+        return $trees;
+    }
 }
