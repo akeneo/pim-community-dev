@@ -10,8 +10,8 @@ use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\TransformBundle\Cache\DoctrineCache;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 
 /**
  * Product writer using ORM method
@@ -45,9 +45,9 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $identifierAttribute;
 
     /**
-     * @var DoctrineCache
+     * @var ProductCacheClearer
      */
-    protected $doctrineCache;
+    protected $cacheClearer;
 
     /**
      * @var StepExecution
@@ -60,60 +60,20 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $realTimeVersioning = true;
 
     /**
-     * Entities which should not be cleared on flush
-     *
-     * @var array
-     */
-    protected $nonClearableEntities = array(
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution',
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Currency',
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution',
-        'Oro\\Bundle\\UserBundle\\Entity\\User',
-        'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
-        'Oro\\Bundle\\UserBundle\\Entity\\UserApi'
-    );
-
-    /**
-     * @param ProductManager $productManager
-     * @param DoctrineCache  $doctrineCache
-     * @param VersionManager $versionManager
-     * @param SmartManagerRegistry $managerRegistry
+     * Constructor 
+     * 
+     * @param ProductManager      $productManager
+     * @param ProductCacheClearer $cacheClearer
+     * @param VersionManager      $versionManager
      */
     public function __construct(
         ProductManager $productManager,
-        DoctrineCache $doctrineCache,
-        VersionManager $versionManager,
-        SmartManagerRegistry $managerRegistry
+        ProductCacheClearer $cacheClearer,
+        VersionManager $versionManager
     ) {
         $this->productManager  = $productManager;
-        $this->doctrineCache   = $doctrineCache;
+        $this->cacheClearer   = $cacheClearer;
         $this->versionManager  = $versionManager;
-        $this->managerRegistry = $managerRegistry;
-    }
-
-    /**
-     * Adds a non clearable entity
-     *
-     * @param string $class
-     */
-    public function addNonClearableEntity($class)
-    {
-        $this->nonClearableEntities[] = $class;
-    }
-
-    /**
-     * Set the list of non clearable entities class.
-     * Allow override of the default list.
-     *
-     * @param array $classesList
-     */
-    public function setNonClearableEntities($classesList)
-    {
-        $this->nonClearableEntities = $classesList;
     }
 
     /**
@@ -164,31 +124,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->productManager->handleAllMedia($items);
         $this->productManager->saveAll($items, false);
 
-        $this->clear();
-    }
-
-    /**
-     * Clear the Unit of Work of the manager(s) from the clearable entities
-     * between batch writes
-     */
-    protected function clear()
-    {
-        foreach ($this->managerRegistry->getManagers() as $objectManager) {
-
-            $identityMap = $objectManager->getUnitOfWork()->getIdentityMap();
-            $managedClasses = array_keys($identityMap);
-            $nonClearableClasses = array_intersect($managedClasses, $this->nonClearableEntities);
-
-            if (empty($nonClearableClasses)) {
-                $objectManager->clear();
-            } else {
-                $clearableClasses = array_diff($managedClasses, $this->nonClearableEntities);
-                foreach ($clearableClasses as $clearableClass) {
-                    $objectManager->clear($clearableClass);
-                }
-            }
-        }
-        $this->doctrineCache->clear();
+        $this->cacheClearer->clear();
     }
 
     /**

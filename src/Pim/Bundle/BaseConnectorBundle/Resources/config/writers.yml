@@ -25,11 +25,8 @@ services:
         class: %pim_base_connector.writer.doctrine.product.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_transform.cache.doctrine_cache'
+            - '@pim_transform.cache.product_cache_clearer'
             - '@pim_versioning.manager.version'
-            - '@pim_catalog.doctrine.smart_manager_registry'
-        calls:
-            - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
 
     pim_base_connector.writer.doctrine.product_association:
         class: %pim_base_connector.writer.doctrine.product_association.class%

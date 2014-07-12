@@ -106,7 +106,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeValues($values, array $context = [])
+    protected function normalizeValues($values, array $context)
     {
         $data = [];
 
@@ -127,7 +127,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      *
      * @return array
      */
-    protected function normalizeAssociations($associations, array $context = [])
+    protected function normalizeAssociations($associations, array $context)
     {
         $data = [];
 
