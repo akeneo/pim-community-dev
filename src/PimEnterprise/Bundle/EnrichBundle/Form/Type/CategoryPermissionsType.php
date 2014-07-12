@@ -30,6 +30,11 @@ class CategoryPermissionsType extends AbstractType
             ['label' => 'category.permissions.edit.label', 'help' => 'category.permissions.edit.help']
         );
         $builder->add(
+            'own',
+            'pimee_security_roles',
+            ['label' => 'category.permissions.own.label', 'help' => 'category.permissions.own.help']
+        );
+        $builder->add(
             'apply_on_children',
             'checkbox',
             [

@@ -31,9 +31,11 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     {
         $accessRepository->getGrantedRoles($category, Attributes::VIEW_PRODUCTS)->willReturn(['foo', 'bar']);
         $accessRepository->getGrantedRoles($category, Attributes::EDIT_PRODUCTS)->willReturn(['bar']);
+        $accessRepository->getGrantedRoles($category, Attributes::OWN_PRODUCTS)->willReturn(['bar']);
 
         $this->getViewRoles($category)->shouldReturn(['foo', 'bar']);
         $this->getEditRoles($category)->shouldReturn(['bar']);
+        $this->getOwnRoles($category)->shouldReturn(['bar']);
     }
 
     function it_grants_access_on_a_category_for_the_provided_roles(
@@ -51,7 +53,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
-        $this->setAccess($category, [$user, $admin], [$admin]);
+        $this->setAccess($category, [$user, $admin], [$admin], [$admin]);
     }
 
     function it_adds_accesses_on_a_category_children_for_the_provided_roles(
@@ -65,8 +67,10 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     ) { 
         $addViewRoles = [$user];
         $addEditRoles = [];
+        $addOwnRoles = [];
         $removeViewRoles = [];
         $removeEditRoles = [];
+        $removeOwnRoles = [];
 
         $childrenIds = [42, 19];
         $categoryRepository->getAllChildrenIds($parent)->willReturn($childrenIds);
@@ -76,7 +80,9 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $objectManager->persist(Argument::any())->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
-        $this->updateChildrenAccesses($parent, $addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        $this->updateChildrenAccesses(
+            $parent, $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+        );
     }
 
     function it_updates_accesses_on_a_category_children_for_the_provided_roles(
@@ -90,8 +96,10 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     ) {
         $addViewRoles = [$user];
         $addEditRoles = [];
+        $addOwnRoles = [];
         $removeViewRoles = [];
         $removeEditRoles = [];
+        $removeOwnRoles = [];
 
         $childrenIds = [42, 19];
         $categoryRepository->getAllChildrenIds($parent)->willReturn($childrenIds);
@@ -104,7 +112,9 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $objectManager->persist($accessTwo)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $this->updateChildrenAccesses($parent, $addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        $this->updateChildrenAccesses(
+            $parent, $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+        );
     }
 
     function it_removes_accesses_on_a_category_children_for_the_provided_roles(
@@ -118,8 +128,10 @@ class CategoryAccessManagerSpec extends ObjectBehavior
     ) {
         $addViewRoles = [];
         $addEditRoles = [];
+        $addOwnRoles = [];
         $removeViewRoles = [$user];
         $removeEditRoles = [$user];
+        $removeOwnRoles = [$user];
 
         $childrenIds = [42, 19];
         $categoryRepository->getAllChildrenIds($parent)->willReturn($childrenIds);
@@ -130,6 +142,8 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         $objectManager->remove($accessTwo)->shouldBeCalled();
         $objectManager->flush()->shouldBeCalled();
 
-        $this->updateChildrenAccesses($parent, $addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        $this->updateChildrenAccesses(
+            $parent, $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+        );
     }
 }
