@@ -6,7 +6,6 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Doctrine\DBAL\Driver\Connection;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -15,11 +14,7 @@ use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
 
 use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -57,7 +52,11 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $normalizer;
 
     /**
-<<<<<<< HEAD
+     * @var ProductCacheClearer
+     */
+    protected $cacheClearer;
+
+    /**
      * Collection
      */
     protected $collection;
@@ -71,42 +70,14 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         ProductManager $productManager,
         DocumentManager $documentManager,
         PendingVersionMassPersister $pendingPersister,
-        NormalizerInterface $normalizer
+        NormalizerInterface $normalizer,
+        ProductCacheClearer $cacheClearer
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
         $this->pendingPersister = $pendingPersister;
         $this->normalizer       = $normalizer;
-=======
-     * @var Connection
-     */
-    protected $connection;
-
-    /**
-     * @var ProductCacheClearer
-     */
-    protected $cacheClearer;
-
-    /**
-     * Collection
-     */
-    protected $collection;
-    
-    public function __construct(
-        ProductManager $productManager,
-        DocumentManager $documentManager,
-        VersionManager $versionManager,
-        NormalizerInterface $normalizer,
-        Connection $connection,
-        ProductCacheClearer $cacheClearer
-    ) {
-        $this->productManager  = $productManager;
-        $this->documentManager = $documentManager;
-        $this->versionManager  = $versionManager;
-        $this->normalizer      = $normalizer;
-        $this->connection      = $connection;
         $this->cacheClearer    = $cacheClearer;
->>>>>>> maintenance/1.1_backports
     }
 
     /**
