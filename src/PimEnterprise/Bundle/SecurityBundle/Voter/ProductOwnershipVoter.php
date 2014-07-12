@@ -32,6 +32,7 @@ class ProductOwnershipVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
+        return false;
         return Attributes::OWNER === $attribute;
     }
 
@@ -40,6 +41,7 @@ class ProductOwnershipVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
+        return false;
         return $class instanceof ProductInterface;
     }
 
