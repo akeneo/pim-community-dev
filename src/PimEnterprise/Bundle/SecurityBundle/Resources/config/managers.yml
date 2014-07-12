@@ -2,7 +2,6 @@ parameters:
     pimee_security.manager.attribute_group_access.class:    PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager
     pimee_security.manager.category_access.class:           PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager
     pimee_security.manager.job_profile_access.class:        PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager
-    pimee_security.manager.category_ownership.class:        PimEnterprise\Bundle\SecurityBundle\Manager\CategoryOwnershipManager
 
 services:
     pimee_security.manager.attribute_group_access:
@@ -23,8 +22,3 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pimee_security.entity.job_profile_access.class%
-
-    pimee_security.manager.category_ownership:
-        class: %pimee_security.manager.category_ownership.class%
-        arguments:
-            - '@doctrine.orm.default_entity_manager'

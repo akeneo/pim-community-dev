@@ -14,6 +14,7 @@ Feature: Enforce no permissions for a category
     And I fill in the following information:
       | View products | User |
       | Edit products | User |
+      | Own products  | User |
     And I save the category
     And I am on the products page
     Then I should be on the homepage

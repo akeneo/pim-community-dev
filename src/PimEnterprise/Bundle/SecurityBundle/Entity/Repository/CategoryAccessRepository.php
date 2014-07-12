@@ -250,6 +250,31 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
+     * Indicates whether a user is the owner of any categories
+     *
+     * @param User $user
+     *
+     * @return boolean
+     */
+    public function isOwner(User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->select('o.id')
+            ->where(
+                $qb->expr()->in('o.role', ':roles')
+            )
+            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->eq('o.'.$this->getAccessField(Attributes::OWN_PRODUCTS), true))
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SCALAR);
+
+        return (bool) count($result);
+    }
+
+    /**
      * Get the access field depending of access level sent
      *
      * @param string $accessLevel
