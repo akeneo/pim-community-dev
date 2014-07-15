@@ -6,8 +6,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\Media;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
 
 /**
@@ -24,16 +24,22 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     /** @var MediaManager */
     protected $mediaManager;
 
+    /** @var MediaFactory */
+    protected $factory;
+
     /**
      * @param ChangesCollector $changesCollector
      * @param MediaManager     $mediaManager
+     * @param MediaFactory     $factory
      */
     public function __construct(
         ChangesCollector $collector,
-        MediaManager $mediaManager
+        MediaManager $mediaManager,
+        MediaFactory $factory
     ) {
         $this->collector = $collector;
         $this->mediaManager = $mediaManager;
+        $this->factory = $factory;
     }
 
     /**
@@ -62,8 +68,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
 
         foreach ($data['values'] as $key => $changes) {
             if (isset($changes['media']['file']) && $changes['media']['file'] instanceof UploadedFile) {
-                $media = new Media();
-                $media->setFile($changes['media']['file']);
+                $media = $this->factory->createMedia($changes['media']['file']);
                 $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
 
                 $data['values'][$key]['media']['filename'] = $media->getFilename();

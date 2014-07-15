@@ -9,6 +9,7 @@ services:
         arguments:
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pim_catalog.manager.media'
+            - '@pim_catalog.factory.media'
 
     pim_enrich.form.type.edit_common_attributes:
         class: %pim_enrich.form.type.edit_common_attributes.class%
