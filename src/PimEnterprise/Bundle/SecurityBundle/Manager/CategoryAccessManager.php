@@ -149,7 +149,12 @@ class CategoryAccessManager
 
         $codeToRoles = [];
         $allRoles = array_merge(
-            $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+            $addViewRoles,
+            $addEditRoles,
+            $addOwnRoles,
+            $removeViewRoles,
+            $removeEditRoles,
+            $removeOwnRoles
         );
         foreach ($allRoles as $role) {
             $codeToRoles[$role->getRole()] = $role;
