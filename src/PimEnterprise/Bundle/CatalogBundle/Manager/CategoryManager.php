@@ -115,7 +115,6 @@ class CategoryManager extends BaseCategoryManager
                         $categoryParentsIds = [];
                         break;
                     }
-
                 }
             }
             $parentsIds = array_merge($parentsIds, $categoryParentsIds);
