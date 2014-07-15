@@ -5,7 +5,7 @@ parameters:
     pim_filter.datasource.mongodb_adapter.class:                    Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
     pim_datagrid.extension.pager.mongodb.pager.class:               Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
     pim_datagrid.extension.sorter.mongodb.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter
-    pim_datagrid.event_listener.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener
+    pim_datagrid.event_listener.mongodb.configure_history_grid_listener.class: Pim\Bundle\DataGridBundle\EventListener\MongoDB\ConfigureHistoryGridListener
     pim_datagrid.extension.formatter.property.version.author_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version\AuthorProperty
 
 services:
@@ -25,17 +25,11 @@ services:
         tags:
             - { name: pim_datagrid.extension.sorter, type: mongodb_field }
 
-    pim_datagrid.event_listener.configure_history_grid_listener:
-        class: %pim_datagrid.event_listener.configure_history_grid_listener.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-        calls:
-            - [setRequest, ['@?request=']]
+    pim_datagrid.event_listener.mongodb.configure_history_grid_listener:
+        class: %pim_datagrid.event_listener.mongodb.configure_history_grid_listener.class%
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-history-grid, method: onBuildAfter }
 
     pim_datagrid.extension.formatter.property.version.author_property:
         class: %pim_datagrid.extension.formatter.property.version.author_property.class%

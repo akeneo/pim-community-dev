@@ -8,6 +8,6 @@ services:
         class: %pim_datagrid.datasource.default.class%
         arguments:
             - '@doctrine.orm.entity_manager'
-            - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_dual }

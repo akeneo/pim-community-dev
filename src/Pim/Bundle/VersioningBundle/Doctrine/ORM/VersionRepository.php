@@ -50,9 +50,11 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
     }
 
     /**
+     * @param array $parameters
+     *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
         $userNameExpr = "CONCAT(CONCAT(CONCAT(u.firstName, ' '), CONCAT(u.lastName, ' - ')), u.email)";
         $removedUserNameExpr = "CONCAT(v.author, ' - Removed user')";
@@ -80,6 +82,11 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
                     $qb->expr()->eq('v.resourceId', ':objectId')
                 )
             );
+
+        if (!empty($parameters['objectClass']) && !empty($parameters['objectId'])) {
+            $qb->setParameter(':objectClass', $parameters['objectClass']);
+            $qb->setParameter(':objectId', $parameters['objectId']);
+        }
 
         return $qb;
     }
