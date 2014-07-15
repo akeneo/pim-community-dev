@@ -94,7 +94,9 @@ class CategoryManager extends BaseCategoryManager
     /**
      * Provides a tree filled up to the categories provided, with all their ancestors
      * and ancestors sibligns are filled too, in order to be able to display the tree
-     * directly without loading other data.
+     * directly without loading other data
+     * We apply permissions per category to hide not granted category or branch when
+     * the path is not fully granted
      *
      * @param CategoryInterface $root       Tree root category
      * @param Collection        $categories Selected categories
@@ -125,7 +127,7 @@ class CategoryManager extends BaseCategoryManager
     }
 
     /**
-     * Filter the filled tree to remove not granted children
+     * Filter the filled tree to remove not granted category or branch of categories
      *
      * @param array &$filledTree the tree
      *
