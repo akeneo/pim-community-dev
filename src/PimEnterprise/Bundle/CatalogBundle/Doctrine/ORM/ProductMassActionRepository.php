@@ -7,6 +7,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository as PimProd
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository;
 
 /**
+ * Overriden product mass action repository
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

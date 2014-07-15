@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository;
 
 /**
+ * Overriden product mass action repository
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
