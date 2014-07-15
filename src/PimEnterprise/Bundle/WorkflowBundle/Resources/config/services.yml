@@ -37,7 +37,8 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.repository.proposition'
             - '@event_dispatcher'
-            - '@pimee_workflow.collector.changes'
+            - '@pimee_workflow.collector.product_submitted_changes'
+            - '@pimee_workflow.change_set_computer'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%

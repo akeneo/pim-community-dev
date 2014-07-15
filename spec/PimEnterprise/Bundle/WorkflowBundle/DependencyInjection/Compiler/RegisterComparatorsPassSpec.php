@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-class RegisterProductFormTypeComparatorsPassSpec extends ObjectBehavior
+class RegisterComparatorsPassSpec extends ObjectBehavior
 {
     function it_is_a_compiler_pass()
     {
@@ -21,9 +21,9 @@ class RegisterProductFormTypeComparatorsPassSpec extends ObjectBehavior
         Definition $fooDefinition,
         Definition $bazDefinition
     ) {
-        $container->hasDefinition('pimee_workflow.form.comparator.chained')->willReturn(true);
-        $container->getDefinition('pimee_workflow.form.comparator.chained')->willReturn($comparator);
-        $container->findTaggedServiceIds('pimee_workflow.form.comparator')->willReturn([
+        $container->hasDefinition('pimee_workflow.comparator.chained')->willReturn(true);
+        $container->getDefinition('pimee_workflow.comparator.chained')->willReturn($comparator);
+        $container->findTaggedServiceIds('pimee_workflow.comparator')->willReturn([
             'comparator.bar' => [['priority' => -10]],
             'comparator.foo' => [['priority' => 10]],
             'comparator.baz' => [[]],

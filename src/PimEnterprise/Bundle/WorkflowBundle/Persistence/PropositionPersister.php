@@ -2,20 +2,21 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Persistence\ProductPersister;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputerInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 /**
  * Store product through propositions
@@ -37,17 +38,17 @@ class PropositionPersister implements ProductPersister
     /** @var PropositionFactory */
     protected $factory;
 
-    /** @var ProductValueChangesCollectorInterface[] */
-    protected $collectors = [];
-
     /** @var PropositionRepositoryInterface */
     protected $repository;
 
     /** @var EventDispatcherInterface */
     protected $dispatcher;
 
-    /** @var ChangesCollectorInterface */
+    /** @var ChangesCollector */
     protected $collector;
+
+    /** @var ChangeSetComputerInterface */
+    protected $changeSet;
 
     /**
      * @param ManagerRegistry                $registry
@@ -56,7 +57,8 @@ class PropositionPersister implements ProductPersister
      * @param PropositionFactory             $factory
      * @param PropositionRepositoryInterface $repository
      * @param EventDispatcherInterface       $dispatcher
-     * @param ChangesCollectorInterface      $collector
+     * @param ChangesCollector               $collector
+     * @param ChangeSetComputerInterface     $changeSet
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -65,7 +67,8 @@ class PropositionPersister implements ProductPersister
         PropositionFactory $factory,
         PropositionRepositoryInterface $repository,
         EventDispatcherInterface $dispatcher,
-        ChangesCollectorInterface $collector
+        ChangesCollector $collector,
+        ChangeSetComputerInterface $changeSet
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -74,6 +77,7 @@ class PropositionPersister implements ProductPersister
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
         $this->collector = $collector;
+        $this->changeSet = $changeSet;
     }
 
     /**
@@ -148,7 +152,10 @@ class PropositionPersister implements ProductPersister
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
-        $changes = $this->collector->getChanges();
+        $changes = $this->changeSet->compute(
+            $product,
+            $this->collector->getData()
+        );
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
         $proposition = $this->repository->findUserProposition($product, $username, $locale);
@@ -166,12 +173,10 @@ class PropositionPersister implements ProductPersister
             $manager->persist($proposition);
         }
 
-        if ($this->dispatcher->hasListeners(PropositionEvents::PRE_UPDATE)) {
-            $this->dispatcher->dispatch(
-                PropositionEvents::PRE_UPDATE,
-                new PropositionEvent($proposition, $changes)
-            );
-        }
+        $event = new PropositionEvent($proposition, $changes);
+        $this->dispatcher->dispatch(PropositionEvents::PRE_UPDATE, $event);
+
+        $proposition->setChanges($event->getChanges());
 
         $manager->flush();
     }

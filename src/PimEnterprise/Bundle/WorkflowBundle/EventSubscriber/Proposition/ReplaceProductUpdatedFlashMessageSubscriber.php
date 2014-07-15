@@ -43,7 +43,7 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
     public static function getSubscribedEvents()
     {
         return [
-            KernelEvents::RESPONSE => 'replaceFlash',
+            KernelEvents::RESPONSE => ['replaceFlash', 129],
         ];
     }
 
