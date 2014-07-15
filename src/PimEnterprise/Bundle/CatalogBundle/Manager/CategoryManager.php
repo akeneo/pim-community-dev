@@ -97,7 +97,7 @@ class CategoryManager extends BaseCategoryManager
      * directly without loading other data.
      *
      * @param CategoryInterface $root       Tree root category
-     * @param Collection        $categories categories
+     * @param Collection        $categories Selected categories
      *
      * @return array Multi-dimensional array representing the tree
      */
@@ -107,7 +107,6 @@ class CategoryManager extends BaseCategoryManager
         foreach ($categories as $category) {
             $categoryParentsIds = array();
             $path = $this->getEntityRepository()->getPath($category);
-
             if ($path[0]->getId() === $root->getId()) {
                 foreach ($path as $pathItem) {
                     $categoryParentsIds[] = $pathItem->getId();
