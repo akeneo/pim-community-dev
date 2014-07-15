@@ -2,8 +2,12 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Proposition;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 
 /**
  * Product change set computer during proposition workflow
@@ -16,11 +20,23 @@ class ChangeSetComputer implements ChangeSetComputerInterface
     /** @var ComparatorInterface $comparator */
     protected $comparator;
 
-    public function __construct(ComparatorInterface $comparator)
-    {
+    /** @var EventDispatcherInterface $eventDispatcher */
+    protected $eventDispatcher;
+
+    /**
+     * @param ComparatorInterface $comparator
+     */
+    public function __construct(
+        ComparatorInterface $comparator,
+        EventDispatcherInterface $eventDispatcher
+    ) {
         $this->comparator = $comparator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function compute(ProductInterface $product, array $submittedData)
     {
         $changeSet = [];
@@ -32,24 +48,31 @@ class ChangeSetComputer implements ChangeSetComputerInterface
         foreach ($submittedData['values'] as $key => $data) {
             if ($currentValues->containsKey($key)) {
                 $value = $currentValues->get($key);
-
-                if (null !== $changes = $this->comparator->getChanges($value, $data)) {
-                    $changes = array_merge(
-                        $changes,
-                        [
-                            '__context__' => [
-                                'attribute' => $value->getAttribute()->getCode(),
-                                    'locale' => $value->getLocale(),
-                                    'scope' => $value->getScope(),
-                                ]
-                            ]
-                        );
-                }
+                $changes = $this->prepareChange(
+                    $value,
+                    $this->comparator->getChanges($value, $data)
+                );
 
                 $changeSet['values'][$key] = $changes;
             }
         }
 
         return $changeSet;
+    }
+
+    /**
+     * Delegates change preparation to event listeners/subscribers
+     *
+     * @param AbstractProductValue $value
+     * @param null|array           $changes
+     *
+     * @return null|array
+     */
+    protected function prepareChange(AbstractProductValue $value, $changes)
+    {
+        $event = new ChangeSetEvent($value, $changes);
+        $this->eventDispatcher->dispatch(ChangeSetEvents::PREPARE_CHANGE, $event);
+
+        return $event->getChangeSet();
     }
 }

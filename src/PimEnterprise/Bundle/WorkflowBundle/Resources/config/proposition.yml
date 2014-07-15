@@ -9,7 +9,8 @@ parameters:
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
     pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
     pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
-    pimee_workflow.proposition.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.proposition_subscriber.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.change_set_subscriber.metadata.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber
     pimee_workflow.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator
     pimee_workflow.comparator.media.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\MediaComparator
     pimee_workflow.comparator.date.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\DateComparator
@@ -60,11 +61,16 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_workflow.proposition.replace_flash_message:
-        class: %pimee_workflow.proposition.replace_flash_message.class%
+    pimee_workflow.proposition_subscriber.replace_flash_message:
+        class: %pimee_workflow.proposition_subscriber.replace_flash_message.class%
         arguments:
             - '@security.context'
             - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.change_set_subscriber.metadata:
+        class: %pimee_workflow.change_set_subscriber.metadata.class%
         tags:
             - { name: kernel.event_subscriber }
 
@@ -118,6 +124,7 @@ services:
         class: %pimee_workflow.change_set_computer.class%
         arguments:
             - '@pimee_workflow.comparator.chained'
+            - '@event_dispatcher'
 
     ##
     # Comparators of product values

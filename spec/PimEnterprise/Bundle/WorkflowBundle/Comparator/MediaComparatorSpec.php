@@ -14,8 +14,24 @@ class MediaComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_get_changes_when_uploading_file(
-        $mediaManager,
+    function it_get_changes_when_add_file(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
+            'id' => 1,
+            'media' => [
+                'filename' => 'foo.jpg',
+                'originalFilename' => 'foo',
+                'filePath' => '/tmp/foo.jpg',
+                'mimeType' => 'image/jpeg',
+                'size' => 1001,
+            ],
+        ];
+
+        $this->getChanges($value, $submittedData)->shouldReturn($submittedData);
+    }
+
+    function it_get_changes_when_removing_file(
         AbstractProductValue $value
     ) {
         $submittedData = [
@@ -24,11 +40,16 @@ class MediaComparatorSpec extends ObjectBehavior
                 'removed' => true,
             ],
         ];
-        $this->getChanges($value, $submittedData)->shouldReturn([
+        $this->getChanges($value, $submittedData)->shouldReturn($submittedData);
+    }
+
+    function it_does_get_changes_when_no_info_is_available(
+        AbstractProductValue $value
+    ) {
+        $submittedData = [
             'id' => 1,
-            'media' => [
-                'removed' => true,
-            ],
-        ]);
+            'media' => [],
+        ];
+        $this->getChanges($value, $submittedData)->shouldReturn(null);
     }
 }

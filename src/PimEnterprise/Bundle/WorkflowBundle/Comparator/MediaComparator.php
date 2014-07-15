@@ -2,7 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
@@ -28,6 +27,23 @@ class MediaComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        return $submittedData;
+        if ($this->hasNewMedia($submittedData) || isset($submittedData['media']['removed'])) {
+            return $submittedData;
+        }
+    }
+
+    protected function hasNewMedia($data)
+    {
+        if (!isset($data['media'])) {
+            return false;
+        }
+
+        foreach (['filename', 'originalFilename', 'filePath', 'mimeType', 'size'] as $key) {
+            if (!array_key_exists($key, $data['media'])) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
