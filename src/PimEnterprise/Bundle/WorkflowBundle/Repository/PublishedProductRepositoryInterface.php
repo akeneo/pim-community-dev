@@ -39,9 +39,11 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Get the ID's of all published products. * The keys of the array are the ID of the original product.
      *
+     * @param integer[] $originalIds
+     *
      * @return array [ original product ID => published product ID ]
      */
-    public function getProductIdsMapping();
+    public function getProductIdsMapping(array $originalIds = []);
 
     /**
      * Count published products for a specific family
