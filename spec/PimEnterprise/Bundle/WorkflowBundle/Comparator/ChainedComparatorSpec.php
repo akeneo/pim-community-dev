@@ -1,12 +1,12 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
 class ChainedComparatorSpec extends ObjectBehavior
 {
@@ -17,9 +17,10 @@ class ChainedComparatorSpec extends ObjectBehavior
         $this->addComparator($comparator1, 0);
         $this->addComparator($comparator2, 100);
     }
+
     function it_is_a_comparator()
     {
-        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface');
+        $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
     function it_is_a_root_comparator(AbstractProductValue $value)

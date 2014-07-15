@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
+namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
@@ -28,9 +28,6 @@ class MediaComparator implements ComparatorInterface
      */
     public function getChanges(AbstractProductValue $value, $submittedData)
     {
-        if ((isset($submittedData['media']['file']) && $submittedData['media']['file'] instanceof UploadedFile)
-            || isset($submittedData['media']['removed'])) {
-            return $submittedData;
-        }
+        return $submittedData;
     }
 }

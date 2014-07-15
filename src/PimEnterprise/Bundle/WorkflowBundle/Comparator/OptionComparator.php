@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Form\Comparator;
+namespace PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 

@@ -12,19 +12,19 @@ use Symfony\Component\DependencyInjection\Reference;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class RegisterProductFormTypeComparatorsPass implements CompilerPassInterface
+class RegisterComparatorsPass implements CompilerPassInterface
 {
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pimee_workflow.form.comparator.chained')) {
+        if (!$container->hasDefinition('pimee_workflow.comparator.chained')) {
             return;
         }
 
-        $definition = $container->getDefinition('pimee_workflow.form.comparator.chained');
-        foreach ($container->findTaggedServiceIds('pimee_workflow.form.comparator') as $id => $attribute) {
+        $definition = $container->getDefinition('pimee_workflow.comparator.chained');
+        foreach ($container->findTaggedServiceIds('pimee_workflow.comparator') as $id => $attribute) {
 
             $container->getDefinition($id)->setPublic(false);
             $definition->addMethodCall(

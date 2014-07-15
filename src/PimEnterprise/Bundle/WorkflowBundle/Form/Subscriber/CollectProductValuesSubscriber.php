@@ -5,11 +5,14 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorAwareInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollectorInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Pim\Bundle\CatalogBundle\Manager\MediaManager;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\Media;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Comparator\ComparatorInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
 
 /**
  * A collector of changes that a client is sending to a product edit form
@@ -17,40 +20,24 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CollectProductValuesSubscriber implements
-    ChangesCollectorAwareInterface,
-    EventSubscriberInterface
+class CollectProductValuesSubscriber implements EventSubscriberInterface
 {
-    /** @var ComparatorInterface */
-    protected $comparator;
-
-    /** @var array */
-    protected $changes = [];
-
-    /** @var SecurityContextInterface */
-    protected $securityContext;
-
-    /** @var ChangesCollectorInterface */
+    /** @var ChangesCollector */
     protected $collector;
 
-    /**
-     * @param ComparatorInterface      $comparator
-     * @param SecurityContextInterface $securityContext
-     */
-    public function __construct(
-        ComparatorInterface $comparator,
-        SecurityContextInterface $securityContext
-    ) {
-        $this->comparator = $comparator;
-        $this->securityContext = $securityContext;
-    }
+    /** @var MediaManager */
+    protected $mediaManager;
 
     /**
-     * {@inheritdoc}
+     * @param SecurityContextInterface $securityContext
+     * @param MediaManager             $mediaManager
      */
-    public function setCollector(ChangesCollectorInterface $collector)
-    {
+    public function __construct(
+        ChangesCollector $collector,
+        MediaManager $mediaManager
+    ) {
         $this->collector = $collector;
+        $this->mediaManager = $mediaManager;
     }
 
     /**
@@ -73,22 +60,26 @@ class CollectProductValuesSubscriber implements
         $form = $event->getForm();
         $data = $event->getData();
 
-        if ('pim_product_edit' !== $form->getName()
-            || !array_key_exists('values', $data)
-            || $this->securityContext->isGranted(Attributes::OWNER, $form->getData())) {
+        if (!array_key_exists('values', $data)) {
             return;
         }
 
-        $currentValues = $form->get('values')->getViewData();
-        foreach ($data['values'] as $key => $data) {
-            if ($currentValues->containsKey($key)) {
-                $value = $currentValues->get($key);
-                $this->collector->add(
-                    $key,
-                    $this->comparator->getChanges($value, $data),
-                    $value
-                );
+        foreach ($data['values'] as $key => $changes) {
+            if (isset($changes['media']['file']) && $changes['media']['file'] instanceof UploadedFile) {
+                $media = new Media();
+                $media->setFile($changes['media']['file']);
+                $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
+
+                $data['values'][$key]['media']['filename'] = $media->getFilename();
+                $data['values'][$key]['media']['originalFilename'] = $media->getOriginalFilename();
+                $data['values'][$key]['media']['filePath'] = $media->getFilePath();
+                $data['values'][$key]['media']['mimeType'] = $media->getMimeType();
+                $data['values'][$key]['media']['size'] = $changes['media']['file']->getClientSize();
+
+                unset($data['values'][$key]['media']['file']);
             }
         }
+
+        $this->collector->setData($data);
     }
 }

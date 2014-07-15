@@ -48,4 +48,9 @@ class PropositionEvent extends Event
     {
         return $this->changes;
     }
+
+    public function setChanges(array $changes)
+    {
+        $this->changes = $changes;
+    }
 }
