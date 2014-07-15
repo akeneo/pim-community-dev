@@ -25,8 +25,8 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     protected $mediaManager;
 
     /**
-     * @param SecurityContextInterface $securityContext
-     * @param MediaManager             $mediaManager
+     * @param ChangesCollector $changesCollector
+     * @param MediaManager     $mediaManager
      */
     public function __construct(
         ChangesCollector $collector,

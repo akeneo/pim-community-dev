@@ -24,7 +24,8 @@ class ChangeSetComputer implements ChangeSetComputerInterface
     protected $eventDispatcher;
 
     /**
-     * @param ComparatorInterface $comparator
+     * @param ComparatorInterface      $comparator
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         ComparatorInterface $comparator,

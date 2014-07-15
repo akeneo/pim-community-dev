@@ -29,6 +29,11 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
         ];
     }
 
+    /**
+     * Keep media changes when from previous proposition
+     *
+     * @param PropositionEvent $event
+     */
     public function keepMedia(PropositionEvent $event)
     {
         $proposition = $event->getProposition();
@@ -73,6 +78,8 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
      * Unset removed changes
      *
      * @param PropositionEvent $event
+     *
+     * @return null
      */
     public function removeNullValues(PropositionEvent $event)
     {

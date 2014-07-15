@@ -32,7 +32,14 @@ class MediaComparator implements ComparatorInterface
         }
     }
 
-    protected function hasNewMedia($data)
+    /**
+     * Whether or not data contain a new media
+     *
+     * @param array $data
+     *
+     * @return boolean
+     */
+    protected function hasNewMedia(array $data)
     {
         if (!isset($data['media'])) {
             return false;
