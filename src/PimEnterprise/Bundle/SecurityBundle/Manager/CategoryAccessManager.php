@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
@@ -150,7 +149,12 @@ class CategoryAccessManager
 
         $codeToRoles = [];
         $allRoles = array_merge(
-            $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+            $addViewRoles,
+            $addEditRoles,
+            $addOwnRoles,
+            $removeViewRoles,
+            $removeEditRoles,
+            $removeOwnRoles
         );
         foreach ($allRoles as $role) {
             $codeToRoles[$role->getRole()] = $role;

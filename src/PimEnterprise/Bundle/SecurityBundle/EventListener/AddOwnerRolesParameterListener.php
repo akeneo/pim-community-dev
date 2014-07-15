@@ -60,7 +60,10 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
             return;
         }
 
-        $parameters['ownerRoles'] = $this->repository->getGrantedRolesForProduct($parameters['product'], Attributes::OWN_PRODUCTS);
+        $parameters['ownerRoles'] = $this->repository->getGrantedRolesForProduct(
+            $parameters['product'],
+            Attributes::OWN_PRODUCTS
+        );
 
         $event->setArgument('parameters', $parameters);
     }
