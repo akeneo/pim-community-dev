@@ -49,7 +49,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsMapping(array $originalIds = array())
+    public function getProductIdsMapping(array $originalIds = [])
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->select('pp.id AS published_id, IDENTITY(pp.originalProduct) AS original_id');
