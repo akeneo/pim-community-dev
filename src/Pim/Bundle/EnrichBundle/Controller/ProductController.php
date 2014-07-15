@@ -2,9 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\EnrichBundle\EnrichEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -17,9 +15,13 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Symfony\Component\EventDispatcher\Event;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Common\Collections\Collection;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
@@ -35,7 +37,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Symfony\Component\EventDispatcher\Event;
+use Pim\Bundle\EnrichBundle\EnrichEvents;
 
 /**
  * Product Controller
@@ -230,7 +232,7 @@ class ProductController extends AbstractDoctrineController
         $this->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
-        $trees    = $this->productCatManager->getProductCountByTree($product);
+        $trees    = $this->getProductCountByTree($product);
 
         return $this->getProductEditTemplateParams($form, $product, $channels, $trees);
     }
@@ -463,9 +465,34 @@ class ProductController extends AbstractDoctrineController
         if ($product !== null) {
             $categories = $product->getCategories();
         }
-        $trees = $this->categoryManager->getFilledTree($parent, $categories);
+        $trees = $this->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
+    }
+
+    /**
+     * Fetch the filled tree
+     *
+     * @param CategoryInterface $parent
+     * @param Collection        $categories
+     *
+     * @return CategoryInterface[]
+     */
+    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
+    {
+        return $this->categoryManager->getFilledTree($parent, $categories);
+    }
+
+    /**
+     * Fetch the product count by tree
+     *
+     * @param ProductInterface $product
+     *
+     * @return []
+     */
+    protected function getProductCountByTree(ProductInterface $product)
+    {
+        return $this->productCatManager->getProductCountByTree($product);
     }
 
     /**
