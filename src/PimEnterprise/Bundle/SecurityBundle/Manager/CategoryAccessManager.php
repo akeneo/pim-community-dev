@@ -208,7 +208,12 @@ class CategoryAccessManager
     ) {
         $mergedPermissions = [];
         $allRoles = array_merge(
-            $addViewRoles, $addEditRoles, $addOwnRoles, $removeViewRoles, $removeEditRoles, $removeOwnRoles
+            $addViewRoles,
+            $addEditRoles,
+            $addOwnRoles,
+            $removeViewRoles,
+            $removeEditRoles,
+            $removeOwnRoles
         );
         foreach ($allRoles as $role) {
             $mergedPermissions[$role->getRole()] = ['view' => null, 'edit' => null, 'own' => null];
