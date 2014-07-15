@@ -7,4 +7,5 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - %pim_catalog.entity.product.class%
+            - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
