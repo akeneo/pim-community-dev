@@ -103,7 +103,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $this->getGrantedChildren(42);
     }
 
-    function it_gets_granted_filled_tree(
+    function it_gets_granted_filled_tree_when_path_is_not_granted(
         $categoryRepository,
         Category $parent,
         Category $childOne,
@@ -118,6 +118,45 @@ class CategoryManagerSpec extends ObjectBehavior
         $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(false);
 
         $categoryRepository->getTreeFromParents([])->willReturn([]);
+        $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
+    }
+
+    function it_gets_granted_filled_tree_when_path_is_granted(
+        $categoryRepository,
+        Category $parent,
+        Category $childOne,
+        Category $childTwo,
+        $context
+    ) {
+        $categoryRepository->getPath($childTwo)->willReturn(
+            [0 => $parent, 1 => $childOne, 2 => $childTwo]
+        );
+        $parent->getId()->willReturn(3);
+        $childOne->getId()->willReturn(1);
+        $childTwo->getId()->willReturn(2);
+
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+        $categoryRepository->getTreeFromParents([3, 1, 2])->willReturn(
+            [
+                0 => [
+                    'item' => $parent,
+                    '__children' => [
+                        0 => [
+                            'item' => $childOne,
+                            '__children' => [
+                                0 => $childTwo
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+        );
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
+        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(true);
+
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }
 }
