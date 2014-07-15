@@ -59,7 +59,10 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb = $this->createQueryBuilder();
         $qb->select('originalProduct', '_id');
         if (!empty($originalIds)) {
-            // @TODO: Should be implemented
+            foreach ($originalIds as $key => $originalId) {
+                $originalIds[$key] = new \MongoId($originalId);
+            }
+            $qb->field('originalProduct.$id')->in($originalIds);
         }
 
         $qb->hydrate(false);
