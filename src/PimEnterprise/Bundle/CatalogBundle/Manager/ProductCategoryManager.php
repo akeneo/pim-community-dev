@@ -43,23 +43,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
-     * TODO : use a dedicated method (not override) / merge with getProductCountByGrantedTree ?
-     */
-    public function getProductCountByTree(ProductInterface $product)
-    {
-        $trees =  $this->productRepository->getProductCountByTree($product);
-
-        foreach ($trees as $key => $tree) {
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree['tree'])) {
-                unset($trees[$key]);
-            }
-        }
-
-        return $trees;
-    }
-
-    /**
-     * {@inheritdoc}
      * @see getProductCountByTree same logic but here we apply permisions and count only visible category (full path)
      */
     public function getProductCountByGrantedTree(ProductInterface $product)
