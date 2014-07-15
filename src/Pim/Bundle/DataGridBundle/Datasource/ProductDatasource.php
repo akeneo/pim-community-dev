@@ -14,14 +14,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 class ProductDatasource extends Datasource
 {
     /**
-     * Used only in OrmSelectorExtension
-     * TODO: find a way to remove it
-     *
-     * @staticvar string
-     */
-    const TYPE = 'pim_product';
-
-    /**
      * {@inheritdoc}
      */
     public function getResults()
