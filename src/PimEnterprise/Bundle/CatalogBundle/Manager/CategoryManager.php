@@ -121,7 +121,33 @@ class CategoryManager extends BaseCategoryManager
             $parentsIds = array_merge($parentsIds, $categoryParentsIds);
         }
         $parentsIds = array_unique($parentsIds);
+        $filledTree = $this->getEntityRepository()->getTreeFromParents($parentsIds);
 
-        return $this->getEntityRepository()->getTreeFromParents($parentsIds);
+        return $this->filterGrantedFilledTree($filledTree);
+    }
+
+    /**
+     * Filter the filled tree to remove not granted children
+     *
+     * @param array &$filledTree the tree
+     *
+     * @return array Multi-dimensional array representing the tree
+     */
+    protected function filterGrantedFilledTree(&$filledTree)
+    {
+        foreach ($filledTree as $categoryIdx => &$categoryData) {
+
+            $isLeaf = is_object($categoryData);
+            $category = $isLeaf ? $categoryData : $categoryData['item'];
+
+            if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+                unset($filledTree[$categoryIdx]);
+
+            } elseif (!$isLeaf) {
+                $this->filterGrantedFilledTree($categoryData['__children']);
+            }
+        }
+
+        return $filledTree;
     }
 }
