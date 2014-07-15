@@ -108,7 +108,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
      *
      * @param ProductInterface $product
      *
-     * @return [] with format [treeId => productCount]
+     * @return array with format [treeId => productCount]
      */
     protected function getProductCountWithFullGrantedPath(ProductInterface $product)
     {
