@@ -55,7 +55,7 @@ class PropositionWidget implements WidgetInterface
 
         if (null !== $user) {
             $isOwner = $this->registry
-                ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership')
+                ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess')
                 ->isOwner($user);
         }
 

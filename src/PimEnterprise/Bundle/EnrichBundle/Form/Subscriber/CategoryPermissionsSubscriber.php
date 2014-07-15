@@ -22,7 +22,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     protected $accessManager;
 
     /** @var array store the previous roles to be able to do a diff of added/removed */
-    protected $previousRoles = ['view' => [], 'edit' => []];
+    protected $previousRoles = ['view' => [], 'edit' => [], 'own' => []];
 
     /**
      * @param CategoryAccessManager $accessManager
@@ -80,6 +80,11 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $editRoles = $this->accessManager->getEditRoles($event->getData());
         $form->get('edit')->setData($editRoles);
         $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+
+        $ownRoles = $this->accessManager->getOwnRoles($event->getData());
+        $form->get('own')->setData($ownRoles);
+        $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
+
     }
 
     /**
@@ -97,11 +102,12 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         if ($form->isValid()) {
             $viewRoles = $form->get('permissions')->get('view')->getData();
             $editRoles = $form->get('permissions')->get('edit')->getData();
-            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+            $ownRoles = $form->get('permissions')->get('own')->getData();
+            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles, $ownRoles);
 
             $updateChildren = $form->get('permissions')->get('apply_on_children')->getData();
             if ($updateChildren === true) {
-                $this->updateChildren($event->getData(), $viewRoles, $editRoles);
+                $this->updateChildren($event->getData(), $viewRoles, $editRoles, $ownRoles);
             }
         }
     }
@@ -112,28 +118,34 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      * @param CategoryInterface     $parent
      * @param array|ArrayCollection $viewRoles
      * @param array|ArrayCollection $editRoles
+     * @param array|ArrayCollection $ownRoles
      */
-    protected function updateChildren(CategoryInterface $parent, $viewRoles, $editRoles)
+    protected function updateChildren(CategoryInterface $parent, $viewRoles, $editRoles, $ownRoles)
     {
         $currentRoles = [];
         $currentRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
         $currentRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
+        $currentRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
 
         $addedViewRoles = array_diff($currentRoles['view'], $this->previousRoles['view']);
         $addedEditRoles = array_diff($currentRoles['edit'], $this->previousRoles['edit']);
+        $addedOwnRoles = array_diff($currentRoles['own'], $this->previousRoles['own']);
         $removedViewRoles = array_diff($this->previousRoles['view'], $currentRoles['view']);
         $removedEditRoles = array_diff($this->previousRoles['edit'], $currentRoles['edit']);
+        $removedOwnRoles = array_diff($this->previousRoles['own'], $currentRoles['own']);
 
-        $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0
-            || count($removedViewRoles) > 0 || count($removedEditRoles) > 0;
+        $changedRoles = count($addedViewRoles) > 0 || count($addedEditRoles) > 0 || count($addedOwnRoles) > 0
+            || count($removedViewRoles) > 0 || count($removedEditRoles) > 0 || count($removedOwnRoles) > 0;
 
         if ($changedRoles) {
             $this->accessManager->updateChildrenAccesses(
                 $parent,
                 $addedViewRoles,
                 $addedEditRoles,
+                $addedOwnRoles,
                 $removedViewRoles,
-                $removedEditRoles
+                $removedEditRoles,
+                $removedOwnRoles
             );
         }
     }
