@@ -32,9 +32,6 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         TokenInterface $token,
         User $user
     ) {
-        $securityContext->getToken()->willReturn($token);
-        $token->getUser()->willReturn($user);
-
         $this->beConstructedWith(
             $productRepo,
             $categoryRepo,
@@ -42,31 +39,37 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         );
     }
 
-    function it_get_product_count_for_accessible_trees(
+    function it_gets_product_count_for_granted_trees(
         $securityContext,
         $productRepo,
+        $categoryRepo,
         ProductInterface $product,
         CategoryInterface $firstTree,
         CategoryInterface $secondTree,
-        CategoryInterface $thirdTree
+        CategoryInterface $firstCat,
+        CategoryInterface $secondCat
     ) {
+
+        $product->getCategories()->willReturn([$firstCat, $secondCat]);
+        $firstCat->getRoot()->willReturn(1);
+        $firstTree->getId()->willReturn(1);
+        $secondCat->getRoot()->willReturn(2);
+        $secondTree->getId()->willReturn(2);
+
+        $categoryRepo->getPath($firstCat)->willReturn([0 => $firstTree, 1 => $firstCat]);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(true);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstCat)->willReturn(false);
+
+        $categoryRepo->getPath($secondCat)->willReturn([0 => $secondTree, 1 => $secondCat]);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondCat)->willReturn(true);
+
+        $categoryRepo->getChildren(null, true, 'created', 'DESC')->willReturn([0 => $firstTree, 1 => $secondTree]);
+
         $trees = [
-            ['tree' => $firstTree, 'productCount' => 21],
-            ['tree' => $secondTree, 'productCount' => 4],
-            ['tree' => $thirdTree, 'productCount' => 46],
+            ['tree' => $firstTree, 'productCount' => 0],
+            ['tree' => $secondTree, 'productCount' => 1],
         ];
-
-        $productRepo->getProductCountByTree($product)
-            ->shouldBeCalled()
-            ->willReturn($trees);
-
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[0]['tree'])->shouldBeCalled()->willReturn(false);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[1]['tree'])->shouldBeCalled()->willReturn(true);
-        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $trees[2]['tree'])->shouldBeCalled()->willReturn(false);
-
-        unset($trees[0]);
-        unset($trees[2]);
-
-        $this->getProductCountByTree($product)->shouldReturn($trees);
+        $this->getProductCountByGrantedTree($product)->shouldReturn($trees);
     }
 }
