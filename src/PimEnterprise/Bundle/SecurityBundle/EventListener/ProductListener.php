@@ -51,7 +51,7 @@ class ProductListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(Attributes::EDIT, $event->getSubject())) {
+        if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }

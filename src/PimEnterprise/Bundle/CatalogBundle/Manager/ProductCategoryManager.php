@@ -60,8 +60,11 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /**
      * {@inheritdoc}
      */
-    public function getProductsCountInGrantedCategory(CategoryInterface $category, $inChildren = false, $inProvided = true)
-    {
+    public function getProductsCountInGrantedCategory(
+        CategoryInterface $category,
+        $inChildren = false,
+        $inProvided = true
+    ) {
         if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             return 0;
         }

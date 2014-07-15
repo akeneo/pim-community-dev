@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
@@ -74,18 +73,38 @@ class CategoryAccessManager
     }
 
     /**
-     * Grant access on a category to specified roles
+     * Get roles that have own access to a category
      *
      * @param CategoryInterface $category
-     * @param Role[]            $viewRoles
-     * @param Role[]            $editRoles
+     *
+     * @return Role[]
      */
-    public function setAccess(CategoryInterface $category, $viewRoles, $editRoles)
+    public function getOwnRoles(CategoryInterface $category)
+    {
+        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::OWN_PRODUCTS);
+    }
+
+    /**
+     * Grant access on a category to specified roles, own implies edit which implies read
+     *
+     * @param CategoryInterface $category  the category
+     * @param Role[]            $viewRoles the view roles
+     * @param Role[]            $editRoles the edit roles
+     * @param Role[]            $ownRoles  the own roles
+     */
+    public function setAccess(CategoryInterface $category, $viewRoles, $editRoles, $ownRoles)
     {
         $grantedRoles = [];
-        foreach ($editRoles as $role) {
-            $this->grantAccess($category, $role, Attributes::EDIT_PRODUCTS);
+        foreach ($ownRoles as $role) {
+            $this->grantAccess($category, $role, Attributes::OWN_PRODUCTS);
             $grantedRoles[] = $role;
+        }
+
+        foreach ($editRoles as $role) {
+            if (!in_array($role, $grantedRoles)) {
+                $this->grantAccess($category, $role, Attributes::EDIT_PRODUCTS);
+                $grantedRoles[] = $role;
+            }
         }
 
         foreach ($viewRoles as $role) {
@@ -105,25 +124,38 @@ class CategoryAccessManager
      * @param CategoryInterface $parent
      * @param Role[]            $addViewRoles
      * @param Role[]            $addEditRoles
+     * @param Role[]            $addOwnRoles
      * @param Role[]            $removeViewRoles
      * @param Role[]            $removeEditRoles
+     * @param Role[]            $removeOwnRoles
      */
     public function updateChildrenAccesses(
         CategoryInterface $parent,
         $addViewRoles,
         $addEditRoles,
+        $addOwnRoles,
         $removeViewRoles,
-        $removeEditRoles
+        $removeEditRoles,
+        $removeOwnRoles
     ) {
         $mergedPermissions = $this->getMergedPermissions(
             $addViewRoles,
             $addEditRoles,
+            $addOwnRoles,
             $removeViewRoles,
-            $removeEditRoles
+            $removeEditRoles,
+            $removeOwnRoles
         );
 
         $codeToRoles = [];
-        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        $allRoles = array_merge(
+            $addViewRoles,
+            $addEditRoles,
+            $addOwnRoles,
+            $removeViewRoles,
+            $removeEditRoles,
+            $removeOwnRoles
+        );
         foreach ($allRoles as $role) {
             $codeToRoles[$role->getRole()] = $role;
         }
@@ -135,19 +167,20 @@ class CategoryAccessManager
             $roleCode = $role->getRole();
             $view = $mergedPermissions[$roleCode]['view'];
             $edit = $mergedPermissions[$roleCode]['edit'];
+            $own = $mergedPermissions[$roleCode]['own'];
 
             $accessRepo = $this->getAccessRepository();
             $toUpdateIds = $accessRepo->getCategoryIdsWithExistingAccess([$role], $childrenIds);
             $toAddIds = array_diff($childrenIds, $toUpdateIds);
 
-            if ($view === false && $edit === false) {
+            if ($view === false && $edit === false && $own === false) {
                 $this->removeAccesses($toUpdateIds, $role);
             } else {
                 if (count($toAddIds) > 0) {
-                    $this->addAccesses($toAddIds, $role, $view, $edit);
+                    $this->addAccesses($toAddIds, $role, $view, $edit, $own);
                 }
                 if (count($toUpdateIds) > 0) {
-                    $this->updateAccesses($toUpdateIds, $role, $view, $edit);
+                    $this->updateAccesses($toUpdateIds, $role, $view, $edit, $own);
                 }
             }
         }
@@ -158,21 +191,32 @@ class CategoryAccessManager
      *
      * @param Role[] $addViewRoles
      * @param Role[] $addEditRoles
+     * @param Role[] $addOwnRoles
      * @param Role[] $removeViewRoles
      * @param Role[] $removeEditRoles
+     * @param Role[] $removeOwnRoles
      *
      * @return array
      */
     protected function getMergedPermissions(
         $addViewRoles,
         $addEditRoles,
+        $addOwnRoles,
         $removeViewRoles,
-        $removeEditRoles
+        $removeEditRoles,
+        $removeOwnRoles
     ) {
         $mergedPermissions = [];
-        $allRoles = array_merge($addViewRoles, $addEditRoles, $removeViewRoles, $removeEditRoles);
+        $allRoles = array_merge(
+            $addViewRoles,
+            $addEditRoles,
+            $addOwnRoles,
+            $removeViewRoles,
+            $removeEditRoles,
+            $removeOwnRoles
+        );
         foreach ($allRoles as $role) {
-            $mergedPermissions[$role->getRole()] = ['view' => null, 'edit' => null];
+            $mergedPermissions[$role->getRole()] = ['view' => null, 'edit' => null, 'own' => null];
         }
         foreach ($addViewRoles as $role) {
             $mergedPermissions[$role->getRole()]['view'] = true;
@@ -181,11 +225,20 @@ class CategoryAccessManager
             $mergedPermissions[$role->getRole()]['edit'] = true;
             $mergedPermissions[$role->getRole()]['view'] = true;
         }
+        foreach ($addOwnRoles as $role) {
+            $mergedPermissions[$role->getRole()]['own']  = true;
+            $mergedPermissions[$role->getRole()]['edit'] = true;
+            $mergedPermissions[$role->getRole()]['view'] = true;
+        }
+
         foreach ($removeViewRoles as $role) {
             $mergedPermissions[$role->getRole()]['view'] = false;
         }
         foreach ($removeEditRoles as $role) {
             $mergedPermissions[$role->getRole()]['edit'] = false;
+        }
+        foreach ($removeOwnRoles as $role) {
+            $mergedPermissions[$role->getRole()]['own'] = false;
         }
 
         return $mergedPermissions;
@@ -214,11 +267,13 @@ class CategoryAccessManager
      * @param Role         $role
      * @param boolean|null $view
      * @param boolean|null $edit
+     * @param boolean|null $own
      */
-    protected function addAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    protected function addAccesses($categoryIds, Role $role, $view = false, $edit = false, $own = false)
     {
         $view = ($view === null) ? false : $view;
         $edit = ($edit === null) ? false : $edit;
+        $own = ($own === null) ? false : $own;
         $categories = $this->getCategoryRepository()->findBy(['id' => $categoryIds]);
 
         foreach ($categories as $category) {
@@ -226,6 +281,7 @@ class CategoryAccessManager
             $access->setCategory($category)->setRole($role);
             $access->setViewProducts($view);
             $access->setEditProducts($edit);
+            $access->setOwnProducts($own);
             $this->getObjectManager()->persist($access);
         }
         $this->getObjectManager()->flush();
@@ -238,8 +294,9 @@ class CategoryAccessManager
      * @param Role         $role
      * @param boolean|null $view
      * @param boolean|null $edit
+     * @param boolean|null $own
      */
-    protected function updateAccesses($categoryIds, Role $role, $view = false, $edit = false)
+    protected function updateAccesses($categoryIds, Role $role, $view = false, $edit = false, $own = false)
     {
         $accesses = $this->getAccessRepository()->findBy(['category' => $categoryIds, 'role' => $role]);
 
@@ -249,6 +306,9 @@ class CategoryAccessManager
             }
             if ($edit !== null) {
                 $access->setEditProducts($edit);
+            }
+            if ($own !== null) {
+                $access->setOwnProducts($own);
             }
             $this->getObjectManager()->persist($access);
         }
@@ -267,7 +327,8 @@ class CategoryAccessManager
         $access = $this->getCategoryAccess($category, $role);
         $access
             ->setViewProducts(true)
-            ->setEditProducts($accessLevel === Attributes::EDIT_PRODUCTS);
+            ->setEditProducts(in_array($accessLevel, [Attributes::EDIT_PRODUCTS, Attributes::OWN_PRODUCTS]))
+            ->setOwnProducts($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
     }

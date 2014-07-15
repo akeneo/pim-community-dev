@@ -30,7 +30,7 @@ services:
     pimee_security.event_listener.add_owner_roles_parameter:
         class: %pimee_security.event_listener.add_owner_roles_parameter.class%
         arguments:
-            - '@pimee_security.repository.category_ownership'
+            - '@pimee_security.repository.category_access'
             - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }

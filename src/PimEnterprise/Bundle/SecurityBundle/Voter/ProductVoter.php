@@ -6,11 +6,11 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Product voter, allows to know if products can be edited or consulted by a
+ * Product voter, allows to know if products can be published, reviewed, edited, consulted by a
  * user depending on his roles
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
@@ -36,7 +36,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT]);
+        return in_array($attribute, [Attributes::VIEW_PRODUCT, Attributes::EDIT_PRODUCT, Attributes::OWNER]);
     }
 
     /**
@@ -44,7 +44,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof AbstractProduct;
+        return $class instanceof ProductInterface;
     }
 
     /**
@@ -73,24 +73,30 @@ class ProductVoter implements VoterInterface
 
     /**
      * Determines if a product is accessible for the user,
-     * - a product is accessible when it's not at least in a category
-     * - then we apply category's permissions
+     * - no categories : the product is accessible
+     * - categories : we apply category's permissions
      *
-     * @param AbstractProduct $product
-     * @param UserInterface   $user
-     * @param string          $attribute
+     * @param ProductInterface $product   the product
+     * @param UserInterface    $user      the user
+     * @param string           $attribute the attribute
      *
      * @return bool
      */
-    protected function isProductAccessible(AbstractProduct $product, UserInterface $user, $attribute)
+    protected function isProductAccessible(ProductInterface $product, UserInterface $user, $attribute)
     {
         if (count($product->getCategories()) === 0) {
-            return true;
+            return VoterInterface::ACCESS_GRANTED;
         }
 
-        $categoryAttribute = (Attributes::EDIT === $attribute) ?
-            Attributes::EDIT_PRODUCTS :
-            Attributes::VIEW_PRODUCTS;
+        $productToCategory = [
+            Attributes::OWNER => Attributes::OWN_PRODUCTS,
+            Attributes::EDIT_PRODUCT => Attributes::EDIT_PRODUCTS,
+            Attributes::VIEW_PRODUCT => Attributes::VIEW_PRODUCTS,
+        ];
+        if (!isset($productToCategory[$attribute])) {
+            return false;
+        }
+        $categoryAttribute = $productToCategory[$attribute];
 
         $categoryIds = [];
         foreach ($product->getCategories() as $category) {

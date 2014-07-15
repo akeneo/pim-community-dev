@@ -1,19 +1,25 @@
 category_accesses:
     2014_collection:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator, manager]
     summer_collection:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator, manager]
     winter_collection:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator, manager]
     winter_top:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator, manager]
     tees:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator]
     jackets:
-        edit: [administrator, manager, user]
         view: [administrator, manager, user]
+        edit: [administrator, manager, user]
+        own: [administrator, manager]

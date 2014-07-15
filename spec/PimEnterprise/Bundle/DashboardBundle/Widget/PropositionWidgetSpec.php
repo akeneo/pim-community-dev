@@ -9,14 +9,14 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 class PropositionWidgetSpec extends ObjectBehavior
 {
     function let(
         ManagerRegistry $registry,
         EntityRepository $repository,
-        CategoryOwnershipRepository $ownershipRepository,
+        CategoryAccessRepository $ownershipRepository,
         UserContext $context,
         User $user
     ) {
@@ -24,7 +24,7 @@ class PropositionWidgetSpec extends ObjectBehavior
             ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
             ->willReturn($repository);
         $registry
-            ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryOwnership')
+            ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess')
             ->willReturn($ownershipRepository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 

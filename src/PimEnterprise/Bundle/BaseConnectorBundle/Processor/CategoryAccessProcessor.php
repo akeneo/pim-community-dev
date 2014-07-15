@@ -19,6 +19,9 @@ class CategoryAccessProcessor extends TransformerProcessor
     /** @staticvar string */
     const ACCESS_EDIT = 'edit';
 
+    /** @staticvar string */
+    const ACCESS_OWN = 'own';
+
     /**
      * {@inheritdoc}
      */
@@ -80,11 +83,21 @@ class CategoryAccessProcessor extends TransformerProcessor
             unset($data[self::ACCESS_EDIT]);
         }
 
+        if (isset($data[self::ACCESS_OWN])) {
+            foreach ($data[self::ACCESS_OWN] as $role) {
+                $tmp[$role][self::ACCESS_OWN] = true;
+                $tmp[$role][self::ACCESS_EDIT] = true;
+                $tmp[$role][self::ACCESS_VIEW] = true;
+            }
+            unset($data[self::ACCESS_OWN]);
+        }
+
         foreach ($tmp as $role => $accesses) {
             $item = $data;
             $item['role'] = $role;
             $item['viewProducts'] = isset($accesses[self::ACCESS_VIEW]);
             $item['editProducts'] = isset($accesses[self::ACCESS_EDIT]);
+            $item['ownProducts'] = isset($accesses[self::ACCESS_OWN]);
             $items[] = $item;
         }
 

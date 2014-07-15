@@ -5,7 +5,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use Pim\Bundle\CatalogBundle\Model\Product;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
@@ -65,7 +64,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
-            if ($this->securityContext->isGranted(Attributes::EDIT, $product)) {
+            if ($this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)) {
                 return [
                     'show' => false,
                     'edit' => true,
