@@ -188,8 +188,14 @@ class AttributeController extends AbstractDoctrineController
     public function editAction(Request $request, $id)
     {
         $attribute = $this->findAttributeOr404($id);
-        if ($this->attributeHandler->process($attribute)) {
-            $this->addFlash('success', 'flash.attribute.updated');
+        try {
+            if ($this->attributeHandler->process($attribute)) {
+                $this->addFlash('success', 'flash.attribute.updated');
+
+                return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
+            }
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
 
             return $this->redirectToRoute('pim_enrich_attribute_edit', array('id' => $attribute->getId()));
         }
