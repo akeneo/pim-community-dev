@@ -33,13 +33,13 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
  */
 class FixturesContext extends RawMinkContext
 {
-    protected $locales = array(
+    protected $locales = [
         'english' => 'en_US',
         'french'  => 'fr_FR',
         'german'  => 'de_DE',
-    );
+    ];
 
-    protected $attributeTypes = array(
+    protected $attributeTypes = [
         'text'         => 'pim_catalog_text',
         'number'       => 'pim_catalog_number',
         'textarea'     => 'pim_catalog_textarea',
@@ -51,9 +51,9 @@ class FixturesContext extends RawMinkContext
         'multiselect'  => 'pim_catalog_multiselect',
         'simpleselect' => 'pim_catalog_simpleselect',
         'date'         => 'pim_catalog_date',
-    );
+    ];
 
-    protected $entities = array(
+    protected $entities = [
         'Attribute'       => 'PimCatalogBundle:Attribute',
         'AttributeGroup'  => 'PimCatalogBundle:AttributeGroup',
         'AttributeOption' => 'PimCatalogBundle:AttributeOption',
@@ -69,9 +69,9 @@ class FixturesContext extends RawMinkContext
         'GroupType'       => 'PimCatalogBundle:GroupType',
         'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
         'ProductGroup'    => 'Pim\Bundle\CatalogBundle\Entity\Group',
-    );
+    ];
 
-    protected $placeholderValues = array();
+    protected $placeholderValues = [];
 
     protected $username;
 
@@ -144,7 +144,7 @@ class FixturesContext extends RawMinkContext
             $entityName = null;
         }
 
-        if ($getter && array_key_exists($entityName, $this->entities)) {
+        if ($getter && array_key_exists($entityName, $this->getEntities())) {
             $method = $getter . 'Entity';
 
             return $this->$method($entityName, $args[0]);
@@ -157,7 +157,7 @@ class FixturesContext extends RawMinkContext
      * @param string $entityName
      * @param mixed  $data
      *
-     * @throws InvalidArgumentException If entity is not found
+     * @throws \InvalidArgumentException If entity is not found
      *
      * @return object
      */
@@ -208,7 +208,7 @@ class FixturesContext extends RawMinkContext
      */
     public function findEntity($entityName, $criteria)
     {
-        if (!array_key_exists($entityName, $this->entities)) {
+        if (!array_key_exists($entityName, $this->getEntities())) {
             throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
         }
 
@@ -216,7 +216,7 @@ class FixturesContext extends RawMinkContext
             $criteria = array('code' => $criteria);
         }
 
-        return $this->getRepository($this->entities[$entityName])->findOneBy($criteria);
+        return $this->getRepository($this->getEntities()[$entityName])->findOneBy($criteria);
     }
 
     /**
@@ -239,7 +239,7 @@ class FixturesContext extends RawMinkContext
             throw new \InvalidArgumentException(
                 sprintf(
                     'Could not find "%s" with criteria %s',
-                    $this->entities[$entityName],
+                    $this->getEntities()[$entityName],
                     print_r(\Doctrine\Common\Util\Debug::export($criteria, 2), true)
                 )
             );
@@ -251,7 +251,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param array|string $data
      *
-     * @return Product
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductInterface
      *
      * @Given /^a "([^"]*)" product$/
      */
@@ -299,6 +299,18 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Given /^the product?:$/
+     */
+    public function theProduct(TableNode $table)
+    {
+        $this->createProduct(
+            $table->getRowsHash()
+        );
+    }
+
+    /**
      * @param string $status
      * @param string $sku
      *
@@ -341,11 +353,11 @@ class FixturesContext extends RawMinkContext
 
         $entityName = ucfirst($entityName);
 
-        if (!array_key_exists($entityName, $this->entities)) {
+        if (!array_key_exists($entityName, $this->getEntities())) {
             throw new \Exception(sprintf('Unrecognized entity "%s".', $entityName));
         }
 
-        $namespace = $this->entities[$entityName];
+        $namespace = $this->getEntities()[$entityName];
         $entities = $this->getRepository($namespace)->findAll();
 
         foreach ($entities as $entity) {
@@ -607,8 +619,10 @@ class FixturesContext extends RawMinkContext
         $channel = $this->getChannel($channel);
 
         $localeCode = isset($this->locales[$locale]) ? $this->locales[$locale] : $locale;
-        $channel->addLocale($this->getLocale($localeCode));
+        $locale = $this->getLocale($localeCode);
+        $channel->addLocale($locale);
         $this->persist($channel);
+        $this->persist($locale);
     }
 
     /**
@@ -1096,7 +1110,9 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $sku
      *
-     * @return Product
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
+     *
+     * @throws \InvalidArgumentException
      */
     public function getProduct($sku)
     {
@@ -1238,6 +1254,14 @@ class FixturesContext extends RawMinkContext
     public function replacePlaceholders($value)
     {
         return strtr($value, $this->placeholderValues);
+    }
+
+    /**
+     * @return array
+     */
+    public function getEntities()
+    {
+        return $this->entities;
     }
 
     /**
@@ -1614,7 +1638,7 @@ class FixturesContext extends RawMinkContext
     /**
      * @param string $namespace
      *
-     * @return Repository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     protected function getRepository($namespace)
     {

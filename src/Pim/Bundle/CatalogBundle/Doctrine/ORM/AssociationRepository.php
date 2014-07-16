@@ -2,8 +2,10 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
+use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Repository\AssociationRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
@@ -72,5 +74,20 @@ class AssociationRepository extends EntityRepository implements
     public function getReferenceProperties()
     {
         return array('owner', 'associationType');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds)
+    {
+        $qb = $this->createQueryBuilder('pa');
+
+        $qb
+            ->join('pa.products', 'pap', Join::WITH, 'pap.id = :productId')
+            ->where($qb->expr()->in('pa.owner', $ownerIds))
+            ->setParameter(':productId', $product->getId());
+
+        return $qb->getQuery()->getResult();
     }
 }

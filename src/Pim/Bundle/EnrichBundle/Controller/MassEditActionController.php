@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -61,6 +62,7 @@ class MassEditActionController extends AbstractDoctrineController
      * @param FormFactoryInterface       $formFactory
      * @param ValidatorInterface         $validator
      * @param TranslatorInterface        $translator
+     * @param EventDispatcherInterface   $eventDispatcher
      * @param ManagerRegistry            $doctrine
      * @param OperatorRegistry           $operatorRegistry
      * @param MassActionParametersParser $parametersParser
@@ -75,6 +77,7 @@ class MassEditActionController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
         OperatorRegistry $operatorRegistry,
         MassActionParametersParser $parametersParser,
@@ -89,6 +92,7 @@ class MassEditActionController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
@@ -107,7 +111,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -144,7 +148,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -189,7 +193,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -244,11 +248,19 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
+     * Check if the mass action is executable
+     *
+     * @return boolean
+     */
+    protected function isExecutable()
+    {
+        return $this->exceedsMassEditLimit() === false;
+    }
+
+    /**
      * Temporary method to avoid editing too many objects
      *
      * @return boolean
-     *
-     * @deprecated
      */
     protected function exceedsMassEditLimit()
     {

@@ -1,9 +1,13 @@
 parameters:
     pim_datagrid.extension.pager.orm.pager.class: Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
+    pim_datagrid.extension.pager.pager_resolver.class: Pim\Bundle\DataGridBundle\Extension\Pager\PagerResolver
 
 services:
     pim_datagrid.extension.pager.orm.pager:
         class: %pim_datagrid.extension.pager.orm.pager.class%
 
-    pim_datagrid.extension.pager.product.pager:
-        class: %pim_datagrid.extension.pager.product.pager.class%
+    pim_datagrid.extension.pager.pager_resolver:
+        class: %pim_datagrid.extension.pager.pager_resolver.class%
+        arguments:
+            - %pim_catalog.storage_driver%
+            - @pim_datagrid.extension.pager.orm.pager

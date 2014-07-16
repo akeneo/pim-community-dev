@@ -135,7 +135,7 @@ abstract class AbstractAssociation implements ReferableInterface
     /**
      * Get products
      *
-     * @return ProductInterface[]|null
+     * @return ProductInterface[]|ArrayCollection
      */
     public function getProducts()
     {
@@ -156,6 +156,18 @@ abstract class AbstractAssociation implements ReferableInterface
         }
 
         return $this;
+    }
+
+    /**
+     * Has a product
+     *
+     * @param ProductInterface $product
+     *
+     * @return boolean
+     */
+    public function hasProduct(ProductInterface $product)
+    {
+        return $this->products->contains($product);
     }
 
     /**

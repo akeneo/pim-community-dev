@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\EnrichBundle\AbstractController;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -13,6 +13,8 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Pim\Bundle\EnrichBundle\Flash\Message;
 
 /**
  * Base abstract controller
@@ -59,6 +61,11 @@ abstract class AbstractController
     protected $translator;
 
     /**
+     * @var EventDispatcherInterface
+     */
+    protected $eventDispatcher;
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -68,6 +75,7 @@ abstract class AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         Request $request,
@@ -76,7 +84,8 @@ abstract class AbstractController
         SecurityContextInterface $securityContext,
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher
     ) {
         $this->request         = $request;
         $this->templating      = $templating;
@@ -85,6 +94,7 @@ abstract class AbstractController
         $this->formFactory     = $formFactory;
         $this->validator       = $validator;
         $this->translator      = $translator;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -156,6 +166,7 @@ abstract class AbstractController
     {
         return $this->translator;
     }
+
     /**
      * Generates a URL from the given parameters.
      *
@@ -243,7 +254,7 @@ abstract class AbstractController
      */
     protected function addFlash($type, $message, array $parameters = array())
     {
-        $this->request->getSession()->getFlashBag()->add($type, $this->translator->trans($message, $parameters));
+        $this->request->getSession()->getFlashBag()->add($type, new Message($message, $parameters));
     }
 
     /**

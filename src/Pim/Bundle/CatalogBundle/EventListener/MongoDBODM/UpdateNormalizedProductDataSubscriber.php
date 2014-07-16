@@ -5,60 +5,43 @@ namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Event\PostFlushEventArgs;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\QueryGenerator\NormalizedDataQueryGeneratorInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Sets the normalized data of a Product document when related entities are modified
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author    Julien Sanchez <julien@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class UpdateNormalizedProductDataSubscriber implements EventSubscriber
 {
+    /** @var array */
+    protected $queryGenerator = [];
+
+    /**
+     * Scheduled queries to apply
+     *
+     * @var string[]
+     */
+    protected $scheduledQueries = [];
+
     /** @var ManagerRegistry */
     protected $registry;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
 
     /** @var string */
     protected $productClass;
 
-    /** @var string */
-    protected $entityMapping = [
-        'Pim\Bundle\CatalogBundle\Model\AbstractAttribute' => 'Attribute',
-        'Pim\Bundle\CatalogBundle\Entity\Family'           => 'Family',
-        'Pim\Bundle\CatalogBundle\Entity\Channel'          => 'Channel',
-    ];
-
     /**
-     * Ids of documents to update
-     *
-     * @var string[]
+     * @param ManagerRegistry $registry
+     * @param string          $productClass
      */
-    protected $pendingProducts = array();
-
-    /**
-     * Ids of updated documents
-     *
-     * @var string[]
-     */
-    protected $updatedProducts = array();
-
-    /**
-     * @param ManagerRegistry     $registry
-     * @param NormalizerInterface $normalizer
-     * @param string              $productClass
-     */
-    public function __construct(ManagerRegistry $registry, NormalizerInterface $normalizer, $productClass)
+    public function __construct(ManagerRegistry $registry, $productClass)
     {
         $this->registry     = $registry;
-        $this->normalizer   = $normalizer;
         $this->productClass = $productClass;
     }
-
     /**
      * {@inheritdoc}
      */
@@ -75,19 +58,19 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
         $uow = $args->getEntityManager()->getUnitOfWork();
 
         foreach ($uow->getScheduledEntityUpdates() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueriesAfterUpdate($entity, $uow->getEntityChangeSet($entity));
         }
 
         foreach ($uow->getScheduledEntityDeletions() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueriesAfterDelete($entity);
         }
 
         foreach ($uow->getScheduledCollectionDeletions() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueriesAfterDelete($entity);
         }
 
         foreach ($uow->getScheduledCollectionUpdates() as $entity) {
-            $this->scheduleRelatedProducts($entity);
+            $this->scheduleQueriesAfterUpdate($entity, $uow->getEntityChangeSet($entity));
         }
     }
 
@@ -96,7 +79,29 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      */
     public function postFlush(PostFlushEventArgs $args)
     {
-        $this->processPendingProducts();
+        $this->executeQueries();
+    }
+
+    /**
+     * Schedule queries related to the entity for normalized data recalculation
+     *
+     * @param object $entity
+     * @param array  $changes
+     */
+    protected function scheduleQueriesAfterUpdate($entity, $changes)
+    {
+        foreach ($changes as $field => $values) {
+            list($oldValue, $newValue) = $values;
+
+            $queries = $this->generateQuery($entity, $field, $oldValue, $newValue);
+
+            if (null !== $queries) {
+                $this->scheduledQueries = array_merge(
+                    $this->scheduledQueries,
+                    $queries
+                );
+            }
+        }
     }
 
     /**
@@ -104,62 +109,60 @@ class UpdateNormalizedProductDataSubscriber implements EventSubscriber
      *
      * @param object $entity
      */
-    protected function scheduleRelatedProducts($entity)
+    protected function scheduleQueriesAfterDelete($entity)
     {
-        $productIds = $this->getRelatedProductIds($entity);
-        foreach ($productIds as $id) {
-            if (!in_array($id, $this->pendingProducts) && !in_array($id, $this->updatedProducts)) {
-                $this->pendingProducts[] = $id;
-            }
+        $queries = $this->generateQuery($entity);
+
+        if (null !== $queries) {
+            $this->scheduledQueries = array_merge(
+                $this->scheduledQueries,
+                $queries
+            );
         }
     }
 
     /**
-     * Find ids of products related to the entity
-     *
+     * Get queries for the given entity and updated field
      * @param object $entity
+     * @param string $field
+     * @param string $oldValue
+     * @param string $newValue
      *
-     * @return array
+     * @return array|null
      */
-    protected function getRelatedProductIds($entity)
+    protected function generateQuery($entity, $field = '', $oldValue = '', $newValue = '')
     {
-        $repository = $this->registry->getRepository($this->productClass);
-
-        foreach ($this->entityMapping as $class => $name) {
-            if ($entity instanceof $class) {
-                $method = sprintf('findAllIdsFor%s', $name);
-
-                if (method_exists($repository, $method)) {
-                    return $repository->$method($entity);
-                }
+        foreach ($this->queryGenerators as $queryGenerator) {
+            if ($queryGenerator->supports($entity, $field)) {
+                return $queryGenerator->generateQuery($entity, $field, $oldValue, $newValue);
             }
         }
 
-        return [];
+        return null;
     }
 
     /**
-     * Process products that are scheduled for normalized data recalculation
+     * Inject query generator
+     * @param NormalizedDataQueryGeneratorInterface $queryGenerator
      */
-    protected function processPendingProducts()
+    public function addQueryGenerator(NormalizedDataQueryGeneratorInterface $queryGenerator)
     {
-        $manager = $this->registry->getManagerForClass($this->productClass);
+        $this->queryGenerators[] = $queryGenerator;
+    }
 
-        foreach ($this->pendingProducts as $productId) {
-            $product = $manager->getRepository($this->productClass)->find($productId);
-            if ($product) {
-                $product->setNormalizedData($this->normalizer->normalize($product, 'mongodb_json'));
-                $manager->persist($product);
+    /**
+     * Execute all scheduled queries
+     */
+    protected function executeQueries()
+    {
+        $collection = $this->registry
+            ->getManagerForClass($this->productClass)
+            ->getDocumentCollection($this->productClass);
 
-                $this->updatedProducts[] = $productId;
-            }
-        }
+        foreach ($this->scheduledQueries as $query) {
+            list($query, $compObject, $options) = $query;
 
-        $this->pendingProducts = array();
-
-        $updatedCount = count($this->updatedProducts);
-        if ($updatedCount) {
-            $manager->flush();
+            $collection->update($query, $compObject, $options);
         }
     }
 }

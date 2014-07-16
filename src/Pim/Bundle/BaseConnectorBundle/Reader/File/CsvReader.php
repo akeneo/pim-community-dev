@@ -29,14 +29,7 @@ class CsvReader extends FileReader implements
      * @Assert\NotBlank(groups={"Execution"})
      * @AssertFile(
      *     groups={"Execution"},
-     *     allowedExtensions={"csv", "zip"},
-     *     mimeTypes={
-     *         "text/csv",
-     *         "text/comma-separated-values",
-     *         "text/plain",
-     *         "application/csv",
-     *         "application/zip"
-     *     }
+     *     allowedExtensions={"csv", "zip"}
      * )
      */
     protected $filePath;
@@ -395,6 +388,16 @@ class CsvReader extends FileReader implements
             }
 
             $this->filePath = current($csvFiles);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize()
+    {
+        if (null !== $this->csv) {
+            $this->csv->rewind();
         }
     }
 }

@@ -1,0 +1,24 @@
+datagrid:
+    export-profile-grid:
+        extend: job-profile-grid
+        options:
+            entityHint: export profile
+        source:
+            acl_resource: pim_importexport_export_profile_index
+        properties:
+            edit_link:
+                route: pim_importexport_export_profile_edit
+            delete_link:
+                route: pim_importexport_export_profile_remove
+            show_link:
+                route: pim_importexport_export_profile_show
+        filters:
+            columns:
+                alias:
+                    options:
+                        field_options:
+                            choices: '@pim_import_export.datagrid.provider.job->getExportJobChoices'
+                connector:
+                    options:
+                        field_options:
+                            choices: '@pim_import_export.datagrid.provider.job->getExportConnectorChoices'

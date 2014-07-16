@@ -136,39 +136,4 @@ class EditCommonAttributesSpec extends ObjectBehavior
         $this->getCommonAttributes()->shouldReturn([$name]);
         $this->getValues()->shouldHaveCount(1);
     }
-
-    function it_updates_the_products_when_performing_the_operation(
-        $productRepository,
-        $query,
-        AbstractProduct $product1,
-        AbstractProduct $product2,
-        AbstractAttribute $attribute,
-        $productManager,
-        $productValue,
-        $massActionManager
-    ) {
-        $this->setObjectsToMassEdit([$product1, $product2]);
-
-        $product1->getId()->willReturn(1);
-        $product2->getId()->willReturn(2);
-
-        $attribute->setLocale(Argument::any())->willReturn($attribute);
-        $attribute->getAttributeType()->willReturn('pim_catalog_text');
-        $attribute->isScopable()->willReturn(false);
-        $attribute->isLocalizable()->willReturn(false);
-        $attribute->getCode()->willReturn('attribute');
-        $attribute->getGroup()->willReturn(new AttributeGroup());
-
-        $massActionManager->findCommonAttributes([1, 2])->willReturn([$attribute]);
-        $productValue->getAttribute()->willReturn($attribute);
-
-        $this->initialize([1, 2]);
-        $this->setDisplayedAttributes(new ArrayCollection([$attribute]));
-
-        $this->getValues()->shouldHaveCount(1);
-
-        $productManager->handleAllMedia([$product1, $product2])->shouldBeCalled();
-
-        $this->perform();
-    }
 }

@@ -1,14 +1,5 @@
 {% extends bap.layout %}
 
-{% macro renderWidget(widget) %}
-    <div class="quick-launchpad-widget span6">
-        <div class="clearfix">
-            {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': widget })) }}
-        </div>
-    </div>
-{% endmacro %}
-{% import _self as __ %}
-
 {% block content %}
     <div class="dashboard header">
         <h3>{{ 'pim_dashboard.title'|trans }}</h3>
@@ -24,7 +15,7 @@
                 {% set widgetsArray = ['completeness', 'last_operations'] %}
 
                 {% for widget in widgetsArray %}
-                    {{ __.renderWidget(widget) }}
+                    {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': widget })) }}
                 {% endfor %}
             </div>
         </div>

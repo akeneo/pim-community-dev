@@ -338,12 +338,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^the Options section should contain ([^"]*) option$/
+     * @param integer $expectedCount
+     *
+     * @Given /^the Options section should contain ([^"]*) options?$/
      */
-    public function theOptionsSectionShouldContainOption()
+    public function theOptionsSectionShouldContainOption($expectedCount = 1)
     {
-        if (1 !== $count = $this->getCurrentPage()->countOptions()) {
-            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
+        if ($expectedCount != $count = $this->getCurrentPage()->countOptions()) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see %d option, saw %d.', $expectedCount, $count)
+            );
         }
     }
 
@@ -436,6 +440,7 @@ class WebUser extends RawMinkContext
      *
      * @Then /^the product (.*) should be empty$/
      * @Then /^the product (.*) should be "([^"]*)"$/
+     * @Then /^the field (.*) should contain "([^"]*)"$/
      */
     public function theProductFieldValueShouldBe($fieldName, $expected = '')
     {
@@ -475,6 +480,12 @@ class WebUser extends RawMinkContext
             sort($expected);
             $actual   = implode(', ', $actual);
             $expected = implode(', ', $expected);
+        } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
+            # We are dealing with an upload field
+            if (null === $filename = $parent->find('css', '.upload-filename')) {
+                throw new \LogicException('Cannot find filename of upload field');
+            }
+            $actual = $filename->getText();
         } else {
             $actual = $field->getValue();
         }
@@ -482,7 +493,7 @@ class WebUser extends RawMinkContext
         if ($expected != $actual) {
             throw $this->createExpectationException(
                 sprintf(
-                    'Expected product %s to be "%s", but got "%s".',
+                    'Expected product field "%s" to contain "%s", but got "%s".',
                     $fieldName,
                     $expected,
                     $actual

@@ -3,7 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Manager;
 
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 
@@ -137,7 +137,7 @@ class VersionManager
             $createdVersions[] = $this->versionBuilder
                 ->buildVersion($versionable, $this->username, $previousVersion, $this->context);
         } else {
-            $createdVersions[] = $this ->versionBuilder
+            $createdVersions[] = $this->versionBuilder
                 ->createPendingVersion($versionable, $this->username, $changeset, $this->context);
         }
 
@@ -145,11 +145,21 @@ class VersionManager
     }
 
     /**
-     * @return VersionRepository
+     * Get object manager for Version
+     *
+     * @return ObjectManager
+     */
+    public function getObjectManager()
+    {
+        return $this->registry->getManagerForClass('Pim\\Bundle\\VersioningBundle\\Model\\Version');
+    }
+
+    /**
+     * @return VersionRepositoryInterface
      */
     public function getVersionRepository()
     {
-        return $this->registry->getRepository('PimVersioningBundle:Version');
+        return $this->registry->getRepository('Pim\Bundle\VersioningBundle\Model\Version');
     }
 
     /**
@@ -157,7 +167,7 @@ class VersionManager
      *
      * @param object $versionable
      *
-     * @return ArrayCollection
+     * @return \Doctrine\Common\Collections\ArrayCollection
      */
     public function getLogEntries($versionable)
     {
@@ -168,26 +178,36 @@ class VersionManager
      * Return the oldest log entry. A the log is order by date
      * desc, it means the very last line of the log
      *
-     * @param object $versionable
+     * @param object    $versionable
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getOldestLogEntry($versionable)
+    public function getOldestLogEntry($versionable, $pending = false)
     {
-        return $this->getVersionRepository()->getOldestLogEntry(get_class($versionable), $versionable->getId());
+        return $this->getVersionRepository()->getOldestLogEntry(
+            get_class($versionable),
+            $versionable->getId(),
+            $pending
+        );
     }
 
     /**
      * Return the newest log entry. As the log is order by date
      * desc, it means the first line of the log
      *
-     * @param object $versionable
+     * @param object    $versionable
+     * @param null|bool $pending
      *
      * @return Version|null
      */
-    public function getNewestLogEntry($versionable)
+    public function getNewestLogEntry($versionable, $pending = false)
     {
-        return $this->getVersionRepository()->getNewestLogEntry(get_class($versionable), $versionable->getId());
+        return $this->getVersionRepository()->getNewestLogEntry(
+            get_class($versionable),
+            $versionable->getId(),
+            $pending
+        );
     }
 
     /**

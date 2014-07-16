@@ -10,7 +10,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\DatagridInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Extension\Acceptor;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 class AddLocaleCodeToGridListenerSpec extends ObjectBehavior
@@ -25,7 +25,7 @@ class AddLocaleCodeToGridListenerSpec extends ObjectBehavior
         DatagridInterface $datagrid,
         Acceptor $acceptor,
         DatagridConfiguration $config,
-        OrmDatasource $datasource,
+        Datasource $datasource,
         QueryBuilder $queryBuilder,
         $requestParams
     ) {
@@ -47,7 +47,7 @@ class AddLocaleCodeToGridListenerSpec extends ObjectBehavior
         DatagridInterface $datagrid,
         Acceptor $acceptor,
         DatagridConfiguration $config,
-        OrmDatasource $datasource,
+        Datasource $datasource,
         $requestParams
     ) {
         $event->getDatagrid()->willReturn($datagrid);

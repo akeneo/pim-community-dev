@@ -42,6 +42,46 @@ final class EnrichEvents
     const POST_EDIT_PRODUCT = 'pim_enrich.product.post_edit';
 
     /**
+     * This event is dispatched each time a category is being edited.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_EDIT_CATEGORY = 'pim_enrich.category.pre_edit';
+
+    /**
+     * This event is dispatched each time a category has been edited.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_EDIT_CATEGORY = 'pim_enrich.category.post_edit';
+
+    /**
+     * This event is dispatched each time a category is being created.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_CREATE_CATEGORY = 'pim_enrich.category.pre_create';
+
+    /**
+     * This event is dispatched each time a category has been created.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_CREATE_CATEGORY = 'pim_enrich.category.post_create';
+
+    /**
      * This event is dispatched before the parameters are sent to the twig engine
      *
      * The event listener receives an

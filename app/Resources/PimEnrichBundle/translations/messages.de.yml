@@ -131,6 +131,9 @@ flash:
     removed: Attributgruppe erfolgreich entfernt
     attributes added: Attribute erfolgreich zur Attributgruppe hinzugefügt
     attribute removed: Attribute erfolgreich aus der Attributgruppe entfernt
+    not removed attributes: Die Attributgruppe kann nicht gelöscht werden, solange sie Attribute enthält
+    not removed default: Die Standard Attributgruppe kann nicht gelöscht werden
+    not removed default attributes: Die Attribute können nicht aus der Standard Attributgruppe entfernt werden
   category:
     created: Kategorie erfolgreich angelegt
     updated: Kategorie erfolgreich aktualisiert
@@ -283,6 +286,7 @@ Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Search: Suche
 Choose the attribute type: Wählen Sie den Attributtyp aus
+Choose the attribute group: Wählen Sie die Attributgruppe
 Drop a file or click here: Datei hierhin ziehen oder klicken
 Drop an image or click here: Bild hierhin ziehen oder klicken
 Automatic option sorting: Option automatisch sortieren
@@ -427,6 +431,10 @@ pim_enrich.mass_edit_action:
     label: Zu Gruppen hinzufügen
     description: Wählen Sie die Gruppen aus, in welche die ausgewählten Produkte hinzugefügt werden sollen
     success_flash: Die Produkte wurden den ausgewählten Gruppen erfolgreich hinzugefügt
+  set-attribute-requirements:
+    label: Benötigte Attribute auswählen
+    description: Die folgenden benötigten Attribute werden den ausgewählten Produktfamilien zugeordnet
+    success_flash: Die benötigten Attribute wurden den ausgewählten Produktfamilien zugeordnet
 To enable: Um zu aktivieren
 Select attributes: Attribute auswählen
 Select: Auswählen
