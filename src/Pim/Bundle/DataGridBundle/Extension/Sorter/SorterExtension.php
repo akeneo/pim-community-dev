@@ -68,7 +68,7 @@ class SorterExtension extends AbstractExtension
             if (!isset($this->sorters[$sorterAlias])) {
                 throw new \LogicException(
                     sprintf(
-                        'The sorter "%s" used to configure the column "%s" not exists',
+                        'The sorter "%s" used to configure the column "%s" does not exist',
                         $sorterAlias,
                         $sortKey
                     )
@@ -133,18 +133,6 @@ class SorterExtension extends AbstractExtension
     protected function getSorters(DatagridConfiguration $config)
     {
         $sorters = $config->offsetGetByPath(Configuration::COLUMNS_PATH);
-
-        foreach ($sorters as $name => $definition) {
-            $definition     = is_array($definition) ? $definition : [];
-            $sorters[$name] = $definition;
-
-            if (isset($definition['supported']) && is_array($definition['supported']['eq'])) {
-                $comparison = $definition['supported']['eq'];
-                if ($comparison[0] !== $comparison[1]) {
-                    unset($sorters[$name]);
-                }
-            }
-        }
 
         return $sorters;
     }

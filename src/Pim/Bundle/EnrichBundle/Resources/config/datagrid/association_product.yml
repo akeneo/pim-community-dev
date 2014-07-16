@@ -58,10 +58,7 @@ datagrid:
             columns:
                 is_associated:
                     data_name: is_associated
-                    supported:
-                        eq:
-                            - %pim_catalog.storage_driver%
-                            - doctrine/orm
+                    sorter:    product_is_associated
                 family:
                     data_name: familyLabel
                     sorter:    product_family

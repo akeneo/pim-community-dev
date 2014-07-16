@@ -42,13 +42,16 @@ class ConfigureSortersListener
         $sorters = $config->offsetGetByPath($sortersPath);
 
         $datasource = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $sorterType = null;
         if (DatasourceInterface::DATASOURCE_PRODUCT === $datasource) {
             $sorterType = 'product_field';
         } elseif (DatasourceInterface::DATASOURCE_DUAL === $datasource &&
             PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
             $sorterType = 'mongodb_field';
-        } else {
-            $sorterType = 'field';
+        }
+
+        if (null === $sorterType) {
+            return;
         }
 
         foreach ($sorters as $sorterName => $sorterConfig) {
