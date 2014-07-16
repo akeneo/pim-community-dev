@@ -64,6 +64,7 @@
 - Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
 - Attribute Options code validation now more precise on uniqueness (equality instead of similarity)
 - Fixed a bug with repository resolver on ODM implementation
+- Fixed a bug on mass edit when we use a completeness filter to select products
 
 ## BC breaks
 - Remove FlexibleEntityBundle
