@@ -27,7 +27,7 @@ class Proposition
     /** @var string */
     protected $author;
 
-    /** @var DateTime */
+    /** @var \DateTime */
     protected $createdAt;
 
     /** @var array */
@@ -93,7 +93,7 @@ class Proposition
     }
 
     /**
-     * @param DateTime $createdAt
+     * @param \DateTime $createdAt
      *
      * @return Proposition
      */
@@ -105,7 +105,7 @@ class Proposition
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
