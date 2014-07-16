@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
+use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\ResultsObject;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
@@ -18,7 +19,7 @@ use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractPagerExtension extends AbstractExtension
+class PagerExtension extends AbstractExtension
 {
     /** @staticvar string Query params */
     const PAGER_ROOT_PARAM = '_pager';
@@ -26,16 +27,16 @@ abstract class AbstractPagerExtension extends AbstractExtension
     const PER_PAGE_PARAM   = '_per_page';
     const TOTAL_PARAM      = 'totalRecords';
 
-    /** @var PagerInterface */
-    protected $pager;
+    /** @var PagerResolver */
+    protected $pagerResolver;
 
     /**
-     * @param PagerInterface    $pager
+     * @param PagerResolver     $resolver
      * @param RequestParameters $requestParams
      */
-    public function __construct(PagerInterface $pager, RequestParameters $requestParams)
+    public function __construct(PagerResolver $resolver, RequestParameters $requestParams)
     {
-        $this->pager = $pager;
+        $this->pagerResolver = $resolver;
         parent::__construct($requestParams);
     }
 
@@ -44,7 +45,7 @@ abstract class AbstractPagerExtension extends AbstractExtension
      */
     public function __clone()
     {
-        $this->pager = clone $this->pager;
+        $this->pagerResolver = clone $this->pagerResolver;
     }
 
     /**
@@ -52,7 +53,7 @@ abstract class AbstractPagerExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return $this->matchDatasource($config);
+        return true;
     }
 
     /**
@@ -62,10 +63,12 @@ abstract class AbstractPagerExtension extends AbstractExtension
     {
         $defaultPerPage = $config->offsetGetByPath(ToolbarExtension::PAGER_DEFAULT_PER_PAGE_OPTION_PATH, 10);
 
-        $this->pager->setQueryBuilder($datasource->getQueryBuilder());
-        $this->pager->setPage($this->getOr(self::PAGE_PARAM, 1));
-        $this->pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
-        $this->pager->init();
+        $pager = $this->getPager($config);
+
+        $pager->setQueryBuilder($datasource->getQueryBuilder());
+        $pager->setPage($this->getOr(self::PAGE_PARAM, 1));
+        $pager->setMaxPerPage($this->getOr(self::PER_PAGE_PARAM, $defaultPerPage));
+        $pager->init();
     }
 
     /**
@@ -73,7 +76,7 @@ abstract class AbstractPagerExtension extends AbstractExtension
      */
     public function visitResult(DatagridConfiguration $config, ResultsObject $result)
     {
-        $result->offsetAddToArray('options', [self::TOTAL_PARAM => $this->pager->getNbResults()]);
+        $result->offsetAddToArray('options', [self::TOTAL_PARAM => $this->getPager($config)->getNbResults()]);
     }
 
     /**
@@ -119,7 +122,12 @@ abstract class AbstractPagerExtension extends AbstractExtension
     /**
      * @param DatagridConfiguration $config
      *
-     * @return boolean
+     * @return PagerInterface
      */
-    abstract protected function matchDatasource(DatagridConfiguration $config);
+    protected function getPager(DatagridConfiguration $config)
+    {
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+
+        return $this->pagerResolver->getPager($datasourceType);
+    }
 }

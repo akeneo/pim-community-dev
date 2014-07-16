@@ -108,6 +108,26 @@
 - Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
 - Inject SecurityFacade inside `Pim\Bundle\EnrichBundle\Controller\CategoryController`
 - Each dashboard widget has to define its full template, nothing is rendered automatically
+- Delete `Pim\Bundle\DataGridBundle\Extension\Filter\MongoDBFilterExtension`, `Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension`, `Pim\Bundle\DataGridBundle\Extension\Filter\ProductFilterExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Filter\AbstractFilterExtension` to `Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension` which expects a `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver\` as third argument for its constructor
+- Rename constant `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddFilterTypesPass::FILTER_ORM_EXTENSION_ID` to `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddFilterTypesPass::FILTER_EXTENSION_ID`
+- Delete `Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDBSorterExtension`, `Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension`, `Pim\Bundle\DataGridBundle\Extension\Sorter\ProductSorterExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Sorter\AbstractSorterExtension` to `Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension`
+- Rename constant `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddSortersPass::SORTER_ORM_EXTENSION_ID` to `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddSortersPass::SORTER_EXTENSION_ID`
+- Delete service `pim_datagrid.extension.filter.mongodb_filter`
+- Delete service `pim_datagrid.extension.filter.product_filter`
+- Rename service `pim_datagrid.extension.filter.orm_filter` to `pim_datagrid.extension.filter`
+- Delete service `pim_datagrid.extension.sorter.mongodb_sorter`
+- Rename service `pim_datagrid.extension.sorter.orm_sorter` to `pim_datagrid.extension.sorter`
+- Delete `Pim\Bundle\DataGridBundle\Extension\Pager\MongoDBPagerExtension`,`Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension` and `Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Pagerr\AbstractPagerExtension` to `Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension` which expects a `PagerResolver` as first argument
+- Delete service `pim_datagrid.extension.pager.mongodb_pager`
+- Delete service `pim_datagrid.extension.pager.product_pager`
+- Rename service `pim_datagrid.extension.pager.orm_pager` to `pim_datagrid.extension.pager`
+- Replace `Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource` by `Pim\Bundle\DataGridBundle\Datasource\Datasource`
+- Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
+- Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
+- Delete service `pim_datagrid.datasource.mongodb`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

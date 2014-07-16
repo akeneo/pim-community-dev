@@ -116,10 +116,9 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-group-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.history_grid_listener:
-        class: %oro_dataaudit.event_listener.dataaudit_history_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_history_grid_listener.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
-            - [objectClass, objectId]
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-history-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }

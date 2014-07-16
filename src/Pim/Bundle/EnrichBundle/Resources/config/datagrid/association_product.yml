@@ -8,7 +8,7 @@ datagrid:
                 dataField: id
                 columnName: is_checked
         source:
-            type:              pim_product
+            type:              pim_datasource_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createAssociationDatagridQueryBuilder
             user_config_alias: product-grid
@@ -58,10 +58,7 @@ datagrid:
             columns:
                 is_associated:
                     data_name: is_associated
-                    supported:
-                        eq:
-                            - %pim_catalog.storage_driver%
-                            - doctrine/orm
+                    sorter:    product_is_associated
                 family:
                     data_name: familyLabel
                     sorter:    product_family

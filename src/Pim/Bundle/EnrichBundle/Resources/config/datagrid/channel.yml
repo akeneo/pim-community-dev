@@ -5,7 +5,7 @@ datagrid:
             locale_parameter: localeCode
         source:
             acl_resource: pim_enrich_channel_index
-            type: pim_orm
+            type: pim_datasource_default
             entity: %pim_catalog.entity.channel.class%
             repository_method: createDatagridQueryBuilder
         columns:
