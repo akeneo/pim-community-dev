@@ -106,7 +106,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      *
      * @return array
      */
-    protected function getDocsFromProducts($products)
+    protected function getDocsFromProducts(array $products)
     {
         $context = array();
         $context[ProductNormalizer::MONGO_COLLECTION_NAME] = $this->collection->getName();
