@@ -43,7 +43,11 @@ class ConfigureHistoryGridListener
         $config = $event->getConfig();
 
         $repositoryParameters = array(
-            'objectClass' => str_replace('_', '\\', $this->requestParams->get(AuditHistoryGridListener::GRID_PARAM_CLASS, '')),
+            'objectClass' => str_replace(
+                '_',
+                '\\',
+                $this->requestParams->get(AuditHistoryGridListener::GRID_PARAM_CLASS, '')
+            ),
             'objectId' => $this->requestParams->get(AuditHistoryGridListener::GRID_PARAM_OBJECT_ID, 0),
         );
 
