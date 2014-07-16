@@ -31,24 +31,16 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
-    /**
-     * @var ProductManager
-     */
+    /** @var ProductManager */
      protected $productManager;
 
-    /**
-     * @var DocumentManager
-     */
+    /** @var DocumentManager */
      protected $documentManager;
 
-    /**
-     * @var PendingVersionMassPersister
-     */
+    /**@var PendingVersionMassPersister */
      protected $pendingPersister;
 
-    /**
-     * @var NormalizerInterface
-     */
+    /** @var NormalizerInterface */
     protected $normalizer;
 
     /**
@@ -65,6 +57,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param ProductManager              $productManager
      * @param DocumentManager             $documentManager
      * @param PendingVersionMassPersister $pendingPersister
+     * @param NormalizerInterface         $normalizer
      */
     public function __construct(
         ProductManager $productManager,
@@ -143,8 +136,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected function insertDocuments($docs)
     {
         $this->collection->batchInsert($docs);
-
-        for ($i = 0; $i < count($docs); $i++) {
+        $productsCount = count($docs);
+        for ($i = 0; $i < $productsCount; $i++) {
             $this->stepExecution->incrementSummaryInfo('created');
         }
     }

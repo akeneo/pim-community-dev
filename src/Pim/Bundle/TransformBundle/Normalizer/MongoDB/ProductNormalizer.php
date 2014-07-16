@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 {
+    /** @staticvar string */
     const FORMAT = "mongodb_document";
 
     /** @staticvar string */
