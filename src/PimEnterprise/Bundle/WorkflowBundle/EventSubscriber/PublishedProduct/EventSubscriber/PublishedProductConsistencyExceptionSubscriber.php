@@ -48,6 +48,7 @@ class PublishedProductConsistencyExceptionSubscriber implements EventSubscriberI
     {
         $e = $event->getException();
         if ($e instanceof PublishedProductConsistencyException && $e->needsRedirection()) {
+            // Only work if the url matching the _route is also accessible through GET
             $request = $event->getRequest();
             $response = new RedirectResponse(
                 $this->router->generate(
