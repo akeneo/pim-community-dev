@@ -345,7 +345,9 @@ class WebUser extends RawMinkContext
     public function theOptionsSectionShouldContainOption($expectedCount = 1)
     {
         if ($expectedCount != $count = $this->getCurrentPage()->countOptions()) {
-            throw $this->createExpectationException(sprintf('Expecting to see %d option, saw %d.', $expectedCount, $count));
+            throw $this->createExpectationException(
+                sprintf('Expecting to see %d option, saw %d.', $expectedCount, $count)
+            );
         }
     }
 
