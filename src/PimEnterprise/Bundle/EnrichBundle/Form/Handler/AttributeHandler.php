@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Handler;
 
-use Pim\Bundle\EnrichBundle\Flash\Message;
+use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +42,11 @@ class AttributeHandler extends PimAttributeHandler
         $this->publishedRepository = $publishedRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @throws PublishedProductConsistencyException
+     */
     public function process(AbstractAttribute $entity)
     {
         $this->addMissingOptionValues($entity);
@@ -52,7 +57,14 @@ class AttributeHandler extends PimAttributeHandler
             $this->form->submit($this->request);
 
             // Check if attribute options have been already published
-            $this->checkAttributeOptionsRemovable($entity, $oldOptions);
+            if (false === $this->checkAttributeOptionsRemovable($entity, $oldOptions)) {
+                throw new PublishedProductConsistencyException(
+                    "Impossible to remove an option that has been published in a product",
+                    0,
+                    null,
+                    true
+                );
+            }
 
             if ($this->form->isValid()) {
                 $this->onSuccess($entity, $oldOptions);
@@ -70,7 +82,7 @@ class AttributeHandler extends PimAttributeHandler
      * @param AbstractAttribute $entity
      * @param Collection        $oldOptions
      *
-     * @throws \Exception
+     * @return boolean
      */
     protected function checkAttributeOptionsRemovable(AbstractAttribute $entity, Collection $oldOptions)
     {
@@ -78,7 +90,7 @@ class AttributeHandler extends PimAttributeHandler
         if ($countPublished > 0) {
             foreach ($oldOptions as $oldOption) {
                 if (false === $entity->getOptions()->contains($oldOption)) {
-                    throw new \Exception("Impossible to remove an option that has been published in a product");
+                    return false;
                 }
             }
         }
