@@ -17,7 +17,6 @@ use \MongoDate;
  */
 class DateTimeNormalizer implements NormalizerInterface
 {
-
     /** @var MongoObjectsFactory */
     protected $mongoFactory;
 

@@ -16,7 +16,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
  */
 class AssociationNormalizer implements NormalizerInterface
 {
-
     /** @var MongoObjectsFactory */
     protected $mongoFactory;
 

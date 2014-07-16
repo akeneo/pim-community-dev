@@ -72,7 +72,7 @@ class MetricNormalizer implements NormalizerInterface
     /**
      * Convert data in standard unit for metrics
      *
-     * @param Metric
+     * @param Metric $metric
      */
     protected function createMetricBaseValues(Metric $metric)
     {

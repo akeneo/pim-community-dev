@@ -172,8 +172,7 @@ class PendingVersionMassPersister
     protected function getVersionTable()
     {
         if (null === $this->versionTable) {
-            $this->versionTable = $this->getVersionMetadata()
-                ->getTableName();
+            $this->versionTable = $this->getVersionMetadata()->getTableName();
         }
 
         return $this->versionTable;
