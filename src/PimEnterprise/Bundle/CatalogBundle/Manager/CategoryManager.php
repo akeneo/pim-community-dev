@@ -6,7 +6,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager as BaseCategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -87,5 +89,65 @@ class CategoryManager extends BaseCategoryManager
         }
 
         return $children;
+    }
+
+    /**
+     * Provides a tree filled up to the categories provided, with all their ancestors
+     * and ancestors sibligns are filled too, in order to be able to display the tree
+     * directly without loading other data
+     * We apply permissions per category to hide not granted category or branch when
+     * the path is not fully granted
+     *
+     * @param CategoryInterface $root       Tree root category
+     * @param Collection        $categories Selected categories
+     *
+     * @return array Multi-dimensional array representing the tree
+     */
+    public function getGrantedFilledTree(CategoryInterface $root, Collection $categories)
+    {
+        $parentsIds = array();
+        foreach ($categories as $category) {
+            $categoryParentsIds = array();
+            $path = $this->getEntityRepository()->getPath($category);
+            if ($path[0]->getId() === $root->getId()) {
+                foreach ($path as $pathItem) {
+                    $categoryParentsIds[] = $pathItem->getId();
+                    if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                        $categoryParentsIds = [];
+                        break;
+                    }
+                }
+            }
+            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
+        }
+        $parentsIds = array_unique($parentsIds);
+        $filledTree = $this->getEntityRepository()->getTreeFromParents($parentsIds);
+
+        return $this->filterGrantedFilledTree($filledTree);
+    }
+
+    /**
+     * Filter the filled tree to remove not granted category or branch of categories
+     *
+     * @param array &$filledTree the tree
+     *
+     * @return array Multi-dimensional array representing the tree
+     */
+    protected function filterGrantedFilledTree(&$filledTree)
+    {
+        foreach ($filledTree as $categoryIdx => &$categoryData) {
+
+            $isLeaf = is_object($categoryData);
+            $category = $isLeaf ? $categoryData : $categoryData['item'];
+
+            if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
+                unset($filledTree[$categoryIdx]);
+
+            } elseif (!$isLeaf) {
+                $this->filterGrantedFilledTree($categoryData['__children']);
+            }
+        }
+
+        return $filledTree;
     }
 }

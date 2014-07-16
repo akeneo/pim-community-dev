@@ -1,5 +1,0 @@
-services:
-    pimee_datagrid.extension.sorter.proposition.field_sorter:
-        class: %pimee_datagrid.extension.sorter.proposition.field_sorter.class%
-        tags:
-            - { name: pimee_datagrid.extension.sorter, type: proposition_field }

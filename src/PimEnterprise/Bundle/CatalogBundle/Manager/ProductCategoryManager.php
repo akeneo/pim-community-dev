@@ -43,22 +43,28 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     * @see getProductCountByTree same logic but here we apply permisions and count only visible category (full path)
      */
-    public function getProductCountByTree(ProductInterface $product)
+    public function getProductCountByGrantedTree(ProductInterface $product)
     {
-        $trees =  $this->productRepository->getProductCountByTree($product);
-
-        foreach ($trees as $key => $tree) {
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree['tree'])) {
-                unset($trees[$key]);
+        $count     = $this->getProductCountWithFullGrantedPath($product);
+        $trees     = $this->categoryRepository->getChildren(null, true, 'created', 'DESC');
+        $treeCount = [];
+        foreach ($trees as $tree) {
+            if ($this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $tree)) {
+                $treeCount[] = [
+                    'tree' => $tree,
+                    'productCount' => isset($count[$tree->getId()]) ? $count[$tree->getId()] : 0
+                ];
             }
         }
 
-        return $trees;
+        return $treeCount;
     }
 
     /**
      * {@inheritdoc}
+     * @see getProductsCountInCategory same logic with applying permissions
      */
     public function getProductsCountInGrantedCategory(
         CategoryInterface $category,
@@ -80,6 +86,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
 
     /**
      * {@inheritdoc}
+     * @see getProductIdsInCategory same logic with applying permissions
      */
     public function getProductIdsInGrantedCategory(CategoryInterface $category, $inChildren = false)
     {
@@ -94,6 +101,38 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
+    }
+
+    /**
+     * Count only product with a full accessible path
+     *
+     * @param ProductInterface $product
+     *
+     * @return array with format [treeId => productCount]
+     */
+    protected function getProductCountWithFullGrantedPath(ProductInterface $product)
+    {
+        $categories = $product->getCategories();
+        $treesCount = [];
+        foreach ($categories as $category) {
+            $path = $this->categoryRepository->getPath($category);
+            $fullPathGranted = true;
+            foreach ($path as $pathItem) {
+                if (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
+                    $fullPathGranted = false;
+                    break;
+                }
+            }
+            if ($fullPathGranted) {
+                $treeId = $category->getRoot();
+                if (!isset($treesCount[$treeId])) {
+                    $treesCount[$treeId] = 0;
+                }
+                $treesCount[$treeId]++;
+            }
+        }
+
+        return $treesCount;
     }
 
     /**

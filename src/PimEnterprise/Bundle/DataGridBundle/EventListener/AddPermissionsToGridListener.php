@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\DataGridBundle\EventListener;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildAfter;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterface;
 
 /**
@@ -47,21 +46,19 @@ class AddPermissionsToGridListener
     public function onBuildAfter(BuildAfter $event)
     {
         $datasource = $event->getDatagrid()->getDatasource();
-        if ($datasource instanceof OrmDatasource) {
 
-            // Prepare subquery
-            $user  = $this->securityContext->getUser();
-            $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
+        // Prepare subquery
+        $user  = $this->securityContext->getUser();
+        $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
-            $datasource->getRepository()->addGridAccessQB(
-                $datasource->getQueryBuilder(),
-                $subQB
-            );
+        $datasource->getRepository()->addGridAccessQB(
+            $datasource->getQueryBuilder(),
+            $subQB
+        );
 
-            $queryParameters = [
-                'roles' => $user->getRoles()
-            ];
-            $datasource->setParameters($queryParameters);
-        }
+        $queryParameters = [
+            'roles' => $user->getRoles()
+        ];
+        $datasource->setParameters($queryParameters);
     }
 }

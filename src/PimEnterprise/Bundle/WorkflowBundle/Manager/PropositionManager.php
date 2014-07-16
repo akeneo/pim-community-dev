@@ -77,13 +77,13 @@ class PropositionManager
      */
     public function approve(Proposition $proposition)
     {
-        $product = $proposition->getProduct();
-        $this->applier->apply($product, $proposition);
-
         $this->dispatcher->dispatch(
             PropositionEvents::PRE_APPROVE,
             new PropositionEvent($proposition)
         );
+
+        $product = $proposition->getProduct();
+        $this->applier->apply($product, $proposition);
 
         $manager = $this->registry->getManagerForClass(get_class($proposition));
         $manager->remove($proposition);

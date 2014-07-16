@@ -8,8 +8,11 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * Product Controller
@@ -109,5 +112,25 @@ class ProductController extends BaseProductController
         $value = $product->getValue($attributeCode, $locale, $scope);
 
         return new Response((string) $value);
+    }
+
+    /**
+     * Override to get only the granted path for the filled tree
+     *
+     * {@inheritdoc}
+     */
+    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
+    {
+        return $this->categoryManager->getGrantedFilledTree($parent, $categories);
+    }
+
+    /**
+     * Override to get only the granted count for the granted tree
+     *
+     * {@inheritdoc}
+     */
+    protected function getProductCountByTree(ProductInterface $product)
+    {
+        return $this->productCatManager->getProductCountByGrantedTree($product);
     }
 }

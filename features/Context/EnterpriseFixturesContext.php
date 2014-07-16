@@ -28,32 +28,60 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * {@inheritdoc}
      */
-    public function createProduct($data)
+    public function createProduct($data, $skipDefaultCategory = false)
     {
         if (!is_array($data)) {
             $data = ['sku' => $data];
         }
-        $defaultCategory = null;
-        foreach ($this->getCategoryRepository()->findAll() as $category) {
-            if ($category->isRoot()) {
-                $defaultCategory = $category->getCode();
-            }
-        }
 
-        if (!$defaultCategory) {
-            throw new \LogicException(
-                'Cannot find the default category in which to put all the products non associated to any category'
+        if (!$skipDefaultCategory) {
+            $defaultCategory = null;
+            foreach ($this->getCategoryRepository()->findAll() as $category) {
+                if ($category->isRoot()) {
+                    $defaultCategory = $category->getCode();
+                }
+            }
+
+            if (!$defaultCategory) {
+                throw new \LogicException(
+                    'Cannot find the default category in which to put all the products non associated to any category'
+                );
+            }
+            $data = array_merge(
+                ['categories' => $defaultCategory],
+                $data
             );
         }
 
-        return parent::createProduct(
-            array_merge(
-                ['categories' => $defaultCategory],
-                $data
-            )
-        );
+        return parent::createProduct($data);
     }
 
+    /**
+     * @param TableNode $table
+     */
+    public function theFollowingProductValues(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
+
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
+            }
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+
+            $data = [
+                'sku'          => $row['product'],
+                $attributeCode => $this->replacePlaceholders($row['value'])
+            ];
+
+            $this->createProduct($data, true);
+        }
+
+        $this->flush();
+    }
 
     /**
      * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/

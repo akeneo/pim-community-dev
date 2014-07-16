@@ -14,13 +14,4 @@ use PimEnterprise\Bundle\DataGridBundle\DependencyInjection\Compiler;
  */
 class PimEnterpriseDataGridBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container
-            ->addCompilerPass(new Compiler\AddFilterTypesPass())
-            ->addCompilerPass(new Compiler\AddSortersPass());
-    }
 }
