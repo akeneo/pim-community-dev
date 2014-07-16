@@ -51,3 +51,10 @@ Feature: Ensure that a published product is safe
     And I confirm the removal
     Then I am on the attributes page
     And I should see attribute handmade
+
+  Scenario: Fail to remove an option that the attribute is linked to a published product
+    Given I am on the "main_color" attribute page
+    And I visit the "Values" tab
+    And I remove the "white" option
+    When I save the attribute
+    Then the Options section should contain 8 options
