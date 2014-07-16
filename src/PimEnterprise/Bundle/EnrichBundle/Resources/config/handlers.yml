@@ -1,5 +1,5 @@
 parameters:
-    pim_enrich.form.handler.attribute.class:    PimEnterprise\Bundle\EnrichBundle\Form\Handler\AttributeHandler
+    pim_enrich.form.handler.attribute.class: PimEnterprise\Bundle\EnrichBundle\Form\Handler\AttributeHandler
 
 services:
     pim_enrich.form.handler.attribute:

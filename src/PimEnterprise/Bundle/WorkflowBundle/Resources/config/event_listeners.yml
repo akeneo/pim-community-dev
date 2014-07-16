@@ -11,7 +11,6 @@ services:
         tags:
             - { name: kernel.event_subscriber}
 
-
     pimee_workflow.event_listener.published_product_consistency_exception:
         class: %pimee_workflow.event_listener.published_product_consistency_exception.class%
         arguments:
