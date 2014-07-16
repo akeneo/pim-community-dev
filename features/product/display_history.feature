@@ -1,4 +1,4 @@
-@javascript
+@javascript @skip
 Feature: Display the product history
   In order to know who, when and what changes has been made to a product
   As a product manager
