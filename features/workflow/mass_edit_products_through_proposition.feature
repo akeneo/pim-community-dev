@@ -41,7 +41,7 @@ Feature: Mass edit products through propositon
     And I am logged in as "Mary"
     And I am on the products page
 
-  Scenario:
+  Scenario: Succesfully create simple text attribute proposition of many products
     Given I mass-edit products my-first-jacket and my-second-jacket
     And I choose the "Edit attributes" operation
     And I display the Name attribute
