@@ -3,7 +3,7 @@ datagrid:
         options:
             entityHint: proposition
         source:
-            type: pim_proposition
+            type: pim_datasource_smart
             entity: %pimee_workflow.model.proposition.class%
             repository_method: createDatagridQueryBuilder
         columns:
@@ -69,12 +69,9 @@ datagrid:
             columns:
                 author:
                     data_name: author
-                    sorter: proposition_field
                 status:
                     data_name: status
-                    sorter: proposition_field
                 createdAt:
                     data_name: createdAt
-                    sorter: proposition_field
             default:
                 createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
