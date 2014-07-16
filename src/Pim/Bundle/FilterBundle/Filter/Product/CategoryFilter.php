@@ -52,32 +52,14 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
-        $qb                 = $ds->getQueryBuilder();
-
         if ($data['categoryId'] === self::ALL_CATEGORY) {
-            return true;
+            return $this->applyFilterByAll($ds, $data);
+
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $tree = $categoryRepository->find($data['treeId']);
-            if ($tree) {
-                $data['includeSub'] = true;
-                $productIds = $this->getProductIdsInCategory($tree, $data);
-                $productRepository->applyFilterByIds($qb, $productIds, false);
+            return $this->applyFilterByUnclassified($ds, $data);
 
-                return true;
-            }
         } else {
-            $category = $categoryRepository->find($data['categoryId']);
-            if (!$category) {
-                $category = $categoryRepository->find($data['treeId']);
-            }
-            if ($category) {
-                $productIds = $this->getProductIdsInCategory($category, $data);
-                $productRepository->applyFilterByIds($qb, $productIds, true);
-
-                return true;
-            }
+            return $this->applyFilterByCategory($ds, $data);
         }
 
         return false;
@@ -99,6 +81,49 @@ class CategoryFilter extends NumberFilter
             'treeId'     => isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null,
             'categoryId' => isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null
         ];
+    }
+
+    protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        return true;
+    }
+
+    protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
+
+        $tree = $categoryRepository->find($data['treeId']);
+        if ($tree) {
+            $data['includeSub'] = true;
+            $productIds = $this->getProductIdsInCategory($tree, $data);
+            $productRepository->applyFilterByIds($qb, $productIds, false);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
+
+        $category = $categoryRepository->find($data['categoryId']);
+        if (!$category) {
+            $category = $categoryRepository->find($data['treeId']);
+        }
+        if ($category) {
+            $productIds = $this->getProductIdsInCategory($category, $data);
+            $productRepository->applyFilterByIds($qb, $productIds, true);
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
