@@ -47,17 +47,13 @@ class PublishedProductConsistencyExceptionSubscriber implements EventSubscriberI
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $e = $event->getException();
-        if ($e instanceof PublishedProductConsistencyException && $e->needsRedirection()) {
+        if ($e instanceof PublishedProductConsistencyException) {
             // Only work if the url matching the _route is also accessible through GET
-            $request = $event->getRequest();
-            $response = new RedirectResponse(
-                $this->router->generate(
-                    $request->attributes->get('_route'),
-                    $request->attributes->get('_route_params')
-                )
-            );
-            $event->setResponse($response);
-            $request->getSession()->getFlashBag()->add('error', $e->getMessage());
+            if (null !== $e->getRoute()) {
+                $response = new RedirectResponse($this->router->generate($e->getRoute(), $e->getRouteParams()));
+                $event->setResponse($response);
+                $event->getRequest()->getSession()->getFlashBag()->add('error', $e->getMessage());
+            }
         }
     }
 }

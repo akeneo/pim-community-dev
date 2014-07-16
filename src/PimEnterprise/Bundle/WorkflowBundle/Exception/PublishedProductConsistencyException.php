@@ -10,29 +10,45 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Exception;
  */
 class PublishedProductConsistencyException extends \Exception
 {
-    /** @var boolean */
-    protected $needsRedirection;
+    /** @var string */
+    protected $route;
+
+    /** @var array */
+    protected $routeParams;
 
     /**
      * @param string     $message
      * @param integer    $code
      * @param \Exception $previous
-     * @param boolean    $needsRedirection
+     * @param string     $route
+     * @param array      $routeParams
      */
-    public function __construct($message = "", $code = 0, \Exception $previous = null, $needsRedirection = false)
-    {
+    public function __construct(
+        $message = "",
+        $code = 0,
+        \Exception $previous = null,
+        $route = null,
+        $routeParams = array()
+    ) {
         parent::__construct($message, $code, $previous);
 
-        $this->needsRedirection = $needsRedirection;
+        $this->route = $route;
+        $this->routeParams = $routeParams;
     }
 
     /**
-     * Predicate to know if this exception needs redirection or not
-     *
-     * @return boolean
+     * @return string
      */
-    public function needsRedirection()
+    public function getRoute()
     {
-        return $this->needsRedirection;
+        return $this->route;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRouteParams()
+    {
+        return $this->routeParams;
     }
 }

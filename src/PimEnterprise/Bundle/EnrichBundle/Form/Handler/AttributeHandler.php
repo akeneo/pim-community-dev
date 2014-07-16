@@ -62,7 +62,8 @@ class AttributeHandler extends PimAttributeHandler
                     "Impossible to remove an option that has been published in a product",
                     0,
                     null,
-                    true
+                    'pim_enrich_attribute_edit',
+                    ['id' => $entity->getId()]
                 );
             }
 
