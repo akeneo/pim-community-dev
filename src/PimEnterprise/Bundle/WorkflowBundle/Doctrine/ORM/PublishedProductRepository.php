@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -44,6 +45,27 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPublishedVersionIdByOriginalProductId($originalId)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->select('IDENTITY(pp.version) AS version_id')
+            ->where('pp.originalProduct = :originalId')
+            ->setParameter('originalId', $originalId)
+        ;
+
+        try {
+            $versionId = (int) $qb->getQuery()->getSingleScalarResult();
+        } catch(NoResultException $e) {
+            $versionId = null;
+        }
+
+        return $versionId;
     }
 
     /**

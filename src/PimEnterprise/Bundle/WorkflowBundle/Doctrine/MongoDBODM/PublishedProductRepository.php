@@ -54,6 +54,25 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     /**
      * {@inheritdoc}
      */
+    public function getPublishedVersionIdByOriginalProductId($originalId)
+    {
+        $qb = $this->createQueryBuilder();
+        $qb->select('version');
+        $qb->field('originalProduct.$id')->equals(new \MongoId($originalId));
+        $qb->hydrate(false);
+
+        $results = $qb->getQuery()->execute();
+
+        foreach ($results as $result) {
+            return $result['version']['$id']->{'$id'};
+        }
+
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getProductIdsMapping(array $originalIds = [])
     {
         $qb = $this->createQueryBuilder();

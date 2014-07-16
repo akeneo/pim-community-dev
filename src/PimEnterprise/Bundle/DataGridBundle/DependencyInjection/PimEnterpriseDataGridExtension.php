@@ -24,5 +24,11 @@ class PimEnterpriseDataGridExtension extends Extension
         $loader->load('configurators.yml');
         $loader->load('event_listeners.yml');
         $loader->load('mass_actions.yml');
+        $loader->load('hydrators.yml');
+        $loader->load('data_sources.yml');
+
+        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load(sprintf('storage_driver/%s.yml', $storageDriver));
     }
 }
