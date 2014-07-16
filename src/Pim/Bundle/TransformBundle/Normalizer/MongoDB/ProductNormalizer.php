@@ -101,8 +101,8 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * Normalize the values of the product to MongoDB objects
      *
-     * @param ArrayCollection $values
-     * @param array           $context
+     * @param ProductValue[]|Collection $values
+     * @param array                     $context
      *
      * @return array
      */
@@ -123,7 +123,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * Normalize the associations of the product
      *
-     * @param Association[] $associations
+     * @param Association[]|Collection $associations
      *
      * @return array
      */
@@ -144,7 +144,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * Normalize the groups of the product
      *
-     * @param Group[] $groups
+     * @param Group[]|Collection $groups
      *
      * @return array
      */
@@ -162,7 +162,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * Normalize the categories of the product
      *
-     * @param Category[] $categories
+     * @param Category[]|Collection $categories
      *
      * @return array
      */
