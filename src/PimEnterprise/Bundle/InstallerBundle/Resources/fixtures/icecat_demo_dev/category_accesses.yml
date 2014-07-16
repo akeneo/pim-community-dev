@@ -17,15 +17,15 @@ category_accesses:
         own: [administrator, manager]
     tvs_projectors:
         view: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator, manager, user]
         own: [administrator, manager]
     pc_monitors:
         view: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator, manager, user]
         own: [administrator, manager]
     led_tvs:
         view: [administrator, manager, user]
-        edit: [administrator, manager]
+        edit: [administrator, manager, user]
         own: [administrator, manager]
     cameras:
         view: [administrator, manager, user]
