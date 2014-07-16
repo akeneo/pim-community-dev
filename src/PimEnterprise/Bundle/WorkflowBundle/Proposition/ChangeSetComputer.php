@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Proposition;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
@@ -23,16 +24,22 @@ class ChangeSetComputer implements ChangeSetComputerInterface
     /** @var EventDispatcherInterface $eventDispatcher */
     protected $eventDispatcher;
 
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
     /**
      * @param ComparatorInterface      $comparator
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ProductBuilder           $productBuilder
      */
     public function __construct(
         ComparatorInterface $comparator,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ProductBuilder $productBuilder
     ) {
         $this->comparator = $comparator;
         $this->eventDispatcher = $eventDispatcher;
+        $this->productBuilder = $productBuilder;
     }
 
     /**
@@ -44,6 +51,8 @@ class ChangeSetComputer implements ChangeSetComputerInterface
         if (!isset($submittedData['values'])) {
             return $changeSet;
         }
+
+        $this->productBuilder->addMissingProductValues($product);
 
         $currentValues = $product->getValues();
         foreach ($submittedData['values'] as $key => $data) {
