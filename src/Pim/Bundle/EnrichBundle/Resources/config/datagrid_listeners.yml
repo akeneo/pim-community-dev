@@ -27,6 +27,8 @@ services:
           - '@pim_user.context.user'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.product_group_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
