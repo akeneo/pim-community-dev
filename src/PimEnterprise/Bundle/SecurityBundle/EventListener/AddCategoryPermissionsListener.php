@@ -51,7 +51,8 @@ class AddCategoryPermissionsListener implements EventSubscriberInterface
             $this->accessManager->setAccess(
                 $category,
                 $this->accessManager->getViewRoles($parent),
-                $this->accessManager->getEditRoles($parent)
+                $this->accessManager->getEditRoles($parent),
+                $this->accessManager->getOwnRoles($parent)
             );
         }
     }
