@@ -93,8 +93,8 @@ class FilterExtension extends AbstractExtension
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        $datasourceAdapterClass = $this->adapterResolver->getDatasourceClass($datasourceType);
-        $datasourceAdapter = new $datasourceAdapterClass($datasource->getQueryBuilder());
+        $adapterClass = $this->adapterResolver->getDatasourceClass($datasourceType);
+        $datasourceAdapter = new $adapterClass($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;
