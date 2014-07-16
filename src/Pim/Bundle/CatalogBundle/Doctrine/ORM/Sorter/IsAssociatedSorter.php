@@ -16,7 +16,6 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 class IsAssociatedSorter implements FieldSorterInterface
 {
     /**
-     * QueryBuilder
      * @var QueryBuilder
      */
     protected $qb;

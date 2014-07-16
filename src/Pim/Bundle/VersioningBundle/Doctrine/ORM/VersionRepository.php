@@ -83,8 +83,11 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
                 )
             );
 
-        if (!empty($parameters['objectClass']) && !empty($parameters['objectId'])) {
+        if (!empty($parameters['objectClass'])) {
             $qb->setParameter(':objectClass', $parameters['objectClass']);
+        }
+
+        if (!empty($parameters['objectId'])) {
             $qb->setParameter(':objectId', $parameters['objectId']);
         }
 

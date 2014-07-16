@@ -11,5 +11,4 @@ namespace Pim\Bundle\CatalogBundle\Repository;
  */
 interface MassActionRepositoryInterface
 {
-
 }

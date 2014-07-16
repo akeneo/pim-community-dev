@@ -30,7 +30,7 @@ class DatasourceAdapterResolverSpec extends ObjectBehavior
         $this->shouldThrow()->during('getDatasourceClass', [Argument::any()]);
     }
 
-    function it_should_return_an_odm_adapter_class_for_a_dual_or_a_product_datasource()
+    function it_should_return_an_odm_adapter_class_for_a_smart_or_a_product_datasource()
     {
         $this->setOdmAdapterClass('odm_adapter_class');
         $this->getDatasourceClass('pim_datasource_product')->shouldReturn('odm_adapter_class');

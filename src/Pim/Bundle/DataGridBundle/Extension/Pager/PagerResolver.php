@@ -46,10 +46,10 @@ class PagerResolver
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             return $this->ormPager;
         } elseif (null === $this->mongoPager) {
-            throw new InvalidConfigurationException('The Mongo DB pager should be registered.');
+            throw new InvalidConfigurationException('The MongoDB pager should be registered.');
         }
 
-        if (DatasourceInterface::DATASOURCE_DUAL === $gridType ||
+        if (DatasourceInterface::DATASOURCE_SMART === $gridType ||
             DatasourceInterface::DATASOURCE_PRODUCT === $gridType) {
             return $this->mongoPager;
         }

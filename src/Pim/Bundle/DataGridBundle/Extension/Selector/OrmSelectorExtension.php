@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Selector;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\From;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
@@ -28,9 +29,26 @@ class OrmSelectorExtension extends AbstractExtension
     const COLUMN_SELECTOR_PATH = 'selector';
 
     /**
+     * @var string
+     */
+    protected $storageDriver;
+
+    /**
      * @var SelectorInterface[]
      */
     protected $selectors;
+
+    /**
+     * Constructor
+     *
+     * @param string            $storageDriver
+     * @param RequestParameters $requestParams
+     */
+    public function __construct($storageDriver, RequestParameters $requestParams = null)
+    {
+        $this->storageDriver = $storageDriver;
+        $this->requestParams = $requestParams;
+    }
 
     /**
      * {@inheritdoc}
@@ -94,12 +112,10 @@ class OrmSelectorExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        //TODO: [source ][product_storage] seems to be never defined, so check if it works well
         if (DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType &&
-            PimCatalogExtension::DOCTRINE_ORM === $config->offsetGetByPath('[source][product_storage]')) {
+            PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             return true;
         }
-
 
         return false;
     }

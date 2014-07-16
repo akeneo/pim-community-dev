@@ -9,13 +9,13 @@ parameters:
     pim_datagrid.extension.formatter.property.version.author_property.class: Pim\Bundle\DataGridBundle\Extension\Formatter\Property\Version\AuthorProperty
 
 services:
-    pim_datagrid.datasource.dual:
+    pim_datagrid.datasource.smart:
         class: %pim_datagrid.datasource.default.class%
         arguments:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_datagrid.datasource.result_record.hydrator.default'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_dual }
+            - { name: oro_datagrid.datasource, type: pim_datasource_smart }
 
     pim_datagrid.extension.pager.mongodb.pager:
         class: %pim_datagrid.extension.pager.mongodb.pager.class%

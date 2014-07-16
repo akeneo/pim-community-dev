@@ -45,7 +45,7 @@ class ConfigureSortersListener
         $sorterType = null;
         if (DatasourceInterface::DATASOURCE_PRODUCT === $datasource) {
             $sorterType = 'product_field';
-        } elseif (DatasourceInterface::DATASOURCE_DUAL === $datasource &&
+        } elseif (DatasourceInterface::DATASOURCE_SMART === $datasource &&
             PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
             $sorterType = 'mongodb_field';
         }

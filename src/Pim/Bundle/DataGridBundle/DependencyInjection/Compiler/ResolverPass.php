@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
- * Resolvers
+ * Setup the the pager resolver and the datasource adapter resolver for the MongoDB support.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

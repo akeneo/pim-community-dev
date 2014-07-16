@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
@@ -45,12 +46,15 @@ class FilterExtension extends AbstractExtension
     /**
      * @param RequestParameters         $requestParams
      * @param TranslatorInterface       $translator
-     * @param DatasourceAdapterResolver $adapterLoader
+     * @param DatasourceAdapterResolver $adapterResolver
      */
-    public function __construct(RequestParameters $requestParams, TranslatorInterface $translator, DatasourceAdapterResolver $adapterLoader)
-    {
+    public function __construct(
+        RequestParameters $requestParams,
+        TranslatorInterface $translator,
+        DatasourceAdapterResolver $adapterResolver
+    ) {
         $this->translator = $translator;
-        $this->adapterResolver = $adapterLoader;
+        $this->adapterResolver = $adapterResolver;
         parent::__construct($requestParams);
     }
 
@@ -66,7 +70,7 @@ class FilterExtension extends AbstractExtension
         }
 
         // ORO grids have a datasource of type ORM, do not apply our filters on these grids
-        return 'orm' !== $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        return PimDatasourceInterface::DATASOURCE_ORO !== $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
     }
 
     /**

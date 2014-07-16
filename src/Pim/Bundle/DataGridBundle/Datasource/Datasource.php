@@ -22,7 +22,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /** @var \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder */
     protected $qb;
 
-    /** @var ObjectManager  */
+    /** @var ObjectManager */
     protected $om;
 
     /** @var ObjectRepository */
@@ -31,7 +31,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     /** @var MassActionRepositoryInterface */
     protected $massActionRepository;
 
-    /** @var HydratorInterface  */
+    /** @var HydratorInterface */
     protected $hydrator;
 
     /** @var array */
@@ -188,4 +188,4 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
 
         return $this->configuration[$key];
     }
-} 
+}

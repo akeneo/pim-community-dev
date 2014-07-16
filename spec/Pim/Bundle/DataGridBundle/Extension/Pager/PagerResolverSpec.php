@@ -25,12 +25,12 @@ class PagerResolverSpec extends ObjectBehavior
         $this->getPager(Argument::any())->shouldReturn($orm);
     }
 
-    function it_should_throw_an_exception_when_mongo_support_is_enabled_and_mongo_pager_is_not_registered($mongo)
+    function it_should_throw_an_exception_when_mongo_support_is_enabled_and_mongo_pager_is_not_registered()
     {
         $this->shouldThrow()->during('getPager', [Argument::any()]);
     }
 
-    function it_should_return_an_odm_pager_for_a_dual_or_a_product_datasource($mongo)
+    function it_should_return_an_odm_pager_for_a_smart_or_a_product_datasource(PagerInterface $mongo)
     {
         $this->setMongoPager($mongo);
         $this->getPager('pim_datasource_product')->shouldReturn($mongo);

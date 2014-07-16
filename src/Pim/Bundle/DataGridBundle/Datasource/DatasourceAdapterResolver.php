@@ -24,8 +24,8 @@ class DatasourceAdapterResolver
     protected $odmAdapterClass;
 
     /**
-     * @param $storageDriver
-     * @param $ormAdapterClass
+     * @param string $storageDriver
+     * @param string $ormAdapterClass
      */
     public function __construct($storageDriver, $ormAdapterClass)
     {
@@ -44,10 +44,10 @@ class DatasourceAdapterResolver
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             return $this->ormAdapterClass;
         } elseif (null === $this->odmAdapterClass) {
-            throw new InvalidConfigurationException('The Mongo DB adapter class should be registered.');
+            throw new InvalidConfigurationException('The MongoDB adapter class should be registered.');
         }
 
-        if (DatasourceInterface::DATASOURCE_DUAL === $datasourceType ||
+        if (DatasourceInterface::DATASOURCE_SMART === $datasourceType ||
             DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType) {
             return $this->odmAdapterClass;
         }
