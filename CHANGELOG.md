@@ -65,6 +65,7 @@
 - Attribute Options code validation now more precise on uniqueness (equality instead of similarity)
 - Fixed a bug with repository resolver on ODM implementation
 - Fixed a bug on mass edit when we use a completeness filter to select products
+- Removed the import CSV mimetype validation which is unreliable
 
 ## BC breaks
 - Remove FlexibleEntityBundle

@@ -29,14 +29,7 @@ class CsvReader extends FileReader implements
      * @Assert\NotBlank(groups={"Execution"})
      * @AssertFile(
      *     groups={"Execution"},
-     *     allowedExtensions={"csv", "zip"},
-     *     mimeTypes={
-     *         "text/csv",
-     *         "text/comma-separated-values",
-     *         "text/plain",
-     *         "application/csv",
-     *         "application/zip"
-     *     }
+     *     allowedExtensions={"csv", "zip"}
      * )
      */
     protected $filePath;
