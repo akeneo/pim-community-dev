@@ -32,9 +32,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @staticvar string */
-    const CONTEXT_OWNERSHIP = 'ownership';
-
     /**
      * Find a category from its id, trows an exception if not found or not granted
      *
@@ -48,7 +45,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected function findGrantedCategory($categoryId, $context)
     {
         $category = $this->findCategory($categoryId);
-        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE, self::CONTEXT_OWNERSHIP];
+        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
 
         if (!in_array($context, $allowed)) {
              throw new AccessDeniedException('You can not access this category');
@@ -73,7 +70,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function findGrantedTrees(UserInterface $user, $context)
     {
-        $allTrees = ($context === self::CONTEXT_MANAGE || $context === self::CONTEXT_OWNERSHIP);
+        $allTrees = ($context === self::CONTEXT_MANAGE);
 
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
             return $this->categoryManager->getTrees($this->getUser());
@@ -117,7 +114,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected function getChildren($parentId, $selectNodeId = false)
     {
         $context = $this->request->get('context', false);
-        $allTrees = ($context === self::CONTEXT_MANAGE || $context === self::CONTEXT_OWNERSHIP);
+        $allTrees = ($context === self::CONTEXT_MANAGE);
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
             return $this->categoryManager->getChildren($parentId, $selectNodeId);
         } else {
