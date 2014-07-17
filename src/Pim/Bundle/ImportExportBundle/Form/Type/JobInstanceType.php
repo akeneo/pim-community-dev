@@ -62,26 +62,6 @@ class JobInstanceType extends AbstractType
     }
 
     /**
-     * {@inheritdoc}
-     *
-     * Allows to print job name as alias instead of call __toString method
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        if (!isset($view['alias'])) {
-            return;
-        }
-
-        /** @var array<ChoiceView> $aliases */
-        $aliases = $view['alias'];
-        foreach ($aliases->vars['choices'] as $connector) {
-            foreach ($connector as $alias) {
-                $alias->label = $alias->label->getName();
-            }
-        }
-    }
-
-    /**
      * Add code field and subscriber
      *
      * @param FormBuilderInterface $builder
@@ -143,8 +123,14 @@ class JobInstanceType extends AbstractType
      */
     protected function addAliasField(FormBuilderInterface $builder)
     {
-        $choices = $this->connectorRegistry->getJobs($this->jobType);
-        unset($choices['oro_importexport']);
+        $choices = [];
+        foreach ($this->connectorRegistry->getJobs($this->jobType) as $connector => $jobs) {
+            if ('oro_importexport' !== $connector) {
+                foreach ($jobs as $key => $job) {
+                    $choices[$connector][$key] = $job->getName();
+                }
+            }
+        }
 
         $builder
             ->add(
