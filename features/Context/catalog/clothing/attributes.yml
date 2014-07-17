@@ -199,9 +199,9 @@ attributes:
             saddle:
                 labels:
                     en_US: Saddle
-            greem:
+            green:
                 labels:
-                    en_US: Greem
+                    en_US: Green
             red:
                 labels:
                     en_US: Red

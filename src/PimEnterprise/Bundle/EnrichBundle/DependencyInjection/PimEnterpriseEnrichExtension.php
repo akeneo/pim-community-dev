@@ -25,5 +25,6 @@ class PimEnterpriseEnrichExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('mass_actions.yml');
         $loader->load('parameters.yml');
+        $loader->load('handlers.yml');
     }
 }
