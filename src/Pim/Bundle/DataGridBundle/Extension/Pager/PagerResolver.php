@@ -38,6 +38,7 @@ class PagerResolver
      * @param string $datasourceType
      *
      * @return PagerInterface
+     *
      * @throws InvalidConfigurationException
      */
     public function getPager($datasourceType)

@@ -1,5 +1,5 @@
 parameters:
-    pim_datagrid.datasource.default.class:     Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pim_datagrid.datasource.default.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
     pim_datagrid.datasource.product.class: Pim\Bundle\DataGridBundle\Datasource\ProductDatasource
     pim_datagrid.datasource.support_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver
     pim_datagrid.datasource.adapter_resolver.class: Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver

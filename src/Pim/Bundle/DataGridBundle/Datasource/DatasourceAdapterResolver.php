@@ -36,6 +36,7 @@ class DatasourceAdapterResolver
      * @param $datasourceType
      *
      * @return string
+     *
      * @throws InvalidConfigurationException
      */
     public function getAdapterClass($datasourceType)
