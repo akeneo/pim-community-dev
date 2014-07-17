@@ -94,5 +94,7 @@ class AttributeHandler extends PimAttributeHandler
                 }
             }
         }
+        
+        return true;
     }
 }
