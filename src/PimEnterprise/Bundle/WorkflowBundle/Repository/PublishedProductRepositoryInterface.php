@@ -2,11 +2,11 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
@@ -21,27 +21,29 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
     /**
      * Fetch a published product by the working copy product id
      *
-     * @param mixed $originalId
+     * @param ProductInterface $originalProduct
      *
      * @return PublishedProductInterface
      */
-    public function findOneByOriginalProductId($originalId);
+    public function findOneByOriginalProduct(ProductInterface $originalProduct);
 
     /**
      * Fetch many published products by a list of working copy product ids
      *
-     * @param array $originalIds
+     * @param ProductInterface[] $originalProducts
      *
      * @return PublishedProductInterface[]
      */
-    public function findByOriginalProductIds(array $originalIds);
+    public function findByOriginalProducts(array $originalProducts);
 
     /**
      * Get the ID's of all published products. * The keys of the array are the ID of the original product.
      *
+     * @param integer[] $originalIds
+     *
      * @return array [ original product ID => published product ID ]
      */
-    public function getProductIdsMapping();
+    public function getProductIdsMapping(array $originalIds = []);
 
     /**
      * Count published products for a specific family

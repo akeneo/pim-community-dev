@@ -8,7 +8,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as PimAvailableAtt
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override available attributes type to remove attributes where permissions are revoked
@@ -49,7 +49,7 @@ class AvailableAttributesType extends PimAvailableAttributesType
     {
         $revokedAttributeIds = $this->attGroupAccessRepo->getRevokedAttributeIds(
             $this->userContext->getUser(),
-            AttributeGroupVoter::EDIT_ATTRIBUTES
+            Attributes::EDIT_ATTRIBUTES
         );
 
         $builder->add(

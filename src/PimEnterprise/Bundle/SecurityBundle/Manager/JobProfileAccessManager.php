@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Oro\Bundle\UserBundle\Entity\Role;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile access manager
@@ -43,7 +43,7 @@ class JobProfileAccessManager
      */
     public function getExecuteRoles(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, JobProfileVoter::EXECUTE_JOB_PROFILE);
+        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
     }
 
     /**
@@ -55,7 +55,7 @@ class JobProfileAccessManager
      */
     public function getEditRoles(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, JobProfileVoter::EDIT_JOB_PROFILE);
+        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE);
     }
 
     /**
@@ -69,13 +69,13 @@ class JobProfileAccessManager
     {
         $grantedRoles = [];
         foreach ($editRoles as $role) {
-            $this->grantAccess($jobProfile, $role, JobProfileVoter::EDIT_JOB_PROFILE);
+            $this->grantAccess($jobProfile, $role, Attributes::EDIT_JOB_PROFILE);
             $grantedRoles[] = $role;
         }
 
         foreach ($executeRoles as $role) {
             if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($jobProfile, $role, JobProfileVoter::EXECUTE_JOB_PROFILE);
+                $this->grantAccess($jobProfile, $role, Attributes::EXECUTE_JOB_PROFILE);
                 $grantedRoles[] = $role;
             }
         }
@@ -98,7 +98,7 @@ class JobProfileAccessManager
         $access = $this->getJobProfileAccess($jobProfile, $role);
         $access
             ->setExecuteJobProfile(true)
-            ->setEditJobProfile($accessLevel === JobProfileVoter::EDIT_JOB_PROFILE);
+            ->setEditJobProfile($accessLevel === Attributes::EDIT_JOB_PROFILE);
 
         $this->getObjectManager()->persist($access);
     }

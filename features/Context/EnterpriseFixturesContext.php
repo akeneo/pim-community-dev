@@ -8,8 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Behat\Behat\Context\Step;
@@ -22,35 +21,67 @@ use Behat\Behat\Context\Step;
  */
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
+    protected $enterpriseEntities = [
+        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+    ];
+
     /**
      * {@inheritdoc}
      */
-    public function createProduct($data)
+    public function createProduct($data, $skipDefaultCategory = false)
     {
         if (!is_array($data)) {
             $data = ['sku' => $data];
         }
-        $defaultCategory = null;
-        foreach ($this->getCategoryRepository()->findAll() as $category) {
-            if ($category->isRoot()) {
-                $defaultCategory = $category->getCode();
-            }
-        }
 
-        if (!$defaultCategory) {
-            throw new \LogicException(
-                'Cannot find the default category in which to put all the products non associated to any category'
+        if (!$skipDefaultCategory) {
+            $defaultCategory = null;
+            foreach ($this->getCategoryRepository()->findAll() as $category) {
+                if ($category->isRoot()) {
+                    $defaultCategory = $category->getCode();
+                }
+            }
+
+            if (!$defaultCategory) {
+                throw new \LogicException(
+                    'Cannot find the default category in which to put all the products non associated to any category'
+                );
+            }
+            $data = array_merge(
+                ['categories' => $defaultCategory],
+                $data
             );
         }
 
-        return parent::createProduct(
-            array_merge(
-                ['categories' => $defaultCategory],
-                $data
-            )
-        );
+        return parent::createProduct($data);
     }
 
+    /**
+     * @param TableNode $table
+     */
+    public function theFollowingProductValues(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
+
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
+            }
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+
+            $data = [
+                'sku'          => $row['product'],
+                $attributeCode => $this->replacePlaceholders($row['value'])
+            ];
+
+            $this->createProduct($data, true);
+        }
+
+        $this->flush();
+    }
 
     /**
      * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
@@ -179,6 +210,35 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getEntities()
+    {
+        return array_merge($this->entities, $this->enterpriseEntities);
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getPublished($sku)
+    {
+        $published = $this->getPublishedProductManager()->findByIdentifier($sku);
+
+        if (!$published) {
+            throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
+        }
+
+        $this->refresh($published);
+
+        return $published;
+    }
+
+
+    /**
      * @Given /^I should the following proposition:$/
      */
     public function iShouldTheFollowingProposition(TableNode $table)
@@ -227,23 +287,25 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following published products:$/
+     * @Given /^the following published products?:$/
      */
     public function theFollowingPublishedProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->createProduct($data);
-
-            $this->getPublishedManager()->publish($product);
+            $this->createPublishedProduct($data);
         }
     }
 
     /**
-     * @return PublishedProductManager
+     * @param $data
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      */
-    protected function getPublishedManager()
+    protected function createPublishedProduct($data)
     {
-        return $this->getContainer()->get('pimee_workflow.manager.published_product');
+        $product = $this->createProduct($data);
+
+        return $this->getPublishedProductManager()->publish($product);
     }
 
     /**
@@ -273,6 +335,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+     */
+    protected function getPublishedProductManager()
+    {
+        return $this->getContainer()->get('pimee_workflow.manager.published_product');
+    }
+
+    /**
      * Get the access level according to the access type and action (view or edit)
      *
      * @param $type
@@ -284,11 +354,11 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
         if ('attribute group' === $type) {
-            return ($action === 'edit') ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
+            return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
         if ('category' === $type) {
-            return ($action === 'edit') ? CategoryVoter::EDIT_PRODUCTS : CategoryVoter::VIEW_PRODUCTS;
+            return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
         throw new \Exception('Undefined access type');

@@ -2,11 +2,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Oro\Bundle\UserBundle\Entity\Role;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category voter, allows to know if products of a category can be edited or consulted by a
@@ -17,12 +18,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  */
 class CategoryVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
-
-    /** @staticvar string */
-    const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
-
     /**
      * @var CategoryAccessManager
      */
@@ -41,7 +36,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [self::VIEW_PRODUCTS, self::EDIT_PRODUCTS]);
+        return in_array($attribute, [Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS]);
     }
 
     /**
@@ -87,7 +82,7 @@ class CategoryVoter implements VoterInterface
      */
     protected function extractRoles($attribute, $object)
     {
-        if ($attribute === self::EDIT_PRODUCTS) {
+        if ($attribute === Attributes::EDIT_PRODUCTS) {
             $grantedRoles = $this->accessManager->getEditRoles($object);
         } else {
             $grantedRoles = $this->accessManager->getViewRoles($object);

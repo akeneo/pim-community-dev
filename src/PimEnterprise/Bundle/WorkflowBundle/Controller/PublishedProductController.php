@@ -115,6 +115,31 @@ class PublishedProductController extends AbstractController
     }
 
     /**
+     * Un publish a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @Template
+     * @AclAncestor("pimee_workflow_published_product_index")
+     * @return array
+     */
+    public function unpublishAction(Request $request, $id)
+    {
+        $published = $this->manager->findPublishedProductById($id);
+        $this->manager->unpublish($published);
+        $this->addFlash('success', 'flash.product.unpublished');
+
+        /**
+        if (!isset($parameters['dataLocale'])) {
+            $parameters['dataLocale'] = $this->getDataLocale();
+        }
+         */
+
+        return parent::redirectToRoute('pimee_workflow_published_product_index');
+    }
+
+    /**
      * View a product
      *
      * @param Request $request

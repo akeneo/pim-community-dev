@@ -35,9 +35,17 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
-        return $this->createQueryBuilder('p');
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author, p.status as status')
+            ->from($this->_entityName, 'p', 'p.id');
+
+        if (isset($parameters['product'])) {
+            $this->applyDatagridContext($qb, $parameters['product']);
+        }
+
+        return $qb;
     }
 
     /**
@@ -47,7 +55,8 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
      */
     public function applyDatagridContext($qb, $productId)
     {
-        $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
+        $qb->innerJoin('p.product', 'product', 'WITH', 'product.id = :product');
+        $qb->setParameter('product', $productId);
 
         return $this;
     }

@@ -7,12 +7,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 class CategoryVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(CategoryVoter::VIEW_PRODUCTS, CategoryVoter::EDIT_PRODUCTS);
+    protected $attributes = array(Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS);
 
     function let(CategoryAccessManager $accessManager, TokenInterface $token)
     {
@@ -29,7 +30,7 @@ class CategoryVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, CategoryVoter $wrongClass)
     {
         $this
-            ->vote($token, $wrongClass, [CategoryVoter::VIEW_PRODUCTS])
+            ->vote($token, $wrongClass, [Attributes::VIEW_PRODUCTS])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -57,7 +58,7 @@ class CategoryVoterSpec extends ObjectBehavior
         $accessManager->getEditRoles($category)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $category, array(CategoryVoter::EDIT_PRODUCTS))
+            ->vote($token, $category, array(Attributes::EDIT_PRODUCTS))
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -72,7 +73,7 @@ class CategoryVoterSpec extends ObjectBehavior
         $accessManager->getViewRoles($category)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $category, array(CategoryVoter::VIEW_PRODUCTS))
+            ->vote($token, $category, array(Attributes::VIEW_PRODUCTS))
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

@@ -8,8 +8,9 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -26,28 +27,34 @@ class PublishedProductManager
     /** @var PublishedProductRepositoryInterface*/
     protected $repository;
 
-    /** @var PublishedProductFactory **/
-    protected $factory;
-
-    /** @var  EventDispatcherInterface */
+    /** @var EventDispatcherInterface */
     protected $eventDispatcher;
+
+    /** @var PublisherInterface */
+    protected $publisher;
+
+    /** @var  UnpublisherInterface */
+    protected $unpublisher;
 
     /**
      * @param ProductManager                      $manager         the product manager
      * @param PublishedProductRepositoryInterface $repository      the published repository
-     * @param PublishedProductFactory             $factory         the published product factory
      * @param EventDispatcherInterface            $eventDispatcher the event dispatcher
+     * @param PublisherInterface                  $publisher       the product publisher
+     * @param UnpublisherInterface                $unpublisher     the product unpublisher
      */
     public function __construct(
         ProductManager $manager,
         PublishedProductRepositoryInterface $repository,
-        PublishedProductFactory $factory,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        PublisherInterface $publisher,
+        UnpublisherInterface $unpublisher
     ) {
         $this->productManager  = $manager;
         $this->repository      = $repository;
-        $this->factory         = $factory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->publisher = $publisher;
+        $this->unpublisher = $unpublisher;
     }
 
     /**
@@ -65,13 +72,13 @@ class PublishedProductManager
     /**
      * Find the published product by its original id
      *
-     * @param mixed $productId
+     * @param ProductInterface $product
      *
      * @return PublishedProductInterface
      */
-    public function findPublishedProductByOriginalId($productId)
+    public function findPublishedProductByOriginal(ProductInterface $product)
     {
-        return $this->repository->findOneByOriginalProductId($productId);
+        return $this->repository->findOneByOriginalProduct($product);
     }
 
     /**
@@ -87,6 +94,25 @@ class PublishedProductManager
     }
 
     /**
+     * Find a published product by its identifier
+     *
+     * @param string $identifier
+     *
+     * @return PublishedProductInterface
+     */
+    public function findByIdentifier($identifier)
+    {
+        return $this->repository->findOneBy(
+            [
+                [
+                    'attribute' => $this->productManager->getIdentifierAttribute(),
+                    'value' => $identifier
+                ]
+            ]
+        );
+    }
+
+    /**
      * Publish a product
      *
      * @param ProductInterface $product
@@ -97,19 +123,35 @@ class PublishedProductManager
     {
         $this->dispatchEvent(PublishedProductEvents::PRE_PUBLISH, $product);
 
-        $published = $this->findPublishedProductByOriginalId($product->getId());
+        $published = $this->findPublishedProductByOriginal($product);
         if ($published) {
+            $this->unpublisher->unpublish($published);
             $this->getObjectManager()->remove($published);
             $this->getObjectManager()->flush();
         }
 
-        $published = $this->factory->createPublishedProduct($product);
+        $published = $this->publisher->publish($product);
         $this->getObjectManager()->persist($published);
         $this->getObjectManager()->flush();
 
         $this->dispatchEvent(PublishedProductEvents::POST_PUBLISH, $product, $published);
 
         return $published;
+    }
+
+    /**
+     * Un publish a product
+     *
+     * @param PublishedProductInterface $published
+     */
+    public function unpublish(PublishedProductInterface $published)
+    {
+        $product = $published->getOriginalProduct();
+        $this->dispatchEvent(PublishedProductEvents::PRE_UNPUBLISH, $product, $published);
+        $this->unpublisher->unpublish($published);
+        $this->getObjectManager()->remove($published);
+        $this->getObjectManager()->flush();
+        $this->dispatchEvent(PublishedProductEvents::POST_UNPUBLISH, $product);
     }
 
     /**

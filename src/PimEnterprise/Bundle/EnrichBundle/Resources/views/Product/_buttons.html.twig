@@ -1,4 +1,4 @@
-{{ elements.backLink(path('pim_enrich_product_index')) }}
+{{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
 {{ elements.enabledSwitch(form) }}
 {% if resource_granted("pim_enrich_product_remove") %}
      {{ elements.deleteLink(

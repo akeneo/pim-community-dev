@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile access repository
@@ -30,7 +30,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
      */
     public function getGrantedRoles(JobInstance $jobProfile, $accessLevel)
     {
-        $accessField = ($accessLevel === JobProfileVoter::EDIT_JOB_PROFILE) ? 'editJobProfile' : 'executeJobProfile';
+        $accessField = ($accessLevel === Attributes::EDIT_JOB_PROFILE) ? 'editJobProfile' : 'executeJobProfile';
 
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -107,7 +107,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
      */
     protected function getAccessField($accessLevel)
     {
-        return ($accessLevel === JobProfileVoter::EDIT_JOB_PROFILE)
+        return ($accessLevel === Attributes::EDIT_JOB_PROFILE)
             ? 'ja.editJobProfile'
             : 'ja.executeJobProfile';
     }

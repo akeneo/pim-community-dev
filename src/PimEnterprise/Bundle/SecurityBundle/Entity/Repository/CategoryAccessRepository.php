@@ -2,14 +2,16 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Oro\Bundle\UserBundle\Entity\Role;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Symfony\Component\Security\Core\Role\RoleInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\AbstractQuery;
+use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category access repository
@@ -34,14 +36,12 @@ class CategoryAccessRepository extends EntityRepository
      */
     public function getGrantedRoles(CategoryInterface $category, $accessLevel)
     {
-        $accessField = ($accessLevel === CategoryVoter::EDIT_PRODUCTS) ? 'editProducts' : 'viewProducts';
-
         $qb = $this->createQueryBuilder('a');
         $qb
             ->select('r')
             ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
             ->where('a.category = :category')
-            ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
+            ->andWhere($qb->expr()->eq(sprintf('a.%s', $this->getAccessField($accessLevel)), true))
             ->setParameter('category', $category);
 
         return $qb->getQuery()->getResult();
@@ -87,7 +87,7 @@ class CategoryAccessRepository extends EntityRepository
         $qb
             ->andWhere($qb->expr()->in('ca.role', ':roles'))
             ->setParameter('roles', $user->getRoles())
-            ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
+            ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('ca.category', 'c', 'c.id')
             ->select('c.id');
@@ -105,11 +105,6 @@ class CategoryAccessRepository extends EntityRepository
      */
     public function getRevokedCategoryQB(User $user, $accessLevel)
     {
-        // prepare access field depending on access level
-        $accessField = ($accessLevel === CategoryVoter::EDIT_PRODUCTS)
-            ? 'ca.edit_products'
-            : 'ca.view_products';
-
         // get role ids
         $roleIds = array_map(
             function (RoleInterface $role) {
@@ -130,15 +125,38 @@ class CategoryAccessRepository extends EntityRepository
             ->andWhere(
                 $qb->expr()->orX(
                     $qb->expr()->andX(
-                        $qb->expr()->neq($accessField, true),
+                        $qb->expr()->neq('ca.'.$this->getAccessField($accessLevel), true),
                         $qb->expr()->in('ca.role_id', $roleIds)
                     ),
-                    $qb->expr()->isNull($accessField)
+                    $qb->expr()->isNull('ca.'.$this->getAccessField($accessLevel))
                 )
             )
             ->groupBy('c.id');
 
         return $qb;
+    }
+
+    /**
+     * Get granted category ids
+     *
+     * @param RoleInterface[] $roles
+     * @param integer[]       $categoryIds
+     *
+     * @return integer[]
+     */
+    public function getCategoryIdsWithExistingAccess($roles, $categoryIds)
+    {
+        $qb = $this->createQueryBuilder('ca');
+        $qb
+            ->andWhere($qb->expr()->in('ca.role', ':roles'))
+            ->setParameter('roles', $roles)
+            ->andWhere($qb->expr()->in('c.id', ':categories'))
+            ->setParameter('categories', $categoryIds)
+            ->resetDQLParts(['select'])
+            ->innerJoin('ca.category', 'c', 'c.id')
+            ->select('c.id');
+
+        return $this->hydrateAsIds($qb);
     }
 
     /**
@@ -204,31 +222,56 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
-     * Get granted category ids for a user
-     * If $filterableIds is provided, the returned ids will consist of these ids
-     * filtered by the given access level
+     * Get the granted roles for a product
      *
-     * @param User      $user
-     * @param string    $accessLevel
-     * @param integer[] $filterableIds
+     * @param ProductInterface $product     the product
+     * @param string           $accessLevel the expected access level
      *
-     * @return integer[]
+     * @return array
      */
-    public function getGrantedAttributeIds(User $user, $accessLevel, array $filterableIds = null)
+    public function getGrantedRolesForProduct(ProductInterface $product, $accessLevel)
     {
-        $qb = $this->getGrantedCategoryQB($user, $accessLevel);
-        $qb
-            ->select('a.id')
-            ->innerJoin('ca.products', 'a')
-            ->groupBy('a.id');
-
-        if (null !== $filterableIds) {
-            $qb->andWhere(
-                $qb->expr()->in('a.id', $filterableIds)
-            );
+        $categories = $product->getCategories();
+        if (count($categories) === 0) {
+            return [];
         }
+        $categoryIds = [];
+        foreach ($categories as $category) {
+            $categoryIds[]= $category->getId();
+        }
+        $qb = $this->createQueryBuilder('o');
+        $qb->where($qb->expr()->in('o.category', $categoryIds));
+        $qb->andWhere($qb->expr()->eq('o.'.$this->getAccessField($accessLevel), true));
+        $qb->leftJoin('o.role', 'role');
+        $qb->select('DISTINCT(role.id) as id, role.label');
+        $roles = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        return $this->hydrateAsIds($qb);
+        return $roles;
+    }
+
+    /**
+     * Indicates whether a user is the owner of any categories
+     *
+     * @param User $user
+     *
+     * @return boolean
+     */
+    public function isOwner(User $user)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb
+            ->select('o.id')
+            ->where(
+                $qb->expr()->in('o.role', ':roles')
+            )
+            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->eq('o.'.$this->getAccessField(Attributes::OWN_PRODUCTS), true))
+            ->setMaxResults(1);
+
+        $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_SCALAR);
+
+        return (bool) count($result);
     }
 
     /**
@@ -240,9 +283,16 @@ class CategoryAccessRepository extends EntityRepository
      */
     protected function getAccessField($accessLevel)
     {
-        return ($accessLevel === CategoryVoter::EDIT_PRODUCTS)
-            ? 'ca.editProducts'
-            : 'ca.viewProducts';
+        $mapping = [
+            Attributes::OWN_PRODUCTS => 'ownProducts',
+            Attributes::EDIT_PRODUCTS => 'editProducts',
+            Attributes::VIEW_PRODUCTS => 'viewProducts'
+        ];
+        if (!isset($mapping[$accessLevel])) {
+            throw new \LogicException(sprintf('%s access level not exists', $accessLevel));
+        }
+
+        return $mapping[$accessLevel];
     }
 
     /**

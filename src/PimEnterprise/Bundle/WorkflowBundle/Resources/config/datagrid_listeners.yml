@@ -39,3 +39,5 @@ services:
           - '@pim_user.context.user'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.published-product-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]

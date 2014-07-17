@@ -49,11 +49,11 @@ class RelatedAssociationPublisher implements PublisherInterface
     public function publish($object, array $options = [])
     {
         $productIds = $this->publishedRepository->getProductIdsMapping();
-        unset($productIds[$object->getOriginalProductId()]);
+        unset($productIds[$object->getOriginalProduct()->getId()]);
 
         if (0 !== count($productIds)) {
-            $associations = $this->associationRepository->findByProductIdAndOwnerIds(
-                $object->getOriginalProductId(),
+            $associations = $this->associationRepository->findByProductAndOwnerIds(
+                $object->getOriginalProduct(),
                 array_keys($productIds)
             );
 

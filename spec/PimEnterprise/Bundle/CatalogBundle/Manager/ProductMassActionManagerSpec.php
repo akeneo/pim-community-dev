@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\SecurityContext;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class ProductMassActionManagerSpec extends ObjectBehavior
 {
@@ -38,7 +38,7 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         $massActionRepo->findCommonAttributeIds($productIds)->shouldBeCalled()->willReturn($attributeIds);
 
         $attGroupAccessRepo
-            ->getGrantedAttributeGroupQB($user, AttributeGroupVoter::EDIT_ATTRIBUTES)
+            ->getGrantedAttributeGroupQB($user, Attributes::EDIT_ATTRIBUTES)
             ->shouldBeCalled()
             ->willReturn($subQB);
 

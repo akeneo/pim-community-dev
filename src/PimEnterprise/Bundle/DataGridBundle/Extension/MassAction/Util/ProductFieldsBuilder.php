@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as PimProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override to apply permissions on attribute groups
@@ -64,7 +64,7 @@ class ProductFieldsBuilder extends PimProductFieldsBuilder
             ->accessRepository
             ->getGrantedAttributeIds(
                 $this->securityContext->getUser(),
-                AttributeGroupVoter::VIEW_ATTRIBUTES,
+                Attributes::VIEW_ATTRIBUTES,
                 $this->attributeIds
             );
     }

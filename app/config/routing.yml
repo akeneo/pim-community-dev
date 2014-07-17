@@ -18,9 +18,6 @@ pim_webservice:
 pim_workflow:
     resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
 
-pim_security:
-    resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
-
 pim_versioning:
     resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
 

@@ -1,3 +1,57 @@
+{% if form.vars.value.id %}
+<script type="text/javascript">
+    require(
+        ['jquery', 'underscore', 'jquery.select2'],
+        function ($, _) {
+            'use strict';
+
+            {% if form.vars.value.hasChildren() %}
+            $(function () {
+                $('#{{form.permissions.vars.id}}').append('<div class="control-group"><label class="control-label">{{ 'Changes'|trans }}</label><div class="controls"><ul id="permissions-changes"></ul></div></div>');
+                $('#permissions-changes').parent().parent().children('label').hide();
+
+                $('#{{form.permissions.vars.id}} select')
+                    .select2()
+                    .on('change', function(e) {
+
+                        var permission = $(this).attr('id');
+                        var permissionLabel = $.trim($(this).parents('.control-group').children('label').text()).toLowerCase();
+
+                        if (typeof e.added !== 'undefined') {
+                            if ($('#change-'+permission+'-'+e.added.id).length > 0) {
+                                $('#change-'+permission+'-'+e.added.id).remove();
+                            } else {
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.added.id+"'>"
+                                    +_.__('permissions-changes.grant-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.added.text})+"</li>");
+                            }
+                        }
+
+                        if (typeof e.removed !== 'undefined') {
+                            if ($('#change-'+permission+'-'+e.removed.id).length > 0) {
+                                $('#change-'+permission+'-'+e.removed.id).remove();
+                            } else {
+                                $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>"
+                                    +_.__('permissions-changes.revoke-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.removed.text})+"</li>");
+                            }
+                        }
+
+                        if ($('#permissions-changes').children().size() > 0) {
+                            $('#permissions-changes').parent().parent().children('label').show();
+                        } else {
+                            $('#permissions-changes').parent().parent().children('label').hide();
+                        }
+                    });
+            });
+
+            {% else %}
+            $(function () {
+                $('#{{form.permissions.apply_on_children.vars.id}}').parent().parent().hide();
+            });
+            {% endif %}
+        });
+</script>
+{% endif %}
+
 <div class="tab-pane active" id="properties">
     {% set generalProperties %}
         {{ form_row(form.code) }}
@@ -12,11 +66,9 @@
 
 {% if form.vars.value.id %}
 
-    {% if form.vars.value.isRoot() %}
-        <div class="tab-pane" id="permissions">
-            {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
-        </div>
-    {% endif %}
+    <div class="tab-pane" id="permissions">
+        {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
+    </div>
 
     <div class="tab-pane" id="history">
         {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}

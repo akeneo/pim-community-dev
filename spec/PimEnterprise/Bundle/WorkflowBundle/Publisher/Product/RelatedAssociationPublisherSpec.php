@@ -39,6 +39,7 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         $publishedAssociationRepository,
         PublishedProductInterface $published,
         AbstractProduct $product1,
+        AbstractProduct $product2,
         AbstractProduct $product3,
         Association $association1,
         AssociationType $type1,
@@ -47,8 +48,9 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         PublishedProductAssociation $publishedAssociation
     ) {
         $product1->getId()->willReturn('original1');
+        $product2->getId()->willReturn('original2');
         $product3->getId()->willReturn('original3');
-        $published->getOriginalProductId()->willReturn('original2');
+        $published->getOriginalProduct()->willReturn($product2);
 
         $publishedRepository->getProductIdsMapping()->willReturn(
             [
@@ -63,7 +65,7 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         $association3->getAssociationType()->willReturn($type3);
         $association3->getOwner()->willReturn($product3);
 
-        $associationRepository->findByProductIdAndOwnerIds('original2', ['original1', 'original3'])
+        $associationRepository->findByProductAndOwnerIds($product2, ['original1', 'original3'])
             ->willReturn([$association1, $association3]);
 
         $publishedAssociationRepository->findOneByTypeAndOwner($type1, 'published1')->willReturn($publishedAssociation);

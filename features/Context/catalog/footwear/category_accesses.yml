@@ -1,11 +1,16 @@
 category_accesses:
     2014_collection:
         edit: [administrator, manager, user]
+        own: [administrator, manager, user]
     summer_collection:
         edit: [administrator, manager, user]
+        own: [administrator, manager, user]
     winter_collection:
         edit: [administrator, manager, user]
+        own: [administrator, manager, user]
     winter_boots:
         edit: [administrator, manager, user]
+        own: [administrator, manager, user]
     sandals:
         edit: [administrator, manager, user]
+        own: [administrator, manager, user]

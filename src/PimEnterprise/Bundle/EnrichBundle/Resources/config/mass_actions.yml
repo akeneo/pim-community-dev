@@ -27,7 +27,7 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: publish
-                acl: pimee_workflow_published_product_publish
+                acl: pim_enrich_product_edit
                 operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.edit_common_attributes:
