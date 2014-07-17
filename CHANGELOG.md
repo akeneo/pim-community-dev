@@ -130,6 +130,7 @@
 - Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
 - Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
 - Delete service `pim_datagrid.datasource.mongodb`
+- Rename countForAttribute to countVariantGroupAxis in GroupRepository
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
