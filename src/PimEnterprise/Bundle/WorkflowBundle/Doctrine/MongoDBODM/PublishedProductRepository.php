@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -201,6 +202,22 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     {
         $qb = $this->createQueryBuilder('pp');
         $qb->field('associations.associationType')->equals($associationType->getId());
+
+        return $qb->getQuery()->count();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    {
+        $qb = $this->createQueryBuilder('pp');
+
+        if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
+            $qb->field("values.option")->equals($option->getId());
+        } else {
+            $qb->field("values.optionIds")->equals($option->getId());
+        }
 
         return $qb->getQuery()->count();
     }
