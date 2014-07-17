@@ -87,13 +87,14 @@ class AttributeHandler extends PimAttributeHandler
      */
     protected function checkAttributeOptionsRemovable(AbstractAttribute $entity, Collection $oldOptions)
     {
-        $countPublished = $this->publishedRepository->countPublishedProductsForAttribute($entity);
-        if ($countPublished > 0) {
-            foreach ($oldOptions as $oldOption) {
-                if (false === $entity->getOptions()->contains($oldOption)) {
+        foreach ($oldOptions as $oldOption) {
+            if (false === $entity->getOptions()->contains($oldOption)) {
+                if ($this->publishedRepository->countPublishedProductsForAttributeOption($oldOption) > 0) {
                     return false;
                 }
             }
         }
+        
+        return true;
     }
 }
