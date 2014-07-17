@@ -21,7 +21,8 @@ class PreparePropositionChangesSubscriberSpec extends ObjectBehavior
             PropositionEvents::PRE_UPDATE => [
                 ['keepMedia', 128],
                 ['mergeValues', 64],
-                ['removeNullValues', 0],
+                ['removeNullValues', 32],
+                ['sortValues', 0],
             ],
         ]);
     }
@@ -100,8 +101,7 @@ class PreparePropositionChangesSubscriberSpec extends ObjectBehavior
     }
 
     function it_unsets_values_for_which_no_changes_were_detected(
-        PropositionEvent $event,
-        Proposition $proposition
+        PropositionEvent $event
     ) {
         $event->getChanges()->willReturn([
             'values' => [
@@ -129,5 +129,41 @@ class PreparePropositionChangesSubscriberSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->removeNullValues($event);
+    }
+
+    function it_sorts_values(
+        PropositionEvent $event
+    ) {
+        $event->getChanges()->willReturn([
+            'values' => [
+                'foo_en_US' => [
+                    'varchar' => 'The Foo',
+                ],
+                'bar' => [
+                    'varchar' => 'Bar',
+                ],
+                'foo_fr_FR' => [
+                    'varchar' => 'Le Foo',
+                ],
+            ]
+        ]);
+
+        $event
+            ->setChanges([
+                'values' => [
+                    'bar' => [
+                        'varchar' => 'Bar',
+                    ],
+                    'foo_fr_FR' => [
+                        'varchar' => 'Le Foo',
+                    ],
+                    'foo_en_US' => [
+                        'varchar' => 'The Foo',
+                    ],
+                ],
+            ])
+            ->shouldBeCalled();
+
+        $this->sortValues($event);
     }
 }

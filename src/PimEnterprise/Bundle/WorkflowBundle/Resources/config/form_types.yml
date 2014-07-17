@@ -11,15 +11,6 @@ services:
             - '@pim_catalog.manager.media'
             - '@pim_catalog.factory.media'
 
-    pim_enrich.form.type.edit_common_attributes:
-        class: %pim_enrich.form.type.edit_common_attributes.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pim_catalog.helper.locale'
-            - %pim_catalog.entity.attribute.class%
-        tags:
-            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
-
     pimee_workflow.form.subscriber.unmap_product_values:
         public: false
         class: %pimee_workflow.form.subscriber.unmap_product_values.class%
