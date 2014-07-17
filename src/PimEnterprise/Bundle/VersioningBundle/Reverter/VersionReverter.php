@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\TransformBundle\Transformer\ProductTransformer;
 use Pim\Bundle\VersioningBundle\Model\Version;
+use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
 
 /**
  * Version reverter that allow to revert an entity to a previous snapshot
@@ -16,22 +16,22 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  */
 class VersionReverter
 {
-    /** @var ProductTransformer */
-    protected $transformer;
+    /** @var ProductDenormalizer */
+    protected $denormalizer;
 
     /** @var ProductManager */
     protected $manager;
 
     /**
-     * @param ProductManager     $manager
-     * @param ProductTransformer $transformer
+     * @param ProductManager      $manager
+     * @param ProductDenormalizer $denormalizer
      */
     public function __construct(
         ProductManager $manager,
-        ProductTransformer $transformer
+        ProductDenormalizer $denormalizer
     ) {
-        $this->manager     = $manager;
-        $this->transformer = $transformer;
+        $this->manager      = $manager;
+        $this->denormalizer = $denormalizer;
     }
 
     /**
@@ -44,7 +44,7 @@ class VersionReverter
         $class = $version->getResourceName();
         $data  = $version->getSnapshot();
 
-        $object = $this->transformer->transform($class, $data);
+        $object = $this->denormalizer->denormalize($class, $data);
 
         if (null !== $object->getFamily()) {
             var_dump($object->getFamily()->getCode());
@@ -52,6 +52,6 @@ class VersionReverter
             var_dump('NULL');
         }
 
-        $this->manager->saveProduct($object);
+        //$this->manager->saveProduct($object);
     }
 }

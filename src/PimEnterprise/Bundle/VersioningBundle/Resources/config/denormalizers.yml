@@ -1,0 +1,9 @@
+parameters:
+    pimee_versioning.denormalizer.product.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
+
+services:
+    pimee_versioning.denormalizer.product:
+        class: %pimee_versioning.denormalizer.product.class%
+        arguments:
+            - %pim_catalog.entity.product.class%
+            - '@pim_catalog.doctrine.smart_manager_registry'
