@@ -10,4 +10,5 @@ services:
             - '@pim_serializer'
             - '@database_connection'
             - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.doctrine.table_name_builder'
             - %pim_versioning.entity.product.class%

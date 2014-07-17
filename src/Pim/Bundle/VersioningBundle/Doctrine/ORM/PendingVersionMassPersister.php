@@ -4,8 +4,10 @@ namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Entity\Version;
+
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
@@ -49,12 +51,16 @@ class PendingVersionMassPersister
     /** @var ClassMetadata */
     protected $versionMetadata;
 
+    /** @var TableNameBuilder */
+    protected $tableNameBuilder;
+
     /**
      * @param VersionBuilder      $versionBuilder
      * @param VersionBuilder      $versionBuilder
      * @param NormalizerInterface $normalizer
      * @param Connection          $connection
      * @maram EntityManager       $entityManager
+     * @param TableNameBuilder    $tableNameBuilder
      * @param string              $versionClass
      */
     public function __construct(
@@ -63,14 +69,16 @@ class PendingVersionMassPersister
         NormalizerInterface $normalizer,
         Connection $connection,
         EntityManager $entityManager,
+        TableNameBuilder $tableNameBuilder,
         $versionClass
     ) {
-        $this->versionBuilder = $versionBuilder;
-        $this->versionManager = $versionManager;
-        $this->normalizer     = $normalizer;
-        $this->connection     = $connection;
-        $this->entityManager  = $entityManager;
-        $this->versionClass   = $versionClass;
+        $this->versionBuilder   = $versionBuilder;
+        $this->versionManager   = $versionManager;
+        $this->normalizer       = $normalizer;
+        $this->connection       = $connection;
+        $this->entityManager    = $entityManager;
+        $this->tableNameBuilder = $tableNameBuilder;
+        $this->versionClass     = $versionClass;
     }
 
     /**
@@ -172,7 +180,7 @@ class PendingVersionMassPersister
     protected function getVersionTable()
     {
         if (null === $this->versionTable) {
-            $this->versionTable = $this->getVersionMetadata()->getTableName();
+            $this->versionTable = $this->tableNameBuilder->getTableName($this->versionClass);
         }
 
         return $this->versionTable;

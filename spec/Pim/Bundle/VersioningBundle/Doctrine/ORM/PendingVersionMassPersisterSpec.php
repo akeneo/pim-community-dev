@@ -5,6 +5,7 @@ namespace spec\Pim\Bundle\VersioningBundle\Doctrine\ORM;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use Pim\Bundle\VersioningBundle\Entity\Version;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,7 +23,8 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
         VersionManager $versionManager,
         NormalizerInterface $normalizer,
         Connection $connection,
-        EntityManager $entityManager
+        EntityManager $entityManager,
+        TableNameBuilder $tableNameBuilder
     ) {
         $this->beConstructedWith(
             $versionBuilder,
@@ -30,6 +32,7 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
             $normalizer,
             $connection,
             $entityManager,
+            $tableNameBuilder,
             'VersionClass'
         );
     }
@@ -40,6 +43,7 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
         $normalizer,
         $connection,
         $entityManager,
+        $tableNameBuilder,
         ClassMetadata $versionMetadata,
         ProductInterface $product1,
         ProductInterface $product2,
@@ -49,6 +53,9 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
         \DateTime $date2
     ) {
         $products = [$product1, $product2];
+
+        $date1->format(\DateTime::ISO8601)->willReturn('2014-07-16T10:20:36+02:00');
+        $date2->format(\DateTime::ISO8601)->willReturn('2014-07-16T10:20:37+02:00');
 
         $versionManager->getUsername()->willReturn('julia');
         $versionManager->getContext()->willReturn('CSV Import');
@@ -64,6 +71,8 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
         $normalizer->normalize($product1, 'csv', ['versioning' => true])->willReturn($normalizedProduct1);
         $normalizer->normalize($product2, 'csv', ['versioning' => true])->willReturn($normalizedProduct2);
 
+        $tableNameBuilder->getTableName('VersionClass')->willReturn('version_table');
+
         $versionMetadata->getColumnNames()->willReturn(
             ['id', 'author', 'changeset', 'snapshot', 'resource_name', 'resource_id', 'context', 'logged_at', 'pending']
         );
@@ -76,7 +85,6 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
         $versionMetadata->getFieldName('logged_at')->willReturn('loggedAt');
         $versionMetadata->getFieldName('pending')->willReturn('pending');
         $versionMetadata->getIdentifierColumnNames()->willReturn(['id']);
-        $versionMetadata->getTableName()->willReturn('version_table');
         $versionMetadata->getFieldValue($pendingVersion1, 'author')->willReturn('julia');
         $versionMetadata->getFieldValue($pendingVersion1, 'context')->willReturn('CSV Import');
         $versionMetadata->getFieldValue($pendingVersion1, 'changeset')->willReturn(serialize($normalizedProduct1));
@@ -115,7 +123,7 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
                 'ProductClass',
                 'myprod1',
                 'CSV Import',
-                $date1,
+                '2014-07-16 08:20:36',
                 true,
                 'julia',
                 'a:2:{s:3:"sku";s:7:"sku-002";s:4:"name";s:12:"my product 2";}',
@@ -123,7 +131,7 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
                 'ProductClass',
                 'myprod2',
                 'CSV Import',
-                $date2,
+                '2014-07-16 08:20:37',
                 true
             ]
         )->shouldBeCalled();
