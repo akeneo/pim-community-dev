@@ -24,7 +24,8 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
             PropositionEvents::PRE_UPDATE => [
                 ['keepMedia', 128],
                 ['mergeValues', 64],
-                ['removeNullValues', 0],
+                ['removeNullValues', 32],
+                ['sortValues', 0],
             ],
         ];
     }
@@ -93,6 +94,25 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
                 unset($submittedChanges['values'][$key]);
             }
         }
+
+        $event->setChanges($submittedChanges);
+    }
+
+    /**
+     * Sort values for esthetic purpose
+     *
+     * @param PropositionEvent $event
+     */
+    public function sortValues(PropositionEvent $event)
+    {
+        $submittedChanges = $event->getChanges();
+        if (!isset($submittedChanges['values'])) {
+            return;
+        }
+
+        $values = $submittedChanges['values'];
+        ksort($values);
+        $submittedChanges['values'] = $values;
 
         $event->setChanges($submittedChanges);
     }
