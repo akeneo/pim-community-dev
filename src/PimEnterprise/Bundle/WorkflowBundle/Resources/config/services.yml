@@ -47,6 +47,9 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
+            - '@pim_versioning.manager.version'
+            - '@pimee_workflow.helper.filter_product_values'
+            - '@pimee_workflow.helper.sort_product_values'
 
     pimee_workflow.datagrid.proposition_grid_helper:
         class: %pimee_workflow.datagrid.proposition_grid_helper.class%

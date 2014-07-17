@@ -62,7 +62,8 @@
                     {% endfor %}
                 </li>
                 {% endif %}
-
+                <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+                <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
                 <li>
                     {{ 'Version'|trans|capitalize }}: {{ published.version.version }}
                 </li>
@@ -71,8 +72,30 @@
 
         {{ elements.page_header(title, buttons, subtitle, left) }}
 
-        <div class="layout-content">
-            <div class="row-fluid tab-content">
-            </div>
+        <div class="layout-content product-edit product-view">
+            <form class="form-horizontal">
+                <div class="row-fluid tab-pane">
+                    {% for group in groups %}
+                        <div class="row-fluid">
+                            <h3>
+                                {{ group.groupLabel }}
+                            </h3>
+                            {% for value in group.values %}
+                                <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
+                                    <label class="control-label">
+                                        {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
+                                    </label>
+                                    <div class="controls">
+                                        <div class="value-field">
+                                            {{ present_product_value(value) }}
+                                        </div>
+                                        <div class="icons-container"></div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </form>
         </div>
 {% endblock %}
