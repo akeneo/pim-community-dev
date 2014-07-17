@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\Builder;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
@@ -70,7 +71,7 @@ class VersionBuilder
      */
     public function createPendingVersion($versionable, $author, array $changeset, $context = null)
     {
-        $resourceName = \Doctrine\Common\Util\ClassUtils::getRealClass(get_class($versionable));
+        $resourceName = ClassUtils::getClass($versionable);
 
         $version = new Version($resourceName, $versionable->getId(), $author, $context);
         $version->setChangeset($changeset);
