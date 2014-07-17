@@ -3,11 +3,11 @@
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfiguration;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**
  * Configure the sorters of the datagrids
@@ -44,7 +44,7 @@ class ConfigureSortersListener
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
         $sorterType = null;
 
-        if (DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType) {
+        if (DatasourceTypes::DATASOURCE_PRODUCT === $datasourceType) {
             $sorterType = 'product_field';
         } elseif (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
             $this->supportResolver->getSupport($datasourceType)

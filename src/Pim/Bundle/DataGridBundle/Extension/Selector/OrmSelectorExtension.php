@@ -13,6 +13,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**
  * Orm selector extension
@@ -112,7 +113,7 @@ class OrmSelectorExtension extends AbstractExtension
     {
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
 
-        if (DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType &&
+        if (DatasourceTypes::DATASOURCE_PRODUCT === $datasourceType &&
             PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             return true;
         }

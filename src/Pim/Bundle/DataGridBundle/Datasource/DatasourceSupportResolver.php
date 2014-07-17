@@ -33,8 +33,8 @@ class DatasourceSupportResolver
     public function __construct(
         $storageDriver,
         $mongoEligibleDatasources = [
-            DatasourceInterface::DATASOURCE_SMART,
-            DatasourceInterface::DATASOURCE_PRODUCT
+            DatasourceTypes::DATASOURCE_SMART,
+            DatasourceTypes::DATASOURCE_PRODUCT
         ]
     ) {
         $this->storageDriver = $storageDriver;
