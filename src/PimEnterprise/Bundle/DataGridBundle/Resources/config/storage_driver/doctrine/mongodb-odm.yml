@@ -1,0 +1,2 @@
+parameters:
+    pimee_datagrid.datasource.result_record.hydrator.product_history.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductHistoryHydrator
