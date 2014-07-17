@@ -62,6 +62,10 @@
                     {% endfor %}
                 </li>
                 {% endif %}
+
+                <li>
+                    {{ 'Version'|trans|capitalize }}: {{ published.version.version }}
+                </li>
            </ul>
         {% endset %}
 
