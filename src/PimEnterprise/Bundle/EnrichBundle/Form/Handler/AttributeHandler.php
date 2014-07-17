@@ -89,7 +89,7 @@ class AttributeHandler extends PimAttributeHandler
     {
         foreach ($oldOptions as $oldOption) {
             if (false === $entity->getOptions()->contains($oldOption)) {
-                if($this->publishedRepository->countPublishedProductsForAttributeOption($oldOption) > 0) {
+                if ($this->publishedRepository->countPublishedProductsForAttributeOption($oldOption) > 0) {
                     return false;
                 }
             }
