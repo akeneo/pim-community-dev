@@ -2,6 +2,7 @@ parameters:
     pimee_enrich.form.type.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AttributeGroupPermissionsType
     pimee_enrich.form.type.category_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\CategoryPermissionsType
     pim_enrich.form.type.available_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\AvailableAttributesType
+    pim_enrich.form.type.edit_common_attributes.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType
     pimee_enrich.form.type.publish.class: PimEnterprise\Bundle\EnrichBundle\Form\Type\MassEditAction\PublishType
 
 services:
@@ -66,3 +67,13 @@ services:
         class: %pimee_enrich.form.type.publish.class%
         tags:
             - { name: form.type, alias: pimee_enrich_mass_publish }
+
+    pim_enrich.form.type.edit_common_attributes:
+        class: %pim_enrich.form.type.edit_common_attributes.class%
+        arguments:
+            - '@pim_enrich.form.type.product.view'
+            - '@pim_catalog.helper.locale'
+            - %pim_catalog.entity.attribute.class%
+            - '@pimee_workflow.form.subscriber.collect_product_value_changes'
+        tags:
+            - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
