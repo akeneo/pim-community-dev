@@ -24,8 +24,9 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
             PropositionEvents::PRE_UPDATE => [
                 ['keepMedia', 128],
                 ['mergeValues', 64],
-                ['removeNullValues', 32],
-                ['sortValues', 0],
+                ['removeNullValues', 0],
+                ['cleanEmptyChangeSet', -128],
+                ['sortValues', -128],
             ],
         ];
     }
@@ -115,5 +116,22 @@ class PreparePropositionChangesSubscriber implements EventSubscriberInterface
         $submittedChanges['values'] = $values;
 
         $event->setChanges($submittedChanges);
+    }
+
+    /**
+     * Clean the whole change set when no value change was submitted
+     *
+     * @param PropositionEvent $event
+     */
+    public function cleanEmptyChangeSet(PropositionEvent $event)
+    {
+        $submittedChanges = $event->getChanges();
+        if (!isset($submittedChanges['values'])) {
+            return;
+        }
+
+        if (empty($submittedChanges['values'])) {
+            $event->setChanges([]);
+        }
     }
 }

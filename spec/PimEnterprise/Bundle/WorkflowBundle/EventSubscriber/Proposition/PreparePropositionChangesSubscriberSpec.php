@@ -21,8 +21,9 @@ class PreparePropositionChangesSubscriberSpec extends ObjectBehavior
             PropositionEvents::PRE_UPDATE => [
                 ['keepMedia', 128],
                 ['mergeValues', 64],
-                ['removeNullValues', 32],
-                ['sortValues', 0],
+                ['removeNullValues', 0],
+                ['cleanEmptyChangeSet', -128],
+                ['sortValues', -128],
             ],
         ]);
     }
@@ -165,5 +166,17 @@ class PreparePropositionChangesSubscriberSpec extends ObjectBehavior
             ->shouldBeCalled();
 
         $this->sortValues($event);
+    }
+
+    function it_cleans_empty_change_set(
+        PropositionEvent $event
+    ) {
+        $event->getChanges()->willReturn([
+            'values' => []
+        ]);
+
+        $event->setChanges([])->shouldBeCalled();
+
+        $this->cleanEmptyChangeSet($event);
     }
 }

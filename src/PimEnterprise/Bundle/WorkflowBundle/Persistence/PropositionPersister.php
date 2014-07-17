@@ -149,34 +149,38 @@ class PropositionPersister implements ProductPersister
      * @param ProductInterface $product
      *
      * @return null
+     *
+     * @throws \LogicException
      */
     private function persistProposition(ObjectManager $manager, ProductInterface $product)
     {
-        $changes = $this->changeSet->compute(
-            $product,
-            $this->collector->getData()
-        );
-        $username = $this->getUser()->getUsername();
-        $locale = $product->getLocale();
-        $proposition = $this->repository->findUserProposition($product, $username, $locale);
-
-        if (empty($changes)) {
-            if (null !== $proposition) {
-                $manager->remove($proposition);
-            }
-
-            return $manager->flush();
+        if (null === $submittedData = $this->collector->getData()) {
+            throw new \LogicException('No product data were collected');
         }
 
-        if (null === $proposition) {
+        $username = $this->getUser()->getUsername();
+        $locale = $product->getLocale();
+        if (null === $proposition = $this->repository->findUserProposition($product, $username, $locale)) {
             $proposition = $this->factory->createProposition($product, $username, $locale);
             $manager->persist($proposition);
         }
 
-        $event = new PropositionEvent($proposition, $changes);
-        $this->dispatcher->dispatch(PropositionEvents::PRE_UPDATE, $event);
+        $event = $this->dispatcher->dispatch(
+            PropositionEvents::PRE_UPDATE,
+            new PropositionEvent(
+                $proposition,
+                $this->changeSet->compute($product, $submittedData)
+            )
+        );
+        $changes = $event->getChanges();
 
-        $proposition->setChanges($event->getChanges());
+        if (empty($changes)) {
+            $manager->remove($proposition);
+
+            return $manager->flush();
+        }
+
+        $proposition->setChanges($changes);
 
         $manager->flush();
     }
