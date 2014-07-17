@@ -83,11 +83,27 @@ class CategoryFilter extends NumberFilter
         ];
     }
 
+    /**
+     * Add filter to display all products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
         return true;
     }
 
+    /**
+     * Add filter to display unclassified products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
     protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
@@ -106,6 +122,14 @@ class CategoryFilter extends NumberFilter
         return false;
     }
 
+    /**
+     * Add filter to display categorized products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
     protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
     {
         $categoryRepository = $this->manager->getCategoryRepository();
