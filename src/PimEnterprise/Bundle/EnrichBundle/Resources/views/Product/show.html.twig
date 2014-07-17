@@ -85,6 +85,10 @@
                         </div>
                     {% endfor %}
                 </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+                </div>
             {% endfor %}
         </div>
     </div>
