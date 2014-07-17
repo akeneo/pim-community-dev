@@ -2,9 +2,10 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAware;
 
 /**
  * Present a file value
@@ -12,18 +13,12 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class FilePresenter implements ProductValuePresenterInterface
+class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterface
 {
-    /** @var UrlGeneratorInterface */
-    protected $generator;
+    use TwigAware;
 
-    /**
-     * @param UrlGeneratorInterface $generator
-     */
-    public function __construct(UrlGeneratorInterface $generator)
-    {
-        $this->generator = $generator;
-    }
+    /** @staticvar string */
+    const TEMPLATE = 'PimEnterpriseWorkflowBundle:ProductValue:file.html.twig';
 
     /**
      * {@inheritdoc}
@@ -43,10 +38,11 @@ class FilePresenter implements ProductValuePresenterInterface
         $title = $value->getData()->getOriginalFilename();
 
         if (null !== $filename && null !== $title) {
-            return sprintf(
-                '<i class="icon-file"></i><a class="no-hash" href="%s">%s</a>',
-                $this->generator->generate('pim_enrich_media_show', ['filename' => $filename]),
-                $title
+            return $this->twig->loadTemplate(static::TEMPLATE)->render(
+                [
+                    'filename' => $filename,
+                    'title' => $title
+                ]
             );
         }
     }

@@ -129,14 +129,10 @@ services:
 
     pimee_workflow.presenter.product_value.image:
         class: %pimee_workflow.presenter.product_value.image.class%
-        arguments:
-            - '@router'
         tags:
             - { name: pimee_workflow.product_value_presenter }
 
     pimee_workflow.presenter.product_value.file:
         class: %pimee_workflow.presenter.product_value.file.class%
-        arguments:
-            - '@router'
         tags:
             - { name: pimee_workflow.product_value_presenter }
