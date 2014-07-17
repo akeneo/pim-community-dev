@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as PimCategoryFilter;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -13,6 +14,19 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  */
 class CategoryFilter extends PimCategoryFilter
 {
+    /**
+     * Override to apply category permissions
+     *
+     * {@inheritdoc}
+     */
+    protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $ids = $this->manager->getGrantedCategoryIds();
+        // TODO : Filter on granted categories + unclassified products
+        // means unclassified in categories I can view
+        return true;
+    }
+
     /**
      * Override to apply category permissions (not for unclassified)
      *

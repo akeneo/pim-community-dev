@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCatego
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
  * Product category manager
@@ -19,10 +20,11 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  */
 class ProductCategoryManager extends BaseProductCategoryManager
 {
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
+
+    /** @var CategoryAccessRepository */
+    protected $accessRepository;
 
     /**
      * Constructor
@@ -30,15 +32,18 @@ class ProductCategoryManager extends BaseProductCategoryManager
      * @param ProductCategoryRepositoryInterface $productRepo     Product repository
      * @param CategoryRepository                 $categoryRepo    Category repository
      * @param SecurityContextInterface           $securityContext Security context
+     * @param CategoryAccessRepository           $accessRepo      Category access repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepository $categoryRepo,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        CategoryAccessRepository $accessRepo
     ) {
         parent::__construct($productRepo, $categoryRepo);
 
         $this->securityContext = $securityContext;
+        $this->accessRepository = $accessRepo;
     }
 
     /**
@@ -101,6 +106,18 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
+    }
+
+    /**
+     * Get granted category ids
+     *
+     * @return integer[]
+     */
+    public function getGrantedCategoryIds()
+    {
+        $user = $this->securityContext->getUser();
+
+        return $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
     }
 
     /**

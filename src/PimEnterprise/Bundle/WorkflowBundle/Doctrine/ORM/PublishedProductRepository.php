@@ -62,7 +62,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
 
         try {
             $versionId = (int) $qb->getQuery()->getSingleScalarResult();
-        } catch(NoResultException $e) {
+        } catch (NoResultException $e) {
             $versionId = null;
         }
 

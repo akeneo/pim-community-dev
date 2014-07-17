@@ -18,3 +18,4 @@ services:
             - '@pimee_workflow.repository.published_product_category'
             - '@pim_catalog.repository.category'
             - '@security.context'
+            - '@pimee_security.repository.category_access'
