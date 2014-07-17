@@ -125,6 +125,7 @@ services:
         arguments:
             - '@pimee_workflow.comparator.chained'
             - '@event_dispatcher'
+            - '@pim_catalog.builder.product'
 
     ##
     # Comparators of product values
