@@ -2,11 +2,10 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
- * Resolver for datasource adapters
+ * Determine which datasource adapter class to use.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -14,22 +13,22 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  */
 class DatasourceAdapterResolver
 {
-    /** @var string */
-    protected $storageDriver;
+    /** @var DatasourceSupportResolver */
+    protected $supportResolver;
 
     /** @var string */
     protected $ormAdapterClass;
 
     /** @var string */
-    protected $odmAdapterClass;
+    protected $mongodbAdapterClass;
 
     /**
-     * @param string $storageDriver
-     * @param string $ormAdapterClass
+     * @param DatasourceSupportResolver $supportResolver
+     * @param string                    $ormAdapterClass
      */
-    public function __construct($storageDriver, $ormAdapterClass)
+    public function __construct(DatasourceSupportResolver $supportResolver, $ormAdapterClass)
     {
-        $this->storageDriver = $storageDriver;
+        $this->supportResolver = $supportResolver;
         $this->ormAdapterClass = $ormAdapterClass;
     }
 
@@ -37,29 +36,32 @@ class DatasourceAdapterResolver
      * @param $datasourceType
      *
      * @return string
+     *
      * @throws InvalidConfigurationException
      */
-    public function getDatasourceClass($datasourceType)
+    public function getAdapterClass($datasourceType)
     {
-        if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
+            $this->supportResolver->getSupport($datasourceType)
+        ) {
             return $this->ormAdapterClass;
-        } elseif (null === $this->odmAdapterClass) {
+        } elseif (null === $this->mongodbAdapterClass) {
             throw new InvalidConfigurationException('The MongoDB adapter class should be registered.');
         }
 
-        if (DatasourceInterface::DATASOURCE_SMART === $datasourceType ||
-            DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType) {
-            return $this->odmAdapterClass;
+        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
+            $this->supportResolver->getSupport($datasourceType)) {
+            return $this->mongodbAdapterClass;
         }
 
         return $this->ormAdapterClass;
     }
 
     /**
-     * @param string $odmAdapterClass
+     * @param string $mongodbAdapterClass
      */
-    public function setOdmAdapterClass($odmAdapterClass)
+    public function setMongodbAdapterClass($mongodbAdapterClass)
     {
-        $this->odmAdapterClass = $odmAdapterClass;
+        $this->mongodbAdapterClass = $mongodbAdapterClass;
     }
 }
