@@ -22,8 +22,8 @@ class DatasourceSupportPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $psupportResolver = $container->getDefinition(self::DATASOURCE_SUPPORT_RESOLVER_ID);
-        $psupportResolver->addMethodCall(
+        $supportResolver = $container->getDefinition(self::DATASOURCE_SUPPORT_RESOLVER_ID);
+        $supportResolver->addMethodCall(
             'addMongoEligibleDatasources',
             [ DatasourceTypes::DATASOURCE_PRODUCT_HISTORY ]
         );

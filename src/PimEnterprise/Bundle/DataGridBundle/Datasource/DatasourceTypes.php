@@ -13,7 +13,7 @@ use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes as BaseDatasourceTypes;
 class DatasourceTypes extends BaseDatasourceTypes
 {
     /**
-     * ORM default datasource
+     * Product history datasource (either ORM or MongoDB ODM)
      *
      * @staticvar string
      */

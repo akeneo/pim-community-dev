@@ -19,8 +19,6 @@ class PimEnterpriseDataGridBundle extends Bundle
      */
     public function build(ContainerBuilder $container)
     {
-        $container
-            ->addCompilerPass(new DatasourceSupportPass())
-        ;
+        $container->addCompilerPass(new DatasourceSupportPass());
     }
 }
