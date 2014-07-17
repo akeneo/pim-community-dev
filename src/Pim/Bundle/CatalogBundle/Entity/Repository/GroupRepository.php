@@ -60,7 +60,7 @@ class GroupRepository extends ReferableEntityRepository
      *
      * @return interger
      */
-    public function countForAttribute(AbstractAttribute $attribute)
+    public function countVariantGroupAxis(AbstractAttribute $attribute)
     {
         $qb = $this->createQueryBuilder('g');
 
