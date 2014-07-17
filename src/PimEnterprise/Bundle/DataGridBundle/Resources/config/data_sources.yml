@@ -9,3 +9,12 @@ services:
             - '@pimee_datagrid.datasource.result_record.hydrator.product_history'
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_product_history }
+    
+    pim_catalog.datasource.published_product:
+        class: %pim_datagrid.datasource.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pimee_workflow.repository.published_product_mass_action'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_published_product }

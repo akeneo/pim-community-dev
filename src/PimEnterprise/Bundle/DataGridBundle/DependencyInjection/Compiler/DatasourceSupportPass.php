@@ -27,5 +27,9 @@ class DatasourceSupportPass implements CompilerPassInterface
             'addMongoEligibleDatasources',
             [ DatasourceTypes::DATASOURCE_PRODUCT_HISTORY ]
         );
+        $supportResolver->addMethodCall(
+            'addMongoEligibleDatasources',
+            [ DatasourceTypes::DATASOURCE_PUBLISHED_PRODUCT ]
+        );
     }
 }
