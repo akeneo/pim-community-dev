@@ -66,6 +66,7 @@
 - Fixed a bug with repository resolver on ODM implementation
 - Fixed a bug on mass edit when we use a completeness filter to select products
 - Removed the import CSV mimetype validation which is unreliable
+- Product completeness in MongoDB is not lost anymore in the grid
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -130,6 +131,7 @@
 - Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
 - Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
 - Delete service `pim_datagrid.datasource.mongodb`
+- Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

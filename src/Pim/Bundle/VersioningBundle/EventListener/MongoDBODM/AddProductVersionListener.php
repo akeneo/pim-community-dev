@@ -96,16 +96,17 @@ class AddProductVersionListener implements EventSubscriber
      */
     protected function processVersionableObjects()
     {
+        $versions = [];
         foreach ($this->versionableObjects as $versionable) {
-            $this->createVersion($versionable);
+            $currentVersions = $this->createVersion($versionable);
+            $versions = array_merge($versions, $currentVersions);
             $this->versionedObjects[] = spl_object_hash($versionable);
         }
 
-        $versionedCount = count($this->versionableObjects);
         $this->versionableObjects = array();
 
-        if ($versionedCount) {
-            $this->versionManager->getObjectManager()->flush();
+        foreach($versions as $version) {
+            $this->applyChangeSet($version);
         }
     }
 
@@ -118,11 +119,7 @@ class AddProductVersionListener implements EventSubscriber
         if (!$this->versionManager->isRealTimeVersioning()) {
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
         }
-        $versions = $this->versionManager->buildVersion($versionable, $changeset);
-
-        foreach ($versions as $version) {
-            $this->computeChangeSet($version);
-        }
+        return $this->versionManager->buildVersion($versionable, $changeset);
     }
 
     /**
@@ -145,12 +142,13 @@ class AddProductVersionListener implements EventSubscriber
      *
      * @param Version $version
      */
-    protected function computeChangeSet(Version $version)
+    protected function applyChangeSet(Version $version)
     {
         $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
             $om->persist($version);
             $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
+            $om->flush($version);
         } else {
             $om->remove($version);
         }
