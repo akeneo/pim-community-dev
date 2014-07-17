@@ -14,6 +14,7 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 use Oro\Bundle\FilterBundle\Filter\FilterInterface;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**
  * Filter extension, storage agnostic
