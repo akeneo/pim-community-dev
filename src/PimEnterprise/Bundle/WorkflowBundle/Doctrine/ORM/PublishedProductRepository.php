@@ -135,15 +135,14 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
     public function countPublishedProductsForAttributeOption(AttributeOption $option)
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb
-            ->innerJoin('pp.values', 'ppv');
+
         if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
             $qb
-                ->andWhere('ppv.option = :option')
-                ->setParameter('option', $option);
+                ->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.option', $option->getId()));
         } else {
             $qb
-                ->innerJoin('ppv.options', 'ppo');
+                ->innerJoin('pp.values', 'ppv')
+                ->innerJoin('ppv.options', 'ppo', 'WITH', $qb->expr()->eq('ppo.id', $option->getId()));
         }
 
         return $this->getCountFromQB($qb);
