@@ -306,7 +306,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $steps[] = new Step\Given(sprintf('I edit the "%s" product', $product));
 
             foreach ($table->getHash() as $data) {
-                $steps[] = new Step\Given(sprintf('the field %s should contain "%s"', $data['attribute'], $data['value']));
+                $steps[] = new Step\Given(
+                    sprintf('the field %s should contain "%s"', $data['attribute'], $data['value'])
+                );
                 $steps[] = new Step\Given(sprintf('I should see that %s is a modified value', $data['attribute']));
             }
         }
