@@ -3,8 +3,7 @@
 namespace Pim\Bundle\DataGridBundle\Extension\Pager;
 
 use Oro\Bundle\DataGridBundle\Extension\Pager\PagerInterface;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 
 /**
@@ -16,52 +15,54 @@ use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
  */
 class PagerResolver
 {
-    /** @var string */
-    protected $storageDriver;
+    /** @var DatasourceSupportResolver */
+    protected $supportResolver;
 
     /** @var PagerInterface */
     protected $ormPager;
 
     /** @var PagerInterface */
-    protected $mongoPager;
+    protected $mongodbPager;
 
     /**
-     * @param string         $storageDriver
-     * @param PagerInterface $ormPager
+     * @param DatasourceSupportResolver $supportResolver
+     * @param PagerInterface            $ormPager
      */
-    public function __construct($storageDriver, PagerInterface $ormPager)
+    public function __construct(DatasourceSupportResolver $supportResolver, PagerInterface $ormPager)
     {
-        $this->storageDriver = $storageDriver;
+        $this->supportResolver = $supportResolver;
         $this->ormPager = $ormPager;
     }
 
     /**
-     * @param $gridType
+     * @param string $datasourceType
      *
      * @return PagerInterface
      * @throws InvalidConfigurationException
      */
-    public function getPager($gridType)
+    public function getPager($datasourceType)
     {
-        if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM ===
+            $this->supportResolver->getSupport($datasourceType)
+        ) {
             return $this->ormPager;
-        } elseif (null === $this->mongoPager) {
+        } elseif (null === $this->mongodbPager) {
             throw new InvalidConfigurationException('The MongoDB pager should be registered.');
         }
 
-        if (DatasourceInterface::DATASOURCE_SMART === $gridType ||
-            DatasourceInterface::DATASOURCE_PRODUCT === $gridType) {
-            return $this->mongoPager;
+        if (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
+            $this->supportResolver->getSupport($datasourceType)) {
+            return $this->mongodbPager;
         }
 
         return $this->ormPager;
     }
 
     /**
-     * @param PagerInterface $mongoPager
+     * @param PagerInterface $mongodbPager
      */
-    public function setMongoPager(PagerInterface $mongoPager)
+    public function setMongodbPager(PagerInterface $mongodbPager)
     {
-        $this->mongoPager = $mongoPager;
+        $this->mongodbPager = $mongodbPager;
     }
 }
