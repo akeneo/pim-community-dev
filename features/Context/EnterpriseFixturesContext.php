@@ -297,6 +297,24 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @Given /^(\w+) should have proposed the following values for products (.*):$/
+     */
+    public function someoneShouldHaveProposedTheFollowingValuesForProducts($username, $products, TableNode $table)
+    {
+        $steps = [];
+        foreach ($this->listToArray($products) as $product) {
+            $steps[] = new Step\Given(sprintf('I edit the "%s" product', $product));
+
+            foreach ($table->getHash() as $data) {
+                $steps[] = new Step\Given(sprintf('the field %s should contain "%s"', $data['attribute'], $data['value']));
+                $steps[] = new Step\Given(sprintf('I should see that %s is a modified value', $data['attribute']));
+            }
+        }
+
+        return $steps;
+    }
+
+    /**
      * @param $data
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
