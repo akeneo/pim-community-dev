@@ -117,7 +117,7 @@ class AddProductVersionListener implements EventSubscriber
 
         $this->versionableObjects = array();
 
-        foreach($versions as $version) {
+        foreach ($versions as $version) {
             $this->applyChangeSet($version);
         }
     }
