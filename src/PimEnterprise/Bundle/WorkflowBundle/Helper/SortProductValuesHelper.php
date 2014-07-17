@@ -15,7 +15,7 @@ class SortProductValuesHelper
      *
      * @param AbstractProductValue[] $values
      *
-     * @return AbstractProductValue[]
+     * @return array
      */
     public function sort($values)
     {

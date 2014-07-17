@@ -19,8 +19,6 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper;
 
 /**
  * Published product controller
@@ -39,26 +37,18 @@ class PublishedProductController extends AbstractController
     /** @var VersionManager */
     protected $versionManager;
 
-    /** @var FilterProductValuesHelper */
-    protected $filterHelper;
-
-    /** @var SortProductValuesHelper */
-    protected $sortHelper;
-
     /**
-     * @param Request                   $request
-     * @param EngineInterface           $templating
-     * @param RouterInterface           $router
-     * @param SecurityContextInterface  $securityContext
-     * @param FormFactoryInterface      $formFactory
-     * @param ValidatorInterface        $validator
-     * @param TranslatorInterface       $translator
-     * @param EventDispatcherInterface  $eventDispatcher
-     * @param UserContext               $userContext
-     * @param PublishedProductManager   $manager
-     * @param VersionManager            $versionManager
-     * @param FilterProductValuesHelper $filterHelper
-     * @param SortProductValuesHelper   $sortHelper
+     * @param Request                  $request
+     * @param EngineInterface          $templating
+     * @param RouterInterface          $router
+     * @param SecurityContextInterface $securityContext
+     * @param FormFactoryInterface     $formFactory
+     * @param ValidatorInterface       $validator
+     * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param UserContext              $userContext
+     * @param PublishedProductManager  $manager
+     * @param VersionManager           $versionManager
      */
     public function __construct(
         Request $request,
@@ -71,9 +61,7 @@ class PublishedProductController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager,
-        VersionManager $versionManager,
-        FilterProductValuesHelper $filterHelper,
-        SortProductValuesHelper $sortHelper
+        VersionManager $versionManager
     ) {
         parent::__construct(
             $request,
@@ -88,8 +76,6 @@ class PublishedProductController extends AbstractController
         $this->userContext    = $userContext;
         $this->manager        = $manager;
         $this->versionManager = $versionManager;
-        $this->filterHelper   = $filterHelper;
-        $this->sortHelper     = $sortHelper;
     }
 
     /**
@@ -173,17 +159,12 @@ class PublishedProductController extends AbstractController
     public function viewAction(Request $request, $id)
     {
         $published = $this->manager->findPublishedProductById($id);
-
-        $values = $this->filterHelper->filter($published->getValues(), $this->getDataLocale());
-        $values = $this->sortHelper->sort($values);
-
         $original = $published->getOriginalProduct();
 
         return [
             'published'  => $published,
             'dataLocale' => $this->getDataLocale(),
             'locales'    => $this->userContext->getUserLocales(),
-            'groups'     => $values,
             'created'    => $this->versionManager->getOldestLogEntry($original),
             'updated'    => $this->versionManager->getNewestLogEntry($original),
         ];
