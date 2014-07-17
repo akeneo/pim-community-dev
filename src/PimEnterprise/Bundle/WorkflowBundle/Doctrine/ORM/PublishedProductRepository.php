@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -124,6 +125,26 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             ->innerJoin('pp.associations', 'ppa')
             ->andWhere('ppa.associationType = :association_type')
             ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->innerJoin('pp.values', 'ppv');
+        if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
+            $qb
+                ->andWhere('ppv.option = :option')
+                ->setParameter('option', $option);
+        } else {
+            $qb
+                ->innerJoin('ppv.options', 'ppo');
+        }
 
         return $this->getCountFromQB($qb);
     }
