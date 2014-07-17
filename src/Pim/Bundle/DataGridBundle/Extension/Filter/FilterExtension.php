@@ -4,7 +4,6 @@ namespace Pim\Bundle\DataGridBundle\Extension\Filter;
 
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface as PimDatasourceInterface;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\MetadataObject;
@@ -70,7 +69,7 @@ class FilterExtension extends AbstractExtension
         }
 
         // ORO grids have a datasource of type ORM, do not apply our filters on these grids
-        return PimDatasourceInterface::DATASOURCE_ORO !== $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        return DatasourceTypes::DATASOURCE_ORO !== $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
     }
 
     /**
@@ -93,8 +92,8 @@ class FilterExtension extends AbstractExtension
         $filters = $this->getFiltersToApply($config);
         $values  = $this->getValuesToApply($config);
         $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        $adapterClass = $this->adapterResolver->getDatasourceClass($datasourceType);
-        $datasourceAdapter = new $adapterClass($datasource->getQueryBuilder());
+        $datasourceAdapterClass = $this->adapterResolver->getAdapterClass($datasourceType);
+        $datasourceAdapter = new $datasourceAdapterClass($datasource->getQueryBuilder());
 
         foreach ($filters as $filter) {
             $value = isset($values[$filter->getName()]) ? $values[$filter->getName()] : false;

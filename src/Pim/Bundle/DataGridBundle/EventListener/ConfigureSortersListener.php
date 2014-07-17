@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration;
 use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfiguration;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**
  * Configure the sorters of the datagrids
@@ -19,15 +19,15 @@ use Oro\Bundle\DataGridBundle\Extension\Sorter\Configuration as SorterConfigurat
  */
 class ConfigureSortersListener
 {
-    /** @var string */
-    protected $storageDriver;
+    /** @var DatasourceSupportResolver */
+    protected $supportResolver;
 
     /**
-     * @param $storageDriver
+     * @param DatasourceSupportResolver $supportResolver
      */
-    public function __construct($storageDriver)
+    public function __construct(DatasourceSupportResolver $supportResolver)
     {
-        $this->storageDriver = $storageDriver;
+        $this->supportResolver = $supportResolver;
     }
 
     /**
@@ -41,12 +41,14 @@ class ConfigureSortersListener
         $sortersPath = sprintf('%s[%s]', SorterConfiguration::SORTERS_PATH, Configuration::COLUMNS_KEY);
         $sorters = $config->offsetGetByPath($sortersPath);
 
-        $datasource = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
         $sorterType = null;
-        if (DatasourceInterface::DATASOURCE_PRODUCT === $datasource) {
+
+        if (DatasourceTypes::DATASOURCE_PRODUCT === $datasourceType) {
             $sorterType = 'product_field';
-        } elseif (DatasourceInterface::DATASOURCE_SMART === $datasource &&
-            PimCatalogExtension::DOCTRINE_MONGODB_ODM === $this->storageDriver) {
+        } elseif (DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB ===
+            $this->supportResolver->getSupport($datasourceType)
+        ) {
             $sorterType = 'mongodb_field';
         }
 
