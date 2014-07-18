@@ -6,7 +6,7 @@ datagrid:
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_datasource_published_product
+            type:              pimee_datasource_published_product
             entity:            %pimee_workflow.entity.published_product.class%
             repository_method: createDatagridQueryBuilder
         columns:

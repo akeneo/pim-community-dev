@@ -3,8 +3,6 @@
 namespace PimEnterprise\Bundle\DataGridBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use PimEnterprise\Bundle\DataGridBundle\DependencyInjection\Compiler\DatasourceSupportPass;
 
 /**
  * PIM Enterprise Datagrid Bundle
@@ -14,11 +12,4 @@ use PimEnterprise\Bundle\DataGridBundle\DependencyInjection\Compiler\DatasourceS
  */
 class PimEnterpriseDataGridBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container->addCompilerPass(new DatasourceSupportPass());
-    }
 }

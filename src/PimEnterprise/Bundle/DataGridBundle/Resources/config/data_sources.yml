@@ -15,6 +15,16 @@ services:
         arguments:
             - '@pim_catalog.object_manager.product'
             - '@pim_datagrid.datasource.result_record.hydrator.product'
-            - '@pimee_workflow.repository.published_product_mass_action'
+            - '@pim_catalog.repository.product_mass_action'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_datasource_published_product }
+            - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
+
+    pim_datagrid.datasource.support_resolver:
+        class: %pim_datagrid.datasource.support_resolver.class%
+        arguments:
+            - %pim_catalog.storage_driver%
+        calls:
+            - [addSmartDatasource, ['pim_datasource_product']]
+            - [addSmartDatasource, ['pim_datasource_smart']]
+            - [addSmartDatasource, ['pimee_datasource_product_history']]
+            - [addSmartDatasource, ['pimee_datasource_published_product']]
