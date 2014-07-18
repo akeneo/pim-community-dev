@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\ImportExportBundle\JobEvents;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile listener used to handle permissions
@@ -54,7 +54,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        $this->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(Attributes::EDIT_JOB_PROFILE, $event->getSubject());
     }
 
     /**
@@ -64,7 +64,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        $this->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(Attributes::EXECUTE_JOB_PROFILE, $event->getSubject());
     }
 
     /**
@@ -77,8 +77,8 @@ class JobPermissionsListener implements EventSubscriberInterface
     public function checkShowPermission(GenericEvent $event)
     {
         $jobInstance = $event->getSubject();
-        if (false === $this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $jobInstance)
-            && false === $this->securityContext->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $jobInstance)) {
+        if (false === $this->securityContext->isGranted(Attributes::EDIT_JOB_PROFILE, $jobInstance)
+            && false === $this->securityContext->isGranted(Attributes::EXECUTE_JOB_PROFILE, $jobInstance)) {
             throw new AccessDeniedException();
         }
     }
@@ -90,7 +90,7 @@ class JobPermissionsListener implements EventSubscriberInterface
      */
     public function checkJobExecutionPermission(GenericEvent $event)
     {
-        $this->isGranted(JobProfileVoter::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
+        $this->isGranted(Attributes::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
     }
 
     /**

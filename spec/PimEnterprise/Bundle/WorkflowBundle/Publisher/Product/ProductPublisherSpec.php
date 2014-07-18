@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\VersioningBundle\Model\Version;
@@ -57,13 +58,15 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->getVersion()->shouldReturn($version);
     }
 
-    function it_builds_the_version_if_needed_during_publishing($versionManager, AbstractProduct $product, Version $version)
+    function it_builds_the_version_if_needed_during_publishing($versionManager, AbstractProduct $product, Version $version, ObjectManager $objectManager)
     {
         $this->initProduct($product);
         $versionManager->getNewestLogEntry($product, null)->willReturn($version);
         $version->isPending()->willReturn(true);
 
         $versionManager->buildPendingVersion($version)->shouldBeCalled();
+        $versionManager->getObjectManager()->willReturn($objectManager);
+        $objectManager->persist($version)->shouldBeCalled();
 
         $published = $this->publish($product);
 

@@ -12,6 +12,20 @@ Feature: Publish a product
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
     And I press the "Publish" button
-    Then I am on the published products page 
+    Then I am on the published index page
     And the grid should contain 1 elements
     And I should see product my-jacket
+
+  Scenario: Successfully unpublish a product
+    Given a "clothing" catalog configuration
+    And the following published product:
+      | sku               | family  | name-en_US      |
+      | my-jacket         | jackets | Jackets         |
+      | my-leather-jacket | jackets | Leather jackets |
+    And I am logged in as "Julia"
+    And I am on the "my-jacket" published show page
+    And I press the "Unpublish" button
+    Then I am on the published index page
+    And the grid should contain 1 elements
+    And I should see product my-leather-jacket
+    And I should not see product my-jacket

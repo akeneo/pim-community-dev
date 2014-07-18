@@ -6,8 +6,9 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Add the owner roles parameter to the product edit template parameters
@@ -17,17 +18,17 @@ use Pim\Bundle\UserBundle\Context\UserContext;
  */
 class AddOwnerRolesParameterListener implements EventSubscriberInterface
 {
-    /** @var CategoryOwnershipRepository */
+    /** @var CategoryAccessRepository */
     protected $repository;
 
     /** @var UserContext */
     protected $userContext;
 
     /**
-     * @param CategoryOwnershipRepository $repository  the owner repo
-     * @param UserContext                 $userContext the user context
+     * @param CategoryAccessRepository $repository  the owner repo
+     * @param UserContext              $userContext the user context
      */
-    public function __construct(CategoryOwnershipRepository $repository, UserContext $userContext)
+    public function __construct(CategoryAccessRepository $repository, UserContext $userContext)
     {
         $this->repository  = $repository;
         $this->userContext = $userContext;
@@ -59,7 +60,10 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
             return;
         }
 
-        $parameters['ownerRoles'] = $this->repository->findRolesForProduct($parameters['product']);
+        $parameters['ownerRoles'] = $this->repository->getGrantedRolesForProduct(
+            $parameters['product'],
+            Attributes::OWN_PRODUCTS
+        );
 
         $event->setArgument('parameters', $parameters);
     }

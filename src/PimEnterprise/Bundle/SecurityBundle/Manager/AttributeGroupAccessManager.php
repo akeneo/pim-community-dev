@@ -8,7 +8,7 @@ use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Attribute group access manager
@@ -49,7 +49,7 @@ class AttributeGroupAccessManager
      */
     public function getViewRoles(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, AttributeGroupVoter::VIEW_ATTRIBUTES);
+        return $this->getRepository()->getGrantedRoles($group, Attributes::VIEW_ATTRIBUTES);
     }
 
     /**
@@ -61,7 +61,7 @@ class AttributeGroupAccessManager
      */
     public function getEditRoles(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, AttributeGroupVoter::EDIT_ATTRIBUTES);
+        return $this->getRepository()->getGrantedRoles($group, Attributes::EDIT_ATTRIBUTES);
     }
 
     /**
@@ -75,13 +75,13 @@ class AttributeGroupAccessManager
     {
         $grantedRoles = [];
         foreach ($editRoles as $role) {
-            $this->grantAccess($group, $role, AttributeGroupVoter::EDIT_ATTRIBUTES);
+            $this->grantAccess($group, $role, Attributes::EDIT_ATTRIBUTES);
             $grantedRoles[] = $role;
         }
 
         foreach ($viewRoles as $role) {
             if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($group, $role, AttributeGroupVoter::VIEW_ATTRIBUTES);
+                $this->grantAccess($group, $role, Attributes::VIEW_ATTRIBUTES);
                 $grantedRoles[] = $role;
             }
         }
@@ -102,7 +102,7 @@ class AttributeGroupAccessManager
         $access = $this->getAttributeGroupAccess($group, $role);
         $access
             ->setViewAttributes(true)
-            ->setEditAttributes($accessLevel === AttributeGroupVoter::EDIT_ATTRIBUTES);
+            ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
 
         $this->getObjectManager()->persist($access);
     }

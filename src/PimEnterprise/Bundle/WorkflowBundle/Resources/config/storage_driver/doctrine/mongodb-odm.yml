@@ -35,4 +35,4 @@ services:
         class: %pimee_workflow.repository.proposition_ownership.class%
         arguments:
             - '@pimee_workflow.repository.proposition'
-            - '@pimee_security.repository.category_ownership'
+            - '@pimee_security.repository.category_access'

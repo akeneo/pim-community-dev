@@ -29,4 +29,34 @@ class PropositionEvents
      * @staticvar string
      */
     const PRE_APPLY = 'pimee_workflow.proposition.pre_apply';
+
+    /**
+     * This event is dispatched before proposition is approved
+     *
+     * The event listener receives an
+     * PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent instance
+     *
+     * @staticvar string
+     */
+    const PRE_APPROVE = 'pimee_workflow.proposition.pre_approve';
+
+    /**
+     * This event is dispatched before proposition is refused
+     *
+     * The event listener receives an
+     * PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent instance
+     *
+     * @staticvar string
+     */
+    const PRE_REFUSE = 'pimee_workflow.proposition.pre_refuse';
+
+    /**
+     * This event is dispatched before proposition is marked as ready
+     *
+     * The event listener receives an
+     * PimEnterprise\Bundle\WorkflowBundle\Proposition\PropositionEvent instance
+     *
+     * @staticvar string
+     */
+    const PRE_READY = 'pimee_workflow.proposition.pre_ready';
 }

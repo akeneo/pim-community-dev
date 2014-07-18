@@ -10,7 +10,7 @@ use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class DisableProductValueFieldListenerSpec extends ObjectBehavior
 {
@@ -44,7 +44,7 @@ class DisableProductValueFieldListenerSpec extends ObjectBehavior
         $value->getAttribute()->willReturn($sku);
         $sku->getGroup()->willReturn($group);
 
-        $context->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $group)->willReturn(false);
+        $context->isGranted(Attributes::EDIT_ATTRIBUTES, $group)->willReturn(false);
         $event->updateFormOptions(['disabled' => true, 'read_only' => true])->shouldBeCalled();
 
         $this->onCreateProductValueForm($event);

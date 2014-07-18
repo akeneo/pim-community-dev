@@ -1,5 +1,10 @@
 <div class="tab-pane active" id="attributes">
     {% include 'PimEnrichBundle:Product:_attributes.html.twig' %}
+    {% if not form.vars.groups %}
+        <div class="alert alert-info">
+            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+        </div>
+    {% endif %}
 </div>
 
 {% if resource_granted("pim_enrich_product_categories_view")

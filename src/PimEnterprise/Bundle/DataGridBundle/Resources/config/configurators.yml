@@ -19,4 +19,4 @@ services:
         arguments:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@security.context'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.product'

@@ -1,5 +1,6 @@
 parameters:
     pimee_filter.proposition_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposition\ChoiceFilter
+    pim_filter.product_category_filter.class:     PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
 
 services:
     pimee_filter.proposition_choice_filter:

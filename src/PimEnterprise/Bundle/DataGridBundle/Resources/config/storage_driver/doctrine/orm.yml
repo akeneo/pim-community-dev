@@ -1,4 +1,2 @@
 parameters:
-    pimee_filter.datasource.proposition_adapter.class:              Pim\Bundle\FilterBundle\Datasource\Orm\OrmFilterDatasourceAdapter
-    pimee_datagrid.extension.pager.proposition.pager.class:         Pim\Bundle\DataGridBundle\Extension\Pager\Orm\Pager
-    pimee_datagrid.extension.sorter.proposition.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\Orm\FieldSorter
+    pimee_datagrid.datasource.result_record.hydrator.product_history.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM\ProductHistoryHydrator

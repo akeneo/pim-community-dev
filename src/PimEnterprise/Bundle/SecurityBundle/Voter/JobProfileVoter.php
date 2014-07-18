@@ -6,6 +6,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
@@ -16,12 +17,6 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
  */
 class JobProfileVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const EXECUTE_JOB_PROFILE = 'EXECUTE_JOB_PROFILE';
-
-    /** @staticvar string */
-    const EDIT_JOB_PROFILE    = 'EDIT_JOB_PROFILE';
-
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
@@ -40,7 +35,7 @@ class JobProfileVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(self::EXECUTE_JOB_PROFILE, self::EDIT_JOB_PROFILE));
+        return in_array($attribute, array(Attributes::EXECUTE_JOB_PROFILE, Attributes::EDIT_JOB_PROFILE));
     }
 
     /**
@@ -86,7 +81,7 @@ class JobProfileVoter implements VoterInterface
      */
     protected function extractRoles($attribute, $object)
     {
-        if ($attribute === self::EDIT_JOB_PROFILE) {
+        if ($attribute === Attributes::EDIT_JOB_PROFILE) {
             $grantedRoles = $this->accessManager->getEditRoles($object);
         } else {
             $grantedRoles = $this->accessManager->getExecuteRoles($object);

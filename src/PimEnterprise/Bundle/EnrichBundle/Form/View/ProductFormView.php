@@ -4,12 +4,10 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\View;
 
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as PimProductFormView;
-
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Extending product form view adding permissions
@@ -42,7 +40,7 @@ class ProductFormView extends PimProductFormView
         $attributeView = parent::prepareAttributeView($attribute, $value, $view);
 
         $attributeView['allowValueCreation'] = $attributeView['allowValueCreation']
-            && $this->securityContext->isGranted(AttributeGroupVoter::EDIT_ATTRIBUTES, $attribute->getGroup());
+            && $this->securityContext->isGranted(Attributes::EDIT_ATTRIBUTES, $attribute->getGroup());
 
         return $attributeView;
     }

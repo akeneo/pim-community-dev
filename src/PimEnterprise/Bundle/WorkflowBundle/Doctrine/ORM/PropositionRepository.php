@@ -44,9 +44,12 @@ class PropositionRepository extends EntityRepository implements
         $qb
             ->join('p.product', 'product')
             ->leftJoin('product.categories', 'category')
-            ->innerJoin('PimEnterpriseSecurityBundle:CategoryOwnership', 'o', 'WITH', 'o.category = category')
+            ->innerJoin('PimEnterpriseSecurityBundle:CategoryAccess', 'a', 'WITH', 'a.category = category')
             ->where(
-                $qb->expr()->in('o.role', ':roles')
+                $qb->expr()->eq('a.ownProducts', true)
+            )
+            ->andWhere(
+                $qb->expr()->in('a.role', ':roles')
             )
             ->andWhere(
                 $qb->expr()->eq('p.status', Proposition::READY)
@@ -66,9 +69,17 @@ class PropositionRepository extends EntityRepository implements
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
-        return $this->createQueryBuilder('p');
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author, p.status as status')
+            ->from($this->_entityName, 'p', 'p.id');
+
+        if (isset($parameters['product'])) {
+            $this->applyDatagridContext($qb, $parameters['product']);
+        }
+
+        return $qb;
     }
 
     /**
@@ -78,7 +89,8 @@ class PropositionRepository extends EntityRepository implements
      */
     public function applyDatagridContext($qb, $productId)
     {
-        $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
+        $qb->innerJoin('p.product', 'product', 'WITH', 'product.id = :product');
+        $qb->setParameter('product', $productId);
 
         return $this;
     }

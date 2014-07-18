@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -10,6 +11,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
 
 /**
  * Manage product propositions
@@ -37,6 +40,9 @@ class PropositionManager
     /** @var PropositionChangesApplier */
     protected $applier;
 
+    /** @var EventDispatcherInterface */
+    protected $dispatcher;
+
     /**
      * @param ManagerRegistry                $registry
      * @param ProductManager                 $manager
@@ -44,6 +50,7 @@ class PropositionManager
      * @param PropositionFactory             $factory
      * @param PropositionRepositoryInterface $repository
      * @param PropositionChangesApplier      $applier
+     * @param EventDispatcherInterface       $dispatcher
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -51,7 +58,8 @@ class PropositionManager
         UserContext $userContext,
         PropositionFactory $factory,
         PropositionRepositoryInterface $repository,
-        PropositionChangesApplier $applier
+        PropositionChangesApplier $applier,
+        EventDispatcherInterface $dispatcher
     ) {
         $this->registry = $registry;
         $this->manager = $manager;
@@ -59,6 +67,7 @@ class PropositionManager
         $this->factory = $factory;
         $this->repository = $repository;
         $this->applier = $applier;
+        $this->dispatcher = $dispatcher;
     }
 
     /**
@@ -68,8 +77,12 @@ class PropositionManager
      */
     public function approve(Proposition $proposition)
     {
-        $product = $proposition->getProduct();
+        $this->dispatcher->dispatch(
+            PropositionEvents::PRE_APPROVE,
+            new PropositionEvent($proposition)
+        );
 
+        $product = $proposition->getProduct();
         $this->applier->apply($product, $proposition);
 
         $manager = $this->registry->getManagerForClass(get_class($proposition));
@@ -87,16 +100,6 @@ class PropositionManager
      */
     public function refuse(Proposition $proposition)
     {
-        $this->remove($proposition);
-    }
-
-    /**
-     * Remove a persisted proposition
-     *
-     * @param Proposition $proposition
-     */
-    public function remove(Proposition $proposition)
-    {
         $manager = $this->registry->getManagerForClass(get_class($proposition));
 
         if (!$proposition->isInProgress()) {
@@ -104,6 +107,11 @@ class PropositionManager
         } else {
             $manager->remove($proposition);
         }
+
+        $this->dispatcher->dispatch(
+            PropositionEvents::PRE_REFUSE,
+            new PropositionEvent($proposition)
+        );
 
         $manager->flush();
     }
@@ -116,8 +124,6 @@ class PropositionManager
      * @return Proposition
      *
      * @throws \LogicException
-     *
-     * TODO (2014-06-18 17:05 by Gildas): Use this method in the PropositionPersister
      */
     public function findOrCreate(ProductInterface $product)
     {
@@ -141,6 +147,10 @@ class PropositionManager
      */
     public function markAsReady(Proposition $proposition)
     {
+        $this->dispatcher->dispatch(
+            PropositionEvents::PRE_READY,
+            new PropositionEvent($proposition)
+        );
         $proposition->setStatus(Proposition::READY);
 
         $manager = $this->registry->getManagerForClass(get_class($proposition));

@@ -6,7 +6,7 @@ use Doctrine\ORM\AbstractQuery;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -23,20 +23,20 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
     protected $propositionRepo;
 
     /**
-     * @var CategoryOwnershipRepository
+     * @var CategoryAccessRepository
      */
-    protected $catOwnershipRepo;
+    protected $catAccessRepo;
 
     /**
      * @param PropositionRepositoryInterface $propositionRepo
-     * @param CategoryOwnershipRepository    $catOwnershipRepo
+     * @param CategoryAccessRepository       $catAccessRepo
      */
     public function __construct(
         PropositionRepositoryInterface $propositionRepo,
-        CategoryOwnershipRepository $catOwnershipRepo
+        CategoryAccessRepository $catAccessRepo
     ) {
-        $this->propositionRepo  = $propositionRepo;
-        $this->catOwnershipRepo = $catOwnershipRepo;
+        $this->propositionRepo = $propositionRepo;
+        $this->catAccessRepo   = $catAccessRepo;
     }
 
     /**
@@ -68,7 +68,7 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
      */
     protected function getGrantedCategoryIds(User $user)
     {
-        $qb = $this->catOwnershipRepo->createQueryBuilder('o');
+        $qb = $this->catAccessRepo->createQueryBuilder('o');
 
         $qb
             ->join('o.category', 'category')

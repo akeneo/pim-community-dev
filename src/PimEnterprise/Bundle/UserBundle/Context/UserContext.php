@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\UserBundle\Context;
 
 use Pim\Bundle\UserBundle\Context\UserContext as BaseUserContext;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * User context that provides access to user locale, channel and default category tree
@@ -29,7 +29,7 @@ class UserContext extends BaseUserContext
     {
         $defaultTree = $this->getUserOption('defaultTree');
 
-        if ($defaultTree && $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $defaultTree)) {
+        if ($defaultTree && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $defaultTree)) {
             return $defaultTree;
         }
 

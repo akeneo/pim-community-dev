@@ -4,6 +4,7 @@ parameters:
     pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.datagrid.proposition_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\PropositionGridHelper
+    pimee_workflow.twig.extension.group_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Twig\GroupProductValuesExtension
 
 services:
     pimee_workflow.event_listener.propositions_grid_listener:
@@ -37,7 +38,8 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.repository.proposition'
             - '@event_dispatcher'
-            - '@pimee_workflow.collector.changes'
+            - '@pimee_workflow.collector.product_submitted_changes'
+            - '@pimee_workflow.change_set_computer'
 
     pimee_workflow.controller.published_product:
         class: %pimee_workflow.controller.published_product.class%
@@ -46,6 +48,15 @@ services:
         arguments:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
+            - '@pim_versioning.manager.version'
 
     pimee_workflow.datagrid.proposition_grid_helper:
         class: %pimee_workflow.datagrid.proposition_grid_helper.class%
+
+    pimee_workflow.twig.extension.group_product_values:
+        class: %pimee_workflow.twig.extension.group_product_values.class%
+        arguments:
+            - '@pimee_workflow.helper.filter_product_values'
+            - '@pimee_workflow.helper.sort_product_values'
+        tags:
+            - { name: twig.extension }

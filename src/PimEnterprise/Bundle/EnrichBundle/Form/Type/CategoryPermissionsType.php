@@ -19,8 +19,31 @@ class CategoryPermissionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('view', 'pimee_security_roles', ['label' => 'category.permissions.view.label']);
-        $builder->add('edit', 'pimee_security_roles', ['label' => 'category.permissions.edit.label']);
+        $builder->add(
+            'view',
+            'pimee_security_roles',
+            ['label' => 'category.permissions.view.label', 'help' => 'category.permissions.view.help']
+        );
+        $builder->add(
+            'edit',
+            'pimee_security_roles',
+            ['label' => 'category.permissions.edit.label', 'help' => 'category.permissions.edit.help']
+        );
+        $builder->add(
+            'own',
+            'pimee_security_roles',
+            ['label' => 'category.permissions.own.label', 'help' => 'category.permissions.own.help']
+        );
+        $builder->add(
+            'apply_on_children',
+            'checkbox',
+            [
+                'label' => 'category.permissions.apply_on_children.label',
+                'help'  => 'category.permissions.apply_on_children.help',
+                'data' => true,
+                'required' => false
+            ]
+        );
     }
 
     /**

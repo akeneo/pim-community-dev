@@ -4,11 +4,18 @@ pane.accordion.permissions: Permissions
 attribute group.permissions:
     view.label: Permissions to view attributes
     edit.label: Permissions to edit attributes
+    no_access_to_attributes: You don't have access to any attributes of this product. Please contact your administrator.
 
 category.permissions:
-    view.label: Permissions to view products in the current category
-    edit.label: Permissions to edit products in the current category
+    view.label: View products
+    view.help: Allow to view the products in this category
+    edit.label: Edit products
+    edit.help: Allow to edit the products in this category (implies the view permission)
+    own.label: Own products
+    own.help: Allow to own the products in this category (implies the edit permission)
     no_access_to_products: You don't have access to products in any tree, please contact your administrator
+    apply_on_children.label: Apply changes on children
+    apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
 pimee_enrich:
     acl.product_ownership.title: Ownership
@@ -22,6 +29,7 @@ btn:
     send for approval: Send for approval
     sent for approval: Sent for approval
 
+# Mass edit operations
 pim_enrich.mass_edit_action.publish.label: Publish products
 pim_enrich.mass_edit_action.publish.description: Publish the selected products, the current published data will be erased by the current working copy.
 pim_enrich.mass_edit_action.publish.success_flash: Selected products have been successfully published
@@ -29,3 +37,7 @@ pim_enrich.mass_edit_action.publish.success_flash: Selected products have been s
 pim_enrich.mass_edit_action.publish.message.error: You're not the owner of the selected products, you can't publish them
 pim_enrich.mass_edit_action.publish.message.warning: You're not the owner of all the selected products, you can't publish the following "%notGranted%"
 pim_enrich.mass_edit_action.publish.message.info: The %nbProducts% selected products will be published
+pim_enrich.mass_edit_action.product.not_editable: You don't have the permission to edit the products "%identifiers%"
+
+flash.product.updated: Product working copy has been updated
+flash.proposition.updated: Draft has been successfully saved

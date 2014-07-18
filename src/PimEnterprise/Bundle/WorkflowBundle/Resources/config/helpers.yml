@@ -1,0 +1,12 @@
+parameters:
+    pimee_workflow.helper.filter_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper
+    pimee_workflow.helper.sort_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper
+
+services:
+    pimee_workflow.helper.filter_product_values:
+        class: %pimee_workflow.helper.filter_product_values.class%
+        arguments:
+            - '@security.context'
+
+    pimee_workflow.helper.sort_product_values:
+        class: %pimee_workflow.helper.sort_product_values.class%

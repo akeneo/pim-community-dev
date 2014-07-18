@@ -2,12 +2,12 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
 
-use Pim\Bundle\EnrichBundle\EnrichEvents;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Pim\Bundle\EnrichBundle\EnrichEvents;
 
 /**
  * Product listener used to handle permissions.
@@ -51,7 +51,7 @@ class ProductListener implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $event->getSubject())) {
+        if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $event->getSubject())) {
             throw new AccessDeniedException();
         }
     }

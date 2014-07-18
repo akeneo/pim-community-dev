@@ -3,12 +3,23 @@ parameters:
     pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
     pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
     pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
-    pimee_workflow.product_changes_applier.merge_values.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MergeValuesSubscriber
+    pimee_workflow.subscriber.prepare_proposition_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PreparePropositionChangesSubscriber
     pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
     pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
     pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
     pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
-    pimee_workflow.collector.changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
+    pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
+    pimee_workflow.proposition_subscriber.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.change_set_subscriber.metadata.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber
+    pimee_workflow.comparator.chained.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\ChainedComparator
+    pimee_workflow.comparator.media.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\MediaComparator
+    pimee_workflow.comparator.date.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\DateComparator
+    pimee_workflow.comparator.prices.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\PricesComparator
+    pimee_workflow.comparator.metric.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\MetricComparator
+    pimee_workflow.comparator.option.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\OptionComparator
+    pimee_workflow.comparator.options.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\OptionsComparator
+    pimee_workflow.comparator.scalar.class: PimEnterprise\Bundle\WorkflowBundle\Comparator\ScalarComparator
+    pimee_workflow.change_set_computer.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputer
 
 services:
     pimee_workflow.factory.proposition:
@@ -23,6 +34,7 @@ services:
             - '@pimee_workflow.factory.proposition'
             - '@pimee_workflow.repository.proposition'
             - '@pimee_workflow.applier.proposition_changes_applier'
+            - '@event_dispatcher'
 
     pimee_workflow.applier.proposition_changes_applier:
         public: false
@@ -39,13 +51,26 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_workflow.product_changes_applier.merge_values:
-        class: %pimee_workflow.product_changes_applier.merge_values.class%
+    pimee_workflow.subscriber.prepare_proposition_changes:
+        class: %pimee_workflow.subscriber.prepare_proposition_changes.class%
         tags:
             - { name: kernel.event_subscriber }
 
     pimee_workflow.proposition_subscriber.mark_in_progress:
         class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.proposition_subscriber.replace_flash_message:
+        class: %pimee_workflow.proposition_subscriber.replace_flash_message.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.change_set_subscriber.metadata:
+        class: %pimee_workflow.change_set_subscriber.metadata.class%
         tags:
             - { name: kernel.event_subscriber }
 
@@ -92,7 +117,54 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    pimee_workflow.collector.changes:
-        class: %pimee_workflow.collector.changes.class%
+    pimee_workflow.collector.product_submitted_changes:
+        class: %pimee_workflow.collector.product_submitted_changes.class%
+
+    pimee_workflow.change_set_computer:
+        class: %pimee_workflow.change_set_computer.class%
         arguments:
-            - '@pim_catalog.manager.media'
+            - '@pimee_workflow.comparator.chained'
+            - '@event_dispatcher'
+            - '@pim_catalog.builder.product'
+
+    ##
+    # Comparators of product values
+    ##
+    pimee_workflow.comparator.chained:
+        public: false
+        class: %pimee_workflow.comparator.chained.class%
+
+    pimee_workflow.comparator.media:
+        class: %pimee_workflow.comparator.media.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.date:
+        class: %pimee_workflow.comparator.date.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.prices:
+        class: %pimee_workflow.comparator.prices.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.metric:
+        class: %pimee_workflow.comparator.metric.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.option:
+        class: %pimee_workflow.comparator.option.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.options:
+        class: %pimee_workflow.comparator.options.class%
+        tags:
+            - { name: pimee_workflow.comparator }
+
+    pimee_workflow.comparator.scalar:
+        class: %pimee_workflow.comparator.scalar.class%
+        tags:
+            - { name: pimee_workflow.comparator, priority: -128 }

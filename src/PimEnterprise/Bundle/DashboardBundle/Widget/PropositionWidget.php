@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\DashboardBundle\Widget;
 use Pim\Bundle\DashboardBundle\Widget\WidgetInterface;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepository;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
  * Widget to display product propositions
@@ -16,14 +16,14 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryOwnershipRepos
 class PropositionWidget implements WidgetInterface
 {
     /**
-     * @var CategoryOwnershipRepository
+     * @var CategoryAccessRepository
      */
-    protected $catOwnershipRepo;
+    protected $accessRepository;
 
     /**
      * @var PropositionOwnershipRepositoryInterface
      */
-    protected $propOwnershipRepo;
+    protected $ownershipRepository;
 
     /**
      * @var UserContext
@@ -33,18 +33,18 @@ class PropositionWidget implements WidgetInterface
     /**
      * Constructor
      *
-     * @param CategoryOwnershipRepository             $catOwnershipRepo
-     * @param PropositionOwnershipRepositoryInterface $propOwnershipRepo
+     * @param CategoryAccessRepository                $accessRepository
+     * @param PropositionOwnershipRepositoryInterface $ownershipRepository
      * @param UserContext                             $userContext
      */
     public function __construct(
-        CategoryOwnershipRepository $catOwnershipRepo,
-        PropositionOwnershipRepositoryInterface $propOwnershipRepo,
+        CategoryAccessRepository $accessRepository,
+        PropositionOwnershipRepositoryInterface $ownershipRepository,
         UserContext $userContext
     ) {
-        $this->catOwnershipRepo  = $catOwnershipRepo;
-        $this->propOwnershipRepo = $propOwnershipRepo;
-        $this->userContext       = $userContext;
+        $this->accessRepository    = $accessRepository;
+        $this->ownershipRepository = $ownershipRepository;
+        $this->userContext         = $userContext;
     }
 
     /**
@@ -64,14 +64,14 @@ class PropositionWidget implements WidgetInterface
         $isOwner = false;
 
         if (null !== $user) {
-            $isOwner = $this->catOwnershipRepo->isOwner($user);
+            $isOwner = $this->accessRepository->isOwner($user);
         }
 
         if (!$isOwner) {
             return ['show' => false];
         }
 
-        $propositions = $this->propOwnershipRepo->findApprovableByUser($user, 10);
+        $propositions = $this->ownershipRepository->findApprovableByUser($user, 10);
 
         return [
             'show'   => true,

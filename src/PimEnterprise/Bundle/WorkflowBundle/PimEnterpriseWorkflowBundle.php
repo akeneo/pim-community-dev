@@ -6,7 +6,6 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
 use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 
 /**
  * PIM Enterprise Workflow Bundle
@@ -49,8 +48,8 @@ class PimEnterpriseWorkflowBundle extends Bundle
 
         $container
             ->addCompilerPass(new Compiler\RegisterPropositionPresentersPass())
-            ->addCompilerPass(new Compiler\RegisterProductFormTypeComparatorsPass())
-            ->addCompilerPass(new Compiler\RegisterPublishersPass())
-            ->addCompilerPass(new Compiler\InjectChangesCollectorPass(), PassConfig::TYPE_BEFORE_REMOVING);
+            ->addCompilerPass(new Compiler\RegisterProductValuePresentersPass())
+            ->addCompilerPass(new Compiler\RegisterComparatorsPass())
+            ->addCompilerPass(new Compiler\RegisterPublishersPass());
     }
 }
