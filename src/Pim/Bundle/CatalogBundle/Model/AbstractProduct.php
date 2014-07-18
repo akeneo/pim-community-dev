@@ -608,6 +608,20 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
+     * Set categories removing old ones
+     *
+     * @param array $categories
+     *
+     * @return AbstractProduct
+     */
+    public function setCategories(array $categories = array())
+    {
+        $this->categories = new ArrayCollection($categories);
+
+        return $this;
+    }
+
+    /**
      * Get a string with categories linked to product
      *
      * @return string
