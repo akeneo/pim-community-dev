@@ -32,7 +32,7 @@ class DatasourceSupportResolver
      */
     public function __construct(
         $storageDriver,
-        array $smartDatasources = [DatasourceTypes::DATASOURCE_SMART, DatasourceTypes::DATASOURCE_PRODUCT]
+        array $smartDatasources = array(DatasourceTypes::DATASOURCE_SMART, DatasourceTypes::DATASOURCE_PRODUCT)
     ) {
         $this->storageDriver    = $storageDriver;
         $this->smartDatasources = $smartDatasources;
