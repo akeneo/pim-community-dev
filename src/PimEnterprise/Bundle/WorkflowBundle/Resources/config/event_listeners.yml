@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.event_listener.check_published_product.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
+    pimee_workflow.event_listener.published_product_consistency_exception.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\PublishedProductConsistencyExceptionSubscriber
 
 services:
     pimee_workflow.event_listener.check_published_product:
@@ -9,3 +10,10 @@ services:
             - '@pim_catalog.repository.category'
         tags:
             - { name: kernel.event_subscriber}
+
+    pimee_workflow.event_listener.published_product_consistency_exception:
+        class: %pimee_workflow.event_listener.published_product_consistency_exception.class%
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }

@@ -59,7 +59,6 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
      */
     public function collect(FormEvent $event)
     {
-        $form = $event->getForm();
         $data = $event->getData();
 
         if (!array_key_exists('values', $data)) {

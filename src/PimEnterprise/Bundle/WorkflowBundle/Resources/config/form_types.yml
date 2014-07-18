@@ -1,5 +1,6 @@
 parameters:
     pimee_workflow.form.subscriber.collect_product_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber
+    pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditValuesSubscriber
     pimee_workflow.form.subscriber.unmap_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\UnmapProductValuesSubscriber
 
 services:
@@ -10,6 +11,15 @@ services:
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pim_catalog.manager.media'
             - '@pim_catalog.factory.media'
+
+    pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes:
+        public: false
+        class: %pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes.class%
+        arguments:
+            - '@pimee_workflow.collector.product_submitted_changes'
+            - '@pim_catalog.manager.media'
+            - '@pim_catalog.factory.media'
+            - '@pim_catalog.repository.locale'
 
     pimee_workflow.form.subscriber.unmap_product_values:
         public: false

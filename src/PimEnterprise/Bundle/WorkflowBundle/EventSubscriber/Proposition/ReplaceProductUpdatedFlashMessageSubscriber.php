@@ -64,8 +64,8 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
         }
 
         $bag = $event->getRequest()->getSession()->getFlashBag();
-        foreach ($bag->peekAll() as $type => $flashes) {
-            foreach ($flashes as $key => $flash) {
+        foreach ($bag->peekAll() as $flashes) {
+            foreach ($flashes as $flash) {
                 if (!$flash instanceof Message) {
                     continue;
                 }

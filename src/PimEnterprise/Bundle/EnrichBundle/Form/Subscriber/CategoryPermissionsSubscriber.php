@@ -84,7 +84,6 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
         $ownRoles = $this->accessManager->getOwnRoles($event->getData());
         $form->get('own')->setData($ownRoles);
         $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
-
     }
 
     /**
