@@ -18,6 +18,6 @@ Every PR should start with:
 | Doc PR               |
 ```
 
-*```bash > ./bin/phpcs --standard=PSR2 --extensions=php src/Pim features```
+*``` > ./bin/phpcs --standard=PSR2 --extensions=php src/Pim features```
 
-**```bash > ./app/Resources/jenkins/phpmd_akeneo src/Pim,features text``` (only on your added/updated files)
+**``` > ./app/Resources/jenkins/phpmd_akeneo src/Pim,features text``` (only on your added/updated files)
