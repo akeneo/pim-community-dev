@@ -46,6 +46,7 @@
 - Add method remove in Category, Group, Attribute, Association type and family managers.
 - Call manager's method remove from these entity controllers
 - Remove the count of products by category in the context of the management of the categories (perf)
+- Remove the hard coded mysql socket file on parameters.yml
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
