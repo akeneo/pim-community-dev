@@ -17,14 +17,15 @@ Feature: Display proposition widget
       | sku        | family  |
       | my-sandals | sandals |
     And the following propositions:
-      | product    | author |
-      | my-sandals | Mary   |
+      | product    | author | status      |
+      | my-sandals | mary   | ready       |
+      | my-sandals | john   | in progress |
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see "Propositions to review"
     And I should the following proposition:
       | product    | author |
-      | my-sandals | Mary   |
+      | my-sandals | mary   |
 
   Scenario: Successfully hide the widget if the current user is not the owner of any categories
     Given the "clothing" catalog configuration
