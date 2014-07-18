@@ -13,7 +13,6 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
 use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
 use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
-use Pim\Bundle\DataGridBundle\Datasource\DatasourceTypes;
 
 /**
  * Orm selector extension
@@ -40,7 +39,7 @@ class OrmSelectorExtension extends AbstractExtension
     protected $selectors;
 
     /**
-     * @var array
+     * @var string[]
      */
     protected $eligibleDatasource = [];
 
@@ -117,9 +116,9 @@ class OrmSelectorExtension extends AbstractExtension
     }
 
     /**
-     * @param $datasource
+     * @param string $datasource
      *
-*@return OrmSelectorExtension
+    * @return OrmSelectorExtension
      */
     public function addEligibleDatasource($datasource)
     {
