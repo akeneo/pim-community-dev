@@ -24,18 +24,18 @@ class DatasourceSupportResolver
     protected $storageDriver;
 
     /** @var array */
-    protected $mongoEligibleDatasources = [];
+    protected $smartDatasources = [];
 
     /**
      * @param string $storageDriver
-     * @param array  $mongoEligibleDatasources
+     * @param array  $mongodbEligibles
      */
     public function __construct(
         $storageDriver,
-        $mongoEligibleDatasources = [DatasourceTypes::DATASOURCE_SMART, DatasourceTypes::DATASOURCE_PRODUCT]
+        array $smartDatasources = [DatasourceTypes::DATASOURCE_SMART, DatasourceTypes::DATASOURCE_PRODUCT]
     ) {
-        $this->storageDriver = $storageDriver;
-        $this->mongoEligibleDatasources = $mongoEligibleDatasources;
+        $this->storageDriver    = $storageDriver;
+        $this->smartDatasources = $smartDatasources;
     }
 
     /**
@@ -51,7 +51,7 @@ class DatasourceSupportResolver
             return self::DATASOURCE_SUPPORT_ORM;
         }
 
-        if (in_array($datasourceType, $this->mongoEligibleDatasources)) {
+        if (in_array($datasourceType, $this->smartDatasources)) {
             return self::DATASOURCE_SUPPORT_MONGODB;
         }
 
@@ -65,6 +65,6 @@ class DatasourceSupportResolver
      */
     public function addMongoEligibleDatasources($datasource)
     {
-        $this->mongoEligibleDatasources[] = $datasource;
+        $this->smartDatasources[] = $datasource;
     }
 }
