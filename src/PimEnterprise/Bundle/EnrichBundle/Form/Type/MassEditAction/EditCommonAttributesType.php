@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Pim\Bundle\EnrichBundle\Form\Type\MassEditAction\EditCommonAttributesType as BaseEditCommonAttributesType;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\CatalogBundle\Helper\LocaleHelper;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductValuesSubscriber;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditValuesSubscriber;
 
 /**
  * Form type of the EditCommonAttributes operation
@@ -30,7 +30,7 @@ class EditCommonAttributesType extends BaseEditCommonAttributesType
         ProductFormViewInterface $productFormView,
         LocaleHelper $localeHelper,
         $attributeClass,
-        CollectProductValuesSubscriber $subscriber
+        CollectProductMassEditValuesSubscriber $subscriber
     ) {
         parent::__construct($productFormView, $localeHelper, $attributeClass);
 

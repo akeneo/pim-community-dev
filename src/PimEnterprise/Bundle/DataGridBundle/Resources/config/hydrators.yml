@@ -1,0 +1,5 @@
+services:
+    pimee_datagrid.datasource.result_record.hydrator.product_history:
+        class: %pimee_datagrid.datasource.result_record.hydrator.product_history.class%
+        arguments:
+            - @pimee_workflow.repository.published_product

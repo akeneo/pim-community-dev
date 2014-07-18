@@ -4,6 +4,7 @@ pane.accordion.permissions: Permissions
 attribute group.permissions:
     view.label: Permissions to view attributes
     edit.label: Permissions to edit attributes
+    no_access_to_attributes: You don't have access to any attributes of this product. Please contact your administrator.
 
 category.permissions:
     view.label: View products

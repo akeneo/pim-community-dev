@@ -86,7 +86,11 @@ class ProductController extends BaseProductController
         $product = $this->findProductOr404($id);
 
         return [
-            'product' => $product,
+            'product'    => $product,
+            'dataLocale' => $this->getDataLocale(),
+            'locales'    => $this->userContext->getUserLocales(),
+            'created'    => $this->versionManager->getOldestLogEntry($product),
+            'updated'    => $this->versionManager->getNewestLogEntry($product),
         ];
     }
 

@@ -1,0 +1,43 @@
+datagrid:
+    product-history-grid:
+        source:
+            type: pimee_datasource_product_history
+            entity: %pim_versioning.entity.version.class%
+            repository_method: createDatagridQueryBuilder
+        columns:
+            version:
+                label: Version
+                frontend_type: integer
+            published:
+                label: Published
+                type: twig
+                template: PimEnterpriseDataGridBundle:Property:published.html.twig
+                frontend_type: html
+            author:
+                label: Author
+                frontend_type: string
+            loggedAt:
+                label: Logged At
+                frontend_type: datetime
+            old:
+                label: Old values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/old.html.twig
+                frontend_type: html
+                data_name: changeset
+            new:
+                label: New values
+                type: twig
+                template: OroDataAuditBundle:Datagrid:Property/new.html.twig
+                frontend_type: html
+                data_name: changeset
+        sorters:
+            columns:
+                version:
+                    data_name: version
+                author:
+                    data_name: author
+                loggedAt:
+                    data_name: loggedAt
+            default:
+                loggedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC

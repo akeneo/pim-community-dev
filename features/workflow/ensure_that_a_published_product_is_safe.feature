@@ -7,8 +7,8 @@ Feature: Ensure that a published product is safe
   Background:
     Given a "clothing" catalog configuration
     And the following published products:
-      | sku       | categories | family  | groups          | handmade |
-      | my-jacket | jackets    | jackets | similar_jackets | yes      |
+      | sku       | categories | family  | groups          | handmade | manufacturer | weather_conditions |
+      | my-jacket | jackets    | jackets | similar_jackets | yes      | Volcom       | dry                |
     And I am logged in as "Julia"
 
   Scenario: Fail to remove a product that has been published
@@ -62,9 +62,16 @@ Feature: Ensure that a published product is safe
     And the grid should contain 2 elements
     And I should see products my-jacket and black-jacket
 
-  Scenario: Fail to remove an option that the attribute is linked to a published product
-    Given I am on the "main_color" attribute page
+  Scenario: Fail to remove an option linked to a published product
+    Given I am on the "manufacturer" attribute page
     And I visit the "Values" tab
-    And I remove the "white" option
+    And I remove the "Volcom" option
     When I save the attribute
-    Then the Options section should contain 8 options
+    Then the Options section should contain 4 options
+
+  Scenario: Fail to remove a multi-option linked to a published product
+    Given I am on the "weather_conditions" attribute page
+    And I visit the "Values" tab
+    And I remove the "dry" option
+    When I save the attribute
+    Then the Options section should contain 5 options

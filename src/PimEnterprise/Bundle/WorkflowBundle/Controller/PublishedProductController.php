@@ -16,6 +16,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
 use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
@@ -33,6 +34,9 @@ class PublishedProductController extends AbstractController
     /** @var PublishedProductManager */
     protected $manager;
 
+    /** @var VersionManager */
+    protected $versionManager;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -44,6 +48,7 @@ class PublishedProductController extends AbstractController
      * @param EventDispatcherInterface $eventDispatcher
      * @param UserContext              $userContext
      * @param PublishedProductManager  $manager
+     * @param VersionManager           $versionManager
      */
     public function __construct(
         Request $request,
@@ -55,7 +60,8 @@ class PublishedProductController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
-        PublishedProductManager $manager
+        PublishedProductManager $manager,
+        VersionManager $versionManager
     ) {
         parent::__construct(
             $request,
@@ -69,6 +75,7 @@ class PublishedProductController extends AbstractController
         );
         $this->userContext    = $userContext;
         $this->manager        = $manager;
+        $this->versionManager = $versionManager;
     }
 
     /**
@@ -151,10 +158,15 @@ class PublishedProductController extends AbstractController
      */
     public function viewAction(Request $request, $id)
     {
+        $published = $this->manager->findPublishedProductById($id);
+        $original = $published->getOriginalProduct();
+
         return [
-            'published'  => $this->manager->findPublishedProductById($id),
+            'published'  => $published,
             'dataLocale' => $this->getDataLocale(),
-            'locales'    => $this->userContext->getUserLocales()
+            'locales'    => $this->userContext->getUserLocales(),
+            'created'    => $this->versionManager->getOldestLogEntry($original),
+            'updated'    => $this->versionManager->getNewestLogEntry($original),
         ];
     }
 

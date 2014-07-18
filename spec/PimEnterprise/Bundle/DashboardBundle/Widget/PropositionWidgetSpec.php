@@ -16,7 +16,7 @@ class PropositionWidgetSpec extends ObjectBehavior
     function let(
         ManagerRegistry $registry,
         EntityRepository $repository,
-        CategoryAccessRepository $ownershipRepository,
+        CategoryAccessRepository $accessRepository,
         UserContext $context,
         User $user
     ) {
@@ -25,7 +25,7 @@ class PropositionWidgetSpec extends ObjectBehavior
             ->willReturn($repository);
         $registry
             ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess')
-            ->willReturn($ownershipRepository);
+            ->willReturn($accessRepository);
         $repository->findBy(Argument::cetera())->willReturn([]);
 
         $context->getUser()->willReturn($user);
@@ -48,16 +48,18 @@ class PropositionWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldBeArray();
     }
 
-    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($ownershipRepository, $user)
+    function it_hides_the_widget_if_user_is_not_the_owner_of_any_categories($accessRepository, $user)
     {
-        $ownershipRepository->isOwner($user)->willReturn(false);
+        $accessRepository->isOwner($user)->willReturn(false);
         $this->getParameters()->shouldReturn(['show' => false]);
     }
 
-    function it_passes_propositions_from_the_repository_to_the_template($ownershipRepository, $user, $repository)
+    function it_passes_propositions_from_the_repository_to_the_template($accessRepository, $user, $repository)
     {
-        $ownershipRepository->isOwner($user)->willReturn(true);
-        $repository->findBy([], ['createdAt' => 'desc'], 10)->willReturn(['proposition one', 'proposition two']);
+        $accessRepository->isOwner($user)->willReturn(true);
+        $repository
+            ->findBy(['status' => Proposition::READY], ['createdAt' => 'desc'], 10)
+            ->willReturn(['proposition one', 'proposition two']);
 
         $this->getParameters()->shouldReturn(['show' => true, 'params' => ['proposition one', 'proposition two']]);
     }

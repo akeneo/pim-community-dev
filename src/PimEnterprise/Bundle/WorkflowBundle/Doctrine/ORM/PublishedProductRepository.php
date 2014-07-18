@@ -3,7 +3,9 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
@@ -44,6 +46,27 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         ;
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPublishedVersionIdByOriginalProductId($originalId)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->select('IDENTITY(pp.version) AS version_id')
+            ->where('pp.originalProduct = :originalId')
+            ->setParameter('originalId', $originalId)
+        ;
+
+        try {
+            $versionId = (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $versionId = null;
+        }
+
+        return $versionId;
     }
 
     /**
@@ -124,6 +147,25 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             ->innerJoin('pp.associations', 'ppa')
             ->andWhere('ppa.associationType = :association_type')
             ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    {
+        $qb = $this->createQueryBuilder('pp');
+
+        if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
+            $qb
+                ->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.option', $option->getId()));
+        } else {
+            $qb
+                ->innerJoin('pp.values', 'ppv')
+                ->innerJoin('ppv.options', 'ppo', 'WITH', $qb->expr()->eq('ppo.id', $option->getId()));
+        }
 
         return $this->getCountFromQB($qb);
     }
