@@ -152,7 +152,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         $rootAlias  = current($childrenQb->getRootAliases());
-        $rootEntity = current($childrenQb->getRootEntities());
         $grantedQb = $this->categoryRepository->createQueryBuilder($rootAlias);
         $grantedQb->select($rootAlias.'.id');
         $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categories'));
