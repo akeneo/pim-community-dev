@@ -10,6 +10,7 @@ Every PR should start with:
 | Tests pass?          |
 | Scenarios pass?      |
 | Checkstyle issues?   |
+| PMD issues?          |
 | Changelog updated?   |
 | Fixed tickets        |
 | Doc PR               |
