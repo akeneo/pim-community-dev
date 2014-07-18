@@ -7,3 +7,7 @@ services:
         arguments:
             - %pim_catalog.entity.product.class%
             - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@property_accessor'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+

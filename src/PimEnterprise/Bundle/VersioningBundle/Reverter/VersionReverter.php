@@ -5,6 +5,8 @@ namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
+use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Version reverter that allow to revert an entity to a previous snapshot
@@ -16,22 +18,22 @@ use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
  */
 class VersionReverter
 {
-    /** @var ProductDenormalizer */
-    protected $denormalizer;
+    /** @var SerializerInterface */
+    protected $serializer;
 
     /** @var ProductManager */
     protected $manager;
 
     /**
      * @param ProductManager      $manager
-     * @param ProductDenormalizer $denormalizer
+     * @param SerializerInterface $serializer
      */
     public function __construct(
         ProductManager $manager,
-        ProductDenormalizer $denormalizer
+        DenormalizerInterface $serializer
     ) {
-        $this->manager      = $manager;
-        $this->denormalizer = $denormalizer;
+        $this->manager    = $manager;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -41,10 +43,12 @@ class VersionReverter
      */
     public function revert(Version $version)
     {
-        $class = $version->getResourceName();
-        $data  = $version->getSnapshot();
+        $class      = $version->getResourceName();
+        $data       = $version->getSnapshot();
+        $resourceId = $version->getResourceId();
 
-        $object = $this->denormalizer->denormalize($class, $data);
+//        $object = $this->manager->find($resourceId);
+        $object = $this->serializer->denormalize($data, $class);
 
         if (null !== $object->getFamily()) {
             var_dump($object->getFamily()->getCode());

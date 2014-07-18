@@ -6,4 +6,4 @@ services:
         class: %pimee_versioning.reverter.version.class%
         arguments:
             - '@pim_catalog.manager.product'
-            - '@pim_transform.transformer.product'
+            - '@pim_serializer'

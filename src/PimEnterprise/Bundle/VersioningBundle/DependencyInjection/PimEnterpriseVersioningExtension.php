@@ -23,6 +23,7 @@ class PimEnterpriseVersioningExtension extends Extension
         $loader->load('parameters.yml');
         $loader->load('controllers.yml');
         $loader->load('reverters.yml');
+        $loader->load('denormalizers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
