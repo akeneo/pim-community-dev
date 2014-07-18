@@ -11,10 +11,13 @@ Every PR should start with:
 | CI currently passes? |
 | Tests pass?          |
 | Scenarios pass?      |
-| Checkstyle issues?   |
+| Checkstyle issues?*  |
+| PMD issues?**        |
 | Changelog updated?   |
 | Fixed tickets        |
 | Doc PR               |
 ```
 
-*Use http://cs.sensiolabs.org/
+*```bash > ./bin/phpcs --standard=PSR2 --extensions=php src/Pim features```
+
+**```bash > ./app/Resources/jenkins/phpmd_akeneo src/Pim,features text``` (only on your added/updated files)

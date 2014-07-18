@@ -339,7 +339,8 @@ class AttributeController extends AbstractDoctrineController
             $errorMessage = 'flash.attribute.identifier not removable';
             $messageParameters = array();
         } else {
-            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')->countForAttribute($attribute);
+            $groupCount = $this->getRepository('Pim\Bundle\CatalogBundle\Entity\Group')
+                ->countVariantGroupAxis($attribute);
             if ($groupCount > 0) {
                 $errorMessage = 'flash.attribute.used by groups';
                 $messageParameters = array('%count%' => $groupCount);

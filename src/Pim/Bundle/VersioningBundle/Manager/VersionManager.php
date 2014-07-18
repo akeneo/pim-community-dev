@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Manager;
 
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
@@ -117,7 +118,7 @@ class VersionManager
         $createdVersions = [];
 
         if ($this->realTimeVersioning) {
-            $this->registry->getManagerForClass(get_class($versionable))->refresh($versionable);
+            $this->registry->getManagerForClass(ClassUtils::getClass($versionable))->refresh($versionable);
 
             $createdVersions = $this->buildPendingVersions($versionable);
 
@@ -171,7 +172,7 @@ class VersionManager
      */
     public function getLogEntries($versionable)
     {
-        return $this->getVersionRepository()->getLogEntries(get_class($versionable), $versionable->getId());
+        return $this->getVersionRepository()->getLogEntries(ClassUtils::getClass($versionable), $versionable->getId());
     }
 
     /**
@@ -186,7 +187,7 @@ class VersionManager
     public function getOldestLogEntry($versionable, $pending = false)
     {
         return $this->getVersionRepository()->getOldestLogEntry(
-            get_class($versionable),
+            ClassUtils::getClass($versionable),
             $versionable->getId(),
             $pending
         );
@@ -204,7 +205,7 @@ class VersionManager
     public function getNewestLogEntry($versionable, $pending = false)
     {
         return $this->getVersionRepository()->getNewestLogEntry(
-            get_class($versionable),
+            ClassUtils::getClass($versionable),
             $versionable->getId(),
             $pending
         );
@@ -242,7 +243,7 @@ class VersionManager
         $pendingVersions = $this->getVersionRepository()->findBy(
             [
                 'resourceId'   => $versionable->getId(),
-                'resourceName' => get_class($versionable),
+                'resourceName' => ClassUtils::getClass($versionable),
                 'pending'      => true
             ],
             ['loggedAt' => 'asc']

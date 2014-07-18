@@ -1,0 +1,37 @@
+<?php
+
+namespace spec\Pim\Bundle\DataGridBundle\Datasource;
+
+use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver;
+use Prophecy\Argument;
+
+class DatasourceSupportResolverSpec extends ObjectBehavior
+{
+    function it_is_initializable()
+    {
+        $this->shouldHaveType('Pim\Bundle\DataGridBundle\Datasource\DatasourceSupportResolver');
+    }
+
+    function let()
+    {
+        $this->beConstructedWith(PimCatalogExtension::DOCTRINE_MONGODB_ODM, ['grid-mongo-1', 'grid-mongo-2']);
+    }
+
+    function it_returns_an_orm_support_when_storage_driver_is_orm()
+    {
+        $this->beConstructedWith(PimCatalogExtension::DOCTRINE_ORM, []);
+        $this->getSupport(Argument::any())->shouldReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM);
+    }
+
+    function it_returns_a_mongodb_support_when_storage_driver_is_odm_and_the_grid_is_eligible()
+    {
+        $this->getSupport('grid-mongo-2')->shouldReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_MONGODB);
+    }
+
+    function it_returns_an_orm_support_when_storage_driver_is_odm_and_the_grid_is_not_eligible()
+    {
+        $this->getSupport('grid-basic')->shouldReturn(DatasourceSupportResolver::DATASOURCE_SUPPORT_ORM);
+    }
+}
