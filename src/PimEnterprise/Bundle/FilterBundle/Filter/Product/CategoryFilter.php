@@ -22,8 +22,15 @@ class CategoryFilter extends PimCategoryFilter
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
         $ids = $this->manager->getGrantedCategoryIds();
+
         // TODO : Filter on granted categories + unclassified products
         // means unclassified in categories I can view
+        $qb = $ds->getQueryBuilder();
+        $rootAlias  = $qb->getRootAlias();
+        $qb->leftJoin('p.categories', 'filterCategory');
+        $qb->andWhere('filterCategory.id in(:filterCatIds) OR filterCategory.id is null');
+        $qb->setParameter('filterCatIds', $categoryIds);
+
         return true;
     }
 
