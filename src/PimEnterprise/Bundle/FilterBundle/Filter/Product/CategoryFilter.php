@@ -21,7 +21,7 @@ class CategoryFilter extends PimCategoryFilter
      */
     protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
     {
-        $ids = $this->manager->getGrantedCategoryIds();
+        $categoryIds = $this->manager->getGrantedCategoryIds();
 
         // TODO : Filter on granted categories + unclassified products
         // means unclassified in categories I can view
