@@ -32,10 +32,15 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
      *
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
-        return $this
-            ->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p');
+
+        if (isset($parameters['product'])) {
+            $this->applyDatagridContext($qb, $parameters['product']);
+        }
+
+        return $qb;
     }
 
     /**

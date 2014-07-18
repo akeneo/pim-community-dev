@@ -11,10 +11,10 @@ Feature: Sort propositions
       | black-boots | boots  |
       | white-boots | boots  |
     And the following propositions:
-      | product     | status      | author | locale |
-      | black-boots | in progress | Julia  | fr_FR  |
-      | black-boots | ready       | Sandra | en_US  |
-      | white-boots | ready       | Mary   | en_US  |
+      | product     | status      | author |
+      | black-boots | in progress | Julia  |
+      | black-boots | ready       | Sandra |
+      | white-boots | ready       | Mary   |
     And I am logged in as "Julia"
 
   Scenario: Successfully sort propositions in the grid
