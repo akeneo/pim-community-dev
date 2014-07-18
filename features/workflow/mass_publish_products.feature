@@ -2,7 +2,7 @@
 Feature: Publish many products at once
   In order to froze the product data I would use to export
   As a product manager
-  I need to be able to publish a product
+  I need to be able to publish several products at the same time
 
   Background:
     Given a "clothing" catalog configuration
@@ -25,7 +25,7 @@ Feature: Publish many products at once
     And I am on the products page
     And I mass-edit products unionjack, jackadi and teafortwo
     When I choose the "Publish products" operation
-    Then I should see "You're not the owner of all the selected products, you can't publish the following \"teafortwo\""
+    Then I should see "You're not the owner of all the selected products. You can't publish the products \"teafortwo\""
     And I should see "Confirm"
     
   Scenario: Forbid to publish if user is not the owner of at least one product
