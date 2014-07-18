@@ -19,4 +19,5 @@ Every PR should start with:
 ```
 
 *./bin/phpcs --standard=PSR2 --extensions=php src/PimEnterprise features
+
 **./app/Resources/jenkins/phpmd_akeneo src/PimEnterprise,features text (only on your added/updated files)
