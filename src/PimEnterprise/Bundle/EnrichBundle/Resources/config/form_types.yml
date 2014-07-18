@@ -74,6 +74,6 @@ services:
             - '@pim_enrich.form.type.product.view'
             - '@pim_catalog.helper.locale'
             - %pim_catalog.entity.attribute.class%
-            - '@pimee_workflow.form.subscriber.collect_product_value_changes'
+            - '@pimee_workflow.form.subscriber.collect_product_mass_edit_value_changes'
         tags:
             - { name: form.type, alias: pim_enrich_mass_edit_common_attributes }
