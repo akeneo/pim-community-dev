@@ -20,4 +20,4 @@ Every PR should start with:
 
 *``` > ./bin/phpcs --standard=PSR2 --extensions=php src/Pim features```
 
-**``` > ./app/Resources/jenkins/phpmd_akeneo src/Pim,features text``` (only on your added/updated files)
+**``` > ./app/Resources/jenkins/phpmd_akeneo src/Pim,features``` (only on your added/updated files)
