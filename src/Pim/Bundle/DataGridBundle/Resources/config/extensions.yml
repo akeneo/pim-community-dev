@@ -34,5 +34,7 @@ services:
         arguments:
             - %pim_catalog.storage_driver%
             - '@oro_datagrid.datagrid.request_params'
+        calls:
+            - [addEligibleDatasource, ['pim_datasource_product']]
         tags:
              - { name: oro_datagrid.extension }
