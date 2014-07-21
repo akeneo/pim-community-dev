@@ -124,8 +124,10 @@ class AddProductVersionListener implements EventSubscriber
 
     /**
      * @param object $versionable
+     *
+     * @return Version
      */
-    public function createVersion($versionable)
+    protected function createVersion($versionable)
     {
         $changeset = [];
         if (!$this->versionManager->isRealTimeVersioning()) {
