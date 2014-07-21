@@ -4,8 +4,8 @@
     {{ parent() }}
     <script type="text/javascript">
         require(
-            ['jquery', 'underscore'],
-            function($, _){
+            ['jquery'],
+            function($){
                 'use strict';
                 $(function() {
                     var $nextBtn = $('a.next');
@@ -25,26 +25,21 @@
     {% set nbGranted = productCount - nbNotGranted %}
     <input type="hidden" id="mass_unpublish_nb_granted" value="{{nbGranted}}"/>
 
-    <div class="errors">
     {% if nbGranted == 0 %}
-        <div class="alert alert-error">
-            <div class="message">
-                <ul><li>{{ 'pim_enrich.mass_edit_action.unpublish.message.error'|trans }}</li></ul>
-            </div>
-        </div>
+        {% set alertClass = 'error' %}
+        {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.error'|trans %}
     {% elseif nbNotGranted > 0 %}
-        <div class="alert alert-warning">
-            <div class="message">
-                <ul><li>{{ 'pim_enrich.mass_edit_action.unpublish.message.warning'|trans({'%notGranted%': notGrantedIdentifiers}) }}</li></ul>
-            </div>
-        </div>
+        {% set alertClass = 'warning' %}
+        {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.warning'|trans({'%notGranted%': notGrantedIdentifiers}) %}
     {% else %}
-        <div class="alert alert-info">
-            <div class="message">
-                <ul><li>{{ 'pim_enrich.mass_edit_action.unpublish.message.info'|trans({'%nbProducts%': productCount}) }}</li></ul>
-            </div>
-        </div>
+        {% set alertClass = 'info' %}
+        {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.info'|trans({'%nbProducts%': productCount}) %}
     {% endif %}
+
+    <div class="alert alert-{{ alertClass }}">
+        <div class="message">
+            <ul><li>{{ alertMessage }}</li></ul>
+        </div>
     </div>
 
 {% endblock %}
