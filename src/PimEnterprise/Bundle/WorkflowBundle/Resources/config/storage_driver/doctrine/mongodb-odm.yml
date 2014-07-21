@@ -29,3 +29,11 @@ services:
 
     pimee_workflow.repository.published_association:
         alias: pimee_workflow.repository.published_product
+
+    pimee_workflow.repository.published_product_mass_action:
+        class: %pim_catalog.repository.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - %pimee_workflow.entity.published_product.class%
+            - '@pim_catalog.repository.family'
+            - '@pimee_workflow.repository.published_product'

@@ -20,6 +20,7 @@ class EnterpriseWebUser extends BaseWebUser
         $this->getNavigationContext()->currentPage = $this
             ->getPage('Batch Operation')
             ->addStep('Publish products', 'Batch Publish')
+            ->addStep('Unpublish products', 'Batch Unpublish')
             ->chooseOperation($operation)
             ->next();
 

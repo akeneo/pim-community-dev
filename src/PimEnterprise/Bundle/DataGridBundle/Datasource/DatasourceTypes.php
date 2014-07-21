@@ -18,4 +18,11 @@ class DatasourceTypes extends BaseDatasourceTypes
      * @staticvar string
      */
     const DATASOURCE_PRODUCT_HISTORY = 'pimee_datasource_product_history';
+
+    /**
+     * Published product datasource (either ORM or MongoDB ODM)
+     *
+     * @staticvar string
+     */
+    const DATASOURCE_PUBLISHED_PRODUCT = 'pimee_datasource_published_product';
 }
