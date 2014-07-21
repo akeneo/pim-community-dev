@@ -166,6 +166,8 @@ flash:
     attributes added: Attribute erfolgreich dem Produkt hinzugefügt
     attribute removed: Attribut erfolgreich aus dem Produkt entfernt
     attribute not removable: Das Attribut kann nicht von diesem Produkt entfernt werden
+    enabled: Produkt wurde aktiviert
+    disabled: Produkt wurde deaktiviert
   group:
     created: Gruppe erfolgreich angelegt
     updated: Gruppe erfolgreich aktualisiert
