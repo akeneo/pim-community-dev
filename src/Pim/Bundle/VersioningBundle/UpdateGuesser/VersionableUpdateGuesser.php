@@ -3,6 +3,7 @@
 namespace Pim\Bundle\VersioningBundle\UpdateGuesser;
 
 use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Util\ClassUtils;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -46,7 +47,9 @@ class VersionableUpdateGuesser implements UpdateGuesserInterface
     public function guessUpdates(EntityManager $em, $entity, $action)
     {
         $pendings = array();
-        if ($entity instanceof VersionableInterface || in_array(get_class($entity), $this->versionableEntities)) {
+        if ($entity instanceof VersionableInterface
+            || in_array(ClassUtils::getClass($entity), $this->versionableEntities)
+        ) {
             $pendings[] = $entity;
         }
 

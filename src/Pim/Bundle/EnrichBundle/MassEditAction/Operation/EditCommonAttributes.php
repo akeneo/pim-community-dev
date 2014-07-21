@@ -212,7 +212,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         return array(
             'locales'          => $this->userContext->getUserLocales(),
-            'commonAttributes' => $this->commonAttributes,
+            'common_attributes' => $this->commonAttributes,
         );
     }
 
@@ -349,29 +349,20 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Add all the values required by the given attribute
+     * Locale is not present because we current locale is bound at the same time as values during form submission
      *
      * @param AbstractAttribute $attribute
      */
     protected function addValues(AbstractAttribute $attribute)
     {
-        $localeCode = null;
         $locale = $this->getLocale();
-        $key = $attribute->getCode();
-
-        if ($attribute->isLocalizable()) {
-            $localeCode = $locale->getCode();
-            $key .= '_'.$localeCode;
-        }
         if ($attribute->isScopable()) {
             foreach ($locale->getChannels() as $channel) {
-                $this->values[$key.'_'.$channel->getCode()] = $this->createValue(
-                    $attribute,
-                    $localeCode,
-                    $channel->getCode()
-                );
+                $key = $attribute->getCode().'_'.$channel->getCode();
+                $this->values[$key] = $this->createValue($attribute, $locale->getCode(), $channel->getCode());
             }
         } else {
-            $this->values[$key] = $this->createValue($attribute, $localeCode);
+            $this->values[$attribute->getCode()] = $this->createValue($attribute, $locale->getCode());
         }
     }
 

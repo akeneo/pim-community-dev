@@ -39,6 +39,11 @@ class OrmSelectorExtension extends AbstractExtension
     protected $selectors;
 
     /**
+     * @var string[]
+     */
+    protected $eligibleDatasource = [];
+
+    /**
      * Constructor
      *
      * @param string            $storageDriver
@@ -55,7 +60,14 @@ class OrmSelectorExtension extends AbstractExtension
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return $this->matchDatasource($config);
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+
+        if (in_array($datasourceType, $this->eligibleDatasource) &&
+            PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -104,20 +116,15 @@ class OrmSelectorExtension extends AbstractExtension
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param string $datasource
      *
-     * @return boolean
+    * @return OrmSelectorExtension
      */
-    protected function matchDatasource(DatagridConfiguration $config)
+    public function addEligibleDatasource($datasource)
     {
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+        $this->eligibleDatasource[] = $datasource;
 
-        if (DatasourceInterface::DATASOURCE_PRODUCT === $datasourceType &&
-            PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
-            return true;
-        }
-
-        return false;
+        return $this;
     }
 
     /**

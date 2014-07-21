@@ -38,10 +38,10 @@ class ResolverPass implements CompilerPassInterface
 
         if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $container->getParameter('pim_catalog.storage_driver')) {
             $datasourceResolver->addMethodCall(
-                'setOdmAdapterClass',
+                'setMongodbAdapterClass',
                 [ $container->getParameter(self::MONGO_DATASOURCE_ADAPTER_CLASS) ]
             );
-            $pagerResolver->addMethodCall('setMongoPager', [ new Reference(self::MONGO_PAGER_ID) ]);
+            $pagerResolver->addMethodCall('setMongodbPager', [ new Reference(self::MONGO_PAGER_ID) ]);
         }
     }
 }
