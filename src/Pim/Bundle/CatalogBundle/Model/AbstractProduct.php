@@ -595,19 +595,6 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove a category
-     * @param CategoryInterface $category
-     *
-     * @return AbstractProduct
-     */
-    public function removeCategory(CategoryInterface $category)
-    {
-        $this->categories->removeElement($category);
-
-        return $this;
-    }
-
-    /**
      * Set categories removing old ones
      *
      * @param array $categories
