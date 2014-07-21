@@ -109,15 +109,13 @@ class ProductCategoryManager extends BaseProductCategoryManager
     }
 
     /**
-     * Get granted category ids
-     *
-     * @return integer[]
+     * @param mixed $queryBuilder
      */
-    public function getGrantedCategoryIds()
+    public function addFilterByAll($queryBuilder)
     {
         $user = $this->securityContext->getUser();
-
-        return $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $grantedCategories = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $this->productRepository->addFilterByAll($queryBuilder, $grantedCategories);
     }
 
     /**
