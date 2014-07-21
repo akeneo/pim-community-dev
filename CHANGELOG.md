@@ -48,6 +48,7 @@
 - Call manager's method remove from these entity controllers
 - Remove the count of products by category in the context of the management of the categories (perf)
 - Define attribute type classes as parameters
+- Products on which mass edit operation is not performed are also ignored from operation finalize method
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
