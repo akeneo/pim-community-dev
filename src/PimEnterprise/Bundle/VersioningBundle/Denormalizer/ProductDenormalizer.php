@@ -2,7 +2,10 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
  *
@@ -11,20 +14,41 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  */
 class ProductDenormalizer extends AbstractEntityDenormalizer
 {
-    const FIELD_ENABLED = 'enabled';
-    const FIELD_FAMILY = 'family';
-    const FIELD_CATEGORIES = 'categories';
-    const FIELD_GROUPS = 'groups';
-    const FIELD_ASSOCIATIONS = 'associations';
-    const FIELD_VALUES = 'values';
+    const FIELD_ENABLED      = 'enabled';
+    const FIELD_FAMILY       = 'family';
+    const FIELD_CATEGORIES   = 'categories';
+    const FIELD_GROUPS       = 'groups';
+//    const FIELD_ASSOCIATIONS = 'associations';
+//    const FIELD_VALUES       = 'values';
+
+    /** @var string */
+    protected $fieldNameBuilder;
+
+    /**
+     * @param ManagerRegistry  $managerRegistry
+     * @param string           $entityClass
+     * @param FieldNameBuilder $fieldNameBuilder
+     */
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        $entityClass,
+        FieldNameBuilder $fieldNameBuilder
+    ) {
+        parent::__construct($managerRegistry, $entityClass);
+
+        $this->fieldNameBuilder = $fieldNameBuilder;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $product = $this->getEntity($data['sku']); //TODO Remove hardcoded stuff
-        var_dump($data); echo "<br />";
+        $product = $context['entity'];
+
+        foreach ($data as $key => $value) {
+            echo $key ." --> ". $value ."<br />";
+        }
         $this->printProduct($product);
 
         if (isset($data[self::FIELD_ENABLED])) {
@@ -47,44 +71,13 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             unset($data[self::FIELD_GROUPS]);
         }
 
-        if (isset($data[self::FIELD_ASSOCIATIONS])) {
-            $this->denormalizeAssociations($data[self::FIELD_ASSOCIATIONS], $product);
+        $this->denormalizeAssociations($data, $product);
 
-        }
-
+        $this->denormalizeValues($data, $product);
 
         $this->printProduct($product);
 
         return $product;
-    }
-
-    protected function printProduct(ProductInterface $product)
-    {
-        echo "<hr />";
-        echo (int) $product->isEnabled() ."<br />";
-
-        if (null !== $product->getFamily()) {
-            echo $product->getFamily()->getCode() ."<br />";
-        } else {
-            echo "NO FAMILY<br />";
-        }
-
-        echo "CATEGORIES: ". count($product->getCategories()) ."<br />";
-        foreach ($product->getCategories() as $category) {
-            echo "- ". $category->getCode() ."<br />";
-        }
-
-        echo "GROUPS: ". count($product->getGroups()) ."<br />";
-        foreach ($product->getGroups() as $group) {
-            echo "- ". $group->getCode() . "<br />";
-        }
-
-        echo "ASSOCIATIONS: ". count($product->getAssociations()) ."<br />";
-        foreach ($product->getAssociations() as $association) {
-            echo "- ". $association->getAssociationType() ."<br />";
-        }
-
-        echo "<hr />";
     }
 
     /**
@@ -136,11 +129,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         // Adding groups
         $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($groupCodes as $groupCode) {
-            echo "GROUP CODE: ". $groupCode ."<br />";
-
-            $group = $this->serializer->denormalize($groupCode, 'Pim\Bundle\CatalogBundle\Entity\Group');
-            var_dump(get_class($group));
-
             $product->addGroup(
                 $this->serializer->denormalize($groupCode, 'Pim\Bundle\CatalogBundle\Entity\Group')
             );
@@ -148,22 +136,97 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param string           $data
+     * @param string           &$data
      * @param ProductInterface $product
      */
-    protected function denormalizeAssociations($data, ProductInterface $product)
+    protected function denormalizeAssociations(&$data, ProductInterface $product)
     {
         // Remove existing associations
         foreach ($product->getAssociations() as $association) {
             $product->removeAssociation($association);
         }
 
-        // Adding associations
-//        $associationCodes = explode(",", $data);
-//        foreach ($associationCodes as $associationCode) {
-//            $product->addAssociation(
-//                $this->serializer->denormalize($associationCode, 'Pim\Bundle\CatalogBundle\Model\Association')
-//            );
-//        }
+        // Get association field names and add associations
+        $assocFieldNames = $this->fieldNameBuilder->getAssociationFieldNames();
+        foreach ($assocFieldNames as $assocFieldName) {
+            if (isset($data[$assocFieldName])) {
+                $product->addAssociation(
+                    $this->serializer->denormalize($data[$assocFieldName], 'Pim\Bundle\CatalogBundle\Model\Association')
+                );
+
+                unset($data[$assocFieldName]);
+            }
+        }
+    }
+
+    /**
+     * @param                  $data
+     * @param ProductInterface $product
+     */
+    protected function denormalizeValues($data, ProductInterface $product)
+    {
+        // Remove existing values
+        foreach ($product->getValues() as $value) {
+            $product->removeValue($value);
+        }
+
+        foreach ($data as $attCode => $value) {
+            // Get existing value if already existed
+            $existingValue = $product->getValue($attCode);
+
+            // Denormalize data value
+            $productValue = $this->serializer->denormalize(
+                $value,
+                'Pim\Bundle\CatalogBundle\Model\ProductValue',
+                null,
+                [
+                    'attribute_code' => $attCode,
+                    'entity'         => $existingValue,
+                    'product'        => $product
+                ]
+            );
+
+            // Add the value to the product only if not already existing one
+            if (null === $existingValue) {
+                $product->addValue($productValue);
+            }
+        }
+    }
+
+    /**
+     * @return AssociationTypeRepository
+     */
+    protected function getAssociationTypeRepository()
+    {
+        return $this->getRepository($this->assocTypeClass);
+    }
+
+    protected function printProduct(ProductInterface $product)
+    {
+        echo "<hr />";
+        echo (int) $product->isEnabled() ."<br />";
+
+        if (null !== $product->getFamily()) {
+            echo $product->getFamily()->getCode() ."<br />";
+        } else {
+            echo "NO FAMILY<br />";
+        }
+
+        echo "CATEGORIES: ". count($product->getCategories()) ."<br />";
+        foreach ($product->getCategories() as $category) {
+            echo "- ". $category->getCode() ."<br />";
+        }
+
+        echo "GROUPS: ". count($product->getGroups()) ."<br />";
+        foreach ($product->getGroups() as $group) {
+            echo "- ". $group->getCode() . "<br />";
+        }
+
+        echo "ASSOCIATIONS: ". count($product->getAssociations()) ."<br />";
+        foreach ($product->getAssociations() as $association) {
+            echo "- ". $association->getAssociationType() ."<br />";
+        }
+
+        echo "<hr />";
     }
 }

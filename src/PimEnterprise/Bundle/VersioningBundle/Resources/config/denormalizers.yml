@@ -4,6 +4,7 @@ parameters:
     pimee_versioning.denormalizer.category.class:    PimEnterprise\Bundle\VersioningBundle\Denormalizer\CategoryDenormalizer
     pimee_versioning.denormalizer.group.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
     pimee_versioning.denormalizer.association.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
+    pimee_versioning.denormalizer.product_value.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValueDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -11,6 +12,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
+            - '@pim_transform.builder.field_name'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -39,9 +41,18 @@ services:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.association:
-            class: %pimee_versioning.denormalizer.association.class%
-            arguments:
-                - '@pim_catalog.doctrine.smart_manager_registry'
-                - %pim_catalog.entity.association.class%
-            tags:
-                - { name: pim_serializer.normalizer, priority: 90 }
+        class: %pimee_versioning.denormalizer.association.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.association.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.product_value:
+        class: %pimee_versioning.denormalizer.product_value.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.product_value.class%
+            - '@pim_catalog.builder.product'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }

@@ -47,15 +47,9 @@ class VersionReverter
         $data       = $version->getSnapshot();
         $resourceId = $version->getResourceId();
 
-//        $object = $this->manager->find($resourceId);
-        $object = $this->serializer->denormalize($data, $class);
+        $currentObject = $this->manager->find($resourceId);
+        $revertedObject = $this->serializer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
 
-        if (null !== $object->getFamily()) {
-            var_dump($object->getFamily()->getCode());
-        } else {
-            var_dump('NULL');
-        }
-
-        //$this->manager->saveProduct($object);
+        //$this->manager->saveProduct($revertedObject);
     }
 }
