@@ -20,8 +20,12 @@ class ProductCategoryRepository extends BaseProductCategoryRepository implements
     public function addFilterByAll($qb, array $grantedCategoryIds)
     {
         if (count($grantedCategoryIds) > 0) {
-            $qb->addOr($qb->expr()->field('categoryIds')->in($grantedCategoryIds));
+            $qb->addAnd(
+                $qb->expr()->addOr($qb->expr()->field('categoryIds')->in($grantedCategoryIds))
+                    ->addOr($qb->expr()->field('categoryIds')->size(0))
+            );
+        } else {
+            $qb->addAnd($qb->expr()->field('categoryIds')->size(0));
         }
-        $qb->addOr($qb->expr()->field('categoryIds')->size(0));
     }
 }
