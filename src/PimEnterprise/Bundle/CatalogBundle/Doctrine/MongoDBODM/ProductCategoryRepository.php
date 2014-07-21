@@ -23,11 +23,7 @@ class ProductCategoryRepository extends BaseProductCategoryRepository
      */
     public function addFilterByAll($qb, array $grantedCategoryIds)
     {
-        $qb->addAnd(
-            $qb->expr()->orX(
-                $qb->expr()->field('categoryIds')->in($grantedCategoryIds),
-                $qb->expr()->isNull('categoryIds')
-            )
-        );
+        $qb->addOr($qb->expr()->field('categoryIds')->in($grantedCategoryIds));
+        $qb->addOr($qb->expr()->field('categoryIds')->size(0));
     }
 }
