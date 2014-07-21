@@ -5,7 +5,11 @@
         function ($, _) {
             'use strict';
 
-            {% if form.vars.value.hasChildren() %}
+            {% if form.vars.value.hasChildren() == false %}
+            $(function () {
+                $('#{{form.permissions.apply_on_children.vars.id}}').parent().parent().hide();
+            });
+            {% endif %}
 
             var updateWhenAdd = {
                 'pim_category_permissions_view': [],
@@ -76,12 +80,6 @@
                         }
                     });
             });
-
-            {% else %}
-            $(function () {
-                $('#{{form.permissions.apply_on_children.vars.id}}').parent().parent().hide();
-            });
-            {% endif %}
         });
 </script>
 {% endif %}
