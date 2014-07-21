@@ -16,14 +16,6 @@ abstract class PublishedProductMassEditOperation extends AbstractMassEditAction
     /**
      * {@inheritdoc}
      */
-    public function affectsCompleteness()
-    {
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function perform()
     {
         foreach ($this->objects as $object) {
