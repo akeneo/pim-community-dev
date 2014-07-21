@@ -28,6 +28,16 @@ class CategoryFilter extends PimCategoryFilter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $this->applyFilterByAll($ds, $data);
+
+        return parent::applyFilterByUnclassified($ds, $data);
+    }
+
+    /**
      * Override to apply category permissions (not for unclassified)
      *
      * {@inheritdoc}
