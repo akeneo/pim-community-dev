@@ -82,9 +82,9 @@ class AttributeGroupVoter implements VoterInterface
     protected function extractRoles($attribute, $object)
     {
         if ($attribute === Attributes::EDIT_ATTRIBUTES) {
-            $grantedRoles = $this->accessManager->getEditRoles($object);
+            $grantedRoles = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getViewRoles($object);
+            $grantedRoles = $this->accessManager->getViewUserGroups($object);
         }
 
         return $grantedRoles;

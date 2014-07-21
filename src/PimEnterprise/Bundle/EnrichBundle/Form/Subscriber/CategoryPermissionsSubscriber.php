@@ -73,15 +73,15 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm()->get('permissions');
 
-        $viewRoles = $this->accessManager->getViewRoles($event->getData());
+        $viewRoles = $this->accessManager->getViewUserGroups($event->getData());
         $form->get('view')->setData($viewRoles);
         $this->previousRoles['view'] = ($viewRoles instanceof ArrayCollection) ? $viewRoles->toArray() : $viewRoles;
 
-        $editRoles = $this->accessManager->getEditRoles($event->getData());
+        $editRoles = $this->accessManager->getEditUserGroups($event->getData());
         $form->get('edit')->setData($editRoles);
         $this->previousRoles['edit'] = ($editRoles instanceof ArrayCollection) ? $editRoles->toArray() : $editRoles;
 
-        $ownRoles = $this->accessManager->getOwnRoles($event->getData());
+        $ownRoles = $this->accessManager->getOwnUserGroups($event->getData());
         $form->get('own')->setData($ownRoles);
         $this->previousRoles['own'] = ($ownRoles instanceof ArrayCollection) ? $ownRoles->toArray() : $ownRoles;
     }

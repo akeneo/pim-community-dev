@@ -26,8 +26,8 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $repository->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
         $repository->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE)->willReturn(['bar']);
 
-        $this->getExecuteRoles($jobProfile)->shouldReturn(['foo', 'bar']);
-        $this->getEditRoles($jobProfile)->shouldReturn(['bar']);
+        $this->getExecuteUserGroups($jobProfile)->shouldReturn(['foo', 'bar']);
+        $this->getEditUserGroups($jobProfile)->shouldReturn(['bar']);
     }
 
     function it_grants_access_on_a_job_profile_for_the_provided_roles(

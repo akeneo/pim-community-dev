@@ -82,9 +82,9 @@ class JobProfileVoter implements VoterInterface
     protected function extractRoles($attribute, $object)
     {
         if ($attribute === Attributes::EDIT_JOB_PROFILE) {
-            $grantedRoles = $this->accessManager->getEditRoles($object);
+            $grantedRoles = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getExecuteRoles($object);
+            $grantedRoles = $this->accessManager->getExecuteUserGroups($object);
         }
 
         return $grantedRoles;

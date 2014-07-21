@@ -39,8 +39,8 @@ class JobProfileVoterSpec extends ObjectBehavior
         $token,
         JobInstance $jobProfile
     ) {
-        $accessManager->getEditRoles($jobProfile)->willReturn(array());
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array());
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array());
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array());
 
         $this
             ->vote($token, $jobProfile, $this->attributes)
@@ -55,7 +55,7 @@ class JobProfileVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($jobProfile)->willReturn(array('foo'));
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
             ->vote($token, $jobProfile, array(Attributes::EDIT_JOB_PROFILE))
@@ -70,7 +70,7 @@ class JobProfileVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasRole('foo')->willReturn(true);
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array('foo'));
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
             ->vote($token, $jobProfile, array(Attributes::EXECUTE_JOB_PROFILE))

@@ -64,9 +64,9 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('edit')->willReturn($editForm);
         $form->get('own')->willReturn($ownForm);
 
-        $accessManager->getViewRoles($category)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($category)->willReturn(['bar', 'baz']);
-        $accessManager->getOwnRoles($category)->willReturn(['bar', 'baz']);
+        $accessManager->getViewUserGroups($category)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($category)->willReturn(['bar', 'baz']);
+        $accessManager->getOwnUserGroups($category)->willReturn(['bar', 'baz']);
 
         $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();

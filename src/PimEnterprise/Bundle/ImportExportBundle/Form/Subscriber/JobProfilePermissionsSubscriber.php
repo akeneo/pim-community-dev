@@ -77,8 +77,8 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $executeRoles = $this->accessManager->getExecuteRoles($jobInstance);
-        $editRoles    = $this->accessManager->getEditRoles($jobInstance);
+        $executeRoles = $this->accessManager->getExecuteUserGroups($jobInstance);
+        $editRoles    = $this->accessManager->getEditUserGroups($jobInstance);
 
         $form = $event->getForm()->get('permissions');
         $form->get('execute')->setData($executeRoles);

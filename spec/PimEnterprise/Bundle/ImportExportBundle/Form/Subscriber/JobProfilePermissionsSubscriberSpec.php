@@ -67,8 +67,8 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
     ) {
         $jobInstance->getId()->willReturn(1);
 
-        $accessManager->getExecuteRoles($jobInstance)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($jobInstance)->willReturn(['bar', 'baz']);
+        $accessManager->getExecuteUserGroups($jobInstance)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($jobInstance)->willReturn(['bar', 'baz']);
 
         $executeForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();

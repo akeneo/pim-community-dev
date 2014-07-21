@@ -47,4 +47,16 @@ interface CategoryAccessInterface extends AccessInterface
      * @return boolean
      */
     public function isViewProducts();
+
+    /**
+     * @param boolean $ownProducts
+     *
+    * @return CategoryAccessInterface
+     */
+    public function setOwnProducts($ownProducts);
+
+    /**
+     * @return boolean
+     */
+    public function isOwnProducts();
 }

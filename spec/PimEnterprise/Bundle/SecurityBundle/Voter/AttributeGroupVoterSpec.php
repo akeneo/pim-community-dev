@@ -39,8 +39,8 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         $token,
         AttributeGroup $attGroup
     ) {
-        $accessManager->getEditRoles($attGroup)->willReturn(array());
-        $accessManager->getViewRoles($attGroup)->willReturn(array());
+        $accessManager->getEditUserGroups($attGroup)->willReturn(array());
+        $accessManager->getViewUserGroups($attGroup)->willReturn(array());
 
         $this
             ->vote($token, $attGroup, $this->attributes)
@@ -55,7 +55,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($attGroup)->willReturn(array('foo'));
+        $accessManager->getEditUserGroups($attGroup)->willReturn(array('foo'));
 
         $this
             ->vote($token, $attGroup, array(Attributes::EDIT_ATTRIBUTES))
@@ -70,7 +70,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     ) {
         $token->getUser()->willReturn($user);
         $user->hasRole('foo')->willReturn(true);
-        $accessManager->getViewRoles($attGroup)->willReturn(array('foo'));
+        $accessManager->getViewUserGroups($attGroup)->willReturn(array('foo'));
 
         $this
             ->vote($token, $attGroup, array(Attributes::VIEW_ATTRIBUTES))

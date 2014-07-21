@@ -57,8 +57,8 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
 
-        $accessManager->getViewRoles($group)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($group)->willReturn(['bar', 'baz']);
+        $accessManager->getViewUserGroups($group)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($group)->willReturn(['bar', 'baz']);
 
         $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();
