@@ -3,8 +3,10 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Oro\Bundle\UserBundle\Entity\User;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -21,23 +23,21 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
     protected $tableNameBuilder;
 
     /**
-     * Get roles that have the specified access to a job instance
+     * Get user groups that have the specified access to a job instance
      *
      * @param JobInstance $jobProfile
      * @param string      $accessLevel
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getGrantedRoles(JobInstance $jobProfile, $accessLevel)
+    public function getGrantedUserGroups(JobInstance $jobProfile, $accessLevel)
     {
-        $accessField = ($accessLevel === Attributes::EDIT_JOB_PROFILE) ? 'editJobProfile' : 'executeJobProfile';
-
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('ja');
         $qb
-            ->select('r')
-            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
-            ->where('a.jobProfile = :jobProfile')
-            ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
+            ->select('g')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'ja.userGroup = g.id')
+            ->where('ja.jobProfile = :jobProfile')
+            ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->setParameter('jobProfile', $jobProfile);
 
         return $qb->getQuery()->getResult();
@@ -45,25 +45,25 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
 
     /**
      * Revoke access to a job profile
-     * If excluded roles are provided, access will not be revoked for these roles
+     * If excluded user groups are provided, access will not be revoked for these groups
      *
      * @param JobInstance $jobProfile
-     * @param Role[]      $excludedRoles
+     * @param Group[]      $excludedGroups
      *
      * @return integer
      */
-    public function revokeAccess(JobInstance $jobProfile, array $excludedRoles = [])
+    public function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
     {
-        $qb = $this->createQueryBuilder('a');
+        $qb = $this->createQueryBuilder('ja');
         $qb
             ->delete()
-            ->where('a.jobProfile = :jobProfile')
+            ->where('ja.jobProfile = :jobProfile')
             ->setParameter('jobProfile', $jobProfile);
 
-        if (!empty($excludedRoles)) {
+        if (!empty($excludedGroups)) {
             $qb
-                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
-                ->setParameter('excludedRoles', $excludedRoles);
+                ->andWhere($qb->expr()->notIn('ja.userGroup', ':excludedGroups'))
+                ->setParameter('excludedGroups', $excludedGroups);
         }
 
         return $qb->getQuery()->execute();
@@ -81,8 +81,8 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
     {
         $qb = $this->createQueryBuilder('ja');
         $qb
-            ->andWhere($qb->expr()->in('ja.role', ':roles'))
-            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->in('ja.userGroup', ':groups'))
+            ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->innerJoin('ja.jobProfile', 'jp', 'jp.id')
             ->select('jp.id');

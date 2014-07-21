@@ -50,7 +50,7 @@ class AttributeGroupAccessManager
      */
     public function getViewUserGroups(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, Attributes::VIEW_ATTRIBUTES);
+        return $this->getRepository()->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES);
     }
 
     /**
@@ -62,7 +62,7 @@ class AttributeGroupAccessManager
      */
     public function getEditUserGroups(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, Attributes::EDIT_ATTRIBUTES);
+        return $this->getRepository()->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES);
     }
 
     /**

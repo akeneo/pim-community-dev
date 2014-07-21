@@ -41,7 +41,7 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $this->preSetData($event);
     }
 
-    function it_injects_defined_roles_in_the_form_data(
+    function it_injects_defined_user_groups_in_the_form_data(
         FormEvent $event,
         AttributeGroup $group,
         Form $form,

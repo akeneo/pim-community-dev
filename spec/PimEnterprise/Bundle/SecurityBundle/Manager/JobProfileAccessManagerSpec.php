@@ -3,6 +3,7 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\Role;
@@ -21,21 +22,21 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess');
     }
 
-    function it_provides_roles_that_have_access_to_a_job_profile(JobInstance $jobProfile, $repository)
+    function it_provides_user_groups_that_have_access_to_a_job_profile(JobInstance $jobProfile, $repository)
     {
-        $repository->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
-        $repository->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE)->willReturn(['bar']);
+        $repository->getGrantedUserGroups($jobProfile, Attributes::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
+        $repository->getGrantedUserGroups($jobProfile, Attributes::EDIT_JOB_PROFILE)->willReturn(['bar']);
 
         $this->getExecuteUserGroups($jobProfile)->shouldReturn(['foo', 'bar']);
         $this->getEditUserGroups($jobProfile)->shouldReturn(['bar']);
     }
 
-    function it_grants_access_on_a_job_profile_for_the_provided_roles(
+    function it_grants_access_on_a_job_profile_for_the_provided_user_groups(
         JobInstance $jobProfile,
         $repository,
         $objectManager,
-        Role $user,
-        Role $admin
+        Group $user,
+        Group $admin
     ) {
         $jobProfile->getId()->willReturn(1);
         $repository->findOneBy(Argument::any())->willReturn(array());
@@ -53,8 +54,8 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
         JobInstance $jobProfile,
         $repository,
         $objectManager,
-        Role $user,
-        Role $admin
+        Group $user,
+        Group $admin
     ) {
             $jobProfile->getId()->willReturn(null);
             $repository->findOneBy(Argument::any())->willReturn(array());

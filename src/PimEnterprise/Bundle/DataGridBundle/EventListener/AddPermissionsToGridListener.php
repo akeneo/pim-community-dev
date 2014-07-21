@@ -57,7 +57,7 @@ class AddPermissionsToGridListener
         );
 
         $queryParameters = [
-            'roles' => $user->getRoles()
+            'groups' => $user->getGroups()->toArray()
         ];
         $datasource->setParameters($queryParameters);
     }

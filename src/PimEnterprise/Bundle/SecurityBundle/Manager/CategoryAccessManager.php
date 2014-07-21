@@ -57,7 +57,7 @@ class CategoryAccessManager
      */
     public function getViewUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::VIEW_PRODUCTS);
     }
 
     /**
@@ -69,7 +69,7 @@ class CategoryAccessManager
      */
     public function getEditUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::EDIT_PRODUCTS);
     }
 
     /**
@@ -81,7 +81,7 @@ class CategoryAccessManager
      */
     public function getOwnUserGroups(CategoryInterface $category)
     {
-        return $this->getAccessRepository()->getGrantedRoles($category, Attributes::OWN_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::OWN_PRODUCTS);
     }
 
     /**

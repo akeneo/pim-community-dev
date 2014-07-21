@@ -43,7 +43,7 @@ class JobProfileAccessManager
      */
     public function getExecuteUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
     }
 
     /**
@@ -55,7 +55,7 @@ class JobProfileAccessManager
      */
     public function getEditUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EDIT_JOB_PROFILE);
     }
 
     /**

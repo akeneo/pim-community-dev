@@ -2,11 +2,10 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -27,19 +26,19 @@ class CategoryAccessRepository extends EntityRepository
     protected $tableNameBuilder;
 
     /**
-     * Get roles that have the specified access to a category
+     * Get user groups that have the specified access to a category
      *
      * @param CategoryInterface $category
      * @param string            $accessLevel
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getGrantedRoles(CategoryInterface $category, $accessLevel)
+    public function getGrantedUserGroups(CategoryInterface $category, $accessLevel)
     {
         $qb = $this->createQueryBuilder('a');
         $qb
-            ->select('r')
-            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
+            ->select('g')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.category = :category')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $this->getAccessField($accessLevel)), true))
             ->setParameter('category', $category);
@@ -49,14 +48,14 @@ class CategoryAccessRepository extends EntityRepository
 
     /**
      * Revoke access to a category
-     * If excluded roles are provided, access will not be revoked for these roles
+     * If excluded user groups are provided, access will not be revoked for these group
      *
      * @param CategoryInterface $category
-     * @param Role[]            $excludedRoles
+     * @param Group[] $excludedGroups
      *
      * @return integer
      */
-    public function revokeAccess(CategoryInterface $category, array $excludedRoles = [])
+    public function revokeAccess(CategoryInterface $category, array $excludedGroups = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -64,10 +63,10 @@ class CategoryAccessRepository extends EntityRepository
             ->where('a.category = :category')
             ->setParameter('category', $category);
 
-        if (!empty($excludedRoles)) {
+        if (!empty($excludedGroups)) {
             $qb
-                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
-                ->setParameter('excludedRoles', $excludedRoles);
+                ->andWhere($qb->expr()->notIn('a.userGroup', ':excludedGroups'))
+                ->setParameter('excludedGroups', $excludedGroups);
         }
 
         return $qb->getQuery()->execute();
@@ -85,8 +84,8 @@ class CategoryAccessRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('ca');
         $qb
-            ->andWhere($qb->expr()->in('ca.role', ':roles'))
-            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+            ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('ca.category', 'c', 'c.id')
@@ -105,12 +104,12 @@ class CategoryAccessRepository extends EntityRepository
      */
     public function getRevokedCategoryQB(User $user, $accessLevel)
     {
-        // get role ids
-        $roleIds = array_map(
-            function (RoleInterface $role) {
-                return $role->getId();
+        // get group ids
+        $groupIds = array_map(
+            function (Group $group) {
+                return $group->getId();
             },
-            $user->getRoles()
+            $user->getGroups()->toArray()
         );
 
         $categoryTable = $this->getTableName('pim_catalog.entity.category.class');
@@ -126,7 +125,7 @@ class CategoryAccessRepository extends EntityRepository
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         $qb->expr()->neq('ca.'.$this->getAccessField($accessLevel), true),
-                        $qb->expr()->in('ca.role_id', $roleIds)
+                        $qb->expr()->in('ca.user_group_id', $groupIds)
                     ),
                     $qb->expr()->isNull('ca.'.$this->getAccessField($accessLevel))
                 )
@@ -139,17 +138,17 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get granted category ids
      *
-     * @param RoleInterface[] $roles
-     * @param integer[]       $categoryIds
+     * @param Group[]   $groups
+     * @param integer[] $categoryIds
      *
      * @return integer[]
      */
-    public function getCategoryIdsWithExistingAccess($roles, $categoryIds)
+    public function getCategoryIdsWithExistingAccess($groups, $categoryIds)
     {
         $qb = $this->createQueryBuilder('ca');
         $qb
-            ->andWhere($qb->expr()->in('ca.role', ':roles'))
-            ->setParameter('roles', $roles)
+            ->andWhere($qb->expr()->in('ca.userGroup', ':groups'))
+            ->setParameter('groups', $groups)
             ->andWhere($qb->expr()->in('c.id', ':categories'))
             ->setParameter('categories', $categoryIds)
             ->resetDQLParts(['select'])
@@ -222,14 +221,14 @@ class CategoryAccessRepository extends EntityRepository
     }
 
     /**
-     * Get the granted roles for a product
+     * Get the granted user groups for a product
      *
      * @param ProductInterface $product     the product
      * @param string           $accessLevel the expected access level
      *
      * @return array
      */
-    public function getGrantedRolesForProduct(ProductInterface $product, $accessLevel)
+    public function getGrantedUserGroupsForProduct(ProductInterface $product, $accessLevel)
     {
         $categories = $product->getCategories();
         if (count($categories) === 0) {
@@ -239,14 +238,14 @@ class CategoryAccessRepository extends EntityRepository
         foreach ($categories as $category) {
             $categoryIds[]= $category->getId();
         }
-        $qb = $this->createQueryBuilder('o');
-        $qb->where($qb->expr()->in('o.category', $categoryIds));
-        $qb->andWhere($qb->expr()->eq('o.'.$this->getAccessField($accessLevel), true));
-        $qb->leftJoin('o.role', 'role');
-        $qb->select('DISTINCT(role.id) as id, role.label');
-        $roles = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
+        $qb = $this->createQueryBuilder('ca');
+        $qb->where($qb->expr()->in('ca.category', $categoryIds));
+        $qb->andWhere($qb->expr()->eq('ca.'.$this->getAccessField($accessLevel), true));
+        $qb->leftJoin('ca.userGroup', 'ug');
+        $qb->select('DISTINCT (ug.id) as id, ug.name');
+        $groups = $qb->getQuery()->execute(array(), AbstractQuery::HYDRATE_ARRAY);
 
-        return $roles;
+        return $groups;
     }
 
     /**
@@ -263,9 +262,9 @@ class CategoryAccessRepository extends EntityRepository
         $qb
             ->select('o.id')
             ->where(
-                $qb->expr()->in('o.role', ':roles')
+                $qb->expr()->in('o.userGroup', ':groups')
             )
-            ->setParameter('roles', $user->getRoles())
+            ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq('o.'.$this->getAccessField(Attributes::OWN_PRODUCTS), true))
             ->setMaxResults(1);
 
@@ -277,9 +276,11 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get the access field depending of access level sent
      *
-     * @param string $accessLevel
+     * @param $accessLevel
      *
      * @return string
+     *
+     * @throws \LogicException
      */
     protected function getAccessField($accessLevel)
     {

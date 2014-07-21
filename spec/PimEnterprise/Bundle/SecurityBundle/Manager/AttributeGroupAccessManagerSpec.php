@@ -23,8 +23,8 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
 
     function it_provides_roles_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
     {
-        $repository->getGrantedRoles($group, Attributes::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
-        $repository->getGrantedRoles($group, Attributes::EDIT_ATTRIBUTES)->willReturn(['baz']);
+        $repository->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
+        $repository->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES)->willReturn(['baz']);
 
         $this->getViewUserGroups($group)->shouldReturn(['foo', 'baz']);
         $this->getEditUserGroups($group)->shouldReturn(['baz']);
