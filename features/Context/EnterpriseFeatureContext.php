@@ -76,13 +76,13 @@ class EnterpriseFeatureContext extends FeatureContext
         $expectedRoles = $this->getMainContext()->listToArray($roles);
         $missingRoles = array_diff($selectedRoles, $expectedRoles);
         $extraRoles = array_diff($expectedRoles, $selectedRoles);
-        if (count($missingRoles) > 0 || count($extraRoles) > 0) {
+        if (count($missingRoles) > 0 || count($extraRoles) > 0) {
             throw $this->createExpectationException(
                 sprintf(
                     'For permission %s, roles %s are expected, roles granted are %s',
                     $field,
-                    $expectedRoles,
-                    $selectedRoles
+                    implode(', ', $expectedRoles),
+                    implode(', ', $selectedRoles)
                 )
             );
         }
