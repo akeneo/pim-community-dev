@@ -432,7 +432,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param Family $family
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function setFamily(Family $family = null)
     {
@@ -449,7 +449,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param integer $familyId
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function setFamilyId($familyId)
     {
@@ -582,7 +582,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      * Add a category
      * @param CategoryInterface $category
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function addCategory(CategoryInterface $category)
     {
@@ -595,14 +595,15 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
-     * Remove a category
-     * @param CategoryInterface $category
+     * Set categories removing old ones
      *
-     * @return Product
+     * @param array $categories
+     *
+     * @return AbstractProduct
      */
-    public function removeCategory(CategoryInterface $category)
+    public function setCategories(array $categories = array())
     {
-        $this->categories->removeElement($category);
+        $this->categories = new ArrayCollection($categories);
 
         return $this;
     }
@@ -653,7 +654,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param boolean $enabled
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function setEnabled($enabled)
     {
@@ -720,7 +721,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      * Remove a group
      * @param Group $group
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function removeGroup(Group $group)
     {
@@ -762,7 +763,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param AbstractAssociation $association
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function addAssociation(AbstractAssociation $association)
     {
@@ -779,7 +780,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param AbstractAssociation $association
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function removeAssociation(AbstractAssociation $association)
     {
@@ -819,7 +820,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param AbstractAssociation[] $associations
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function setAssociations(array $associations = array())
     {
@@ -833,7 +834,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      *
      * @param ArrayCollection $completenesses
      *
-     * @return Product
+     * @return AbstractProduct
      */
     public function setCompletenesses(ArrayCollection $completenesses)
     {
