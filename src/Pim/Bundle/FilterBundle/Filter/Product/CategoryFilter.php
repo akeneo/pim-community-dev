@@ -20,6 +20,12 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 class CategoryFilter extends NumberFilter
 {
     /** @staticvar integer */
+    const UNKNOWN_TREE = 0;
+
+    /** @staticvar integer */
+    const DEFAULT_TYPE = 1;
+
+    /** @staticvar integer */
     const UNCLASSIFIED_CATEGORY = -1;
 
     /** @staticvar integer */
