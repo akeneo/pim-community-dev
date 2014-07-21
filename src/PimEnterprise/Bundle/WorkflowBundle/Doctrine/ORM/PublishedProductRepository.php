@@ -42,8 +42,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb = $this->createQueryBuilder('pp');
         $qb
             ->where($qb->expr()->in('pp.originalProduct', ':originalIds'))
-            ->setParameter(':originalIds', $originalIds)
-        ;
+            ->setParameter(':originalIds', $originalIds);
 
         return $qb->getQuery()->getResult();
     }
@@ -57,8 +56,7 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
         $qb
             ->select('IDENTITY(pp.version) AS version_id')
             ->where('pp.originalProduct = :originalId')
-            ->setParameter('originalId', $originalId)
-        ;
+            ->setParameter('originalId', $originalId);
 
         try {
             $versionId = (int) $qb->getQuery()->getSingleScalarResult();
