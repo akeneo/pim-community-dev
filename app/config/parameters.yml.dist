@@ -2,7 +2,6 @@ parameters:
     database_driver:      pdo_mysql
     database_host:        localhost
     database_port:        ~
-    database_unix_socket:
     database_name:        akeneo_pim
     database_user:        akeneo_pim
     database_password:    akeneo_pim
