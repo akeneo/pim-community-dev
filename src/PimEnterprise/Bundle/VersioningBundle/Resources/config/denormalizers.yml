@@ -1,6 +1,9 @@
 parameters:
-    pimee_versioning.denormalizer.product.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
-    pimee_versioning.denormalizer.family.class:  PimEnterprise\Bundle\VersioningBundle\Denormalizer\FamilyDenormalizer
+    pimee_versioning.denormalizer.product.class:     PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
+    pimee_versioning.denormalizer.family.class:      PimEnterprise\Bundle\VersioningBundle\Denormalizer\FamilyDenormalizer
+    pimee_versioning.denormalizer.category.class:    PimEnterprise\Bundle\VersioningBundle\Denormalizer\CategoryDenormalizer
+    pimee_versioning.denormalizer.group.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
+    pimee_versioning.denormalizer.association.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -18,3 +21,27 @@ services:
             - %pim_catalog.entity.family.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.category:
+        class: %pimee_versioning.denormalizer.category.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.category.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.group:
+        class: %pimee_versioning.denormalizer.group.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.group.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.association:
+            class: %pimee_versioning.denormalizer.association.class%
+            arguments:
+                - '@pim_catalog.doctrine.smart_manager_registry'
+                - %pim_catalog.entity.association.class%
+            tags:
+                - { name: pim_serializer.normalizer, priority: 90 }

@@ -14,8 +14,6 @@ class FamilyDenormalizer extends AbstractEntityDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $family = $this->getEntity($data);
-
-        return $family;
+        return $this->getEntity($data);
     }
 }
