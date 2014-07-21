@@ -1,40 +1,40 @@
 job_profile_accesses:
     csv_association_type_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager]
+        edit: [IT support]
     csv_attribute_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_category_import:
-        execute: [administrator]
-        edit: [administrator]
+        execute: [IT support]
+        edit: [IT support]
     csv_group_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager]
+        edit: [IT support]
     csv_option_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_product_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_published_product_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_association_type_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager]
+        edit: [IT support]
     csv_attribute_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_category_export:
-        execute: [administrator]
-        edit: [administrator]
+        execute: [IT support]
+        edit: [IT support]
     csv_group_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager]
+        edit: [IT support]
     csv_option_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]
     csv_product_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager]
+        execute: [IT support, Manager]
+        edit: [IT support, Manager]

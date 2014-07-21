@@ -1,7 +1,9 @@
 user_groups:
-    administrators:
-        name: Administrators
-    marketing:
-        name: Marketing
-    sales:
-        name: Sales
+    technical:
+        name: Technical
+    manager:
+        name: Manager
+    redactor:
+        name: Redactor
+    all:
+        name: All

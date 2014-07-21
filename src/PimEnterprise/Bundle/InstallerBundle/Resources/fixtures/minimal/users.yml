@@ -12,5 +12,5 @@ users:
         roles:
             - ROLE_ADMINISTRATOR
         groups:
-            - Administrators
+            - Technical
         enable: true
