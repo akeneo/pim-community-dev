@@ -110,14 +110,14 @@ class CategoryManagerSpec extends ObjectBehavior
         Category $childTwo,
         $context
     ) {
+
         $categoryRepository->getPath($childTwo)->willReturn(
             [0 => $parent, 1 => $childOne, 2 => $childTwo]
         );
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $parent)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childOne)->willReturn(true);
-        $context->isGranted(Attributes::VIEW_PRODUCTS, $childTwo)->willReturn(false);
-
-        $categoryRepository->getTreeFromParents([])->willReturn([]);
+        $parent->getId()->willReturn(3);
+        $childOne->getId()->willReturn(1);
+        $childTwo->getId()->willReturn(2);
+        $categoryRepository->getTreeFromParents([3, 1, 2])->willReturn([]);
         $this->getGrantedFilledTree($parent, new ArrayCollection([$childTwo]));
     }
 

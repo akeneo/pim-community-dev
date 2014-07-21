@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
+use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 
 /**
  * A collector of changes that a client is sending to a product edit form
@@ -16,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CollectProductValuesSubscriber implements EventSubscriberInterface
+class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
 {
     /** @var ChangesCollector */
     protected $collector;
@@ -27,6 +29,8 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     /** @var MediaFactory */
     protected $factory;
 
+    protected $repository;
+
     /**
      * @param ChangesCollector $changesCollector
      * @param MediaManager     $mediaManager
@@ -35,11 +39,13 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     public function __construct(
         ChangesCollector $collector,
         MediaManager $mediaManager,
-        MediaFactory $factory
+        MediaFactory $factory,
+        LocaleRepository $repository
     ) {
         $this->collector = $collector;
         $this->mediaManager = $mediaManager;
         $this->factory = $factory;
+        $this->repository = $repository;
     }
 
     /**
@@ -59,10 +65,25 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
      */
     public function collect(FormEvent $event)
     {
+        $form = $event->getForm();
         $data = $event->getData();
 
-        if (!array_key_exists('values', $data)) {
+        if (!array_key_exists('values', $data) || !array_key_exists('locale', $data)) {
             return;
+        }
+
+        $locale = $this->repository->find($data['locale']);
+
+        $values = $form->getData()->getValues();
+        foreach (array_keys($data['values']) as $key) {
+            $value = $values->get($key);
+            if ($value->getAttribute()->isLocalizable()) {
+                $value->setLocale($locale);
+            }
+            if ($key !== $correctKey = ProductValueKeyGenerator::getKey($value)) {
+                $data['values'][$correctKey] = $data['values'][$key];
+                unset($data['values'][$key]);
+            }
         }
 
         foreach ($data['values'] as $key => $changes) {
