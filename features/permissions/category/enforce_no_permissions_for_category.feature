@@ -6,6 +6,11 @@ Feature: Enforce no permissions for a category
 
   Background:
     Given a "clothing" catalog configuration
+    And the following products:
+      | sku        | categories        |
+      | grantedOne | winter_collection |
+      | grantedTwo | winter_collection |
+      | notGranted | summer_collection |
     And I am logged in as "Mary"
 
   Scenario: Redirect users from the product page to the dashboard when they can't see products in any tree
@@ -20,14 +25,12 @@ Feature: Enforce no permissions for a category
     Then I should be on the homepage
     Then I should see "You don't have access to products in any tree, please contact your administrator"
 
-  @skip : must ensure we always apply "all products" filter when no category is selected
-  Scenario: Display only granted products in products grid
-    Given the following products:
-      | sku        | categories        |
-      | grantedOne | winter_collection |
-      | grantedTwo | winter_collection |
-      | notGranted | summer_collection |
-    And I am on the "summer_collection" category page
+  Scenario: Display only granted products in products grid, sub set of products
+    Given I am on the products page
+    And the grid should contain 3 elements
+
+  Scenario: Display only granted products in products grid, all products
+    Given I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
       | View products | Manager |
