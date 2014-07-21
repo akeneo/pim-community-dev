@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter available products for a variant group
   In order to easily browse products inside a variant group
-  As a user
+  As a product manager
   I need to be able to filter products in a variant group
 
   Background:
@@ -12,7 +12,7 @@ Feature: Filter available products for a variant group
       | white_boots | boots    | white | 42   | 50 EUR, 65 USD | White boots | Great boots              | Great shiny boots        |
       | blue_boots  | sneakers | blue  | 43   | 45 EUR, 60 USD | Blue boots  | Nice boots               | Nice shiny boots         |
       | sneakers    | sneakers | black |      | 40 EUR, 55 USD |             |                          |                          |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the "caterpillar_boots" variant group page
 
   Scenario: Successfully filter the product datagrid when I edit a variant group

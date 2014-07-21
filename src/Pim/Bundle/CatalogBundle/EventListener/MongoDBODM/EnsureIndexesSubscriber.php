@@ -32,7 +32,7 @@ class EnsureIndexesSubscriber implements EventSubscriber
 
     /**
      * @param IndexCreator $indexCreator
-     * @param IndexPurger  $indexCreator
+     * @param IndexPurger  $indexPurger
      */
     public function __construct(IndexCreator $indexCreator, IndexPurger $indexPurger)
     {

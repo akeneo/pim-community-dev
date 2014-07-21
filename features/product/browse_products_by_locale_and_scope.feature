@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse products by locale and scope
   In order to enrich my catalog
-  As a user
+  As a regular user
   I need to be able to browse products data by locale and scope
 
   Background:
@@ -17,7 +17,7 @@ Feature: Browse products by locale and scope
     And the following product:
       | sku    | family    | name-en_US | name-fr_FR | description-en_US-ecommerce | description-fr_FR-ecommerce | description-fr_FR-mobile | image-ecommerce | image-mobile |
       | postit | furniture | Post it    | Etiquette  | My ecommerce description    | Ma description ecommerce    | Ma description mobile    | large.jpeg      | small.jpeg   |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the products page
     And I display the columns sku, name, image, description and family
 

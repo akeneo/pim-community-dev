@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse attributes
   In order to check whether an attribute is available in the catalog
-  As a user
+  As a product manager
   I need to be able to see attributes in the catalog
 
   Scenario: Successfully view, sort and filter attributes
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the attributes page
     Then the grid should contain 14 elements
     And I should see the columns Code, Label, Type, Scopable, Localizable and Group

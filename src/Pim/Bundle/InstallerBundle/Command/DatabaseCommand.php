@@ -29,7 +29,7 @@ class DatabaseCommand extends ContainerAwareCommand
      * @staticvar string
      */
     const LOAD_ALL    = 'all';
-    const LOAD_ORO    = 'OroPlatform';
+    const LOAD_BASE   = 'base';
 
     /**
      * {@inheritdoc}
@@ -122,7 +122,7 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function loadFixturesStep(InputInterface $input, OutputInterface $output)
     {
         if ($input->getOption('env') === 'behat') {
-            $input->setOption('fixtures', self::LOAD_ORO);
+            $input->setOption('fixtures', self::LOAD_BASE);
         }
 
         $output->writeln(
@@ -169,30 +169,11 @@ class DatabaseCommand extends ContainerAwareCommand
      */
     protected function getFixturesList($fixtureOpt)
     {
-        if ($fixtureOpt === self::LOAD_ORO) {
-            $bundles = $this->getContainer()->getParameter('kernel.bundles');
+        if ($fixtureOpt === self::LOAD_BASE) {
+            $fixtures = $this->getOroFixturesList();
+            $fixtures[] = realpath(__DIR__ . '/../DataFixtures/ORM/Base');
 
-            $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
-            $finder = new Finder();
-
-            foreach ($bundles as $bundleName => $bundleNamespace) {
-                if (strpos($bundleNamespace, 'Oro\\') === 0) {
-                    $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
-                    $finder->in($bundle->getPath());
-                }
-            }
-            // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
-            $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
-            $directories = $finder
-                ->path('/^DataFixtures$/')
-                ->directories();
-
-            $oroFixtures = array();
-            foreach ($directories as $directory) {
-                $oroFixtures[] = $directory->getPathName();
-            }
-
-            return array('--fixtures' => $oroFixtures);
+            return array('--fixtures' => $fixtures);
         }
 
         return array();
@@ -231,5 +212,37 @@ class DatabaseCommand extends ContainerAwareCommand
     protected function getFixtureJobLoader()
     {
         return $this->getContainer()->get('pim_installer.fixture_loader.job_loader');
+    }
+
+    /**
+     * Get the Oro fixtures list
+     *
+     * @return array
+     */
+    protected function getOroFixturesList()
+    {
+        $bundles = $this->getContainer()->getParameter('kernel.bundles');
+
+        $basePath = realpath($this->getContainer()->getParameter('kernel.root_dir') . DIRECTORY_SEPARATOR .'..');
+        $finder = new Finder();
+
+        foreach ($bundles as $bundleName => $bundleNamespace) {
+            if (strpos($bundleNamespace, 'Oro\\') === 0) {
+                $bundle = $this->getContainer()->get('kernel')->getBundle($bundleName);
+                $finder->in($bundle->getPath());
+            }
+        }
+        // Oro User Bundle overriden by Pim User Bundle, but we still need the data fixtures inside OroUserBundle
+        $finder->in($basePath."/vendor/oro/platform/src/Oro/Bundle/UserBundle");
+        $directories = $finder
+            ->path('/^DataFixtures$/')
+            ->directories();
+
+        $oroFixtures = array();
+        foreach ($directories as $directory) {
+            $oroFixtures[] = $directory->getPathName();
+        }
+
+        return $oroFixtures;
     }
 }

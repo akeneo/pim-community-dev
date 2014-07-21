@@ -1,6 +1,6 @@
 Feature: Display the variant group history
   In order to know who, when and what changes has been made to a variant group
-  As a user
+  As a product manager
   I need to have access to a variant group history
 
   @javascript

@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit a group type
   In order to manage existing group types in the catalog
-  As a user
+  As an administrator
   I need to be able to edit a group type
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit a group type
     Given I am on the "X_SELL" group type page

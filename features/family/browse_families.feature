@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse families
   In order to view the families that have been created
-  As a user
+  As an administrator
   I need to be able to view a list of them
 
   Scenario: Successfully display all the families
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
     When I am on the families page
     Then the grid should contain 3 elements
     And I should see the columns Code, Label and Attribute as label

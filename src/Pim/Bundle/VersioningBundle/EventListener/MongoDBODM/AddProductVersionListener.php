@@ -6,11 +6,9 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ODM\MongoDB\Event\OnFlushEventArgs;
 use Doctrine\ODM\MongoDB\Event\PostFlushEventArgs;
-use Doctrine\ORM\EntityManager;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 
 /**
  * Aims to audit data updates on products stored in MongoDB
@@ -39,11 +37,6 @@ class AddProductVersionListener implements EventSubscriber
     protected $versionManager;
 
     /**
-     * @var SmartManagerRegistry
-     */
-    protected $registry;
-
-    /**
      * @var NormalizerInterface
      */
     protected $normalizer;
@@ -51,17 +44,12 @@ class AddProductVersionListener implements EventSubscriber
     /**
      * Constructor
      *
-     * @param VersionManager       $versionManager
-     * @param SmartManagerRegistry $registry
-     * @param NormalizerInterface  $normalizer
+     * @param VersionManager      $versionManager
+     * @param NormalizerInterface $normalizer
      */
-    public function __construct(
-        VersionManager $versionManager,
-        SmartManagerRegistry $registry,
-        NormalizerInterface $normalizer
-    ) {
+    public function __construct(VersionManager $versionManager, NormalizerInterface $normalizer)
+    {
         $this->versionManager = $versionManager;
-        $this->registry       = $registry;
         $this->normalizer     = $normalizer;
     }
 
@@ -108,37 +96,32 @@ class AddProductVersionListener implements EventSubscriber
      */
     protected function processVersionableObjects()
     {
+        $versions = [];
         foreach ($this->versionableObjects as $versionable) {
-            $this->createVersion($versionable);
+            $currentVersions = $this->createVersion($versionable);
+            $versions = array_merge($versions, $currentVersions);
             $this->versionedObjects[] = spl_object_hash($versionable);
         }
 
-        $versionedCount = count($this->versionableObjects);
         $this->versionableObjects = array();
 
-        if ($versionedCount) {
-            foreach ($this->registry->getManagers() as $manager) {
-                if ($manager instanceof EntityManager) {
-                    $manager->flush();
-                }
-            }
+        foreach ($versions as $version) {
+            $this->applyChangeSet($version);
         }
     }
 
     /**
      * @param object $versionable
+     *
+     * @return Version
      */
-    public function createVersion($versionable)
+    protected function createVersion($versionable)
     {
         $changeset = [];
         if (!$this->versionManager->isRealTimeVersioning()) {
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
         }
-        $versions = $this->versionManager->buildVersion($versionable, $changeset);
-
-        foreach ($versions as $version) {
-            $this->computeChangeSet($version);
-        }
+        return $this->versionManager->buildVersion($versionable, $changeset);
     }
 
     /**
@@ -150,7 +133,7 @@ class AddProductVersionListener implements EventSubscriber
     {
         if ($versionable instanceof ProductInterface) {
             $oid = spl_object_hash($versionable);
-            if (!isset($this->versionableObjects[$oid]) and !in_array($oid, $this->versionedObjects)) {
+            if (!isset($this->versionableObjects[$oid]) && !in_array($oid, $this->versionedObjects)) {
                 $this->versionableObjects[$oid] = $versionable;
             }
         }
@@ -161,15 +144,15 @@ class AddProductVersionListener implements EventSubscriber
      *
      * @param Version $version
      */
-    protected function computeChangeSet(Version $version)
+    protected function applyChangeSet(Version $version)
     {
-        $manager = $this->registry->getManagerForClass(get_class($version));
-
+        $om = $this->versionManager->getObjectManager();
         if ($version->getChangeset()) {
-            $manager->persist($version);
-            $manager->getUnitOfWork()->computeChangeSet($manager->getClassMetadata(get_class($version)), $version);
+            $om->persist($version);
+            $om->getUnitOfWork()->computeChangeSet($om->getClassMetadata(get_class($version)), $version);
+            $om->flush($version);
         } else {
-            $manager->remove($version);
+            $om->remove($version);
         }
     }
 }

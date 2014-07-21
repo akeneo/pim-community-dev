@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per metric
   In order to filter products in the catalog per metric
-  As a user
+  As a regular user
   I need to be able to filter products per metric
 
   Background:
@@ -19,7 +19,7 @@ Feature: Filter products per metric
       | book   | library   | no      | 0.2 KILOGRAM     |               |
       | mug    |           | yes     |                  | 120 GRAM      |
       | pen    |           | yes     |                  |               |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products by metric
     Given I am on the products page

@@ -1,7 +1,7 @@
 @javascript
 Feature: Edit a variant group adding/removing products
   In order to manage existing variant groups for the catalog
-  As a user
+  As a product manager
   I need to be able to add and remove product from a variant group
 
   Background:
@@ -26,7 +26,7 @@ Feature: Edit a variant group adding/removing products
       | code   | label      | attributes  | type    |
       | MUG    | MUG Akeneo | color       | VARIANT |
       | POSTIT | Postit     | color, size | VARIANT |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully display the product datagrid when I edit a variant group
     Given I am on the "MUG" variant group page

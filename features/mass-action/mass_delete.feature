@@ -1,7 +1,7 @@
 @javascript
 Feature: Delete many product at once
   In order to easily manage products
-  As Julia
+  As a product manager
   I need to be able to remove many products at once
 
   Background:

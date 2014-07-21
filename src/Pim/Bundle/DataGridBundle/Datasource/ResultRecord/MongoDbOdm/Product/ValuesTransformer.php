@@ -29,7 +29,7 @@ class ValuesTransformer
                 $filterValueScope = isset($value['scope']) && ($value['scope'] !== $scope);
                 $attributeId = $value['attribute'];
 
-                if (!$filterValueLocale && !$filterValueScope and isset($attributes[$attributeId])) {
+                if (!$filterValueLocale && !$filterValueScope && isset($attributes[$attributeId])) {
                     $attribute = $attributes[$attributeId];
                     $attributeCode = $attribute['code'];
                     $value['attribute'] = $attribute;

@@ -1,6 +1,6 @@
 Feature: Display the attribute group history
   In order to know who, when and what changes has been made to an attribute group
-  As Julia
+  As a product manager
   I need to have access to attribute group history
 
   Background:

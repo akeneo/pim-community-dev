@@ -1,11 +1,11 @@
 Feature: Update user preferences
   In order for users to be able to choose their preferences
-  As a developer
+  As an administrator
   I need to synchronize user preferences with the catalog configuration
 
   Background:
     Given an "apparel" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   @javascript
   Scenario: Successfully delete a tree used by a user

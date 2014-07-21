@@ -1,12 +1,12 @@
 @javascript
 Feature: Delete a group type
   In order to manage group types in the catalog
-  As a user
+  As an administrator
   I need to be able to delete group types
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully delete a group type from the edit page
     Given I edit the "X_SELL" group type

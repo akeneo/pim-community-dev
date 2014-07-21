@@ -1,6 +1,6 @@
 Feature: Switch product locale
   In order to manage product information in different languages
-  as a PIM User
+  as Mary
   I need to be able to switch product locale
 
   Background:
@@ -8,7 +8,7 @@ Feature: Switch product locale
     And the following product:
       | sku    | family  | name-en_US | name-fr_FR |
       | jacket | jackets | My jacket  | Ma veste   |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
     And I am on the "jacket" product page
 
   Scenario: Succesfully display and edit a product in the default locale

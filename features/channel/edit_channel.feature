@@ -1,11 +1,11 @@
 Feature: Edit a channel
   In order to manage existing channels in the catalog
-  As a user
+  As an administrator
   I need to be able to edit a channel
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit a channel
     Given I am on the "tablet" channel page

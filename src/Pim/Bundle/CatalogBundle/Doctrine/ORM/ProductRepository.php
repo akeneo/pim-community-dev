@@ -307,7 +307,7 @@ class ProductRepository extends EntityRepository implements
         $isCheckedExpr =
             'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
-            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)'.
+            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) '.
             'THEN true ELSE false END';
         $qb
             ->addSelect($isCheckedExpr.' AS is_checked');
@@ -571,7 +571,7 @@ class ProductRepository extends EntityRepository implements
         }
 
         // use doctrine paginator to avoid count problem with left join of values
-        if (!is_null($offset) and !is_null($limit)) {
+        if (!is_null($offset) && !is_null($limit)) {
             $qb->setFirstResult($offset)->setMaxResults($limit);
             $paginator = new Paginator($qb->getQuery());
 

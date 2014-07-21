@@ -1,7 +1,7 @@
 @javascript
 Feature: Upload and import products with media
   In order to easily import existing product media
-  As Julia
+  As a product manager
   I need to be able to upload and import products along with media
 
   Scenario: Successfully upload and import an archive

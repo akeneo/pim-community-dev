@@ -1,7 +1,7 @@
 @javascript
 Feature: Import association types
   In order to reuse the association types of my products
-  As Julia
+  As a product manager
   I need to be able to import association types
 
   Scenario: Successfully import association types

@@ -48,7 +48,7 @@ class ProductMassEditOperator extends AbstractMassEditOperator
     }
 
     /**
-     * Finalize the batch operation - flush the products
+     * {@inheritdoc}
      */
     public function finalizeOperation()
     {

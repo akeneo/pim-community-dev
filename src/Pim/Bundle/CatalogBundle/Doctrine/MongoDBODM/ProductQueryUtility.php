@@ -19,6 +19,9 @@ class ProductQueryUtility
     const FIELD_TOKEN_SEPARATOR = '-';
 
     /** @staticvar string */
+    const ELEMENT_TOKEN_SEPARATOR = '.';
+
+    /** @staticvar string */
     const NORMALIZED_FIELD = 'normalizedData';
 
     /**

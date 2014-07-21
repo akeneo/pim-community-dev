@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products
   In order to filter products in the catalog
-  As a user
+  As a regular user
   I need to be able to filter products in the catalog
 
   Background:
@@ -25,7 +25,7 @@ Feature: Filter products
       | MUG    | Mug    | color      | VARIANT | MUG-1, MUG-2 |
       | POSTIT | Postit |            | X_SELL  | POSTIT       |
       | EMPTY  | Empty  |            | X_SELL  |              |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully display datagrid with group
     Given I am on the products page

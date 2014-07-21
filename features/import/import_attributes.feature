@@ -1,7 +1,7 @@
 @javascript
 Feature: Import attributes
   In order to reuse the attributes of my products
-  As Julia
+  As a product manager
   I need to be able to import attributes
 
   Scenario: Successfully import attributes

@@ -1,12 +1,12 @@
 Feature: Order attributes
   In order to always have the same attribute fields order in each locale
-  As a user
+  As a regular user
   I need to be able to set an order parameter which will manage fields order
 
   Background:
     Given the "footwear" catalog configuration
     And a "Rangers" product
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   @javascript @skip
   Scenario: Successfully update an attribute position

@@ -6,6 +6,7 @@
 - Allow filtering by empty values for attributes (text, textarea, number, date, simple and multiselect, prices and metrics) and for family property
 - Add an option to filter products by a list of identifier values
 - Don't allow editing the default datagrid view
+- Add a enable/disable row action in product grid
 
 ## Improvements
 - Group datagrid filters by attribute groups
@@ -36,6 +37,19 @@
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
 - Faster MongoDB product writer (around 10x times faster than current one)
+- Dispatch events on show/edit/execute/remove job profile actions
+- Dispatch events on view/download job execution actions
+- Allow to install custom user roles and groups from installer fixtures
+- Display the code of import/export profiles on the edit and show views
+- Related entities' edition and deletion doesn't reload all the products' normalized data
+- Inject event dispatcher inside AbstractController
+- Csv reader and Yaml readers are now reseted between each steps
+- Dispatch events when removing some entities
+- Add method remove in Category, Group, Attribute, Association type and family managers.
+- Call manager's method remove from these entity controllers
+- Remove the count of products by category in the context of the management of the categories (perf)
+- Define attribute type classes as parameters
+- Products on which mass edit operation is not performed are also ignored from operation finalize method
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -48,6 +62,13 @@
 - Fixed a bug with image upload on product with a "\" or "/" in their sku
 - Fixed a bug that silently failed when uploading file that does not comply with server configuration
 - Fixed a bug when display image thumbnail in the product grid with MongoDB support
+- Fixed a bug with timestampable listener which doesn't change the updated date of a product
+- Fixed a bug with numeric validation and decimal allowed property (number, metric, price attribute types)
+- Attribute Options code validation now more precise on uniqueness (equality instead of similarity)
+- Fixed a bug with repository resolver on ODM implementation
+- Fixed a bug on mass edit when we use a completeness filter to select products
+- Removed the import CSV mimetype validation which is unreliable
+- Product completeness in MongoDB is not lost anymore in the grid
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -64,7 +85,7 @@
 - Remove `MetricBaseValuesSubscriber` and create one for MongoDB and another one for ORM
 - Create `OptionFilter`, `OptionsFilter` for ORM and MongoDB implementations
 - InstallerBundle/LoaderInterface has been changed to pass ProductManager to manage media (loading images from fixtures)
-- Refactor VersioningBundle - a lot of API changes.
+- Refactor VersioningBundle - a lot of API changes, add MongoDB support.
 - Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Manager\CompletenessManager` and use only the family repository
 - Remove the Doctrine registry dependency from `Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator` and use only the entity manager
 - Add a new method `scheduleForChannelAndLocale` to `Pim\Bundle\CatalogBundle\Doctrine\CompletenessGeneratorInterface`
@@ -79,6 +100,41 @@
 - Inject `Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager` into LastOperationsWidget
 - Remove injection of WidgetRepository from LastOperationsWidget
 - Inject JobInstanceFactory inside `Pim\Bundle\ImportExportBundle\Controller\JobProfileController`
+- Remove duplicate pim_catalog.entity.job_instance.class parameter, we must now use akeneo_batch.entity.job_instance.class
+- Inject EventDispatcher inside AbstractController
+- Add missing getEntity() method in product value interface
+- Add methods inside CategoryInterface
+- Inject `Symfony\Component\EventDispatcher\EventDispatcherInterface` inside Attribute, AssociationType, Category, Family and Group managers
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager`
+- Inject `Doctrine\Common\Persistence\ObjectManager` in `Pim\Bundle\CatalogBundle\Manager\FamilyManager`
+- Inject group and group types classes in `Pim\Bundle\CatalogBundle\Manager\GroupManager`
+- Inject `Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager` in `Pim\Bundle\EnrichBundle\Controller\AssociationTypeController`
+- Inject `Pim\Bundle\CatalogBundle\Manager\FamilyManager` in `Pim\Bundle\EnrichBundle\Controller\FamilyController`
+- Inject SecurityFacade inside `Pim\Bundle\EnrichBundle\Controller\CategoryController`
+- Each dashboard widget has to define its full template, nothing is rendered automatically
+- Delete `Pim\Bundle\DataGridBundle\Extension\Filter\MongoDBFilterExtension`, `Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension`, `Pim\Bundle\DataGridBundle\Extension\Filter\ProductFilterExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Filter\AbstractFilterExtension` to `Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension` which expects a `Pim\Bundle\DataGridBundle\Datasource\DatasourceAdapterResolver\` as third argument for its constructor
+- Rename constant `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddFilterTypesPass::FILTER_ORM_EXTENSION_ID` to `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddFilterTypesPass::FILTER_EXTENSION_ID`
+- Delete `Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDBSorterExtension`, `Pim\Bundle\DataGridBundle\Extension\Sorter\OrmSorterExtension`, `Pim\Bundle\DataGridBundle\Extension\Sorter\ProductSorterExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Sorter\AbstractSorterExtension` to `Pim\Bundle\DataGridBundle\Extension\Sorter\SorterExtension`
+- Rename constant `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddSortersPass::SORTER_ORM_EXTENSION_ID` to `Pim\Bundle\DataGridBundle\DependencyInjection\Compiler\AddSortersPass::SORTER_EXTENSION_ID`
+- Delete service `pim_datagrid.extension.filter.mongodb_filter`
+- Delete service `pim_datagrid.extension.filter.product_filter`
+- Rename service `pim_datagrid.extension.filter.orm_filter` to `pim_datagrid.extension.filter`
+- Delete service `pim_datagrid.extension.sorter.mongodb_sorter`
+- Rename service `pim_datagrid.extension.sorter.orm_sorter` to `pim_datagrid.extension.sorter`
+- Delete `Pim\Bundle\DataGridBundle\Extension\Pager\MongoDBPagerExtension`,`Pim\Bundle\DataGridBundle\Extension\Pager\OrmPagerExtension` and `Pim\Bundle\DataGridBundle\Extension\Pager\ProductPagerExtension`
+- Rename `Pim\Bundle\DataGridBundle\Extension\Pagerr\AbstractPagerExtension` to `Pim\Bundle\DataGridBundle\Extension\Pager\PagerExtension` which expects a `PagerResolver` as first argument
+- Delete service `pim_datagrid.extension.pager.mongodb_pager`
+- Delete service `pim_datagrid.extension.pager.product_pager`
+- Rename service `pim_datagrid.extension.pager.orm_pager` to `pim_datagrid.extension.pager`
+- Replace `Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource` by `Pim\Bundle\DataGridBundle\Datasource\Datasource`
+- Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
+- Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
+- Delete service `pim_datagrid.datasource.mongodb`
+- Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
+- Rename countForAttribute to countVariantGroupAxis in GroupRepository
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

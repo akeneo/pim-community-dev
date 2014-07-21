@@ -1,6 +1,6 @@
 Feature: Display the attribute history
   In order to know who, when and what changes has been made to an attribute
-  As Julia
+  As a product manager
   I need to have access to a attribute history
 
   Background:

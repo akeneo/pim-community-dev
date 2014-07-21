@@ -1,7 +1,7 @@
 @javascript
 Feature: Choose and order product grids columns
   In order to works with data that I'm interested in the product datagrid
-  As Julia
+  As a regular user
   I need to be able to choose and order product grids columns
 
   Background:
@@ -10,7 +10,7 @@ Feature: Choose and order product grids columns
       | sku     |
       | sandals |
       | basket  |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the products page
 
   Scenario: Succesfully display default columns

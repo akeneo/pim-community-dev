@@ -1,12 +1,12 @@
 @javascript
 Feature: Browse export profiles
   In order to view the list of export jobs that have been created
-  As a user
+  As a product manager
   I need to be able to view a list of them
 
   Scenario: Successfully view, sort and filter export jobs
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the exports page
     Then the grid should contain 6 elements
     And I should see the columns Code, Label, Job, Connector and Status

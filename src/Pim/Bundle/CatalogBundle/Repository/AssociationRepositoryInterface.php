@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Repository;
 
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Interface for association repository
@@ -21,4 +22,14 @@ interface AssociationRepositoryInterface
      * @return mixed
      */
     public function countForAssociationType(AssociationType $associationType);
+
+    /**
+     * Get the list of associations corresponding to the given owner IDs
+     *
+     * @param ProductInterface $product
+     * @param array            $ownerIds
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Association[]
+     */
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds);
 }

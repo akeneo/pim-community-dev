@@ -1,7 +1,7 @@
 @javascript
 Feature: Import categories
   In order to reuse the categories of my products
-  As Julia
+  As a product manager
   I need to be able to import categories
 
   Scenario: Succesfully import categories

@@ -1,7 +1,7 @@
 @javascript
 Feature: Browse roles
   In order to manage the user roles and rights
-  As Peter
+  As an administrator
   I need to be able to see user roles
 
   Background:

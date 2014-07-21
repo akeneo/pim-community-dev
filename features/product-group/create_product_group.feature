@@ -1,12 +1,12 @@
 @javascript
 Feature: Product group creation
   In order to manage relations between products
-  As a user
+  As a product manager
   I need to be able to manually create a group
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the product groups page
     And I create a new product group
 

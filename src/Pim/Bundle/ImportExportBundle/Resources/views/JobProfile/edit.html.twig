@@ -1,5 +1,6 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+{% set title =  (entityName ~ '.edit')|trans ~ ' - ' ~ jobInstance.label ~ ' [' ~ jobInstance.code ~ ']'  %}
 
 {% block content %}
 

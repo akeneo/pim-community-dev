@@ -1,7 +1,7 @@
 @javascript
 Feature: Import media with products
   In order to re-use the images and documents I have set on my products
-  As Julia
+  As a product manager
   I need to be able to import them along with the products
 
   Background:

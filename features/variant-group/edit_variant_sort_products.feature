@@ -1,7 +1,7 @@
 @javascript
 Feature: Sort available products for a variant group
   In order to easily browse products inside a variant group
-  As a user
+  As a product manager
   I need to be able to sort products in a variant group
 
   Background:
@@ -23,7 +23,7 @@ Feature: Sort available products for a variant group
     And the following product groups:
       | code   | label  | attributes  | products | type    |
       | POSTIT | Postit | color, size | POSTIT   | VARIANT |
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully sort products
     Given I am on the "POSTIT" variant group page

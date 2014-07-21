@@ -1,12 +1,12 @@
 @javascript
 Feature: Variant group creation
   In order to manage relations between products
-  As a user
+  As a product manager
   I need to be able to manually create a variant group
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the variant groups page
     And I create a new variant group
 

@@ -1,7 +1,7 @@
 @javascript
 Feature: Import groups
   In order to reuse the groups of my products
-  As Julia
+  As a product manager
   I need to be able to import groups
 
   Scenario: Successfully import groups

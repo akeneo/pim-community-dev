@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per option
   In order to enrich my catalog
-  As a user
+  As a regular user
   I need to be able to manually filter products per option
 
   Background:
@@ -18,7 +18,7 @@ Feature: Filter products per option
       | Sweat |       | M    |
       | Shoes | Black |      |
     And the "Shirt" product has the "color and size" attributes
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products by a simple option
     Given I am on the products page

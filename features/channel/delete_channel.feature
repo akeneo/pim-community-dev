@@ -1,12 +1,12 @@
 @javascript
 Feature: Delete a channel
   In order to manage channels for the catalog
-  As a user
+  As an administrator
   I need to be able to delete channels
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully delete a channel from the grid
     Given I am on the channels page

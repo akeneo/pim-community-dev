@@ -100,7 +100,7 @@ class FixtureJobLoader
      */
     public function deleteJobs()
     {
-        $jobs = $this->em->getRepository($this->container->getParameter('pim_catalog.entity.job_instance.class'))
+        $jobs = $this->em->getRepository($this->container->getParameter('akeneo_batch.entity.job_instance.class'))
                 ->findBy(array('type' => FixtureJobLoader::JOB_TYPE));
 
         foreach ($jobs as $job) {

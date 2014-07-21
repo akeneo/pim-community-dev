@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\Orm\OrmDatasource;
+use Pim\Bundle\DataGridBundle\Datasource\Datasource;
 use Pim\Bundle\DataGridBundle\Extension\Selector\Orm\ProductValue\BaseSelector;
 
 class MediaSelectorSpec extends ObjectBehavior
@@ -22,7 +22,7 @@ class MediaSelectorSpec extends ObjectBehavior
     }
 
     function it_applies_join_on_datasource_query(
-        OrmDatasource $datasource,
+        Datasource $datasource,
         DatagridConfiguration $configuration,
         QueryBuilder $queryBuilder
     ) {

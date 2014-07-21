@@ -1,12 +1,12 @@
 @javascript
 Feature: Display available field options
   In order to configure an attribute validation rules
-  As a user
+  As a product manager
   I need to see only relevant validation fields given the attribute type
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the attributes page
 
   Scenario: Successfully display available parameter fields for attribute types

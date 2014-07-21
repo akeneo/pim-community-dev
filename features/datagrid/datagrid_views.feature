@@ -1,7 +1,7 @@
 @javascript
 Feature: Datagrid views
   In order to easily manage different views in the datagrid
-  As Julia
+  As a regular user
   I need to be able to create, update, apply and remove datagrid views
 
   Background:
@@ -11,7 +11,7 @@ Feature: Datagrid views
       | purple-sneakers | sneakers |
       | black-sneakers  | sneakers |
       | black-boots     | boots    |
-    And I am logged in as "Julia"
+    And I am logged in as "Mary"
     And I am on the products page
 
   Scenario: Successfully display the default view

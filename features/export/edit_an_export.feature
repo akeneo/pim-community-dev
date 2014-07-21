@@ -1,11 +1,11 @@
 Feature: Edit an export
   In order to manage existing export jobs
-  As a user
+  As an administrator
   I need to be able to edit an export job
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Peter"
 
   Scenario: Successfully edit an export job
     Given I am on the "footwear_product_export" export job edit page

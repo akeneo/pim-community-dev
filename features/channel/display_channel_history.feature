@@ -1,12 +1,12 @@
 Feature: Display the channel history
   In order to know who, when and what changes has been made to a channel
-  As a user
+  As an administrator
   I need to have access to a channel history
 
   @javascript
   Scenario: Successfully edit a channel and see the history
     Given a "footwear" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Peter"
     And I am on the channel creation page
     And I fill in the following information:
       | Code          | foo             |

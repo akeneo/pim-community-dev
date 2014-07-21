@@ -29,60 +29,34 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class EditCommonAttributes extends ProductMassEditOperation
 {
-    /**
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection */
     protected $values;
 
-    /**
-     * @var Locale
-     */
-    protected $locale;
-
-    /**
-     * @var ProductManager
-     */
-    protected $productManager;
-
-    /**
-     * @var ProductMassActionManager
-     */
-    protected $massActionManager;
-
-    /**
-     * @var UserContext
-     */
-    protected $userContext;
-
-    /**
-     * @var CatalogContext
-     */
-    protected $catalogContext;
-
-    /**
-     * @var CurrencyManager
-     */
-    protected $currencyManager;
-
-    /**
-     * @var array
-     */
-    protected $commonAttributes = array();
-
-    /**
-     * @var ArrayCollection
-     */
+    /** @var ArrayCollection */
     protected $displayedAttributes;
 
-    /**
-     * Collection of the attributes for each family code
-     * @var array $familiesAttributes
-     */
-    protected $familiesAttributes = array();
+    /** @var Locale */
+    protected $locale;
 
-    /**
-     * @var ProductBuilder $productBuilder
-     */
+    /** @var ProductManager */
+    protected $productManager;
+
+    /** @var ProductMassActionManager */
+    protected $massActionManager;
+
+    /** @var UserContext */
+    protected $userContext;
+
+    /** @var CatalogContext */
+    protected $catalogContext;
+
+    /** @var CurrencyManager */
+    protected $currencyManager;
+
+    /** @var array */
+    protected $commonAttributes = array();
+
+    /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
@@ -103,14 +77,14 @@ class EditCommonAttributes extends ProductMassEditOperation
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager
     ) {
-        $this->productManager      = $productManager;
-        $this->userContext         = $userContext;
-        $this->currencyManager     = $currencyManager;
-        $this->values              = new ArrayCollection();
+        $this->productManager = $productManager;
+        $this->userContext = $userContext;
+        $this->currencyManager = $currencyManager;
+        $this->catalogContext = $catalogContext;
+        $this->productBuilder = $productBuilder;
+        $this->massActionManager = $massActionManager;
         $this->displayedAttributes = new ArrayCollection();
-        $this->catalogContext      = $catalogContext;
-        $this->productBuilder      = $productBuilder;
-        $this->massActionManager   = $massActionManager;
+        $this->values = new ArrayCollection();
     }
 
     /**
@@ -238,7 +212,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         return array(
             'locales'          => $this->userContext->getUserLocales(),
-            'commonAttributes' => $this->commonAttributes,
+            'common_attributes' => $this->commonAttributes,
         );
     }
 
@@ -248,6 +222,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     public function initialize()
     {
         $productIds = array();
+        $this->values = new ArrayCollection();
         foreach ($this->objects as $object) {
             $productIds[] = $object->getId();
         }
@@ -311,9 +286,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductValues(ProductInterface $product)
     {
         foreach ($this->values as $value) {
-            if ($this->displayedAttributes->contains($value->getAttribute())) {
-                $this->setProductValue($product, $value);
-            }
+            $this->setProductValue($product, $value);
         }
     }
 
@@ -376,6 +349,7 @@ class EditCommonAttributes extends ProductMassEditOperation
 
     /**
      * Add all the values required by the given attribute
+     * Locale is not present because we current locale is bound at the same time as values during form submission
      *
      * @param AbstractAttribute $attribute
      */
@@ -455,7 +429,12 @@ class EditCommonAttributes extends ProductMassEditOperation
      */
     protected function setProductOption(ProductValueInterface $productValue, ProductValueInterface $value)
     {
-        $productValue->getOptions()->clear();
+        foreach ($productValue->getOptions() as $option) {
+            if (!$value->getOptions()->contains($option)) {
+                $productValue->removeOption($option);
+            }
+        }
+
         // TODO: Clean this code removing flush for ORM
         if (!class_exists(PimCatalogBundle::DOCTRINE_MONGODB)) {
             $this->productManager->getObjectManager()->flush();
@@ -464,6 +443,7 @@ class EditCommonAttributes extends ProductMassEditOperation
         foreach ($value->getOptions() as $option) {
             $productValue->addOption($option);
         }
+
     }
 
     /**

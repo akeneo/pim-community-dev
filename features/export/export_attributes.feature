@@ -1,7 +1,7 @@
 @javascript
 Feature: Export attributes
   In order to be able to access and modify attributes data outside PIM
-  As Julia
+  As a product manager
   I need to be able to export attributes
 
   Scenario: Successfully export attributes

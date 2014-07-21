@@ -182,11 +182,12 @@ class Edit extends Form
      */
     public function findFieldIcons($name)
     {
-        if ($field = $this->findField($name)) {
-            return $field->getParent()->findAll('css', '.icons-container i');
-        }
+        $controls = $this->findField($name);
+        do {
+            $controls = $controls->getParent();
+        } while (null !== $controls && !$controls->hasClass('controls'));
 
-        return [];
+        return $controls->findAll('css', '.icons-container i');
     }
 
     /**
@@ -419,8 +420,10 @@ class Edit extends Form
      */
     public function selectTree($category)
     {
-        $link = $this->getElement('Category pane')
-            ->find('css', sprintf('#trees-list li a:contains(%s)', $category));
+        $link = $this->getElement('Category pane')->find('css', sprintf('#trees-list li a:contains("%s")', $category));
+        if (!$link) {
+            throw new\InvalidArgumentException(sprintf('Tree "%s" not found', $category));
+        }
         $link->click();
 
         return $this;
@@ -433,8 +436,10 @@ class Edit extends Form
      */
     public function expandCategory($category)
     {
-        $category = $this->findCategoryInTree($category);
-        $category->getParent()->find('css', 'ins')->click();
+        $category = $this->findCategoryInTree($category)->getParent();
+        if ($category->hasClass('jstree-closed')) {
+            $category->getParent()->find('css', 'ins')->click();
+        }
 
         return $this;
     }
@@ -448,7 +453,7 @@ class Edit extends Form
      */
     public function findCategoryInTree($category)
     {
-        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains(%s)', $category));
+        $elt = $this->getElement('Category tree')->find('css', sprintf('li a:contains("%s")', $category));
         if (!$elt) {
             throw new \InvalidArgumentException(sprintf('Unable to find category "%s" in the tree', $category));
         }

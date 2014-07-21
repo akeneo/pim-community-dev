@@ -1,7 +1,7 @@
 @javascript
 Feature: Export products
   In order to use the enriched product data
-  As Julia
+  As a product manager
   I need to be able to export the products to several channels
 
   Scenario: Successfully export products to multiple channels

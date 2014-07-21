@@ -131,6 +131,9 @@ flash:
     removed: "Groupe d'attributs supprimé avec succès"
     attributes added: "Attributs ajoutés avec succès au groupe d'attributs"
     attribute removed: "Attribut supprimé avec succès du groupe d'attributs"
+    not removed attributes: "Le groupe d'attributs ne peut pas être supprimé car il contient des attributs"
+    not removed default: "Le groupe d'attributs par défaut ne peut pas être supprimé"
+    not removed default attributes: "Cet attribut ne peut pas être supprimé du groupe d'attributs par défaut"
   category:
     created: Catégorie créée avec succès
     updated: Catégorie mise à jour avec succès
@@ -283,6 +286,7 @@ Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche
 Choose the attribute type: "Choisissez le type d'attribut"
+Choose the attribute group: "Choisissez le groupe d'attributs"
 Drop a file or click here: Déposez un fichier ou cliquez ici
 Drop an image or click here: Déposez une image ou cliquez ici
 Automatic option sorting: Option de tri automatique

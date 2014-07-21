@@ -40,7 +40,7 @@ define(
                 },
                 tree_selector: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_managetree', { _format: 'json', select_node_id: selectedNodeOrTree })
+                        url: Routing.generate('pim_enrich_categorytree_listtree', { _format: 'json', select_node_id: selectedNodeOrTree, context: 'manage', with_products_count: 0 })
                     },
                     auto_open_root: true,
                     node_label_field: 'label',
@@ -53,7 +53,7 @@ define(
                 },
                 json_data: {
                     ajax: {
-                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json' }),
+                        url: Routing.generate('pim_enrich_categorytree_children', { _format: 'json', context: 'manage' }),
                         data: function (node) {
                             // the result is fed to the AJAX request `data` option
                             var id = null;
@@ -66,7 +66,7 @@ define(
                             return {
                                 id: id,
                                 select_node_id: selectedNode,
-                                with_products_count: 1
+                                with_products_count: 0
                             };
                         }
                     }

@@ -1,12 +1,12 @@
 @javascript
 Feature: Add attribute options
   In order to define choices for a choice attribute
-  As a user
+  As a product manager
   I need to add and remove options for attributes of type "Multi select" and "Simple select"
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
     And I am on the attributes page
 
   Scenario Outline: Sucessfully display the Options section when creating an attribute

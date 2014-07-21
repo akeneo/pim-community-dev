@@ -1,0 +1,70 @@
+datagrid:
+    channel-grid:
+        options:
+            entityHint: channel
+            locale_parameter: localeCode
+        source:
+            acl_resource: pim_enrich_channel_index
+            type: pim_datasource_default
+            entity: %pim_catalog.entity.channel.class%
+            repository_method: createDatagridQueryBuilder
+        columns:
+            code:
+                label: Code
+            label:
+                label: Label
+            category:
+                label:     Category tree
+                data_name: categoryLabel
+        properties:
+            id: ~
+            edit_link:
+                type: url
+                route: pim_enrich_channel_edit
+                params:
+                    - id
+            delete_link:
+                type: url
+                route: pim_enrich_channel_remove
+                params:
+                    - id
+        actions:
+            edit:
+                type:      navigate
+                label:     Edit
+                icon:      edit
+                link:      edit_link
+                rowAction: true
+            delete:
+                type:  delete
+                label: Delete
+                icon:  trash
+                link:  delete_link
+        sorters:
+            columns:
+                code:
+                    data_name: c.code
+                label:
+                    data_name: c.label
+                category:
+                    data_name: categoryLabel
+            default:
+                code: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: c.code
+                label:
+                    type:      string
+                    label:     Label
+                    data_name: c.label
+                category:
+                    type:      choice
+                    label:     Category tree
+                    data_name: category.id
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_catalog.manager.category->getTreeChoices'

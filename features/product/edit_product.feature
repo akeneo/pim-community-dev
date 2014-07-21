@@ -1,12 +1,12 @@
 @javascript
 Feature: Edit a product
   In order to enrich the catalog
-  As a user
+  As a regular user
   I need to be able edit and save a product
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
     And the following products:
       | sku    | family  |
       | sandal | sandals |

@@ -7,3 +7,5 @@ services:
         tags:
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-profile-grid, method: onBuildAfter }
             - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-profile-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.export-execution-grid, method: onBuildAfter }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.import-execution-grid, method: onBuildAfter }

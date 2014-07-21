@@ -116,6 +116,6 @@ services:
             - '@pim_base_connector.validator.skip_import'
             - '@translator'
             - '@pim_transform.transformer.registry'
-            - %pim_catalog.entity.job_instance.class%
+            - %akeneo_batch.entity.job_instance.class%
         calls:
             - [ addMapping, [ configuration, rawConfiguration ] ]

@@ -1,16 +1,16 @@
 @javascript
 Feature: Remove a category
   In order to be able to remove an unused category
-  As a user
+  As a product manager
   I need to be able to remove a category
 
   Background:
     Given a "footwear" catalog configuration
     And the following products:
-      | sku           | categories        |
-      | caterpillar_1 | winter_collection |
-      | caterpillar_2 | winter_boots      |
-    And I am logged in as "admin"
+      | sku           | categories                        |
+      | caterpillar_1 | winter_collection,2014_collection |
+      | caterpillar_2 | winter_boots,2014_collection      |
+    And I am logged in as "Julia"
 
   Scenario: Remove a simple category
     Given I am on the "sandals" category page
@@ -37,11 +37,11 @@ Feature: Remove a category
     When I expand the "Winter collection" category
     Then I should not see "Winter boots"
     When I edit the "caterpillar_2" product
-    Then the category of "caterpillar_2" should be ""
+    Then the category of "caterpillar_2" should be "2014_collection"
     When I visit the "History" tab
     Then I should see history:
-      | version | property   | value |
-      | 2       | categories |       |
+      | version | property   | value           |
+      | 2       | categories | 2014_collection |
 
   Scenario: Remove a category with sub-categories and products linked
     Given I am on the "winter_collection" category page

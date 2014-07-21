@@ -75,7 +75,7 @@ services:
         class: %pim_transform.transformer.job_instance.class%
         parent: pim_transform.transformer.entity
         tags:
-            - { name: pim_transform.transformer.entity, entity: %pim_catalog.entity.job_instance.class% }
+            - { name: pim_transform.transformer.entity, entity: %akeneo_batch.entity.job_instance.class% }
 
     pim_transform.transformer.column_info_transformer:
         class: %pim_transform.transformer.column_info_transformer.class%

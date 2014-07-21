@@ -1,6 +1,6 @@
 Feature: Export association types
   In order to be able to access and modify association types data outside PIM
-  As Julia
+  As a product manager
   I need to be able to export association types
 
   @javascript

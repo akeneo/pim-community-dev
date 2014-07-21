@@ -1,7 +1,7 @@
 @javascript
 Feature: Export products with media
   In order to re-use the images and documents I have set on my products
-  As Julia
+  As a product manager
   I need to be able to export them along with the products
 
   Scenario: Successfully export products with media

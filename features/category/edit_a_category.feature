@@ -1,11 +1,11 @@
 Feature: Edit a category
   In order to be able to modify the category tree
-  As a user
+  As a product manager
   I need to be able to edit a category
 
   Background:
     Given a "footwear" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Successfully edit a category
     Given I edit the "Sandals" category

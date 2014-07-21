@@ -31,12 +31,12 @@ class AttributeGroupUpdateGuesser implements UpdateGuesserInterface
         if ($entity instanceof AbstractAttribute) {
             $pendings[] = $entity;
             $changeset = $em->getUnitOfWork()->getEntityChangeSet($entity);
-            if ($changeset and in_array('group', array_keys($changeset))) {
+            if ($changeset && in_array('group', array_keys($changeset))) {
                 $groupChangeset = $changeset['group'];
-                if (isset($groupChangeset[0]) and $groupChangeset[0]) {
+                if (isset($groupChangeset[0]) && $groupChangeset[0]) {
                     $pendings[] = $groupChangeset[0];
                 }
-                if (isset($groupChangeset[1]) and $groupChangeset[1]) {
+                if (isset($groupChangeset[1]) && $groupChangeset[1]) {
                     $pendings[] = $groupChangeset[1];
                 }
             }

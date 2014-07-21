@@ -27,6 +27,8 @@ class PimInstallerExtension extends Extension
         'associations',
         'jobs',
         'products',
+        'user_groups',
+        'user_roles',
         'users'
     );
 

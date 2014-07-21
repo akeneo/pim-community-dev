@@ -1,7 +1,7 @@
 @javascript
 Feature: Filter products per price
   In order to filter products in the catalog per price
-  As a user
+  As a regular user
   I need to be able to filter products per price
 
   Background:
@@ -19,7 +19,7 @@ Feature: Filter products per price
       | book   | library   | no      | 20 EUR       | 22.5 EUR        |
       | mug    |           | yes     | 10.5 EUR     |                 |
       | pen    |           | yes     |              |                 |
-    And I am logged in as "admin"
+    And I am logged in as "Mary"
 
   Scenario: Successfully filter products by price
     Given I am on the products page

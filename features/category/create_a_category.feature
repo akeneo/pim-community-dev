@@ -1,11 +1,12 @@
+@javascript
 Feature: Create a category
   In order to provide a tree of my product categories
-  As a user
+  As a product manager
   I need to be able to create a new category tree or a node of a category tree
 
   Background:
     Given the "default" catalog configuration
-    And I am logged in as "admin"
+    And I am logged in as "Julia"
 
   Scenario: Create a category tree
     Given I am on the category tree creation page
@@ -26,7 +27,7 @@ Feature: Create a category
     Then I should be on the category "flipflap" edit page
     And I should see "Category successfully created"
 
-  @javascript @skip
+  @skip
   Scenario: Go to category creation page from the category tree right click menu
     Given the following category:
       | code | label-en_US | parent  |

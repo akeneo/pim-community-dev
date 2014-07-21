@@ -117,7 +117,7 @@ class FeatureContext extends MinkContext implements KernelAwareInterface
 
                 if ($id) {
                     $path = sprintf(
-                        'http://ci.akeneo.com/screenshots/%s/%s/screenshots/%s',
+                        '/screenshots/%s/%s/screenshots/%s',
                         getenv('JOB_NAME'),
                         $id,
                         $filename

@@ -1,12 +1,12 @@
 @javascript
 Feature: Mass Edit Families
   In order to define common data between families
-  As Julia
+  As an administrator
   I need to be able to mass edit attributes and requirements of families
 
   Scenario: Successfully add many attributes with their requirements to many families
     Given the "footwear" catalog configuration
-    And I am logged in as "Julia"
+    And I am logged in as "Peter"
     And I am on the families page
     # These families don't have attribute Length
     When I mass-edit families boots, sneakers and sandals

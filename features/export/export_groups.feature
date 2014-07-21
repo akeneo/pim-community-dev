@@ -1,6 +1,6 @@
 Feature: Export groups
   In order to be able to access and modify groups data outside PIM
-  As Julia
+  As a product manager
   I need to be able to export groups
 
   @javascript
