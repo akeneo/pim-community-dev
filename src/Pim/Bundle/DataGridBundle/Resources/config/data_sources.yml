@@ -26,6 +26,9 @@ services:
         class: %pim_datagrid.datasource.support_resolver.class%
         arguments:
             - %pim_catalog.storage_driver%
+        calls:
+            - [addSmartDatasource, ['pim_datasource_product']]
+            - [addSmartDatasource, ['pim_datasource_smart']]
 
     pim_datagrid.datasource.adapter_resolver:
         class: %pim_datagrid.datasource.adapter_resolver.class%

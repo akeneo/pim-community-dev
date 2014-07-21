@@ -16,7 +16,9 @@ class DatasourceSupportResolverSpec extends ObjectBehavior
 
     function let()
     {
-        $this->beConstructedWith(PimCatalogExtension::DOCTRINE_MONGODB_ODM, ['grid-mongo-1', 'grid-mongo-2']);
+        $this->beConstructedWith(PimCatalogExtension::DOCTRINE_MONGODB_ODM);
+        $this->addSmartDatasource('grid-mongo-1');
+        $this->addSmartDatasource('grid-mongo-2');
     }
 
     function it_returns_an_orm_support_when_storage_driver_is_orm()

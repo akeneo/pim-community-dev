@@ -106,7 +106,10 @@ class EditCommonAttributesSpec extends ObjectBehavior
     function it_provides_form_options($en, $de)
     {
         $this->setCommonAttributes(['foo', 'bar', 'baz']);
-        $this->getFormOptions()->shouldReturn(['locales' => [$en, $de], 'commonAttributes' => ['foo', 'bar', 'baz']]);
+        $this->getFormOptions()->shouldReturn([
+            'locales' => [$en, $de],
+            'common_attributes' => ['foo', 'bar', 'baz'],
+        ]);
     }
 
     function it_initializes_the_operation_with_common_attributes_of_the_products(
