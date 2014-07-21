@@ -27,3 +27,4 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
             - '@security.context'
+            - '@pimee_security.repository.category_access'
