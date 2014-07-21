@@ -20,7 +20,11 @@ class ProductCategoryRepository extends BaseProductCategoryRepository implements
     {
         $rootAlias  = $qb->getRootAlias();
         $qb->leftJoin('p.categories', 'filterCategory');
-        $qb->andWhere('filterCategory.id in(:filterCatIds) OR filterCategory.id is null');
-        $qb->setParameter('filterCatIds', $grantedCategoryIds);
+        $expr = '';
+        if (count($grantedCategoryIds) > 0) {
+            $expr = 'filterCategory.id in(:filterCatIds) OR ';
+            $qb->setParameter('filterCatIds', $grantedCategoryIds);
+        }
+        $qb->andWhere($expr.'filterCategory.id is null');
     }
 }
