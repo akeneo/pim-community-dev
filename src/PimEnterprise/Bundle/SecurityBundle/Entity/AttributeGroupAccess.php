@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 
@@ -14,29 +14,19 @@ use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
  */
 class AttributeGroupAccess implements AttributeGroupAccessInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer */
     protected $id;
 
-    /**
-     * @var AttributeGroup $attributeGroup
-     */
+    /** @var AttributeGroup */
     protected $attributeGroup;
 
-    /**
-     * @var Role $role
-     */
-    protected $role;
+    /** @var Group */
+    protected $userGroup;
 
-    /**
-     * @var boolean $viewAttributes
-     */
+    /** @var boolean */
     protected $viewAttributes;
 
-    /**
-     * @var boolean $editAttributes
-     */
+    /** @var boolean */
     protected $editAttributes;
 
     /**
@@ -68,17 +58,17 @@ class AttributeGroupAccess implements AttributeGroupAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole()
+    public function getUserGroup()
     {
-        return $this->role;
+        return $this->userGroup;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRole(Role $role)
+    public function setUserGroup(Group $group)
     {
-        $this->role = $role;
+        $this->userGroup = $group;
 
         return $this;
     }

@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 
@@ -20,8 +20,8 @@ class JobProfileAccess implements JobProfileAccessInterface
     /** @var JobInstance */
     protected $jobProfile;
 
-    /** @var Role */
-    protected $role;
+    /** @var Group */
+    protected $userGroup;
 
     /** @var boolean */
     protected $executeJobProfile;
@@ -40,17 +40,17 @@ class JobProfileAccess implements JobProfileAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole()
+    public function getUserGroup()
     {
-        return $this->role;
+        return $this->userGroup;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRole(Role $role)
+    public function setUserGroup(Group $group)
     {
-        $this->role = $role;
+        $this->userGroup = $group;
 
         return $this;
     }
