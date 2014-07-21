@@ -204,7 +204,7 @@ define(
         return {
             init: function($element, state) {
                 if (!$element || !$element.length || !_.isObject($element)) {
-                    throw new Error('Unable to instantiate tree on this element');
+                    return;
                 }
 
                 $el           = $element;
