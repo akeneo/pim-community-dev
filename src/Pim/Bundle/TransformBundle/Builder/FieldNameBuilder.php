@@ -5,9 +5,11 @@ namespace Pim\Bundle\TransformBundle\Builder;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
+ * Create field names for associations and product values
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class FieldNameBuilder
 {
@@ -28,6 +30,8 @@ class FieldNameBuilder
     }
 
     /**
+     * Get the association field names
+     *
      * @return array
      */
     public function getAssociationFieldNames()
