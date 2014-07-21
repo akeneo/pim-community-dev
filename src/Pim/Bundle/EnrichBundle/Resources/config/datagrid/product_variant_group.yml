@@ -12,7 +12,7 @@ datagrid:
                     excluded: '#removeProducts'
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_product
+            type:              pim_datasource_product
             entity:            %pim_catalog.entity.product.class%
             repository_method: createVariantGroupDatagridQueryBuilder
             repository_parameters:

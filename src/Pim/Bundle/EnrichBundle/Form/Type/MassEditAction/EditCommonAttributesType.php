@@ -80,7 +80,7 @@ class EditCommonAttributesType extends AbstractType
                 'entity',
                 array(
                     'class'    => $this->attributeClass,
-                    'choices'  => $options['commonAttributes'],
+                    'choices'  => $options['common_attributes'],
                     'required' => false,
                     'multiple' => true,
                     'expanded' => false,
@@ -110,7 +110,7 @@ class EditCommonAttributesType extends AbstractType
             [
                 'data_class' => 'Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes',
                 'locales' => [],
-                'commonAttributes' => [],
+                'common_attributes' => [],
             ]
         );
     }

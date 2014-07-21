@@ -16,10 +16,7 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 class AddFilterTypesPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const FILTER_ORM_EXTENSION_ID = 'pim_datagrid.extension.filter.orm_filter';
-
-    /** @staticvar string */
-    const FILTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.filter.product_filter';
+    const FILTER_EXTENSION_ID = 'pim_datagrid.extension.filter';
 
     /** @staticvar string */
     const TAG_NAME = 'oro_filter.extension.orm_filter.filter';
@@ -29,18 +26,12 @@ class AddFilterTypesPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $ormExtension = $container->getDefinition(self::FILTER_ORM_EXTENSION_ID);
-        $productExtension = $container->getDefinition(self::FILTER_PRODUCT_EXTENSION_ID);
+        $extension = $container->getDefinition(self::FILTER_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
             $tagAttrs = reset($tags);
-            if ($ormExtension) {
-                $ormExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
-            if ($productExtension) {
-                $productExtension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
+            $extension->addMethodCall('addFilter', array($tagAttrs['type'], new Reference($serviceId)));
         }
     }
 }

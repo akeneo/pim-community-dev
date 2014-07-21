@@ -338,12 +338,16 @@ class WebUser extends RawMinkContext
     }
 
     /**
-     * @Given /^the Options section should contain ([^"]*) option$/
+     * @param integer $expectedCount
+     *
+     * @Given /^the Options section should contain ([^"]*) options?$/
      */
-    public function theOptionsSectionShouldContainOption()
+    public function theOptionsSectionShouldContainOption($expectedCount = 1)
     {
-        if (1 !== $count = $this->getCurrentPage()->countOptions()) {
-            throw $this->createExpectationException(sprintf('Expecting to see the 1 option, saw %d.', $count));
+        if ($expectedCount != $count = $this->getCurrentPage()->countOptions()) {
+            throw $this->createExpectationException(
+                sprintf('Expecting to see %d option, saw %d.', $expectedCount, $count)
+            );
         }
     }
 

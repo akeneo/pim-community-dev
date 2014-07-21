@@ -44,7 +44,7 @@ define(
                 }
             });
 
-            $el.parent().on('click', '.remove-upload', function (e) {
+            $el.parent().on('click', '.remove-upload:not(.disabled)', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
                 $el.wrap('<form>').closest('form').get(0).reset();

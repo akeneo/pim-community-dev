@@ -5,7 +5,6 @@ namespace Pim\Bundle\DataGridBundle\DependencyInjection\Compiler;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 
 /**
  * Add grid sorters
@@ -17,13 +16,7 @@ use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 class AddSortersPass implements CompilerPassInterface
 {
     /** @staticvar string */
-    const SORTER_ORM_EXTENSION_ID = 'pim_datagrid.extension.sorter.orm_sorter';
-
-    /** @staticvar string */
-    const SORTER_PRODUCT_EXTENSION_ID = 'pim_datagrid.extension.sorter.product_sorter';
-
-    /** @staticvar string */
-    const SORTER_MONGODB_EXTENSION_ID = 'pim_datagrid.extension.sorter.mongodb_sorter';
+    const SORTER_EXTENSION_ID = 'pim_datagrid.extension.sorter';
 
     /** @staticvar string */
     const TAG_NAME = 'pim_datagrid.extension.sorter';
@@ -33,14 +26,7 @@ class AddSortersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $ormExtension = $container->getDefinition(self::SORTER_ORM_EXTENSION_ID);
-        $productExtension = $container->getDefinition(self::SORTER_PRODUCT_EXTENSION_ID);
-
-        $mongoDBExtension = null;
-
-        if (PimCatalogExtension::DOCTRINE_MONGODB_ODM === $container->getParameter('pim_catalog.storage_driver')) {
-            $mongoDBExtension = $container->getDefinition(self::SORTER_MONGODB_EXTENSION_ID);
-        }
+        $extension = $container->getDefinition(self::SORTER_EXTENSION_ID);
 
         $filters = $container->findTaggedServiceIds(self::TAG_NAME);
         foreach ($filters as $serviceId => $tags) {
@@ -50,15 +36,7 @@ class AddSortersPass implements CompilerPassInterface
                     sprintf('The service %s must be configured with a type attribute', $serviceId)
                 );
             }
-            if ($ormExtension) {
-                $ormExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
-            if ($productExtension) {
-                $productExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
-            if ($mongoDBExtension) {
-                $mongoDBExtension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
-            }
+            $extension->addMethodCall('addSorter', array($tagAttrs['type'], new Reference($serviceId)));
         }
     }
 }

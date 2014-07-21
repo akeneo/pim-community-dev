@@ -135,7 +135,7 @@ abstract class AbstractAssociation implements ReferableInterface
     /**
      * Get products
      *
-     * @return ProductInterface[]|null
+     * @return ProductInterface[]|ArrayCollection
      */
     public function getProducts()
     {

@@ -1,7 +1,7 @@
 datagrid:
     job-profile-grid:
         source:
-            type: pim_orm
+            type: pim_datasource_default
             entity: %akeneo_batch.entity.job_instance.class%
             repository_method: createDatagridQueryBuilder
         columns:

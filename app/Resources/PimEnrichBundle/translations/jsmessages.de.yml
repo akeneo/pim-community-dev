@@ -62,6 +62,7 @@ Edit attributes of the product: Bearbeite die Attribute des Produkts
 Classify the product: Produkt klassifizieren
 Delete the product: Produkt löschen
 Change status: Status ändern
+Toggle status: Status umschalten
 pim.grid.mass_action.quick_export.csv_all: CSV (alle Attribute)
 pim.grid.mass_action.delete: Löschen
 pim.grid.mass_action.mass_edit: Massenbearbeitung

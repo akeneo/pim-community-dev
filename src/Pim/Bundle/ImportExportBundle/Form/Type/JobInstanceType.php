@@ -5,8 +5,6 @@ namespace Pim\Bundle\ImportExportBundle\Form\Type;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 
 use Akeneo\Bundle\BatchBundle\Connector\ConnectorRegistry;
 
@@ -58,26 +56,6 @@ class JobInstanceType extends AbstractType
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Allows to print job name as alias instead of call __toString method
-     */
-    public function finishView(FormView $view, FormInterface $form, array $options)
-    {
-        if (!isset($view['alias'])) {
-            return;
-        }
-
-        /** @var array<ChoiceView> $aliases */
-        $aliases = $view['alias'];
-        foreach ($aliases->vars['choices'] as $connector) {
-            foreach ($connector as $alias) {
-                $alias->label = $alias->label->getName();
-            }
         }
     }
 
@@ -143,8 +121,14 @@ class JobInstanceType extends AbstractType
      */
     protected function addAliasField(FormBuilderInterface $builder)
     {
-        $choices = $this->connectorRegistry->getJobs($this->jobType);
-        unset($choices['oro_importexport']);
+        $choices = [];
+        foreach ($this->connectorRegistry->getJobs($this->jobType) as $connector => $jobs) {
+            if ('oro_importexport' !== $connector) {
+                foreach ($jobs as $key => $job) {
+                    $choices[$connector][$key] = $job->getName();
+                }
+            }
+        }
 
         $builder
             ->add(

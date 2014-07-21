@@ -118,7 +118,7 @@ class ProductTransformer extends EntityTransformer
     protected function findEntity($class, array $data)
     {
         if (!$this->identifierAttribute) {
-            throw new MissingIdentifierException;
+            throw new MissingIdentifierException();
         }
 
         return $this->productManager->getProductRepository()->findByReference(

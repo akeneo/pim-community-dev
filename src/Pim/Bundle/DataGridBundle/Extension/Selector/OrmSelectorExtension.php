@@ -4,13 +4,15 @@ namespace Pim\Bundle\DataGridBundle\Extension\Selector;
 
 use Doctrine\ORM\AbstractQuery;
 use Doctrine\ORM\Query\Expr\From;
+use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\DataGridBundle\Extension\AbstractExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\DataGridBundle\Datagrid\Builder;
-use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface;
+use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConfiguration;
-use Pim\Bundle\DataGridBundle\Datasource\ProductDatasource;
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\QueryBuilderUtility;
+use Pim\Bundle\DataGridBundle\Datasource\DatasourceInterface;
 
 /**
  * Orm selector extension
@@ -27,16 +29,45 @@ class OrmSelectorExtension extends AbstractExtension
     const COLUMN_SELECTOR_PATH = 'selector';
 
     /**
+     * @var string
+     */
+    protected $storageDriver;
+
+    /**
      * @var SelectorInterface[]
      */
     protected $selectors;
+
+    /**
+     * @var string[]
+     */
+    protected $eligibleDatasource = [];
+
+    /**
+     * Constructor
+     *
+     * @param string            $storageDriver
+     * @param RequestParameters $requestParams
+     */
+    public function __construct($storageDriver, RequestParameters $requestParams = null)
+    {
+        $this->storageDriver = $storageDriver;
+        $this->requestParams = $requestParams;
+    }
 
     /**
      * {@inheritdoc}
      */
     public function isApplicable(DatagridConfiguration $config)
     {
-        return $this->matchDatasource($config);
+        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
+
+        if (in_array($datasourceType, $this->eligibleDatasource) &&
+            PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -57,7 +88,7 @@ class OrmSelectorExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function visitDatasource(DatagridConfiguration $config, DatasourceInterface $datasource)
+    public function visitDatasource(DatagridConfiguration $config, OroDatasourceInterface $datasource)
     {
         $entityIds = $this->getEntityIds($datasource);
         $rootAlias = $datasource->getQueryBuilder()->getRootAlias();
@@ -85,20 +116,15 @@ class OrmSelectorExtension extends AbstractExtension
     }
 
     /**
-     * @param DatagridConfiguration $config
+     * @param string $datasource
      *
-     * @return boolean
+    * @return OrmSelectorExtension
      */
-    protected function matchDatasource(DatagridConfiguration $config)
+    public function addEligibleDatasource($datasource)
     {
-        $datasourceType = $config->offsetGetByPath(Builder::DATASOURCE_TYPE_PATH);
-        if (ProductDatasource::TYPE === $datasourceType) {
-            if ($config->offsetGetByPath('[source][product_storage]') == 'doctrine/orm') {
-                return true;
-            }
-        }
+        $this->eligibleDatasource[] = $datasource;
 
-        return false;
+        return $this;
     }
 
     /**

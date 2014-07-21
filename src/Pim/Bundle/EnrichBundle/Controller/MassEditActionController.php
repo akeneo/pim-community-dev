@@ -111,7 +111,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -148,7 +148,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -193,7 +193,7 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        if ($this->exceedsMassEditLimit()) {
+        if ($this->isExecutable() === false) {
             return $this->redirectToRoute('pim_enrich_product_index');
         }
 
@@ -248,11 +248,19 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
+     * Check if the mass action is executable
+     *
+     * @return boolean
+     */
+    protected function isExecutable()
+    {
+        return $this->exceedsMassEditLimit() === false;
+    }
+
+    /**
      * Temporary method to avoid editing too many objects
      *
      * @return boolean
-     *
-     * @deprecated
      */
     protected function exceedsMassEditLimit()
     {

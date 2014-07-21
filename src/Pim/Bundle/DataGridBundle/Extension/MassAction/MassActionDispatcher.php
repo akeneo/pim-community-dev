@@ -12,7 +12,7 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\Actions\MassActionInterface;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionExtension;
 use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
-use Pim\Bundle\DataGridBundle\Extension\Filter\OrmFilterExtension;
+use Pim\Bundle\DataGridBundle\Extension\Filter\FilterExtension;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\MassActionHandlerInterface;
 
 /**
@@ -81,7 +81,7 @@ class MassActionDispatcher
 
         $datagrid   = $this->manager->getDatagrid($datagridName);
         $massAction = $this->getMassActionByName($actionName, $datagrid);
-        $this->requestParams->set(OrmFilterExtension::FILTER_ROOT_PARAM, $filters);
+        $this->requestParams->set(FilterExtension::FILTER_ROOT_PARAM, $filters);
 
         return $this->performMassAction($datagrid, $massAction, $inset, $values);
     }
