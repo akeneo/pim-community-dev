@@ -42,6 +42,32 @@ Feature: Enforce no permissions for a category
     And I am on the products page
     And the grid should contain 2 elements
 
+  Scenario: Display only granted products in products grid when filtering by unclassified
+    Given the following categories:
+      | code           | parent         |
+      | protected_tree |                |
+      | protected_node | protected_tree |
+    And the following products:
+      | sku             | categories     |
+      | unclassifiedOne |                |
+      | unclassifiedTwo |                |
+      | inProtectedTree | protected_tree |
+      | inProtectedNode | protected_node |
+    And I am logged in as "Julia"
+    And I am on the products page
+    When I filter by "category" with value "unclassified"
+    Then the grid should contain 2 elements
+    And I should see products unclassifiedOne and unclassifiedTwo
+    But I should not see products inProtectedTree and inProtectedNode
+    When I am on the "protected_tree" category page
+    And I visit the "Permissions" tab
+    And I fill in the following information:
+      | View products | Manager |
+    And I save the category
+    When I am on the products page
+    Then the grid should contain 4 elements
+    And I should see products unclassifiedOne, unclassifiedTwo, inProtectedTree and inProtectedNode
+
   Scenario: Display only granted products in association products grid, I see all products
     Given I am logged in as "Julia"
     And I edit the "grantedOne" product
