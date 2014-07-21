@@ -77,7 +77,9 @@ class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
         $values = $form->getData()->getValues();
         foreach (array_keys($data['values']) as $key) {
             $value = $values->get($key);
-            $value->setLocale($locale);
+            if ($value->getAttribute()->isLocalizable()) {
+                $value->setLocale($locale);
+            }
             if ($key !== $correctKey = ProductValueKeyGenerator::getKey($value)) {
                 $data['values'][$correctKey] = $data['values'][$key];
                 unset($data['values'][$key]);

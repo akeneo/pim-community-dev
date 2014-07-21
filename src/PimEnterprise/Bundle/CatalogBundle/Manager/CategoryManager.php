@@ -105,23 +105,7 @@ class CategoryManager extends BaseCategoryManager
      */
     public function getGrantedFilledTree(CategoryInterface $root, Collection $categories)
     {
-        $parentsIds = array();
-        foreach ($categories as $category) {
-            $categoryParentsIds = array();
-            $path = $this->getEntityRepository()->getPath($category);
-            if ($path[0]->getId() === $root->getId()) {
-                foreach ($path as $pathItem) {
-                    $categoryParentsIds[] = $pathItem->getId();
-                    if (!$this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $pathItem)) {
-                        $categoryParentsIds = [];
-                        break;
-                    }
-                }
-            }
-            $parentsIds = array_merge($parentsIds, $categoryParentsIds);
-        }
-        $parentsIds = array_unique($parentsIds);
-        $filledTree = $this->getEntityRepository()->getTreeFromParents($parentsIds);
+        $filledTree = parent::getFilledTree($root, $categories);
 
         return $this->filterGrantedFilledTree($filledTree);
     }
