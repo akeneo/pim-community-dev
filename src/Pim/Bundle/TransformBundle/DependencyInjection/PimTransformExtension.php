@@ -26,5 +26,6 @@ class PimTransformExtension extends Extension
         $loader->load('transformers.yml');
         $loader->load('guessers.yml');
         $loader->load('services.yml');
+        $loader->load('builders.yml');
     }
 }
