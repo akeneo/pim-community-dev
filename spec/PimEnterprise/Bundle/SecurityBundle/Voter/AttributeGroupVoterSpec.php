@@ -34,7 +34,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         AttributeGroup $attGroup
@@ -54,7 +54,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
+        $user->hasGroup('foo')->willReturn(false);
         $accessManager->getEditUserGroups($attGroup)->willReturn(array('foo'));
 
         $this
@@ -69,7 +69,7 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
+        $user->hasGroup('foo')->willReturn(true);
         $accessManager->getViewUserGroups($attGroup)->willReturn(array('foo'));
 
         $this

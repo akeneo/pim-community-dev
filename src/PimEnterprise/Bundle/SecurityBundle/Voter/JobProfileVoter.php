@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
- * a user depending on his roles
+ * a user depending on his user groups
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -57,10 +57,10 @@ class JobProfileVoter implements VoterInterface
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
                     $result = VoterInterface::ACCESS_DENIED;
-                    $grantedRoles = $this->extractRoles($attribute, $object);
+                    $grantedGroups = $this->extractGroups($attribute, $object);
 
-                    foreach ($grantedRoles as $role) {
-                        if ($token->getUser()->hasRole($role)) {
+                    foreach ($grantedGroups as $group) {
+                        if ($token->getUser()->hasGroup($group)) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }
@@ -72,21 +72,21 @@ class JobProfileVoter implements VoterInterface
     }
 
     /**
-     * Get roles for specific job profile
+     * Get user groups for specific job profile
      *
      * @param string      $attribute
      * @param JobInstance $object
      *
-     * @return Role[]
+     * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    protected function extractRoles($attribute, $object)
+    protected function extractGroups($attribute, $object)
     {
         if ($attribute === Attributes::EDIT_JOB_PROFILE) {
-            $grantedRoles = $this->accessManager->getEditUserGroups($object);
+            $grantedGroups = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getExecuteUserGroups($object);
+            $grantedGroups = $this->accessManager->getExecuteUserGroups($object);
         }
 
-        return $grantedRoles;
+        return $grantedGroups;
     }
 }

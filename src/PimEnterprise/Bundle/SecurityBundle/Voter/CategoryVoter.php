@@ -4,14 +4,13 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category voter, allows to know if products of a category can be edited or consulted by a
- * user depending on his roles
+ * user depending on his user groups
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -57,11 +56,11 @@ class CategoryVoter implements VoterInterface
         if ($this->supportsClass($object)) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
-                    $result       = VoterInterface::ACCESS_DENIED;
-                    $grantedRoles = $this->extractRoles($attribute, $object);
+                    $result        = VoterInterface::ACCESS_DENIED;
+                    $grantedGroups = $this->extractGroups($attribute, $object);
 
-                    foreach ($grantedRoles as $role) {
-                        if ($token->getUser()->hasRole($role)) {
+                    foreach ($grantedGroups as $group) {
+                        if ($token->getUser()->hasGroup($group)) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }
@@ -73,21 +72,21 @@ class CategoryVoter implements VoterInterface
     }
 
     /**
-     * Get roles for specific attribute and object
+     * Get user groups for specific attribute and object
      *
      * @param string            $attribute
      * @param CategoryInterface $object
      *
-     * @return Role[]
+     * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    protected function extractRoles($attribute, $object)
+    protected function extractGroups($attribute, $object)
     {
         if ($attribute === Attributes::EDIT_PRODUCTS) {
-            $grantedRoles = $this->accessManager->getEditUserGroups($object);
+            $grantedGroups = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getViewUserGroups($object);
+            $grantedGroups = $this->accessManager->getViewUserGroups($object);
         }
 
-        return $grantedRoles;
+        return $grantedGroups;
     }
 }
