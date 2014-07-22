@@ -289,7 +289,7 @@ class CategoryAccessRepository extends EntityRepository
             Attributes::VIEW_PRODUCTS => 'viewProducts'
         ];
         if (!isset($mapping[$accessLevel])) {
-            throw new \LogicException(sprintf('%s access level not exists', $accessLevel));
+            throw new \LogicException(sprintf('"%s" access level does not exist', $accessLevel));
         }
 
         return $mapping[$accessLevel];
