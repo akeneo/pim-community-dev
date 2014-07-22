@@ -1,5 +1,5 @@
 category_accesses:
     default:
-        edit: [administrator, manager, user]
-        view: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        view: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]

@@ -1,9 +1,15 @@
 user_groups:
-    technical:
-        name: Technical
+    it_support:
+        name: IT support
     manager:
         name: Manager
-    redactor:
-        name: Redactor
+    furniture_manager:
+        name: Furniture manager
+    clothes_manager:
+        name: Clothes manager
+    web_redactor:
+        name: Web redactor
+    english_translator:
+        name: English translator
     all:
         name: All

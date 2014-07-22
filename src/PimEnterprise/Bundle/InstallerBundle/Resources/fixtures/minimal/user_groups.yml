@@ -1,6 +1,6 @@
 user_groups:
-    technical:
-        name: Technical
+    it_support:
+        name: IT support
     manager:
         name: Manager
     redactor:
