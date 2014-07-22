@@ -136,6 +136,7 @@
 - Delete service `pim_datagrid.datasource.mongodb`
 - Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository
+- Remove locale-specific rights
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
