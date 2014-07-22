@@ -9,7 +9,7 @@ services:
         arguments:
             - '@pim_catalog.manager.media'
         calls:
-            - [setFilters, [['@pim_versioning.filter.flat_product_value']]]
+            - [setFilters, [['@pim_serializer.filter.flat_product_value']]]
         tags:
             - { name: pim_versioning.normalizer, priority: 90 }
 
@@ -80,7 +80,3 @@ services:
         parent: pim_versioning.normalizer.label_translation
         tags:
             - { name: pim_versioning.normalizer, priority: 90 }
-
-    # Filters
-    pim_versioning.filter.flat_product_value:
-        class: %pim_serializer.filter.flat_product_value.class%
