@@ -18,7 +18,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\Proposition:
         author:
             type: string
         # Denormalize product's category ids stored for checking product ownership
-        reviewers:
+        categoryIds:
             type: collection
         status:
             type: int

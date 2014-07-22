@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Proposition ownership repository interface
@@ -15,10 +15,10 @@ interface PropositionOwnershipRepositoryInterface
     /**
      * Return propositions that can be approved by the given user
      *
-     * @param User    $user
-     * @param integer $limit
+     * @param UserInterface $user
+     * @param integer       $limit
      *
      * @return Proposition[]
      */
-    public function findApprovableByUser(User $user, $limit = null);
+    public function findApprovableByUser(UserInterface $user, $limit = null);
 }

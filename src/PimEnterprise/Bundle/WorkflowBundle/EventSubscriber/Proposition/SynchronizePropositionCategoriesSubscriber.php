@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 use Doctrine\ODM\MongoDB\Events;
 use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use Doctrine\Common\EventSubscriber;
@@ -39,16 +40,6 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
         ];
     }
 
-    public function prePersist(LifecycleEventArgs $event)
-    {
-        $product = $event->getDocument();
-        if (!$product instanceof ProductInterface) {
-            return;
-        }
-
-        $this->synchronize($product);
-    }
-
     public function preUpdate(LifecycleEventArgs $event)
     {
         $product = $event->getDocument();
@@ -62,16 +53,18 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
 
     protected function synchronize(ProductInterface $product)
     {
-        $roles = [];
-        foreach ($product->getCategories() as $category) {
-            foreach ($this->getAccessRepository()->getGrantedRoles($category, Attributes::OWN_PRODUCTS) as $role) {
-                $roles[$role->getRole()] = null;
-            }
-        }
+        $categoryIds = $product
+            ->getCategories()
+            ->map(
+                function (CategoryInterface $category) {
+                    return $category->getId();
+                }
+            )
+            ->toArray();
 
         $propositions = $this->getPropositionRepository()->findBy(['product.id' => $product->getId()]);
         foreach ($propositions as $proposition) {
-            $proposition->setReviewers(array_keys($roles));
+            $proposition->setCategoryIds($categoryIds);
         }
     }
 

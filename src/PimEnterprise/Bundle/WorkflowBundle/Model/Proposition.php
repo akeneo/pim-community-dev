@@ -37,7 +37,7 @@ class Proposition
     protected $status;
 
     /** @var array */
-    protected $reviewers = [];
+    protected $categoryIds = [];
 
     /**
      * Constructor
@@ -166,24 +166,24 @@ class Proposition
     }
 
     /**
-     * Set the reviewers' role
+     * Set the category ids
      * NB: Only used with MongoDB
      *
-     * @param array $reviewers
+     * @param array $categoryIds
      */
-    public function setReviewers(array $reviewers)
+    public function setCategoryIds(array $categoryIds)
     {
-        $this->reviewers = $reviewers;
+        $this->categoryIds = $categoryIds;
     }
 
     /**
-     * Get the reviewers' role
+     * Get the product category ids
      * NB: Only used with MongoDB
      *
      * @return array
      */
-    public function getReviewers()
+    public function getCategoryIds()
     {
-        return $this->reviewers;
+        return $this->categoryIds;
     }
 }
