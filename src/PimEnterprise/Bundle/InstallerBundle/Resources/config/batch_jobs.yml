@@ -33,3 +33,14 @@ connector:
                         reader:    pim_base_connector.reader.file.yaml
                         processor: pimee_base_connector.processor.job_profile_access
                         writer:    pim_base_connector.writer.doctrine
+
+        fixtures_locale_access_yml:
+            title: pim_installer.jobs.fixtures_locale_yml.title
+            type:  fixtures
+            steps:
+                import:
+                    title:     pim_installer.jobs.fixtures_locale_access_yml.import.title
+                    services:
+                        reader:    pim_base_connector.reader.file.yaml
+                        processor: pimee_base_connector.processor.locale_access
+                        writer:    pim_base_connector.writer.doctrine

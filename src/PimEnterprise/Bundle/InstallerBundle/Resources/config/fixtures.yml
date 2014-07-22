@@ -18,3 +18,10 @@ job_profile_accesses:
         processor: pimee_base_connector.processor.job_profile_access
     yml:
         processor: pimee_base_connector.processor.job_profile_access
+
+locale_accesses:
+    order: 150
+    csv:
+        processor: pimee_base_connector.processor.locale_access
+    yml:
+        processor: pimee_base_connector.processor.locale_access
