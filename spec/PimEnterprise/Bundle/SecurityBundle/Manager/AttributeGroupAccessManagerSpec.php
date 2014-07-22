@@ -21,7 +21,7 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess');
     }
 
-    function it_provides_roles_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
+    function it_provides_user_groups_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
     {
         $repository->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
         $repository->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES)->willReturn(['baz']);

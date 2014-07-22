@@ -6,7 +6,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
