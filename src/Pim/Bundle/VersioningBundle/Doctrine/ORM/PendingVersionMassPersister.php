@@ -56,10 +56,10 @@ class PendingVersionMassPersister
 
     /**
      * @param VersionBuilder      $versionBuilder
-     * @param VersionBuilder      $versionBuilder
+     * @param VersionManager      $versionManager
      * @param NormalizerInterface $normalizer
      * @param Connection          $connection
-     * @maram EntityManager       $entityManager
+     * @param EntityManager       $entityManager
      * @param TableNameBuilder    $tableNameBuilder
      * @param string              $versionClass
      */
@@ -102,7 +102,7 @@ class PendingVersionMassPersister
     /**
      * Insert into pending versions
      *
-     * @param array
+     * @param array $pendingVersions
      */
     protected function batchInsertPendingVersions(array $pendingVersions)
     {

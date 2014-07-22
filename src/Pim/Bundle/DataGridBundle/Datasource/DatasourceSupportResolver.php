@@ -35,7 +35,7 @@ class DatasourceSupportResolver
     }
 
     /**
-     * @param $datasourceType
+     * @param string $datasourceType
      *
      * @return string
      *
@@ -57,7 +57,7 @@ class DatasourceSupportResolver
     /**
      * Define a datasource as smart which it will be eligible to the MongoDB support.
      *
-     * @param $datasource
+     * @param mixed $datasource
      */
     public function addSmartDatasource($datasource)
     {

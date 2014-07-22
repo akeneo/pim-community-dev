@@ -26,7 +26,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
     /** @staticvar string */
     const MONGO_COLLECTION_NAME = 'collection_name';
-    
+
     /** @var NormalizerInterface */
     protected $normalizer;
 
@@ -125,6 +125,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
      * Normalize the associations of the product
      *
      * @param Association[]|Collection $associations
+     * @param array                    $context
      *
      * @return array
      */
