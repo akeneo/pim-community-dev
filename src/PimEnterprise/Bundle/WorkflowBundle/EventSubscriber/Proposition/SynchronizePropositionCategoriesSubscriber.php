@@ -2,53 +2,59 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
-use Doctrine\ODM\MongoDB\Events;
-use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ODM\MongoDB\Event\LifecycleEventArgs;
+use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs;
+use Doctrine\ODM\MongoDB\Events;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 /**
- * PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition
+ * Keeps proposition categoryIds field synchronized with its related product's categories
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
 {
-
-    public function __construct(
-        ManagerRegistry $registry,
-        $categoryAccessClassName,
-        $propositionClassName
-    ) {
-        // TODO (2014-07-21 19:13 by Gildas): retrieve repositories from document manager
-        $this->registry = $registry;
-        $this->categoryAccessClassName = $categoryAccessClassName;
-        $this->propositionClassName = $propositionClassName;
-    }
-
     public function getSubscribedEvents()
     {
         return [
-            #Events::prePersist,
             Events::preUpdate,
+            Events::preRemove,
         ];
     }
 
-    public function preUpdate(LifecycleEventArgs $event)
+    /**
+     * Synchronize category ids of propositions of product of which categories has been changed
+     *
+     * @param PreUpdateEventArgs $event
+     */
+    public function preUpdate(PreUpdateEventArgs $event)
     {
         $product = $event->getDocument();
         if (!$product instanceof ProductInterface) {
             return;
         }
+        if (!$event->hasChangedField('categoryIds')) {
+            return;
+        }
 
-        // TODO (2014-07-22 10:04 by Gildas): Do it only if product categories have changed
         $this->synchronize($product);
+    }
+
+    public function preRemove(LifecycleEventArgs $event)
+    {
+        $category = $event->getDocument();
+        if (!$category instanceof CategoryInterface) {
+            return;
+        }
+
+        # Synchronize all category products
     }
 
     protected function synchronize(ProductInterface $product)
@@ -62,19 +68,8 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
             )
             ->toArray();
 
-        $propositions = $this->getPropositionRepository()->findBy(['product.id' => $product->getId()]);
-        foreach ($propositions as $proposition) {
+        foreach ($product->getPropositions() as $proposition) {
             $proposition->setCategoryIds($categoryIds);
         }
-    }
-
-    protected function getAccessRepository()
-    {
-        return $this->registry->getRepository($this->categoryAccessClassName);
-    }
-
-    protected function getPropositionRepository()
-    {
-        return $this->registry->getRepository($this->propositionClassName);
     }
 }
