@@ -64,23 +64,17 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
-            if ($this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)) {
-                return [
-                    'show' => false,
-                    'edit' => true,
-                    'edit_categories' => true,
-                    'delete' => true,
-                    'toggle_status' => true
-                ];
-            } else {
-                return [
-                    'show' => true,
-                    'edit' => false,
-                    'edit_categories' => false,
-                    'delete' => false,
-                    'toggle_status' => false
-                ];
-            }
+
+            $editGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
+            $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWNER, $product) : false;
+
+            return [
+                'show'            => !$editGranted,
+                'edit'            => $editGranted,
+                'edit_categories' => $ownershipGranted,
+                'delete'          => $editGranted,
+                'toggle_status'   => $editGranted
+            ];
         };
     }
 
