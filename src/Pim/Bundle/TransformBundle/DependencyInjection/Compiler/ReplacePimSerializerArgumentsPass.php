@@ -25,11 +25,17 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      */
     protected $factory;
 
+    protected $serializerKey;
+
+    protected $serializerTags;
+
     /**
      * @param ReferenceFactory|null $factory
      */
-    public function __construct(ReferenceFactory $factory = null)
+    public function __construct($serializerKey, array $serializerTags, ReferenceFactory $factory = null)
     {
+        $this->serializerKey  = $serializerKey;
+        $this->serializerTags = $serializerTags;
         $this->factory = $factory ?: new ReferenceFactory();
     }
 
@@ -38,16 +44,16 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_serializer')) {
+        if (!$container->hasDefinition($this->serializerKey)) {
             return;
         }
 
-        $container->getDefinition('pim_serializer')->setArguments(
-            array(
-                $this->getDependencyReferences($container, 'pim_serializer.normalizer'),
-                $this->getDependencyReferences($container, 'pim_serializer.encoder')
-            )
-        );
+        $args = [];
+        foreach ($this->serializerTags as $serializerTag) {
+            $args[] = $this->getDependencyReferences($container, $serializerTag);
+        }
+
+        $container->getDefinition($this->serializerKey)->setArguments($args);
     }
 
     /**
