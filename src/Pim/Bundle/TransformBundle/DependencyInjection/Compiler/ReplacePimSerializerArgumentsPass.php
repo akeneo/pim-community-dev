@@ -22,19 +22,19 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
     protected $factory;
 
     /** @var string  */
-    protected $serializerKey;
+    protected $serializerServiceId;
 
     /** @var string[] */
     protected $serializerTags;
 
     /**
-     * @param string                $serializerKey
+     * @param string                $serializerServiceId
      * @param string[]              $serializerTags
      * @param ReferenceFactory|null $factory
      */
-    public function __construct($serializerKey, array $serializerTags, ReferenceFactory $factory = null)
+    public function __construct($serializerServiceId, array $serializerTags, ReferenceFactory $factory = null)
     {
-        $this->serializerKey  = $serializerKey;
+        $this->serializerServiceId  = $serializerServiceId;
         $this->serializerTags = $serializerTags;
         $this->factory = $factory ?: new ReferenceFactory();
     }
@@ -44,8 +44,10 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition($this->serializerKey)) {
-            return;
+        if (!$container->hasDefinition($this->serializerServiceId)) {
+            throw new \LogicException(
+                sprintf('Resolver "%s" is called on an incorrect serializer service id', get_class($this))
+            );
         }
 
         $args = [];
@@ -53,7 +55,7 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
             $args[] = $this->getDependencyReferences($container, $serializerTag);
         }
 
-        $container->getDefinition($this->serializerKey)->setArguments($args);
+        $container->getDefinition($this->serializerServiceId)->setArguments($args);
     }
 
     /**
