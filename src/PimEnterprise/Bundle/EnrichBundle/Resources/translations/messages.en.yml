@@ -17,6 +17,12 @@ category.permissions:
     apply_on_children.label: Apply changes on children
     apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
+locale.permissions:
+    view.label: View products data
+    view.help: Allow to view the products data in this locale
+    edit.label: Edit products data
+    edit.help: Allow to edit the products data in this locale (implies the view permission)
+
 pimee_enrich:
     acl.product_ownership.title: Ownership
     roles:
