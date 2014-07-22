@@ -2,14 +2,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
 
 /**
  * Proposition ORM repository
@@ -45,7 +46,7 @@ class PropositionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findApprovableByUser(User $user, $limit = null)
+    public function findApprovableByUser(UserInterface $user, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');
 
