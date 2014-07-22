@@ -15,21 +15,21 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
  */
 class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
 {
-    /**
-     * @staticvar integer The default priority for services
-     */
+    /** @staticvar integer The default priority for services */
     const DEFAULT_PRIORITY = 100;
 
-    /**
-     * @var ReferenceFactory
-     */
+    /** @var ReferenceFactory */
     protected $factory;
 
+    /** @var string  */
     protected $serializerKey;
 
+    /** @var string[] */
     protected $serializerTags;
 
     /**
+     * @param string                $serializerKey
+     * @param string[]              $serializerTags
      * @param ReferenceFactory|null $factory
      */
     public function __construct($serializerKey, array $serializerTags, ReferenceFactory $factory = null)
