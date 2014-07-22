@@ -25,6 +25,7 @@ class PimVersioningExtension extends Extension
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
         $loader->load('builders.yml');
+        $loader->load('persisters.yml');
         $loader->load('event_listeners.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');

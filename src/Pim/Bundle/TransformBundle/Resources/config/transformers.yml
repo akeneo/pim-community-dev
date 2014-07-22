@@ -139,3 +139,4 @@ services:
     pim_transform.transformer.property.skip:
         class: %pim_transform.transformer.property.skip.class%
         public: false
+
