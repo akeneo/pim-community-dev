@@ -8,6 +8,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -30,19 +31,25 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var ProductRepositoryInterface */
     protected $productRepository;
 
+    /** @var LocaleRepository */
+    protected $localeRepository;
+
     /**
      * @param ConfigurationRegistry      $registry
      * @param SecurityContextInterface   $securityContext
      * @param ProductRepositoryInterface $productRepository
+     * @param LocaleRepository           $localeRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
-        ProductRepositoryInterface $productRepository
+        ProductRepositoryInterface $productRepository,
+        LocaleRepository           $localeRepository
     ) {
         $this->registry = $registry;
         $this->securityContext = $securityContext;
         $this->productRepository = $productRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -64,16 +71,18 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         return function (ResultRecordInterface $record) {
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
+            $locale = $this->localeRepository->findOneByCode($record->getValue('dataLocale'));
 
             $editGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
             $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWNER, $product) : false;
+            $localeGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
             return [
-                'show'            => !$editGranted,
-                'edit'            => $editGranted,
-                'edit_categories' => $ownershipGranted,
-                'delete'          => $editGranted,
-                'toggle_status'   => $editGranted
+                'show'            => !$editGranted || !$localeGranted,
+                'edit'            => $editGranted && $localeGranted,
+                'edit_categories' => $ownershipGranted && $localeGranted,
+                'delete'          => $editGranted && $localeGranted,
+                'toggle_status'   => $editGranted && $localeGranted
             ];
         };
     }

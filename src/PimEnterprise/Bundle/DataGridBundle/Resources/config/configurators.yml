@@ -20,3 +20,4 @@ services:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@security.context'
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'
