@@ -5,7 +5,6 @@ namespace Pim\Bundle\UserBundle\Context;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\UserBundle\Entity\User;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -25,9 +24,6 @@ class UserContext
 
     /** @var SecurityContextInterface */
     protected $securityContext;
-
-    /** @var SecurityFacade */
-    protected $securityFacade;
 
     /** @var LocaleManager */
     protected $localeManager;
@@ -49,7 +45,6 @@ class UserContext
 
     /**
      * @param SecurityContextInterface $securityContext
-     * @param SecurityFacade           $securityFacade
      * @param LocaleManager            $localeManager
      * @param ChannelManager           $channelManager
      * @param CategoryManager          $categoryManager
@@ -57,14 +52,12 @@ class UserContext
      */
     public function __construct(
         SecurityContextInterface $securityContext,
-        SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
         $defaultLocale
     ) {
         $this->securityContext = $securityContext;
-        $this->securityFacade  = $securityFacade;
         $this->localeManager   = $localeManager;
         $this->channelManager  = $channelManager;
         $this->categoryManager = $categoryManager;
@@ -83,11 +76,11 @@ class UserContext
 
     /**
      * Returns the current locale from the request or the user's catalog locale
-     * or the first activated locale the user has access to
+     * or the first activated locale
      *
      * @return Locale
      *
-     * @throws \LogicException When user doesn't have access to any activated locales
+     * @throws \LogicException When there are no activated locales
      */
     public function getCurrentLocale()
     {
@@ -107,7 +100,7 @@ class UserContext
             return $locale;
         }
 
-        throw new \LogicException("User doesn't have access to any activated locales");
+        throw new \LogicException('There are no activated locales');
     }
 
     /**
@@ -121,26 +114,21 @@ class UserContext
     }
 
     /**
-     * Returns active locales the user has access to
+     * Returns active locales
      *
      * @return Locale[]
      */
     public function getUserLocales()
     {
         if ($this->userLocales === null) {
-            $this->userLocales = array_filter(
-                $this->localeManager->getActiveLocales(),
-                function ($locale) {
-                    return $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()));
-                }
-            );
+            $this->userLocales = $this->localeManager->getActiveLocales();
         }
 
         return $this->userLocales;
     }
 
     /**
-     * Returns the codes of active locales that the user has access to
+     * Returns the codes of active locales
      *
      * @return array
      */
@@ -238,21 +226,17 @@ class UserContext
     }
 
     /**
-     * Returns the default application locale if user has access to it
+     * Returns the default application locale
      *
      * @return Locale|null
      */
     protected function getDefaultLocale()
     {
-        if ($this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $this->defaultLocale))) {
-            return $this->localeManager->getLocaleByCode($this->defaultLocale);
-        }
-
-        return null;
+        return $this->localeManager->getLocaleByCode($this->defaultLocale);
     }
 
     /**
-     * Checks if a locale is activated and user has the right to access it
+     * Checks if a locale is activated
      *
      * @param Locale $locale
      *
@@ -260,8 +244,7 @@ class UserContext
      */
     protected function isLocaleAvailable(Locale $locale)
     {
-        return $locale->isActivated() &&
-               $this->securityFacade->isGranted(sprintf('pim_enrich_locale_%s', $locale->getCode()));
+        return $locale->isActivated();
     }
 
     /**
