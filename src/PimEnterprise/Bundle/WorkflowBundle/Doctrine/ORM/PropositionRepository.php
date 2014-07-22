@@ -37,6 +37,14 @@ class PropositionRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
+    public function findByProduct(ProductInterface $product)
+    {
+        return $this->findBy(['product' => $product]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function findApprovableByUser(User $user, $limit = null)
     {
         $qb = $this->createQueryBuilder('p');

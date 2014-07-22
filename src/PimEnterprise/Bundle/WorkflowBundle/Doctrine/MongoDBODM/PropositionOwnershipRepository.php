@@ -75,9 +75,8 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
         $qb
             ->join('o.category', 'category')
             ->select('category.id')
-            ->where(
-                $qb->expr()->in('o.role', ':roles')
-            )
+            ->where($qb->expr()->in('o.role', ':roles'))
+            ->andWhere('o.ownProducts = 1')
             ->setParameter('roles', $user->getRoles());
 
         $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);

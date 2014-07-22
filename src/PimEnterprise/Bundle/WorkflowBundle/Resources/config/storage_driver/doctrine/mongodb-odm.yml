@@ -48,5 +48,9 @@ services:
 
     pimee_workflow.subscriber.synchronize_proposition_categories:
         class: %pimee_workflow.subscriber.synchronize_proposition_categories.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '%pimee_workflow.model.proposition.class%'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+            - { name: doctrine.event_subscriber }

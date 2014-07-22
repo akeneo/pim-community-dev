@@ -186,4 +186,19 @@ class Proposition
     {
         return $this->categoryIds;
     }
+
+    /**
+     * Removes a category id
+     *
+     * @param integer $categoryId
+     */
+    public function removeCategoryId($categoryId)
+    {
+        if (false === $key = array_search($categoryId, $this->categoryIds)) {
+            return;
+        }
+
+        unset($this->categoryIds[$key]);
+        $this->categoryIds = array_values($this->categoryIds);
+    }
 }
