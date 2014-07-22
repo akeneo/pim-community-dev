@@ -23,7 +23,8 @@ class PimVersioningBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass());
+            ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
+            ->addCompilerPass(new Compiler\RegisterVersioningSerializerPass());
 
         $versionMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\VersioningBundle\Model'
