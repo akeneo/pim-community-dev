@@ -53,8 +53,7 @@ class LocaleVoter implements VoterInterface
     public function vote(TokenInterface $token, $object, array $attributes)
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
-
-        if ($this->supportsClass($object)) {
+        if ($this->supportsClass($object) && !is_string($token->getUser())) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
                     $result       = VoterInterface::ACCESS_DENIED;
