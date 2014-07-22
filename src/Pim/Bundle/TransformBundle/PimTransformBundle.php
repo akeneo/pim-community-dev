@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\TransformBundle\DependencyInjection\Compiler;
 
 /**
  * Transform bundle
@@ -20,8 +21,8 @@ class PimTransformBundle extends Bundle
     public function build(ContainerBuilder $container)
     {
         $container
-            ->addCompilerPass(new DependencyInjection\Compiler\RegisterEntityTransformersPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\TransformerGuesserPass())
-            ->addCompilerPass(new DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass());
+            ->addCompilerPass(new Compiler\RegisterEntityTransformersPass())
+            ->addCompilerPass(new Compiler\TransformerGuesserPass())
+            ->addCompilerPass(new Compiler\ReplacePimSerializerArgumentsPass());
     }
 }
