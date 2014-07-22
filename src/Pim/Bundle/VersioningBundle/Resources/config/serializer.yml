@@ -82,8 +82,5 @@ services:
             - { name: pim_versioning.normalizer, priority: 90 }
 
     # Filters
-    pim_versioning.filter.product_value:
-        class: %pim_serializer.filter.product_value.class%
-
     pim_versioning.filter.flat_product_value:
         class: %pim_serializer.filter.flat_product_value.class%
