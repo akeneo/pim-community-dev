@@ -24,11 +24,12 @@ datagrid:
                     - id
         actions:
             edit:
-                type:      navigate
-                label:     Edit locale
-                icon:      edit
-                link:      edit_link
-                rowAction: true
+                type:         navigate
+                label:        Edit locale
+                icon:         edit
+                link:         edit_link
+                acl_resource: pimee_enrich_locale_edit_permissions
+                rowAction:    true
         sorters:
             columns:
                 code:
