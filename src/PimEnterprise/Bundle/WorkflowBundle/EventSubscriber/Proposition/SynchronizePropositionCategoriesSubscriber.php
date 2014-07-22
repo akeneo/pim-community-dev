@@ -71,7 +71,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
 
         $propositions = $this->getPropositionRepository()->findBy(['product.id' => $product->getId()]);
         foreach ($propositions as $proposition) {
-            $proposition->reviewers = array_keys($roles);
+            $proposition->setReviewers(array_keys($roles));
         }
     }
 

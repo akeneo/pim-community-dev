@@ -37,7 +37,7 @@ class Proposition
     protected $status;
 
     /** @var array */
-    public $reviewers = [];
+    protected $reviewers = [];
 
     /**
      * Constructor
@@ -163,5 +163,27 @@ class Proposition
     public function isInProgress()
     {
         return self::IN_PROGRESS === $this->status;
+    }
+
+    /**
+     * Set the reviewers' role
+     * NB: Only used with MongoDB
+     *
+     * @param array $reviewers
+     */
+    public function setReviewers(array $reviewers)
+    {
+        $this->reviewers = $reviewers;
+    }
+
+    /**
+     * Get the reviewers' role
+     * NB: Only used with MongoDB
+     *
+     * @return array
+     */
+    public function getReviewers()
+    {
+        return $this->reviewers;
     }
 }
