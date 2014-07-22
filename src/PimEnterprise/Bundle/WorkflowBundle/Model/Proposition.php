@@ -36,6 +36,9 @@ class Proposition
     /** @var integer */
     protected $status;
 
+    /** @var array */
+    public $reviewers = [];
+
     /**
      * Constructor
      */
