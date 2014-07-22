@@ -69,6 +69,7 @@
 - Fixed a bug on mass edit when we use a completeness filter to select products
 - Removed the import CSV mimetype validation which is unreliable
 - Product completeness in MongoDB is not lost anymore in the grid
+- Upload on a job with a custom step (non ItemStep) doesn't crash anymore
 
 ## BC breaks
 - Remove FlexibleEntityBundle
