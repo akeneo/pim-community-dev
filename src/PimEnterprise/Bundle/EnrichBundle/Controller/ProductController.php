@@ -61,7 +61,11 @@ class ProductController extends BaseProductController
     public function dispatchAction($id)
     {
         $product = $this->findProductOr404($id);
-        if ($this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)) {
+        $editProductGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
+        $locale = $this->userContext->getCurrentLocale();
+        $editLocaleGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
+
+        if ($editProductGranted && $editLocaleGranted) {
             return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
 
         } elseif ($this->securityContext->isGranted(Attributes::VIEW_PRODUCT, $product)) {
@@ -84,6 +88,11 @@ class ProductController extends BaseProductController
     public function showAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
+        $locale = $this->userContext->getCurrentLocale();
+        $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
+        if (!$viewLocaleGranted) {
+            throw new AccessDeniedException();
+        }
 
         return [
             'product'    => $product,
