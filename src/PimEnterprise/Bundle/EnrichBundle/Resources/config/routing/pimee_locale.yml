@@ -1,0 +1,5 @@
+pimee_enrich_locale_edit:
+    path: /{id}/edit
+    defaults: { _controller: pim_enrich.controller.locale:editAction }
+    requirements:
+        id: \d+
