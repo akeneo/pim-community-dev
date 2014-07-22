@@ -20,22 +20,8 @@ class LocaleType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('code');
+        $builder->add('code', 'text', ['disabled' => true]);
         $builder->add('permissions', 'pimee_enrich_locale_permissions');
-        $this->addEventSubscribers($builder);
-    }
-
-    /**
-     * Add event subscriber to channel form type
-     * @param FormBuilderInterface $builder
-     *
-     * @return ChannelType
-     */
-    protected function addEventSubscribers(FormBuilderInterface $builder)
-    {
-        $builder->addEventSubscriber(new DisableFieldSubscriber('code'));
-
-        return $this;
     }
 
     /**
