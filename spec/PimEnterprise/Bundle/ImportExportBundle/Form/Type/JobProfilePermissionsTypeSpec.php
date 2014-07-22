@@ -23,11 +23,11 @@ class JobProfilePermissionsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('execute', 'pimee_security_roles', ['label' => 'job_profile.permissions.execute.label'])
+            ->add('execute', 'pimee_security_groups', ['label' => 'job_profile.permissions.execute.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('edit', 'pimee_security_roles', ['label' => 'job_profile.permissions.edit.label'])
+            ->add('edit', 'pimee_security_groups', ['label' => 'job_profile.permissions.edit.label'])
             ->shouldHaveBeenCalled();
     }
 

@@ -72,7 +72,7 @@ class AttributeGroupVoter implements VoterInterface
     }
 
     /**
-     * Get roles for specific attribute and object
+     * Get user groups for specific attribute and object
      *
      * @param string         $attribute
      * @param AttributeGroup $object

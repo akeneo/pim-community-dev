@@ -6,7 +6,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class RolesTypeSpec extends ObjectBehavior
+class GroupsTypeSpec extends ObjectBehavior
 {
     function it_is_a_form_type()
     {
@@ -15,7 +15,7 @@ class RolesTypeSpec extends ObjectBehavior
 
     function it_has_a_name()
     {
-        $this->getName()->shouldReturn('pimee_security_roles');
+        $this->getName()->shouldReturn('pimee_security_groups');
     }
 
     function it_extends_the_entity_form_type()
@@ -23,16 +23,15 @@ class RolesTypeSpec extends ObjectBehavior
         $this->getParent()->shouldReturn('entity');
     }
 
-    function it_configures_the_form_type_to_provide_available_roles(OptionsResolverInterface $resolver)
+    function it_configures_the_form_type_to_provide_available_user_groups(OptionsResolverInterface $resolver)
     {
         $this->setDefaultOptions($resolver, []);
 
         $resolver
             ->setDefaults(
                 Argument::allOf(
-                    Argument::withEntry('class', 'OroUserBundle:Role'),
-                    Argument::withEntry('property', 'label'),
-                    Argument::withKey('query_builder'),
+                    Argument::withEntry('class', 'OroUserBundle:Group'),
+                    Argument::withEntry('property', 'name'),
                     Argument::withEntry('multiple', true),
                     Argument::withEntry('required', false),
                     Argument::withEntry('select2', true)
