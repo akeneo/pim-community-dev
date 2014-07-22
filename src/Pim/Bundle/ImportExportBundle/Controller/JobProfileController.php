@@ -369,21 +369,23 @@ class JobProfileController extends AbstractDoctrineController
 
         $job = $jobInstance->getJob();
         foreach ($job->getSteps() as $step) {
-            $reader = $step->getReader();
+            if (method_exists($step, 'getReader')) {
+                $reader = $step->getReader();
 
-            if ($reader instanceof UploadedFileAwareInterface) {
-                $constraints = $reader->getUploadedFileConstraints();
-                $errors = $this->getValidator()->validateValue($file, $constraints);
+                if ($reader instanceof UploadedFileAwareInterface) {
+                    $constraints = $reader->getUploadedFileConstraints();
+                    $errors = $this->getValidator()->validateValue($file, $constraints);
 
-                if ($errors->count() !== 0) {
-                    foreach ($errors as $error) {
-                        $this->addFlash('error', $error->getMessage());
+                    if ($errors->count() !== 0) {
+                        foreach ($errors as $error) {
+                            $this->addFlash('error', $error->getMessage());
+                        }
+
+                        return false;
+                    } else {
+                        $reader->setUploadedFile($file);
+                        $success = true;
                     }
-
-                    return false;
-                } else {
-                    $reader->setUploadedFile($file);
-                    $success = true;
                 }
             }
         }
