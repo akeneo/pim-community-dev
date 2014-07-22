@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCatego
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
  * Product category manager
@@ -19,10 +20,11 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  */
 class ProductCategoryManager extends BaseProductCategoryManager
 {
-    /**
-     * @var SecurityContextInterface
-     */
+    /** @var SecurityContextInterface */
     protected $securityContext;
+
+    /** @var CategoryAccessRepository */
+    protected $accessRepository;
 
     /**
      * Constructor
@@ -30,15 +32,18 @@ class ProductCategoryManager extends BaseProductCategoryManager
      * @param ProductCategoryRepositoryInterface $productRepo     Product repository
      * @param CategoryRepository                 $categoryRepo    Category repository
      * @param SecurityContextInterface           $securityContext Security context
+     * @param CategoryAccessRepository           $accessRepo      Category access repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepository $categoryRepo,
-        SecurityContextInterface $securityContext
+        SecurityContextInterface $securityContext,
+        CategoryAccessRepository $accessRepo
     ) {
         parent::__construct($productRepo, $categoryRepo);
 
         $this->securityContext = $securityContext;
+        $this->accessRepository = $accessRepo;
     }
 
     /**
@@ -104,6 +109,16 @@ class ProductCategoryManager extends BaseProductCategoryManager
     }
 
     /**
+     * @param mixed $queryBuilder
+     */
+    public function addFilterByAll($queryBuilder)
+    {
+        $user = $this->securityContext->getUser();
+        $grantedCategories = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $this->productRepository->addFilterByAll($queryBuilder, $grantedCategories);
+    }
+
+    /**
      * Count only product with a full accessible path
      *
      * @param ProductInterface $product
@@ -152,7 +167,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         $rootAlias  = current($childrenQb->getRootAliases());
-        $rootEntity = current($childrenQb->getRootEntities());
         $grantedQb = $this->categoryRepository->createQueryBuilder($rootAlias);
         $grantedQb->select($rootAlias.'.id');
         $grantedQb->where($grantedQb->expr()->in($rootAlias.'.id', ':categories'));

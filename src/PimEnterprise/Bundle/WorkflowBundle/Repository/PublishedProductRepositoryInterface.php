@@ -41,7 +41,7 @@ interface PublishedProductRepositoryInterface extends ProductRepositoryInterface
      * Get the version that has been published for a given original product ID.
      * If none version has been published, null is returned.
      *
-     * @param $originalId
+     * @param integer|string $originalId
      *
      * @return int|null
      */

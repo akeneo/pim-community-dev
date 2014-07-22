@@ -1,5 +1,6 @@
 parameters:
     pim_catalog.repository.product_mass_action.class: PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository
+    pim_catalog.repository.product_category.class:    PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
 
 services:
     pim_catalog.repository.product_mass_action:

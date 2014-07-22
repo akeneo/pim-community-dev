@@ -29,12 +29,14 @@ class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
     /** @var MediaFactory */
     protected $factory;
 
+    /** @var LocaleRepository */
     protected $repository;
 
     /**
-     * @param ChangesCollector $changesCollector
+     * @param ChangesCollector $collector
      * @param MediaManager     $mediaManager
      * @param MediaFactory     $factory
+     * @param LocaleRepository $repository
      */
     public function __construct(
         ChangesCollector $collector,
@@ -77,7 +79,9 @@ class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
         $values = $form->getData()->getValues();
         foreach (array_keys($data['values']) as $key) {
             $value = $values->get($key);
-            $value->setLocale($locale);
+            if ($value->getAttribute()->isLocalizable()) {
+                $value->setLocale($locale);
+            }
             if ($key !== $correctKey = ProductValueKeyGenerator::getKey($value)) {
                 $data['values'][$correctKey] = $data['values'][$key];
                 unset($data['values'][$key]);

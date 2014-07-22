@@ -12,10 +12,12 @@ Feature: Define permissions for a category
     Given I am on the category "2014_collection" node creation page
     And I fill in the following information:
       | Code | newcategory |
-    When I save the category
+    And I save the category
+    When I edit the "newcategory" category
     And I visit the "Permissions" tab
     Then I should see the permission View products with roles Administrator, Manager and User
     And I should see the permission Edit products with roles Administrator, Manager and User
+    And I should see the permission Own products with roles Administrator and Manager
 
   Scenario: By default, update children when the parent's permissions are changed
     Given the following categories:

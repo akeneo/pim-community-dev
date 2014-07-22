@@ -52,7 +52,7 @@ class ChangeSetEvent extends Event
     /**
      * Overrides the submitted changeSet
      *
-     * @return array
+     * @param array $changeSet
      */
     public function setChangeSet(array $changeSet)
     {

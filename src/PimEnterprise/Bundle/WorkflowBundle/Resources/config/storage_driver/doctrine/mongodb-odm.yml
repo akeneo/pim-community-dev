@@ -36,3 +36,11 @@ services:
         arguments:
             - '@pimee_workflow.repository.proposition'
             - '@pimee_security.repository.category_access'
+
+    pimee_workflow.repository.published_product_mass_action:
+        class: %pim_catalog.repository.product_mass_action.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - %pimee_workflow.entity.published_product.class%
+            - '@pim_catalog.repository.family'
+            - '@pimee_workflow.repository.published_product'

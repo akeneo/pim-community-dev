@@ -126,7 +126,8 @@ class PropositionChangesExtension extends \Twig_Extension
     /**
      * Present an attribute change
      *
-     * @param array $change
+     * @param array       $change
+     * @param Proposition $proposition
      *
      * @return string
      *

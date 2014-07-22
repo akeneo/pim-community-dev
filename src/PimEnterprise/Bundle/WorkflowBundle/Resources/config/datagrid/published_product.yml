@@ -6,7 +6,7 @@ datagrid:
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_datasource_product
+            type:              pimee_datasource_published_product
             entity:            %pimee_workflow.entity.published_product.class%
             repository_method: createDatagridQueryBuilder
         columns:
@@ -55,6 +55,14 @@ datagrid:
                 icon:      eye-open
                 link:      view_link
                 rowAction: true
+        mass_actions:
+            mass_edit:
+                type: edit
+                acl_resource: pimee_workflow_published_product_index
+                label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                icon: edit
         sorters:
             columns:
                 family:
@@ -129,3 +137,9 @@ datagrid:
                     parent_type: date
                     data_name:   updated
                     label:       Updated At
+            default:
+                category:
+                    value:
+                        treeId: %pim_filter.product_category_filter.class%::UNKNOWN_TREE
+                        categoryId: %pim_filter.product_category_filter.class%::ALL_CATEGORY
+                    type: %pim_filter.product_category_filter.class%::DEFAULT_TYPE

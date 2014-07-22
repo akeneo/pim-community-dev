@@ -2,19 +2,18 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ProductMassEditOperation;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Batch operation to publish products
+ * Batch operation to unpublish products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Julien Janvier <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class Publish extends ProductMassEditOperation
+class Unpublish extends PublishedProductMassEditOperation
 {
     /**
      * @var PublishedProductManager
@@ -41,7 +40,7 @@ class Publish extends ProductMassEditOperation
      */
     public function getFormType()
     {
-        return 'pimee_enrich_mass_publish';
+        return 'pimee_enrich_mass_unpublish';
     }
 
     /**
@@ -51,11 +50,12 @@ class Publish extends ProductMassEditOperation
      */
     public function getNotGrantedIdentifiers()
     {
-        $products   = $this->getObjectsToMassEdit();
+        /** @var PublishedProductInterface[] $publisheds */
+        $publisheds   = $this->getObjectsToMassEdit();
         $notGranted = [];
-        foreach ($products as $product) {
-            if ($this->securityContext->isGranted(Attributes::OWNER, $product) === false) {
-                $notGranted[] = (string) $product->getIdentifier();
+        foreach ($publisheds as $published) {
+            if ($this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct()) === false) {
+                $notGranted[] = (string) $published->getIdentifier();
             }
         }
 
@@ -77,17 +77,10 @@ class Publish extends ProductMassEditOperation
     /**
      * {@inheritdoc}
      */
-    protected function doPerform(ProductInterface $product)
+    protected function doPerform(PublishedProductInterface $published)
     {
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $product)) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot publish product "%s" because current user does not own it',
-                    (string) $product
-                )
-            );
+        if ($this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct())) {
+            $this->manager->unpublish($published);
         }
-
-        $this->manager->publish($product);
     }
 }

@@ -28,7 +28,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @param ChangesCollector $changesCollector
+     * @param ChangesCollector $collector
      * @param MediaManager     $mediaManager
      * @param MediaFactory     $factory
      */
@@ -59,7 +59,6 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
      */
     public function collect(FormEvent $event)
     {
-        $form = $event->getForm();
         $data = $event->getData();
 
         if (!array_key_exists('values', $data)) {
