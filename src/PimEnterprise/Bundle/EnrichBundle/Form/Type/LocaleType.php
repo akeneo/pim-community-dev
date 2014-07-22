@@ -4,8 +4,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\AbstractType;
-
-use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
  * Form type for Locale
@@ -15,6 +14,9 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class LocaleType extends AbstractType
 {
+    /** @var EventSubscriberInterface[] */
+    protected $subscribers = [];
+
     /**
      * {@inheritdoc}
      */
@@ -22,6 +24,20 @@ class LocaleType extends AbstractType
     {
         $builder->add('code', 'text', ['disabled' => true]);
         $builder->add('permissions', 'pimee_enrich_locale_permissions');
+
+        foreach ($this->subscribers as $subscriber) {
+            $builder->addEventSubscriber($subscriber);
+        }
+    }
+
+    /**
+     * Add an event subscriber
+     *
+     * @param EventSubscriberInterface $subscriber
+     */
+    public function addEventSubscriber(EventSubscriberInterface $subscriber)
+    {
+        $this->subscribers[] = $subscriber;
     }
 
     /**

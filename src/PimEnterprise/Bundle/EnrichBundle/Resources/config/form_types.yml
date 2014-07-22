@@ -90,6 +90,8 @@ services:
         class: %pimee_enrich.form.type.locale.class%
         tags:
             - { name: form.type, alias: pimee_enrich_locale }
+        calls:
+            - [addEventSubscriber, ['@pimee_enrich.form.subscriber.locale_permissions']]
 
     pimee_enrich.form.type.locale_permissions:
         class: %pimee_enrich.form.type.locale_permissions.class%
