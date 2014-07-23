@@ -70,6 +70,7 @@
 - Removed the import CSV mimetype validation which is unreliable
 - Product completeness in MongoDB is not lost anymore in the grid
 - Upload on a job with a custom step (non ItemStep) doesn't crash anymore
+- Memory leak fixed in pim:version:refresh command
 
 ## BC breaks
 - Remove FlexibleEntityBundle
