@@ -40,13 +40,22 @@ class ProductController extends BaseProductController
     {
         try {
             $this->userContext->getAccessibleUserTree();
-
-            return parent::indexAction($request);
         } catch (\LogicException $e) {
             $this->addFlash('error', 'category.permissions.no_access_to_products');
 
             return $this->redirectToRoute('oro_default');
         }
+
+        if (null === $dataLocale = $this->getDataLocale()) {
+            $this->addFlash('error', 'locale.permissions.no_access_to_products');
+
+            return $this->redirectToRoute('oro_default');
+        }
+
+        return array(
+            'locales'    => $this->userContext->getGrantedUserLocales(),
+            'dataLocale' => $dataLocale,
+        );
     }
 
     /**
@@ -132,6 +141,21 @@ class ProductController extends BaseProductController
         $value = $product->getValue($attributeCode, $locale, $scope);
 
         return new Response((string) $value);
+    }
+
+    /**
+     * Returns the code of the data locale
+     * If user doesn't have permissions to see product data in any locale, returns null
+     *
+     * @return string|null
+     */
+    protected function getDataLocale()
+    {
+        try {
+            return $this->userContext->getCurrentGrantedLocale()->getCode();
+        } catch (\LogicException $e) {
+            return null;
+        }
     }
 
     /**
