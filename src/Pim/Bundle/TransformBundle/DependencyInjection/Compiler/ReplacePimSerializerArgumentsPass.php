@@ -70,9 +70,7 @@ class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
     {
         $priorities = array();
         foreach ($container->findTaggedServiceIds($tagName) as $id => $attributes) {
-            $priority = isset($attributes[0]['priority'])
-                    ? $attributes[0]['priority']
-                    : static::DEFAULT_PRIORITY;
+            $priority = isset($attributes[0]['priority']) ? $attributes[0]['priority'] : static::DEFAULT_PRIORITY;
             if (!isset($priorities[$priority])) {
                 $priorities[$priority] = array();
             }
