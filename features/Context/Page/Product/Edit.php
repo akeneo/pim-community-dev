@@ -45,6 +45,14 @@ class Edit extends Form
     }
 
     /**
+     * @return integer
+     */
+    public function countLocaleLinks()
+    {
+        return count($this->getElement('Locales dropdown')->findAll('css', 'a'));
+    }
+
+    /**
      * @param string $locale
      * @param string $content
      *

@@ -261,6 +261,15 @@ class WebUser extends RawMinkContext
      */
     public function theLocaleSwitcherShouldContainTheFollowingItems(TableNode $table)
     {
+        $linkCount = $this->getPage('Product edit')->countLocaleLinks();
+        $expectedLinkCount = count($table->getHash());
+
+        if ($linkCount !== $expectedLinkCount) {
+            throw $this->createExpectationException(
+                sprintf('Expected to see %d items in the locale switcher, saw %d', $expectedLinkCount, $linkCount)
+            );
+        }
+
         foreach ($table->getHash() as $data) {
             if (!$this->getPage('Product edit')->findLocaleLink($data['language'], $data['label'])) {
                 throw $this->createExpectationException(
