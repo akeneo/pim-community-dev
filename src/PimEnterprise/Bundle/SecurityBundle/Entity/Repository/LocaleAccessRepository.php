@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -15,20 +16,20 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 class LocaleAccessRepository extends EntityRepository
 {
     /**
-     * Get roles that have the specified access to a locale
+     * Get group that have the specified access to a locale
      *
      * @param Locale $locale
      * @param string $accessLevel
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getGrantedRoles(Locale $locale, $accessLevel)
+    public function getGrantedUserGroups(Locale $locale, $accessLevel)
     {
         $accessField = $this->getAccessField($accessLevel);
         $qb = $this->createQueryBuilder('a');
         $qb
-            ->select('r')
-            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
+            ->select('g')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.locale = :locale')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('locale', $locale);
@@ -38,14 +39,14 @@ class LocaleAccessRepository extends EntityRepository
 
     /**
      * Revoke access to a locales
-     * If excluded roles are provided, access will not be revoked for these roles
+     * If excluded user groups are provided, access will not be revoked for these groups
      *
      * @param Locale locale
-     * @param Role[] $excludedRoles
+     * @param Group[] $excludedUserGroups
      *
      * @return integer
      */
-    public function revokeAccess(Locale $locale, array $excludedRoles = [])
+    public function revokeAccess(Locale $locale, array $excludedUserGroups = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -53,10 +54,10 @@ class LocaleAccessRepository extends EntityRepository
             ->where('a.locale = :locale')
             ->setParameter('locale', $locale);
 
-        if (!empty($excludedRoles)) {
+        if (!empty($excludedUserGroups)) {
             $qb
-                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
-                ->setParameter('excludedRoles', $excludedRoles);
+                ->andWhere($qb->expr()->notIn('a.userGroup', ':excludedUserGroups'))
+                ->setParameter('excludedUserGroups', $excludedUserGroups);
         }
 
         return $qb->getQuery()->execute();

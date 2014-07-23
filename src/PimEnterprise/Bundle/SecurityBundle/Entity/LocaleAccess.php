@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use PimEnterprise\Bundle\SecurityBundle\Model\LocaleAccessInterface;
 
@@ -24,10 +24,8 @@ class LocaleAccess implements LocaleAccessInterface
      */
     protected $locale;
 
-    /**
-     * @var Role $role
-     */
-    protected $role;
+    /** @var Group */
+    protected $userGroup;
 
     /**
      * @var boolean $viewProducts
@@ -68,17 +66,17 @@ class LocaleAccess implements LocaleAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole()
+    public function getUserGroup()
     {
-        return $this->role;
+        return $this->userGroup;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRole(Role $role)
+    public function setUserGroup(Group $group)
     {
-        $this->role = $role;
+        $this->userGroup = $group;
 
         return $this;
     }

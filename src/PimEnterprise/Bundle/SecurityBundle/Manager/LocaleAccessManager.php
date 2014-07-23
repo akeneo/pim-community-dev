@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -40,65 +40,65 @@ class LocaleAccessManager
     }
 
     /**
-     * Get roles that have view access to a locale
+     * Get user groups that have view access to a locale
      *
      * @param Locale $locale
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getViewRoles(Locale $locale)
+    public function getViewUserGroups(Locale $locale)
     {
-        return $this->getAccessRepository()->getGrantedRoles($locale, Attributes::VIEW_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::VIEW_PRODUCTS);
     }
 
     /**
-     * Get roles that have edit access to a locale
+     * Get user groups that have edit access to a locale
      *
      * @param Locale $locale
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getEditRoles(Locale $locale)
+    public function getEditUserGroups(Locale $locale)
     {
-        return $this->getAccessRepository()->getGrantedRoles($locale, Attributes::EDIT_PRODUCTS);
+        return $this->getAccessRepository()->getGrantedUserGroups($locale, Attributes::EDIT_PRODUCTS);
     }
 
     /**
-     * Grant access on an attribute locale to specified roles
+     * Grant access on an attribute locale to specified user groups
      *
-     * @param Locale $locale
-     * @param Role[] $viewRoles
-     * @param Role[] $editRoles
+     * @param Locale  $locale
+     * @param Group[] $viewUserGroups
+     * @param Group[] $editUserGroups
      */
-    public function setAccess(Locale $locale, $viewRoles, $editRoles)
+    public function setAccess(Locale $locale, $viewUserGroups, $editUserGroups)
     {
-        $grantedRoles = [];
-        foreach ($editRoles as $role) {
-            $this->grantAccess($locale, $role, Attributes::EDIT_PRODUCTS);
-            $grantedRoles[] = $role;
+        $grantedUserGroups = [];
+        foreach ($editUserGroups as $group) {
+            $this->grantAccess($locale, $group, Attributes::EDIT_PRODUCTS);
+            $grantedUserGroups[] = $group;
         }
 
-        foreach ($viewRoles as $role) {
-            if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($locale, $role, Attributes::VIEW_PRODUCTS);
-                $grantedRoles[] = $role;
+        foreach ($viewUserGroups as $group) {
+            if (!in_array($group, $grantedUserGroups)) {
+                $this->grantAccess($locale, $group, Attributes::VIEW_PRODUCTS);
+                $grantedUserGroups[] = $group;
             }
         }
 
-        $this->revokeAccess($locale, $grantedRoles);
+        $this->revokeAccess($locale, $grantedUserGroups);
         $this->getObjectManager()->flush();
     }
 
     /**
-     * Grant specified access on an attribute locale for the provided role
+     * Grant specified access on an attribute locale for the provided user group
      *
      * @param Locale $locale
-     * @param Role   $role
+     * @param Group  $group
      * @param string $accessLevel
      */
-    public function grantAccess(Locale $locale, Role $role, $accessLevel)
+    public function grantAccess(Locale $locale, Group $group, $accessLevel)
     {
-        $access = $this->getLocaleAccess($locale, $role);
+        $access = $this->getLocaleAccess($locale, $group);
         $access
             ->setViewProducts(true)
             ->setEditProducts($accessLevel === Attributes::EDIT_PRODUCTS);
@@ -108,33 +108,33 @@ class LocaleAccessManager
 
     /**
      * Revoke access to an attribute locale
-     * If $excludedRoles are provided, access will not be revoked for roles with them
+     * If $excludedUserGroups are provided, access will not be revoked for user groups with them
      *
-     * @param Locale $locale
-     * @param Role[] $excludedRoles
+     * @param Locale  $locale
+     * @param Group[] $excludedUserGroups
      *
      * @return integer
      */
-    protected function revokeAccess(Locale $locale, array $excludedRoles = [])
+    protected function revokeAccess(Locale $locale, array $excludedUserGroups = [])
     {
-        return $this->getAccessRepository()->revokeAccess($locale, $excludedRoles);
+        return $this->getAccessRepository()->revokeAccess($locale, $excludedUserGroups);
     }
 
     /**
-     * Get LocaleAccess entity for a locale and role
+     * Get LocaleAccess entity for a locale and user group
      *
      * @param Locale $locale
-     * @param Role   $role
+     * @param Group  $group
      *
      * @return LocaleAccess
      */
-    protected function getLocaleAccess(Locale $locale, Role $role)
+    protected function getLocaleAccess(Locale $locale, Group $group)
     {
         $access = $this->getAccessRepository()
             ->findOneBy(
                 [
                     'locale' => $locale,
-                    'role'           => $role
+                    'userGroup'           => $group
                 ]
             );
 
@@ -142,7 +142,7 @@ class LocaleAccessManager
             $access = new $this->localeAccessClass();
             $access
                 ->setLocale($locale)
-                ->setRole($role);
+                ->setUserGroup($group);
         }
 
         return $access;

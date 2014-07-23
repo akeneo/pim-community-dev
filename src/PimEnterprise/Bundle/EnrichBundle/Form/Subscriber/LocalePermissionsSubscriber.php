@@ -54,8 +54,8 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+        $form->get('view')->setData($this->accessManager->getViewUserGroups($event->getData()));
+        $form->get('edit')->setData($this->accessManager->getEditUserGroups($event->getData()));
     }
 
     /**
@@ -71,9 +71,9 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         if ($form->isValid()) {
-            $viewRoles = $form->get('permissions')->get('view')->getData();
-            $editRoles = $form->get('permissions')->get('edit')->getData();
-            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+            $viewUserGroups = $form->get('permissions')->get('view')->getData();
+            $editUserGroups = $form->get('permissions')->get('edit')->getData();
+            $this->accessManager->setAccess($event->getData(), $viewUserGroups, $editUserGroups);
         }
     }
 }

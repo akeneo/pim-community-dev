@@ -21,12 +21,12 @@ class LocalePermissionsType extends AbstractType
     {
         $builder->add(
             'view',
-            'pimee_security_roles',
+            'pimee_security_groups',
             ['label' => 'locale.permissions.view.label', 'help' => 'locale.permissions.view.help']
         );
         $builder->add(
             'edit',
-            'pimee_security_roles',
+            'pimee_security_groups',
             ['label' => 'locale.permissions.edit.label', 'help' => 'locale.permissions.edit.help']
         );
     }
