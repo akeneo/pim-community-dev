@@ -16,5 +16,10 @@
         "psr-0": { "Akeneo\\Bundle\\BatchBundle": "" }
     },
     "target-dir": "Akeneo/Bundle/BatchBundle",
-    "minimum-stability": "stable"
+    "minimum-stability": "stable",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
+    }
 }
