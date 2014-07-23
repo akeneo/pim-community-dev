@@ -413,10 +413,6 @@ class EditCommonAttributes extends AbstractMassEditAction
             }
         }
 
-        if ('pim_catalog_metric' === $attribute->getAttributeType()) {
-            $this->setProductMetric($value, $value);
-        }
-
         return $value;
     }
 
