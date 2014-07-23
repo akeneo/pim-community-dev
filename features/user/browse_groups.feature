@@ -10,4 +10,8 @@ Feature: Browse groups
 
   Scenario: Successfully display groups
     Given I am on the user groups page
-    Then the grid should contain 3 elements
+    Then the grid should contain 4 elements
+    And I should see "All"
+    And I should see "Manager"
+    And I should see "Redactor"
+    And I should see "IT support"
