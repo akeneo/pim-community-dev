@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 use Pim\Bundle\CatalogBundle\Model\Product;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use Pim\Bundle\CatalogBundle\Entity\Locale;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class RowActionsConfiguratorSpec extends ObjectBehavior
@@ -21,18 +23,22 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepository $productRepository,
+        LocaleRepository $localeRepository,
         TokenInterface $token,
         User $user,
         ResultRecordInterface $record,
-        Product $product
+        Product $product,
+        Locale $locale
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
 
         $record->getValue('id')->willReturn(42);
+        $record->getValue('dataLocale')->willReturn('en_US');
+        $localeRepository->findOneBy(['code' => 'en_US'])->willReturn($locale);
         $productRepository->findOneBy(['id' => 42])->willReturn($product);
 
-        $this->beConstructedWith($registry, $securityContext, $productRepository);
+        $this->beConstructedWith($registry, $securityContext, $productRepository, $localeRepository);
     }
 
     function it_is_initializable()
@@ -42,6 +48,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_configures_the_grid($datagridConfiguration, $securityContext)
     {
+        $securityContext->isGranted(Attributes::EDIT_PRODUCT, Argument::any())->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
@@ -50,6 +57,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
     function it_configures_the_view_actions_for_a_row($record, $product, $securityContext)
     {
         $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -63,10 +71,11 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_configures_the_edit_actions_for_a_row($record, $product, $securityContext)
+    function it_configures_the_edit_actions_for_a_row($record, $product, $securityContext, $locale)
     {
         $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
@@ -80,10 +89,29 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product($record, $product, $securityContext)
+    function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product($record, $product, $securityContext, $locale)
+    {
+        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
+            [
+                'show' => true,
+                'edit' => false,
+                'edit_categories' => false,
+                'delete' => false,
+                'toggle_status' => false
+            ]
+        );
+    }
+
+    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product($record, $product, $securityContext, $locale)
     {
         $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
         $closure($record)->shouldReturn(
