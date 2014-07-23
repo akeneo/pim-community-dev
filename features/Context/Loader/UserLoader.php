@@ -2,6 +2,7 @@
 
 namespace Context\Loader;
 
+use Oro\Bundle\UserBundle\Entity\Group;
 use Symfony\Component\Yaml\Yaml;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -73,6 +74,7 @@ class UserLoader extends LoadUserData
         $email     = isset($data['email']) ? $data['email'] : $username . '@example.com';
         $apiKey    = isset($data['api_key']) ? $data['api_key'] : $username . '_api_key';
         $roles     = isset($data['roles']) ? $data['roles'] : array('ROLE_ADMINISTRATOR');
+        $groups    = isset($data['groups']) ? $data['groups'] : array('all');
 
         $user = $this->getUserManager()->createUser();
 
@@ -95,6 +97,10 @@ class UserLoader extends LoadUserData
 
         foreach ($roles as $role) {
             $user->addRole($this->getOrCreateRole($role));
+        }
+
+        foreach ($groups as $group) {
+            $user->addGroup($this->getOrCreateGroup($group));
         }
 
         $user->setCatalogLocale($this->getLocale($data['catalogLocale']));
@@ -120,5 +126,23 @@ class UserLoader extends LoadUserData
         }
 
         return $role;
+    }
+
+    /**
+     * @param string $name
+     *
+     * @return Group
+     */
+    protected function getOrCreateGroup($name)
+    {
+        $group = $this->getGroup($name);
+
+        if (!$group) {
+            $group = new Group($name);
+            $this->om->persist($group);
+            $this->om->flush();
+        }
+
+        return $group;
     }
 }
