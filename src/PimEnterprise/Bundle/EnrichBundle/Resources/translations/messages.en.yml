@@ -19,8 +19,8 @@ category.permissions:
 
 pimee_enrich:
     acl.product_ownership.title: Ownership
-    roles:
-        label: owner roles
+    groups:
+        label: owner groups
         empty: none
 
 btn:
