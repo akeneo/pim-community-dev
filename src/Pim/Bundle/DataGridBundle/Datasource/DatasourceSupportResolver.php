@@ -28,18 +28,14 @@ class DatasourceSupportResolver
 
     /**
      * @param string $storageDriver
-     * @param array  $mongodbEligibles
      */
-    public function __construct(
-        $storageDriver,
-        array $smartDatasources = [DatasourceTypes::DATASOURCE_SMART, DatasourceTypes::DATASOURCE_PRODUCT]
-    ) {
-        $this->storageDriver    = $storageDriver;
-        $this->smartDatasources = $smartDatasources;
+    public function __construct($storageDriver)
+    {
+        $this->storageDriver = $storageDriver;
     }
 
     /**
-     * @param $datasourceType
+     * @param string $datasourceType
      *
      * @return string
      *
@@ -59,11 +55,11 @@ class DatasourceSupportResolver
     }
 
     /**
-     * Define a datasource as eligible to the MongoDB support.
+     * Define a datasource as smart which it will be eligible to the MongoDB support.
      *
-     * @param $datasource
+     * @param mixed $datasource
      */
-    public function addMongoEligibleDatasources($datasource)
+    public function addSmartDatasource($datasource)
     {
         $this->smartDatasources[] = $datasource;
     }

@@ -36,6 +36,7 @@
 - Make optional the generation of missing completenesses in product reader
 - Update install to be able to define email address/name used for system emailing
 - Update BatchBundle version to get a better support of exceptions in logs and provide the new command akeneo:batch:list-jobs
+- Faster MongoDB product writer (around 10x times faster than current one)
 - Dispatch events on show/edit/execute/remove job profile actions
 - Dispatch events on view/download job execution actions
 - Allow to install custom user roles and groups from installer fixtures
@@ -48,6 +49,7 @@
 - Call manager's method remove from these entity controllers
 - Remove the count of products by category in the context of the management of the categories (perf)
 - Define attribute type classes as parameters
+- Products on which mass edit operation is not performed are also ignored from operation finalize method
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -66,6 +68,8 @@
 - Fixed a bug with repository resolver on ODM implementation
 - Fixed a bug on mass edit when we use a completeness filter to select products
 - Removed the import CSV mimetype validation which is unreliable
+- Product completeness in MongoDB is not lost anymore in the grid
+- Upload on a job with a custom step (non ItemStep) doesn't crash anymore
 
 ## BC breaks
 - Remove FlexibleEntityBundle
@@ -130,7 +134,9 @@
 - Replace service `pim_datagrid.datasource.orm` by `pim_datagrid.datasource.default`
 - Delete `Pim\Bundle\DataGridBundle\Datasource\MongoDB\MongoDBDatasource`
 - Delete service `pim_datagrid.datasource.mongodb`
+- Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository
+- Remove locale-specific rights
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

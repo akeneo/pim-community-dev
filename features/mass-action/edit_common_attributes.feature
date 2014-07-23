@@ -164,8 +164,8 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit attributes" operation
     And I display the Description attribute
     And I expand the "Description" attribute
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_en_US_mobile_text" with "Foo"
-    And fill in "pim_enrich_mass_edit_action_operation_values_description_en_US_tablet_text" with "Bar"
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_mobile_text" with "Foo"
+    And fill in "pim_enrich_mass_edit_action_operation_values_description_tablet_text" with "Bar"
     And I move on to the next step
     Then the english mobile Description of "boots" should be "Foo"
     And the english tablet Description of "boots" should be "Bar"

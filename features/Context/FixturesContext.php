@@ -65,6 +65,7 @@ class FixturesContext extends RawMinkContext
         'JobInstance'     => 'AkeneoBatchBundle:JobInstance',
         'User'            => 'OroUserBundle:User',
         'Role'            => 'OroUserBundle:Role',
+        'UserGroup'       => 'OroUserBundle:Group',
         'Locale'          => 'PimCatalogBundle:Locale',
         'GroupType'       => 'PimCatalogBundle:GroupType',
         'Product'         => 'Pim\Bundle\CatalogBundle\Model\Product',
@@ -1095,6 +1096,16 @@ class FixturesContext extends RawMinkContext
                 );
             }
         }
+    }
+
+    /**
+     * @param string $userGroupName
+     *
+     * @return \Oro\Bundle\UserBundle\Entity\Group
+     */
+    public function getUserGroup($userGroupName)
+    {
+        return $this->getEntityOrException('UserGroup', array('name' => $userGroupName));
     }
 
     /**

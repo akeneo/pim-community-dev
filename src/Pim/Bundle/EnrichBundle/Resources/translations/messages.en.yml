@@ -538,7 +538,6 @@ pim_enrich:
     acl:
         locale:
             index:  List locales
-            access: Access to locales
         currency:
             index: List currencies
             toggle: Toggle currencies

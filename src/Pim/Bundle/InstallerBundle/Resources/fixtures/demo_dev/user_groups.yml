@@ -1,7 +1,15 @@
 user_groups:
-    administrators:
-        name: Administrators
-    marketing:
-        name: Marketing
-    sales:
-        name: Sales
+    it_support:
+        name: IT support
+    manager:
+        name: Manager
+    furniture_manager:
+        name: Furniture manager
+    clothes_manager:
+        name: Clothes manager
+    web_redactor:
+        name: Web redactor
+    english_translator:
+        name: English translator
+    all:
+        name: All

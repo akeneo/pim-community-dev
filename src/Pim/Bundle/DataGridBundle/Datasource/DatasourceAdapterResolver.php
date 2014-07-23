@@ -33,7 +33,7 @@ class DatasourceAdapterResolver
     }
 
     /**
-     * @param $datasourceType
+     * @param string $datasourceType
      *
      * @return string
      *

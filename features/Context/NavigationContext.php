@@ -112,10 +112,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         $this->getSession()->visit($this->locatePath('/user/logout'));
     }
 
+
+
     /**
      * @param string $page
      *
      * @Given /^I am on the ([^"]*) page$/
+     * @Given /^I go to the ([^"]*) page$/
      */
     public function iAmOnThePage($page)
     {

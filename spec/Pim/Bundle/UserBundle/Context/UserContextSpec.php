@@ -7,7 +7,6 @@ use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
@@ -19,7 +18,6 @@ class UserContextSpec extends ObjectBehavior
 {
     function let(
         SecurityContextInterface $securityContext,
-        SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
@@ -52,16 +50,7 @@ class UserContextSpec extends ObjectBehavior
         $channelManager->getChannels()->willReturn([$mobile, $ecommerce]);
         $categoryManager->getTrees()->willReturn([$firstTree, $secondTree]);
 
-        $securityFacade->isGranted(Argument::any())->willReturn(true);
-
-        $this->beConstructedWith(
-            $securityContext,
-            $securityFacade,
-            $localeManager,
-            $channelManager,
-            $categoryManager,
-            'en_US'
-        );
+        $this->beConstructedWith($securityContext, $localeManager, $channelManager, $categoryManager, 'en_US');
     }
 
     function it_provides_locale_from_the_request_if_it_has_been_set(Request $request, $fr)
@@ -83,12 +72,13 @@ class UserContextSpec extends ObjectBehavior
         $this->getCurrentLocale()->shouldReturn($en);
     }
 
-    function it_throws_an_exception_if_user_doesnt_have_access_to_any_activated_locales($securityFacade)
+    function it_throws_an_exception_if_there_are_no_activated_locales($localeManager)
     {
-        $securityFacade->isGranted(Argument::any())->willReturn(false);
+        $localeManager->getLocaleByCode('en_US')->willReturn(null);
+        $localeManager->getActiveLocales()->willReturn([]);
 
         $this
-            ->shouldThrow(new \Exception("User doesn't have access to any activated locales"))
+            ->shouldThrow(new \Exception('There are no activated locales'))
             ->duringGetCurrentLocale();
     }
 

@@ -15,13 +15,13 @@ class DummyReaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testRead()
     {
-        $reader = new DummyReader;
+        $reader = new DummyReader();
         $this->assertNull($reader->read());
     }
 
     public function testGetConfigurationFields()
     {
-        $reader = new DummyReader;
+        $reader = new DummyReader();
         $this->assertEquals(array(), $reader->getConfigurationFields());
     }
 }
