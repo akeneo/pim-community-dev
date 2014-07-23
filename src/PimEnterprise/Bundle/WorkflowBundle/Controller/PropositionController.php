@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -74,6 +75,7 @@ class PropositionController extends AbstractController
      * @param integer|string $id
      *
      * @return RedirectResponse
+     * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
@@ -81,6 +83,10 @@ class PropositionController extends AbstractController
     {
         if (null === $proposition = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+        }
+
+        if (Proposition::READY !== $proposition->getStatus()) {
+            throw new \LogicException('A proposition that is not ready can not be approved');
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
