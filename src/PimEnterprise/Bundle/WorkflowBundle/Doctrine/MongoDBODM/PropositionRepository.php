@@ -29,6 +29,17 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
 
     /**
      * {@inheritdoc}
+     */
+    public function findByProduct(ProductInterface $product)
+    {
+        return $this
+            ->createQueryBuilder('Proposition')
+            ->field('product')->references($product)
+            ->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */

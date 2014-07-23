@@ -1,6 +1,8 @@
 parameters:
     pimee_workflow.repository.proposition.class:       PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PropositionRepository
     pimee_workflow.repository.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepository
+    pimee_workflow.repository.proposition_ownership.class: PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PropositionOwnershipRepository
+    pimee_workflow.subscriber.synchronize_proposition_categories.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\SynchronizePropositionCategoriesSubscriber
 
 services:
     pimee_workflow.object_manager.proposition:
@@ -30,6 +32,12 @@ services:
     pimee_workflow.repository.published_association:
         alias: pimee_workflow.repository.published_product
 
+    pimee_workflow.repository.proposition_ownership:
+        class: %pimee_workflow.repository.proposition_ownership.class%
+        arguments:
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_security.repository.category_access'
+
     pimee_workflow.repository.published_product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
@@ -37,3 +45,12 @@ services:
             - %pimee_workflow.entity.published_product.class%
             - '@pim_catalog.repository.family'
             - '@pimee_workflow.repository.published_product'
+
+    pimee_workflow.subscriber.synchronize_proposition_categories:
+        class: %pimee_workflow.subscriber.synchronize_proposition_categories.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '%pimee_workflow.model.proposition.class%'
+        tags:
+            - { name: doctrine_mongodb.odm.event_subscriber }
+            - { name: doctrine.event_subscriber }

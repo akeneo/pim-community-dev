@@ -4,33 +4,22 @@ namespace spec\PimEnterprise\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
 
 class PropositionWidgetSpec extends ObjectBehavior
 {
     function let(
-        ManagerRegistry $registry,
-        EntityRepository $repository,
+        PropositionOwnershipRepositoryInterface $ownershipRepository,
         CategoryAccessRepository $accessRepository,
         UserContext $context,
         User $user
     ) {
-        $registry
-            ->getRepository('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition')
-            ->willReturn($repository);
-        $registry
-            ->getRepository('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess')
-            ->willReturn($accessRepository);
-        $repository->findBy(Argument::cetera())->willReturn([]);
-
         $context->getUser()->willReturn($user);
 
-        $this->beConstructedWith($registry, $context);
+        $this->beConstructedWith($accessRepository, $ownershipRepository, $context);
     }
 
     function it_is_a_widget()
@@ -54,12 +43,10 @@ class PropositionWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn(['show' => false]);
     }
 
-    function it_passes_propositions_from_the_repository_to_the_template($accessRepository, $user, $repository)
+    function it_passes_propositions_from_the_repository_to_the_template($accessRepository, $user, $ownershipRepository)
     {
         $accessRepository->isOwner($user)->willReturn(true);
-        $repository
-            ->findBy(['status' => Proposition::READY], ['createdAt' => 'desc'], 10)
-            ->willReturn(['proposition one', 'proposition two']);
+        $ownershipRepository->findApprovableByUser($user, 10)->willReturn(['proposition one', 'proposition two']);
 
         $this->getParameters()->shouldReturn(['show' => true, 'params' => ['proposition one', 'proposition two']]);
     }

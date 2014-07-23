@@ -33,6 +33,9 @@ services:
         tags:
             - { name: 'pim_repository' }
 
+    pimee_workflow.repository.proposition_ownership:
+        alias: pimee_workflow.repository.proposition
+
     pimee_workflow.repository.published_product_mass_action:
         class: %pim_catalog.repository.product_mass_action.class%
         arguments:
