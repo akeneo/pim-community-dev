@@ -19,11 +19,6 @@ use Pim\Bundle\VersioningBundle\Model\Version;
 class RefreshCommand extends ContainerAwareCommand
 {
     /**
-     * Versioned entities
-     */
-    protected $versionedEntities = array();
-
-    /**
      * {@inheritdoc}
      */
     protected function configure()
@@ -62,6 +57,7 @@ class RefreshCommand extends ContainerAwareCommand
 
         if ($totalPendings === 0) {
             $output->writeln('<info>Versioning is already up to date.</info>');
+
             return;
         }
 
@@ -95,7 +91,7 @@ class RefreshCommand extends ContainerAwareCommand
 
             }
             $om->flush();
-            $om->clear('Pim\\Bundle\\VersioningBundle\\Entity\\Version');
+            $om->clear($this->getVersionClass());
 
             $pendingVersions = $this->getVersionManager()
                 ->getVersionRepository()
@@ -126,7 +122,7 @@ class RefreshCommand extends ContainerAwareCommand
     }
 
     /**
-     * @return AddVersionListener
+     * @return VersionManager
      */
     protected function getVersionManager()
     {
@@ -138,11 +134,17 @@ class RefreshCommand extends ContainerAwareCommand
      */
     protected function getObjectManager()
     {
-        $versionClass = $this->getContainer()->getParameter('pim_versioning.entity.version.class');
-
         return $this
             ->getContainer()
             ->get('pim_catalog.doctrine.smart_manager_registry')
-            ->getManagerForClass($versionClass);
+            ->getManagerForClass($this->getVersionClass());
+    }
+
+    /**
+     * @return string
+     */
+    protected function getVersionClass()
+    {
+        return $this->getContainer()->getParameter('pim_versioning.entity.version.class');
     }
 }

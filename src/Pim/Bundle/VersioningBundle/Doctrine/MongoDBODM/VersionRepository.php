@@ -57,6 +57,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     public function getPendingVersionsCount()
     {
         $qb = $this->createQueryBuilder()->field('pending')->equals(true);
+
         return $qb->getQuery()->execute()->count();
     }
 
