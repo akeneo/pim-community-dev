@@ -42,7 +42,7 @@ users:
         roles:
             - ROLE_USER
         groups:
-            - Web redactor
+            - Redactor
         enable: true
     sandra:
         username: sandra
@@ -57,7 +57,7 @@ users:
         roles:
             - ROLE_USER
         groups:
-            - Web redactor
+            - Redactor
         enable: true
     peter:
         username: peter
