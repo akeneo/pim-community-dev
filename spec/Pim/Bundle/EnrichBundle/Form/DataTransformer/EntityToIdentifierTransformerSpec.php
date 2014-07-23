@@ -120,4 +120,9 @@ class EntityToIdentifierTransformerSpec extends ObjectBehavior
         $this->beConstructedWith($repository, true, $propertyAccessor, null);
         $this->shouldThrow(new UnexpectedTypeException('foo', 'array'))->duringReverseTransform('foo');
     }
+
+    function it_does_not_reverse_transform_null_value()
+    {
+        $this->reverseTransform(null)->shouldReturn(null);
+    }
 }
