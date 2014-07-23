@@ -84,7 +84,6 @@ class SerializerPass implements CompilerPassInterface
             }
         }
 
-
         krsort($sortedServices);
 
         // Flatten the array
