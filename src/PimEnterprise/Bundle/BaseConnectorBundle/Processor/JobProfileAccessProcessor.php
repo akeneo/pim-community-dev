@@ -82,7 +82,7 @@ class JobProfileAccessProcessor extends TransformerProcessor
 
         foreach ($tmp as $role => $accesses) {
             $item = $data;
-            $item['role'] = $role;
+            $item['userGroup'] = $role;
             $item['executeJobProfile'] = isset($accesses[self::ACCESS_EXECUTE]);
             $item['editJobProfile'] = isset($accesses[self::ACCESS_EDIT]);
             $items[] = $item;

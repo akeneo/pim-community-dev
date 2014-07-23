@@ -1,17 +1,17 @@
 attribute_groups_accesses:
     general:
-        view: [administrator, user]
-        edit: [administrator, user]
+        view: [Manager, Redactor]
+        edit: [Manager, Redactor]
     seo:
-        view: [administrator, user]
-        edit: [administrator]
+        view: [Manager, Redactor]
+        edit: [Manager]
     marketing:
-        view: [administrator, user]
-        edit: [administrator]
+        view: [Manager, Redactor]
+        edit: [Manager]
     sizes:
-        view: [user]
-        edit: [administrator]
+        view: [Redactor]
+        edit: [Manager]
     colors:
-        view: [administrator]
+        view: [Manager]
     other:
-        edit: [administrator, manager, user]
+        edit: [Manager, Redactor]

@@ -1,14 +1,14 @@
 attribute_groups_accesses:
     info:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
     marketing:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
     sizes:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
     colors:
-        edit: [administrator]
-        view: [manager]
+        edit: [IT support]
+        view: [Manager]
     media:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
     other:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]

@@ -1,7 +1,7 @@
 user_roles:
     ROLE_ADMINISTRATOR:
         label: Administrator
-    ROLE_MANAGER:
-        label: Manager
+    ROLE_CATALOG_MANAGER:
+        label: Catalog manager
     ROLE_USER:
         label: User

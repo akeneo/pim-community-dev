@@ -3,10 +3,10 @@ PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess:
     table: pimee_security_job_profile_access
     repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
     uniqueConstraints:
-        job_profile_role_idx:
+        job_profile_user_group_idx:
             columns:
                 - job_profile_id
-                - role_id
+                - user_group_id
     fields:
         id:
             type: integer
@@ -33,10 +33,10 @@ PimEnterprise\Bundle\SecurityBundle\Entity\JobProfileAccess:
                     nullable: false
             cascade:
                 - persist
-        role:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+        userGroup:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
             joinColumns:
-                role_id:
+                user_group_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false

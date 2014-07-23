@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity\Repository;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
@@ -19,21 +19,26 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 class AttributeGroupAccessRepository extends EntityRepository
 {
     /**
-     * Get roles that have the specified access to an attribute group
+     * @var TableNameBuilder
+     */
+    protected $tableNameBuilder;
+
+    /**
+     * Get user groups that have the specified access to an attribute group
      *
      * @param AttributeGroup $group
      * @param string         $accessLevel
      *
-     * @return Role[]
+     * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    public function getGrantedRoles(AttributeGroup $group, $accessLevel)
+    public function getGrantedUserGroups(AttributeGroup $group, $accessLevel)
     {
         $accessField = ($accessLevel === Attributes::EDIT_ATTRIBUTES) ? 'editAttributes' : 'viewAttributes';
 
         $qb = $this->createQueryBuilder('a');
         $qb
-            ->select('r')
-            ->innerJoin('OroUserBundle:Role', 'r', 'WITH', 'a.role = r.id')
+            ->select('g')
+            ->innerJoin('OroUserBundle:Group', 'g', 'WITH', 'a.userGroup = g.id')
             ->where('a.attributeGroup = :group')
             ->andWhere($qb->expr()->eq(sprintf('a.%s', $accessField), true))
             ->setParameter('group', $group);
@@ -43,14 +48,14 @@ class AttributeGroupAccessRepository extends EntityRepository
 
     /**
      * Revoke access to an attribute group
-     * If excluded roles are provided, access will not be revoked for these roles
+     * If excluded user groups are provided, access will not be revoked for these groups
      *
-     * @param AttributeGroup $group
-     * @param Role[]         $excludedRoles
+     * @param AttributeGroup                        $group
+     * @param \Oro\Bundle\UserBundle\Entity\Group[] $excludedUserGroups
      *
-     * @return integer
+    * @return integer
      */
-    public function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
+    public function revokeAccess(AttributeGroup $group, array $excludedUserGroups = [])
     {
         $qb = $this->createQueryBuilder('a');
         $qb
@@ -58,10 +63,10 @@ class AttributeGroupAccessRepository extends EntityRepository
             ->where('a.attributeGroup = :group')
             ->setParameter('group', $group);
 
-        if (!empty($excludedRoles)) {
+        if (!empty($excludedUserGroups)) {
             $qb
-                ->andWhere($qb->expr()->notIn('a.role', ':excludedRoles'))
-                ->setParameter('excludedRoles', $excludedRoles);
+                ->andWhere($qb->expr()->notIn('a.userGroup', ':excludedUserGroups'))
+                ->setParameter('excludedUserGroups', $excludedUserGroups);
         }
 
         return $qb->getQuery()->execute();
@@ -79,8 +84,8 @@ class AttributeGroupAccessRepository extends EntityRepository
     {
         $qb = $this->createQueryBuilder('aga');
         $qb
-            ->andWhere($qb->expr()->in('aga.role', ':roles'))
-            ->setParameter('roles', $user->getRoles())
+            ->andWhere($qb->expr()->in('aga.userGroup', ':groups'))
+            ->setParameter('groups', $user->getGroups()->toArray())
             ->andWhere($qb->expr()->eq($this->getAccessField($accessLevel), true))
             ->resetDQLParts(['select'])
             ->innerJoin('aga.attributeGroup', 'ag', 'ag.id')
@@ -104,12 +109,12 @@ class AttributeGroupAccessRepository extends EntityRepository
             ? 'aga.edit_attributes'
             : 'aga.view_attributes';
 
-        // get role ids
-        $roleIds = array_map(
-            function (RoleInterface $role) {
-                return $role->getId();
+        // get group ids
+        $groupIds = array_map(
+            function (Group $group) {
+                return $group->getId();
             },
-            $user->getRoles()
+            $user->getGroups()->toArray()
         );
 
         $groupTable = $this->getTableName('pim_catalog.entity.attribute_group.class');
@@ -125,7 +130,7 @@ class AttributeGroupAccessRepository extends EntityRepository
                 $qb->expr()->orX(
                     $qb->expr()->andX(
                         $qb->expr()->neq($accessField, true),
-                        $qb->expr()->in('aga.role_id', $roleIds)
+                        $qb->expr()->in('aga.user_group_id', $groupIds)
                     ),
                     $qb->expr()->isNull($accessField)
                 )

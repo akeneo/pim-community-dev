@@ -34,13 +34,13 @@ class CategoryVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         Category $category
     ) {
-        $accessManager->getEditRoles($category)->willReturn(array());
-        $accessManager->getViewRoles($category)->willReturn(array());
+        $accessManager->getEditUserGroups($category)->willReturn(array());
+        $accessManager->getViewUserGroups($category)->willReturn(array());
 
         $this
             ->vote($token, $category, $this->attributes)
@@ -54,8 +54,8 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($category)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(false);
+        $accessManager->getEditUserGroups($category)->willReturn(array('foo'));
 
         $this
             ->vote($token, $category, array(Attributes::EDIT_PRODUCTS))
@@ -69,8 +69,8 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
-        $accessManager->getViewRoles($category)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(true);
+        $accessManager->getViewUserGroups($category)->willReturn(array('foo'));
 
         $this
             ->vote($token, $category, array(Attributes::VIEW_PRODUCTS))

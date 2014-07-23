@@ -54,9 +54,9 @@ class EnterpriseFeatureContext extends FeatureContext
     }
 
     /**
-     * @Then /^I should see the permission (.*) with roles (.*)$/
+     * @Then /^I should see the permission (.*) with user groups (.*)$/
      */
-    public function iShouldSeeThePermissionFieldWithRoles($field, $roles)
+    public function iShouldSeeThePermissionFieldWithRoles($field, $userGroups)
     {
         try {
             $element = $this->getSubcontext('navigation')->getCurrentPage()->findField($field);
@@ -73,15 +73,15 @@ class EnterpriseFeatureContext extends FeatureContext
             $selectedRoles[] = $option->getHtml();
         }
 
-        $expectedRoles = $this->getMainContext()->listToArray($roles);
-        $missingRoles = array_diff($selectedRoles, $expectedRoles);
-        $extraRoles = array_diff($expectedRoles, $selectedRoles);
-        if (count($missingRoles) > 0 || count($extraRoles) > 0) {
+        $expectedUserGroups = $this->getMainContext()->listToArray($userGroups);
+        $missingUserGroups = array_diff($selectedRoles, $expectedUserGroups);
+        $extraUserGroups = array_diff($expectedUserGroups, $selectedRoles);
+        if (count($missingUserGroups) > 0 || count($extraUserGroups) > 0) {
             throw $this->createExpectationException(
                 sprintf(
-                    'For permission %s, roles %s are expected, roles granted are %s',
+                    'For permission %s, user groups %s are expected, user groups granted are %s',
                     $field,
-                    implode(', ', $expectedRoles),
+                    implode(', ', $expectedUserGroups),
                     implode(', ', $selectedRoles)
                 )
             );

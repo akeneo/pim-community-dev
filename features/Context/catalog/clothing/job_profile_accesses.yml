@@ -1,38 +1,38 @@
 job_profile_accesses:
     clothing_association_type_export:
-        execute: [administrator, user]
-        edit: [administrator]
+        execute: [IT support, Redactor]
+        edit: [IT support]
     clothing_attribute_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
     clothing_category_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
     clothing_group_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
     clothing_option_export:
-        execute: [administrator, user]
+        execute: [IT support, Redactor]
         edit: []
     clothing_product_export:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
 
     clothing_association_type_import:
-        execute: [administrator, user]
+        execute: [IT support, Redactor]
         edit: []
     clothing_attribute_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
     clothing_category_import:
-        execute: [administrator, user]
-        edit: [administrator]
+        execute: [IT support, Redactor]
+        edit: [IT support]
     clothing_group_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]
     clothing_option_import:
-        execute: [administrator, user]
-        edit: [administrator]
+        execute: [IT support, Redactor]
+        edit: [IT support]
     clothing_product_import:
-        execute: [administrator, manager, user]
-        edit: [administrator]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support]

@@ -1,38 +1,38 @@
 job_profile_accesses:
     footwear_association_type_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_attribute_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_category_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_group_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_option_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_product_export:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
 
     footwear_association_type_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_attribute_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_category_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_group_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_option_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
     footwear_product_import:
-        execute: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        execute: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]

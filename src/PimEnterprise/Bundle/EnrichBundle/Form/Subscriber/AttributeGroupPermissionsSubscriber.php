@@ -65,8 +65,8 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
         }
 
         $form = $event->getForm()->get('permissions');
-        $form->get('view')->setData($this->accessManager->getViewRoles($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditRoles($event->getData()));
+        $form->get('view')->setData($this->accessManager->getViewUserGroups($event->getData()));
+        $form->get('edit')->setData($this->accessManager->getEditUserGroups($event->getData()));
     }
 
     /**
