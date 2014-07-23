@@ -9,13 +9,13 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
-class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
+class SerializerPassSpec extends ObjectBehavior
 {
     function let(ContainerBuilder $container, ParameterBag $bag, ReferenceFactory $factory)
     {
         $container->getParameterBag()->willReturn($bag);
 
-        $this->beConstructedWith('pim_serializer', ['normalizer', 'encoder'], $factory);
+        $this->beConstructedWith('pim_serializer', $factory);
     }
 
     function it_is_a_compiler_pass()
@@ -32,7 +32,7 @@ class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
                 new \LogicException(
                     sprintf(
                         'Resolver "%s" is called on an incorrect serializer service id',
-                        'Pim\Bundle\TransformBundle\DependencyInjection\Compiler\RegisterSerializerArgumentsPass'
+                        'Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass'
                     )
                 )
             )
@@ -54,13 +54,13 @@ class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
         $definition->getClass()->willReturn('%pim_serializer.class%');
         $bag->resolveValue('%pim_serializer.class%')->willReturn('Symfony\Component\Serializer\Serializer');
 
-        $container->findTaggedServiceIds('normalizer')->willReturn(
+        $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn(
             [
                 'normalizer.foo' => [[]],
                 'normalizer.bar' => [[]]
             ]
         );
-        $container->findTaggedServiceIds('encoder')->willReturn(
+        $container->findTaggedServiceIds('pim_serializer.encoder')->willReturn(
             [
                 'encoder.baz' => [[]]
             ]
@@ -96,16 +96,16 @@ class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
         $definition->getClass()->willReturn('%pim_serializer.class%');
         $bag->resolveValue('%pim_serializer.class%')->willReturn('Symfony\Component\Serializer\Serializer');
 
-        $container->findTaggedServiceIds('normalizer')->willReturn(
+        $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn(
             [
                 'normalizer.foo' => [['priority' => 10]],
                 'normalizer.bar' => [['priority' => 50]]
             ]
         );
-        $container->findTaggedServiceIds('encoder')->willReturn(
+        $container->findTaggedServiceIds('pim_serializer.encoder')->willReturn(
             [
-                'encoder.baz' => [['priority' => 90]],
-                'encoder.qux' => [[]]
+                'encoder.baz' => [[]],
+                'encoder.qux' => [['priority' => 90]]
             ]
         );
 
@@ -122,5 +122,20 @@ class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
         )->shouldBeCalled();
 
         $this->process($container);
+    }
+
+    function it_throws_an_exception_if_no_encoder_nor_normalizer_tag_services($container)
+    {
+        // Mock service definition
+        $container->hasDefinition('pim_serializer')->willReturn(true);
+        $container->findTaggedServiceIds('pim_serializer.normalizer')->willReturn([]);
+
+        $this
+            ->shouldThrow(
+                new \RuntimeException(
+                    'You must tag at least one service as "pim_serializer.normalizer" to use the Serializer service'
+                )
+            )
+            ->duringProcess($container);
     }
 }

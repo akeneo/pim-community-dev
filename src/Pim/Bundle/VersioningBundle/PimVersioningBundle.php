@@ -2,12 +2,12 @@
 
 namespace Pim\Bundle\VersioningBundle;
 
-use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\RegisterSerializerArgumentsPass;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Oro\Bundle\EntityBundle\DependencyInjection\Compiler\DoctrineOrmMappingsPass;
-use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 use Pim\Bundle\CatalogBundle\PimCatalogBundle;
+use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
+use Pim\Bundle\VersioningBundle\DependencyInjection\Compiler;
 
 /**
  * Pim Versioning Bundle
@@ -25,12 +25,7 @@ class PimVersioningBundle extends Bundle
     {
         $container
             ->addCompilerPass(new Compiler\RegisterUpdateGuessersPass())
-            ->addCompilerPass(
-                new RegisterSerializerArgumentsPass(
-                    'pim_versioning.serializer',
-                    ['pim_versioning.normalizer']
-                )
-            );
+            ->addCompilerPass(new SerializerPass('pim_versioning.serializer'));
 
         $versionMappings = [
             realpath(__DIR__ . '/Resources/config/model/doctrine') => 'Pim\Bundle\VersioningBundle\Model'
