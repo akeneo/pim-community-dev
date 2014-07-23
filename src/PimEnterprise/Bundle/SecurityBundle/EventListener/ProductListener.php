@@ -6,6 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 
@@ -23,13 +24,20 @@ class ProductListener implements EventSubscriberInterface
     protected $securityContext;
 
     /**
+     * @var UserContext
+     */
+    protected $userContext;
+
+    /**
      * Constructor
      *
      * @param SecurityContextInterface $securityContext
+     * @param UserContext              $userContext
      */
-    public function __construct(SecurityContextInterface $securityContext)
+    public function __construct(SecurityContextInterface $securityContext, UserContext $userContext)
     {
         $this->securityContext = $securityContext;
+        $this->userContext     = $userContext;
     }
 
     /**
@@ -52,6 +60,10 @@ class ProductListener implements EventSubscriberInterface
     public function checkEditPermission(GenericEvent $event)
     {
         if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $event->getSubject())) {
+            throw new AccessDeniedException();
+        }
+        $locale = $this->userContext->getCurrentLocale();
+        if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)) {
             throw new AccessDeniedException();
         }
     }
