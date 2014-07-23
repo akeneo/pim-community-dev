@@ -2,11 +2,11 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -23,22 +23,22 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /** @var SecurityFacade */
     protected $securityFacade;
 
-    /** @var RoleRepository */
-    protected $roleRepository;
+    /** @var GroupRepository */
+    protected $userGroupRepository;
 
     /**
      * @param JobProfileAccessManager $accessManager
      * @param SecurityFacade          $securityFacade
-     * @param RoleRepository          $roleRepository
+     * @param GroupRepository          $userGroupRepository
      */
     public function __construct(
         JobProfileAccessManager $accessManager,
         SecurityFacade $securityFacade,
-        RoleRepository $roleRepository
+        GroupRepository $userGroupRepository
     ) {
         $this->accessManager  = $accessManager;
         $this->securityFacade = $securityFacade;
-        $this->roleRepository = $roleRepository;
+        $this->userGroupRepository = $userGroupRepository;
     }
 
     /**
@@ -77,12 +77,12 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $executeRoles = $this->accessManager->getExecuteUserGroups($jobInstance);
-        $editRoles    = $this->accessManager->getEditUserGroups($jobInstance);
+        $executeGroups = $this->accessManager->getExecuteUserGroups($jobInstance);
+        $editGroups    = $this->accessManager->getEditUserGroups($jobInstance);
 
         $form = $event->getForm()->get('permissions');
-        $form->get('execute')->setData($executeRoles);
-        $form->get('edit')->setData($editRoles);
+        $form->get('execute')->setData($executeGroups);
+        $form->get('edit')->setData($editGroups);
     }
 
     /**
@@ -105,16 +105,16 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
             $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $jobInstance->getType());
 
             if ($this->securityFacade->isGranted($resource) && null !== $jobInstance->getId()) {
-                $executeRoles = $form->get('permissions')->get('execute')->getData();
-                $editRoles    = $form->get('permissions')->get('edit')->getData();
+                $executeGroups = $form->get('permissions')->get('execute')->getData();
+                $editGroups    = $form->get('permissions')->get('edit')->getData();
             } elseif (null === $jobInstance->getId()) {
-                $editRoles    = $this->roleRepository->findAll();
-                $executeRoles = $editRoles;
+                $editGroups    = $this->userGroupRepository->findAll();
+                $executeGroups = $editGroups;
             } else {
                 return;
             }
 
-            $this->accessManager->setAccess($jobInstance, $executeRoles, $editRoles);
+            $this->accessManager->setAccess($jobInstance, $executeGroups, $editGroups);
         }
     }
 }
