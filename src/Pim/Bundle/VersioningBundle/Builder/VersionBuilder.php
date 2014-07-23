@@ -40,7 +40,7 @@ class VersionBuilder
      */
     public function buildVersion($versionable, $author, Version $previousVersion = null, $context = null)
     {
-        $resourceName = get_class($versionable);
+        $resourceName = ClassUtils::getClass($versionable);
         $resourceId   = $versionable->getId();
 
         $versionNumber = $previousVersion ? $previousVersion->getVersion() + 1 : 1;
