@@ -38,13 +38,13 @@ class JobExecutionNormalizer extends SerializerAwareNormalizer implements Normal
             throw new \RuntimeException(
                 sprintf(
                     'Cannot normalize job execution of "%s" because injected serializer is not a normalizer',
-                    $object->getLabel()
+                    $object->getJobInstance()->getLabel()
                 )
             );
         }
 
         return [
-            'label'          => $object->getLabel(),
+            'label'          => $object->getJobInstance()->getLabel(),
             'failures'       => array_map(
                 function ($exception) {
                     return $this->translator->trans($exception['message'], $exception['messageParameters']);
