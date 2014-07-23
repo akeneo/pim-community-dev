@@ -53,7 +53,7 @@ class ProductController extends BaseProductController
         }
 
         return array(
-            'locales'    => $this->userContext->getGrantedUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'dataLocale' => $dataLocale,
         );
     }
@@ -113,7 +113,7 @@ class ProductController extends BaseProductController
         return [
             'product'    => $product,
             'dataLocale' => $this->getDataLocale(),
-            'locales'    => $this->userContext->getGrantedUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'created'    => $this->versionManager->getOldestLogEntry($product),
             'updated'    => $this->versionManager->getNewestLogEntry($product),
         ];
@@ -141,6 +141,16 @@ class ProductController extends BaseProductController
         $value = $product->getValue($attributeCode, $locale, $scope);
 
         return new Response((string) $value);
+    }
+
+    /**
+     * Override to return only granted user locales
+     *
+     * @return Locale[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getGrantedUserLocales();
     }
 
     /**

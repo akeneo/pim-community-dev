@@ -55,6 +55,19 @@ class EditCommonAttributes extends BaseEditCommonAttributes
     }
 
     /**
+     * Get form options
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return array(
+            'locales'          => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
+            'common_attributes' => $this->commonAttributes,
+        );
+    }
+
+    /**
      * {@inheritdoc}
      *
      * Prevent performing operation if current user does not own the product
