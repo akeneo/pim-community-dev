@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Component\DependencyInjection\Reference;
 
-class ReplacePimSerializerArgumentsPassSpec extends ObjectBehavior
+class RegisterSerializerArgumentsPassSpec extends ObjectBehavior
 {
     function let(ContainerBuilder $container, ParameterBag $bag, ReferenceFactory $factory)
     {
@@ -32,7 +32,7 @@ class ReplacePimSerializerArgumentsPassSpec extends ObjectBehavior
                 new \LogicException(
                     sprintf(
                         'Resolver "%s" is called on an incorrect serializer service id',
-                        'Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass'
+                        'Pim\Bundle\TransformBundle\DependencyInjection\Compiler\RegisterSerializerArgumentsPass'
                     )
                 )
             )

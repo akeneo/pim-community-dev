@@ -13,7 +13,7 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class ReplacePimSerializerArgumentsPass implements CompilerPassInterface
+class RegisterSerializerArgumentsPass implements CompilerPassInterface
 {
     /** @staticvar integer The default priority for services */
     const DEFAULT_PRIORITY = 100;

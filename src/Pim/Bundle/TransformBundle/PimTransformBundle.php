@@ -24,7 +24,7 @@ class PimTransformBundle extends Bundle
             ->addCompilerPass(new Compiler\RegisterEntityTransformersPass())
             ->addCompilerPass(new Compiler\TransformerGuesserPass())
             ->addCompilerPass(
-                new Compiler\ReplacePimSerializerArgumentsPass(
+                new Compiler\RegisterSerializerArgumentsPass(
                     'pim_serializer',
                     ['pim_serializer.normalizer', 'pim_serializer.encoder']
                 )
