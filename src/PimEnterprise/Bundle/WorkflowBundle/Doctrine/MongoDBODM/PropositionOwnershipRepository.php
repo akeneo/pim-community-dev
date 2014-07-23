@@ -42,13 +42,6 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
      */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
-        $roles = array_map(
-            function (Role $role) {
-                return $role->getRole();
-            },
-            $user->getRoles()
-        );
-
         $qb = $this->propositionRepo->createQueryBuilder();
         $qb
             ->field('status')->equals(Proposition::READY)
@@ -76,9 +69,9 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
         $qb
             ->join('o.category', 'category')
             ->select('category.id')
-            ->where($qb->expr()->in('o.role', ':roles'))
+            ->where($qb->expr()->in('o.userGroup', ':userGroups'))
             ->andWhere('o.ownProducts = 1')
-            ->setParameter('roles', $user->getRoles());
+            ->setParameter('userGroups', $user->getGroups()->toArray());
 
         $result = $qb->getQuery()->getResult(AbstractQuery::HYDRATE_ARRAY);
 

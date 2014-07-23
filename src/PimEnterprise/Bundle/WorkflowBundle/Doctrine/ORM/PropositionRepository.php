@@ -58,13 +58,13 @@ class PropositionRepository extends EntityRepository implements
                 $qb->expr()->eq('a.ownProducts', true)
             )
             ->andWhere(
-                $qb->expr()->in('a.role', ':roles')
+                $qb->expr()->in('a.userGroup', ':userGroups')
             )
             ->andWhere(
                 $qb->expr()->eq('p.status', Proposition::READY)
             )
             ->orderBy('p.createdAt', 'desc')
-            ->setParameter('roles', $user->getRoles());
+            ->setParameter('userGroups', $user->getGroups()->toArray());
 
         if (null !== $limit) {
             $qb->setMaxResults($limit);
