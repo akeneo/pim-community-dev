@@ -84,16 +84,16 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
+     * @Given /^user group "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
-    public function roleHasThePermissionToEditTheAttributeGroup($role, $accessLevel, $attributeGroup)
+    public function userGroupHasThePermissionToEditTheAttributeGroup($userGroup, $accessLevel, $attributeGroup)
     {
-        $role = $this->getRole($role);
+        $userGroup = $this->getUserGroup($userGroup);
         $attributeGroup = $this->getAttributeGroup($attributeGroup);
 
         $this
             ->getAccessManager('attribute_group')
-            ->setAccess($attributeGroup, [$role], $accessLevel === 'edit' ? [$role] : []);
+            ->setAccess($attributeGroup, [$userGroup], $accessLevel === 'edit' ? [$userGroup] : []);
     }
 
     /**
@@ -397,10 +397,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             $access = $this->$getterAccessType($data[$accessType]);
-            $role  = $this->getRole($data['role']);
+            $userGroup = $this->getUserGroup($data['user group']);
             $accessLevel = $this->getAccessLevelByAccessTypeAndAction($accessType, $data['access']);
 
-            $this->getAccessManager($accessType)->grantAccess($access, $role, $accessLevel);
+            $this->getAccessManager($accessType)->grantAccess($access, $userGroup, $accessLevel);
         }
 
         $registry = $this->getSmartRegistry()

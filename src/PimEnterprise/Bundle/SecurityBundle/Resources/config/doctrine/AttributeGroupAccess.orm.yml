@@ -3,10 +3,10 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
     table: pimee_security_attribute_group_access
     repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository
     uniqueConstraints:
-        group_role_idx:
+        group_user_group_idx:
             columns:
                 - attribute_group_id
-                - role_id
+                - user_group_id
     fields:
         id:
             type: integer
@@ -31,10 +31,10 @@ PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false
-        role:
-            targetEntity: Oro\Bundle\UserBundle\Entity\Role
+        userGroup:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
             joinColumns:
-                role_id:
+                user_group_id:
                     referencedColumnName: id
                     onDelete: CASCADE
                     nullable: false

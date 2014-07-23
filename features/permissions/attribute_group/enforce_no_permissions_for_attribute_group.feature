@@ -15,8 +15,8 @@ Feature: Enforce no permissions for an attribute group
     Given I am on the "info" attribute group page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to edit attributes | Administrator |
-      | Permissions to view attributes | Administrator |
+      | Permissions to edit attributes | IT support |
+      | Permissions to view attributes | IT support |
     And I save the attribute group
     And I edit the "foo" product
     Then I should not see the SKU, Name and Manufacturer fields

@@ -79,9 +79,9 @@ Feature: Enforce no permissions for a category
     And I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Administrator |
-      | Edit products | Administrator |
-      | Own products  | Administrator |
+      | View products | IT support |
+      | Edit products | IT support |
+      | Own products  | IT support |
     And I save the category
     And I edit the "grantedOne" product
     When I visit the "Associations" tab

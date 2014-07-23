@@ -12,8 +12,8 @@ Feature: Define permissions for a job profile
     Given I am on the "clothing_product_export" export job edit page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to execute job profile | User |
-      | Permissions to edit job profile    | User |
+      | Permissions to execute job profile | Redactor |
+      | Permissions to edit job profile    | Redactor |
     When I save the job profile
     Then I should be on the "clothing_product_export" export job page
     And I should not see the "Export now" button
@@ -25,7 +25,7 @@ Feature: Define permissions for a job profile
     Given I am on the "clothing_product_export" export job edit page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to edit job profile    | User |
+      | Permissions to edit job profile    | Redactor |
     When I save the job profile
     Then I should be on the "clothing_product_export" export job page
     And I should not see the "Edit" button

@@ -4,8 +4,8 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Manager;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as PimJobExecutionManager;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -22,6 +22,9 @@ class JobExecutionManager extends PimJobExecutionManager
 
     /** @var SecurityContextInterface */
     protected $securityContext;
+
+    /** @var JobExecutionRepository */
+    protected $repository;
 
     /**
      * Constructor
@@ -58,7 +61,7 @@ class JobExecutionManager extends PimJobExecutionManager
         );
 
         $subQB = $this->accessRepository->getGrantedJobsQB(
-            $this->securityContext->getUser(),
+            $this->securityContext->getToken()->getUser(),
             Attributes::EXECUTE_JOB_PROFILE
         );
 

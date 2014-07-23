@@ -11,12 +11,12 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Add the owner roles parameter to the product edit template parameters
+ * Add the owner groups parameter to the product edit template parameters
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AddOwnerRolesParameterListener implements EventSubscriberInterface
+class AddOwnerGroupsParameterListener implements EventSubscriberInterface
 {
     /** @var CategoryAccessRepository */
     protected $repository;
@@ -40,7 +40,7 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            EnrichEvents::PRE_RENDER_PRODUCT_EDIT => 'addOwnerRolesParameter',
+            EnrichEvents::PRE_RENDER_PRODUCT_EDIT => 'addOwnerGroupsParameter',
         ];
     }
 
@@ -49,7 +49,7 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
      *
      * @param GenericEvent $event
      */
-    public function addOwnerRolesParameter(GenericEvent $event)
+    public function addOwnerGroupsParameter(GenericEvent $event)
     {
         try {
             $parameters = $event->getArgument('parameters');
@@ -60,7 +60,7 @@ class AddOwnerRolesParameterListener implements EventSubscriberInterface
             return;
         }
 
-        $parameters['ownerRoles'] = $this->repository->getGrantedRolesForProduct(
+        $parameters['ownerGroups'] = $this->repository->getGrantedUserGroupsForProduct(
             $parameters['product'],
             Attributes::OWN_PRODUCTS
         );

@@ -14,7 +14,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Oro\Bundle\UserBundle\Entity\Role;
 
 class ProductVoterSpec extends ObjectBehavior
 {
@@ -97,7 +96,7 @@ class ProductVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
-    function it_grants_OWNER_access_to_user_that_has_a_role_which_has_the_ownership_of_the_product(
+    function it_grants_OWNER_access_to_user_that_has_a_group_which_has_the_ownership_of_the_product(
         $categoryAccessRepository,
         TokenInterface $token,
         ProductInterface $product,
@@ -113,7 +112,7 @@ class ProductVoterSpec extends ObjectBehavior
         $this->vote($token, $product, ['OWNER'])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
-    function it_denies_OWNER_access_to_user_that_does_not_have_a_role_which_has_the_ownership_of_the_product(
+    function it_denies_OWNER_access_to_user_that_does_not_have_a_group_which_has_the_ownership_of_the_product(
         $categoryAccessRepository,
         TokenInterface $token,
         ProductInterface $product,

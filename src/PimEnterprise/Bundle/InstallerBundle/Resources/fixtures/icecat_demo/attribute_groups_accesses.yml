@@ -1,22 +1,22 @@
 attribute_groups_accesses:
     marketing:
-        view: [administrator, user]
-        edit: [administrator, user]
-    technical:
-        view: [administrator, user]
-        edit: [administrator]
+        view: [IT support, Redactor]
+        edit: [IT support, Redactor]
+    IT support:
+        view: [IT support, Redactor]
+        edit: [IT support]
     design:
-        view: [administrator, user]
-        edit: [administrator]
+        view: [IT support, Redactor]
+        edit: [IT support]
     manufacturing:
-        view: [user]
-        edit: [administrator]
+        view: [Redactor]
+        edit: [IT support]
     color:
-        view: [administrator]
+        view: [IT support]
     size:
-        edit: [user]
+        edit: [Redactor]
     media:
-        view: [user]
-        edit: [user]
+        view: [Redactor]
+        edit: [Redactor]
     other:
-        edit: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
