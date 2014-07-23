@@ -138,6 +138,7 @@
 - Remove the flush parameter from Pim\Bundle\CatalogBundle\Doctrine\MongoDB\CompletenessGenerator::generateMissingForProduct(), as it was not used properly anymore (completeness are directly pushed to MongoDB without using ODM)
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository
 - Remove locale-specific rights
+- Upgraded to 0.2.* version of akeneo/batch-bundle
 - Rename `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass` by `Pim\Bundle\Transform\DependencyInjection\Compiler\SerializerPass` and change construct parameters
 - AddVersionListener and VersionBuilder use new `pim_versioning.serializer` service
 
