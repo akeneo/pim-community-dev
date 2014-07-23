@@ -92,6 +92,10 @@ class EntityToIdentifierTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if (null === $value) {
+            return;
+        }
+
         if ($this->multiple) {
             if (is_string($value) && (null !== $this->delimiter)) {
                 $value = explode($this->delimiter, $value);
