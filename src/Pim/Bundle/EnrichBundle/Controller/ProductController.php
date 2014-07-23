@@ -158,7 +158,7 @@ class ProductController extends AbstractDoctrineController
     public function indexAction(Request $request)
     {
         return array(
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
@@ -509,6 +509,14 @@ class ProductController extends AbstractDoctrineController
     }
 
     /**
+     * @return Locale[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getUserLocales();
+    }
+
+    /**
      * Get data locale code
      *
      * @throws \Exception
@@ -629,7 +637,7 @@ class ProductController extends AbstractDoctrineController
             'trees'            => $trees,
             'created'          => $this->versionManager->getOldestLogEntry($product),
             'updated'          => $this->versionManager->getNewestLogEntry($product),
-            'locales'          => $this->userContext->getUserLocales(),
+            'locales'          => $this->getUserLocales(),
             'createPopin'      => $this->getRequest()->get('create_popin')
         );
 
