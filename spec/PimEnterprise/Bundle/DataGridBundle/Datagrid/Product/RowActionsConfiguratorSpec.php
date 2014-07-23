@@ -6,7 +6,6 @@ use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -24,10 +23,15 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         ProductRepository $productRepository,
         TokenInterface $token,
         User $user,
-        CategoryInterface $category
+        ResultRecordInterface $record,
+        Product $product
     ) {
         $securityContext->getToken()->willReturn($token);
         $token->getUser()->willReturn($user);
+
+        $record->getValue('id')->willReturn(42);
+        $productRepository->findOneBy(['id' => 42])->willReturn($product);
+
         $this->beConstructedWith($registry, $securityContext, $productRepository);
     }
 
@@ -36,23 +40,19 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator');
     }
 
-    function it_configures_the_grid(
-        $datagridConfiguration,
-        $securityContext,
-        ProductRepository $productRepository
-    ) {
+    function it_configures_the_grid($datagridConfiguration, $securityContext)
+    {
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
     }
 
-    function it_configures_the_view_actions_for_a_row(ResultRecordInterface $record, ProductRepository $productRepository, Product $product, SecurityContextInterface $securityContext)
+    function it_configures_the_view_actions_for_a_row($record, $product, $securityContext)
     {
-        $method = $this->getActionConfigurationClosure();
-        $record->getValue('id')->willReturn(42);
-        $productRepository->findOneBy(['id' => 42])->willReturn($product);
         $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(false);
-        $method($record)->shouldReturn(
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
             [
                 'show' => true,
                 'edit' => false,
@@ -63,17 +63,34 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
         );
     }
 
-    function it_configures_the_edit_actions_for_a_row(ResultRecordInterface $record, ProductRepository $productRepository, Product $product, SecurityContextInterface $securityContext)
+    function it_configures_the_edit_actions_for_a_row($record, $product, $securityContext)
     {
-        $method = $this->getActionConfigurationClosure();
-        $record->getValue('id')->willReturn(42);
-        $productRepository->findOneBy(['id' => 42])->willReturn($product);
         $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
-        $method($record)->shouldReturn(
+        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
             [
                 'show' => false,
                 'edit' => true,
                 'edit_categories' => true,
+                'delete' => true,
+                'toggle_status' => true
+            ]
+        );
+    }
+
+    function it_hides_the_edit_categories_action_if_user_does_not_own_the_product($record, $product, $securityContext)
+    {
+        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(false);
+
+        $closure = $this->getActionConfigurationClosure();
+        $closure($record)->shouldReturn(
+            [
+                'show' => false,
+                'edit' => true,
+                'edit_categories' => false,
                 'delete' => true,
                 'toggle_status' => true
             ]

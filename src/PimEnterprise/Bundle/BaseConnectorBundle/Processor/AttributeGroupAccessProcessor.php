@@ -82,7 +82,7 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
 
         foreach ($tmp as $role => $accesses) {
             $item = $data;
-            $item['role'] = $role;
+            $item['userGroup'] = $role;
             $item['viewAttributes'] = isset($accesses[self::ACCESS_VIEW]);
             $item['editAttributes'] = isset($accesses[self::ACCESS_EDIT]);
             $items[] = $item;

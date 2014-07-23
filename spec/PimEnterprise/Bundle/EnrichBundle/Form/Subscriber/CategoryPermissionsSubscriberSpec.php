@@ -45,7 +45,7 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $this->preSetData($event);
     }
 
-    function it_injects_defined_roles_in_the_form_data(
+    function it_injects_defined_user_groups_in_the_form_data(
         FormEvent $event,
         Category $category,
         Form $form,
@@ -64,9 +64,9 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('edit')->willReturn($editForm);
         $form->get('own')->willReturn($ownForm);
 
-        $accessManager->getViewRoles($category)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($category)->willReturn(['bar', 'baz']);
-        $accessManager->getOwnRoles($category)->willReturn(['bar', 'baz']);
+        $accessManager->getViewUserGroups($category)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($category)->willReturn(['bar', 'baz']);
+        $accessManager->getOwnUserGroups($category)->willReturn(['bar', 'baz']);
 
         $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();

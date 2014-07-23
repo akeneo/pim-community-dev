@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Model;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 
 /**
  * Base interface for all access entities
@@ -20,18 +20,18 @@ interface AccessInterface
     public function getId();
 
     /**
-     * Get role
+     * Get user group
      *
-     * @return Role
+     * @return Group
      */
-    public function getRole();
+    public function getUserGroup();
 
     /**
-     * Set role
+     * Set user group
      *
-     * @param Role $role
+     * @param Group $group
      *
      * @return AccessInterface
      */
-    public function setRole(Role $role);
+    public function setUserGroup(Group $group);
 }

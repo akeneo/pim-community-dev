@@ -19,11 +19,11 @@ Feature: Classify a product in the trees I have access
       | boots        | Boots         |           |
       | slippers     | Slippers      |           |
     And the following category accesses:
-      | category | role    | access |
-      | shoes    | Manager | view   |
-      | vintage  | Manager | view   |
-      | trendy   | Manager | view   |
-      | classy   | Manager | view   |
+      | category | user group | access |
+      | shoes    | Manager    | view   |
+      | vintage  | Manager    | view   |
+      | trendy   | Manager    | view   |
+      | classy   | Manager    | view   |
     And I am logged in as "Julia"
 
   Scenario: Associate a product to categories

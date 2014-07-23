@@ -15,9 +15,9 @@ Feature: Define permissions for a category
     And I save the category
     When I edit the "newcategory" category
     And I visit the "Permissions" tab
-    Then I should see the permission View products with roles Administrator, Manager and User
-    And I should see the permission Edit products with roles Administrator, Manager and User
-    And I should see the permission Own products with roles Administrator and Manager
+    Then I should see the permission View products with user groups IT support, Manager and Redactor
+    And I should see the permission Edit products with user groups IT support, Manager and Redactor
+    And I should see the permission Own products with user groups IT support and Manager
 
   Scenario: By default, update children when the parent's permissions are changed
     Given the following categories:
@@ -33,4 +33,4 @@ Feature: Define permissions for a category
     And I save the category
     When I edit the "classy" category
     And I visit the "Permissions" tab
-    Then I should see the permission View products with roles Manager
+    Then I should see the permission View products with user groups Manager

@@ -32,9 +32,9 @@ class AddCategoryPermissionsListenerSpec extends ObjectBehavior
     {
         $event->getSubject()->willReturn($category);
         $category->getParent()->willReturn($parent);
-        $accessManager->getViewRoles($parent)->willReturn(['A', 'B']);
-        $accessManager->getEditRoles($parent)->willReturn(['C']);
-        $accessManager->getOwnRoles($parent)->willReturn(['C']);
+        $accessManager->getViewUserGroups($parent)->willReturn(['A', 'B']);
+        $accessManager->getEditUserGroups($parent)->willReturn(['C']);
+        $accessManager->getOwnUserGroups($parent)->willReturn(['C']);
         $accessManager->setAccess($category, ['A', 'B'], ['C'], ['C'])->shouldBeCalled();
         $this->addNewCategoryPermissions($event);
     }

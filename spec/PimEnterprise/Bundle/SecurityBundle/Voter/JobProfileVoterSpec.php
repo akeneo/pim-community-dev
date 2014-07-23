@@ -34,13 +34,13 @@ class JobProfileVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         JobInstance $jobProfile
     ) {
-        $accessManager->getEditRoles($jobProfile)->willReturn(array());
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array());
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array());
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array());
 
         $this
             ->vote($token, $jobProfile, $this->attributes)
@@ -54,8 +54,8 @@ class JobProfileVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($jobProfile)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(false);
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
             ->vote($token, $jobProfile, array(Attributes::EDIT_JOB_PROFILE))
@@ -69,8 +69,8 @@ class JobProfileVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(true);
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
             ->vote($token, $jobProfile, array(Attributes::EXECUTE_JOB_PROFILE))

@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PimEnterprise\Bundle\SecurityBundle\Model\JobProfileAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -35,67 +35,67 @@ class JobProfileAccessManager
     }
 
     /**
-     * Get roles that have execute access to a job profile
+     * Get user groups that have execute access to a job profile
      *
      * @param JobInstance $jobProfile
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getExecuteRoles(JobInstance $jobProfile)
+    public function getExecuteUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
     }
 
     /**
-     * Get roles that have edit access to a job profile
+     * Get user groups that have edit access to a job profile
      *
      * @param JobInstance $jobProfile
      *
-     * @return Role[]
+     * @return Group[]
      */
-    public function getEditRoles(JobInstance $jobProfile)
+    public function getEditUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedRoles($jobProfile, Attributes::EDIT_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EDIT_JOB_PROFILE);
     }
 
     /**
-     * Grant access on a job profile to specified roles
+     * Grant access on a job profile to specified user groups
      *
      * @param JobInstance $jobProfile
-     * @param Roles[]     $executeRoles
-     * @param Roles[]     $editRoles
+     * @param Group[]     $executeGroups
+     * @param Group[]     $editGroups
      */
-    public function setAccess(JobInstance $jobProfile, $executeRoles, $editRoles)
+    public function setAccess(JobInstance $jobProfile, $executeGroups, $editGroups)
     {
-        $grantedRoles = [];
-        foreach ($editRoles as $role) {
-            $this->grantAccess($jobProfile, $role, Attributes::EDIT_JOB_PROFILE);
-            $grantedRoles[] = $role;
+        $grantedGroups = [];
+        foreach ($editGroups as $group) {
+            $this->grantAccess($jobProfile, $group, Attributes::EDIT_JOB_PROFILE);
+            $grantedGroups[] = $group;
         }
 
-        foreach ($executeRoles as $role) {
-            if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($jobProfile, $role, Attributes::EXECUTE_JOB_PROFILE);
-                $grantedRoles[] = $role;
+        foreach ($executeGroups as $group) {
+            if (!in_array($group, $grantedGroups)) {
+                $this->grantAccess($jobProfile, $group, Attributes::EXECUTE_JOB_PROFILE);
+                $grantedGroups[] = $group;
             }
         }
 
         if (null !== $jobProfile->getId()) {
-            $this->revokeAccess($jobProfile, $grantedRoles);
+            $this->revokeAccess($jobProfile, $grantedGroups);
         }
         $this->getObjectManager()->flush();
     }
 
     /**
-     * Grant specified access on a job profile for the provided role
+     * Grant specified access on a job profile for the provided user group
      *
      * @param JobInstance $jobProfile
-     * @param Role        $role
+     * @param Group       $group
      * @param string      $accessLevel
      */
-    public function grantAccess(JobInstance $jobProfile, Role $role, $accessLevel)
+    public function grantAccess(JobInstance $jobProfile, Group $group, $accessLevel)
     {
-        $access = $this->getJobProfileAccess($jobProfile, $role);
+        $access = $this->getJobProfileAccess($jobProfile, $group);
         $access
             ->setExecuteJobProfile(true)
             ->setEditJobProfile($accessLevel === Attributes::EDIT_JOB_PROFILE);
@@ -104,28 +104,30 @@ class JobProfileAccessManager
     }
 
     /**
-     * Get JobProfileAccess entity for a job profile and role
+     * Get JobProfileAccess entity for a job profile and user group
      *
      * @param JobInstance $jobProfile
-     * @param Role        $role
+     * @param Group       $group
      *
      * @return JobProfileAccessInterface
      */
-    protected function getJobProfileAccess(JobInstance $jobProfile, Role $role)
+    protected function getJobProfileAccess(JobInstance $jobProfile, Group $group)
     {
         $access = $this->getRepository()
             ->findOneby(
                 [
                     'jobProfile' => $jobProfile,
-                    'role'       => $role
+                    'userGroup'  => $group
                 ]
             );
 
         if (!$access) {
+            /** @var JobProfileAccessInterface $access */
             $access = new $this->objectAccessClass();
             $access
                 ->setJobProfile($jobProfile)
-                ->setRole($role);
+                ->setUserGroup($group)
+            ;
         }
 
         return $access;
@@ -133,22 +135,22 @@ class JobProfileAccessManager
 
     /**
      * Revoke access to a job profile
-     * If $excludedRoles are provided, access will not be revoked for roles with them
+     * If $excludedGroups are provided, access will not be revoked for user groups with them
      *
      * @param JobInstance $jobProfile
-     * @param Role[]      $excludedRoles
+     * @param Group[]     $excludedGroups
      *
      * @return integer
      */
-    protected function revokeAccess(JobInstance $jobProfile, array $excludedRoles = [])
+    protected function revokeAccess(JobInstance $jobProfile, array $excludedGroups = [])
     {
-        return $this->getRepository()->revokeAccess($jobProfile, $excludedRoles);
+        return $this->getRepository()->revokeAccess($jobProfile, $excludedGroups);
     }
 
     /**
      * Get repository
      *
-     * @return JobProfileAccessRepository
+     * @return \PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository
      */
     protected function getRepository()
     {
@@ -158,7 +160,7 @@ class JobProfileAccessManager
     /**
      * Get the object manager
      *
-     * @return 0bjectManager
+     * @return \Doctrine\Common\Persistence\ObjectManager|null
      */
     protected function getObjectManager()
     {

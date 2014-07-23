@@ -19,8 +19,8 @@ class AttributeGroupPermissionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('view', 'pimee_security_roles', ['label' => 'attribute group.permissions.view.label']);
-        $builder->add('edit', 'pimee_security_roles', ['label' => 'attribute group.permissions.edit.label']);
+        $builder->add('view', 'pimee_security_groups', ['label' => 'attribute group.permissions.view.label']);
+        $builder->add('edit', 'pimee_security_groups', ['label' => 'attribute group.permissions.edit.label']);
     }
 
     /**

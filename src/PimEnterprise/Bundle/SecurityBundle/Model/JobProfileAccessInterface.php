@@ -17,7 +17,7 @@ interface JobProfileAccessInterface extends AccessInterface
      *
      * @param JobInstance $jobProfile
      *
-     * @return ProfileAccessInterface
+     * @return JobProfileAccessInterface
      */
     public function setJobProfile(JobInstance $jobProfile);
 
@@ -33,7 +33,7 @@ interface JobProfileAccessInterface extends AccessInterface
      *
      * @param boolean $executeJobProfile
      *
-     * @return ProfileAccessInterface
+     * @return JobProfileAccessInterface
      */
     public function setExecuteJobProfile($executeJobProfile);
 
@@ -49,7 +49,7 @@ interface JobProfileAccessInterface extends AccessInterface
      *
      * @param boolean $editJobProfile
      *
-     * @return ProfileAccessInterface
+     * @return JobProfileAccessInterface
      */
     public function setEditJobProfile($editJobProfile);
 
