@@ -61,6 +61,8 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion before proposition document insertion
      *
      * @param LifecycleEventArgs $event
+     *
+     * @return null
      */
     public function prePersist(LifecycleEventArgs $event)
     {
@@ -77,6 +79,8 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion(s) before proposition or product document update
      *
      * @param LifecycleEventArgs $event
+     *
+     * @return null
      */
     public function preUpdate(LifecycleEventArgs $event)
     {
@@ -98,6 +102,8 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
      * Handle synchronization of propostion(s) before category entity removal
      *
      * @param LifecycleEventArgs $event
+     *
+     * @return null
      */
     public function preRemove(LifecycleEventArgs $event)
     {
