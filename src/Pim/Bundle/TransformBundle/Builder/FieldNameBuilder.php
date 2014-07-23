@@ -3,6 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Builder;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 
 /**
  * Create field names for associations and product values
@@ -19,14 +20,19 @@ class FieldNameBuilder
     /** @var string */
     protected $assocTypeClass;
 
+    /** @var string */
+    protected $attributeClass;
+
     /**
      * @param ManagerRegistry $managerRegistry
      * @param string          $assocTypeClass
+     * @param string          $attributeClass
      */
-    public function __construct(ManagerRegistry $managerRegistry, $assocTypeClass)
+    public function __construct(ManagerRegistry $managerRegistry, $assocTypeClass, $attributeClass)
     {
         $this->managerRegistry = $managerRegistry;
         $this->assocTypeClass  = $assocTypeClass;
+        $this->attributeClass  = $attributeClass;
     }
 
     /**
@@ -37,12 +43,77 @@ class FieldNameBuilder
     public function getAssociationFieldNames()
     {
         $fieldNames = [];
-        foreach ($this->getAssociationTypes() as $assocType) {
+        $assocTypes = $this->getRepository($this->assocTypeClass)->findAll();
+        foreach ($assocTypes as $assocType) {
             $fieldNames[] = $assocType->getCode() .'-groups';
             $fieldNames[] = $assocType->getCode() .'-products';
         }
 
         return $fieldNames;
+    }
+
+    /**
+     * Extract attribute field name informations with attribute code, locale code, scope code
+     * and optionally price currency
+     *
+     * Returned array is like:
+     * [
+     *     "attribute"   => AbstractAttribute,
+     *     "locale_code" => <locale_code>|null,
+     *     "scope_code"  => <scope_code>|null,
+     *     "price_currency" => <currency_code> // this key is optional
+     * ]
+     *
+     * @param $fieldName
+     *
+     * @return array
+     */
+    public function extractAttributeFieldNameInfos($fieldName)
+    {
+        $explodedFieldName = explode("-", $fieldName);
+        $attributeCode = $explodedFieldName[0];
+
+        $attribute = $this->getRepository($this->attributeClass)->findByReference($attributeCode);
+
+        return $this->extractAttributeInfos($attribute, $explodedFieldName);
+    }
+
+    /**
+     * Extract informations from an attribute and exploded field name
+     * This method is used from extractAttributeFieldNameInfos and can be redefine to add new rules
+     *
+     * @param AbstractAttribute $attribute
+     * @param array             $explodedFieldName
+     *
+     * @return array
+     */
+    protected function extractAttributeInfos(AbstractAttribute $attribute, array $explodedFieldName)
+    {
+        if ($attribute->isLocalizable() && $attribute->isScopable()) {
+            $localeCode = $explodedFieldName[1];
+            $scopeCode  = $explodedFieldName[2];
+            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[3] : null;
+        } elseif ($attribute->isLocalizable()) {
+            $localeCode = $explodedFieldName[1];
+            $scopeCode  = null;
+            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
+        } elseif ($attribute->isScopable()) {
+            $localeCode = null;
+            $scopeCode  = $explodedFieldName[1];
+            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[2] : null;
+        } else {
+            $localeCode = null;
+            $scopeCode  = null;
+            $priceCurrency = $attribute->getBackendType() === 'prices' ? $explodedFieldName[1] : null;
+        }
+
+        $priceArray = (null === $priceCurrency) ? [] : ['price_currency' => $priceCurrency];
+
+        return [
+            'attribute'   => $attribute,
+            'locale_code' => $localeCode,
+            'scope_code'  => $scopeCode,
+        ] + $priceArray;
     }
 
     /**
@@ -53,13 +124,5 @@ class FieldNameBuilder
     protected function getRepository($entityClass)
     {
         return $this->managerRegistry->getRepository($entityClass);
-    }
-
-    /**
-     * @return AssociationType[]
-     */
-    protected function getAssociationTypes()
-    {
-        return $this->getRepository($this->assocTypeClass)->findAll();
     }
 }
