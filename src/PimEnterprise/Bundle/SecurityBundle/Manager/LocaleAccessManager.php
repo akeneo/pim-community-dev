@@ -133,8 +133,8 @@ class LocaleAccessManager
         $access = $this->getAccessRepository()
             ->findOneBy(
                 [
-                    'locale' => $locale,
-                    'userGroup'           => $group
+                    'locale'    => $locale,
+                    'userGroup' => $group
                 ]
             );
 

@@ -90,7 +90,7 @@ class PublishedProductController extends AbstractController
     public function indexAction(Request $request)
     {
         return array(
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->userContext->getGrantedUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
