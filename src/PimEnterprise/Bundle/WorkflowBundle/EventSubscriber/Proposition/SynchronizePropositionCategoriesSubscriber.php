@@ -21,20 +21,32 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
  * inside mongodb-odm and orm event managers, then event received as parameter must be typehinted against
  * the common LifecycleEventArgs interface.
  *
+ * This subscriber is only registered when the mongodb support is activated
+ *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
 {
+    /** @var ManagerRegistry */
     protected $registry;
+
+    /** @var string */
     protected $propositionClassName;
 
+    /**
+     * @param ManagerRegistry $registry
+     * @param string          $propositionClassName
+     */
     public function __construct(ManagerRegistry $registry, $propositionClassName)
     {
         $this->registry = $registry;
         $this->propositionClassName = $propositionClassName;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getSubscribedEvents()
     {
         return [
@@ -45,7 +57,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Synchronize category ids of inserted propositions
+     * Handle synchronization of propostion before proposition document insertion
      *
      * @param LifecycleEventArgs $event
      */
@@ -61,6 +73,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     }
 
     /**
+     * Handle synchronization of propostion(s) before proposition or product document update
      *
      * @param LifecycleEventArgs $event
      */
@@ -79,7 +92,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Synchronize category ids of propositions of products belonging to a removed category
+     * Handle synchronization of propostion(s) before category entity removal
      *
      * @param LifecycleEventArgs $event
      */
@@ -141,7 +154,14 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
         }
     }
 
-    public function getPropositions(ProductInterface $product)
+    /**
+     * Get propositions related to a product
+     *
+     * @param ProductInterface $product
+     *
+     * @return array
+     */
+    protected function getPropositions(ProductInterface $product)
     {
         return $this->registry->getRepository($this->propositionClassName)->findByProduct($product);
     }
