@@ -117,7 +117,7 @@ class SerializerPassSpec extends ObjectBehavior
         $definition->setArguments(
             [
                 [$barNormalizer, $fooNormalizer],
-                [$quxEncoder, $bazEncoder]
+                [$bazEncoder, $quxEncoder]
             ]
         )->shouldBeCalled();
 
