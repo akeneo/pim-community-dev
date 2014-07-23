@@ -46,9 +46,18 @@ interface VersionRepositoryInterface
     /**
      * Returns pending versions
      *
+     * @param int $limit
+     *
      * @return Version[]|null
      */
-    public function getPendingVersions();
+    public function getPendingVersions($limit = null);
+
+    /**
+     * Get total pending versions count
+     *
+     * @return int
+     */
+    public function getPendingVersionsCount();
 
     /**
      * Find Version entities by a set of criteria
