@@ -70,6 +70,14 @@ class VersionManager
     }
 
     /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
      * @param boolean $mode
      */
     public function setRealTimeVersioning($mode)

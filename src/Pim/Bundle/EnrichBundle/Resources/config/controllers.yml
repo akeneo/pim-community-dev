@@ -82,6 +82,7 @@ services:
 
     pim_enrich.controller.locale:
         scope: request
+        parent: pim_enrich.controller.abstract
         class: %pim_enrich.controller.locale.class%
 
     pim_enrich.controller.attribute:

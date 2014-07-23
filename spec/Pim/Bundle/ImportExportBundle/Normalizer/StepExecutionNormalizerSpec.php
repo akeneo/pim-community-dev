@@ -2,11 +2,13 @@
 
 namespace spec\Pim\Bundle\ImportExportBundle\Normalizer;
 
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Entity\Warning;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Doctrine\Common\Collections\ArrayCollection;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Translation\TranslatorInterface;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class StepExecutionNormalizerSpec extends ObjectBehavior
 {
@@ -47,14 +49,17 @@ class StepExecutionNormalizerSpec extends ObjectBehavior
         $startTime->format('Y-m-d H:i:s')->willReturn('yesterday');
 
         $stepExecution->getWarnings()->willReturn(
-            [
+            new ArrayCollection(
                 [
-                    'name'             => 'a_warning',
-                    'reason'           => 'warning_reason',
-                    'reasonParameters' => ['foo' => 'bar'],
-                    'item'             => ['a' => 'A', 'b' => 'B', 'c' => 'C'],
+                    new Warning(
+                        $stepExecution->getWrappedObject(),
+                        'a_warning',
+                        'warning_reason',
+                        ['foo' => 'bar'],
+                        ['a' => 'A', 'b' => 'B', 'c' => 'C']
+                    )
                 ]
-            ]
+            )
         );
         $translator->trans('a_warning')->willReturn('Reader');
         $translator->trans('warning_reason', ['foo' => 'bar'])->willReturn('WARNING!');

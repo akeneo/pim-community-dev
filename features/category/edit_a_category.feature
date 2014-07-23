@@ -7,6 +7,7 @@ Feature: Edit a category
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
 
+  @javascript
   Scenario: Successfully edit a category
     Given I edit the "Sandals" category
     Then I should see the Code field

@@ -14,6 +14,11 @@ use Symfony\Component\HttpFoundation\File\File;
  */
 class MediaFactory
 {
+    /**
+     * @param File|null $file
+     *
+     * @return Media
+     */
     public function createMedia(File $file = null)
     {
         $media = new Media();

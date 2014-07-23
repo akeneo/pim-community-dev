@@ -121,6 +121,7 @@ class AddProductVersionListener implements EventSubscriber
         if (!$this->versionManager->isRealTimeVersioning()) {
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
         }
+
         return $this->versionManager->buildVersion($versionable, $changeset);
     }
 

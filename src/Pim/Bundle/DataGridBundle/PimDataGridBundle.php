@@ -27,7 +27,6 @@ class PimDataGridBundle extends Bundle
             ->addCompilerPass(new Compiler\AddSortersPass())
             ->addCompilerPass(new Compiler\AddMassActionHandlersPass())
             ->addCompilerPass(new Compiler\ResolverPass())
-            ->addCompilerPass(new Compiler\ConfigurationPass())
-        ;
+            ->addCompilerPass(new Compiler\ConfigurationPass());
     }
 }

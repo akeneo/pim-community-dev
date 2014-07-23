@@ -118,7 +118,7 @@ class TransformationContext extends RawMinkContext
      */
     public function castRoleLabelToRole($label)
     {
-        return $this->getFixturesContext()->getRole($label);
+        return $this->getFixturesContext()->getUserGroup($label);
     }
 
     /**

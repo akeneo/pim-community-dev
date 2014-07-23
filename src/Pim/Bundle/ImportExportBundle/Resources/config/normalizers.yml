@@ -9,6 +9,7 @@ services:
             - '@translator'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }
 
     pim_import_export.normalizer.step_execution:
         class: %pim_import_export.normalizer.step_execution.class%
@@ -16,3 +17,4 @@ services:
             - '@translator'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pim_versioning.serializer.normalizer, priority: 90 }

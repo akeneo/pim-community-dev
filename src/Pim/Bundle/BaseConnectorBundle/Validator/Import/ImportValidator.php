@@ -69,10 +69,10 @@ class ImportValidator implements ImportValidatorInterface
         $class = get_class($entity);
         if (!isset($this->identifiers[$class])) {
             $this->identifiers[$class] = array();
-        } elseif (in_array($identifier, $this->identifiers[$class])) {
+        } elseif (isset($this->identifiers[$class][$identifier])) {
             throw new DuplicateIdentifierException($identifier, $data);
         }
-        $this->identifiers[$class][] = $identifier;
+        $this->identifiers[$class][$identifier] = "";
     }
 
     /**
