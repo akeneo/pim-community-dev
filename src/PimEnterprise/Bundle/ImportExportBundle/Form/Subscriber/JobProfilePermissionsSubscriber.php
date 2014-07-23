@@ -29,7 +29,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     /**
      * @param JobProfileAccessManager $accessManager
      * @param SecurityFacade          $securityFacade
-     * @param GroupRepository          $userGroupRepository
+     * @param GroupRepository         $userGroupRepository
      */
     public function __construct(
         JobProfileAccessManager $accessManager,

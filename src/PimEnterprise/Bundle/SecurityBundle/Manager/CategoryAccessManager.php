@@ -88,9 +88,9 @@ class CategoryAccessManager
      * Grant access on a category to specified user groups, own implies edit which implies read
     *
     * @param CategoryInterface $category   the category
-     * @param Group[]          $viewGroups the view user groups
-     * @param Group[]          $editGroups the edit user groups
-     * @param Group[]          $ownGroups  the own user groups
+     * @param Group[] $viewGroups the view user groups
+     * @param Group[] $editGroups the edit user groups
+     * @param Group[] $ownGroups  the own user groups
      */
     public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups)
     {
@@ -300,7 +300,7 @@ class CategoryAccessManager
      * Update accesses on categories, if a permission is null we don't update
      *
      * @param integer[]    $categoryIds
-     * @param Group         $group
+     * @param Group        $group
      * @param boolean|null $view
      * @param boolean|null $edit
      * @param boolean|null $own
@@ -329,7 +329,7 @@ class CategoryAccessManager
      * Grant specified access on a category for the provided user group
      *
      * @param CategoryInterface $category
-     * @param Group              $group
+     * @param Group             $group
      * @param string            $accessLevel
      */
     public function grantAccess(CategoryInterface $category, Group $group, $accessLevel)
@@ -347,7 +347,7 @@ class CategoryAccessManager
      * Get CategoryAccess entity for a category and user group
      *
      * @param CategoryInterface $category
-     * @param Group              $group
+     * @param Group             $group
      *
      * @return CategoryAccessInterface
      */
@@ -377,7 +377,7 @@ class CategoryAccessManager
      * If $excludedGroups are provided, access will not be revoked for user groups with them
      *
      * @param CategoryInterface $category
-     * @param Group[]            $excludedGroups
+     * @param Group[]           $excludedGroups
      *
      * @return integer
      */

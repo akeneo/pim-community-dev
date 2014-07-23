@@ -48,7 +48,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
      * If excluded user groups are provided, access will not be revoked for these groups
      *
      * @param JobInstance $jobProfile
-     * @param Group[]      $excludedGroups
+     * @param Group[]     $excludedGroups
      *
      * @return integer
      */

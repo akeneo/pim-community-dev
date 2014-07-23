@@ -51,7 +51,7 @@ class CategoryAccessRepository extends EntityRepository
      * If excluded user groups are provided, access will not be revoked for these group
      *
      * @param CategoryInterface $category
-     * @param Group[] $excludedGroups
+     * @param Group[]           $excludedGroups
      *
      * @return integer
      */
