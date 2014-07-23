@@ -12,6 +12,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 class ProductCategoryManagerSpec extends ObjectBehavior
 {
@@ -29,13 +30,15 @@ class ProductCategoryManagerSpec extends ObjectBehavior
         SecurityContextInterface $securityContext,
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepository $categoryRepo,
+        CategoryAccessRepository $accessRepo,
         TokenInterface $token,
         User $user
     ) {
         $this->beConstructedWith(
             $productRepo,
             $categoryRepo,
-            $securityContext
+            $securityContext,
+            $accessRepo
         );
     }
 

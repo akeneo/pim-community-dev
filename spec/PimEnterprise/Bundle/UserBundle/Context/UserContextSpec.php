@@ -24,7 +24,6 @@ class UserContextSpec extends ObjectBehavior
 
     function let(
         SecurityContextInterface $securityContext,
-        SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
@@ -36,7 +35,6 @@ class UserContextSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $securityContext,
-            $securityFacade,
             $localeManager,
             $channelManager,
             $categoryManager,

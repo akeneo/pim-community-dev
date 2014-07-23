@@ -94,7 +94,7 @@ class CategoryAccessProcessor extends TransformerProcessor
 
         foreach ($tmp as $role => $accesses) {
             $item = $data;
-            $item['role'] = $role;
+            $item['userGroup'] = $role;
             $item['viewProducts'] = isset($accesses[self::ACCESS_VIEW]);
             $item['editProducts'] = isset($accesses[self::ACCESS_EDIT]);
             $item['ownProducts'] = isset($accesses[self::ACCESS_OWN]);

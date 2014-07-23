@@ -1,52 +1,52 @@
 category_accesses:
     2013_collection:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     2014_collection:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     2015_collection:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2013:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2013:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2014:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2014:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2015:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2015:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2015_spring:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2015_summer:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2015_autumn:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     men_2015_winter:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2015_spring:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2015_summer:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2015_autumn:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]
     women_2015_winter:
-        edit: [administrator, manager, user]
-        own: [administrator, manager, user]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager, Redactor]

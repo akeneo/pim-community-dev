@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Entity;
 
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 
@@ -14,34 +14,22 @@ use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
  */
 class CategoryAccess implements CategoryAccessInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer */
     protected $id;
 
-    /**
-     * @var CategoryInterface $category
-     */
+    /** @var CategoryInterface */
     protected $category;
 
-    /**
-     * @var Role $role
-     */
-    protected $role;
+    /** @var Group */
+    protected $userGroup;
 
-    /**
-     * @var boolean $viewProducts
-     */
+    /** @var boolean */
     protected $viewProducts;
 
-    /**
-     * @var boolean $editProducts
-     */
+    /** @var boolean */
     protected $editProducts;
 
-    /**
-     * @var boolean $ownProducts
-     */
+    /** @var boolean */
     protected $ownProducts;
 
     /**
@@ -55,17 +43,17 @@ class CategoryAccess implements CategoryAccessInterface
     /**
      * {@inheritdoc}
      */
-    public function getRole()
+    public function getUserGroup()
     {
-        return $this->role;
+        return $this->userGroup;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRole(Role $role)
+    public function setUserGroup(Group $group)
     {
-        $this->role = $role;
+        $this->userGroup = $group;
 
         return $this;
     }

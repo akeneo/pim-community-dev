@@ -28,7 +28,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
     protected $factory;
 
     /**
-     * @param ChangesCollector $changesCollector
+     * @param ChangesCollector $collector
      * @param MediaManager     $mediaManager
      * @param MediaFactory     $factory
      */

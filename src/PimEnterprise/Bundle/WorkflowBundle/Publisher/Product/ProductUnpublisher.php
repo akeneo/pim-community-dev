@@ -25,6 +25,7 @@ class ProductUnpublisher implements UnpublisherInterface
      * The constructor
      *
      * @param PublishedAssociationRepositoryInterface $publishedAssociationRepository
+     * @param AssociationTypeRepository               $associationTypeRepository
      */
     public function __construct(
         PublishedAssociationRepositoryInterface $publishedAssociationRepository,

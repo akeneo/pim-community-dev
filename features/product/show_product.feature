@@ -15,10 +15,10 @@ Feature: Show a product
       | classy  | Classy      | shoes  |
       | boots   | Boots       |        |
     And the following category accesses:
-      | category        | role    | access |
-      | 2014_collection | Manager |        |
-      | shoes           | Manager | edit   |
-      | boots           | Manager | view   |
+      | category        | user group | access |
+      | 2014_collection | Manager    |        |
+      | shoes           | Manager    | edit   |
+      | boots           | Manager    | view   |
     And the following products:
       | sku     | categories | name-en |
       | rangers | shoes      | rangers |

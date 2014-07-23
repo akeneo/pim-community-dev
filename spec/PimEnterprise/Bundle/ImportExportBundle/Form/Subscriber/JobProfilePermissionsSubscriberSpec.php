@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
-use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
@@ -17,14 +17,14 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
     function let(
         JobProfileAccessManager $accessManager,
         SecurityFacade $securityFacade,
-        RoleRepository $roleRepository,
+        GroupRepository $userGroupRepository,
         FormEvent $event,
         Form $form,
         JobInstance $jobInstance,
         Form $executeForm,
         Form $editForm
     ) {
-        $this->beConstructedWith($accessManager, $securityFacade, $roleRepository);
+        $this->beConstructedWith($accessManager, $securityFacade, $userGroupRepository);
 
         $event->getData()->willReturn($jobInstance);
         $event->getForm()->willReturn($form);
@@ -58,7 +58,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->preSetData($event);
     }
 
-    function it_injects_defined_roles_in_the_form_data(
+    function it_injects_defined_user_groups_in_the_form_data(
         $event,
         $jobInstance,
         $executeForm,
@@ -67,8 +67,8 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
     ) {
         $jobInstance->getId()->willReturn(1);
 
-        $accessManager->getExecuteRoles($jobInstance)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($jobInstance)->willReturn(['bar', 'baz']);
+        $accessManager->getExecuteUserGroups($jobInstance)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($jobInstance)->willReturn(['bar', 'baz']);
 
         $executeForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();
@@ -76,17 +76,17 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_persists_all_roles_on_creation(
+    function it_persists_all_user_groups_on_creation(
         $event,
         $form,
         $jobInstance,
-        $roleRepository,
+        $userGroupRepository,
         $accessManager
     ) {
         $form->isValid()->willReturn(true);
         $jobInstance->getId()->willReturn(null);
         $jobInstance->getType()->willReturn('import');
-        $roleRepository->findAll()->willReturn(['foo']);
+        $userGroupRepository->findAll()->willReturn(['foo']);
 
         $accessManager->setAccess($jobInstance, ['foo'], ['foo'])->shouldBeCalled();
 

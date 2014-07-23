@@ -23,11 +23,11 @@ class CategoryRightsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('view', 'pimee_security_roles', ['label' => 'category.permissions.view.label'])
+            ->add('view', 'pimee_security_groups', ['label' => 'category.permissions.view.label'])
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('edit', 'pimee_security_roles', ['label' => 'category.permissions.edit.label'])
+            ->add('edit', 'pimee_security_groups', ['label' => 'category.permissions.edit.label'])
             ->shouldHaveBeenCalled();
     }
 

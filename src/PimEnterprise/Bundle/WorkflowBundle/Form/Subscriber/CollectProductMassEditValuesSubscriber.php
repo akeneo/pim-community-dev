@@ -29,12 +29,14 @@ class CollectProductMassEditValuesSubscriber implements EventSubscriberInterface
     /** @var MediaFactory */
     protected $factory;
 
+    /** @var LocaleRepository */
     protected $repository;
 
     /**
-     * @param ChangesCollector $changesCollector
+     * @param ChangesCollector $collector
      * @param MediaManager     $mediaManager
      * @param MediaFactory     $factory
+     * @param LocaleRepository $repository
      */
     public function __construct(
         ChangesCollector $collector,

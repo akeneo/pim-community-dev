@@ -4,11 +4,12 @@ namespace PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
-use Oro\Bundle\UserBundle\Entity\Role;
+use Oro\Bundle\UserBundle\Entity\Group as UserGroup;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
 
 /**
  * Attribute group access manager
@@ -41,65 +42,65 @@ class AttributeGroupAccessManager
     }
 
     /**
-     * Get roles that have view access to an attribute group
+     * Get user groups that have view access to an attribute group
      *
      * @param AttributeGroup $group
      *
-     * @return Role[]
+     * @return UserGroup[]
      */
-    public function getViewRoles(AttributeGroup $group)
+    public function getViewUserGroups(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, Attributes::VIEW_ATTRIBUTES);
+        return $this->getRepository()->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES);
     }
 
     /**
-     * Get roles that have edit access to an attribute group
+     * Get user groups that have edit access to an attribute group
      *
      * @param AttributeGroup $group
      *
-     * @return Role[]
+     * @return UserGroup[]
      */
-    public function getEditRoles(AttributeGroup $group)
+    public function getEditUserGroups(AttributeGroup $group)
     {
-        return $this->getRepository()->getGrantedRoles($group, Attributes::EDIT_ATTRIBUTES);
+        return $this->getRepository()->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES);
     }
 
     /**
-     * Grant access on an attribute group to specified roles
+     * Grant access on an attribute group to specified user group
      *
-     * @param AttributeGroup $group
-     * @param Role[]         $viewRoles
-     * @param Role[]         $editRoles
+     * @param AttributeGroup $attributeGroup
+     * @param UserGroup[]    $viewUserGroups
+     * @param UserGroup[]    $editGroups
      */
-    public function setAccess(AttributeGroup $group, $viewRoles, $editRoles)
+    public function setAccess(AttributeGroup $attributeGroup, $viewUserGroups, $editGroups)
     {
-        $grantedRoles = [];
-        foreach ($editRoles as $role) {
-            $this->grantAccess($group, $role, Attributes::EDIT_ATTRIBUTES);
-            $grantedRoles[] = $role;
+        $grantedUserGroups = [];
+        foreach ($editGroups as $userGroup) {
+            $this->grantAccess($attributeGroup, $userGroup, Attributes::EDIT_ATTRIBUTES);
+            $grantedUserGroups[] = $userGroup;
         }
 
-        foreach ($viewRoles as $role) {
-            if (!in_array($role, $grantedRoles)) {
-                $this->grantAccess($group, $role, Attributes::VIEW_ATTRIBUTES);
-                $grantedRoles[] = $role;
+        foreach ($viewUserGroups as $userGroup) {
+            if (!in_array($userGroup, $grantedUserGroups)) {
+                $this->grantAccess($attributeGroup, $userGroup, Attributes::VIEW_ATTRIBUTES);
+                $grantedUserGroups[] = $userGroup;
             }
         }
 
-        $this->revokeAccess($group, $grantedRoles);
+        $this->revokeAccess($attributeGroup, $grantedUserGroups);
         $this->getObjectManager()->flush();
     }
 
     /**
-     * Grant specified access on an attribute group for the provided role
+     * Grant specified access on an attribute group for the provided user group
      *
-     * @param AttributeGroup $group
-     * @param Role           $role
+     * @param AttributeGroup $attributeGroup
+     * @param UserGroup      $userGroup
      * @param string         $accessLevel
      */
-    public function grantAccess(AttributeGroup $group, Role $role, $accessLevel)
+    public function grantAccess(AttributeGroup $attributeGroup, UserGroup $userGroup, $accessLevel)
     {
-        $access = $this->getAttributeGroupAccess($group, $role);
+        $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
         $access
             ->setViewAttributes(true)
             ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
@@ -108,28 +109,29 @@ class AttributeGroupAccessManager
     }
 
     /**
-     * Get AttributeGroupAccess entity for a group and role
+     * Get AttributeGroupAccess entity for an attribute group and user group
      *
-     * @param AttributeGroup $group
-     * @param Role           $role
-     *
-     * @return AttributeGroupAccess
+    * @param AttributeGroup $attributeGroup
+    * @param UserGroup      $userGroup
+    *
+    * @return AttributeGroupAccess
      */
-    protected function getAttributeGroupAccess(AttributeGroup $group, Role $role)
+    protected function getAttributeGroupAccess(AttributeGroup $attributeGroup, UserGroup $userGroup)
     {
         $access = $this->getRepository()
             ->findOneBy(
                 [
-                    'attributeGroup' => $group,
-                    'role'           => $role
+                    'attributeGroup' => $attributeGroup,
+                    'userGroup'      => $userGroup
                 ]
             );
 
         if (!$access) {
+            /** @var AttributeGroupAccessInterface $access */
             $access = new $this->attGroupAccessClass();
             $access
-                ->setAttributeGroup($group)
-                ->setRole($role);
+                ->setAttributeGroup($attributeGroup)
+                ->setUserGroup($userGroup);
         }
 
         return $access;
@@ -137,16 +139,16 @@ class AttributeGroupAccessManager
 
     /**
      * Revoke access to an attribute group
-     * If $excludedRoles are provided, access will not be revoked for roles with them
+     * If $excludedUserGroups are provided, access will not be revoked for groups with them
      *
-     * @param AttributeGroup $group
-     * @param Role[]         $excludedRoles
+     * @param AttributeGroup $attributeGroup
+     * @param UserGroup[]    $excludedUserGroups
      *
      * @return integer
      */
-    protected function revokeAccess(AttributeGroup $group, array $excludedRoles = [])
+    protected function revokeAccess(AttributeGroup $attributeGroup, array $excludedUserGroups = [])
     {
-        return $this->getRepository()->revokeAccess($group, $excludedRoles);
+        return $this->getRepository()->revokeAccess($attributeGroup, $excludedUserGroups);
     }
 
     /**
