@@ -70,7 +70,7 @@ class RefreshCommand extends ContainerAwareCommand
 
         $batchSize = $input->getOption('batch-size');
 
-        $om = $this->getVersionManager()->getObjectManager;
+        $om = $this->getObjectManager();
 
         $pendingVersions = $this->getVersionManager()
             ->getVersionRepository()
@@ -117,11 +117,11 @@ class RefreshCommand extends ContainerAwareCommand
         $version = $this->getVersionManager()->buildPendingVersion($version, $previousVersion);
 
         if ($version->getChangeset()) {
-            $this->getVersionManager()->getObjectManager()->persist($version);
+            $this->getObjectManager()->persist($version);
 
             return $version;
         } else {
-            $this->getVersionManager()->getObjectManager()->remove($version);
+            $this->getObjectManager()->remove($version);
         }
     }
 
