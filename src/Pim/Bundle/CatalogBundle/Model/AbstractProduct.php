@@ -9,6 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
+use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
 /**
  * Abstract product
@@ -512,15 +513,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         $_values = new ArrayCollection();
 
         foreach ($this->values as $value) {
-            $attribute = $value->getAttribute();
-            $key = $attribute->getCode();
-            if ($attribute->isLocalizable()) {
-                $key .= '_'.$value->getLocale();
-            }
-            if ($attribute->isScopable()) {
-                $key .= '_'.$value->getScope();
-            }
-            $_values[$key] = $value;
+            $_values[ProductValueKeyGenerator::getKey($value)] = $value;
         }
 
         return $_values;
@@ -612,24 +605,6 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         $this->categories->removeElement($category);
 
         return $this;
-    }
-
-    /**
-     * Get the product root category ids
-     *
-     * @return array
-     */
-    public function getTreeIds()
-    {
-        $roots = [];
-
-        foreach ($this->categories as $category) {
-            if (!in_array($category->getRoot(), $roots)) {
-                $roots[] = $category->getRoot();
-            }
-        }
-
-        return $roots;
     }
 
     /**

@@ -25,6 +25,8 @@ services:
           - '@pim_user.context.user'
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.product_group_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
@@ -46,6 +48,8 @@ services:
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-group-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.product_variant_group_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_product_grid_listener.class%
@@ -68,6 +72,8 @@ services:
           - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-variant-group-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.group_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
@@ -105,6 +111,8 @@ services:
             - true
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-product-grid, method: onBuildAfter }
+        calls:
+            - [setRequest, ['@?request=']]
 
     pim_enrich.event_listener.association_group_grid_after_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
@@ -116,9 +124,9 @@ services:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.association-group-grid, method: onBuildAfter }
 
     pim_enrich.event_listener.history_grid_listener:
-        class: %oro_dataaudit.event_listener.dataaudit_history_grid_listener.class%
+        class: %pim_datagrid.event_listener.configure_history_grid_listener.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
-            - [objectClass, objectId]
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.history-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.history-grid, method: onBuildBefore }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-history-grid, method: onBuildBefore }

@@ -1,0 +1,9 @@
+parameters: ~
+
+services:
+    pim_enrich.event_subscriber.translate_flash_messages:
+        class: %pim_enrich.event_subscriber.translate_flash_messages.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

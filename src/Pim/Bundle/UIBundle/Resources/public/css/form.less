@@ -371,14 +371,17 @@ div.btn-group > .has-switch {
     margin: 0;
     border-style: dashed;
     border-width: 2px;
-    &:hover {
+    &:not(.disabled):hover {
       border-color: @textColor + #555;
     }
     div.upload-info {
       min-width: 278px;
     }
   }
-  &:hover {
+  &.disabled {
+    background-color: @color-light_grey;
+  }
+  &:not(.disabled):hover {
     background-color: @color-purple_hover;
   }
   div.upload-info {

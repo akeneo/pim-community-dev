@@ -45,9 +45,6 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var EventDispatcherInterface */
-    protected $eventDispatcher;
-
     /**
      * Constructor
      * @param Request                  $request
@@ -57,8 +54,8 @@ class JobExecutionController extends AbstractDoctrineController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
-     * @param ManagerRegistry          $doctrine
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ManagerRegistry          $doctrine
      * @param BatchLogHandler          $batchLogHandler
      * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
@@ -72,8 +69,8 @@ class JobExecutionController extends AbstractDoctrineController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
-        ManagerRegistry $doctrine,
         EventDispatcherInterface $eventDispatcher,
+        ManagerRegistry $doctrine,
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
         $jobType,
@@ -87,10 +84,10 @@ class JobExecutionController extends AbstractDoctrineController
             $formFactory,
             $validator,
             $translator,
+            $eventDispatcher,
             $doctrine
         );
 
-        $this->eventDispatcher = $eventDispatcher;
         $this->batchLogHandler = $batchLogHandler;
         $this->archivist       = $archivist;
         $this->jobType         = $jobType;

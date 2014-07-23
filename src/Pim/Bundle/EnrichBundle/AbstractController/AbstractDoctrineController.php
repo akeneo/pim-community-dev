@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\AbstractController;
 
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -38,6 +39,7 @@ abstract class AbstractDoctrineController extends AbstractController
      * @param FormFactoryInterface     $formFactory
      * @param ValidatorInterface       $validator
      * @param TranslatorInterface      $translator
+     * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
      */
     public function __construct(
@@ -48,9 +50,19 @@ abstract class AbstractDoctrineController extends AbstractController
         FormFactoryInterface $formFactory,
         ValidatorInterface $validator,
         TranslatorInterface $translator,
+        EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine
     ) {
-        parent::__construct($request, $templating, $router, $securityContext, $formFactory, $validator, $translator);
+        parent::__construct(
+            $request,
+            $templating,
+            $router,
+            $securityContext,
+            $formFactory,
+            $validator,
+            $translator,
+            $eventDispatcher
+        );
 
         $this->doctrine = $doctrine;
     }

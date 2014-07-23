@@ -85,29 +85,7 @@ class ProductRepository extends DocumentRepository implements
         $limit = null,
         $offset = null
     ) {
-        $qb = $this->createQueryBuilder('p');
-
-        foreach ($attributes as $attribute => $value) {
-            $qb->field($attribute)->equals($value);
-        }
-
-        if ($criteria) {
-            foreach ($criteria as $field => $value) {
-                $qb->field('normalizedData.'.$field)->equals($value);
-            }
-        }
-
-        if ($orderBy) {
-            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($limit) {
-            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
-
-        if ($offset) {
-            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
-        }
+        $qb = $this->findAllByAttributesQB($attributes, $criteria, $orderBy, $limit, $offset);
 
         return $qb->getQuery()->execute();
     }
@@ -622,5 +600,88 @@ class ProductRepository extends DocumentRepository implements
         $this->familyRepository = $familyRepository;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * TODO: find a way to do it efficiently
+     */
+    public function findByProductAndOwnerIds(ProductInterface $product, array $ownerIds)
+    {
+        $ownerIds = array_map(
+            function ($id) {
+                return new \MongoId($id);
+            },
+            $ownerIds
+        );
+
+        // retrieve products whom associations are concerned
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->select('associations')
+            ->field('_id')->in($ownerIds)
+            ->field('associations.products.$id')->equals(new \MongoId($product->getId()));
+
+        $products = $qb->getQuery()->execute();
+        $associations = [];
+
+        // filter associations
+        foreach ($products as $dummyProduct) {
+            foreach ($dummyProduct->getAssociations() as $association) {
+                if ($association->hasProduct($product)) {
+                    $associations[] = $association;
+                }
+            }
+        }
+
+        return $associations;
+    }
+
+    /**
+     * Finds documents by a set of criteria
+     *
+     * @param array        $attributes
+     * @param array        $criteria
+     * @param array        $orderBy
+     * @param integer|null $limit
+     * @param integer|null $offset
+     *
+     * @return QueryBuilder
+     *
+     * @throws \RuntimeException
+     */
+    protected function findAllByAttributesQB(
+        array $attributes = array(),
+        array $criteria = null,
+        array $orderBy = null,
+        $limit = null,
+        $offset = null
+    ) {
+        $qb = $this->createQueryBuilder('p');
+
+        foreach ($attributes as $attribute => $value) {
+            $qb->field($attribute)->equals($value);
+        }
+
+        if ($criteria) {
+            foreach ($criteria as $field => $value) {
+                $qb->field('normalizedData.'.$field)->equals($value);
+            }
+        }
+
+        if ($orderBy) {
+            throw new \RuntimeException("Order by is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($limit) {
+            throw new \RuntimeException("Limit is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        if ($offset) {
+            throw new \RuntimeException("Offset is not implemented yet ! ".__CLASS__."::".__METHOD__);
+        }
+
+        return $qb;
     }
 }

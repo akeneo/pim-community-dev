@@ -26,7 +26,7 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      */
     public function perform()
     {
-        foreach ($this->objects as $object) {
+        foreach ($this->objects as $key => $object) {
             if (!$object instanceof ProductInterface) {
                 throw new \LogicException(
                     sprintf(
@@ -37,7 +37,12 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
                     )
                 );
             }
-            $this->doPerform($object);
+
+            try {
+                $this->doPerform($object);
+            } catch (\RuntimeException $e) {
+                unset($this->objects[$key]);
+            }
         }
     }
 
@@ -45,6 +50,10 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
      * Perform operation on the product instance
      *
      * @param ProductInterface $product
+     *
+     * @return null
+     *
+     * @throw \RuntimeException if operation cannot be performed on the given product
      */
     abstract protected function doPerform(ProductInterface $product);
 }

@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Datasource;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
@@ -15,9 +16,21 @@ use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 interface DatasourceInterface extends OroDatasourceInterface
 {
     /**
+     * Get the query builder
+     *
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
+     */
+    public function getQueryBuilder();
+
+    /**
+     * @return ObjectManager
+     */
+    public function getObjectManager();
+
+    /**
      * Get repository
      *
-     * @return ObjectRepository
+     * @return \Doctrine\Common\Persistence\ObjectRepository
      */
     public function getRepository();
 

@@ -8,6 +8,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\Yaml\Parser as YamlParser;
+use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * Enrich extension
@@ -37,6 +38,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('attribute_icons.yml');
         $loader->load('mass_actions.yml');
         $loader->load('factories.yml');
+        $loader->load('event_subscribers.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
@@ -95,18 +97,19 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
     {
         $container->prependExtensionConfig(
             $extensionAlias,
-            $this->getBundleConfig($extensionAlias)
+            $this->getBundleConfig($container, $extensionAlias)
         );
     }
 
     /**
      * Get the bundle configuration from a file
      *
-     * @param string $extensionAlias
+     * @param ContainerBuilder $container
+     * @param string           $extensionAlias
      *
      * @return array
      */
-    private function getBundleConfig($extensionAlias)
+    private function getBundleConfig(ContainerBuilder $container, $extensionAlias)
     {
         $configFile = realpath(
             sprintf('%s/../Resources/config/bundles/%s.yml', __DIR__, $extensionAlias)
@@ -118,6 +121,7 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
             );
         }
 
+        $container->addResource(new FileResource($configFile));
         $yamlParser = new YamlParser();
         $config = $yamlParser->parse(file_get_contents($configFile));
 

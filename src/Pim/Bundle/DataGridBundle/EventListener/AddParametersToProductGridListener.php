@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\EventListener;
 
+use Symfony\Component\HttpFoundation\Request;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
@@ -26,6 +27,11 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     protected $catalogContext;
 
     /**
+     * @var Request
+     */
+    protected $request;
+
+    /**
      * @param array             $paramNames     Parameter name that should be binded to query
      * @param RequestParameters $requestParams  Request params
      * @param CatalogContext    $catalogContext The catalog context
@@ -46,6 +52,14 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     }
 
     /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request = null)
+    {
+        $this->request = $request;
+    }
+
+    /**
      * @return array
      */
     protected function prepareParameters()
@@ -53,6 +67,7 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
         $queryParameters = parent::prepareParameters();
 
         $dataLocale = $this->getLocale($queryParameters);
+        $queryParameters['dataLocale'] = $dataLocale;
         $this->catalogContext->setLocaleCode($dataLocale);
 
         $dataScope = $this->getScope();
@@ -62,6 +77,8 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     }
 
     /**
+     * Get datalocale from parent's parameters, fallback on request parameters to deal with the mass edit case
+     *
      * @param array $queryParameters
      *
      * @return string
@@ -73,6 +90,9 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
             $dataLocale = $queryParameters['dataLocale'];
         }
         if (null === $dataLocale) {
+            $dataLocale = $this->request->get('dataLocale', null);
+        }
+        if (null === $dataLocale) {
             $dataLocale = $this->userContext->getCurrentLocaleCode();
         }
 
@@ -80,11 +100,17 @@ class AddParametersToProductGridListener extends AddParametersToGridListener
     }
 
     /**
+     * Get scope from datagrid's filters, fallback on request parameters to deal with the mass edit case
+     *
      * @return string
      */
     protected function getScope()
     {
         $filterValues = $this->requestParams->get('_filter');
+        if (empty($filterValues)) {
+            $filterValues = $this->request->get('filters');
+        }
+
         if (isset($filterValues['scope']['value']) && $filterValues['scope']['value'] !== null) {
             return $filterValues['scope']['value'];
         } else {

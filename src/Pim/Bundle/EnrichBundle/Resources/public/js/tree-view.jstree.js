@@ -32,7 +32,8 @@ define(
                         dataLocale:     dataLocale,
                         select_node_id: getActiveNode(true),
                         include_sub:    +includeSub,
-                        related_entity: relatedEntity
+                        related_entity: relatedEntity,
+                        context: 'view'
                     }
                 );
             },
@@ -43,7 +44,8 @@ define(
                     {
                         _format:    'json',
                         dataLocale: dataLocale,
-                        related_entity: relatedEntity
+                        related_entity: relatedEntity,
+                        context: 'view'
                     }
                 );
             },
@@ -202,7 +204,7 @@ define(
         return {
             init: function($element, state) {
                 if (!$element || !$element.length || !_.isObject($element)) {
-                    throw new Error('Unable to instantiate tree on this element');
+                    return;
                 }
 
                 $el           = $element;

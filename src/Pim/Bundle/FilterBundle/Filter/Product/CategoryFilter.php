@@ -5,9 +5,10 @@ namespace Pim\Bundle\FilterBundle\Filter\Product;
 use Symfony\Component\Form\FormFactoryInterface;
 use Oro\Bundle\FilterBundle\Filter\NumberFilter;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\FilterBundle\Form\Type\Filter\CategoryFilterType;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
-use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 
 /**
  * Category filter
@@ -18,6 +19,12 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
  */
 class CategoryFilter extends NumberFilter
 {
+    /** @staticvar integer */
+    const UNKNOWN_TREE = 0;
+
+    /** @staticvar integer */
+    const DEFAULT_TYPE = 1;
+
     /** @staticvar integer */
     const UNCLASSIFIED_CATEGORY = -1;
 
@@ -51,33 +58,14 @@ class CategoryFilter extends NumberFilter
             return false;
         }
 
-        $categoryRepository = $this->manager->getCategoryRepository();
-        $productRepository  = $this->manager->getProductCategoryRepository();
-        $qb                 = $ds->getQueryBuilder();
-
         if ($data['categoryId'] === self::ALL_CATEGORY) {
-            return true;
+            return $this->applyFilterByAll($ds, $data);
+
         } elseif ($data['categoryId'] === self::UNCLASSIFIED_CATEGORY) {
-            $tree = $categoryRepository->find($data['treeId']);
-            if ($tree) {
-                $productIds = $this->manager->getProductIdsInCategory($tree, true);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $productRepository->applyFilterByIds($qb, $productIds, false);
+            return $this->applyFilterByUnclassified($ds, $data);
 
-                return true;
-            }
         } else {
-            $category = $categoryRepository->find($data['categoryId']);
-            if (!$category) {
-                $category = $categoryRepository->find($data['treeId']);
-            }
-            if ($category) {
-                $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
-                $productIds = (empty($productIds)) ? array(0) : $productIds;
-                $productRepository->applyFilterByIds($qb, $productIds, true);
-
-                return true;
-            }
+            return $this->applyFilterByCategory($ds, $data);
         }
 
         return false;
@@ -99,6 +87,88 @@ class CategoryFilter extends NumberFilter
             'treeId'     => isset($data['value']['treeId'])     ? (int) $data['value']['treeId']     : null,
             'categoryId' => isset($data['value']['categoryId']) ? (int) $data['value']['categoryId'] : null
         ];
+    }
+
+    /**
+     * Add filter to display all products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
+    protected function applyFilterByAll(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        return true;
+    }
+
+    /**
+     * Add filter to display unclassified products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
+    protected function applyFilterByUnclassified(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
+
+        $tree = $categoryRepository->find($data['treeId']);
+        if ($tree) {
+            $data['includeSub'] = true;
+            $productIds = $this->getProductIdsInCategory($tree, $data);
+            $productRepository->applyFilterByIds($qb, $productIds, false);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Add filter to display categorized products
+     *
+     * @param FilterDatasourceAdapterInterface $ds
+     * @param array                            $data
+     *
+     * @return boolean has been applied
+     */
+    protected function applyFilterByCategory(FilterDatasourceAdapterInterface $ds, $data)
+    {
+        $categoryRepository = $this->manager->getCategoryRepository();
+        $productRepository  = $this->manager->getProductCategoryRepository();
+        $qb                 = $ds->getQueryBuilder();
+
+        $category = $categoryRepository->find($data['categoryId']);
+        if (!$category) {
+            $category = $categoryRepository->find($data['treeId']);
+        }
+        if ($category) {
+            $productIds = $this->getProductIdsInCategory($category, $data);
+            $productRepository->applyFilterByIds($qb, $productIds, true);
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Get product ids in category (and children)
+     *
+     * @param CategoryInterface $category
+     * @param array             $data
+     *
+     * @return integer[]
+     */
+    protected function getProductIdsInCategory(CategoryInterface $category, $data)
+    {
+        $productIds = $this->manager->getProductIdsInCategory($category, $data['includeSub']);
+
+        return (empty($productIds)) ? array(0) : $productIds;
     }
 
     /**

@@ -1,0 +1,77 @@
+datagrid:
+    job-execution-grid:
+        source:
+            type: pim_datasource_default
+            entity: %akeneo_batch.entity.job_execution.class%
+            repository_method: createDatagridQueryBuilder
+        columns:
+            code:
+                label: Code
+                data_name: jobCode
+            label:
+                label: Label
+                data_name: jobLabel
+            alias:
+                label:     Job
+                data_name: jobAlias
+            date:
+                label: Date
+                data_name: date
+                frontend_type: datetime
+            status:
+                label: Status
+                type: translateable
+                data_name: statusLabel
+        properties:
+            id: ~
+            show_link:
+                type: url
+                params:
+                    - id
+        actions:
+            show:
+                type:      navigate
+                label:     pim.grid.action.show.title
+                icon:      list-alt
+                link:      show_link
+                rowAction: true
+        sorters:
+            columns:
+                code:
+                    data_name: jobCode
+                label:
+                    data_name: jobLabel
+                alias:
+                    data_name: jobAlias
+                date:
+                    data_name: date
+                status:
+                    data_name: statusLabel
+            default:
+                date: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                code:
+                    type:      string
+                    data_name: jobCode
+                label:
+                    type:      string
+                    data_name: jobLabel
+                alias:
+                    type:      choice
+                    data_name: j.alias
+                    options:
+                        field_options:
+                            multiple: true
+                date:
+                    type:             datetime
+                    data_name:        date
+                    filter_by_having: true
+                status:
+                    type:             choice
+                    data_name:        status
+                    filter_by_having: true
+                    options:
+                        field_options:
+                            multiple: true
+                            choices: %akeneo_batch.job.batch_status.class%::getAllLabels()

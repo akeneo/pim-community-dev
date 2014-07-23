@@ -307,7 +307,7 @@ class ProductRepository extends EntityRepository implements
         $isCheckedExpr =
             'CASE WHEN ' .
             '(:currentGroup MEMBER OF p.groups '.
-            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in)'.
+            'OR p.id IN (:data_in)) AND p.id NOT IN (:data_not_in) '.
             'THEN true ELSE false END';
         $qb
             ->addSelect($isCheckedExpr.' AS is_checked');

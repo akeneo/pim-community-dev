@@ -29,7 +29,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     protected $entityManager;
 
     /**
-     * MongoDBODM Document Manager to access ORM entities
+     * MongoDBODM Document Manager to access ODM entities
      *
      * @var DocumentManager
      */

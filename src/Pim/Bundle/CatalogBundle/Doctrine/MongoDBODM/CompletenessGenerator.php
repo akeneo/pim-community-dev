@@ -72,13 +72,11 @@ class CompletenessGenerator implements CompletenessGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generateMissingForProduct(ProductInterface $product, $flush = true)
+    public function generateMissingForProduct(ProductInterface $product)
     {
         $this->generate($product);
 
-        if ($flush) {
-            $this->documentManager->flush($product);
-        }
+        $this->documentManager->refresh($product);
     }
 
     /**

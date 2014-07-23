@@ -10,8 +10,6 @@ parameters:
 services:
     pim_user.form.type.acl_collection:
         class: %pim_user.form.type.acl_collection.class%
-        arguments:
-            - '@pim_catalog.manager.locale'
         tags:
             - { name: form.type, alias: oro_acl_collection }
 
@@ -19,7 +17,6 @@ services:
         class: %pim_user.context.user.class%
         arguments:
             - '@security.context'
-            - '@oro_security.security_facade'
             - '@pim_catalog.manager.locale'
             - '@pim_catalog.manager.channel'
             - '@pim_catalog.manager.category'

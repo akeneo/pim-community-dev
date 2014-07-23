@@ -1,0 +1,68 @@
+datagrid:
+    association-group-grid:
+        options:
+            entityHint: group
+            requireJSModules:
+                - pim/datagrid/column-form-listener
+            columnListener:
+                dataField: id
+                columnName: is_checked
+        source:
+            type: pim_datasource_default
+            entity: %pim_catalog.entity.group.class%
+            repository_method: createAssociationDatagridQueryBuilder
+        columns:
+            is_checked:
+                frontend_type: boolean
+                data_name:     is_checked
+                editable:      true
+            is_associated:
+                label:         Is associated
+                data_name:     is_associated
+                type:          twig
+                template:      PimDataGridBundle:Property:boolean.html.twig
+                frontend_type: html
+                primary:       true
+            code:
+                label: Code
+            label:
+                label: Label
+            type:
+                label: Type
+        properties:
+            id: ~
+        sorters:
+            columns:
+                is_associated:
+                    data_name: is_associated
+                code:
+                    data_name: g.code
+                label:
+                    data_name: groupLabel
+                type:
+                    data_name: typeLabel
+            default:
+                is_associated: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                is_associated:
+                    type:             boolean
+                    label:            Is associated
+                    data_name:        is_associated
+                    filter_by_having: true
+                code:
+                    type:      string
+                    label:     Code
+                    data_name: g.code
+                label:
+                    type:      string
+                    label:     Label
+                    data_name: translation.label
+                type:
+                    type:      choice
+                    label:     Type
+                    data_name: g.type
+                    options:
+                        field_options:
+                            multiple: true
+                            choices:  '@pim_catalog.manager.group->getTypeChoices'

@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\VersioningBundle\Tests\Unit\Entity;
 
-use Pim\Bundle\VersioningBundle\Entity\Version;
+use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\CatalogBundle\Model\Product;
 
 /**
@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 class VersionTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Pim\Bundle\VersioningBundle\Entity\Version
+     * @var \Pim\Bundle\VersioningBundle\Model\Version
      */
     protected $version;
 

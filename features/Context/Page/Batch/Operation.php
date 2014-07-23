@@ -58,10 +58,14 @@ class Operation extends Wizard
     /**
      * @param string $operation
      * @param string $page
+     *
+     * @return Operation
      */
     public function addStep($operation, $page)
     {
         $this->steps[$operation] = $page;
+
+        return $this;
     }
 
     /**

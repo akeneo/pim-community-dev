@@ -13,6 +13,7 @@ Feature: Join a document to a product
     And I am logged in as "Julia"
     And I am on the "Car" product page
 
+  @ce
   Scenario: Succesfully leave the document empty
     When I save the product
     Then I should see "Product successfully updated"

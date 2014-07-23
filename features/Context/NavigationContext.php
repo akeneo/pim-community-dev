@@ -47,7 +47,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     /**
      * @var array $pageMapping
      */
-    protected $pageMapping = array(
+    protected $pageMapping = [
         'association types'        => 'AssociationType index',
         'attributes'               => 'Attribute index',
         'categories'               => 'Category tree creation',
@@ -71,7 +71,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
         'attribute group creation' => 'AttributeGroup creation',
         'dashboard'                => 'Dashboard index',
         'search'                   => 'Search index',
-    );
+    ];
 
     /**
      * @param PageFactory $pageFactory
@@ -105,13 +105,21 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I logout$/
+     */
+    public function iLogout()
+    {
+        $this->getSession()->visit($this->locatePath('/user/logout'));
+    }
+
+    /**
      * @param string $page
      *
      * @Given /^I am on the ([^"]*) page$/
      */
     public function iAmOnThePage($page)
     {
-        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
         $this->openPage($page);
         $this->wait();
     }
@@ -129,7 +137,7 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
             return $this->iAmOnThePage($page);
         }
 
-        $page = isset($this->pageMapping[$page]) ? $this->pageMapping[$page] : $page;
+        $page = isset($this->getPageMapping()[$page]) ? $this->getPageMapping()[$page] : $page;
 
         $this->currentPage = $page;
         $this->getCurrentPage()->open();
@@ -556,6 +564,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     public function getCurrentPage()
     {
         return $this->getPage($this->currentPage);
+    }
+
+    /**
+     * @return array
+     */
+    public function getPageMapping()
+    {
+        return $this->pageMapping;
     }
 
     /**
