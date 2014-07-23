@@ -23,6 +23,9 @@ class SerializerPass implements CompilerPassInterface
     /** @var string  */
     protected $serializerServiceId;
 
+    /** @staticvar integer The default priority for services */
+    const DEFAULT_PRIORITY = 100;
+
     /**
      * @param string                $serializerServiceId
      * @param ReferenceFactory|null $factory
@@ -76,7 +79,7 @@ class SerializerPass implements CompilerPassInterface
         $sortedServices = array();
         foreach ($services as $serviceId => $tags) {
             foreach ($tags as $tag) {
-                $priority = isset($tag['priority']) ? $tag['priority'] : 0;
+                $priority = isset($tag['priority']) ? $tag['priority'] : self::DEFAULT_PRIORITY;
                 $sortedServices[$priority][] = $this->factory->createReference($serviceId);
             }
         }
