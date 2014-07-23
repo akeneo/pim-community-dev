@@ -13,6 +13,7 @@ use Doctrine\ORM\Events as ORMEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
  * Keeps proposition categoryIds field synchronized with its related product's categories
@@ -68,7 +69,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
         }
         $document = $event->getDocument();
         if ($document instanceof Proposition) {
-            return $this->syncProductProposition($document);
+            $this->syncProductProposition($document);
         }
     }
 
@@ -84,10 +85,12 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
         }
         $document = $event->getDocument();
         if ($document instanceof Proposition) {
-            return $this->syncProductProposition($document);
-        }
-        if ($document instanceof ProductInterface && $event->hasChangedField('categoryIds')) {
-            return $this->syncProductPropositions($document);
+            $this->syncProductProposition($document);
+        } elseif ($document instanceof ProductInterface && $event->hasChangedField('categoryIds')) {
+            $this->syncProductPropositions(
+                $document,
+                $event->getDocumentManager()->getUnitOfWork()
+            );
         }
     }
 
@@ -116,7 +119,7 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     /**
      * Synchronize category ids of proposition
      *
-     * @param MongoDBODMLifecycleEventArgs $event
+     * @param Proposition $proposition
      */
     protected function syncProductProposition(Proposition $proposition)
     {
@@ -135,9 +138,10 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     /**
      * Synchronize category ids of propositions of product of which categories has been changed
      *
-     * @param MongoDBODMPreUpdateEventsArgs $event
+     * @param ProductInterface $product
+     * @param UnitOfWork       $uow
      */
-    protected function syncProductPropositions(ProductInterface $product)
+    protected function syncProductPropositions(ProductInterface $product, UnitOfWork $uow)
     {
         $categoryIds = $product
             ->getCategories()
@@ -150,7 +154,15 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
 
         $propositions = $this->getPropositions($product);
         foreach ($propositions as $proposition) {
-            $proposition->setCategoryIds($categoryIds);
+            $uow->scheduleExtraUpdate(
+                $proposition,
+                [
+                    'categoryIds' => [
+                        $proposition->getCategoryIds(),
+                        $categoryIds
+                    ]
+                ]
+            );
         }
     }
 

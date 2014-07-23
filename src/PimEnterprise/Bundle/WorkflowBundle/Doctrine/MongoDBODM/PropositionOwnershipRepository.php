@@ -27,6 +27,7 @@ class PropositionOwnershipRepository implements PropositionOwnershipRepositoryIn
 
     /**
      * @param PropositionRepositoryInterface $propositionRepo
+     * @param CategoryAccessRepository       $catAccessRepo
      */
     public function __construct(
         PropositionRepositoryInterface $propositionRepo,

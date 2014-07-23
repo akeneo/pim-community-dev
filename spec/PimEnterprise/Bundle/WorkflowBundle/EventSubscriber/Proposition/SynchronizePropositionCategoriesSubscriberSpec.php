@@ -14,6 +14,8 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
+use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\ODM\MongoDB\UnitOfWork;
 
 class SynchronizePropositionCategoriesSubscriberSpec extends ObjectBehavior
 {
@@ -81,19 +83,25 @@ class SynchronizePropositionCategoriesSubscriberSpec extends ObjectBehavior
         CategoryInterface $catA,
         CategoryInterface $catB,
         Proposition $propositionA,
-        Proposition $propositionB
+        Proposition $propositionB,
+        DocumentManager $dm,
+        UnitOfWork $uow
     ) {
         $event->getDocument()->willReturn($product);
         $event->hasChangedField('categoryIds')->willReturn(true);
+        $event->getDocumentManager()->willReturn($dm);
+        $dm->getUnitOfWork()->willReturn($uow);
 
         $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
         $repository->findByProduct($product)->willReturn([$propositionA, $propositionB]);
+        $propositionA->getCategoryIds()->willReturn([]);
+        $propositionB->getCategoryIds()->willReturn([15, 16]);
 
-        $propositionA->setCategoryIds([4, 8])->shouldBeCalled();
-        $propositionB->setCategoryIds([4, 8])->shouldBeCalled();
+        $uow->scheduleExtraUpdate($propositionA, ['categoryIds' => [[      ], [4, 8]]])->shouldBeCalled();
+        $uow->scheduleExtraUpdate($propositionB, ['categoryIds' => [[15, 16], [4, 8]]])->shouldBeCalled();
 
         $this->preUpdate($event);
     }
@@ -144,5 +152,31 @@ class SynchronizePropositionCategoriesSubscriberSpec extends ObjectBehavior
         $event->getObject()->shouldNotBeCalled();
 
         $this->preRemove($event);
+    }
+
+    function it_does_not_synchronize_product_proposition_documents_when_its_category_has_not_been_updated(
+        $repository,
+        MongoDBODMPreUpdateEventsArgs $event,
+        ProductInterface $product,
+        CategoryInterface $catA,
+        CategoryInterface $catB,
+        Proposition $proposition,
+        DocumentManager $dm,
+        UnitOfWork $uow
+    ) {
+        $event->getDocument()->willReturn($product);
+        $event->hasChangedField('categoryIds')->willReturn(false);
+        $event->getDocumentManager()->willReturn($dm);
+        $dm->getUnitOfWork()->willReturn($uow);
+
+        $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
+        $catA->getId()->willReturn(4);
+        $catB->getId()->willReturn(8);
+
+        $repository->findByProduct($product)->willReturn([$proposition]);
+
+        $uow->scheduleExtraUpdate(Argument::cetera())->shouldNotBeCalled();
+
+        $this->preUpdate($event);
     }
 }

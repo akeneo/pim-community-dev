@@ -5,7 +5,7 @@ Feature: Display proposition widget
   I need to be able to see a widget with pending propositions on the dashboard
 
   Scenario: Display proposition widget
-    Given the "default" catalog configuration
+    Given the "clothing" catalog configuration
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see "Propositions to review"
