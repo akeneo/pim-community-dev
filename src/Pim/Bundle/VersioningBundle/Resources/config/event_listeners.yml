@@ -4,7 +4,7 @@ services:
         arguments:
             - '@pim_versioning.manager.version'
             - '@pim_versioning.update_guesser.chained'
-            - '@pim_serializer'
+            - '@pim_versioning.serializer'
         tags:
             - { name: doctrine.event_subscriber }
 

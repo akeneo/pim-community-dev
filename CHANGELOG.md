@@ -50,6 +50,7 @@
 - Remove the count of products by category in the context of the management of the categories (perf)
 - Define attribute type classes as parameters
 - Products on which mass edit operation is not performed are also ignored from operation finalize method
+- Create specific serializer service for versioning
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -138,6 +139,8 @@
 - Rename countForAttribute to countVariantGroupAxis in GroupRepository
 - Remove locale-specific rights
 - Upgraded to 0.2.* version of akeneo/batch-bundle
+- Rename `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass` by `Pim\Bundle\Transform\DependencyInjection\Compiler\SerializerPass` and change construct parameters
+- AddVersionListener and VersionBuilder use new `pim_versioning.serializer` service
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
