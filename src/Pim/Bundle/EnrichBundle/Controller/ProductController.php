@@ -209,13 +209,14 @@ class ProductController extends AbstractDoctrineController
     /**
      * Edit product
      *
+     * @param Request $request
      * @param integer $id
      *
      * @Template
      * @AclAncestor("pim_enrich_product_edit")
      * @return array
      */
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
 
