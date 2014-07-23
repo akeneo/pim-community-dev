@@ -12,6 +12,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product.class%
+            - '@pim_catalog.builder.product'
             - '@pim_transform.builder.field_name'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
@@ -53,6 +54,5 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product_value.class%
-            - '@pim_catalog.builder.product'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
