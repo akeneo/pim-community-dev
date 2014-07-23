@@ -6,13 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Product Controller
@@ -50,6 +52,7 @@ class ProductController extends BaseProductController
     /**
      * Dispatch to product view or product edit when a user click on a product grid row
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return RedirectResponse
@@ -58,7 +61,7 @@ class ProductController extends BaseProductController
      *
      * @AclAncestor("pim_enrich_product_edit")
      */
-    public function dispatchAction($id)
+    public function dispatchAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
         $editProductGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
@@ -66,10 +69,14 @@ class ProductController extends BaseProductController
         $editLocaleGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
         if ($editProductGranted && $editLocaleGranted) {
-            return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
+            $parameters = $this->editAction($this->request, $id);
+
+            return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
 
         } elseif ($this->securityContext->isGranted(Attributes::VIEW_PRODUCT, $product)) {
-            return $this->redirectToRoute('pimee_enrich_product_show', array('id' => $id));
+            $parameters = $this->showAction($this->request, $id);
+
+            return $this->render('PimEnrichBundle:Product:show.html.twig', $parameters);
         }
 
         throw new AccessDeniedException();
