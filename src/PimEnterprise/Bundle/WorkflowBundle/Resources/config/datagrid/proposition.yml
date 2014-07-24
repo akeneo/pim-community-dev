@@ -32,11 +32,13 @@ datagrid:
                 route: pimee_workflow_proposition_approve
                 params:
                     - id
+                    - dataLocale
             refuse_link:
                 type: url
                 route: pimee_workflow_proposition_refuse
                 params:
                     - id
+                    - dataLocale
         actions:
             approve:
                 type: navigate

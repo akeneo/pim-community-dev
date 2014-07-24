@@ -22,6 +22,7 @@ services:
         arguments:
             - '@pimee_workflow.repository.proposition'
             - '@pimee_workflow.manager.proposition'
+            - '@pim_user.context.user'
 
     pimee_workflow.repository.proposition:
         class: %pimee_workflow.repository.proposition.class%
