@@ -54,11 +54,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     {
         $product = $context['entity'];
 
-        foreach ($data as $key => $value) {
-            echo $key ." --> ". $value ."<br />";
-        }
-        $this->printProduct($product);
-
         if (isset($data[self::FIELD_ENABLED])) {
             $product->setEnabled((bool) $data[self::FIELD_ENABLED]);
             unset($data[self::FIELD_ENABLED]);
@@ -82,8 +77,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $this->denormalizeAssociations($data, $product);
 
         $this->denormalizeValues($data, $product);
-
-        $this->printProduct($product);
 
         return $product;
     }
@@ -150,17 +143,21 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected function denormalizeAssociations(&$data, ProductInterface $product)
     {
         // Remove existing associations
-        foreach ($product->getAssociations() as $association) {
+        /*foreach ($product->getAssociations() as $association) {
             $product->removeAssociation($association);
-        }
+        }*/
 
         // Get association field names and add associations
         $assocFieldNames = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
-                $product->addAssociation(
-                    $this->serializer->denormalize($data[$assocFieldName], 'Pim\Bundle\CatalogBundle\Model\Association', 'csv')
-                );
+                /*$product->addAssociation(
+                    $this->serializer->denormalize(
+                        $data[$assocFieldName],
+                        'Pim\Bundle\CatalogBundle\Model\Association',
+                        'csv'
+                    )
+                );*/
 
                 unset($data[$assocFieldName]);
             }
@@ -183,12 +180,10 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         foreach ($data as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
-
-            echo "<hr />". $attribute->getCode() ."<br />";
+            unset($attributeInfos['attribute']);
 
             // Add attribute to product if not already done
             if (!$product->hasAttribute($attribute)) {
-                echo "Add attribute to product<br />";
                 $this->productBuilder->addAttributeToProduct($product, $attribute);
             }
 
@@ -198,10 +193,15 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 $dataValue,
                 'Pim\Bundle\CatalogBundle\Model\ProductValue',
                 'csv',
-                $attributeInfos + ['product' => $product] + ['entity' => $product->getValue($attribute->getCode())]
+                [
+                    'product' => $product,
+                    'entity' => $product->getValue(
+                        $attribute->getCode(),
+                        $attributeInfos['locale_code'],
+                        $attributeInfos['scope_code']
+                    )
+                ] + $attributeInfos
             );
-
-            echo "- ". $product->getValue($attribute->getCode()) ."<br />";
         }
     }
 
@@ -211,34 +211,5 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected function getAssociationTypeRepository()
     {
         return $this->getRepository($this->assocTypeClass);
-    }
-
-    protected function printProduct(ProductInterface $product)
-    {
-        echo "<hr />";
-        echo (int) $product->isEnabled() ."<br />";
-
-        if (null !== $product->getFamily()) {
-            echo $product->getFamily()->getCode() ."<br />";
-        } else {
-            echo "NO FAMILY<br />";
-        }
-
-        echo "CATEGORIES: ". count($product->getCategories()) ."<br />";
-        foreach ($product->getCategories() as $category) {
-            echo "- ". $category->getCode() ."<br />";
-        }
-
-        echo "GROUPS: ". count($product->getGroups()) ."<br />";
-        foreach ($product->getGroups() as $group) {
-            echo "- ". $group->getCode() . "<br />";
-        }
-
-        echo "ASSOCIATIONS: ". count($product->getAssociations()) ."<br />";
-        foreach ($product->getAssociations() as $association) {
-            echo "- ". $association->getAssociationType() ."<br />";
-        }
-
-        echo "<hr />";
     }
 }

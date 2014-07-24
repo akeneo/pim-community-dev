@@ -22,19 +22,25 @@ class VersionReverter
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var ProductManager */
+    /** @var ManagerRegistry */
     protected $manager;
+
+    /** @var ProductManager */
+    protected $productManager;
 
     /**
      * @param ProductManager      $manager
      * @param SerializerInterface $serializer
+     * @param ProductManager      $productManager
      */
     public function __construct(
         ManagerRegistry $manager,
-        DenormalizerInterface $serializer
+        DenormalizerInterface $serializer,
+        ProductManager $productManager
     ) {
-        $this->manager    = $manager;
-        $this->serializer = $serializer;
+        $this->manager        = $manager;
+        $this->serializer     = $serializer;
+        $this->productManager = $productManager;
     }
 
     /**
@@ -51,6 +57,6 @@ class VersionReverter
         $currentObject = $this->manager->getRepository($class)->find($resourceId);
         $revertedObject = $this->serializer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
 
-        //$this->manager->saveProduct($revertedObject);
+        $this->productManager->saveProduct($revertedObject);
     }
 }

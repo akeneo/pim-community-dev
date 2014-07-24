@@ -25,6 +25,7 @@ class MetricDenormalizer implements DenormalizerInterface
         if (null === $metric = $value->getMetric()) {
             $metric = new Metric();
             $metric->setData($data);
+            $metric->setFamily($value->getAttribute()->getMetricFamily());
         } else {
             $metric->setUnit($data);
         }

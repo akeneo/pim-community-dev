@@ -34,10 +34,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        echo get_class($this)."::denormalize<br />";
         $value = $context['entity'];
-        echo "Attribute type: ". $value->getAttribute()->getAttributeType() ."<br />";
-
         $context['entity'] = null;
         $context['value']  = $value;
 

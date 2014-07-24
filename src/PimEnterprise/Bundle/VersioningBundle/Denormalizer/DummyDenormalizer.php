@@ -16,7 +16,7 @@ class DummyDenormalizer implements DenormalizerInterface
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        echo '<b>Attribute Type "'. $class .'" is not yet implemented</b><br />';
+//        echo '<b>Attribute Type "'. $class .'" is not yet implemented</b><br />';
 
         return;
     }
