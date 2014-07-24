@@ -84,6 +84,11 @@ class UserType extends OroUserType
                 array(
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
+                    'query_builder' => function (EntityRepository $er) {
+                            return $er->createQueryBuilder('g')
+                                ->where('g.name <> :all')
+                                ->setParameter('all', User::GROUP_DEFAULT);
+                        },
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => false,
