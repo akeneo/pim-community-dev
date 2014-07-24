@@ -2,7 +2,10 @@
 
 namespace Oro\Bundle\UserBundle\Controller;
 
+use Oro\Bundle\UserBundle\OroUserEvents;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -31,7 +34,11 @@ class GroupController extends Controller
      */
     public function createAction()
     {
-        return $this->update(new Group());
+        $this->dispatchGroupEvent(OroUserEvents::PRE_CREATE_GROUP);
+        $group = $this->update(new Group());
+        $this->dispatchGroupEvent(OroUserEvents::POST_CREATE_GROUP, $group);
+
+        return $group;
     }
 
     /**
@@ -48,7 +55,11 @@ class GroupController extends Controller
      */
     public function updateAction(Group $entity)
     {
-        return $this->update($entity);
+        $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $entity);
+        $entity = $this->update($entity);
+        $this->dispatchGroupEvent(OroUserEvents::POST_UPDATE_GROUP, $entity);
+
+        return $entity;
     }
 
     /**
@@ -136,5 +147,23 @@ class GroupController extends Controller
         return array(
             'form'     => $this->get('oro_user.form.group')->createView(),
         );
+    }
+
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->get('event_dispatcher');
+    }
+
+    /**
+     * @param string $event
+     * @param Group  $group
+     */
+    protected function dispatchGroupEvent($event, Group $group = null)
+    {
+        $this->getEventDispatcher()->dispatch($event, new GenericEvent($group));
     }
 }

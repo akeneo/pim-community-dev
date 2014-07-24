@@ -12,6 +12,9 @@ use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Oro\Bundle\SecurityBundle\Annotation\Acl;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Oro\Bundle\SoapBundle\Controller\Api\Rest\RestController;
+use Oro\Bundle\UserBundle\OroUserEvents;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 
 /**
  * @NamePrefix("oro_api_")
@@ -80,7 +83,11 @@ class GroupController extends RestController implements ClassResourceInterface
      */
     public function postAction()
     {
-        return $this->handleCreateRequest();
+        $this->dispatchGroupEvent(OroUserEvents::PRE_CREATE_GROUP);
+        $response = $this->handleCreateRequest();
+        $this->dispatchGroupEvent(OroUserEvents::POST_CREATE_GROUP);
+
+        return $response;
     }
 
     /**
@@ -100,7 +107,11 @@ class GroupController extends RestController implements ClassResourceInterface
      */
     public function putAction($id)
     {
-        return $this->handleUpdateRequest($id);
+        $this->dispatchGroupEvent(OroUserEvents::PRE_UPDATE_GROUP, $id);
+        $response = $this->handleUpdateRequest($id);
+        $this->dispatchGroupEvent(OroUserEvents::POST_UPDATE_GROUP, $id);
+
+        return $response;
     }
 
     /**
@@ -125,7 +136,11 @@ class GroupController extends RestController implements ClassResourceInterface
      */
     public function deleteAction($id)
     {
-        return $this->handleDeleteRequest($id);
+        $this->dispatchGroupEvent(OroUserEvents::PRE_DELETE_GROUP, $id);
+        $response = $this->handleDeleteRequest($id);
+        $this->dispatchGroupEvent(OroUserEvents::POST_DELETE_GROUP, $id);
+
+        return $response;
     }
 
     /**
@@ -177,5 +192,27 @@ class GroupController extends RestController implements ClassResourceInterface
     public function getFormHandler()
     {
         return $this->container->get('oro_user.form.handler.group.api');
+    }
+
+    /**
+     * @return EventDispatcherInterface
+     */
+    protected function getEventDispatcher()
+    {
+        return $this->get('event_dispatcher');
+    }
+
+    /**
+     * @param string $event
+     * @param int    $groupId
+     */
+    protected function dispatchGroupEvent($event, $groupId = null)
+    {
+        $group = null;
+        if ($groupId) {
+            $group = $this->getManager()->find($groupId);
+        }
+
+        $this->getEventDispatcher()->dispatch($event, new GenericEvent($group));
     }
 }
