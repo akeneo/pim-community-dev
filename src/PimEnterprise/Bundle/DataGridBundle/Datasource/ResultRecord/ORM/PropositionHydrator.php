@@ -17,7 +17,7 @@ class PropositionHydrator implements HydratorInterface
     /**
      * @var RequestParametersExtractorInterface
      */
-    protected $requestParams;
+    protected $extractor;
 
     /**
      * @param RequestParametersExtractorInterface $extractor
