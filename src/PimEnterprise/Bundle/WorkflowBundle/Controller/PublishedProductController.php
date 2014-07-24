@@ -90,7 +90,7 @@ class PublishedProductController extends AbstractController
     public function indexAction(Request $request)
     {
         return array(
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
@@ -158,10 +158,20 @@ class PublishedProductController extends AbstractController
         return [
             'published'  => $published,
             'dataLocale' => $this->getDataLocale(),
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'created'    => $this->versionManager->getOldestLogEntry($original),
             'updated'    => $this->versionManager->getNewestLogEntry($original),
         ];
+    }
+
+    /**
+     * Return only granted user locales
+     *
+     * @return Locale[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getGrantedUserLocales();
     }
 
     /**

@@ -1,0 +1,20 @@
+parameters:
+    pimee_enrich.form.subscriber.attribute_group_permissions.class: PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\AttributeGroupPermissionsSubscriber
+    pimee_enrich.form.subscriber.category_permissions.class:        PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\CategoryPermissionsSubscriber
+    pimee_enrich.form.subscriber.locale_permissions.class:          PimEnterprise\Bundle\EnrichBundle\Form\Subscriber\LocalePermissionsSubscriber
+
+services:
+    pimee_enrich.form.subscriber.attribute_group_permissions:
+        class: %pimee_enrich.form.subscriber.attribute_group_permissions.class%
+        arguments:
+            - '@pimee_security.manager.attribute_group_access'
+
+    pimee_enrich.form.subscriber.category_permissions:
+        class: %pimee_enrich.form.subscriber.category_permissions.class%
+        arguments:
+            - '@pimee_security.manager.category_access'
+
+    pimee_enrich.form.subscriber.locale_permissions:
+        class: %pimee_enrich.form.subscriber.locale_permissions.class%
+        arguments:
+            - '@pimee_security.manager.locale_access'

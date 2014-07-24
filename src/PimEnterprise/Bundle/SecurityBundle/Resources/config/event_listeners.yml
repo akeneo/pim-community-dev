@@ -17,6 +17,7 @@ services:
         class: %pimee_security.event_listener.product.class%
         arguments:
             - '@security.context'
+            - '@pim_user.context.user'
         tags:
             - { name: kernel.event_subscriber }
 

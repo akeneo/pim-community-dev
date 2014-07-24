@@ -1,0 +1,5 @@
+parameters:
+    pim_enrich.controller.category_tree.class:    PimEnterprise\Bundle\EnrichBundle\Controller\CategoryTreeController
+    pim_enrich.controller.product.class:          PimEnterprise\Bundle\EnrichBundle\Controller\ProductController
+    pim_enrich.controller.mass_edit_action.class: PimEnterprise\Bundle\EnrichBundle\Controller\MassEditActionController
+    pim_enrich.controller.locale.class:           PimEnterprise\Bundle\EnrichBundle\Controller\LocaleController

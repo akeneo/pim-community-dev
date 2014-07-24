@@ -17,6 +17,9 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterfac
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class SynchronizePropositionCategoriesSubscriberSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, PropositionRepositoryInterface $repository)

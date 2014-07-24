@@ -7,6 +7,9 @@ namespace PimEnterprise\Bundle\SecurityBundle;
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * TODO @nidup :re-organize/rename constants after the merge of https://github.com/akeneo/pim-enterprise-dev/pull/174
+ * TODO : needs VIEW, EDIT, EXECUTE, OWN, VIEW_PRODUCTS, EDIT_PRODUCTS, OWN_PRODUCTS, VIEW_ATTRIBUTES, EDIT_ATTRIBUTES
  */
 final class Attributes
 {
@@ -26,13 +29,13 @@ final class Attributes
     const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
 
     /** @staticvar string */
-    const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
+    const VIEW_PRODUCTS = 'VIEW_PRODUCTS';
 
     /** @staticvar string */
-    const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
+    const EDIT_PRODUCTS = 'EDIT_PRODUCTS';
 
     /** @staticvar string */
-    const OWN_PRODUCTS = 'CATEGORY_OWN_PRODUCTS';
+    const OWN_PRODUCTS = 'OWN_PRODUCTS';
 
     /** @staticvar string */
     const EXECUTE_JOB_PROFILE = 'EXECUTE_JOB_PROFILE';
