@@ -28,12 +28,4 @@ class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
 
         return $options;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDenormalization($data, $type, $format = null)
-    {
-        return in_array($type, $this->supportedTypes) && 'csv' === $format;
-    }
 }
