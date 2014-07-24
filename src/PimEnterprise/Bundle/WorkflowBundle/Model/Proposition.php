@@ -39,6 +39,9 @@ class Proposition
     /** @var array */
     protected $categoryIds = [];
 
+    /** @var string not persisted, used to contextualize the proposition */
+    protected $dataLocale = null;
+
     /**
      * Constructor
      */
@@ -200,5 +203,25 @@ class Proposition
 
         unset($this->categoryIds[$key]);
         $this->categoryIds = array_values($this->categoryIds);
+    }
+
+    /**
+     * @param string $dataLocale
+     *
+     * @return Proposition
+     */
+    public function setDataLocale($dataLocale)
+    {
+        $this->dataLocale = $dataLocale;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataLocale()
+    {
+        return $this->dataLocale;
     }
 }

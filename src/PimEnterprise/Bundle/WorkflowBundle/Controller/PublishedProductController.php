@@ -111,10 +111,6 @@ class PublishedProductController extends AbstractController
         $this->manager->publish($product);
         $this->addFlash('success', 'flash.product.published');
 
-        if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocale();
-        }
-
         return parent::redirectToRoute(
             'pim_enrich_product_edit',
             ['id' => $product->getId(), 'dataLocale' => $this->getDataLocale()]
@@ -137,7 +133,10 @@ class PublishedProductController extends AbstractController
         $this->manager->unpublish($published);
         $this->addFlash('success', 'flash.product.unpublished');
 
-        return parent::redirectToRoute('pimee_workflow_published_product_index');
+        return parent::redirectToRoute(
+            'pimee_workflow_published_product_index',
+            ['dataLocale' => $this->getDataLocale()]
+        );
     }
 
     /**
