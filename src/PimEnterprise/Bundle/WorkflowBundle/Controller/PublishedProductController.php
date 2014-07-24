@@ -133,7 +133,10 @@ class PublishedProductController extends AbstractController
         $this->manager->unpublish($published);
         $this->addFlash('success', 'flash.product.unpublished');
 
-        return parent::redirectToRoute('pimee_workflow_published_product_index');
+        return parent::redirectToRoute(
+            'pimee_workflow_published_product_index',
+            ['dataLocale' => $this->getDataLocale()]
+        );
     }
 
     /**
