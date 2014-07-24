@@ -10,6 +10,7 @@ parameters:
     pimee_versioning.denormalizer.attribute_option.class:  PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionDenormalizer
     pimee_versioning.denormalizer.attribute_options.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionsDenormalizer
     pimee_versioning.denormalizer.prices.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\PricesDenormalizer
+    pimee_versioning.denormalizer.metric.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MetricDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -89,5 +90,10 @@ services:
         class: %pimee_versioning.denormalizer.prices.class%
         arguments:
             - '@pim_catalog.builder.product'
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.metric:
+        class: %pimee_versioning.denormalizer.metric.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
