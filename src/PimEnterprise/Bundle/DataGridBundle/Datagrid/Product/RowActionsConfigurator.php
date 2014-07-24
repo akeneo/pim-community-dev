@@ -44,7 +44,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
         ProductRepositoryInterface $productRepository,
-        LocaleRepository           $localeRepository
+        LocaleRepository $localeRepository
     ) {
         $this->registry = $registry;
         $this->securityContext = $securityContext;
