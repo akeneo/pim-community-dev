@@ -21,6 +21,7 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/EnrichBundle\\MassEditAction/EnrichBundle\\MassEditAction\\Operation/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_class/product_class/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_value_class/product_value_class/g'
+    find ./src/ -type f -name '*.yml'  -print0 | xargs -0 sed -i 's/parent_type/ftype/g'
 ```
 
 BatchBundle

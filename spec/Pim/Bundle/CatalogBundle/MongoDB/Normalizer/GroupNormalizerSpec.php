@@ -5,7 +5,7 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class GroupNormalizerSpec extends ObjectBehavior
 {
@@ -27,7 +27,7 @@ class GroupNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_group(
-        TranslationNormalizer $normalizer,
+        $normalizer,
         Group $group
     ) {
         $group->getCode()->willReturn('mongo');

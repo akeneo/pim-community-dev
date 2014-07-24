@@ -153,6 +153,7 @@
 - Change the arguments of EditCommonAttributes to pass classes (metric, media, price) as an array
 - Remove not used parameter `pim_import_export.entity.export.class`
 - Remove file `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass`
+- Replace the filter config parent_type by ftype
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
