@@ -111,10 +111,6 @@ class PublishedProductController extends AbstractController
         $this->manager->publish($product);
         $this->addFlash('success', 'flash.product.published');
 
-        if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocale();
-        }
-
         return parent::redirectToRoute(
             'pim_enrich_product_edit',
             ['id' => $product->getId(), 'dataLocale' => $this->getDataLocale()]
