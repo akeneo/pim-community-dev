@@ -95,7 +95,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected function denormalizeFamily($data, ProductInterface $product)
     {
         if (strlen($data) > 0) {
-            $family = $this->serializer->denormalize($data, 'Pim\Bundle\CatalogBundle\Entity\Family');
+            $family = $this->serializer->denormalize($data, 'Pim\Bundle\CatalogBundle\Entity\Family', 'csv');
         } else {
             $family = null;
         }
@@ -118,7 +118,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $categoryCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($categoryCodes as $categoryCode) {
             $product->addCategory(
-                $this->serializer->denormalize($categoryCode, 'Pim\Bundle\CatalogBundle\Entity\Category')
+                $this->serializer->denormalize($categoryCode, 'Pim\Bundle\CatalogBundle\Entity\Category', 'csv')
             );
         }
     }
@@ -138,7 +138,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($groupCodes as $groupCode) {
             $product->addGroup(
-                $this->serializer->denormalize($groupCode, 'Pim\Bundle\CatalogBundle\Entity\Group')
+                $this->serializer->denormalize($groupCode, 'Pim\Bundle\CatalogBundle\Entity\Group', 'csv')
             );
         }
     }
@@ -159,7 +159,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 $product->addAssociation(
-                    $this->serializer->denormalize($data[$assocFieldName], 'Pim\Bundle\CatalogBundle\Model\Association')
+                    $this->serializer->denormalize($data[$assocFieldName], 'Pim\Bundle\CatalogBundle\Model\Association', 'csv')
                 );
 
                 unset($data[$assocFieldName]);
@@ -197,7 +197,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $this->serializer->denormalize(
                 $dataValue,
                 'Pim\Bundle\CatalogBundle\Model\ProductValue',
-                null,
+                'csv',
                 $attributeInfos + ['product' => $product] + ['entity' => $product->getValue($attribute->getCode())]
             );
         }
