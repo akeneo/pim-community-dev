@@ -4,7 +4,6 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\AbstractQuery;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
