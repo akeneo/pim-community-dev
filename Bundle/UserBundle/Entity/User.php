@@ -76,6 +76,7 @@ class User implements
     FullNameInterface
 {
     const ROLE_DEFAULT   = 'ROLE_USER';
+    const GROUP_DEFAULT  = 'All';
     const ROLE_ANONYMOUS = 'IS_AUTHENTICATED_ANONYMOUSLY';
 
     /**
