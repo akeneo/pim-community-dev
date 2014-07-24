@@ -1,14 +1,15 @@
 parameters:
-    pimee_versioning.denormalizer.product.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
-    pimee_versioning.denormalizer.family.class:        PimEnterprise\Bundle\VersioningBundle\Denormalizer\FamilyDenormalizer
-    pimee_versioning.denormalizer.category.class:      PimEnterprise\Bundle\VersioningBundle\Denormalizer\CategoryDenormalizer
-    pimee_versioning.denormalizer.group.class:         PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
-    pimee_versioning.denormalizer.association.class:   PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
-    pimee_versioning.denormalizer.product_value.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValueDenormalizer
-    pimee_versioning.denormalizer.dummy.class:         PimEnterprise\Bundle\VersioningBundle\Denormalizer\DummyDenormalizer
-    pimee_versioning.denormalizer.base_value.class:    PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\BaseValueDenormalizer
-    pimee_versioning.denormalizer.attribute_option.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionDenormalizer
+    pimee_versioning.denormalizer.product.class:           PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
+    pimee_versioning.denormalizer.family.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\FamilyDenormalizer
+    pimee_versioning.denormalizer.category.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\CategoryDenormalizer
+    pimee_versioning.denormalizer.group.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
+    pimee_versioning.denormalizer.association.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
+    pimee_versioning.denormalizer.product_value.class:     PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValueDenormalizer
+    pimee_versioning.denormalizer.dummy.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\DummyDenormalizer
+    pimee_versioning.denormalizer.base_value.class:        PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\BaseValueDenormalizer
+    pimee_versioning.denormalizer.attribute_option.class:  PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionDenormalizer
     pimee_versioning.denormalizer.attribute_options.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionsDenormalizer
+    pimee_versioning.denormalizer.prices.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\PricesDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -81,5 +82,12 @@ services:
     pimee_versioning.denormalizer.attribute_options:
         class: %pimee_versioning.denormalizer.attribute_options.class%
         parent: pimee_versioning.denormalizer.attribute_option
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.prices:
+        class: %pimee_versioning.denormalizer.prices.class%
+        arguments:
+            - '@pim_catalog.builder.product'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
