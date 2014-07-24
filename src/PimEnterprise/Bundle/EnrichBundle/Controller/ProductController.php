@@ -112,7 +112,7 @@ class ProductController extends BaseProductController
 
         return [
             'product'    => $product,
-            'dataLocale' => $this->getDataLocale(),
+            'dataLocale' => $this->getDataLocaleCode(),
             'locales'    => $this->getUserLocales(),
             'created'    => $this->versionManager->getOldestLogEntry($product),
             'updated'    => $this->versionManager->getNewestLogEntry($product),
@@ -154,12 +154,27 @@ class ProductController extends BaseProductController
     }
 
     /**
-     * Returns the code of the data locale
+     * Returns the the data locale object
      * If user doesn't have permissions to see product data in any locale, returns null
      *
      * @return string|null
      */
     protected function getDataLocale()
+    {
+        try {
+            return $this->userContext->getCurrentGrantedLocale();
+        } catch (\LogicException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the code of the data locale
+     * If user doesn't have permissions to see product data in any locale, returns null
+     *
+     * @return string|null
+     */
+    protected function getDataLocaleCode()
     {
         try {
             return $this->userContext->getCurrentGrantedLocale()->getCode();

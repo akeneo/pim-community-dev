@@ -1,0 +1,8 @@
+{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::EDIT_PRODUCTS'), dataLocale) %}
+    {{ elements.createBtn(
+        'product',
+        path('pim_enrich_product_create'),
+        'dialog',
+        'pim_enrich_product_create'
+    ) }}
+{% endif %}
