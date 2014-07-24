@@ -31,6 +31,8 @@ class LocaleController extends BaseLocaleController
             $form->submit($this->request);
             if ($form->isValid()) {
                 $this->addFlash('success', 'flash.locale.updated');
+
+                return $this->redirectToRoute('pimee_enrich_locale_edit', ['id' => $locale->getId()]);
             }
         }
 
