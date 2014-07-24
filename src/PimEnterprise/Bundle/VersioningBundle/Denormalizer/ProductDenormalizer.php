@@ -3,7 +3,9 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
@@ -24,18 +26,24 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var string */
     protected $fieldNameBuilder;
 
+    /** @var ProductBuilder */
+    protected $productBuilder;
+
     /**
      * @param ManagerRegistry  $managerRegistry
      * @param string           $entityClass
+     * @param ProductBuilder   $productBuilder
      * @param FieldNameBuilder $fieldNameBuilder
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
+        ProductBuilder $productBuilder,
         FieldNameBuilder $fieldNameBuilder
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
+        $this->productBuilder   = $productBuilder;
         $this->fieldNameBuilder = $fieldNameBuilder;
     }
 
@@ -162,6 +170,8 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /**
      * @param                  $data
      * @param ProductInterface $product
+     *
+     * TODO: parameters should be $data, $format, $context (with product)
      */
     protected function denormalizeValues($data, ProductInterface $product)
     {
@@ -170,26 +180,26 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             $product->removeValue($value);
         }
 
-        foreach ($data as $attCode => $value) {
-            // Get existing value if already existed
-            $existingValue = $product->getValue($attCode);
+        foreach ($data as $attFieldName => $dataValue) {
+            $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
+            $attribute = $attributeInfos['attribute'];
 
-            // Denormalize data value
-            $productValue = $this->serializer->denormalize(
-                $value,
+            echo "<hr />". $attribute->getCode() ."<br />";
+
+            // Add attribute to product if not already done
+            if (!$product->hasAttribute($attribute)) {
+                echo "Add attribute to product<br />";
+                $this->productBuilder->addAttributeToProduct($product, $attribute);
+            }
+
+            // Denormalize data value.
+            // The value is already added to the product so automatically updated
+            $this->serializer->denormalize(
+                $dataValue,
                 'Pim\Bundle\CatalogBundle\Model\ProductValue',
                 null,
-                [
-                    'attribute_code' => $attCode,
-                    'entity'         => $existingValue,
-                    'product'        => $product
-                ]
+                $attributeInfos + ['product' => $product] + ['entity' => $product->getValue($attribute->getCode())]
             );
-
-            // Add the value to the product only if not already existing one
-            if (null === $existingValue) {
-                $product->addValue($productValue);
-            }
         }
     }
 

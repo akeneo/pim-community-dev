@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
@@ -29,7 +30,7 @@ class VersionReverter
      * @param SerializerInterface $serializer
      */
     public function __construct(
-        ProductManager $manager,
+        ManagerRegistry $manager,
         DenormalizerInterface $serializer
     ) {
         $this->manager    = $manager;
@@ -47,7 +48,7 @@ class VersionReverter
         $data       = $version->getSnapshot();
         $resourceId = $version->getResourceId();
 
-        $currentObject = $this->manager->find($resourceId);
+        $currentObject = $this->manager->getRepository($class)->find($resourceId);
         $revertedObject = $this->serializer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
 
         //$this->manager->saveProduct($revertedObject);

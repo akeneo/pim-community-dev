@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
@@ -21,7 +22,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
      * @param string          $entityClass
      * @param ProductBuilder  $productBuilder
      */
-    public function __construct(ManagerRegistry $managerRegistry, $entityClass, ProductBuilder $productBuilder)
+    public function __construct(ManagerRegistry $managerRegistry, $entityClass, ProductBuilder $productBuilder = null)
     {
         parent::__construct($managerRegistry, $entityClass);
 
@@ -33,37 +34,16 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $value = isset($context['entity'])
-            ? $context['entity']
-            : $this->getProductValue($context['attribute_code'], $context['product']);
+        echo get_class($this)."::denormalize<br />";
+        $value = $context['entity'];
+        echo "Attribute type: ". $value->getAttribute()->getAttributeType() ."<br />";
 
-        $value->setData($data);
+
+        // Call denormalizer with attribute type
+
+
+        return $value;
     }
 
-    protected function getProductValue($identifier, ProductInterface $product)
-    {
-        $attribute = $this->getAttribute($identifier);
-
-        $this->productBuilder->addAttributeToProduct($product, $attribute);
-
-        return $product->getValue($identifier);
-    }
-
-    /**
-     * @return \Doctrine\Common\Persistence\ObjectRepository
-     */
-    protected function getProductRepository()
-    {
-        return $this->managerRegistry->getRepository('Pim\Bundle\CatalogBundle\Model\Product');
-    }
-
-    protected function getAttributeRepository()
-    {
-        return $this->managerRegistry->getRepository('Pim\Bundle\CatalogBundle\Entity\Attribute');
-    }
-
-    protected function getAttribute($attributeCode)
-    {
-        return $this->getAttributeRepository()->findByReference($attributeCode);
-    }
+    protected
 }
