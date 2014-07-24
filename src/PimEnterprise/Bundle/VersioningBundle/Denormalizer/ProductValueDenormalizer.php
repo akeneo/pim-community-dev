@@ -11,8 +11,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * TODO : Should be removed
  */
 class ProductValueDenormalizer extends AbstractEntityDenormalizer
 {
@@ -40,10 +38,14 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
         $value = $context['entity'];
         echo "Attribute type: ". $value->getAttribute()->getAttributeType() ."<br />";
 
+        $context['entity'] = null;
+        $context['value']  = $value;
 
         // Call denormalizer with attribute type
-        $this->serializer->denormalize($data, $value->getAttribute()->getAttributeType(), 'csv', $context);
-
+        $dataValue = $this->serializer->denormalize($data, $value->getAttribute()->getAttributeType(), 'csv', $context);
+        if (null !== $dataValue) {
+            $value->setData($dataValue);
+        }
 
         return $value;
     }
