@@ -5,8 +5,10 @@ parameters:
     pimee_versioning.denormalizer.group.class:         PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
     pimee_versioning.denormalizer.association.class:   PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
     pimee_versioning.denormalizer.product_value.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValueDenormalizer
-    pimee_versioning.denormalizer.base_value.class:    PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\BaseValueDenormalizer
     pimee_versioning.denormalizer.dummy.class:         PimEnterprise\Bundle\VersioningBundle\Denormalizer\DummyDenormalizer
+    pimee_versioning.denormalizer.base_value.class:    PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\BaseValueDenormalizer
+    pimee_versioning.denormalizer.attribute_option.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionDenormalizer
+    pimee_versioning.denormalizer.attribute_options.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionsDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -59,12 +61,25 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
+    pimee_versioning.denormalizer.dummy:
+        class: %pimee_versioning.denormalizer.dummy.class%
+        tags:
+            - { name: pim_serializer.normalizer, priority: 30 }
+
     pimee_versioning.denormalizer.base_value:
         class: %pimee_versioning.denormalizer.base_value.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pimee_versioning.denormalizer.dummy:
-        class: %pimee_versioning.denormalizer.dummy.class%
+    pimee_versioning.denormalizer.attribute_option:
+        class: %pimee_versioning.denormalizer.attribute_option.class%
+        arguments:
+            - '@pim_catalog.repository.attribute_option'
         tags:
-            - { name: pim_serializer.normalizer, priority: 30 }
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.attribute_options:
+        class: %pimee_versioning.denormalizer.attribute_options.class%
+        parent: pimee_versioning.denormalizer.attribute_option
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
