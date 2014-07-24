@@ -27,7 +27,6 @@ class PropositionHydratorSpec extends ObjectBehavior
     {
         $extractor->getParameter('dataLocale')->shouldBeCalled();
         $builder->getQuery()->willReturn($query);
-        $builder->hydrate(false)->willReturn($builder);
         $query->execute()->willReturn([]);
 
         $this->hydrate($builder, []);

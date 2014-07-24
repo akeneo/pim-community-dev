@@ -34,10 +34,10 @@ class PropositionHydrator implements HydratorInterface
     {
         $locale = $this->extractor->getParameter('dataLocale');
         /** @var \Doctrine\MongoDB\Query $query */
-        $query = $qb->hydrate(false)->getQuery();
+        $query = $qb->getQuery();
         $rows = [];
         foreach ($query->execute() as $result) {
-            $result['dataLocale'] =  $locale;
+            $result->setDataLocale($locale);
             $rows[] = new ResultRecord($result);
         }
 
