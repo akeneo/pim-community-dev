@@ -87,7 +87,7 @@ class ProductController extends BaseProductController
 
         return [
             'product'    => $product,
-            'dataLocale' => $this->getDataLocale(),
+            'dataLocale' => $this->getDataLocaleCode(),
             'locales'    => $this->userContext->getUserLocales(),
             'created'    => $this->versionManager->getOldestLogEntry($product),
             'updated'    => $this->versionManager->getNewestLogEntry($product),
