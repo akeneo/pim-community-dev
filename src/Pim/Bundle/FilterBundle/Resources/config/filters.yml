@@ -94,7 +94,7 @@ services:
         arguments:
             - '@form.factory'
             - '@pim_filter.product_utility'
-            - '@oro_datagrid.datagrid.request_params'
+            - '@pim_datagrid.datagrid.request_parameters_extractor'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_in_group }
 

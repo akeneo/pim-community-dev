@@ -51,4 +51,20 @@ class RequestParametersExtractor implements RequestParametersExtractorInterface
 
         return $param;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getDatagridParameter($key, $defaultValue = null)
+    {
+        return $this->requestParams->get($key, $defaultValue);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRequestParameter($key, $defaultValue = null)
+    {
+        return $this->request->get($key, $defaultValue);
+    }
 }
