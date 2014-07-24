@@ -143,6 +143,7 @@
 - Upgraded to 0.2.* version of akeneo/batch-bundle
 - Rename `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass` by `Pim\Bundle\Transform\DependencyInjection\Compiler\SerializerPass` and change construct parameters
 - AddVersionListener and VersionBuilder use new `pim_versioning.serializer` service
+- Remove `pim_serializer.normalizer.get_set_method` defined as fallback normalizer
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
