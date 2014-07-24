@@ -26,6 +26,7 @@ class PimTransformExtension extends Extension
         $loader->load('transformers.yml');
         $loader->load('guessers.yml');
         $loader->load('services.yml');
+        $loader->load('builders.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
