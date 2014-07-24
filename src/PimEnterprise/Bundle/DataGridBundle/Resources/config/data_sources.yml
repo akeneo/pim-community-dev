@@ -1,5 +1,6 @@
 parameters:
     pimee_datagrid.datasource.product_history.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_datagrid.datasource.proposition.class:     Pim\Bundle\DataGridBundle\Datasource\Datasource
 
 services:
     pim_catalog.product_history.product:
@@ -19,6 +20,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
 
+    pimee_catalog.datasource.proposition:
+        class: %pimee_datagrid.datasource.proposition.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.proposition'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_proposition }
+
     pim_datagrid.datasource.support_resolver:
         class: %pim_datagrid.datasource.support_resolver.class%
         arguments:
@@ -28,3 +37,4 @@ services:
             - [addSmartDatasource, ['pim_datasource_smart']]
             - [addSmartDatasource, ['pimee_datasource_product_history']]
             - [addSmartDatasource, ['pimee_datasource_published_product']]
+            - [addSmartDatasource, ['pimee_datasource_proposition']]
