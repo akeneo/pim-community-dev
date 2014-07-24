@@ -9,11 +9,4 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
  */
 class FamilyDenormalizer extends AbstractEntityDenormalizer
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function denormalize($data, $class, $format = null, array $context = array())
-    {
-        return $this->getEntity($data);
-    }
 }
