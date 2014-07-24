@@ -13,6 +13,14 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_default }
 
+    pim_catalog.datasource.smart:
+        class: %pim_datagrid.datasource.default.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.default'
+        tags:
+            - { name: oro_datagrid.datasource, type: pim_datasource_smart }
+
     pim_catalog.datasource.product:
         class: %pim_datagrid.datasource.product.class%
         arguments:
