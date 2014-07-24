@@ -2,10 +2,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM;
 
-use Symfony\Component\HttpFoundation\Request;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 
 /**
  * Hydrator for proposition (MongoDB support)
@@ -16,24 +15,16 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 class PropositionHydrator implements HydratorInterface
 {
     /**
-     * @var RequestParameters
+     * @var RequestParametersExtractorInterface
      */
     protected $requestParams;
 
     /**
-     * @param RequestParameters $requestParams
+     * @param RequestParametersExtractorInterface $extractor
      */
-    public function __construct(RequestParameters $requestParams)
+    public function __construct(RequestParametersExtractorInterface $extractor)
     {
-        $this->requestParams = $requestParams;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -41,34 +32,15 @@ class PropositionHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
+        $locale = $this->extractor->getParameter('dataLocale');
         /** @var \Doctrine\MongoDB\Query $query */
         $query = $qb->hydrate(false)->getQuery();
-        $locale = $this->getCurrentLocaleCode();
         $rows = [];
         foreach ($query->execute() as $result) {
-            $result['dataLocale'] =  $this->getCurrentLocaleCode();
+            $result['dataLocale'] =  $locale;
             $rows[] = new ResultRecord($result);
         }
 
         return $rows;
-    }
-
-    /**
-     * Get current locale from datagrid parameters, then request parameters, then user config
-     * TODO : merge with other hydrator
-     *
-     * @return string
-     */
-    protected function getCurrentLocaleCode()
-    {
-        $dataLocale = $this->requestParams->get('dataLocale', null);
-        if (!$dataLocale) {
-            $dataLocale = $this->request->get('dataLocale', null);
-        }
-        if (!$dataLocale) {
-            throw new \LogicException('Data locale should be passed to each result record');
-        }
-
-        return $dataLocale;
     }
 }

@@ -2,10 +2,9 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\ORM;
 
-use Symfony\Component\HttpFoundation\Request;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecord;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 
 /**
  * Hydrator for proposition (ORM support)
@@ -16,24 +15,16 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 class PropositionHydrator implements HydratorInterface
 {
     /**
-     * @var RequestParameters
+     * @var RequestParametersExtractorInterface
      */
     protected $requestParams;
 
     /**
-     * @param RequestParameters $requestParams
+     * @param RequestParametersExtractorInterface $extractor
      */
-    public function __construct(RequestParameters $requestParams)
+    public function __construct(RequestParametersExtractorInterface $extractor)
     {
-        $this->requestParams = $requestParams;
-    }
-
-    /**
-     * @param Request $request
-     */
-    public function setRequest(Request $request = null)
-    {
-        $this->request = $request;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -41,7 +32,7 @@ class PropositionHydrator implements HydratorInterface
      */
     public function hydrate($qb, array $options = [])
     {
-        $locale = $this->getCurrentLocaleCode();
+        $locale = $this->extractor->getParameter('dataLocale');
         $records = [];
         foreach ($qb->getQuery()->execute() as $result) {
             $result['dataLocale']= $locale;
@@ -50,23 +41,5 @@ class PropositionHydrator implements HydratorInterface
         }
 
         return $records;
-    }
-
-    /**
-     * Get current locale from datagrid parameters, then request parameters, then user config
-     *
-     * @return string
-     */
-    protected function getCurrentLocaleCode()
-    {
-        $dataLocale = $this->requestParams->get('dataLocale', null);
-        if (!$dataLocale) {
-            $dataLocale = $this->request->get('dataLocale', null);
-        }
-        if (!$dataLocale) {
-            throw new \LogicException('Data locale should be passed to each result record');
-        }
-
-        return $dataLocale;
     }
 }
