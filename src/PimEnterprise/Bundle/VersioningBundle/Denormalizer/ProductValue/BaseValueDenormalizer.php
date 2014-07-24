@@ -2,39 +2,18 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
 
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
-
 /**
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class BaseValueDenormalizer implements DenormalizerInterface
+class BaseValueDenormalizer extends AbstractValueDenormalizer
 {
-
-    /** @var array */
-    protected $supportedTypes = array(
-        'pim_catalog_boolean',
-        'pim_catalog_date',
-        'pim_catalog_identifier',
-        'pim_catalog_number',
-        'pim_catalog_text',
-        'pim_catalog_textarea'
-    );
-
     /**
      * {@inheritdoc}
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         return $data;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDenormalization($data, $type, $format = null)
-    {
-        return in_array($type, $this->supportedTypes) && 'csv' === $format;
     }
 }

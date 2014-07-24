@@ -11,9 +11,6 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
 {
-    /** @var array */
-    protected $supportedTypes = array('pim_catalog_multiselect');
-
     /**
      * {@inheritdoc}
      */

@@ -4,26 +4,24 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
 
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeOptionDenormalizer implements DenormalizerInterface
+class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {
-    /** @var array */
-    protected $supportedTypes = array('pim_catalog_simpleselect');
-
     /** @var AttributeOptionRepository */
     protected $repository;
 
     /**
      * @param AttributeOptionRepository $repository
      */
-    public function __construct(AttributeOptionRepository $repository)
+    public function __construct(array $supportedTypes, AttributeOptionRepository $repository)
     {
+        parent::__construct($supportedTypes);
+
         $this->repository = $repository;
     }
 
@@ -38,14 +36,6 @@ class AttributeOptionDenormalizer implements DenormalizerInterface
         );
 
         return $option;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsDenormalization($data, $type, $format = null)
-    {
-        return in_array($type, $this->supportedTypes) && 'csv' === $format;
     }
 
     /**

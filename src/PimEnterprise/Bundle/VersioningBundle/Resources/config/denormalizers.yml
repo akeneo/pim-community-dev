@@ -70,30 +70,38 @@ services:
 
     pimee_versioning.denormalizer.base_value:
         class: %pimee_versioning.denormalizer.base_value.class%
+        arguments:
+            - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number', 'pim_catalog_boolean']
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.attribute_option:
         class: %pimee_versioning.denormalizer.attribute_option.class%
         arguments:
+            - ['pim_catalog_simpleselect']
             - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.attribute_options:
         class: %pimee_versioning.denormalizer.attribute_options.class%
-        parent: pimee_versioning.denormalizer.attribute_option
+        arguments:
+            - ['pim_catalog_multiselect']
+            - '@pim_catalog.repository.attribute_option'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.prices:
         class: %pimee_versioning.denormalizer.prices.class%
         arguments:
+            - ['pim_catalog_price_collection']
             - '@pim_catalog.builder.product'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.metric:
         class: %pimee_versioning.denormalizer.metric.class%
+        arguments:
+            - ['pim_catalog_metric']
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
