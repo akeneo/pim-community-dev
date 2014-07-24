@@ -36,3 +36,14 @@ Feature: Enforce no permissions for a locale
       | language                | label |
       | English (United States) |       |
       | German (Germany)        |       |
+
+  Scenario: Display product view or edit page depending on user's rights
+    Given the following locale accesses:
+      | locale | user group | access |
+      | en_US  | Manager    | view   |
+    And I am logged in as "Julia"
+    When I am on the products page
+    And I click on the "foo" row
+    Then I should not see the "Save working copy" button
+    When I switch the locale to "German (Germany)"
+    Then I should see the "Save working copy" button
