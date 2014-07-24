@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
+namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
@@ -22,7 +22,7 @@ class DummyDenormalizer implements DenormalizerInterface
     /**
      * {@inheritdoc}
      */
-    public function supportDenormalization($data, $type, $format = null)
+    public function supportsDenormalization($data, $type, $format = null)
     {
         return $format === 'csv';
     }

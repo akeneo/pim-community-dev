@@ -23,6 +23,9 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var array */
+    protected $supportedFormats = array('csv');
+
     /**
      * @param ManagerRegistry $managerRegistry
      * @param string          $entityClass
@@ -46,7 +49,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return $type === $this->entityClass;
+        return $type === $this->entityClass && in_array($format, $this->supportedFormats);
     }
 
     /**
