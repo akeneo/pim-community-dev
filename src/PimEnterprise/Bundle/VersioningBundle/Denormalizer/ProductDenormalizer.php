@@ -194,12 +194,15 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
 
             // Denormalize data value.
             // The value is already added to the product so automatically updated
+
             $this->serializer->denormalize(
                 $dataValue,
                 'Pim\Bundle\CatalogBundle\Model\ProductValue',
                 'csv',
                 $attributeInfos + ['product' => $product] + ['entity' => $product->getValue($attribute->getCode())]
             );
+
+            echo "- ". $product->getValue($attribute->getCode()) ."<br />";
         }
     }
 

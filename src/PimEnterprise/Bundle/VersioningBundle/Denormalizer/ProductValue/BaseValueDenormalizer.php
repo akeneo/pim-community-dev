@@ -21,15 +21,15 @@ class BaseValueDenormalizer implements DenormalizerInterface
         'pim_catalog_date'
     );
 
-    /** @var array */
-    protected $supportedFormats = array('csv');
-
     /**
      * {@inheritdoc}
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        // TODO: Implement denormalize() method.
+        $value = $context['entity'];
+        $value->setData($data);
+
+        return $value;
     }
 
     /**
@@ -37,5 +37,6 @@ class BaseValueDenormalizer implements DenormalizerInterface
      */
     public function supportsDenormalization($data, $type, $format = null)
     {
-        return in_array($type, $this->supportedTypes) && in_array($format, $this->supportedFormats);
-}}
+        return in_array($type, $this->supportedTypes) && 'csv' === $format;
+    }
+}
