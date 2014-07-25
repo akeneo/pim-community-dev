@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UserBundle\Entity\Repository;
 
 use Oro\Bundle\UserBundle\Entity\Repository\GroupRepository as BaseGroupRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
 
 /**
@@ -20,6 +21,18 @@ class GroupRepository extends BaseGroupRepository implements ReferableEntityRepo
     public function findByReference($code)
     {
         return $this->findOneBy(array('name' => $code));
+    }
+
+    /**
+     * Create a QB to find all groups but the default one
+     *
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getAllButDefaultQB()
+    {
+        return $this->createQueryBuilder('g')
+            ->where('g.name <> :all')
+            ->setParameter('all', User::GROUP_DEFAULT);
     }
 
     /**

@@ -52,6 +52,7 @@ class UserHandler extends AbstractUserHandler
      */
     protected function onSuccess(User $user)
     {
+        $this->addDefaultGroup($user);
         $this->manager->updateUser($user);
         // Reloads the user to reset its username. This is needed when the
         // username or password have been changed to avoid issues with the
@@ -65,5 +66,26 @@ class UserHandler extends AbstractUserHandler
     public function setBusinessUnitManager(BusinessUnitManager $businessUnitManager)
     {
         $this->businessUnitManager = $businessUnitManager;
+    }
+
+    /**
+     * Add the default group to the user.
+     *
+     * @param User $user
+     *
+     * @throws \RuntimeException
+     */
+    protected function addDefaultGroup(User $user)
+    {
+        if (!$user->hasGroup(User::GROUP_DEFAULT)) {
+            $group = $this->manager->getStorageManager()
+                ->getRepository('OroUserBundle:Group')->findOneBy(array('name' => User::GROUP_DEFAULT));
+
+            if (!$group) {
+                throw new \RuntimeException('Default user group not found');
+            }
+
+            $user->addGroup($group);
+        }
     }
 }
