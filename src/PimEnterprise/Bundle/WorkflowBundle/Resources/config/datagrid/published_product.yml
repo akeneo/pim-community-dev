@@ -3,6 +3,7 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
+                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
@@ -63,6 +64,19 @@ datagrid:
                 handler: product_mass_edit
                 route: pim_enrich_mass_edit_action_choose
                 icon: edit
+            quick_export_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_all
+                icon: download
+                handler: product_quick_export
+                route: pimee_datagrid_export_published_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: No products selected
         sorters:
             columns:
                 family:

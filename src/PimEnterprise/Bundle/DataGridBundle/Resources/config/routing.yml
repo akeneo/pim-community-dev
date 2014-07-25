@@ -1,0 +1,3 @@
+pimee_datagrid_export:
+    resource: '@PimEnterpriseDataGridBundle/Resources/config/routing/pimee_export.yml'
+    prefix: /datagrid/export
