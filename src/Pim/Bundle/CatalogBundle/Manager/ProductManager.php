@@ -259,14 +259,44 @@ class ProductManager
      * @param boolean            $recalculate Whether or not to directly recalculate the completeness
      * @param boolean            $flush       Whether or not to flush the entity manager
      * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
+     *
+     * @deprecated use saveAllProducts() instead. Will be removed in 1.3
      */
     public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
     {
+        $options = [
+            'recalculate' => $recalculate,
+            'flush' => $flush,
+            'schedule' => $schedule,
+        ];
+
+        return $this->saveAllProducts($products, $options);
+    }
+
+    /**
+     * Save multiple products
+     *
+     * @param ProductInterface[] $products    The products to save
+     * @param array              $options     Saving options
+     */
+    public function saveAllProducts(array $products, array $options = [])
+    {
+        $allOptions = array_merge(
+            [
+                'recalculate' => false,
+                'flush' => true,
+                'schedule' => true,
+            ],
+            $options
+        );
+        $itemOptions = $allOptions;
+        $itemOptions['flush'] = false;
+
         foreach ($products as $product) {
-            $this->save($product, $recalculate, false, $schedule);
+            $this->saveProduct($product, $itemOptions);
         }
 
-        if ($flush) {
+        if ($allOptions['flush'] === true) {
             $this->objectManager->flush();
         }
     }
