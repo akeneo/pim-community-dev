@@ -30,4 +30,17 @@ class Classify extends BaseClassify
         $this->trees           = $categoryManager->getAccessibleTrees($securityContext->getToken()->getUser());
         $this->categories      = [];
     }
+
+    /**
+     * Override to bypass the creation of a proposition
+     *
+     * @return array
+     */
+    public function getSavingOptions()
+    {
+        $options = parent::getSavingOptions();
+        $options['bypass_proposition']= true;
+
+        return $options;
+    }
 }
