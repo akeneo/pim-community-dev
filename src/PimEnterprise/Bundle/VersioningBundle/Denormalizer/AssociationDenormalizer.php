@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
+use Pim\Bundle\CatalogBundle\Model\Association;
+
 /**
  *
  * @author    Romain Monceau <romain@akeneo.com>
@@ -11,7 +13,11 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $association = $context['entity'];
+        $association = isset($context['entity'])
+            ? $context['entity']
+            : $this->createEntity()->setAssociationType(
+                $this->getAssociationType($context['association_type_code'])
+            );
 
         if ('groups' === $context['part']) {
             if (strlen($data) > 0) {

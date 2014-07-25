@@ -6,6 +6,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
@@ -53,6 +54,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         $product = $context['entity'];
+        echo $product->getId() ."<br />";
 
         if (isset($data[self::FIELD_ENABLED])) {
             $product->setEnabled((bool) $data[self::FIELD_ENABLED]);
@@ -64,16 +66,19 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             unset($data[self::FIELD_FAMILY]);
         }
 
+        echo $product->getId() ."<br />";
         if (isset($data[self::FIELD_CATEGORIES])) {
             $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $product);
             unset($data[self::FIELD_CATEGORIES]);
         }
+        echo $product->getId() ."<br />";
 
         if (isset($data[self::FIELD_GROUPS])) {
             $this->denormalizeGroups($data[self::FIELD_GROUPS], $product);
             unset($data[self::FIELD_GROUPS]);
         }
 
+        echo $product->getId() ."<br />";
         $this->denormalizeAssociations($data, $product);
 
         $this->denormalizeValues($data, $product);
@@ -148,46 +153,42 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 $association->removeGroup($group);
             }
 
-            foreach ($association->getProducts() as $product) {
-                $association->removeProduct($product);
+            foreach ($association->getProducts() as $prod) {
+                $association->removeProduct($prod);
             }
         }
+        unset($prod);
+        unset($association);
+        unset($group);
 
+        echo "DenormalizeAssociations<br />";
 
+        echo $product->getId() ."<br />";
         // Get association field names and add associations
         $assocFieldNames = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
                 list($associationTypeCode, $part) = explode('-', $assocFieldName);
 
-                $association = $product->getAssociationForTypeCode($associationTypeCode);
+                if (!$association = $product->getAssociationForTypeCode($associationTypeCode)) {
+                    echo "I'M HERE !!!<br />";
+                    $association = null;
+                }
 
-                $this->serializer->denormalize(
+                $association = $this->serializer->denormalize(
                     $data[$assocFieldName],
                     'Pim\Bundle\CatalogBundle\Model\Association',
                     'csv',
                     ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
                 );
 
-                unset($data[$assocFieldName]);
-                $assocFieldName = current($assocFieldNames);
-
-                // TODO: Explode in a method
-                if (isset($data[$assocFieldName])) {
-                    list($associationTypeCode, $part) = explode('-', $assocFieldName);
-
-                    $this->serializer->denormalize(
-                        $data[$assocFieldName],
-                        'Pim\Bundle\CatalogBundle\Model\Association',
-                        'csv',
-                        ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
-                    );
-                    unset($data[$assocFieldName]);
+                if (!$product->getAssociationForTypeCode($associationTypeCode)) {
                     $product->addAssociation($association);
                 }
+
+
+                unset($data[$assocFieldName]);
             }
-
-
         }
     }
 

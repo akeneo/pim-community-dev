@@ -53,6 +53,7 @@ class VersionReverter
         $class      = $version->getResourceName();
         $data       = $version->getSnapshot();
         $resourceId = $version->getResourceId();
+        echo "ResourceId: ". $resourceId ."<br /><br />";
 
         $currentObject = $this->manager->getRepository($class)->find($resourceId);
         $revertedObject = $this->serializer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
