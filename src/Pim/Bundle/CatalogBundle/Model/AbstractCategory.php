@@ -17,54 +17,34 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 abstract class AbstractCategory  implements CategoryInterface, TranslatableInterface, ReferableInterface,
     VersionableInterface
 {
-    /**
-     * @var integer $id
-     */
+    /** @var integer $id */
     protected $id;
 
-    /**
-     * @var string $code
-     */
+    /** @var string $code */
     protected $code;
 
-    /**
-     * @var integer $left
-     */
+    /** @var integer $left */
     protected $left;
 
-    /**
-     * @var integer $level
-     */
+    /** @var integer $level */
     protected $level;
 
-    /**
-     * @var integer $right
-     */
+    /** @var integer $right */
     protected $right;
 
-    /**
-     * @var integer $root
-     */
+    /** @var integer $root */
     protected $root;
 
-    /**
-     * @var CategoryInterface $parent
-     */
+    /** @var CategoryInterface $parent */
     protected $parent;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection $children
-     */
+    /** @var \Doctrine\Common\Collections\Collection $children */
     protected $children;
 
-    /**
-     * @var ArrayCollection $products
-     */
+    /** @var ArrayCollection $products */
     protected $products;
 
-    /**
-     * @var datetime
-     */
+    /** @var datetime */
     protected $created;
 
     /**
@@ -75,14 +55,10 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
      */
     protected $locale;
 
-    /**
-     * @var ArrayCollection $translations
-     */
+    /** @var ArrayCollection $translations */
     protected $translations;
 
-    /**
-     * @var ArrayCollection $channels
-     */
+    /** @var ArrayCollection $channels */
     protected $channels;
 
     /**
@@ -97,8 +73,6 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Get id
-     *
      * @return integer
      */
     public function getId()
@@ -107,8 +81,6 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Set code
-     *
      * @param string $code
      *
      * @return CategoryInterface
@@ -121,8 +93,6 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Get code
-     *
      * @return string
      */
     public function getCode()
@@ -131,7 +101,6 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Set left
      * @param integer $left
      *
      * @return CategoryInterface
