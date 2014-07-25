@@ -42,6 +42,8 @@ btn:
 # Mass edit operations
 pim_enrich:
     mass_edit_action:
+        product:
+            not_editable: You don't have the permission to edit the products "%identifiers%".
         publish:
             label: Publish products
             description: Publish the selected products, the current published data will be erased by the current working copy.
