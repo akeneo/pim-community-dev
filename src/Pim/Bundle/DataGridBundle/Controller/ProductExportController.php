@@ -4,8 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\SerializerInterface;
-
-use Pim\Bundle\CatalogBundle\Manager\ProductManager;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder;
@@ -20,34 +19,34 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  */
 class ProductExportController extends ExportController
 {
-    /** @var ProductManager $productManager */
-    protected $productManager;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var LocaleManager $localeManager */
+    /** @var LocaleManager */
     protected $localeManager;
 
-    /** @var CatalogContext $catalogContext */
+    /** @var CatalogContext */
     protected $catalogContext;
 
-    /** @var ProductFieldsBuilder $fieldsBuilder */
+    /** @var ProductFieldsBuilder */
     protected $fieldsBuilder;
 
     /**
      * Constructor
      *
-     * @param Request              $request
-     * @param MassActionDispatcher $massActionDispatcher
-     * @param SerializerInterface  $serializer
-     * @param ProductManager       $productManager
-     * @param LocaleManager        $localeManager
-     * @param CatalogContext       $catalogContext
-     * @param ProductFieldsBuilder $fieldsBuilder
+     * @param Request                    $request
+     * @param MassActionDispatcher       $massActionDispatcher
+     * @param SerializerInterface        $serializer
+     * @param ProductRepositoryInterface $productRepository
+     * @param LocaleManager              $localeManager
+     * @param CatalogContext             $catalogContext
+     * @param ProductFieldsBuilder       $fieldsBuilder
      */
     public function __construct(
         Request $request,
         MassActionDispatcher $massActionDispatcher,
         SerializerInterface $serializer,
-        ProductManager $productManager,
+        ProductRepositoryInterface $productRepository,
         LocaleManager $localeManager,
         CatalogContext $catalogContext,
         ProductFieldsBuilder $fieldsBuilder
@@ -58,10 +57,10 @@ class ProductExportController extends ExportController
             $serializer
         );
 
-        $this->productManager   = $productManager;
-        $this->localeManager    = $localeManager;
-        $this->catalogContext   = $catalogContext;
-        $this->fieldsBuilder    = $fieldsBuilder;
+        $this->productRepository = $productRepository;
+        $this->localeManager     = $localeManager;
+        $this->catalogContext    = $catalogContext;
+        $this->fieldsBuilder     = $fieldsBuilder;
     }
 
     /**
@@ -89,13 +88,12 @@ class ProductExportController extends ExportController
         $fieldsList   = $this->fieldsBuilder->getFieldsList($productIds);
         $attributeIds = $this->fieldsBuilder->getAttributeIds();
         $context      = $this->getContext() + ['fields' => $fieldsList];
-        $productRepo  = $this->productManager->getProductRepository();
 
         // batch output to avoid memory leak
         $offset = 0;
         $batchSize = 100;
         while ($productsList = array_slice($productIds, $offset, $batchSize)) {
-            $results = $productRepo->getFullProducts($productsList, $attributeIds);
+            $results = $this->productRepository->getFullProducts($productsList, $attributeIds);
             echo $this->serializer->serialize($results, $this->getFormat(), $context);
             $offset += $batchSize;
             flush();

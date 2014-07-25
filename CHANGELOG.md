@@ -143,7 +143,8 @@
 - Upgraded to 0.2.* version of akeneo/batch-bundle
 - Rename `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass` by `Pim\Bundle\Transform\DependencyInjection\Compiler\SerializerPass` and change construct parameters
 - AddVersionListener and VersionBuilder use new `pim_versioning.serializer` service
-- In InGroupFilter and IsAssociatedFilter constructors, replace the RequestParameters argument by a RequestParametersExtractorInterface 
+- In InGroupFilter and IsAssociatedFilter constructors, replace the RequestParameters argument by a RequestParametersExtractorInterface
+- Change constructor of `Pim\Bundle\DataGridBundle\Controller\ProductExportController` to inject the product repository `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` as fourth argument
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
