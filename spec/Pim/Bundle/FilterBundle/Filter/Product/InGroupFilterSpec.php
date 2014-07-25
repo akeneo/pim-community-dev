@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -14,9 +14,9 @@ use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 
 class InGroupFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, RequestParameters $params)
+    function let(FormFactoryInterface $factory, ProductFilterUtility $utility, RequestParametersExtractorInterface $extractor)
     {
-        $this->beConstructedWith($factory, $utility, $params);
+        $this->beConstructedWith($factory, $utility, $extractor);
     }
 
     function it_is_an_oro_choice_filter()
@@ -30,13 +30,13 @@ class InGroupFilterSpec extends ObjectBehavior
         ProductRepositoryInterface $repository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
-        RequestParameters $params
+        RequestParametersExtractorInterface $extractor
     ) {
-        $params->get('currentGroup', null)->willReturn(12);
+        $extractor->getDatagridParameter('currentGroup')->willReturn(12);
         $datasource->getQueryBuilder()->willReturn($qb);
         $utility->getProductRepository()->willReturn($repository);
         $repository->getProductQueryBuilder($qb)->willReturn($pqb);
-        $pqb->addFieldFilter('groups', 'IN', 12)->shouldBeCalled();
+        $pqb->addFieldFilter('groups', 'IN', [12])->shouldBeCalled();
 
         $this->apply($datasource, ['type' => null, 'value' => 1]);
     }

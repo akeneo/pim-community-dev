@@ -8,6 +8,7 @@ use Oro\Bundle\FilterBundle\Filter\BooleanFilter;
 use Oro\Bundle\FilterBundle\Form\Type\Filter\BooleanFilterType;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use Oro\Bundle\FilterBundle\Filter\FilterUtility;
+use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 
 /**
  * Product in group filter (used by group products grid)
@@ -19,24 +20,24 @@ use Oro\Bundle\FilterBundle\Filter\FilterUtility;
 class InGroupFilter extends BooleanFilter
 {
     /**
-     * @var RequestParameters
+     * @var RequestParametersExtractorInterface
      */
-    protected $requestParams;
+    protected $extractor;
 
     /**
      * Constructor
      *
-     * @param FormFactoryInterface $factory
-     * @param FilterUtility        $util
-     * @param RequestParameters    $requestParams
+     * @param FormFactoryInterface                $factory
+     * @param FilterUtility                       $util
+     * @param RequestParametersExtractorInterface $extractor
      */
     public function __construct(
         FormFactoryInterface $factory,
         FilterUtility $util,
-        RequestParameters $requestParams
+        RequestParametersExtractorInterface $extractor
     ) {
         parent::__construct($factory, $util);
-        $this->requestParams = $requestParams;
+        $this->extractor = $extractor;
     }
 
     /**
@@ -49,12 +50,12 @@ class InGroupFilter extends BooleanFilter
             return false;
         }
 
-        $groupId = $this->requestParams->get('currentGroup', null);
+        $groupId = $this->extractor->getDatagridParameter('currentGroup');
         if (!$groupId) {
             throw new \LogicalException('The current product group must be configured');
         }
 
-        $value = $groupId;
+        $value = [$groupId];
         $operator = ($data['value'] === BooleanFilterType::TYPE_YES) ? 'IN' : 'NOT IN';
 
         $qb = $ds->getQueryBuilder();
