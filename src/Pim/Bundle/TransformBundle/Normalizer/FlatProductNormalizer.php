@@ -35,7 +35,7 @@ class FlatProductNormalizer implements NormalizerInterface
     protected $mediaManager;
 
     /** @var array */
-    protected $supportedFormats = array('csv', 'flat');
+    protected $supportedFormats = array('csv');
 
     /** @var array */
     protected $results = array();

@@ -30,7 +30,7 @@ class BulkProductReaderSpec extends ObjectBehavior
 
     function it_is_a_product_reader()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ObsoleteProductReader');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\BaseConnectorBundle\Reader\Doctrine\ProductReader');
     }
 
     function it_has_a_channel()
