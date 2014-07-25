@@ -144,6 +144,25 @@ class ProductController extends BaseProductController
     }
 
     /**
+     * Propositions of a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function propositionsAction(Request $request, $id)
+    {
+        return $this->render(
+            'PimEnterpriseEnrichBundle:Product:_propositions.html.twig',
+            array(
+                'product' => $this->findProductOr404($id),
+                'dataLocale' => $this->getDataLocaleCode()
+            )
+        );
+    }
+
+    /**
      * Override to return only granted user locales
      *
      * @return Locale[]

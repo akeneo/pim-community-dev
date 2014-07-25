@@ -27,7 +27,6 @@
 </div>
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
-<div class="tab-pane" id="propositions">
-    {% include 'PimEnterpriseEnrichBundle:Product:_propositions.html.twig' %}
+<div class="tab-pane" id="propositions" data-url="{{ path('pimee_enrich_product_propositions', { id: product.id, dataLocale: dataLocale }) }}">
 </div>
 {% endif %}

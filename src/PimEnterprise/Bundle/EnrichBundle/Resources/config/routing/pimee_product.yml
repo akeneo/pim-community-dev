@@ -18,3 +18,10 @@ pimee_enrich_product_value_show:
     requirements:
         product: '[0-9a-f]+'
     methods: [GET]
+
+pimee_enrich_product_propositions:
+    path: /{id}/propositions
+    defaults: { _controller: pim_enrich.controller.product:propositionsAction }
+    requirements:
+        product: '[0-9a-f]+'
+    methods: [GET]

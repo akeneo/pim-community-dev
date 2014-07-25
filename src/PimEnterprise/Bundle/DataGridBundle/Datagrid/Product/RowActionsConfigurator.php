@@ -171,7 +171,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
         $showLink = [];
         $showLink['type'] = 'url';
         $showLink['route'] = 'pimee_enrich_product_show';
-        $showLink['params'][] = 'id';
+        $showLink['params'] = ['id', 'dataLocale'];
 
         $this->configuration->offsetSetByPath('[properties][show_link]', $showLink);
 

@@ -35,7 +35,8 @@ class PropositionHydrator implements HydratorInterface
         $locale = $this->extractor->getParameter('dataLocale');
         $records = [];
         foreach ($qb->getQuery()->execute() as $result) {
-            $result['dataLocale']= $locale;
+            $result = current($result);
+            $result->setDataLocale($locale);
             $record = new ResultRecord($result);
             $records[] = $record;
         }
