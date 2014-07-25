@@ -39,7 +39,7 @@ class Classify extends BaseClassify
     public function getSavingOptions()
     {
         $options = parent::getSavingOptions();
-        $options['bypass_proposition']= true;
+        $options['bypass_proposition'] = true;
 
         return $options;
     }

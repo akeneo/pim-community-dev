@@ -20,7 +20,7 @@ class ChangeStatus extends BaseChangeStatus
     public function getSavingOptions()
     {
         $options = parent::getSavingOptions();
-        $options['bypass_proposition']= true;
+        $options['bypass_proposition'] = true;
 
         return $options;
     }
