@@ -807,11 +807,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getAssociationForType(AssociationType $type)
     {
-        return $this->associations->filter(
-            function ($association) use ($type) {
-                return $association->getAssociationType() === $type;
-            }
-        )->first();
+        return $this->getAssociationForTypeCode($type->getCode());
     }
 
     /**
@@ -823,11 +819,13 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
      */
     public function getAssociationForTypeCode($typeCode)
     {
-        return $this->associations->filter(
-            function ($association) use ($typeCode) {
-                return $association->getAssociationType()->getCode() === $typeCode;
+        foreach ($this->associations as $association) {
+            if ($association->getAssociationType()->getCode() === $typeCode) {
+                return $association;
             }
-        )->first();
+        }
+
+        return null;
     }
 
     /**

@@ -27,7 +27,7 @@ class ProductSpec extends ObjectBehavior
         $this->getCategories()->shouldHaveCount(2);
     }
 
-    function it_return_association_from_an_association_type(
+    function it_returns_association_from_an_association_type(
         Association $assoc1,
         Association $assoc2,
         AssociationType $assocType1,
@@ -53,5 +53,12 @@ class ProductSpec extends ObjectBehavior
 
         $this->setAssociations([$assoc1, $assoc2]);
         $this->getAssociationForTypeCode('ASSOC_TYPE_2')->shouldReturn($assoc2);
+    }
+
+    function it_returns_null_when_i_try_to_get_an_association_with_an_empty_collection(
+        AssociationType $assocType1
+    ) {
+        $this->setAssociations([]);
+        $this->getAssociationForType($assocType1)->shouldReturn(null);
     }
 }
