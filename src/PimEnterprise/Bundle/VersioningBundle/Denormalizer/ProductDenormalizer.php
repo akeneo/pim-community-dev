@@ -143,24 +143,51 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected function denormalizeAssociations(&$data, ProductInterface $product)
     {
         // Remove existing associations
-        /*foreach ($product->getAssociations() as $association) {
-            $product->removeAssociation($association);
-        }*/
+        foreach ($product->getAssociations() as $association) {
+            foreach ($association->getGroups() as $group) {
+                $association->removeGroup($group);
+            }
+
+            foreach ($association->getProducts() as $product) {
+                $association->removeProduct($product);
+            }
+        }
+
 
         // Get association field names and add associations
         $assocFieldNames = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
-                /*$product->addAssociation(
+                list($associationTypeCode, $part) = explode('-', $assocFieldName);
+
+                $association = $product->getAssociationForTypeCode($associationTypeCode);
+
+                $this->serializer->denormalize(
+                    $data[$assocFieldName],
+                    'Pim\Bundle\CatalogBundle\Model\Association',
+                    'csv',
+                    ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
+                );
+
+                unset($data[$assocFieldName]);
+                $assocFieldName = current($assocFieldNames);
+
+                // TODO: Explode in a method
+                if (isset($data[$assocFieldName])) {
+                    list($associationTypeCode, $part) = explode('-', $assocFieldName);
+
                     $this->serializer->denormalize(
                         $data[$assocFieldName],
                         'Pim\Bundle\CatalogBundle\Model\Association',
-                        'csv'
-                    )
-                );*/
-
-                unset($data[$assocFieldName]);
+                        'csv',
+                        ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
+                    );
+                    unset($data[$assocFieldName]);
+                    $product->addAssociation($association);
+                }
             }
+
+
         }
     }
 
