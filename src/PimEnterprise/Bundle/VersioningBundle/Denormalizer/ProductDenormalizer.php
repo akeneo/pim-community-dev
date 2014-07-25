@@ -21,8 +21,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     const FIELD_FAMILY       = 'family';
     const FIELD_CATEGORIES   = 'categories';
     const FIELD_GROUPS       = 'groups';
-//    const FIELD_ASSOCIATIONS = 'associations';
-//    const FIELD_VALUES       = 'values';
 
     /** @var string */
     protected $fieldNameBuilder;
@@ -54,7 +52,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         $product = $context['entity'];
-        echo $product->getId() ."<br />";
 
         if (isset($data[self::FIELD_ENABLED])) {
             $product->setEnabled((bool) $data[self::FIELD_ENABLED]);
@@ -66,19 +63,16 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             unset($data[self::FIELD_FAMILY]);
         }
 
-        echo $product->getId() ."<br />";
         if (isset($data[self::FIELD_CATEGORIES])) {
             $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $product);
             unset($data[self::FIELD_CATEGORIES]);
         }
-        echo $product->getId() ."<br />";
 
         if (isset($data[self::FIELD_GROUPS])) {
             $this->denormalizeGroups($data[self::FIELD_GROUPS], $product);
             unset($data[self::FIELD_GROUPS]);
         }
 
-        echo $product->getId() ."<br />";
         $this->denormalizeAssociations($data, $product);
 
         $this->denormalizeValues($data, $product);
@@ -157,13 +151,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 $association->removeProduct($prod);
             }
         }
-        unset($prod);
-        unset($association);
-        unset($group);
 
-        echo "DenormalizeAssociations<br />";
-
-        echo $product->getId() ."<br />";
         // Get association field names and add associations
         $assocFieldNames = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
@@ -171,7 +159,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 list($associationTypeCode, $part) = explode('-', $assocFieldName);
 
                 if (!$association = $product->getAssociationForTypeCode($associationTypeCode)) {
-                    echo "I'M HERE !!!<br />";
                     $association = null;
                 }
 
@@ -185,7 +172,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 if (!$product->getAssociationForTypeCode($associationTypeCode)) {
                     $product->addAssociation($association);
                 }
-
 
                 unset($data[$assocFieldName]);
             }
