@@ -8,9 +8,11 @@ connector:
                 export:
                     title:     pim_base_connector.jobs.csv_product_export.export.title
                     services:
-                        reader:    pim_base_connector.reader.doctrine.bulk_product
-                        processor: pim_base_connector.processor.csv_serializer.product
-                        writer:    pim_base_connector.writer.product_file
+                        reader:    pim_base_connector.reader.doctrine.product
+                        processor: pim_base_connector.processor.product_to_flat_array
+                        writer:    pim_base_connector.writer.file.csv
+                    parameters:
+                        batch_size: 10
         csv_category_export:
             title: pim_base_connector.jobs.csv_category_export.title
             type:  export
