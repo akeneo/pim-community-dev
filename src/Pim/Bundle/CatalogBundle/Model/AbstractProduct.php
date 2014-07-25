@@ -815,6 +815,22 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     }
 
     /**
+     * Get the product association for an association type code
+     *
+     * @param string $typeCode
+     *
+     * @return AbstractAssociation|null
+     */
+    public function getAssociationForTypeCode($typeCode)
+    {
+        return $this->associations->filter(
+            function ($association) use ($typeCode) {
+                return $association->getAssociationType()->getCode() === $typeCode;
+            }
+        )->first();
+    }
+
+    /**
      * Set product associations
      *
      * @param AbstractAssociation[] $associations
