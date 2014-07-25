@@ -198,6 +198,7 @@ class ORMProductReader extends AbstractConfigurableStepElement implements Produc
         $this->entityManager->clear();
         $this->ids = null;
         $this->offset = 0;
+        $this->products = new \ArrayIterator();
     }
 
     /**
