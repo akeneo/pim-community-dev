@@ -3,17 +3,18 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 
-class FamilyDenormalizerSpec extends ObjectBehavior
+class CategoryDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Family';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, FamilyRepository $repository)
+    function let(ManagerRegistry $registry, CategoryRepository $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
@@ -25,7 +26,7 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
     }
 
-    function it_supports_denormalization_in_csv_of_a_family()
+    function it_supports_denormalization_in_csv_of_a_category()
     {
         $this->supportsDenormalization([], self::ENTITY_CLASS, self::FORMAT_CSV)->shouldBe(true);
 
@@ -48,14 +49,14 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_family($repository, Family $family)
+    function it_denormalizes_category($repository, CategoryInterface $category)
     {
-        $repository->findByReference('foo')->willReturn($family);
+        $repository->findByReference('foo')->willReturn($category);
 
-        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($family);
+        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($category);
     }
 
-    function it_throws_an_exception_if_family_is_unknown($repository)
+    function it_throws_an_exception_if_category_is_unknown($repository)
     {
         $repository->findByReference('foo')->willReturn(false);
 
