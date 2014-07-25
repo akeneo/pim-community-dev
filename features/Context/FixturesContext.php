@@ -497,6 +497,60 @@ class FixturesContext extends RawMinkContext
     }
 
     /**
+     * @param integer $attributeCount
+     * @param string  $filterable
+     * @param string  $type
+     * @param integer $optionCount
+     *
+     * @Given /^(\d+) (filterable )?(simple|multi) select attributes with (\d+) options per attribute$/
+     */
+    public function createSelectAttributesWithOptions($attributeCount, $filterable, $type, $optionCount)
+    {
+        $attCodePattern     = 'attribute_%d';
+        $attLabelPattern    = 'Attribute %d';
+        $optionCodePattern  = 'attribute_%d_option_%d';
+        $optionLabelPattern = 'Option %d for attribute %d';
+
+        $attributeConfig = [
+            'type'                   => $this->getAttributeType($type . 'select'),
+            'group'                  => 'other',
+            'useable_as_grid_filter' => (bool) $filterable
+        ];
+
+        $attributeData = [];
+        $optionData    = [];
+
+        for ($i = 1; $i <= $attributeCount; $i++) {
+            $attributeData[] = [
+                'code'        => sprintf($attCodePattern, $i),
+                'label-en_US' => sprintf($attLabelPattern, $i),
+            ] + $attributeConfig;
+
+            for ($j = 1; $j <= $optionCount; $j++) {
+                $optionData[] = [
+                    'attribute'   => sprintf($attCodePattern, $i),
+                    'code'        => sprintf($optionCodePattern, $i, $j),
+                    'label-en_US' => sprintf($optionLabelPattern, $j, $i)
+                ];
+            }
+        }
+
+        foreach ($attributeData as $index => $data) {
+            $attribute = $this->loadFixture('attributes', $data);
+            $this->persist($attribute, $index % 200 === 0);
+        }
+
+        $this->flush();
+
+        foreach ($optionData as $index => $data) {
+            $option = $this->loadFixture('attribute_options', $data);
+            $this->persist($option, $index % 200 === 0);
+        }
+
+        $this->flush();
+    }
+
+    /**
      * @param TableNode $table
      *
      * @Then /^there should be the following attributes:$/
