@@ -28,4 +28,4 @@ services:
     pim_catalog.factory.media:
         class: %pim_catalog.factory.media.class%
         arguments:
-            - %pim_catalog.entity.media.class%
+            - %pim_catalog.entity.product_media.class%
