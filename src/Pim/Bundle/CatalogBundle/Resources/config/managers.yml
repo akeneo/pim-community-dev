@@ -39,16 +39,6 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
 
-    pim_catalog.builder.product:
-        class: %pim_catalog.builder.product.class%
-        arguments:
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.manager.currency'
-
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
         arguments:

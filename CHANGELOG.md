@@ -146,6 +146,11 @@
 - In InGroupFilter and IsAssociatedFilter constructors, replace the RequestParameters argument by a RequestParametersExtractorInterface
 - Change constructor of `Pim\Bundle\DataGridBundle\Controller\ProductExportController` to inject the product repository `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` as fourth argument
 - Rename Pim\CatalogBundle\Model\Media to Pim\CatalogBundle\Model\ProductMedia to reflect the coupling between product media and product value and allow the future introduction of generic media
+- Add a $metricClass argument in MetricTransformer constructor
+- Add a $mediaClass argument in MediaTransformer constructor
+- Add a $metricClass argument in MetricType constructor
+- Change the arguments of ProductBuilder to pass classes (product, value, price) as an array
+- Change the arguments of EditCommonAttributes to pass classes (metric, media, price) as an array
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

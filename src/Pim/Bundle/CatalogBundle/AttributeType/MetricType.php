@@ -17,10 +17,11 @@ use Pim\Bundle\CatalogBundle\Validator\ConstraintGuesserInterface;
  */
 class MetricType extends AbstractAttributeType
 {
-    /**
-     * @var MeasureManager $manager
-     */
+    /** @var MeasureManager $manager */
     protected $manager;
+
+    /** @var string $metricClass */
+    protected $metricClass;
 
     /**
      * Constructor
@@ -28,17 +29,19 @@ class MetricType extends AbstractAttributeType
      * @param string                     $backendType       the backend type
      * @param string                     $formType          the form type
      * @param ConstraintGuesserInterface $constraintGuesser the form type
-     * @param MeasureManager             $manager           The measure manager
+     * @param MeasureManager             $manager           the measure manager
+     * @param string                     $metricClass       the metric class
      */
     public function __construct(
         $backendType,
         $formType,
         ConstraintGuesserInterface $constraintGuesser,
-        MeasureManager $manager
+        MeasureManager $manager,
+        $metricClass
     ) {
         parent::__construct($backendType, $formType, $constraintGuesser);
-
         $this->manager = $manager;
+        $this->metricClass = $metricClass;
     }
 
     /**
@@ -70,7 +73,7 @@ class MetricType extends AbstractAttributeType
             return $value->getData();
         };
 
-        $data = new Metric();
+        $data = new $this->metricClass();
         $data->setData($value->getAttribute()->getDefaultValue());
 
         return $data;

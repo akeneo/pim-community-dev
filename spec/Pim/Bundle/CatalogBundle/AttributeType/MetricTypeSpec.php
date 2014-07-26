@@ -16,7 +16,7 @@ class MetricTypeSpec extends ObjectBehavior
 {
     function let(AttributeConstraintGuesser $guesser, MeasureManager $manager)
     {
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_METRIC, 'pim_enrich_metric', $guesser, $manager);
+        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_METRIC, 'pim_enrich_metric', $guesser, $manager, 'Pim\Bundle\CatalogBundle\Model\Metric');
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $size)
