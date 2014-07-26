@@ -36,6 +36,7 @@ class PimCatalogExtension extends Extension
         $loader->load('services.yml');
         $loader->load('event_listeners.yml');
         $loader->load('managers.yml');
+        $loader->load('builders.yml');
         $loader->load('attribute_types.yml');
         $loader->load('attribute_constraint_guessers.yml');
         $loader->load('factory.yml');
