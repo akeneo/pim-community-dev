@@ -8,6 +8,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\ORMException;
 use Doctrine\ODM\MongoDB\MongoDBException;
 
+/**
+ * @require Doctrine\ODM\MongoDB\MongoDBException
+ */
 class SmartManagerRegistrySpec extends ObjectBehavior
 {
     function let(
