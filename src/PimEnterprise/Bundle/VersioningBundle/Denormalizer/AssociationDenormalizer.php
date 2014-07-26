@@ -46,7 +46,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
         }
 
         if ('groups' === $context['part']) {
-            if (strlen($data) > 0) {
+            if (strlen($data) > 0) { //TODO: test should be in group denormalizer
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
                     $group = $this->serializer->deserialize($identifier, $this->groupClass, $format);
@@ -54,7 +54,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
                 }
             }
         } else {
-            if (strlen($data) > 0) {
+            if (strlen($data) > 0) { // TODO: test should be in product denormalizer
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
                     $product = $this->serializer->deserialize($identifier, $this->productClass, $format);
