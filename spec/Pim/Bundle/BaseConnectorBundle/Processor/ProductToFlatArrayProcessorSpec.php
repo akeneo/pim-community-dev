@@ -24,8 +24,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Channel $channel,
         ChannelManager $channelManager,
         Product $item,
-        Media $media1,
-        Media $media2,
+        ProductMedia $media1,
+        ProductMedia $media2,
         Serializer $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');
