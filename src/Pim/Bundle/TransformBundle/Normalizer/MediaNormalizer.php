@@ -3,7 +3,7 @@
 namespace Pim\Bundle\TransformBundle\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Normalize a media entity into an array
@@ -32,6 +32,6 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMedia && in_array($format, $this->supportedFormats);
+        return $data instanceof AbstractProductMedia && in_array($format, $this->supportedFormats);
     }
 }
