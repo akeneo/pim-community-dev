@@ -120,5 +120,6 @@ services:
             - pim_enrich_metric
             - '@pim_catalog.validator.attribute_constraint_guesser'
             - '@akeneo_measure.manager'
+            - %pim_catalog.entity.metric.class%
         tags:
             - { name: pim_catalog.attribute_type, alias: pim_catalog_metric, entity: %pim_catalog.entity.product.class% }

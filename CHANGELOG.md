@@ -147,6 +147,7 @@
 - Change constructor of `Pim\Bundle\DataGridBundle\Controller\ProductExportController` to inject the product repository `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` as fourth argument
 - Rename Pim\CatalogBundle\Model\Media to Pim\CatalogBundle\Model\ProductMedia to reflect the coupling between product media and product value and allow the future introduction of generic media
 - Add a $metricClass parameter in MetricTransformer constructor
+- Add a $metricClass parameter in MetricType constructor
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
