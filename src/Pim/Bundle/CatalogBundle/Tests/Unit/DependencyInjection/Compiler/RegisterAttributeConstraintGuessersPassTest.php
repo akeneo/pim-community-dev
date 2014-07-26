@@ -47,7 +47,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
         $definition = $this->getDefinitionMock();
         $container  = $this->getContainerBuilderMock(
             $definition,
-            array('pim.attribute_constraint_guesser.foo', 'pim.attribute_constraint_guesser.bar')
+            array('pim_catalog.validator.constraint_guesser.foo', 'pim_catalog.validator.constraint_guesser.bar')
         );
 
         $definition->expects($this->exactly(2))
@@ -69,7 +69,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
 
         $container->expects($this->any())
             ->method('hasDefinition')
-            ->with('pim_catalog.validator.attribute_constraint_guesser')
+            ->with('pim_catalog.validator.constraint_guesser.chained_attribute')
             ->will($this->returnValue(null !== $definition));
 
         if ($definition) {
@@ -79,7 +79,7 @@ class RegisterAttributeConstraintGuessersPassTest extends \PHPUnit_Framework_Tes
 
             $container->expects($this->any())
                 ->method('findTaggedServiceIds')
-                ->with('pim.attribute_constraint_guesser')
+                ->with('pim_catalog.constraint_guesser.attribute')
                 ->will($this->returnValue($taggedServices));
         } else {
             $container->expects($this->never())

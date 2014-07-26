@@ -20,13 +20,13 @@ class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_catalog.validator.attribute_constraint_guesser')) {
+        if (!$container->hasDefinition('pim_catalog.validator.constraint_guesser.chained_attribute')) {
             return;
         }
 
-        $service = $container->getDefinition('pim_catalog.validator.attribute_constraint_guesser');
+        $service = $container->getDefinition('pim_catalog.validator.constraint_guesser.chained_attribute');
 
-        $taggedServices = $container->findTaggedServiceIds('pim.attribute_constraint_guesser');
+        $taggedServices = $container->findTaggedServiceIds('pim_catalog.constraint_guesser.attribute');
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('addConstraintGuesser', array(new Reference($id)));
