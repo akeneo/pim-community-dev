@@ -150,6 +150,7 @@
 - Add a $mediaClass argument in MediaTransformer constructor
 - Add a $metricClass argument in MetricType constructor
 - Change the arguments of ProductBuilder to pass classes (product, value, price) as an array
+- Change the arguments of EditCommonAttributes to pass classes (metric, media, price) as an array
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
