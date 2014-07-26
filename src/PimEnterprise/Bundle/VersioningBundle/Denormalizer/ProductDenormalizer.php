@@ -158,10 +158,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             if (isset($data[$assocFieldName])) {
                 list($associationTypeCode, $part) = explode('-', $assocFieldName);
 
-                if (!$association = $product->getAssociationForTypeCode($associationTypeCode)) {
-                    $association = null;
-                }
-
+                $association = $product->getAssociationForTypeCode($associationTypeCode);
                 $association = $this->serializer->denormalize(
                     $data[$assocFieldName],
                     'Pim\Bundle\CatalogBundle\Model\Association',
