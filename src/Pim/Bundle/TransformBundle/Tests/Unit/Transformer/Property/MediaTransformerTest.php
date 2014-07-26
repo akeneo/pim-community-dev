@@ -20,7 +20,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform()
     {
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $d = tempnam('/tmp', 'pim-media-transformer-test');
@@ -58,7 +58,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
         $f = tempnam('/tmp', 'pim-media-transformer-test');
         $this->media = $mediaExists ? new ProductMedia() : null;
         $file = $hasFile ? new File($f) : null;
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $productValue = $this->getValue($hasFile, $mediaExists);
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $transformer->setValue($productValue, $columnInfo, $file);
@@ -73,7 +73,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnvalid()
     {
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $transformer->transform('/bogus-file');
     }
 
