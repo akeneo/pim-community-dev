@@ -1,9 +1,14 @@
 parameters: ~
+    pim_catalog.validator.constraint.valid_metric.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
+    pim_catalog.validator.constraint.unique_identifier.class:   Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
+    pim_catalog.validator.constraint.unique_variant_axis.class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
+    pim_catalog.validator.constraint.unique_value.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
+    pim_catalog.validator.constraint.immutable.class:           Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
 
 services:
     # Validators
     pim_catalog.form.validator.metric:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
+        class: %pim_catalog.validator.constraint.valid_metric.class%
         arguments:
             - '@property_accessor'
             - %akeneo_measure.measures_config%
@@ -11,28 +16,28 @@ services:
             - { name: validator.constraint_validator, alias: pim_metric_validator }
 
     pim_catalog.form.validator.single_identifier_attribute:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
+        class: %pim_catalog.validator.constraint.unique_identifier.class%
         arguments:
             - '@pim_catalog.manager.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_single_identifier_attribute_validator }
 
     pim_catalog.form.validator.unique_variant_axis:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
+        class: %pim_catalog.validator.constraint.unique_variant_axis.class%
         arguments:
             - '@pim_catalog.manager.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_variant_axis_validator }
 
     pim_catalog.validator.constraints.unique_value:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueValueValidator
+        class: %pim_catalog.validator.constraint.unique_value.class%
         arguments:
             - '@pim_catalog.manager.product'
         tags:
             - { name: validator.constraint_validator, alias: pim_unique_value_validator }
 
     pim_catalog.validator.immutable:
-        class: Pim\Bundle\CatalogBundle\Validator\Constraints\ImmutableValidator
+        class: %pim_catalog.validator.constraint.immutable.class%
         arguments:
             - '@doctrine.orm.entity_manager'
         tags:
