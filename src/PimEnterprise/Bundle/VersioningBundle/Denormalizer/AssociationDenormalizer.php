@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
-use Pim\Bundle\CatalogBundle\Model\Association;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  *
@@ -11,30 +11,54 @@ use Pim\Bundle\CatalogBundle\Model\Association;
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
+    /** @var string */
+    protected $productClass;
+
+    /** @var string */
+    protected $groupClass;
+
+    /**
+     * @param ManagerRegistry $registry
+     * @param string          $entityClass
+     * @param string          $productClass
+     * @param string          $groupClass
+     */
+    public function __construct(ManagerRegistry $registry, $entityClass, $productClass, $groupClass)
+    {
+        parent::__construct($registry, $entityClass);
+
+        $this->productClass = $productClass;
+        $this->groupClass   = $groupClass;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $association = isset($context['entity'])
-            ? $context['entity']
-            : $this->createEntity()->setAssociationType(
+        if (isset($context['entity']) && null !== $context['entity']) {
+            $association = $context['entity'];
+        } else {
+            $association = $this->createEntity();
+            $association->setAssociationType(
                 $this->getAssociationType($context['association_type_code'])
             );
+        }
 
         if ('groups' === $context['part']) {
             if (strlen($data) > 0) {
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
-                    $association->addGroup(
-                        $this->getGroup($identifier)
-                    );
+                    $group = $this->serializer->deserialize($identifier, $this->groupClass, $format);
+                    $association->addGroup($group);
                 }
             }
         } else {
             if (strlen($data) > 0) {
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
-                    $association->addProduct(
-                        $this->getProduct($identifier)
-                    );
+                    $product = $this->serializer->deserialize($identifier, $this->productClass, $format);
+                    $association->addProduct($product);
                 }
             }
         }
@@ -43,43 +67,20 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param $associationTypeCode
+     * @param string $identifier
+     *
+     * @return AssociationType
      */
-    protected function getAssociationType($associationTypeCode)
+    protected function getAssociationType($identifier)
     {
-        return $this->getAssociationTypeRepository()->findByReference($associationTypeCode);
+        return $this->getAssociationTypeRepository()->findByReference($identifier);
     }
 
     /**
      * @return \Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository
-     *
-     * TODO: Remove hardcoded data class
      */
     protected function getAssociationTypeRepository()
     {
-        return $this->managerRegistry->getRepository('Pim\Bundle\CatalogBundle\Entity\AssociationType');
-    }
-
-    /**
-     * @return \Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository
-     */
-    protected function getGroupRepository()
-    {
-        return $this->managerRegistry->getRepository('Pim\Bundle\CatalogBundle\Entity\Group');
-    }
-
-    protected function getGroup($identifier)
-    {
-        return $this->getGroupRepository()->findByReference($identifier);
-    }
-
-    protected function getProductRepository()
-    {
-        return $this->managerRegistry->getRepository('Pim\Bundle\CatalogBundle\Model\Product');
-    }
-
-    protected function getProduct($identifier)
-    {
-        return $this->getProductRepository()->findByReference($identifier);
+        return $this->managerRegistry->getRepository($this->associationTypeClass);
     }
 }
