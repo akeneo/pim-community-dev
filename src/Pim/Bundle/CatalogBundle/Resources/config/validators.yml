@@ -1,7 +1,4 @@
-parameters:
-    pim_catalog.doctrine.smart_manager_registry.class: Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry
-    pim_catalog.doctrine.table_name_builder.class:     Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder
-    pim_catalog.helper.locale.class:                   Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+parameters: ~
 
 services:
     # Validators
@@ -40,21 +37,3 @@ services:
             - '@doctrine.orm.entity_manager'
         tags:
             - { name: validator.constraint_validator, alias: pim_immutable_validator }
-
-    # Locale helper
-    pim_catalog.helper.locale:
-        class: %pim_catalog.helper.locale.class%
-        arguments:
-            - '@pim_user.context.user'
-            - '@pim_catalog.manager.locale'
-
-    pim_catalog.doctrine.smart_manager_registry:
-        class: %pim_catalog.doctrine.smart_manager_registry.class%
-        calls:
-            - [addRegistry, ['@doctrine']]
-
-    pim_catalog.doctrine.table_name_builder:
-        class: %pim_catalog.doctrine.table_name_builder.class%
-        arguments:
-            - '@service_container'
-            - '@pim_catalog.doctrine.smart_manager_registry'
