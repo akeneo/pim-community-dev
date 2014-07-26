@@ -298,8 +298,14 @@
         <exec executable="${basedir}/composer.phar" failonerror="true">
             <arg value="require" />
             <arg value="--no-update" />
+            <arg value="doctrine/mongodb-odm" />
+            <arg value="1.0.0-BETA11" />
+        </exec>
+        <exec executable="${basedir}/composer.phar" failonerror="true">
+            <arg value="require" />
+            <arg value="--no-update" />
             <arg value="doctrine/mongodb-odm-bundle" />
-            <arg value="3.0.*@dev" />
+            <arg value="3.0.0-BETA6" />
         </exec>
     </target>
 
