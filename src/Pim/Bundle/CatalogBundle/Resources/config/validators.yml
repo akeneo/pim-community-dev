@@ -1,4 +1,4 @@
-parameters: ~
+parameters:
     pim_catalog.validator.constraint.valid_metric.class:             Pim\Bundle\CatalogBundle\Validator\Constraints\ValidMetricValidator
     pim_catalog.validator.constraint.single_identifier.class:        Pim\Bundle\CatalogBundle\Validator\Constraints\SingleIdentifierAttributeValidator
     pim_catalog.validator.constraint.unique_variant_axis.class:      Pim\Bundle\CatalogBundle\Validator\Constraints\UniqueVariantAxisValidator
