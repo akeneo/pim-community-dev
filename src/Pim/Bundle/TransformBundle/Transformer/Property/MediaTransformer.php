@@ -6,7 +6,6 @@ use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 /**
  * Media attribute transformer
