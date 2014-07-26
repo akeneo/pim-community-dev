@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\FilterBundle\Filter\Product;
 
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as PimCategoryFilter;
+use Pim\Bundle\FilterBundle\Filter\Product\CategoryFilter as BaseCategoryFilter;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CategoryFilter extends PimCategoryFilter
+class CategoryFilter extends BaseCategoryFilter
 {
     /**
      * Override to apply category permissions

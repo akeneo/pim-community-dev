@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
-use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as PimContextConfigurator;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator as BaseContextConfigurator;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ContextConfigurator extends PimContextConfigurator
+class ContextConfigurator extends BaseContextConfigurator
 {
     /** @staticvar string */
     const CURRENT_TREE_ID_KEY = 'current_tree_id';

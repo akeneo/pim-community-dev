@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Manager;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as PimJobExecutionManager;
+use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
 use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobExecutionManager extends PimJobExecutionManager
+class JobExecutionManager extends BaseJobExecutionManager
 {
     /** @var JobProfileAccessRepository */
     protected $accessRepository;

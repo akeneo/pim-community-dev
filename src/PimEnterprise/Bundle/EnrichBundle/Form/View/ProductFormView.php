@@ -6,7 +6,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
-use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as PimProductFormView;
+use Pim\Bundle\EnrichBundle\Form\View\ProductFormView as BaseProductFormView;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductFormView extends PimProductFormView
+class ProductFormView extends BaseProductFormView
 {
     /**
      * @var SecurityContextInterface
