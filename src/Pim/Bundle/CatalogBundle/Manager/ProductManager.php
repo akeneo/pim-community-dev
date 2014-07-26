@@ -276,8 +276,8 @@ class ProductManager
     /**
      * Save multiple products
      *
-     * @param ProductInterface[] $products    The products to save
-     * @param array              $options     Saving options
+     * @param ProductInterface[] $products The products to save
+     * @param array              $options  Saving options
      */
     public function saveAllProducts(array $products, array $options = [])
     {

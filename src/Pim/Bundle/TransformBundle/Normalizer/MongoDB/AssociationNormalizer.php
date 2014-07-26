@@ -58,7 +58,7 @@ class AssociationNormalizer implements NormalizerInterface
      * Get the products ids as an array of MongoDBRef
      *
      * @param ProductInterface[]|Collection $products
-     * @param string                        $productCollection
+     * @param string $productCollection
      *
      * @return array
      */

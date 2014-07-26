@@ -4,9 +4,9 @@ namespace Pim\Bundle\TransformBundle\Transformer\Property;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Symfony\Component\HttpFoundation\File\File;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\TransformBundle\Exception\PropertyTransformerException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 /**
  * Media attribute transformer
@@ -48,7 +48,7 @@ class MediaTransformer implements PropertyTransformerInterface, EntityUpdaterInt
 
         $media = $object->getMedia();
         if (!$media) {
-            $media = new Media();
+            $media = new ProductMedia();
             $object->setMedia($media);
         }
         $media->setFile($data);
