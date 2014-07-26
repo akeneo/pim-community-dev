@@ -1,0 +1,9 @@
+parameters:
+    pim_enrich.provider.colors.class: Pim\Bundle\EnrichBundle\Provider\ColorsProvider
+
+services:
+    # Color management
+    pim_enrich.provider.colors:
+        class: %pim_enrich.provider.colors.class%
+        arguments:
+            - %pim_enrich.colors%

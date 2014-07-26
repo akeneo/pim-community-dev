@@ -27,8 +27,6 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('parameters.yml');
-        $loader->load('services.yml');
         $loader->load('controllers.yml');
         $loader->load('handlers.yml');
         $loader->load('forms.yml');
@@ -38,7 +36,11 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('attribute_icons.yml');
         $loader->load('mass_actions.yml');
         $loader->load('factories.yml');
-        $loader->load('event_subscribers.yml');
+        $loader->load('twig.yml');
+        $loader->load('providers.yml');
+        $loader->load('event_listeners.yml');
+        $loader->load('form_subscribers.yml');
+        $loader->load('resolvers.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
