@@ -1,6 +1,6 @@
-Pim\Bundle\CatalogBundle\Model\Media:
+Pim\Bundle\CatalogBundle\Model\ProductMedia:
     type: entity
-    table: pim_catalog_media
+    table: pim_catalog_product_media
     fields:
         id:
             type: integer

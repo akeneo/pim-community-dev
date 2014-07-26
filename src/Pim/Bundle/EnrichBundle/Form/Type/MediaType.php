@@ -41,7 +41,7 @@ class MediaType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'data_class' => 'Pim\Bundle\CatalogBundle\Model\Media'
+                'data_class' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'
             )
         );
     }

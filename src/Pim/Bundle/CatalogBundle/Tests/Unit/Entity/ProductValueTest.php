@@ -182,6 +182,6 @@ class ProductValueTest extends \PHPUnit_Framework_TestCase
      */
     protected function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductMedia');
     }
 }

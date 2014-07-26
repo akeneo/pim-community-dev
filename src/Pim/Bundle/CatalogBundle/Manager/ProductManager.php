@@ -383,7 +383,7 @@ class ProductManager
                 if ($id = $media->getCopyFrom()) {
                     $source = $this
                         ->objectManager
-                        ->getRepository('Pim\Bundle\CatalogBundle\Model\Media')
+                        ->getRepository('Pim\Bundle\CatalogBundle\Model\ProductMedia')
                         ->find($id);
 
                     if (!$source) {

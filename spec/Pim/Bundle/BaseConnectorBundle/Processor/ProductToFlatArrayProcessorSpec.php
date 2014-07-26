@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Symfony\Component\Serializer\Serializer;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
