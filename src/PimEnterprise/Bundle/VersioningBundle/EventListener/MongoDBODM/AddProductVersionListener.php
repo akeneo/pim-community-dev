@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\EventListener\MongoDBODM;
 
-use Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener as PimAddProductVersionListener;
+use Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener as BaseAddProductVersionListener;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AddProductVersionListener extends PimAddProductVersionListener
+class AddProductVersionListener extends BaseAddProductVersionListener
 {
     /**
      * {@inheritdoc}

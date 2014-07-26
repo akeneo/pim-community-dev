@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\Twig;
 
-use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as PimCategoryExtension;
+use Pim\Bundle\EnrichBundle\Twig\CategoryExtension as BaseCategoryExtension;
 use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CategoryExtension extends PimCategoryExtension
+class CategoryExtension extends BaseCategoryExtension
 {
     /**
      * @var ProductCategoryManager

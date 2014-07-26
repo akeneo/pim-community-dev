@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\ImportExportBundle\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as PimJobExecutionRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as BaseJobExecutionRepository;
 
 /**
  * Override of job execution repository
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository as Pi
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobExecutionRepository extends PimJobExecutionRepository
+class JobExecutionRepository extends BaseJobExecutionRepository
 {
     /**
      * Get last operations

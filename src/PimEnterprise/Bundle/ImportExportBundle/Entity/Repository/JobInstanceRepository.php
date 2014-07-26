@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\ImportExportBundle\Entity\Repository;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository as PimJobInstanceRepository;
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository as BaseJobInstanceRepository;
 
 /**
  * Override job instance repository
@@ -11,7 +11,7 @@ use Pim\Bundle\ImportExportBundle\Entity\Repository\JobInstanceRepository as Pim
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobInstanceRepository extends PimJobInstanceRepository
+class JobInstanceRepository extends BaseJobInstanceRepository
 {
     /**
      * Inject subquery to filter jobs depending on permissions

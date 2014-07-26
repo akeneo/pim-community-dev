@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as PimAvailableAttributesType;
+use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AvailableAttributesType extends PimAvailableAttributesType
+class AvailableAttributesType extends BaseAvailableAttributesType
 {
     /** @var AttributeGroupAccessRepository */
     protected $attGroupAccessRepo;
