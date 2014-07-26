@@ -715,25 +715,6 @@ abstract class AbstractProductValue implements ProductValueInterface
     }
 
     /**
-     * Adds a price for the given currency, or returns the existing price
-     *
-     * @param string $currency
-     *
-     * @return AbstractProductPrice
-     *
-     * @deprecated This method will be removed in 1.2, use ProductBuilder::addPriceForCurrency() instead
-     */
-    public function addPriceForCurrency($currency)
-    {
-        if (null === $productPrice = $this->getPrice($currency)) {
-            $productPrice = new ProductPrice(null, $currency);
-            $this->addPrice($productPrice);
-        }
-
-        return $productPrice;
-    }
-
-    /**
      * Remove price
      *
      * @param AbstractProductPrice $price
