@@ -23,6 +23,10 @@ As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
 CatalogBundle
 -------------
 
+Please run the following commands against your database :
+
+    RENAME TABLE pim_catalog_media TO pim_catalog_product_media;
+
 In ./src/Pim/Bundle/CatalogBundle/Resources/config/managers.yml:
 
 With 1.1 :

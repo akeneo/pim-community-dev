@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\CatalogBundle\Factory;
 
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -21,7 +21,7 @@ class MediaFactory
      */
     public function createMedia(File $file = null)
     {
-        $media = new Media();
+        $media = new ProductMedia();
         $media->setFile($file);
 
         return $media;

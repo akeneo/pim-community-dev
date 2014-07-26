@@ -98,7 +98,7 @@ class ProductProcessorTest extends \PHPUnit_Framework_TestCase
      */
     public function getMediaMock()
     {
-        return $this->getMock('Pim\Bundle\CatalogBundle\Model\Media');
+        return $this->getMock('Pim\Bundle\CatalogBundle\Model\ProductMedia');
     }
 
     /**

@@ -4,7 +4,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Write data into a csv file on the filesystem
@@ -204,11 +204,11 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     }
 
     /**
-     * @param AbstractMedia $media
+     * @param AbstractProductMedia $media
      *
      * @return void
      */
-    protected function copyMedia(AbstractMedia $media)
+    protected function copyMedia(AbstractProductMedia $media)
     {
         $result = $this->mediaManager->copy($media, dirname($this->getPath()));
         $exportPath = $this->mediaManager->getExportPath($media);
