@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.helper.locale.class:                   Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+    pim_catalog.helper.locale.class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
 
 services:
     # Locale helper

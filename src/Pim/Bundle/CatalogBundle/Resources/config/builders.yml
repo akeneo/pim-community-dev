@@ -1,5 +1,6 @@
 parameters:
-    pim_catalog.builder.product.class:             Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+    pim_catalog.builder.product.class: Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+
 services:
     pim_catalog.builder.product:
         class: %pim_catalog.builder.product.class%
