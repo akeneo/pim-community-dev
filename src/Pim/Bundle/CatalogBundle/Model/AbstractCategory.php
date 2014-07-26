@@ -73,7 +73,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * @return integer
+     * {@inheritdoc}
      */
     public function getId()
     {
@@ -81,9 +81,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * @param string $code
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function setCode($code)
     {
@@ -93,7 +91,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * @return string
+     * {@inheritdoc}
      */
     public function getCode()
     {
@@ -101,9 +99,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * @param integer $left
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function setLeft($left)
     {
@@ -113,9 +109,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Get left
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getLeft()
     {
@@ -141,10 +135,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Set right
-     * @param integer $right
-     *
-     * @return CategoryInterface
+     * {@inheritdoc}
      */
     public function setRight($right)
     {
@@ -154,9 +145,7 @@ abstract class AbstractCategory  implements CategoryInterface, TranslatableInter
     }
 
     /**
-     * Get right
-     *
-     * @return integer
+     * {@inheritdoc}
      */
     public function getRight()
     {
