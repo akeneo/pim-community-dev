@@ -5,13 +5,13 @@ namespace Pim\Bundle\CatalogBundle\Model;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
- * Abstract media (backend type entity)
+ * Abstract product media (backend type entity)
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class AbstractMedia
+abstract class AbstractProductMedia
 {
     /**
      * @var integer $id
@@ -83,7 +83,7 @@ abstract class AbstractMedia
      *
      * @param integer $id
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setId($id)
     {
@@ -107,7 +107,7 @@ abstract class AbstractMedia
      *
      * @param \Symfony\Component\HttpFoundation\File\File $file
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setFile(File $file)
     {
@@ -131,7 +131,7 @@ abstract class AbstractMedia
      *
      * @param string $filename
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setFilename($filename)
     {
@@ -155,7 +155,7 @@ abstract class AbstractMedia
      *
      * @param string $filePath
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setFilePath($filePath)
     {
@@ -179,7 +179,7 @@ abstract class AbstractMedia
      *
      * @param string $originalFilename
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setOriginalFilename($originalFilename)
     {
@@ -203,7 +203,7 @@ abstract class AbstractMedia
      *
      * @param string $mimeType
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setMimeType($mimeType)
     {
@@ -215,7 +215,7 @@ abstract class AbstractMedia
     /**
      * @param boolean $removed
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setRemoved($removed)
     {
@@ -237,7 +237,7 @@ abstract class AbstractMedia
      *
      * @param ProductValueInterface $value
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setValue(ProductValueInterface $value)
     {
@@ -271,7 +271,7 @@ abstract class AbstractMedia
      *
      * @param integer $copyFrom
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function setCopyFrom($copyFrom)
     {

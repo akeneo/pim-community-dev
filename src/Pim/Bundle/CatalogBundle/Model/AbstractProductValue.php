@@ -112,7 +112,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Store upload values
      *
-     * @var AbstractMedia $media
+     * @var AbstractProductMedia $media
      */
     protected $media;
 
@@ -598,7 +598,7 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Get media
      *
-     * @return AbstractMedia
+     * @return AbstractProductMedia
      */
     public function getMedia()
     {
@@ -608,11 +608,11 @@ abstract class AbstractProductValue implements ProductValueInterface
     /**
      * Set media
      *
-     * @param AbstractMedia $media
+     * @param AbstractProductMedia $media
      *
      * @return ProductValue
      */
-    public function setMedia(AbstractMedia $media)
+    public function setMedia(AbstractProductMedia $media)
     {
         $media->setValue($this);
         $this->media = $media;

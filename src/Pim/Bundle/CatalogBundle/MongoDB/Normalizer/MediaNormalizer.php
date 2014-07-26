@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Normalizes a media or a file when normalizes a product value as mongodb_json
@@ -27,6 +27,6 @@ class MediaNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof AbstractMedia && 'mongodb_json' === $format;
+        return $data instanceof AbstractProductMedia && 'mongodb_json' === $format;
     }
 }
