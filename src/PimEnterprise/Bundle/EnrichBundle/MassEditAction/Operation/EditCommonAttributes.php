@@ -40,8 +40,8 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
+        array $classes,
         SecurityContextInterface $securityContext
-        array $classes
     ) {
         parent::__construct(
             $productManager,
