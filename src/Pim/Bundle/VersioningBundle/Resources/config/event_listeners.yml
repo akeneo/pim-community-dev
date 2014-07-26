@@ -1,3 +1,8 @@
+parameters:
+    pim_versioning.event_listener.addversion.class:        Pim\Bundle\VersioningBundle\EventListener\AddVersionListener
+    pim_versioning.event_listener.adduser.class:           Pim\Bundle\VersioningBundle\EventListener\AddUserListener
+    pim_versioning.event_listener.addcontext.class:        Pim\Bundle\VersioningBundle\EventListener\AddContextListener
+
 services:
     pim_versioning.event_listener.addversion:
         class: %pim_versioning.event_listener.addversion.class%
