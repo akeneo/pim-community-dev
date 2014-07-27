@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Controller;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -73,6 +74,7 @@ class VersionController extends AbstractDoctrineController
     public function revertAction(Version $version)
     {
         $this->reverter->revert($version);
-        die;
+
+        return $this->redirectToRoute('pim_enrich_product_edit', ['id' => $version->getResourceId()]);
     }
 }
