@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
@@ -160,7 +160,7 @@ class AttributeManager
      */
     public function remove(AbstractAttribute $attribute)
     {
-        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_ATTRIBUTE, new GenericEvent($attribute));
+        $this->eventDispatcher->dispatch(AttributeEvents::PRE_REMOVE, new GenericEvent($attribute));
 
         $this->objectManager->remove($attribute);
         $this->objectManager->flush();

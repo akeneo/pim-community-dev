@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -41,7 +41,7 @@ class FamilyManagerSpec extends ObjectBehavior
         Family $family
     ) {
         $eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_FAMILY,
+            FamilyEvents::PRE_REMOVE,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
 

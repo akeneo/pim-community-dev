@@ -3,8 +3,8 @@
 namespace Pim\Bundle\CatalogBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
-use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
+use Pim\Bundle\CatalogBundle\Event\ProductEvent;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
@@ -25,16 +25,16 @@ class InitializeValuesListener implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            CatalogEvents::CREATE_PRODUCT => array('onCreateProduct'),
+            ProductEvents::CREATE => array('onCreateProduct'),
         );
     }
 
     /**
      * Add values for each attribute
      *
-     * @param FilterProductEvent $event
+     * @param ProductEvent $event
      */
-    public function onCreateProduct(FilterProductEvent $event)
+    public function onCreateProduct(ProductEvent $event)
     {
         $product = $event->getProduct();
         $manager = $event->getProductManager();
