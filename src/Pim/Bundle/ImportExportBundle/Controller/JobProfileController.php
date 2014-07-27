@@ -25,7 +25,7 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
-use Pim\Bundle\ImportExportBundle\JobProfileEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 
 /**
  * Job Profile controller
