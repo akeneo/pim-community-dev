@@ -4,16 +4,16 @@ namespace Pim\Bundle\CatalogBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
- * Filter event allows to know the create product
+ * Filter event allows to know the create product value
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class FilterProductEvent extends Event
+class ProductValueEvent extends Event
 {
     /**
      * @var ProductManager
@@ -21,20 +21,20 @@ class FilterProductEvent extends Event
     protected $manager;
 
     /**
-     * @var ProductInterface
+     * @var ProductValueInterface
      */
-    protected $product;
+    protected $value;
 
     /**
      * Constructor
      *
-     * @param ProductManager   $manager the manager
-     * @param ProductInterface $product the product
+     * @param ProductManager        $manager the manager
+     * @param ProductValueInterface $value   the product value
      */
-    public function __construct(ProductManager $manager, ProductInterface $product)
+    public function __construct(ProductManager $manager, ProductValueInterface $value)
     {
         $this->manager = $manager;
-        $this->product = $product;
+        $this->value   = $value;
     }
 
     /**
@@ -46,10 +46,10 @@ class FilterProductEvent extends Event
     }
 
     /**
-     * @return ProductInterface
+     * @return ProductValueInterface
      */
-    public function getProduct()
+    public function getValue()
     {
-        return $this->product;
+        return $this->value;
     }
 }

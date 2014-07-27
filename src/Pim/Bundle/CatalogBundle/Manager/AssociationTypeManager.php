@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 
@@ -62,7 +62,7 @@ class AssociationTypeManager
     public function remove(AssociationType $associationType)
     {
         $this->eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE,
+            AssociationTypeEvents::PRE_REMOVE,
             new GenericEvent($associationType)
         );
 
