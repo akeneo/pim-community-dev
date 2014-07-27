@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid;
+namespace PimEnterprise\Bundle\DatagridBundle\Datagrid\Proposition;
 
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
@@ -11,7 +11,7 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PropositionGridHelper
+class GridHelper
 {
 
     /**

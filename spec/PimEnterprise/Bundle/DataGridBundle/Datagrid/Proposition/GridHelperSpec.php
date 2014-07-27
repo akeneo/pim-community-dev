@@ -1,11 +1,11 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\Datagrid;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
-class PropositionGridHelperSpec extends ObjectBehavior
+class GridHelperSpec extends ObjectBehavior
 {
     function it_provides_proposition_status_choices()
     {
