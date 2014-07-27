@@ -22,7 +22,7 @@ use Gaufrette\StreamMode;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\ImportExportBundle\JobEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobEvents;
 
 /**
  * Job execution controller

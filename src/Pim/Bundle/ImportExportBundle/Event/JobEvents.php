@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\ImportExportBundle;
+namespace Pim\Bundle\ImportExportBundle\Event;
 
 /**
  * Job events
