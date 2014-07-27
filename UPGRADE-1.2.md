@@ -16,7 +16,8 @@ Based on a pim standard installation, execute the following command in your proj
 ```
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim.attribute_constraint_guesser/pim_catalog.constraint_guesser.attribute/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.validator.attribute_constraint_guesser/pim_catalog.validator.constraint_guesser.chained_attribute/g'
-
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Model\\Media/Model\\ProductMedia/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog_media/pim_catalog_product_media/g'
 ```
 
 BatchBundle
