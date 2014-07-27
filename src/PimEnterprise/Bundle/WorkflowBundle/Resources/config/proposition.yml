@@ -2,7 +2,6 @@ parameters:
     pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
     pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
     pimee_workflow.change_set_computer.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputer
-    pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
 
 services:
     pimee_workflow.applier.proposition_changes_applier:
@@ -12,15 +11,6 @@ services:
             - '@form.factory'
             - '@event_dispatcher'
 
-    ##
-    # Product form view decorator
-    ##
-    pimee_workflow.form.type.product.highlight_modified_values_view:
-        class: %pimee_workflow.form.type.product.highlight_modified_values_view.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pimee_workflow.applier.proposition_changes_applier'
-            - '@router'
 
     pimee_workflow.collector.product_submitted_changes:
         class: %pimee_workflow.collector.product_submitted_changes.class%
