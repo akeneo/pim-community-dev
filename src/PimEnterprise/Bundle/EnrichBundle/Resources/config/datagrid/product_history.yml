@@ -31,6 +31,19 @@ datagrid:
                 template: OroDataAuditBundle:Datagrid:Property/new.html.twig
                 frontend_type: html
                 data_name: changeset
+        properties:
+            id: ~
+            revert_link:
+                type: url
+                route: pimee_versioning_version_revert
+                params:
+                    - id
+        actions:
+            revert:
+                type:   navigate
+                label:  Revert to this version
+                icon:   undo
+                link:   revert_link
         sorters:
             columns:
                 version:
