@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventListener;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -12,7 +12,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
-class JobPermissionsListenerSpec extends ObjectBehavior
+class JobPermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(
         SecurityContextInterface $securityContext,
@@ -28,7 +28,7 @@ class JobPermissionsListenerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\EventListener\JobPermissionsListener');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber');
     }
 
     function it_subscribes_events()

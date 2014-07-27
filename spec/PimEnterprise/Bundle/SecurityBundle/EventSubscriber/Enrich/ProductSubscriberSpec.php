@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventListener;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
-class ProductListenerSpec extends ObjectBehavior
+class ProductSubscriberSpec extends ObjectBehavior
 {
     function let(SecurityContextInterface $securityContext, TokenInterface $token, User $user, UserContext $userContext, Locale $locale)
     {
