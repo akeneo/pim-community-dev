@@ -12,9 +12,6 @@ parameters:
     pim_catalog.repository.locale.class:           Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository
     pim_catalog.repository.product_value.class:    Doctrine\ORM\EntityRepository
 
-    doctrine.entity_repository.class: Doctrine\ORM\EntityRepository
-    doctrine.document_repository.class: Doctrine\ODM\MongoDB\DocumentRepository
-
 services:
     pim_catalog.repository.association_type:
         class: %pim_catalog.repository.association_type.class%

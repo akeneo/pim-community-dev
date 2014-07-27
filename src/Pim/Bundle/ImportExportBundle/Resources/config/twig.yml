@@ -8,10 +8,3 @@ services:
             - '@translator'
         tags:
             - { name: twig.extension }
-
-    pim_import_export.validator.job_instance:
-        class: Pim\Bundle\ImportExportBundle\Validator\Constraints\JobInstanceValidator
-        arguments:
-            - '@akeneo_batch.connectors'
-        tags:
-            - { name: validator.constraint_validator, alias: pim_job_instance_validator }
