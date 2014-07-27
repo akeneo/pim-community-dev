@@ -24,7 +24,6 @@ class PimEnterpriseSecurityExtension extends Extension
         $loader->load('managers.yml');
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
-        $loader->load('services.yml');
         $loader->load('voters.yml');
         $loader->load('subscribers.yml');
         $loader->load('event_listeners.yml');
