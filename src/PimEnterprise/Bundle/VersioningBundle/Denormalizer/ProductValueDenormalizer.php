@@ -46,4 +46,12 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
 
         return $value;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function doDenormalize(array $data, $format, array $context)
+    {
+        throw new \Exception('Should not be called');
+    }
 }

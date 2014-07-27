@@ -49,9 +49,9 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /**
      * {@inheritdoc}
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    protected function doDenormalize(array $data, $format, array $context)
     {
-        $product = $context['entity'];
+        $product = $this->getEntity($data, $context);
 
         if (isset($data[self::FIELD_ENABLED])) {
             $product->setEnabled((bool) $data[self::FIELD_ENABLED]);
@@ -214,13 +214,5 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 ] + $attributeInfos
             );
         }
-    }
-
-    /**
-     * @return AssociationTypeRepository
-     */
-    protected function getAssociationTypeRepository()
-    {
-        return $this->getRepository($this->assocTypeClass);
     }
 }
