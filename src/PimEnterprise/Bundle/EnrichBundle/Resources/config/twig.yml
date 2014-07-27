@@ -6,15 +6,6 @@ services:
     pimee_enrich.twig.version_extension:
         class: %pimee_enrich.twig.version_extension.class%
         tags:
-            - { name: twig.extension }
-
-    pimee_enrich.event_listener.propositions_grid_listener:
-        class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
-        arguments:
-          - [ product ]
-          - '@oro_datagrid.datagrid.request_params'
-        tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposition-grid, method: onBuildAfter }
 
     pim_enrich.twig.category_extension:
         class: %pim_enrich.twig.category_extension.class%
