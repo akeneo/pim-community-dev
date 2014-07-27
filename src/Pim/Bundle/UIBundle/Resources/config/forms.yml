@@ -4,7 +4,6 @@ parameters:
     pim_ui.form.type.switch.class:                     Pim\Bundle\UIBundle\Form\Type\SwitchType
     pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
     pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
-    pim_ui.controller.ajax_option.class:               Pim\Bundle\UIBundle\Controller\AjaxOptionController
 
 services:
     pim_ui.form.extension.help:
@@ -41,9 +40,3 @@ services:
         arguments:
             - '@doctrine'
             - %pim_ui.form.transformer.ajax_entity.class%
-
-
-    pim_ui.controller.ajax_option:
-        class: %pim_ui.controller.ajax_option.class%
-        arguments:
-            - '@doctrine'
