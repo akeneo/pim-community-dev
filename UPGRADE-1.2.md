@@ -4,6 +4,21 @@ UPGRADE FROM 1.1 to 1.2
 General
 -------
 
+Fix BC breaks
+-------------
+
+If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
+
+*It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance*
+
+Based on a pim standard installation, execute the following command in your project folder :
+
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim.attribute_constraint_guesser/pim_catalog.constraint_guesser.attribute/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.validator.attribute_constraint_guesser/pim_catalog.validator.constraint_guesser.chained_attribute/g'
+
+```
+
 BatchBundle
 -----------
 
@@ -55,39 +70,6 @@ With 1.2 :
 ```
 
 ./src/Pim/Bundle/CatalogBundle/Manager/ProductManager.php has been updated to use these new configuration parameters
-
-The validators constraint guesser have been changed :
-
-With 1.1:
-```
-    pim.attribute_constraint_guesser.email: ~
-```
-
-With 1.2:
-```
-    pim_catalog.validator.constraint_guesser.email: ~
-```
-
-The constraint guesser tag has changed :
-
-With 1.1:
-```
-    tags:
-        - { name: pim.attribute_constraint_guesser }
-
-```
-
-With 1.2:
-```
-    tags:
-        - { name: pim_catalog.constraint_guesser.attribute }
-```
-
-The chained attribute constraint guesser has changed :
-```
--            - { name: pim.attribute_constraint_guesser }
-+            - { name: pim_catalog.constraint_guesser.attribute }
-```
 
 MongoDB implementation
 ----------------------
