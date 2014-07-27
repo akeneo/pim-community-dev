@@ -22,7 +22,7 @@ use Gaufrette\StreamMode;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\ImportExportBundle\Event\JobEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 
 /**
  * Job execution controller
@@ -118,7 +118,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_SHOW_JOB_EXECUTION, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
             $archives = [];
@@ -161,7 +161,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_DOWNLOAD_LOG_JOB_EXECUTION, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_LOG, new GenericEvent($jobExecution));
 
         $response = new BinaryFileResponse($jobExecution->getLogFile());
         $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT);
@@ -182,7 +182,7 @@ class JobExecutionController extends AbstractDoctrineController
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
 
-        $this->eventDispatcher->dispatch(JobEvents::PRE_DOWNLOAD_FILES_JOB_EXECUTION, new GenericEvent($jobExecution));
+        $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_DOWNLOAD_FILES, new GenericEvent($jobExecution));
 
         $stream       = $this->archivist->getArchive($jobExecution, $archiver, $key);
 
