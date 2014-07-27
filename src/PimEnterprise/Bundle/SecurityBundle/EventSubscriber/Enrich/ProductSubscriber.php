@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
+namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -16,7 +16,7 @@ use Pim\Bundle\EnrichBundle\EnrichEvents;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductListener implements EventSubscriberInterface
+class ProductSubscriber implements EventSubscriberInterface
 {
     /**
      * @var SecurityContextInterface

@@ -6,3 +6,4 @@ parameters:
     pimee_workflow.entity.published_product_price.class:        PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
     pimee_workflow.entity.published_product_completeness.class: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
     pimee_workflow.entity.published_product_association.class:  PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
+    pimee_workflow.model.proposition.class:                     PimEnterprise\Bundle\WorkflowBundle\Model\Proposition

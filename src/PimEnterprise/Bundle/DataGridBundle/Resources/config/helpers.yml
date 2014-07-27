@@ -1,0 +1,6 @@
+parameters:
+    pimee_datagrid.datagrid.proposition.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition\GridHelper
+
+services:
+    pimee_datagrid.datagrid.proposition.grid_helper:
+        class: %pimee_datagrid.datagrid.proposition.grid_helper.class%

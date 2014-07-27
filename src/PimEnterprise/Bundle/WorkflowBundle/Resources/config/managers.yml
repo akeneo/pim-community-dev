@@ -1,8 +1,8 @@
 parameters:
     pimee_workflow.manager.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+    pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
 
 services:
-
     pimee_workflow.manager.published_product:
         class: %pimee_workflow.manager.published_product.class%
         arguments:
@@ -19,3 +19,14 @@ services:
             - '@pim_catalog.repository.category'
             - '@security.context'
             - '@pimee_security.repository.category_access'
+
+    pimee_workflow.manager.proposition:
+        class: %pimee_workflow.manager.proposition.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_catalog.manager.product'
+            - '@pim_user.context.user'
+            - '@pimee_workflow.factory.proposition'
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.applier.proposition_changes_applier'
+            - '@event_dispatcher'

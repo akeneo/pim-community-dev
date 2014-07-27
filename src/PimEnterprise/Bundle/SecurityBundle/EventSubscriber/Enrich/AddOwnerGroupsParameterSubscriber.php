@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\SecurityBundle\EventListener;
+namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AddOwnerGroupsParameterListener implements EventSubscriberInterface
+class AddOwnerGroupsParameterSubscriber implements EventSubscriberInterface
 {
     /** @var CategoryAccessRepository */
     protected $repository;

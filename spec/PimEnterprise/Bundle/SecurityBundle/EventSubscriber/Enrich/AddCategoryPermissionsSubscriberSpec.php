@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventListener;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -9,7 +9,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\EnrichBundle\EnrichEvents;
 
-class AddCategoryPermissionsListenerSpec extends ObjectBehavior
+class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(CategoryAccessManager $accessManager)
     {
@@ -18,7 +18,7 @@ class AddCategoryPermissionsListenerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\EventListener\AddCategoryPermissionsListener');
+        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber');
     }
 
     function it_subscribes_events()
