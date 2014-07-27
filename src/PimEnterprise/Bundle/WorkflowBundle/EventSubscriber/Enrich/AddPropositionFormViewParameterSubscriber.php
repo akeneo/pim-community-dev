@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
 
 /**
@@ -38,7 +38,7 @@ class AddPropositionFormViewParameterSubscriber implements EventSubscriberInterf
     public static function getSubscribedEvents()
     {
         return [
-            EnrichEvents::PRE_RENDER_PRODUCT_EDIT => 'addPropositionFormView',
+            ProductEvents::PRE_RENDER_EDIT => 'addPropositionFormView',
         ];
     }
 

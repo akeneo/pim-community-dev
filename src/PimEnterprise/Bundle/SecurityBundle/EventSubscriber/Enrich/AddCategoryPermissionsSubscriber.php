@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 /**
@@ -34,7 +34,7 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            EnrichEvents::POST_CREATE_CATEGORY => 'addNewCategoryPermissions'
+            CategoryEvents::POST_CREATE => 'addNewCategoryPermissions'
         ];
     }
 

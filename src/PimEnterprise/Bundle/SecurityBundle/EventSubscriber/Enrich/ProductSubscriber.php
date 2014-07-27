@@ -8,7 +8,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 
 /**
  * Product listener used to handle permissions.
@@ -46,7 +46,7 @@ class ProductSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            EnrichEvents::PRE_EDIT_PRODUCT => 'checkEditPermission',
+            ProductEvents::PRE_EDIT => 'checkEditPermission',
         ];
     }
 

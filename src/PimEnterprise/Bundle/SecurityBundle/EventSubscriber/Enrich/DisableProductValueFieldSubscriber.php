@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -33,7 +33,7 @@ class DisableProductValueFieldSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EnrichEvents::CREATE_PRODUCT_VALUE_FORM => 'onCreateProductValueForm',
+            ProductEvents::CREATE_VALUE_FORM => 'onCreateProductValueForm',
         );
     }
 
