@@ -1,0 +1,81 @@
+parameters:
+    pimee_workflow.event_subscriber.check_published_product.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
+    pimee_workflow.event_subscriber.published_product_consistency_exception.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\PublishedProductConsistencyExceptionSubscriber
+    pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
+    pimee_workflow.subscriber.prepare_proposition_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PreparePropositionChangesSubscriber
+    pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
+    pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
+    pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
+    pimee_workflow.proposition_subscriber.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.change_set_subscriber.metadata.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber
+
+services:
+    ##
+    # Published product events
+    ##
+    pimee_workflow.event_subscriber.check_published_product:
+        class: %pimee_workflow.event_subscriber.check_published_product.class%
+        arguments:
+            - '@pimee_workflow.repository.published_product'
+            - '@pim_catalog.repository.category'
+        tags:
+            - { name: kernel.event_subscriber}
+
+    pimee_workflow.event_subscriber.published_product_consistency_exception:
+        class: %pimee_workflow.event_subscriber.published_product_consistency_exception.class%
+        arguments:
+            - '@router'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ##
+    # Proposition event subscribers
+    ##
+    pimee_workflow.product_changes_applier.prepare_uploading_media:
+        class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.prepare_proposition_changes:
+        class: %pimee_workflow.subscriber.prepare_proposition_changes.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.proposition_subscriber.mark_in_progress:
+        class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.proposition_subscriber.replace_flash_message:
+        class: %pimee_workflow.proposition_subscriber.replace_flash_message.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.repository.product'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.change_set_subscriber.metadata:
+        class: %pimee_workflow.change_set_subscriber.metadata.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    ##
+    # Product to edit preparation
+    ##
+    pimee_workflow.subscriber.inject_current_user_proposition:
+        class: %pimee_workflow.subscriber.inject_current_user_proposition.class%
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_catalog.context.catalog'
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.applier.proposition_changes_applier'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_workflow.subscriber.add_proposition_form_view_parameter:
+        class: %pimee_workflow.subscriber.add_proposition_form_view_parameter.class%
+        arguments:
+            - '@form.factory'
+            - '@pimee_workflow.manager.proposition'
+        tags:
+            - { name: kernel.event_subscriber }

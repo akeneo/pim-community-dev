@@ -1,15 +1,8 @@
 parameters:
     pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
-    pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
-    pimee_workflow.subscriber.prepare_proposition_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PreparePropositionChangesSubscriber
-    pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
-    pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
-    pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
-    pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
     pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
-    pimee_workflow.proposition_subscriber.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
-    pimee_workflow.change_set_subscriber.metadata.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber
     pimee_workflow.change_set_computer.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputer
+    pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
 
 services:
     pimee_workflow.applier.proposition_changes_applier:
@@ -18,37 +11,6 @@ services:
         arguments:
             - '@form.factory'
             - '@event_dispatcher'
-
-    ##
-    # Proposition event subscribers
-    ##
-    pimee_workflow.product_changes_applier.prepare_uploading_media:
-        class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.subscriber.prepare_proposition_changes:
-        class: %pimee_workflow.subscriber.prepare_proposition_changes.class%
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.proposition_subscriber.mark_in_progress:
-        class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.proposition_subscriber.replace_flash_message:
-        class: %pimee_workflow.proposition_subscriber.replace_flash_message.class%
-        arguments:
-            - '@security.context'
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.change_set_subscriber.metadata:
-        class: %pimee_workflow.change_set_subscriber.metadata.class%
-        tags:
-            - { name: kernel.event_subscriber }
 
     ##
     # Product form view decorator
@@ -71,27 +33,6 @@ services:
             - '@pimee_workflow.form.type.product.highlight_modified_values_view'
         tags:
             - { name: form.type, alias: pim_product_value }
-
-    ##
-    # Product to edit preparation
-    ##
-    pimee_workflow.subscriber.inject_current_user_proposition:
-        class: %pimee_workflow.subscriber.inject_current_user_proposition.class%
-        arguments:
-            - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
-            - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.applier.proposition_changes_applier'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.subscriber.add_proposition_form_view_parameter:
-        class: %pimee_workflow.subscriber.add_proposition_form_view_parameter.class%
-        arguments:
-            - '@form.factory'
-            - '@pimee_workflow.manager.proposition'
-        tags:
-            - { name: kernel.event_subscriber }
 
     pimee_workflow.collector.product_submitted_changes:
         class: %pimee_workflow.collector.product_submitted_changes.class%
