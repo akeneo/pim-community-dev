@@ -32,9 +32,13 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $data
+     * @param       $format
+     * @param array $context
+     *
+     * @return object
      */
-    public function denormalize($data, $class, $format = null, array $context = array())
+    protected function doDenormalize(array $data, $format, array $context)
     {
         if (isset($context['entity']) && null !== $context['entity']) {
             $association = $context['entity'];
@@ -46,10 +50,10 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
         }
 
         if ('groups' === $context['part']) {
-            if (strlen($data) > 0) { //TODO: test should be in group denormalizer
-                $identifiers = explode(',', $data);
-                foreach ($identifiers as $identifier) {
-                    $group = $this->serializer->deserialize($identifier, $this->groupClass, $format);
+            $identifiers = explode(',', $data);
+            foreach ($identifiers as $identifier) {
+                $group = $this->serializer->deserialize($identifier, $this->groupClass, $format);
+                if (null !== $group) {
                     $association->addGroup($group);
                 }
             }

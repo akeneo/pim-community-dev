@@ -42,7 +42,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     public function denormalize($data, $class, $format = null, array $context = array())
     {
         if (is_array($data) && !empty($data)) {
-            return $this->doNormalize($data, $context);
+            return $this->doNormalize($data, $format, $context);
         } elseif (is_string($data) && strlen($data) > 0) {
             return $this->findEntity($data);
         } else {
@@ -59,7 +59,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @return mixed
      */
-    abstract protected function doNormalize(array $data, $format, array $context);
+    abstract protected function doDenormalize(array $data, $format, array $context);
 
     /**
      * {@inheritdoc}
