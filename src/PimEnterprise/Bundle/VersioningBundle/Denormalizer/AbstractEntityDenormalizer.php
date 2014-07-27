@@ -41,8 +41,25 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        return $this->getEntity($data);
+        if (is_array($data) && !empty($data)) {
+            return $this->doNormalize($data, $context);
+        } elseif (is_string($data) && strlen($data) > 0) {
+            return $this->findEntity($data);
+        } else {
+            return null;
+        }
     }
+
+    /**
+     * Get an existing entity (or create a new one)
+     * Set all data values to entity
+     *
+     * @param array $data
+     * @param array $context
+     *
+     * @return mixed
+     */
+    abstract protected function doNormalize(array $data, $format, array $context);
 
     /**
      * {@inheritdoc}
@@ -73,9 +90,22 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @return object
      */
-    protected function getEntity($identifier)
+    protected function getEntity(array $data, array $context)
     {
-        return $object = strlen($identifier) > 0 ? $this->findEntity($identifier) : $this->createEntity();
+        if (isset($context['entity'])) {
+            $entity = $context['entity'];
+            unset($context['entity']);
+        } else {
+            if (isset($data['code'])) {
+                $entity = $this->findEntity($data['code']);
+            } else {
+                throw new \Exception(
+                    sprintf('Missing identifier "%s" to get "%s" identity', 'code', $this->entityClass)
+                );
+            }
+        }
+
+        return $entity;
     }
 
     /**
