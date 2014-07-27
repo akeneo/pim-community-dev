@@ -7,7 +7,8 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\ImportExportBundle\JobEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
+use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
@@ -34,13 +35,13 @@ class JobPermissionsSubscriberSpec extends ObjectBehavior
     function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            JobEvents::PRE_EDIT_JOB_PROFILE             => 'checkEditPermission',
-            JobEvents::PRE_REMOVE_JOB_PROFILE           => 'checkEditPermission',
-            JobEvents::PRE_EXECUTE_JOB_PROFILE          => 'checkExecutePermission',
-            JobEvents::PRE_SHOW_JOB_PROFILE             => 'checkShowPermission',
-            JobEvents::PRE_SHOW_JOB_EXECUTION           => 'checkJobExecutionPermission',
-            JobEvents::PRE_DOWNLOAD_FILES_JOB_EXECUTION => 'checkJobExecutionPermission',
-            JobEvents::PRE_DOWNLOAD_LOG_JOB_EXECUTION   => 'checkJobExecutionPermission'
+            JobProfileEvents::PRE_EDIT             => 'checkEditPermission',
+            JobProfileEvents::PRE_REMOVE           => 'checkEditPermission',
+            JobProfileEvents::PRE_EXECUTE          => 'checkExecutePermission',
+            JobProfileEvents::PRE_SHOW             => 'checkShowPermission',
+            JobExecutionEvents::PRE_SHOW           => 'checkJobExecutionPermission',
+            JobExecutionEvents::PRE_DOWNLOAD_FILES => 'checkJobExecutionPermission',
+            JobExecutionEvents::PRE_DOWNLOAD_LOG   => 'checkJobExecutionPermission'
         ]);
     }
 

@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 
 class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
@@ -24,7 +24,7 @@ class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
     function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            EnrichEvents::POST_CREATE_CATEGORY => 'addNewCategoryPermissions'
+            CategoryEvents::POST_CREATE => 'addNewCategoryPermissions'
         ]);
     }
 

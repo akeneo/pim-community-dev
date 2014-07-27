@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\EnrichBundle\Event\CreateProductValueFormEvent;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
@@ -27,7 +27,7 @@ class DisableProductValueFieldSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_create_product_value_form()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            EnrichEvents::CREATE_PRODUCT_VALUE_FORM => 'onCreateProductValueForm'
+            ProductEvents::CREATE_VALUE_FORM => 'onCreateProductValueForm'
         ]);
     }
 

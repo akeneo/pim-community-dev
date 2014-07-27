@@ -6,7 +6,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
@@ -28,7 +28,7 @@ class ProductSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_pre_edit_product()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            EnrichEvents::PRE_EDIT_PRODUCT => 'checkEditPermission',
+            ProductEvents::PRE_EDIT => 'checkEditPermission',
         ]);
     }
 
