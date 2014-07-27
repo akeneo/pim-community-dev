@@ -1,0 +1,11 @@
+parameters:
+    pimee_workflow.twig.extension.group_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Twig\GroupProductValuesExtension
+
+services:
+    pimee_workflow.twig.extension.group_product_values:
+        class: %pimee_workflow.twig.extension.group_product_values.class%
+        arguments:
+            - '@pimee_workflow.helper.filter_product_values'
+            - '@pimee_workflow.helper.sort_product_values'
+        tags:
+            - { name: twig.extension }
