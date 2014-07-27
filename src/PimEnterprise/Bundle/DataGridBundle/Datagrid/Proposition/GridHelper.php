@@ -13,7 +13,6 @@ use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
  */
 class GridHelper
 {
-
     /**
      * Returns callback that will disable approve and refuse buttons
      * given proposition status
