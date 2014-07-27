@@ -18,6 +18,9 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.validator.attribute_constraint_guesser/pim_catalog.validator.constraint_guesser.chained_attribute/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/Model\\Media/Model\\ProductMedia/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog_media/pim_catalog_product_media/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/EnrichBundle\\MassEditAction/EnrichBundle\\MassEditAction\\Operation/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_class/product_class/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_value_class/product_value_class/g'
 ```
 
 BatchBundle
@@ -55,22 +58,6 @@ This can be done thanks to the following queries :
     SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
     WHERE a.`group_id` IS NULL
 ```
-
-With the removal of FlexibleEntityBundle, related parameters have been changed, in ./src/Pim/Bundle/CatalogBundle/Resources/config/managers.yml:
-
-With 1.1 :
-```
-    flexible_class:               %pim_catalog.entity.product.class%
-    flexible_value_class:         %pim_catalog.entity.product_value.class%
-```
-
-With 1.2 :
-```
-    product_class:                %pim_catalog.entity.product.class%
-    product_value_class:          %pim_catalog.entity.product_value.class%
-```
-
-./src/Pim/Bundle/CatalogBundle/Manager/ProductManager.php has been updated to use these new configuration parameters
 
 MongoDB implementation
 ----------------------

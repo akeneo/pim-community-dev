@@ -79,7 +79,7 @@
 - Remove CategoryWriter and use the generic doctrine writer instead
 - Remove entity argument from FiltersConfigurator constructor
 - Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
-- The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
+- The Pim\Bundle\EnrichBundle\MassEditAction namespace has been renamed to Pim\Bundle\EnrichBundle\MassEditAction\Operation
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
 - Changed the HydratorInterface::hydrate() method signature
