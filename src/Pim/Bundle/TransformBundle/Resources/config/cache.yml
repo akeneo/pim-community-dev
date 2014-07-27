@@ -1,10 +1,8 @@
 parameters:
     pim_transform.cache.doctrine_cache.class: Pim\Bundle\TransformBundle\Cache\DoctrineCache
     pim_transform.cache.attribute_cache.class: Pim\Bundle\TransformBundle\Cache\AttributeCache
-    pim_transform.converter.metric.class: Pim\Bundle\TransformBundle\Converter\MetricConverter
 
 services:
-
     pim_transform.cache.doctrine_cache:
         class: %pim_transform.cache.doctrine_cache.class%
         arguments:
@@ -15,8 +13,3 @@ services:
         arguments:
             - '@doctrine'
             - %pim_catalog.entity.attribute.class%
-
-    pim_transform.converter.metric:
-        class: %pim_transform.converter.metric.class%
-        arguments:
-            - '@akeneo_measure.measure_converter'
