@@ -33,6 +33,8 @@ class PimEnterpriseWorkflowExtension extends Extension
         $loader->load('helpers.yml');
         $loader->load('comparators.yml');
         $loader->load('factories.yml');
+        $loader->load('controllers.yml');
+        $loader->load('repositories.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

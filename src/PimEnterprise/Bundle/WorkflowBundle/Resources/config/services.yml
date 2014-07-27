@@ -1,8 +1,6 @@
 parameters:
     pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
     pimee_workflow.model.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Model\Proposition
-    pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
-    pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
     pimee_workflow.datagrid.proposition_grid_helper.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\PropositionGridHelper
     pimee_workflow.twig.extension.group_product_values.class: PimEnterprise\Bundle\WorkflowBundle\Twig\GroupProductValuesExtension
 
@@ -15,21 +13,6 @@ services:
         tags:
           - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposition-grid, method: onBuildAfter }
 
-    pimee_workflow.controller.proposition:
-        class: %pimee_workflow.controller.proposition.class%
-        parent: pim_enrich.controller.abstract
-        scope: request
-        arguments:
-            - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.manager.proposition'
-            - '@pim_user.context.user'
-
-    pimee_workflow.repository.proposition:
-        class: %pimee_workflow.repository.proposition.class%
-        factory_service: pimee_workflow.object_manager.proposition
-        factory_method: getRepository
-        arguments: [%pimee_workflow.model.proposition.class%]
-
     pim_catalog.persister.product:
         class: %pim_catalog.persister.product.class%
         arguments:
@@ -41,15 +24,6 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pimee_workflow.change_set_computer'
-
-    pimee_workflow.controller.published_product:
-        class: %pimee_workflow.controller.published_product.class%
-        parent: pim_enrich.controller.abstract
-        scope: request
-        arguments:
-            - '@pim_user.context.user'
-            - '@pimee_workflow.manager.published_product'
-            - '@pim_versioning.manager.version'
 
     pimee_workflow.datagrid.proposition_grid_helper:
         class: %pimee_workflow.datagrid.proposition_grid_helper.class%
