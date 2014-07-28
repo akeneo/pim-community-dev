@@ -2,7 +2,7 @@ attribute_groups_accesses:
     marketing:
         view: [IT support, Redactor]
         edit: [IT support, Redactor]
-    IT support:
+    technical:
         view: [IT support, Redactor]
         edit: [IT support]
     design:
