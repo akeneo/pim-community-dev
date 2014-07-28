@@ -34,17 +34,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
-        $value = $context['entity'];
-        $context['entity'] = null;
-        $context['value']  = $value;
-
-        // Call denormalizer with attribute type
-        $dataValue = $this->serializer->denormalize($data, $value->getAttribute()->getAttributeType(), 'csv', $context);
-        if (null !== $dataValue) {
-            $value->setData($dataValue);
-        }
-
-        return $value;
+        return $this->doDenormalize($data, $format, $context);
     }
 
     /**
@@ -52,6 +42,22 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
      */
     protected function doDenormalize(array $data, $format, array $context)
     {
-        throw new \Exception('Should not be called');
+
+        if (isset($context['entity'])) {
+            $value = $context['entity'];
+            $context['entity'] = null;
+            $context['value']  = $value;
+        } else {
+            //TODO: implements this part in a cleaner way
+            throw new \Exception('Value should be passed in context');
+        }
+
+        // Call denormalizer with attribute type
+        $dataValue = $this->serializer->denormalize($data, $value->getAttribute()->getAttributeType(), $format, $context);
+        if (null !== $dataValue) {
+            $value->setData($dataValue);
+        }
+
+        return $value;
     }
 }
