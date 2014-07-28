@@ -161,10 +161,10 @@ datagrid:
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
-                    type:        product_enabled
-                    parent_type: choice
-                    label:       Status
-                    data_name:   enabled
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
                     options:
                         field_options:
                             choices:
@@ -186,15 +186,24 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   created
-                    label:       Created At
+                    type:      product_date
+                    ftype:     date
+                    data_name: created
+                    label:     Created At
                 updated:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   updated
-                    label:       Updated At
+                    type:      product_date
+                    ftype:     date
+                    data_name: updated
+                    label:     Updated At
+                is_owner:
+                    type:        product_is_owner
+                    ftype:       choice
+                    data_name:   is_owner
+                    label:       pimee_workflow.product.is_owner.label
+                    options:
+                        field_options:
+                            multiple: false
+                            choices: '@pimee_datagrid.datagrid.product.grid_helper->getOwnerChoices'
             default:
                 category:
                     value:
