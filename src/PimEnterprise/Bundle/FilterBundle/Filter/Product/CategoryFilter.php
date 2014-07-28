@@ -61,7 +61,7 @@ class CategoryFilter extends BaseCategoryFilter
         $productRepository = $this->manager->getProductCategoryRepository();
 
         if (count($grantedCategoryIds > 0)) {
-            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds, true);
+            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
         } else {
             $productRepository->applyFilterByUnclassified($qb);
         }

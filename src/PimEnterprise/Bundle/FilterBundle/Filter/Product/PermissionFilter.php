@@ -77,7 +77,7 @@ class PermissionFilter extends OroChoiceFilter
 
         $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, $level);
         if (count($grantedCategoryIds > 0)) {
-            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds, true);
+            $this->productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds);
         } else {
             $this->productRepository->applyFilterByUnclassified($qb);
         }
