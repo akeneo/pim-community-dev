@@ -51,7 +51,7 @@ class IsOwnerFilter extends OroChoiceFilter
     }
 
     /**
-     * Filter by owner category ids (category with owner permissions or not classified at all) 
+     * Filter by owner category ids (category with owner permissions or not classified at all)
      *
      * @return boolean
      */
@@ -65,7 +65,6 @@ class IsOwnerFilter extends OroChoiceFilter
         $this->categoryRepository->addFilterByAll($qb, $grantedCategoryIds /*, 'owner'*/);
 
         // TODO : IN / NOT IN
-
         return true;
     }
 }

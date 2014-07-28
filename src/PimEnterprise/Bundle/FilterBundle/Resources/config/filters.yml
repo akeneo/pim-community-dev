@@ -23,11 +23,24 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: product_is_owner }
 
+    pim_filter.product_category_filter:
+        class: %pim_filter.product_category_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@oro_filter.filter_utility'
+            - '@pim_catalog.manager.product_category'
+            - '@security.context'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_category }
+
     pimee_filter.published_product_category_filter:
         class: %pim_filter.product_category_filter.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
             - '@pimee_workflow.manager.published_product_category'
+            - '@security.context'
+            - '@pimee_security.repository.category_access'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: published_product_category }

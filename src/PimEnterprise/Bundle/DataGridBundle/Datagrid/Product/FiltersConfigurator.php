@@ -6,7 +6,6 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator as BaseFilter
 
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
-use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 
 /**
  * Override filters configurator to add is owner filter in product grid

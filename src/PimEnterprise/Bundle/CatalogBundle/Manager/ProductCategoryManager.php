@@ -10,7 +10,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager as BaseProductCatego
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
  * Product category manager
@@ -23,27 +22,21 @@ class ProductCategoryManager extends BaseProductCategoryManager
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var CategoryAccessRepository */
-    protected $accessRepository;
-
     /**
      * Constructor
      *
      * @param ProductCategoryRepositoryInterface $productRepo     Product repository
      * @param CategoryRepository                 $categoryRepo    Category repository
      * @param SecurityContextInterface           $securityContext Security context
-     * @param CategoryAccessRepository           $accessRepo      Category access repository
      */
     public function __construct(
         ProductCategoryRepositoryInterface $productRepo,
         CategoryRepository $categoryRepo,
-        SecurityContextInterface $securityContext,
-        CategoryAccessRepository $accessRepo
+        SecurityContextInterface $securityContext
     ) {
         parent::__construct($productRepo, $categoryRepo);
 
         $this->securityContext = $securityContext;
-        $this->accessRepository = $accessRepo;
     }
 
     /**
@@ -106,16 +99,6 @@ class ProductCategoryManager extends BaseProductCategoryManager
         }
 
         return $this->productRepository->getProductIdsInCategory($category, $grantedQb);
-    }
-
-    /**
-     * @param mixed $queryBuilder
-     */
-    public function addFilterByAll($queryBuilder)
-    {
-        $user = $this->securityContext->getToken()->getUser();
-        $grantedCategories = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
-        $this->productRepository->addFilterByAll($queryBuilder, $grantedCategories);
     }
 
     /**
