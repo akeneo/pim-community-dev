@@ -23,4 +23,13 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     {
         return array_merge($this->pageMapping, $this->enterprisePageMapping);
     }
+
+    /**
+     * @Given /^I should be on the published index page$/
+     */
+    public function iShouldBeOnTheProductsPage()
+    {
+        $expectedAddress = $this->getPage('Published index')->getUrl();
+        $this->assertAddress($expectedAddress);
+    }
 }
