@@ -26,6 +26,7 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: boat"
     Then product "boat" should be disabled
 
+  @skip
   Scenario: Successfully revert the family of a product
     Given the following product:
       | sku  | family |
