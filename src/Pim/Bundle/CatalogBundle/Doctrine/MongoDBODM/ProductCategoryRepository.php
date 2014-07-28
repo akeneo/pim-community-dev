@@ -222,9 +222,9 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     public function applyFilterByCategoryIds($qb, array $categoryIds, $include)
     {
         if ($include) {
-            $qb->addAnd($qb->expr()->field('categoryIds')->in($grantedCategoryIds));
+            $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
         } else {
-            $qb->addAnd($qb->expr()->field('categoryIds')->notIn($grantedCategoryIds));
+            $qb->addAnd($qb->expr()->field('categoryIds')->notIn($categoryIds));
         }
     }
 
@@ -235,12 +235,12 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         if ($include) {
             $qb->addAnd(
-                $qb->expr()->addOr($qb->expr()->field('categoryIds')->in($grantedCategoryIds))
+                $qb->expr()->addOr($qb->expr()->field('categoryIds')->in($categoryIds))
                     ->addOr($qb->expr()->field('categoryIds')->size(0))
             );
         } else {
             $qb->addAnd(
-                $qb->expr()->addOr($qb->expr()->field('categoryIds')->notIn($grantedCategoryIds))
+                $qb->expr()->addOr($qb->expr()->field('categoryIds')->notIn($categoryIds))
                     ->addOr($qb->expr()->field('categoryIds')->size(0))
             );
         }
