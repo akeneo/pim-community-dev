@@ -42,7 +42,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
             );
         }
 
-        return parent::denormalize($data, $class, $format, $context);
+        return $this->doDenormalize($data, $format, $context);
     }
 
     /**
@@ -56,17 +56,21 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     {
         if (isset($context['entity']) && null !== $context['entity']) {
             $association = $context['entity'];
-        } else {
+        } elseif (isset($context['association_type_code'])) {
             $association = $this->createEntity();
             $association->setAssociationType(
                 $this->getAssociationType($context['association_type_code'])
+            );
+        } else {
+            throw new \Exception(
+                'Association entity or association type code should be passed in context"'
             );
         }
 
         if ('groups' === $context['part']) {
             $identifiers = explode(',', $data);
             foreach ($identifiers as $identifier) {
-                $group = $this->serializer->deserialize($identifier, $this->groupClass, $format);
+                $group = $this->serializer->denormalize($identifier, $this->groupClass, $format);
                 if (null !== $group) {
                     $association->addGroup($group);
                 }
@@ -75,7 +79,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
             if (strlen($data) > 0) { // TODO: test should be in product denormalizer
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
-                    $product = $this->serializer->deserialize($identifier, $this->productClass, $format);
+                    $product = $this->serializer->denormalize($identifier, $this->productClass, $format);
                     $association->addProduct($product);
                 }
             }
