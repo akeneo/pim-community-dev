@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
-use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-
 /**
  * Helper for product datagrid
  *

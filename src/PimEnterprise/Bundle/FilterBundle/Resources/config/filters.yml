@@ -16,7 +16,8 @@ services:
         class: %pimee_filter.product_is_owner_filter.class%
         arguments:
             - '@form.factory'
-            - '@pim_filter.product_utility'
+            - '@oro_filter.filter_utility'
+
             - '@pim_catalog.repository.product_category'
             - '@pimee_security.repository.category_access'
         tags:

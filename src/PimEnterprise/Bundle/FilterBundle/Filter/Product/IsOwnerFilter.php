@@ -51,7 +51,6 @@ class IsOwnerFilter extends OroChoiceFilter
      */
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
-
         return true;
     }
 }
