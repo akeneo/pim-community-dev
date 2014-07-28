@@ -124,7 +124,7 @@ class DatagridViewController extends AbstractDoctrineController
             }
         }
 
-        $views = $this->datagridViewManager->findAllForUser($alias, $user);
+        $views = $this->datagridViewManager->findPublic($alias);
 
         return $this->render(
             'PimDataGridBundle:Datagrid:_views.html.twig',

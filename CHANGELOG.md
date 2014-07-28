@@ -157,6 +157,7 @@
 - Remove file `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass`
 - Replace the filter config parent_type by ftype
 - Rename VersioningBundle, UserBundle listeners to subscribers
+- Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
