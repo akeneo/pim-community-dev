@@ -57,4 +57,29 @@ interface ProductCategoryRepositoryInterface
      * @param boolean $include    true for in, false for not in
      */
     public function applyFilterByIds($qb, array $productIds, $include);
+
+    /**
+     * Apply a filter by unclassified (not placed in any categories)
+     *
+     * @param mixed $qb query builder to update
+     */
+    public function applyFilterByUnclassified($qb);
+
+    /**
+     * Apply a filter by category ids
+     *
+     * @param mixed   $qb          query builder to update
+     * @param array   $categoryIds category ids
+     * @param boolean $include     true for in, false for not in
+     */
+    public function applyFilterByCategoryIds($qb, array $categoryIds, $include);
+
+    /**
+     * Apply filter by category ids or unclassified
+     *
+     * @param mixed   $qb          query builder to update
+     * @param array   $categoryIds category ids
+     * @param boolean $include     true for in, false for not in
+     */
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds, $include);
 }

@@ -137,12 +137,67 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias  = $qb->getRootAlias();
         if ($include) {
-            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
 
         } else {
-            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByUnclassified($qb)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.microtime();
+        $qb->leftJoin('p.categories', $alias);
+        $qb->andWhere($qb->expr()->isNull($alias.'.id'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIds($qb, array $categoryIds, $include)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.microtime();
+        $qb->leftJoin('p.categories', $alias);
+
+        if ($include) {
+            $qb->andWhere($qb->expr()->in($alias.'id', ':filterCatIds'));
+        } else {
+            $qb->andWhere($qb->expr()->notIn($alias.'id', ':filterCatIds'));
+        }
+        $qb->setParameter('filterCatIds', $grantedCategoryIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds, $include)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.microtime();
+        $qb->leftJoin('p.categories', $alias);
+
+        if ($include) {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->in($alias.'id', ':filterCatIds'),
+                    $qb->expr()->isNull($alias.'.id')
+                )
+            );
+        } else {
+            $qb->andWhere(
+                $qb->expr()->orX(
+                    $qb->expr()->notIn($alias.'id', ':filterCatIds'),
+                    $qb->expr()->isNull($alias.'.id')
+                )
+            );
+        }
+        $qb->setParameter('filterCatIds', $grantedCategoryIds);
     }
 }
