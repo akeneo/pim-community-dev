@@ -105,7 +105,7 @@ function(localeSettings, moment) {
          * @returns {moment}
          */
         getMomentForBackendDate: function(value) {
-            var momentDate = moment.utc(value);
+            var momentDate = moment.utc(value).zone(this.timezoneOffset);
             if (!momentDate.isValid()) {
                 throw new Error('Invalid backend date ' + value);
             }

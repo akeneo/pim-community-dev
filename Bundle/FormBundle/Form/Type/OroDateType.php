@@ -32,9 +32,7 @@ class OroDateType extends AbstractType
     {
         $resolver->setDefaults(
             array(
-                'model_timezone' => 'UTC',
-                'view_timezone'  => 'UTC',
-                'format'         => 'yyyy-MM-dd', // ISO format
+                'format'         => 'yyyy-MM-dd',
                 'widget'         => 'single_text',
                 'placeholder'    => 'oro.form.click_here_to_select',
             )
