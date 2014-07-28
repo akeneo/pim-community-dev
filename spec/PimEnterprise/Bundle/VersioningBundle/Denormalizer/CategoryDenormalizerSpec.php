@@ -8,22 +8,29 @@ use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Symfony\Component\Serializer\Serializer;
 
 class CategoryDenormalizerSpec extends ObjectBehavior
 {
     const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, CategoryRepository $repository)
+    function let(Serializer $serializer, ManagerRegistry $registry, CategoryRepository $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
         $this->beConstructedWith($registry, self::ENTITY_CLASS);
+        $this->setSerializer($serializer);
     }
 
     function it_is_a_denormalizer()
     {
         $this->shouldImplement('Symfony\Component\Serializer\Normalizer\DenormalizerInterface');
+    }
+
+    function it_is_serializer_aware()
+    {
+        $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
     function it_supports_denormalization_in_csv_of_a_category()
