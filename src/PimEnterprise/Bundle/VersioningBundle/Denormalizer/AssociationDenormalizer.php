@@ -12,6 +12,9 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
     /** @var string */
+    protected $assocTypeClass;
+
+    /** @var string */
     protected $productClass;
 
     /** @var string */
@@ -20,15 +23,17 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     /**
      * @param ManagerRegistry $registry
      * @param string          $entityClass
+     * @param string          $assocTypeClass
      * @param string          $productClass
      * @param string          $groupClass
      */
-    public function __construct(ManagerRegistry $registry, $entityClass, $productClass, $groupClass)
+    public function __construct(ManagerRegistry $registry, $entityClass, $assocTypeClass, $productClass, $groupClass)
     {
         parent::__construct($registry, $entityClass);
 
-        $this->productClass = $productClass;
-        $this->groupClass   = $groupClass;
+        $this->assocTypeClass = $assocTypeClass;
+        $this->productClass   = $productClass;
+        $this->groupClass     = $groupClass;
     }
 
     /**
@@ -56,6 +61,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     {
         if (isset($context['entity']) && null !== $context['entity']) {
             $association = $context['entity'];
+            unset($context['entity']);
         } elseif (isset($context['association_type_code'])) {
             $association = $this->createEntity();
             $association->setAssociationType(
@@ -80,7 +86,9 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
                     $product = $this->serializer->denormalize($identifier, $this->productClass, $format);
-                    $association->addProduct($product);
+                    if (null !== $product) {
+                        $association->addProduct($product);
+                    }
                 }
             }
         }
@@ -103,6 +111,6 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
      */
     protected function getAssociationTypeRepository()
     {
-        return $this->managerRegistry->getRepository($this->associationTypeClass);
+        return $this->managerRegistry->getRepository($this->assocTypeClass);
     }
 }
