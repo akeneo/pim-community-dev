@@ -207,4 +207,32 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
             $qb->addAnd($qb->expr()->field('id')->notIn($productIds));
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByUnclassified($qb)
+    {
+        $qb->addAnd($qb->expr()->field('categoryIds')->size(0));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIds($qb, array $categoryIds)
+    {
+        $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
+    {
+        $qb->addAnd(
+            $qb->expr()
+                ->addOr($qb->expr()->field('categoryIds')->in($categoryIds))
+                ->addOr($qb->expr()->field('categoryIds')->size(0))
+        );
+    }
 }
