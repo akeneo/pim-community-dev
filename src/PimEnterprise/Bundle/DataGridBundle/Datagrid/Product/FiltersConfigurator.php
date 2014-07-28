@@ -2,10 +2,10 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
-use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator as BaseFiltersConfigurator;
-
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
 use Oro\Bundle\FilterBundle\Grid\Extension\Configuration as FilterConfiguration;
+use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator as BaseFiltersConfigurator;
+use PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter;
 
 /**
  * Override filters configurator to add is owner filter in product grid
@@ -30,22 +30,23 @@ class FiltersConfigurator extends BaseFiltersConfigurator
     protected function addIsOwnerFilter()
     {
         $filter = [
-            'type'      => 'product_is_owner',
+            'type'      => 'product_permission',
             'ftype'     => 'choice',
-            'data_name' => 'is_owner',
-            'label'     => 'pimee_workflow.product.is_owner.label',
+            'data_name' => 'permissions',
+            'label'     => 'pimee_workflow.product.permission.label',
             'options'   => [
                 'field_options' => [
                     'multiple' => false,
                     'choices'  => [
-                        1 => 'pimee_workflow.product.is_owner.yes',
-                        0 => 'pimee_workflow.product.is_owner.no'
+                        PermissionFilter::OWN => 'pimee_workflow.product.permission.own',
+                        PermissionFilter::EDIT => 'pimee_workflow.product.permission.edit',
+                        PermissionFilter::VIEW => 'pimee_workflow.product.permission.view',
                     ]
                 ]
             ]
         ];
         $this->configuration->offsetSetByPath(
-            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'is_owner'),
+            sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission'),
             $filter
         );
     }

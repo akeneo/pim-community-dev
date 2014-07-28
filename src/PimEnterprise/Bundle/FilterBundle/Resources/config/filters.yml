@@ -1,7 +1,7 @@
 parameters:
     pimee_filter.proposition_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposition\ChoiceFilter
     pim_filter.product_category_filter.class:     PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
-    pimee_filter.product_is_owner_filter.class:   PimEnterprise\Bundle\FilterBundle\Filter\Product\IsOwnerFilter
+    pimee_filter.product_permission_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 
 services:
     pimee_filter.proposition_choice_filter:
@@ -12,8 +12,8 @@ services:
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: proposition_choice }
 
-    pimee_filter.product_is_owner_filter:
-        class: %pimee_filter.product_is_owner_filter.class%
+    pimee_filter.product_permission_filter:
+        class: %pimee_filter.product_permission_filter.class%
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
@@ -21,7 +21,7 @@ services:
             - '@pim_catalog.repository.product_category'
             - '@pimee_security.repository.category_access'
         tags:
-            - { name: oro_filter.extension.orm_filter.filter, type: product_is_owner }
+            - { name: oro_filter.extension.orm_filter.filter, type: product_permission }
 
     pim_filter.product_category_filter:
         class: %pim_filter.product_category_filter.class%

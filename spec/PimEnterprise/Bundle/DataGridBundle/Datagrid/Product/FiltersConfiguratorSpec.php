@@ -77,18 +77,19 @@ class FiltersConfiguratorSpec extends ObjectBehavior
         $configuration->offsetSetByPath($columnConfPath, $expectedConf)->willReturn($configuration);
 
         // and it adds the is owner filter
-        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'is_owner');
+        $columnConfPath = sprintf('%s[%s]', FilterConfiguration::COLUMNS_PATH, 'permission');
         $expectedConf = [
-            'type'      => 'product_is_owner',
+            'type'      => 'product_permission',
             'ftype'     => 'choice',
-            'data_name' => 'is_owner',
-            'label'     => 'pimee_workflow.product.is_owner.label',
+            'data_name' => 'permissions',
+            'label'     => 'pimee_workflow.product.permission.label',
             'options'   => [
                 'field_options' => [
                     'multiple' => false,
                     'choices'  => [
-                        1 => 'pimee_workflow.product.is_owner.yes',
-                        0 => 'pimee_workflow.product.is_owner.no'
+                        3 => 'pimee_workflow.product.permission.own',
+                        2 => 'pimee_workflow.product.permission.edit',
+                        1 => 'pimee_workflow.product.permission.view',
                     ]
                 ]
             ]
