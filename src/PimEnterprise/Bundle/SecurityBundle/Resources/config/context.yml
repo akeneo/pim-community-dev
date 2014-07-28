@@ -1,2 +1,0 @@
-parameters:
-    security.context.class:               PimEnterprise\Bundle\SecurityBundle\SecurityContext

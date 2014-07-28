@@ -63,7 +63,7 @@ class ProductFieldsBuilder extends BaseProductFieldsBuilder
         $this->attributeIds = $this
             ->accessRepository
             ->getGrantedAttributeIds(
-                $this->securityContext->getUser(),
+                $this->securityContext->getToken()->getUser(),
                 Attributes::VIEW_ATTRIBUTES,
                 $this->attributeIds
             );

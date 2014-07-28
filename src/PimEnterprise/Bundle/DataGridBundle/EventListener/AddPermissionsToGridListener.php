@@ -48,7 +48,7 @@ class AddPermissionsToGridListener
         $datasource = $event->getDatagrid()->getDatasource();
 
         // Prepare subquery
-        $user  = $this->securityContext->getUser();
+        $user  = $this->securityContext->getToken()->getUser();
         $subQB = $this->accessRepository->getGrantedEntitiesQB($user, $this->accessLevel);
 
         $datasource->getRepository()->addGridAccessQB(

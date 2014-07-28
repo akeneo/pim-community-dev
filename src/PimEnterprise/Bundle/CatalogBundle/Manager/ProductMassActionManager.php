@@ -56,7 +56,7 @@ class ProductMassActionManager extends BaseProductMassActionManager
 
         $subQB = $this
             ->attGroupAccessRepo
-            ->getGrantedAttributeGroupQB($this->securityContext->getUser(), Attributes::EDIT_ATTRIBUTES);
+            ->getGrantedAttributeGroupQB($this->securityContext->getToken()->getUser(), Attributes::EDIT_ATTRIBUTES);
 
         return $this
             ->attributeRepository
