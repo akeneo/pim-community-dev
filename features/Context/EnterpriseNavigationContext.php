@@ -27,7 +27,7 @@ class EnterpriseNavigationContext extends BaseNavigationContext
     /**
      * @Given /^I should be on the published index page$/
      */
-    public function iShouldBeOnTheProductsPage()
+    public function iShouldBeOnThePublishedProductsPage()
     {
         $expectedAddress = $this->getPage('Published index')->getUrl();
         $this->assertAddress($expectedAddress);
