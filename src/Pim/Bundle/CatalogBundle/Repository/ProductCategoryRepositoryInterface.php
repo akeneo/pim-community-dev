@@ -68,16 +68,16 @@ interface ProductCategoryRepositoryInterface
     /**
      * Apply a filter by category ids
      *
-     * @param mixed   $qb          query builder to update
-     * @param array   $categoryIds category ids
+     * @param mixed $qb          query builder to update
+     * @param array $categoryIds category ids
      */
     public function applyFilterByCategoryIds($qb, array $categoryIds);
 
     /**
      * Apply filter by category ids or unclassified
      *
-     * @param mixed   $qb          query builder to update
-     * @param array   $categoryIds category ids
+     * @param mixed $qb          query builder to update
+     * @param array $categoryIds category ids
      */
     public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);
 }
