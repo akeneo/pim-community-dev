@@ -17,7 +17,7 @@ services:
         arguments:
             - '@form.factory'
             - '@oro_filter.filter_utility'
-
+            - '@security.context'
             - '@pim_catalog.repository.product_category'
             - '@pimee_security.repository.category_access'
         tags:
