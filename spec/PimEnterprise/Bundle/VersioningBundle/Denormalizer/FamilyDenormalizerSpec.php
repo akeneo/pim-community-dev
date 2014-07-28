@@ -19,7 +19,6 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
         $this->beConstructedWith($registry, self::ENTITY_CLASS);
-        $this->setSerializer($serializer);
     }
 
     function it_is_a_denormalizer()
