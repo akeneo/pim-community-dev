@@ -1,6 +1,7 @@
 parameters:
     pimee_filter.proposition_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposition\ChoiceFilter
     pim_filter.product_category_filter.class:     PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
+    pimee_filter.product_is_owner_filter.class:   PimEnterprise\Bundle\FilterBundle\Filter\Product\IsOwnerFilter
 
 services:
     pimee_filter.proposition_choice_filter:
@@ -10,6 +11,16 @@ services:
             - '@pimee_filter.proposition_utility'
         tags:
             - { name: oro_filter.extension.orm_filter.filter, type: proposition_choice }
+
+    pimee_filter.product_is_owner_filter:
+        class: %pimee_filter.product_is_owner_filter.class%
+        arguments:
+            - '@form.factory'
+            - '@pim_filter.product_utility'
+            - '@pim_catalog.repository.product_category'
+            - '@pimee_security.repository.category_access'
+        tags:
+            - { name: oro_filter.extension.orm_filter.filter, type: product_is_owner }
 
     pimee_filter.published_product_category_filter:
         class: %pim_filter.product_category_filter.class%

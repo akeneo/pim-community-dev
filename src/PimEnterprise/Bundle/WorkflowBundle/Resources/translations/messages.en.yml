@@ -17,6 +17,11 @@ pimee_workflow:
         index: Published Products
     acl.published_product:
         index: Manage published products
+    product:
+        is_owner:
+            label: Is owner
+            yes: Yes (can review / publish)
+            no: No (cannot review / publish)
 btn.publish: Publish
 btn.unpublish: Unpublish
 flash.product.published: The product has been successfully published.
