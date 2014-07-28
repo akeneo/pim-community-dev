@@ -1,0 +1,22 @@
+parameters:
+    pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
+    pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
+
+services:
+    pimee_workflow.controller.proposition:
+        class: %pimee_workflow.controller.proposition.class%
+        parent: pim_enrich.controller.abstract
+        scope: request
+        arguments:
+            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.manager.proposition'
+            - '@pim_user.context.user'
+
+    pimee_workflow.controller.published_product:
+        class: %pimee_workflow.controller.published_product.class%
+        parent: pim_enrich.controller.abstract
+        scope: request
+        arguments:
+            - '@pim_user.context.user'
+            - '@pimee_workflow.manager.published_product'
+            - '@pim_versioning.manager.version'

@@ -204,9 +204,17 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @Given /^the following category accesses:$/
      */
-    public function theFollowingAccesses(TableNode $table)
+    public function theFollowingCategoryAccesses(TableNode $table)
     {
         $this->createAccesses($table, 'category');
+    }
+
+    /**
+     * @Given /^the following locale accesses:$/
+     */
+    public function theFollowingLocaleAccesses(TableNode $table)
+    {
+        $this->createAccesses($table, 'locale');
     }
 
     /**
@@ -236,7 +244,6 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         return $published;
     }
-
 
     /**
      * @Given /^I should the following proposition:$/
@@ -365,19 +372,23 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * Get the access level according to the access type and action (view or edit)
      *
-     * @param $type
-     * @param $action
+     * @param string $type
+     * @param string $action
      *
      * @return string
      * @throws \Exception
      */
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
+        if ('none' === $action) {
+            return $action;
+        }
+
         if ('attribute group' === $type) {
             return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
         }
 
-        if ('category' === $type) {
+        if ('category' === $type || 'locale' === $type) {
             return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
@@ -400,7 +411,26 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $userGroup = $this->getUserGroup($data['user group']);
             $accessLevel = $this->getAccessLevelByAccessTypeAndAction($accessType, $data['access']);
 
-            $this->getAccessManager($accessType)->grantAccess($access, $userGroup, $accessLevel);
+            $accessManager = $this->getAccessManager($accessType);
+
+            if ('none' === $accessLevel) {
+                $viewGroups = $accessManager->getViewUserGroups($access);
+
+                $key = array_search($userGroup, $viewGroups, true);
+                if (false !== $key) {
+                    unset($viewGroups[$key]);
+                }
+
+                $editGroups = $accessManager->getEditUserGroups($access);
+                $key = array_search($userGroup, $editGroups, true);
+                if (false !== $key) {
+                    unset($editGroups[$key]);
+                }
+
+                $accessManager->setAccess($access, $viewGroups, $editGroups);
+            } else {
+                $accessManager->grantAccess($access, $userGroup, $accessLevel);
+            }
         }
 
         $registry = $this->getSmartRegistry()

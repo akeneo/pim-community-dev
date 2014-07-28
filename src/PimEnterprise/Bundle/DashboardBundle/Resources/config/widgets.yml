@@ -1,0 +1,12 @@
+parameters:
+    pimee_dashboard.widget.proposition.class: PimEnterprise\Bundle\DashboardBundle\Widget\PropositionWidget
+
+services:
+    pimee_dashboard.widget.proposition:
+        class: %pimee_dashboard.widget.proposition.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pimee_workflow.repository.proposition_ownership'
+            - '@pim_user.context.user'
+        tags:
+            - { name: pim_dashboard.widget, alias: propositions }

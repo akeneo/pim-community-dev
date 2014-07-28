@@ -90,7 +90,7 @@ class PublishedProductController extends AbstractController
     public function indexAction(Request $request)
     {
         return array(
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
         );
     }
@@ -110,10 +110,6 @@ class PublishedProductController extends AbstractController
         $product = $this->manager->findOriginalProduct($id);
         $this->manager->publish($product);
         $this->addFlash('success', 'flash.product.published');
-
-        if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocale();
-        }
 
         return parent::redirectToRoute(
             'pim_enrich_product_edit',
@@ -137,7 +133,10 @@ class PublishedProductController extends AbstractController
         $this->manager->unpublish($published);
         $this->addFlash('success', 'flash.product.unpublished');
 
-        return parent::redirectToRoute('pimee_workflow_published_product_index');
+        return parent::redirectToRoute(
+            'pimee_workflow_published_product_index',
+            ['dataLocale' => $this->getDataLocale()]
+        );
     }
 
     /**
@@ -158,10 +157,20 @@ class PublishedProductController extends AbstractController
         return [
             'published'  => $published,
             'dataLocale' => $this->getDataLocale(),
-            'locales'    => $this->userContext->getUserLocales(),
+            'locales'    => $this->getUserLocales(),
             'created'    => $this->versionManager->getOldestLogEntry($original),
             'updated'    => $this->versionManager->getNewestLogEntry($original),
         ];
+    }
+
+    /**
+     * Return only granted user locales
+     *
+     * @return Locale[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getGrantedUserLocales();
     }
 
     /**

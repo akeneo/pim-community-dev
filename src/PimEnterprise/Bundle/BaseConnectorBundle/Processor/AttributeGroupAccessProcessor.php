@@ -46,13 +46,13 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
      * OUT :
      * [
      *      'code': 'general',
-     *      'role': 'administrator',
+     *      'group': 'administrator',
      *      'viewAttributes': true,
      *      'editAttributes': true,
      * ],
      * [
      *      'code': 'general',
-     *      'role': 'user',
+     *      'group': 'user',
      *      'viewAttributes': true,
      *      'editAttributes': false,
      * ]
@@ -66,23 +66,23 @@ class AttributeGroupAccessProcessor extends TransformerProcessor
         $items = [];
 
         if (isset($data[self::ACCESS_VIEW])) {
-            foreach ($data[self::ACCESS_VIEW] as $role) {
-                $tmp[$role][self::ACCESS_VIEW] = true;
+            foreach ($data[self::ACCESS_VIEW] as $group) {
+                $tmp[$group][self::ACCESS_VIEW] = true;
             }
             unset($data[self::ACCESS_VIEW]);
         }
 
         if (isset($data[self::ACCESS_EDIT])) {
-            foreach ($data[self::ACCESS_EDIT] as $role) {
-                $tmp[$role][self::ACCESS_EDIT] = true;
-                $tmp[$role][self::ACCESS_VIEW] = true;
+            foreach ($data[self::ACCESS_EDIT] as $group) {
+                $tmp[$group][self::ACCESS_EDIT] = true;
+                $tmp[$group][self::ACCESS_VIEW] = true;
             }
             unset($data[self::ACCESS_EDIT]);
         }
 
-        foreach ($tmp as $role => $accesses) {
+        foreach ($tmp as $group => $accesses) {
             $item = $data;
-            $item['userGroup'] = $role;
+            $item['userGroup'] = $group;
             $item['viewAttributes'] = isset($accesses[self::ACCESS_VIEW]);
             $item['editAttributes'] = isset($accesses[self::ACCESS_EDIT]);
             $items[] = $item;

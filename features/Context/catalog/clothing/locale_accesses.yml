@@ -1,0 +1,4 @@
+locale_accesses:
+    en_US:
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]

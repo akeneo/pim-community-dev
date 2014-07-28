@@ -20,6 +20,54 @@ class UserContext extends BaseUserContext
     protected $categoryManager;
 
     /**
+     * Returns the current locale making sure that user has permissions for this locale
+     *
+     * @return Locale
+     *
+     * @throws \LogicException When there is no granted locale
+     */
+    public function getCurrentGrantedLocale()
+    {
+        $locale = $this->getRequestLocale();
+        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+            return $locale;
+        }
+
+        $locale = $this->getUserLocale();
+        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+            return $locale;
+        }
+
+        $locale = $this->getDefaultLocale();
+        if (null !== $locale && $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale)) {
+            return $locale;
+        }
+
+        if ($locale = current($this->getGrantedUserLocales())) {
+            return $locale;
+        }
+
+        throw new \LogicException("User doesn't have access to any activated locales");
+    }
+
+    /**
+     * Returns active locales the user has access to
+     *
+     * @param string $permissionLevel
+     *
+     * @return Locale[]
+     */
+    public function getGrantedUserLocales($permissionLevel = Attributes::VIEW_PRODUCTS)
+    {
+        return array_filter(
+            $this->getUserLocales(),
+            function ($locale) use ($permissionLevel) {
+                return $this->securityContext->isGranted($permissionLevel, $locale);
+            }
+        );
+    }
+
+    /**
      * Get user category tree
      *
      * @return CategoryInterface

@@ -8,7 +8,7 @@ use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as PimProductFieldsBuilder;
+use Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder as BaseProductFieldsBuilder;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductFieldsBuilder extends PimProductFieldsBuilder
+class ProductFieldsBuilder extends BaseProductFieldsBuilder
 {
     /** @var AttributeGroupAccessRepository */
     protected $accessRepository;

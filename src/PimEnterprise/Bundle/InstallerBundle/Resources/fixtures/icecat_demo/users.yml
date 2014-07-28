@@ -21,7 +21,7 @@ users:
         firstname: Julia
         lastname: Morgan
         owner: Main
-        catalog_locale: de_DE
+        catalog_locale: en_US
         catalog_scope: ecommerce
         default_tree: master
         roles:

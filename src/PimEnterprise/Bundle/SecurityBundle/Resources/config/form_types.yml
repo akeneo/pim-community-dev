@@ -1,0 +1,8 @@
+parameters:
+    pimee_security.form.type.groups.class: PimEnterprise\Bundle\SecurityBundle\Form\Type\GroupsType
+
+services:
+    pimee_security.form.type.groups:
+        class: %pimee_security.form.type.groups.class%
+        tags:
+            - { name: form.type, alias: pimee_security_groups }

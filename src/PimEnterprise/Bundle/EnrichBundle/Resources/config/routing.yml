@@ -4,3 +4,7 @@ pim:
 pimee_product:
     resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_product.yml'
     prefix: /enrich/product
+
+pimee_locale:
+    resource: '@PimEnterpriseEnrichBundle/Resources/config/routing/pimee_locale.yml'
+    prefix: /configuration/locale

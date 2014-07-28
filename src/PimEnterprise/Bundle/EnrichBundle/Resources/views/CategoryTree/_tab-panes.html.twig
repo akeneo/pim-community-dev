@@ -38,7 +38,7 @@
                                 $('#change-'+permission+'-'+e.added.id).remove();
                             } else {
                                 $('#permissions-changes').append("<li id='change-"+permission+'-'+e.added.id+"'>"
-                                    +_.__('permissions-changes.grant-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.added.text})+"</li>");
+                                    +_.__('permissions-changes.grant-{{"{{ permission }}"}}-to-{{"{{ group }}"}}', {'permission': permissionLabel, 'group':e.added.text})+"</li>");
                             }
 
                             var idsToUpdate = updateWhenAdd[e.target.id];
@@ -58,7 +58,7 @@
                                 $('#change-'+permission+'-'+e.removed.id).remove();
                             } else {
                                 $('#permissions-changes').append("<li id='change-"+permission+'-'+e.removed.id+"'>"
-                                    +_.__('permissions-changes.revoke-{{"{{ permission }}"}}-to-{{"{{ role }}"}}', {'permission': permissionLabel, 'role':e.removed.text})+"</li>");
+                                    +_.__('permissions-changes.revoke-{{"{{ permission }}"}}-to-{{"{{ group }}"}}', {'permission': permissionLabel, 'group':e.removed.text})+"</li>");
                             }
 
                             var idsToUpdate = updateWhenRemove[e.target.id];

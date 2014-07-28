@@ -51,7 +51,7 @@ interface CategoryAccessInterface extends AccessInterface
     /**
      * @param boolean $ownProducts
      *
-    * @return CategoryAccessInterface
+     * @return CategoryAccessInterface
      */
     public function setOwnProducts($ownProducts);
 

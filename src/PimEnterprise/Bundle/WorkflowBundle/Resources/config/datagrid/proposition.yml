@@ -3,7 +3,7 @@ datagrid:
         options:
             entityHint: proposition
         source:
-            type: pim_datasource_smart
+            type: pimee_datasource_proposition
             entity: %pimee_workflow.model.proposition.class%
             repository_method: createDatagridQueryBuilder
         columns:
@@ -32,11 +32,13 @@ datagrid:
                 route: pimee_workflow_proposition_approve
                 params:
                     - id
+                    - dataLocale
             refuse_link:
                 type: url
                 route: pimee_workflow_proposition_refuse
                 params:
                     - id
+                    - dataLocale
         actions:
             approve:
                 type: navigate
@@ -53,7 +55,7 @@ datagrid:
                 label: pimee_workflow.proposition.action.remove
                 icon: trash
                 link: refuse_link
-        action_configuration: '@pimee_workflow.datagrid.proposition_grid_helper->getActionConfigurationClosure'
+        action_configuration: '@pimee_datagrid.datagrid.proposition.grid_helper->getActionConfigurationClosure'
         filters:
             columns:
                 status:
@@ -64,7 +66,7 @@ datagrid:
                     options:
                         field_options:
                             multiple: true
-                            choices: '@pimee_workflow.datagrid.proposition_grid_helper->getStatusChoices'
+                            choices: '@pimee_datagrid.datagrid.proposition.grid_helper->getStatusChoices'
         sorters:
             columns:
                 author:

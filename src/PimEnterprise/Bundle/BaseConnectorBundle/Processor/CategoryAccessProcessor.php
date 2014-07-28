@@ -49,13 +49,13 @@ class CategoryAccessProcessor extends TransformerProcessor
      * OUT :
      * [
      *      'code': 'general',
-     *      'role': 'administrator',
+     *      'group': 'administrator',
      *      'viewProducts': true,
      *      'editProducts': true,
      * ],
      * [
      *      'code': 'general',
-     *      'role': 'user',
+     *      'group': 'user',
      *      'viewProducts': true,
      *      'editProducts': false,
      * ]
@@ -69,32 +69,32 @@ class CategoryAccessProcessor extends TransformerProcessor
         $items = [];
 
         if (isset($data[self::ACCESS_VIEW])) {
-            foreach ($data[self::ACCESS_VIEW] as $role) {
-                $tmp[$role][self::ACCESS_VIEW] = true;
+            foreach ($data[self::ACCESS_VIEW] as $group) {
+                $tmp[$group][self::ACCESS_VIEW] = true;
             }
             unset($data[self::ACCESS_VIEW]);
         }
 
         if (isset($data[self::ACCESS_EDIT])) {
-            foreach ($data[self::ACCESS_EDIT] as $role) {
-                $tmp[$role][self::ACCESS_EDIT] = true;
-                $tmp[$role][self::ACCESS_VIEW] = true;
+            foreach ($data[self::ACCESS_EDIT] as $group) {
+                $tmp[$group][self::ACCESS_EDIT] = true;
+                $tmp[$group][self::ACCESS_VIEW] = true;
             }
             unset($data[self::ACCESS_EDIT]);
         }
 
         if (isset($data[self::ACCESS_OWN])) {
-            foreach ($data[self::ACCESS_OWN] as $role) {
-                $tmp[$role][self::ACCESS_OWN] = true;
-                $tmp[$role][self::ACCESS_EDIT] = true;
-                $tmp[$role][self::ACCESS_VIEW] = true;
+            foreach ($data[self::ACCESS_OWN] as $group) {
+                $tmp[$group][self::ACCESS_OWN] = true;
+                $tmp[$group][self::ACCESS_EDIT] = true;
+                $tmp[$group][self::ACCESS_VIEW] = true;
             }
             unset($data[self::ACCESS_OWN]);
         }
 
-        foreach ($tmp as $role => $accesses) {
+        foreach ($tmp as $group => $accesses) {
             $item = $data;
-            $item['userGroup'] = $role;
+            $item['userGroup'] = $group;
             $item['viewProducts'] = isset($accesses[self::ACCESS_VIEW]);
             $item['editProducts'] = isset($accesses[self::ACCESS_EDIT]);
             $item['ownProducts'] = isset($accesses[self::ACCESS_OWN]);

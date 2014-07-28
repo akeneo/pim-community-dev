@@ -19,11 +19,11 @@ class MediaPublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function it_supports_media(Model\AbstractMedia $value) {
+    function it_supports_media(Model\AbstractProductMedia $value) {
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_media(Model\AbstractMedia $media, Model\Product $product, Model\ProductValue $value) {
+    function it_publishes_media(Model\AbstractProductMedia $media, Model\Product $product, Model\ProductValue $value) {
         $options = ['product' => $product, 'value' => $value];
         $this->publish($media, $options)->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia');
     }

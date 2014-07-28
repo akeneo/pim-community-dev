@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAware;
@@ -26,7 +26,7 @@ class FilePresenter implements ProductValuePresenterInterface, TwigAwareInterfac
     public function supports(ProductValueInterface $value)
     {
         return 'pim_catalog_file' === $value->getAttribute()->getAttributeType()
-            && $value->getData() instanceof AbstractMedia;
+            && $value->getData() instanceof AbstractProductMedia;
     }
 
     /**

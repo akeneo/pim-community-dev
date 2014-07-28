@@ -40,6 +40,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
+        array $classes,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
@@ -48,10 +49,24 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $currencyManager,
             $catalogContext,
             $productBuilder,
-            $massActionManager
+            $massActionManager,
+            $classes
         );
 
         $this->securityContext = $securityContext;
+    }
+
+    /**
+     * Get form options
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return array(
+            'locales'          => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
+            'common_attributes' => $this->commonAttributes,
+        );
     }
 
     /**

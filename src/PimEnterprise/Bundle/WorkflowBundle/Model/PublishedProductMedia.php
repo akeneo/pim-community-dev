@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Published product media
@@ -12,6 +12,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @ExclusionPolicy("all")
  */
-class PublishedProductMedia extends AbstractMedia
+class PublishedProductMedia extends AbstractProductMedia
 {
 }

@@ -1,3 +1,6 @@
+pim_title.locale:
+    edit: "Locales %locale.code% | Edit"
+
 Permissions: Permissions
 pane.accordion.permissions: Permissions
 
@@ -17,6 +20,13 @@ category.permissions:
     apply_on_children.label: Apply changes on children
     apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
+locale.permissions:
+    view.label: View products data
+    view.help: Allow to view the products data in this locale
+    edit.label: Edit products data
+    edit.help: Allow to edit the products data in this locale (implies the view permission)
+    no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
+
 pimee_enrich:
     acl.product_ownership.title: Ownership
     groups:
@@ -32,6 +42,8 @@ btn:
 # Mass edit operations
 pim_enrich:
     mass_edit_action:
+        product:
+            not_editable: You don't have the permission to edit the products "%identifiers%".
         publish:
             label: Publish products
             description: Publish the selected products, the current published data will be erased by the current working copy.
@@ -79,3 +91,4 @@ pim_enrich.mass_edit_action:
 
 flash.product.updated: Product working copy has been updated
 flash.proposition.updated: Draft has been successfully saved
+flash.locale.updated: The locale and permissions have been updated

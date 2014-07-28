@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
@@ -89,14 +89,14 @@ class ImagePresenter implements PresenterInterface
     /**
      * Check wether or not the given data represents an image
      *
-     * @param array|Media $data
+     * @param array|ProductMedia $data
      *
      * @return boolean
      */
     protected function isImageMimeType($data)
     {
         switch (true) {
-            case $data instanceof Media:
+            case $data instanceof ProductMedia:
                 $mimeType = $data->getMimeType();
                 break;
 

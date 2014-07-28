@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
@@ -30,7 +30,7 @@ class AddPropositionFormViewParameterSubscriberSpec extends ObjectBehavior
     function it_registers_to_the_enrich_pre_product_render_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            EnrichEvents::PRE_RENDER_PRODUCT_EDIT => 'addPropositionFormView',
+            ProductEvents::PRE_RENDER_EDIT => 'addPropositionFormView',
         ]);
     }
 

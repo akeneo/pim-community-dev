@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository as PimProductMassActionRepository;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository as BaseProductMassActionRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository;
 
 /**
@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM\PublishedProductRepository;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductMassActionRepository extends PimProductMassActionRepository
+class ProductMassActionRepository extends BaseProductMassActionRepository
 {
     /** @var PublishedProductRepository */
     protected $publishedRepository;
