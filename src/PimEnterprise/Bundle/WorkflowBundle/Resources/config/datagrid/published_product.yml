@@ -128,10 +128,10 @@ datagrid:
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
-                    type:        product_enabled
-                    parent_type: choice
-                    label:       Status
-                    data_name:   enabled
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
                     options:
                         field_options:
                             choices:
@@ -146,6 +146,7 @@ datagrid:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
                 category:
                     type:      published_product_category
+                    ftype:     product_category
                     label:     Category
                     data_name: category
                 completeness:
@@ -153,15 +154,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   created
-                    label:       Created At
+                    type:      product_date
+                    ftype:     date
+                    data_name: created
+                    label:     Created At
                 updated:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   updated
-                    label:       Updated At
+                    type:      product_date
+                    ftype:     date
+                    data_name: updated
+                    label:     Updated At
             default:
                 category:
                     value:
