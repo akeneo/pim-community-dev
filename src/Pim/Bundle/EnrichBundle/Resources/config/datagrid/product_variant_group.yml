@@ -83,10 +83,10 @@ datagrid:
         filters:
             columns:
                 in_group:
-                    type:        product_in_group
-                    parent_type: boolean
-                    label:       In group
-                    data_name:   in_group
+                    type:      product_in_group
+                    ftype:     boolean
+                    label:     In group
+                    data_name: in_group
                 family:
                     type:      product_family
                     label:     Family
@@ -96,10 +96,10 @@ datagrid:
                             multiple: true
                             choices:  '@pim_catalog.manager.family->getChoices'
                 enabled:
-                    type:        product_enabled
-                    parent_type: choice
-                    label:       Status
-                    data_name:   enabled
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
                     options:
                         field_options:
                             choices:
@@ -110,15 +110,15 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   created
-                    label:       Created At
+                    type:      product_date
+                    ftype:     date
+                    data_name: created
+                    label:     Created At
                 updated:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   updated
-                    label:       Updated At
+                    type:      product_date
+                    ftype:     date
+                    data_name: updated
+                    label:     Updated At
                 scope:
                     type:      product_scope
                     label:     Scope
