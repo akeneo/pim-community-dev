@@ -109,7 +109,6 @@ flash:
     updated: 属性を更新しました
     removed: 属性を削除しました
     identifier not removable: 識別子の属性は削除できません
-    used by groups: 'この属性は %count% 件のグループが使用しているために削除できません。'
     option created: オプションを作成しました
     error creating option: オプションの保存中にエラーが発生しました、やり直してください
   attribute group:

@@ -1,0 +1,8 @@
+parameters:
+    pim_transform.converter.metric.class: Pim\Bundle\TransformBundle\Converter\MetricConverter
+
+services:
+    pim_transform.converter.metric:
+        class: %pim_transform.converter.metric.class%
+        arguments:
+            - '@akeneo_measure.measure_converter'

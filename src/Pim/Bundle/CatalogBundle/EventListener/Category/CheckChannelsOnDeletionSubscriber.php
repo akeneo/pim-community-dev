@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 
 /**
  * Check if the category is used by a channel when try to remove it
@@ -34,7 +34,7 @@ class CheckChannelsOnDeletionSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CatalogEvents::PRE_REMOVE_TREE => 'checkChannels'
+            CategoryEvents::PRE_REMOVE_TREE => 'checkChannels'
         ];
     }
 

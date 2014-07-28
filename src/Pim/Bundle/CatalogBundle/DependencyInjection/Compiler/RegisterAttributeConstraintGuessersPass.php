@@ -15,18 +15,24 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 class RegisterAttributeConstraintGuessersPass implements CompilerPassInterface
 {
+    /** @staticvar string */
+    const SERVICE_CHAINED = 'pim_catalog.validator.constraint_guesser.chained_attribute';
+
+    /** @staticvar string */
+    const SERVICE_TAG = 'pim_catalog.constraint_guesser.attribute';
+
     /**
      * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_catalog.validator.attribute_constraint_guesser')) {
+        if (!$container->hasDefinition(self::SERVICE_CHAINED)) {
             return;
         }
 
-        $service = $container->getDefinition('pim_catalog.validator.attribute_constraint_guesser');
+        $service = $container->getDefinition(self::SERVICE_CHAINED);
 
-        $taggedServices = $container->findTaggedServiceIds('pim.attribute_constraint_guesser');
+        $taggedServices = $container->findTaggedServiceIds(self::SERVICE_TAG);
 
         foreach (array_keys($taggedServices) as $id) {
             $service->addMethodCall('addConstraintGuesser', array(new Reference($id)));

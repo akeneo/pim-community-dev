@@ -14,9 +14,10 @@ Feature: Quick export many products from datagrid
       | pump     |          | summer_collection | Pump          | 15 EUR, 20 USD | 41   | blue  |
     And I am logged in as "Julia"
 
-  @skip
+  # No way to retrieve the downloaded file from Firefox. So we just check here that we can press the
+  # "Quick Export" button
   Scenario: Successfully quick export products
     Given I am on the products page
-    Then I select products boots and sneakers
-    When I press "CSV (all)" on the "Quick Export" dropdown button
-    And I choose to download the file
+    And I select rows boots, sneakers
+    Then I press "CSV (All attributes)" on the "Quick Export" dropdown button
+

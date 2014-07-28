@@ -53,7 +53,12 @@ class EditCommonAttributesSpec extends ObjectBehavior
             $currencyManager,
             $catalogContext,
             $productBuilder,
-            $massActionManager
+            $massActionManager,
+            [
+                'metric'        => 'Pim\Bundle\CatalogBundle\Model\Metric',
+                'product_price' => 'Pim\Bundle\CatalogBundle\Model\ProductPrice',
+                'product_media' => 'Pim\Bundle\CatalogBundle\Model\ProductMedia'
+            ]
         );
     }
 

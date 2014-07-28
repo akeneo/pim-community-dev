@@ -51,4 +51,4 @@ Pim\Bundle\CatalogBundle\Model\ProductValue:
         media:
             simple: true
             cascade: all
-            targetDocument: Pim\Bundle\CatalogBundle\Model\Media
+            targetDocument: Pim\Bundle\CatalogBundle\Model\ProductMedia

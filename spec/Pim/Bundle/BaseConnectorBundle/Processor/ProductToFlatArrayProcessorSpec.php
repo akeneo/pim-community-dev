@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use Symfony\Component\Serializer\Serializer;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 class ProductToFlatArrayProcessorSpec extends ObjectBehavior
 {
@@ -24,8 +24,8 @@ class ProductToFlatArrayProcessorSpec extends ObjectBehavior
         Channel $channel,
         ChannelManager $channelManager,
         Product $item,
-        Media $media1,
-        Media $media2,
+        ProductMedia $media1,
+        ProductMedia $media2,
         Serializer $serializer
     ) {
         $media1->getFilename()->willReturn('media_name');

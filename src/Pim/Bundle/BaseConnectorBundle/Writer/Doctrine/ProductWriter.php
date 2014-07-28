@@ -183,7 +183,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $this->incrementCount($item);
         }
         $this->productManager->handleAllMedia($items);
-        $this->productManager->saveAll($items, false);
+        $this->productManager->saveAll($items, ['recalculate' => false]);
 
         $this->clear();
     }

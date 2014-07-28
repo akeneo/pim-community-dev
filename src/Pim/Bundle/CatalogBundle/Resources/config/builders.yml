@@ -1,0 +1,12 @@
+parameters:
+    pim_catalog.builder.product.class: Pim\Bundle\CatalogBundle\Builder\ProductBuilder
+
+services:
+    pim_catalog.builder.product:
+        class: %pim_catalog.builder.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_catalog.manager.channel'
+            - '@pim_catalog.manager.locale'
+            - '@pim_catalog.manager.currency'
+            - {'product': %pim_catalog.entity.product.class%, 'product_value': %pim_catalog.entity.product_value.class%, 'product_price': %pim_catalog.entity.product_price.class%}

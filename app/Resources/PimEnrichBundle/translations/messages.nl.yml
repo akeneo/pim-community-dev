@@ -109,7 +109,6 @@ flash:
     updated: Attribuut succesvol bijgewerkt
     removed: Attribuut succesvol verwijderd
     identifier not removable: Id-attribuut kan niet worden verwijderd
-    used by groups: 'Dit kenmerk kan niet worden verwijderd omdat het wordt gebruikt door %count% groepen'
     option created: Optie succesvol aangemaakt
     error creating option: Een fout is opgetreden tijdens het aanmaken van de optie, probeer het opnieuw
   attribute group:

@@ -1,0 +1,31 @@
+parameters:
+    pim_dashboard.widget.registry.class:        Pim\Bundle\DashboardBundle\Widget\Registry
+    pim_dashboard.widget.completeness.class:    Pim\Bundle\DashboardBundle\Widget\CompletenessWidget
+    pim_dashboard.widget.links.class:           Pim\Bundle\DashboardBundle\Widget\LinksWidget
+    pim_dashboard.widget.last_operations.class: Pim\Bundle\DashboardBundle\Widget\LastOperationsWidget
+
+services:
+    pim_dashboard.widget.registry:
+        class: %pim_dashboard.widget.registry.class%
+
+    ##
+    # Widgets
+    ##
+    pim_dashboard.widget.links:
+        class: %pim_dashboard.widget.links.class%
+        tags:
+            - { name: pim_dashboard.widget, alias: links }
+
+    pim_dashboard.widget.completeness:
+        class: %pim_dashboard.widget.completeness.class%
+        arguments:
+            - '@pim_catalog.repository.completeness'
+        tags:
+            - { name: pim_dashboard.widget, alias: completeness }
+
+    pim_dashboard.widget.last_operations:
+        class: %pim_dashboard.widget.last_operations.class%
+        arguments:
+            - '@pim_import_export.manager.job_execution'
+        tags:
+            - { name: pim_dashboard.widget, alias: last_operations }

@@ -3,6 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\ORMException;
 
 /**
  * Doctrine manager registry which is able to get object manager
@@ -59,19 +60,39 @@ class SmartManagerRegistry implements ManagerRegistry
 
     /**
      * {@inheritdoc}
+     *
+     * In case of unknown alias, the registries defined in doctrine ORM
+     * and MongoDB ODM will throw exceptions that are not related to each other.
+     * That's why, we need to handle both cases by hand here.
+     * It means that when, in the future, another registry will be registered,
+     * the exception thrown by its getAliasNamespace() method will have to be
+     * manually caught here also.
+     * Finally, it's not safe to catch the \Exception class and continue, because
+     * it creates an exception blackhole that will subtly hide any other interesting exception.
+     *
+     * @throws \LogicException when no doctrine registry is able to get the alias namespace
      */
     public function getAliasNamespace($alias)
     {
         foreach ($this->registries as $registry) {
-            //TODO: catch more precise exception
             try {
                 return $registry->getAliasNamespace($alias);
             } catch (\Exception $e) {
-                continue;
+                if ($e instanceof ORMException) {
+                    continue;
+                }
+                if (class_exists('Doctrine\ODM\MongoDB\MongoDBException', false)
+                    && $e instanceof \Doctrine\ODM\MongoDB\MongoDBException) {
+                    continue;
+                }
+
+                throw $e;
             }
         }
 
-        throw new \LogicException(sprintf('Can not resolve alias namespace "%s"', $alias));
+        throw new \LogicException(
+            sprintf('No registered doctrine registry was able to get the alias namespace "%s"', $alias)
+        );
     }
 
     /**

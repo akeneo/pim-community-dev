@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\GroupEvents;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
@@ -42,7 +42,7 @@ class GroupManagerSpec extends ObjectBehavior
         Group $group
     ) {
         $eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_GROUP,
+            GroupEvents::PRE_REMOVE,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
 

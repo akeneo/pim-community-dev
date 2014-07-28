@@ -37,7 +37,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 
 /**
  * Product Controller
@@ -188,7 +188,7 @@ class ProductController extends AbstractDoctrineController
                 $this->addFlash('success', 'flash.product.created');
 
                 if ($dataLocale === null) {
-                    $dataLocale = $this->getDataLocale();
+                    $dataLocale = $this->getDataLocaleCode();
                 }
                 $url = $this->generateUrl(
                     'pim_enrich_product_edit',
@@ -202,7 +202,7 @@ class ProductController extends AbstractDoctrineController
 
         return array(
             'form'       => $form->createView(),
-            'dataLocale' => $this->getDataLocale()
+            'dataLocale' => $this->getDataLocaleCode()
         );
     }
 
@@ -220,7 +220,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $this->dispatch(EnrichEvents::PRE_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(ProductEvents::PRE_EDIT, new GenericEvent($product));
 
         $this->productManager->ensureAllAssociationTypes($product);
 
@@ -230,7 +230,7 @@ class ProductController extends AbstractDoctrineController
             $this->getEditFormOptions($product)
         );
 
-        $this->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(ProductEvents::POST_EDIT, new GenericEvent($product));
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->getProductCountByTree($product);
@@ -301,10 +301,9 @@ class ProductController extends AbstractDoctrineController
                 $this->addFlash('error', $e->getMessage());
             }
 
-            // TODO : Check if the locale exists and is activated
             $params = [
                 'id' => $product->getId(),
-                'dataLocale' => $this->getDataLocale(),
+                'dataLocale' => $this->getDataLocaleCode(),
             ];
             if ($comparisonLocale = $this->getComparisonLocale()) {
                 $params['compareWith'] = $comparisonLocale;
@@ -502,7 +501,7 @@ class ProductController extends AbstractDoctrineController
     protected function redirectToRoute($route, $parameters = array(), $status = 302)
     {
         if (!isset($parameters['dataLocale'])) {
-            $parameters['dataLocale'] = $this->getDataLocale();
+            $parameters['dataLocale'] = $this->getDataLocaleCode();
         }
 
         return parent::redirectToRoute($route, $parameters, $status);
@@ -523,9 +522,21 @@ class ProductController extends AbstractDoctrineController
      *
      * @return string
      */
-    protected function getDataLocale()
+    protected function getDataLocaleCode()
     {
         return $this->userContext->getCurrentLocaleCode();
+    }
+
+    /**
+     * Get data locale object
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    protected function getDataLocale()
+    {
+        return $this->userContext->getCurrentLocale();
     }
 
     /**
@@ -535,7 +546,7 @@ class ProductController extends AbstractDoctrineController
     {
         $locale = $this->getRequest()->query->get('compareWith');
 
-        if ($this->getDataLocale() !== $locale) {
+        if ($this->getDataLocaleCode() !== $locale) {
             return $locale;
         }
     }
@@ -593,7 +604,7 @@ class ProductController extends AbstractDoctrineController
         return array(
             'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
             'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
-            'currentLocale'    => $this->getDataLocale(),
+            'currentLocale'    => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
         );
     }
@@ -628,7 +639,7 @@ class ProductController extends AbstractDoctrineController
     ) {
         $defaultParameters = array(
             'form'             => $form->createView(),
-            'dataLocale'       => $this->getDataLocale(),
+            'dataLocale'       => $this->getDataLocaleCode(),
             'comparisonLocale' => $this->getComparisonLocale(),
             'channels'         => $channels,
             'attributesForm'   =>
@@ -642,7 +653,7 @@ class ProductController extends AbstractDoctrineController
         );
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
-        $this->dispatch(EnrichEvents::PRE_RENDER_PRODUCT_EDIT, $event);
+        $this->dispatch(ProductEvents::PRE_RENDER_EDIT, $event);
 
         return $event->getArgument('parameters');
     }

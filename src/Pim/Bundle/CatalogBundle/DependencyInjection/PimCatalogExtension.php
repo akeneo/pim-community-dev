@@ -11,7 +11,9 @@ use Symfony\Component\Finder\Finder;
 /**
  * This is the class that loads and manages your bundle configuration
  *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
+ * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 class PimCatalogExtension extends Extension
 {
@@ -26,19 +28,19 @@ class PimCatalogExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        // process configuration to validation and merge
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('parameters.yml');
         $loader->load('doctrine.yml');
         $loader->load('context.yml');
-        $loader->load('services.yml');
+        $loader->load('validators.yml');
         $loader->load('event_listeners.yml');
         $loader->load('managers.yml');
+        $loader->load('persisters.yml');
+        $loader->load('builders.yml');
+        $loader->load('helpers.yml');
         $loader->load('attribute_types.yml');
-        $loader->load('attribute_constraint_guessers.yml');
-        $loader->load('factory.yml');
+        $loader->load('factories.yml');
         $loader->load('entities.yml');
         $loader->load('repositories.yml');
 

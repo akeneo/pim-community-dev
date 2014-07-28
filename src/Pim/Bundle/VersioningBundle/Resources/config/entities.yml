@@ -1,0 +1,3 @@
+parameters:
+    pim_versioning.entity.version.class: Pim\Bundle\VersioningBundle\Model\Version
+    pim_versioning.versionable_entities: ~

@@ -1,0 +1,21 @@
+parameters:
+    pim_enrich.form.subscriber.add_attribute_type.class:         Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeTypeRelatedFieldsSubscriber
+    pim_enrich.form.subscriber.add_attribute_requirements.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber
+    pim_enrich.form.subscriber.add_value_field_subscriber.class: Pim\Bundle\EnrichBundle\Form\Subscriber\AddProductValueFieldSubscriber
+
+services:
+    # Subscribers
+    pim_enrich.form.subscriber.attribute:
+        class: %pim_enrich.form.subscriber.add_attribute_type.class%
+        arguments:
+            - '@pim_catalog.factory.attribute_type'
+
+    pim_enrich.form.subscriber.attribute_requirements:
+        class: %pim_enrich.form.subscriber.add_attribute_requirements.class%
+        arguments:
+            - '@pim_catalog.manager.channel'
+
+    pim_enrich.form.subscriber.add_value_field_subscriber:
+        class: %pim_enrich.form.subscriber.add_value_field_subscriber.class%
+        arguments:
+            - '@pim_enrich.factory.product_value_form_factory'

@@ -5,11 +5,10 @@ namespace Pim\Bundle\UserBundle\Form\Type;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Form\Type\UserType as OroUserType;
 use Oro\Bundle\UserBundle\Form\EventListener\UserSubscriber;
-use Oro\Bundle\UserBundle\Entity\User;
-
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\UserBundle\Entity\Repository\RoleRepository;
 use Pim\Bundle\UserBundle\Form\Subscriber\UserPreferencesSubscriber;
 
 /**
@@ -24,19 +23,31 @@ class UserType extends OroUserType
     /** @var UserPreferencesSubscriber */
     protected $subscriber;
 
+    /** @var RoleRepository  */
+    protected $roleRepository;
+
+    /** @var GroupRepository  */
+    protected $groupRepository;
+
     /**
      * @param SecurityContextInterface  $security
      * @param Request                   $request
      * @param UserPreferencesSubscriber $subscriber
+     * @param RoleRepository            $roleRepository
+     * @param GroupRepository           $groupRepository
      */
     public function __construct(
         SecurityContextInterface $security,
         Request $request,
-        UserPreferencesSubscriber $subscriber
+        UserPreferencesSubscriber $subscriber,
+        RoleRepository $roleRepository,
+        GroupRepository $groupRepository
     ) {
         parent::__construct($security, $request);
 
         $this->subscriber = $subscriber;
+        $this->roleRepository = $roleRepository;
+        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -66,11 +77,7 @@ class UserType extends OroUserType
                     'label'          => 'Roles',
                     'class'          => 'OroUserBundle:Role',
                     'property'       => 'label',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('r')
-                            ->where('r.role <> :anon')
-                            ->setParameter('anon', User::ROLE_ANONYMOUS);
-                    },
+                    'query_builder'  => $this->roleRepository->getAllButAnonymousQB(),
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => !$this->isMyProfilePage,
@@ -84,6 +91,7 @@ class UserType extends OroUserType
                 array(
                     'class'          => 'OroUserBundle:Group',
                     'property'       => 'name',
+                    'query_builder'  => $this->groupRepository->getAllButDefaultQB(),
                     'multiple'       => true,
                     'expanded'       => true,
                     'required'       => false,

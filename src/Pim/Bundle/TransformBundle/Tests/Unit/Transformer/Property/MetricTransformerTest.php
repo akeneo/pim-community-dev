@@ -76,7 +76,7 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $transformer = new MetricTransformer();
+        $transformer = new MetricTransformer('Pim\Bundle\CatalogBundle\Model\Metric');
         $transformer->setValue($object, $columnInfo, $data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Metric', $metric);
         $this->assertEquals('metric_family', $metric->getFamily());

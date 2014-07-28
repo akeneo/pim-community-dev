@@ -468,7 +468,7 @@ MAIN_SQL;
                 return array(sprintf('%s.%s', $prefix, 'data'));
             case 'Pim\Bundle\CatalogBundle\Model\ProductPrice':
                 return array();
-            case 'Pim\Bundle\CatalogBundle\Model\Media':
+            case 'Pim\Bundle\CatalogBundle\Model\ProductMedia':
                 return array(sprintf('%s.%s', $prefix, 'filename'));
             default:
                 return array_map(

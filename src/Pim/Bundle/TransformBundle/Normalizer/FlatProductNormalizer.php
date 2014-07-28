@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
@@ -192,7 +192,7 @@ class FlatProductNormalizer implements NormalizerInterface
             return $this->normalizePriceCollection($value);
         } elseif ($data instanceof Collection) {
             $data = $this->normalizeCollectionData($data);
-        } elseif ($data instanceof AbstractMedia) {
+        } elseif ($data instanceof AbstractProductMedia) {
             $data = $this->mediaManager->getExportPath($data);
         } elseif ($data instanceof AbstractMetric) {
             if (empty($this->fields)) {

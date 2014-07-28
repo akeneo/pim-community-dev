@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\FamilyEvents;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\UserBundle\Context\UserContext;
@@ -70,7 +70,7 @@ class FamilyManager
      */
     public function remove(Family $family)
     {
-        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_FAMILY, new GenericEvent($family));
+        $this->eventDispatcher->dispatch(FamilyEvents::PRE_REMOVE, new GenericEvent($family));
 
         $this->objectManager->remove($family);
         $this->objectManager->flush();
