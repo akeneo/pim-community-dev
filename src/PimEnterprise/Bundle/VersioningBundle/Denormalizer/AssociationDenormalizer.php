@@ -52,7 +52,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
      *
      * @return object
      */
-    protected function doDenormalize(array $data, $format, array $context)
+    protected function doDenormalize($data, $format, array $context)
     {
         if (isset($context['entity']) && null !== $context['entity']) {
             $association = $context['entity'];

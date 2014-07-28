@@ -12,7 +12,7 @@ class GroupDenormalizer extends AbstractEntityDenormalizer
     /**
      * {@inheritdoc}
      */
-    protected function doDenormalize(array $data, $format, array $context)
+    protected function doDenormalize($data, $format, array $context)
     {
         return $this->getEntity($data, $context);
     }

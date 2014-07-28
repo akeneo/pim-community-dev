@@ -40,9 +40,8 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
     /**
      * {@inheritdoc}
      */
-    protected function doDenormalize(array $data, $format, array $context)
+    protected function doDenormalize($data, $format, array $context)
     {
-
         if (isset($context['entity'])) {
             $value = $context['entity'];
             $context['entity'] = null;

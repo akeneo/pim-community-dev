@@ -59,7 +59,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      *
      * @return mixed
      */
-    abstract protected function doDenormalize(array $data, $format, array $context);
+    abstract protected function doDenormalize($data, $format, array $context);
 
     /**
      * {@inheritdoc}
