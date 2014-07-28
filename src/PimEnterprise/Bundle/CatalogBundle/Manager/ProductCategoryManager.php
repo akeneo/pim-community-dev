@@ -113,7 +113,7 @@ class ProductCategoryManager extends BaseProductCategoryManager
      */
     public function addFilterByAll($queryBuilder)
     {
-        $user = $this->securityContext->getUser();
+        $user = $this->securityContext->getToken()->getUser();
         $grantedCategories = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         $this->productRepository->addFilterByAll($queryBuilder, $grantedCategories);
     }
