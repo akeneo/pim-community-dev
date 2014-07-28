@@ -32,6 +32,20 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function denormalize($data, $class, $format = null, array $context = array())
+    {
+        if (!isset($context['part']) || !in_array($context['part'], ['groups', 'products'])) {
+            throw new \Exception(
+                'Missing key "part" in context explaining if denormalizing groups or products part of the association'
+            );
+        }
+
+        return parent::denormalize($data, $class, $format, $context);
+    }
+
+    /**
      * @param array $data
      * @param       $format
      * @param array $context
