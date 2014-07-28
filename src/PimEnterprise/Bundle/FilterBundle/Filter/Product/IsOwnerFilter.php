@@ -23,7 +23,7 @@ class IsOwnerFilter extends OroChoiceFilter
     protected $securityContext;
 
     /** @var ProductCategoryRepositoryInterface $repository */
-    protected $categoryRepository;
+    protected $productRepository;
 
     /** @var CategoryAccessRepository $repository */
     protected $accessRepository;
@@ -41,12 +41,12 @@ class IsOwnerFilter extends OroChoiceFilter
         FormFactoryInterface $factory,
         FilterUtility $util,
         SecurityContextInterface $securityContext,
-        ProductCategoryRepositoryInterface $categoryRepository,
+        ProductCategoryRepositoryInterface $productRepository,
         CategoryAccessRepository $accessRepository
     ) {
         parent::__construct($factory, $util);
         $this->securityContext = $securityContext;
-        $this->categoryRepository = $categoryRepository;
+        $this->productRepository = $productRepository;
         $this->accessRepository = $accessRepository;
     }
 
@@ -58,13 +58,17 @@ class IsOwnerFilter extends OroChoiceFilter
     public function apply(FilterDatasourceAdapterInterface $ds, $data)
     {
         $user = $this->securityContext->getToken()->getUser();
-        $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS);
-        $grantedCategoryIds = count($grantedCategoryIds) > 0 ? $grantedCategoryIds : [-1];
 
         $qb = $ds->getQueryBuilder();
-        $this->categoryRepository->addFilterByAll($qb, $grantedCategoryIds /*, 'owner'*/);
+        if ($data['value'] === 1) {
+            $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS);
+            if (count($grantedCategoryIds > 0)) {
+                $this->productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds, true);
+            } else {
+                $this->productRepository->applyFilterByUnclassified($qb);
+            }
+        }
 
-        // TODO : IN / NOT IN
         return true;
     }
 }

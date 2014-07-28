@@ -57,9 +57,14 @@ class CategoryFilter extends BaseCategoryFilter
     {
         $qb = $ds->getQueryBuilder();
         $user = $this->securityContext->getToken()->getUser();
-        $grantedCategories = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
+        $grantedCategoryIds = $this->accessRepository->getGrantedCategoryIds($user, Attributes::VIEW_PRODUCTS);
         $productRepository = $this->manager->getProductCategoryRepository();
-        $productRepository->addFilterByAll($qb, $grantedCategories);
+
+        if (count($grantedCategoryIds > 0)) {
+            $productRepository->applyFilterByCategoryIdsOrUnclassified($qb, $grantedCategoryIds, true);
+        } else {
+            $productRepository->applyFilterByUnclassified($qb);
+        }
 
         return true;
     }
