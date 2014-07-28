@@ -160,44 +160,29 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds, $include)
+    public function applyFilterByCategoryIds($qb, array $categoryIds)
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
         $qb->leftJoin('p.categories', $alias);
-
-        if ($include) {
-            $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
-        } else {
-            $qb->andWhere($qb->expr()->notIn($alias.'.id', ':filterCatIds'));
-        }
+        $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
         $qb->setParameter('filterCatIds', $categoryIds);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds, $include)
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
         $qb->leftJoin('p.categories', $alias);
-
-        if ($include) {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->in($alias.'.id', ':filterCatIds'),
-                    $qb->expr()->isNull($alias.'.id')
-                )
-            );
-        } else {
-            $qb->andWhere(
-                $qb->expr()->orX(
-                    $qb->expr()->notIn($alias.'.id', ':filterCatIds'),
-                    $qb->expr()->isNull($alias.'.id')
-                )
-            );
-        }
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in($alias.'.id', ':filterCatIds'),
+                $qb->expr()->isNull($alias.'.id')
+            )
+        );
         $qb->setParameter('filterCatIds', $categoryIds);
     }
 }

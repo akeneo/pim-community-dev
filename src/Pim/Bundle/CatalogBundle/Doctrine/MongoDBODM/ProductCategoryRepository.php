@@ -219,30 +219,20 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds, $include)
+    public function applyFilterByCategoryIds($qb, array $categoryIds)
     {
-        if ($include) {
-            $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
-        } else {
-            $qb->addAnd($qb->expr()->field('categoryIds')->notIn($categoryIds));
-        }
+        $qb->addAnd($qb->expr()->field('categoryIds')->in($categoryIds));
     }
 
     /**
      * {@inheritdoc}
      */
-    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds, $include)
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
     {
-        if ($include) {
-            $qb->addAnd(
-                $qb->expr()->addOr($qb->expr()->field('categoryIds')->in($categoryIds))
-                    ->addOr($qb->expr()->field('categoryIds')->size(0))
-            );
-        } else {
-            $qb->addAnd(
-                $qb->expr()->addOr($qb->expr()->field('categoryIds')->notIn($categoryIds))
-                    ->addOr($qb->expr()->field('categoryIds')->size(0))
-            );
-        }
+        $qb->addAnd(
+            $qb->expr()
+                ->addOr($qb->expr()->field('categoryIds')->in($categoryIds))
+                ->addOr($qb->expr()->field('categoryIds')->size(0))
+        );
     }
 }

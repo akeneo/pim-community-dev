@@ -70,16 +70,14 @@ interface ProductCategoryRepositoryInterface
      *
      * @param mixed   $qb          query builder to update
      * @param array   $categoryIds category ids
-     * @param boolean $include     true for in, false for not in
      */
-    public function applyFilterByCategoryIds($qb, array $categoryIds, $include);
+    public function applyFilterByCategoryIds($qb, array $categoryIds);
 
     /**
      * Apply filter by category ids or unclassified
      *
      * @param mixed   $qb          query builder to update
      * @param array   $categoryIds category ids
-     * @param boolean $include     true for in, false for not in
      */
-    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds, $include);
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds);
 }
