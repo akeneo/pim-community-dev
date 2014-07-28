@@ -59,10 +59,10 @@ datagrid:
         filters:
             columns:
                 status:
-                    type:        proposition_choice
-                    parent_type: choice
-                    data_name:   status
-                    label:       pimee_workflow.proposition.status.label
+                    type:      proposition_choice
+                    ftype:     choice
+                    data_name: status
+                    label:     pimee_workflow.proposition.status.label
                     options:
                         field_options:
                             multiple: true

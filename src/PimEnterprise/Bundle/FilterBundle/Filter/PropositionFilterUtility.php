@@ -14,9 +14,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterfac
  */
 class PropositionFilterUtility extends BaseFilterUtility
 {
-    /** @staticvar string */
-    const PARENT_TYPE_KEY = 'parent_type';
-
     /** @var PropositionRepositoryInterface */
     protected $repository;
 
@@ -28,14 +25,6 @@ class PropositionFilterUtility extends BaseFilterUtility
     public function __construct(PropositionRepositoryInterface $repository)
     {
         $this->repository = $repository;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParamMap()
-    {
-        return [self::PARENT_TYPE_KEY => self::TYPE_KEY];
     }
 
     /**

@@ -14,11 +14,6 @@ class PropositionFilterUtilitySpec extends ObjectBehavior
         $this->beConstructedWith($propositionRepository);
     }
 
-    function it_shoud_returns_parent_type_key_as_param_map()
-    {
-        $this->getParamMap()->shouldReturn(['parent_type' => 'type']);
-    }
-
     function it_applies_a_filter_on_field(
         $propositionRepository,
         FilterDatasourceAdapterInterface $ds,
