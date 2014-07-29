@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\EventListener\MongoDBODM;
+namespace Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
@@ -17,7 +17,7 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddProductVersionListener implements EventSubscriber
+class AddProductVersionSubscriber implements EventSubscriber
 {
     /**
      * Objects to version

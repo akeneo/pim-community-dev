@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\UserBundle\EventListener;
+namespace Pim\Bundle\UserBundle\EventSubscriber;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\Event\OnFlushEventArgs;
@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Entity\Locale;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class UserPreferencesListener implements EventSubscriber
+class UserPreferencesSubscriber implements EventSubscriber
 {
     /**
      * @var ContainerInterface $container

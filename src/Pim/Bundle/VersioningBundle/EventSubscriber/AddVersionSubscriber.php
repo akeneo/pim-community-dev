@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\EventListener;
+namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\ORM\EntityManager;
@@ -19,7 +19,7 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddVersionListener implements EventSubscriber
+class AddVersionSubscriber implements EventSubscriber
 {
     /**
      * Entities to version

@@ -156,6 +156,7 @@
 - Remove not used parameter `pim_import_export.entity.export.class`
 - Remove file `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass`
 - Replace the filter config parent_type by ftype
+- Rename VersioningBundle, UserBundle listeners to subscribers
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\EventListener;
+namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -14,7 +14,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
 use Pim\Bundle\VersioningBundle\UpdateGuesser\ChainedUpdateGuesser;
 
-class AddVersionListenerSpec extends ObjectBehavior
+class AddVersionSubscriberSpec extends ObjectBehavior
 {
     function let(VersionManager $versionManager, ChainedUpdateGuesser $guesser, NormalizerInterface $normalizer)
     {

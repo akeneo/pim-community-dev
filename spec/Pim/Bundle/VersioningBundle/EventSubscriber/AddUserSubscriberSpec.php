@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\VersioningBundle\EventListener;
+namespace spec\Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Oro\Bundle\UserBundle\Entity\User;
 
-class AddUserListenerSpec extends ObjectBehavior
+class AddUserSubscriberSpec extends ObjectBehavior
 {
     function let(VersionManager $versionManager, SecurityContextInterface $security, TokenInterface $token)
     {
