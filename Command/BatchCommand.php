@@ -134,8 +134,9 @@ class BatchCommand extends ContainerAwareCommand
         if (ExitStatus::COMPLETED === $jobExecution->getExitStatus()->getExitCode()) {
             $output->writeln(
                 sprintf(
-                    '<info>%s has been successfully executed.</info>',
-                    ucfirst($jobInstance->getType())
+                    '<info>%s %s has been successfully executed.</info>',
+                    ucfirst($jobInstance->getType()),
+                    $jobInstance->getCode()
                 )
             );
         } else {
