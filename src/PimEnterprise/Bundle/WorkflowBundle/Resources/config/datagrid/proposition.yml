@@ -60,12 +60,12 @@ datagrid:
             columns:
                 status:
                     type:        proposition_choice
-                    parent_type: choice
+                    ftype:       choice
                     data_name:   status
                     label:       pimee_workflow.proposition.status.label
                     options:
                         field_options:
-                            multiple: true
+                            multiple: false
                             choices: '@pimee_datagrid.datagrid.proposition.grid_helper->getStatusChoices'
         sorters:
             columns:

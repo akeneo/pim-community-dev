@@ -5,19 +5,19 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use Pim\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
-
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
 /**
@@ -85,14 +85,14 @@ class PublishedProductController extends AbstractController
      *
      * @AclAncestor("pimee_workflow_published_product_index")
      * @Template
-     * @return Response
+     * @return array
      */
     public function indexAction(Request $request)
     {
-        return array(
+        return [
             'locales'    => $this->getUserLocales(),
             'dataLocale' => $this->getDataLocale(),
-        );
+        ];
     }
 
     /**
@@ -103,11 +103,19 @@ class PublishedProductController extends AbstractController
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
-     * @return array
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function publishAction(Request $request, $id)
     {
         $product = $this->manager->findOriginalProduct($id);
+
+        $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+        if (!$isOwner) {
+            throw new AccessDeniedException();
+        }
+
         $this->manager->publish($product);
         $this->addFlash('success', 'flash.product.published');
 
@@ -125,13 +133,30 @@ class PublishedProductController extends AbstractController
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
-     * @return array
+     *
+     * @return JsonResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      */
     public function unpublishAction(Request $request, $id)
     {
         $published = $this->manager->findPublishedProductById($id);
+
+        $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct());
+        if (!$isOwner) {
+            throw new AccessDeniedException();
+        }
+
         $this->manager->unpublish($published);
         $this->addFlash('success', 'flash.product.unpublished');
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => true,
+                    'message' => $this->translator->trans('flash.product.unpublished')
+                ]
+            );
+        }
 
         return parent::redirectToRoute(
             'pimee_workflow_published_product_index',
@@ -166,7 +191,7 @@ class PublishedProductController extends AbstractController
     /**
      * Return only granted user locales
      *
-     * @return Locale[]
+     * @return \Pim\Bundle\CatalogBundle\Entity\Locale[]
      */
     protected function getUserLocales()
     {

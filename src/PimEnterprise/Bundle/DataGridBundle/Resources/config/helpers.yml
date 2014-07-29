@@ -1,6 +1,13 @@
 parameters:
-    pimee_datagrid.datagrid.proposition.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition\GridHelper
+    pimee_datagrid.datagrid.proposition.grid_helper.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition\GridHelper
+    pimee_datagrid.datagrid.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct\GridHelper
 
 services:
     pimee_datagrid.datagrid.proposition.grid_helper:
         class: %pimee_datagrid.datagrid.proposition.grid_helper.class%
+
+    pimee_datagrid.datagrid.published_product.grid_helper:
+        class: %pimee_datagrid.datagrid.published_product.grid_helper.class%
+        arguments:
+            - '@security.context'
+            - '@pimee_workflow.repository.published_product'

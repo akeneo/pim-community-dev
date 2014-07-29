@@ -5,10 +5,11 @@ namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\SecurityContext;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Pim\Bundle\CatalogBundle\Repository\ProductMassActionRepositoryInterface;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\SecurityContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class ProductMassActionManagerSpec extends ObjectBehavior
@@ -18,9 +19,11 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         AttributeRepository $attRepo,
         AttributeGroupAccessRepository $attGroupAccessRepo,
         SecurityContext $securityContext,
+        TokenInterface $token,
         User $user
     ) {
-        $securityContext->getUser()->willReturn($user);
+        $securityContext->getToken()->willReturn($token);
+        $token->getUser()->willReturn($user);
 
         $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $securityContext);
     }

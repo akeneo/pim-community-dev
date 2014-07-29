@@ -23,3 +23,11 @@ category_accesses:
         view: [IT support, Manager, Redactor]
         edit: [IT support, Manager, Redactor]
         own: [IT support, Manager]
+    tshirts:
+        view: [IT support, Manager]
+        edit: [IT support]
+        own: [IT support]
+    jeans:
+        view: [IT support]
+        edit: [IT support]
+        own: [IT support]

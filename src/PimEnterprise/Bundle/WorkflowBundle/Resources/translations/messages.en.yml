@@ -17,6 +17,12 @@ pimee_workflow:
         index: Published Products
     acl.published_product:
         index: Manage published products
+    product:
+        permission:
+            label: Permissions
+            own: Review / publish
+            edit: Edit
+            view: View
 btn.publish: Publish
 btn.unpublish: Unpublish
 flash.product.published: The product has been successfully published.

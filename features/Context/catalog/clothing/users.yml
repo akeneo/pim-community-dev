@@ -9,7 +9,7 @@ users:
         catalogLocale: en_US
         catalogScope:  tablet
         defaultTree:   2014_collection
-        last_name:     Morgan
+        last_name:     Stark
         roles:         [ ROLE_CATALOG_MANAGER ]
         groups:        [ Manager ]
     Peter:
