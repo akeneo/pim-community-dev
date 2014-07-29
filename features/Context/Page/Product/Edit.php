@@ -272,46 +272,6 @@ class Edit extends Form
     }
 
     /**
-     * Find completeness channel
-     * @param string $name the channel name
-     *
-     * @throws \InvalidArgumentException
-     * @return \Behat\Mink\Element\NodeElement
-     */
-    public function findCompletenessScope($name)
-    {
-        $channel = $this->findCompletenessContent()
-             ->find(sprintf('th .channel:contains("%s")', $name));
-
-        if (!$channel) {
-            throw new \InvalidArgumentException(sprintf('Completeness for channel %s not found', $name));
-        }
-
-        return $channel;
-    }
-
-    /**
-     * Find completeness locale
-     * @param string $code
-     *
-     * @throws \InvalidArgumentException
-     * @return boolean
-     */
-    public function findCompletenessLocale($code)
-    {
-        $flag   = $this->findCompletenessContent()
-            ->find('css', sprintf('td img.flag'));
-        $locale = $this->findCompletenessContent()
-            ->find('css', sprintf('td code.flag-language:contains("%s")'));
-
-        if ($flag && $locale) {
-            return true;
-        } else {
-            throw new \InvalidArgumentException(sprintf('Completeness for locale %s not found', $code));
-        }
-    }
-
-    /**
      * Check completeness state
      * @param string $channelCode
      * @param string $localeCode
