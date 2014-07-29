@@ -22,7 +22,6 @@ class PimTransformExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('serializer.yml');
         $loader->load('transformers.yml');
         $loader->load('guessers.yml');
         $loader->load('converters.yml');
@@ -33,5 +32,21 @@ class PimTransformExtension extends Extension
         if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
             $loader->load($storageConfig);
         }
+
+        $this->loadSerializerConfig($configs, $container);
+    }
+
+    /**
+     * Load serializer related configuration
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    private function loadSerializerConfig(array $configs, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
+        $loader->load('serializer.yml');
+        $loader->load('structured.yml');
+        $loader->load('flat.yml');
     }
 }

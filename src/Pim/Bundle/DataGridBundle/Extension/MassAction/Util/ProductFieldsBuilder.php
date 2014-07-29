@@ -6,7 +6,7 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager;
-use Pim\Bundle\TransformBundle\Normalizer\FlatProductNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
@@ -107,9 +107,9 @@ class ProductFieldsBuilder
     protected function prepareFieldsList(array $attributesList = array())
     {
         $fieldsList = $this->prepareAttributesList($attributesList);
-        $fieldsList[] = FlatProductNormalizer::FIELD_FAMILY;
-        $fieldsList[] = FlatProductNormalizer::FIELD_CATEGORY;
-        $fieldsList[] = FlatProductNormalizer::FIELD_GROUPS;
+        $fieldsList[] = ProductNormalizer::FIELD_FAMILY;
+        $fieldsList[] = ProductNormalizer::FIELD_CATEGORY;
+        $fieldsList[] = ProductNormalizer::FIELD_GROUPS;
 
         $associationTypes = $this->assocTypeManager->getAssociationTypes();
         foreach ($associationTypes as $associationType) {

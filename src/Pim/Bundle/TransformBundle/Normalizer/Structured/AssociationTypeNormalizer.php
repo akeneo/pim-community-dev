@@ -1,21 +1,27 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
+namespace Pim\Bundle\TransformBundle\Normalizer\Structured;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
+use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 
 /**
- * Group normalizer
+ * Association type normalizer
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class GroupNormalizer implements NormalizerInterface
+class AssociationTypeNormalizer implements NormalizerInterface
 {
-    /** @var TranslationNormalizer $transNormalizer */
+    /**
+     * @var array $supportedFormats
+     */
+    protected $supportedFormats = array('json', 'xml');
+
+    /**
+     * @var TranslationNormalizer $transNormalizer
+     */
     protected $transNormalizer;
 
     /**
@@ -33,9 +39,9 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function normalize($object, $format = null, array $context = array())
     {
-        $data = ['code' => $object->getCode()] + $this->transNormalizer->normalize($object, $format, $context);
-
-        return $data;
+        return array(
+            'code'  => $object->getCode()
+        ) + $this->transNormalizer->normalize($object, $format, $context);
     }
 
     /**
@@ -43,6 +49,6 @@ class GroupNormalizer implements NormalizerInterface
      */
     public function supportsNormalization($data, $format = null)
     {
-        return $data instanceof Group && 'mongodb_json' === $format;
+        return $data instanceof AssociationType && in_array($format, $this->supportedFormats);
     }
 }

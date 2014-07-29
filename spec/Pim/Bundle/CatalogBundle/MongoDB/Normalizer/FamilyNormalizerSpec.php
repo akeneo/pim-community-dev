@@ -5,8 +5,8 @@ namespace spec\Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 class FamilyNormalizerSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class FamilyNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_family(
-        TranslationNormalizer $normalizer,
+        $normalizer,
         Family $family,
         AbstractAttribute $sku
     ) {
