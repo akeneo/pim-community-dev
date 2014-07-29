@@ -153,7 +153,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
-        $qb->leftJoin('p.categories', $alias);
+        $qb->leftJoin($rootAlias.'.categories', $alias);
         $qb->andWhere($qb->expr()->isNull($alias.'.id'));
     }
 
@@ -164,7 +164,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
-        $qb->leftJoin('p.categories', $alias);
+        $qb->leftJoin($rootAlias.'.categories', $alias);
         $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
         $qb->setParameter('filterCatIds', $categoryIds);
     }
@@ -176,7 +176,7 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias = $qb->getRootAlias();
         $alias = 'filterCategory'.md5(microtime());
-        $qb->leftJoin('p.categories', $alias);
+        $qb->leftJoin($rootAlias.'.categories', $alias);
         $qb->andWhere(
             $qb->expr()->orX(
                 $qb->expr()->in($alias.'.id', ':filterCatIds'),
