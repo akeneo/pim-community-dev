@@ -22,3 +22,11 @@ categories:
         labels:
             en_US: Jackets
         parent: summer_collection
+    tshirts:
+        labels:
+            en_US: Tshirts
+        parent: summer_collection
+    jeans:
+        labels:
+            en_US: Jeans
+        parent: summer_collection
