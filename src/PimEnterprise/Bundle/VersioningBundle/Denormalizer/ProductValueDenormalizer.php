@@ -47,11 +47,9 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
             $context['entity'] = null;
             $context['value']  = $value;
         } else {
-            //TODO: implements this part in a cleaner way
             throw new InvalidArgumentException('Value should be passed in context');
         }
 
-        // Call denormalizer with attribute type
         $attributeType = $value->getAttribute()->getAttributeType();
         $dataValue = $this->serializer->denormalize($data, $attributeType, $format, $context);
         if (null !== $dataValue) {

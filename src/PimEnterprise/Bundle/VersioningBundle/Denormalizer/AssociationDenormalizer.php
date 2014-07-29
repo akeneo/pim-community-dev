@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
@@ -12,6 +13,21 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
+    /**
+     * @param ManagerRegistry $managerRegistry
+     * @param string          $entityClass
+     * @param string          $assocTypeClass
+     */
+    public function __construct(
+        ManagerRegistry $managerRegistry,
+        $entityClass,
+        $assocTypeClass
+    ) {
+        parent::__construct($managerRegistry, $entityClass);
+
+        $this->assocTypeClass = $assocTypeClass;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -87,8 +103,6 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
      */
     protected function getAssociationTypeRepository()
     {
-        $assocTypeClass = $this->getTargetClass('associationType');
-
-        return $this->managerRegistry->getRepository($assocTypeClass);
+        return $this->managerRegistry->getRepository($this->assocTypeClass);
     }
 }

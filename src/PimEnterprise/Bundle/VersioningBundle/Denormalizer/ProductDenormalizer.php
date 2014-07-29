@@ -36,22 +36,53 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var string */
+    protected $associationClass;
+
+    /** @var string */
+    protected $categoryClass;
+
+    /** @var string */
+    protected $familyClass;
+
+    /** @var string */
+    protected $groupClass;
+
+    /** @var string */
+    protected $productValueClass;
+
     /**
      * @param ManagerRegistry  $managerRegistry
      * @param string           $entityClass
      * @param ProductBuilder   $productBuilder
      * @param FieldNameBuilder $fieldNameBuilder
+     * @param string           $associationClass
+     * @param string           $categoryClass
+     * @param string           $familyClass
+     * @param string           $groupClass
+     * @param string           $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
-        FieldNameBuilder $fieldNameBuilder
+        FieldNameBuilder $fieldNameBuilder,
+        $associationClass,
+        $categoryClass,
+        $familyClass,
+        $groupClass,
+        $productValueClass
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
         $this->productBuilder    = $productBuilder;
         $this->fieldNameBuilder  = $fieldNameBuilder;
+
+        $this->associationClass  = $associationClass;
+        $this->categoryClass     = $categoryClass;
+        $this->familyClass       = $familyClass;
+        $this->groupClass        = $groupClass;
+        $this->productValueClass = $productValueClass;
     }
 
     /**
@@ -100,7 +131,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     protected function denormalizeFamily($data, $format, array $context = array(), ProductInterface $product)
     {
         if (strlen($data) > 0) {
-            $family = $this->serializer->denormalize($data, $this->getTargetClass('family'), $format, $context);
+            $family = $this->serializer->denormalize($data, $this->familyClass, $format, $context);
         } else {
             $family = null;
         }
@@ -118,17 +149,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      */
     protected function denormalizeCategories($data, $format, array $context = array(), ProductInterface $product)
     {
-        // Remove existing categories
         foreach ($product->getCategories() as $category) {
             $product->removeCategory($category);
         }
 
-        // Adding categories
-        $categoryClass = $this->getTargetClass('categories');
         $categoryCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($categoryCodes as $categoryCode) {
             $product->addCategory(
-                $this->serializer->denormalize($categoryCode, $categoryClass, $format, $context)
+                $this->serializer->denormalize($categoryCode, $this->categoryClass, $format, $context)
             );
         }
     }
@@ -143,17 +171,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      */
     protected function denormalizeGroups($data, $format, array $context = array(), ProductInterface $product)
     {
-        // Remove existing groups
         foreach ($product->getGroups() as $group) {
             $product->removeGroup($group);
         }
 
-        // Adding groups
-        $groupClass = $this->getTargetClass('groups');
         $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($groupCodes as $groupCode) {
             $product->addGroup(
-                $this->serializer->denormalize($groupCode, $groupClass, $format, $context)
+                $this->serializer->denormalize($groupCode, $this->groupClass, $format, $context)
             );
         }
     }
@@ -168,7 +193,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      */
     protected function denormalizeAssociations(&$data, $format, array $context = array(), ProductInterface $product)
     {
-        // Remove existing associations
         foreach ($product->getAssociations() as $association) {
             foreach ($association->getGroups() as $group) {
                 $association->removeGroup($group);
@@ -180,7 +204,6 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         // Get association field names and add associations
-        $associationClass = $this->getTargetClass('associations');
         $assocFieldNames  = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
@@ -189,7 +212,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 $association = $product->getAssociationForTypeCode($associationTypeCode);
                 $association = $this->serializer->denormalize(
                     $data[$assocFieldName],
-                    $associationClass,
+                    $this->associationClass,
                     $format,
                     ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
                 );
@@ -213,18 +236,15 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      */
     protected function denormalizeValues($data, $format, array $context = array(), ProductInterface $product)
     {
-        // Remove existing values
         foreach ($product->getValues() as $value) {
             $product->removeValue($value);
         }
 
-        $valueClass = $this->getTargetClass('values');
         foreach ($data as $attFieldName => $dataValue) {
             $attributeInfos = $this->fieldNameBuilder->extractAttributeFieldNameInfos($attFieldName);
             $attribute = $attributeInfos['attribute'];
             unset($attributeInfos['attribute']);
 
-            // Add attribute to product if not already done
             if (!$product->hasAttribute($attribute)) {
                 $this->productBuilder->addAttributeToProduct($product, $attribute);
             }
@@ -238,7 +258,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             );
             $this->serializer->denormalize(
                 $dataValue,
-                $valueClass,
+                $this->productValueClass,
                 $format,
                 [
                     'product' => $product,

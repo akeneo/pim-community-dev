@@ -44,13 +44,14 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      */
     public function denormalize($data, $class, $format = null, array $context = array())
     {
+        $object = null;
         if (is_array($data) && !empty($data)) {
-            return $this->doDenormalize($data, $format, $context);
+            $object = $this->doDenormalize($data, $format, $context);
         } elseif (is_string($data) && strlen($data) > 0) {
-            return $this->findEntity($data);
-        } else {
-            return null;
+            $object = $this->findEntity($data);
         }
+
+        return $object;
     }
 
     /**
@@ -82,7 +83,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     }
 
     /**
-     * @return ReferableEntityRepositoryInterface
+     * @return ObjectRepository
      */
     protected function getRepository()
     {
