@@ -13,7 +13,7 @@ use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\Controller\CategoryTreeController as BaseCategoryTreeController;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
 use PimEnterprise\Bundle\UserBundle\Context\UserContext;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Overriden category controller
@@ -32,9 +32,6 @@ class CategoryTreeController extends BaseCategoryTreeController
     /** @staticvar string */
     const CONTEXT_ASSOCIATE = 'associate';
 
-    /** @staticvar string */
-    const CONTEXT_OWNERSHIP = 'ownership';
-
     /**
      * Find a category from its id, trows an exception if not found or not granted
      *
@@ -48,7 +45,7 @@ class CategoryTreeController extends BaseCategoryTreeController
     protected function findGrantedCategory($categoryId, $context)
     {
         $category = $this->findCategory($categoryId);
-        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE, self::CONTEXT_OWNERSHIP];
+        $allowed = [self::CONTEXT_MANAGE, self::CONTEXT_VIEW, self::CONTEXT_ASSOCIATE];
 
         if (!in_array($context, $allowed)) {
              throw new AccessDeniedException('You can not access this category');
@@ -56,7 +53,7 @@ class CategoryTreeController extends BaseCategoryTreeController
 
         if ($context === self::CONTEXT_MANAGE && !$this->securityFacade->isGranted('pim_enrich_category_edit')) {
              throw new AccessDeniedException('You can not access this category');
-        } elseif (false === $this->securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $category)) {
+        } elseif (false === $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $category)) {
             throw new AccessDeniedException('You can not access this category');
         }
 
@@ -73,7 +70,7 @@ class CategoryTreeController extends BaseCategoryTreeController
      */
     protected function findGrantedTrees(UserInterface $user, $context)
     {
-        $allTrees = ($context === self::CONTEXT_MANAGE || $context === self::CONTEXT_OWNERSHIP);
+        $allTrees = ($context === self::CONTEXT_MANAGE);
 
         if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
             return $this->categoryManager->getTrees($this->getUser());
@@ -108,5 +105,20 @@ class CategoryTreeController extends BaseCategoryTreeController
             'product_count'  => (bool) $this->getRequest()->get('with_products_count', true),
             'related_entity' => $this->getRequest()->get('related_entity', 'product'),
         );
+    }
+    /**
+     * {@inheritdoc}
+     *
+     * Override parent to use only granted categories
+     */
+    protected function getChildren($parentId, $selectNodeId = false)
+    {
+        $context = $this->request->get('context', false);
+        $allTrees = ($context === self::CONTEXT_MANAGE);
+        if ($allTrees && $this->securityFacade->isGranted('pim_enrich_category_edit')) {
+            return $this->categoryManager->getChildren($parentId, $selectNodeId);
+        } else {
+            return $this->categoryManager->getGrantedChildren($parentId, $selectNodeId);
+        }
     }
 }

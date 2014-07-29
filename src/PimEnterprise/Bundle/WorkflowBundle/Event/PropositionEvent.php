@@ -48,4 +48,14 @@ class PropositionEvent extends Event
     {
         return $this->changes;
     }
+
+    /**
+     * Overrides the submitted changes
+     *
+     * @param array $changes
+     */
+    public function setChanges(array $changes)
+    {
+        $this->changes = $changes;
+    }
 }

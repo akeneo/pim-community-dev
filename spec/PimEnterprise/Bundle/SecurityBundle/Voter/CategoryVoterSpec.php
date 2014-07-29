@@ -7,12 +7,13 @@ use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\CatalogBundle\Entity\Category;
+use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 
 class CategoryVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(CategoryVoter::VIEW_PRODUCTS, CategoryVoter::EDIT_PRODUCTS);
+    protected $attributes = array(Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS);
 
     function let(CategoryAccessManager $accessManager, TokenInterface $token)
     {
@@ -29,17 +30,17 @@ class CategoryVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, CategoryVoter $wrongClass)
     {
         $this
-            ->vote($token, $wrongClass, [CategoryVoter::VIEW_PRODUCTS])
+            ->vote($token, $wrongClass, [Attributes::VIEW_PRODUCTS])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         Category $category
     ) {
-        $accessManager->getEditRoles($category)->willReturn(array());
-        $accessManager->getViewRoles($category)->willReturn(array());
+        $accessManager->getEditUserGroups($category)->willReturn(array());
+        $accessManager->getViewUserGroups($category)->willReturn(array());
 
         $this
             ->vote($token, $category, $this->attributes)
@@ -53,11 +54,11 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($category)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(false);
+        $accessManager->getEditUserGroups($category)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $category, array(CategoryVoter::EDIT_PRODUCTS))
+            ->vote($token, $category, array(Attributes::EDIT_PRODUCTS))
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -68,11 +69,11 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
-        $accessManager->getViewRoles($category)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(true);
+        $accessManager->getViewUserGroups($category)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $category, array(CategoryVoter::VIEW_PRODUCTS))
+            ->vote($token, $category, array(Attributes::VIEW_PRODUCTS))
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

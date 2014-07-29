@@ -1,31 +1,9 @@
 parameters:
-    pimee_workflow.factory.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory
-    pimee_workflow.manager.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
     pimee_workflow.applier.proposition_changes_applier.class: PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier
-    pimee_workflow.product_changes_applier.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
-    pimee_workflow.product_changes_applier.merge_values.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MergeValuesSubscriber
-    pimee_workflow.subscriber.inject_current_user_proposition.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
-    pimee_workflow.subscriber.add_proposition_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
-    pimee_workflow.form.type.product.highlight_modified_values_view.class: PimEnterprise\Bundle\WorkflowBundle\Form\View\HighlightModifiedProductFormView
-    pimee_workflow.proposition_subscriber.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
-    pimee_workflow.collector.changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
-    pimee_workflow.proposition.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
+    pimee_workflow.collector.product_submitted_changes.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector
+    pimee_workflow.change_set_computer.class: PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputer
 
 services:
-    pimee_workflow.factory.proposition:
-        class: %pimee_workflow.factory.proposition.class%
-
-    pimee_workflow.manager.proposition:
-        class: %pimee_workflow.manager.proposition.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.product'
-            - '@pim_user.context.user'
-            - '@pimee_workflow.factory.proposition'
-            - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.applier.proposition_changes_applier'
-            - '@event_dispatcher'
-
     pimee_workflow.applier.proposition_changes_applier:
         public: false
         class: %pimee_workflow.applier.proposition_changes_applier.class%
@@ -33,76 +11,13 @@ services:
             - '@form.factory'
             - '@event_dispatcher'
 
-    ##
-    # Proposition event subscribers
-    ##
-    pimee_workflow.product_changes_applier.prepare_uploading_media:
-        class: %pimee_workflow.product_changes_applier.prepare_uploading_media.class%
-        tags:
-            - { name: kernel.event_subscriber }
 
-    pimee_workflow.product_changes_applier.merge_values:
-        class: %pimee_workflow.product_changes_applier.merge_values.class%
-        tags:
-            - { name: kernel.event_subscriber }
+    pimee_workflow.collector.product_submitted_changes:
+        class: %pimee_workflow.collector.product_submitted_changes.class%
 
-    pimee_workflow.proposition_subscriber.mark_in_progress:
-        class: %pimee_workflow.proposition_subscriber.mark_in_progress.class%
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.proposition.replace_flash_message:
-        class: %pimee_workflow.proposition.replace_flash_message.class%
+    pimee_workflow.change_set_computer:
+        class: %pimee_workflow.change_set_computer.class%
         arguments:
-            - '@security.context'
-            - '@pim_catalog.repository.product'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    ##
-    # Product form view decorator
-    ##
-    pimee_workflow.form.type.product.highlight_modified_values_view:
-        class: %pimee_workflow.form.type.product.highlight_modified_values_view.class%
-        arguments:
-            - '@pim_enrich.form.type.product.view'
-            - '@pimee_workflow.applier.proposition_changes_applier'
-            - '@router'
-
-    ##
-    # Product form view overriding
-    ##
-    pim_enrich.form.type.product_value:
-        class: %pim_enrich.form.type.product_value.class%
-        arguments:
-            - %pim_catalog.entity.product_value.class%
-            - '@pim_enrich.form.subscriber.add_value_field_subscriber'
-            - '@pimee_workflow.form.type.product.highlight_modified_values_view'
-        tags:
-            - { name: form.type, alias: pim_product_value }
-
-    ##
-    # Product to edit preparation
-    ##
-    pimee_workflow.subscriber.inject_current_user_proposition:
-        class: %pimee_workflow.subscriber.inject_current_user_proposition.class%
-        arguments:
-            - '@pim_user.context.user'
-            - '@pim_catalog.context.catalog'
-            - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.applier.proposition_changes_applier'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.subscriber.add_proposition_form_view_parameter:
-        class: %pimee_workflow.subscriber.add_proposition_form_view_parameter.class%
-        arguments:
-            - '@form.factory'
-            - '@pimee_workflow.manager.proposition'
-        tags:
-            - { name: kernel.event_subscriber }
-
-    pimee_workflow.collector.changes:
-        class: %pimee_workflow.collector.changes.class%
-        arguments:
-            - '@pim_catalog.manager.media'
+            - '@pimee_workflow.comparator.chained'
+            - '@event_dispatcher'
+            - '@pim_catalog.builder.product'

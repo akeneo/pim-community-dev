@@ -16,14 +16,14 @@ interface PublishedProductInterface extends ProductInterface
     /**
      * @return mixed
      */
-    public function getOriginalProductId();
+    public function getOriginalProduct();
 
     /**
-     * @param mixed $productId
+     * @param ProductInterface $product
      *
-     * @return PublishedProduct
+     * @return PublishedProductInterface
      */
-    public function setOriginalProductId($productId);
+    public function setOriginalProduct(ProductInterface $product);
 
     /**
      * @return Version

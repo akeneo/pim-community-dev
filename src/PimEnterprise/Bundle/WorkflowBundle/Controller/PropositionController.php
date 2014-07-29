@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
+use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
+use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
@@ -32,6 +34,9 @@ class PropositionController extends AbstractController
     /** @var PropositionManager */
     protected $manager;
 
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -43,6 +48,7 @@ class PropositionController extends AbstractController
      * @param EventDispatcherInterface $eventDispatcher
      * @param ObjectRepository         $repository
      * @param PropositionManager       $manager
+     * @param UserContext              $userContext
      */
     public function __construct(
         Request $request,
@@ -54,7 +60,8 @@ class PropositionController extends AbstractController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ObjectRepository $repository,
-        PropositionManager $manager
+        PropositionManager $manager,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -66,14 +73,16 @@ class PropositionController extends AbstractController
             $translator,
             $eventDispatcher
         );
-        $this->repository = $repository;
-        $this->manager    = $manager;
+        $this->repository  = $repository;
+        $this->manager     = $manager;
+        $this->userContext = $userContext;
     }
 
     /**
      * @param integer|string $id
      *
      * @return RedirectResponse
+     * @throws \LogicException
      * @throws NotFoundHttpException
      * @throws AccessDeniedHttpException
      */
@@ -81,6 +90,10 @@ class PropositionController extends AbstractController
     {
         if (null === $proposition = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+        }
+
+        if (Proposition::READY !== $proposition->getStatus()) {
+            throw new \LogicException('A proposition that is not ready can not be approved');
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
@@ -98,7 +111,8 @@ class PropositionController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId()
+                    'id' => $proposition->getProduct()->getId(),
+                    'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
         );
@@ -127,7 +141,8 @@ class PropositionController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId()
+                    'id' => $proposition->getProduct()->getId(),
+                    'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
         );
@@ -158,9 +173,20 @@ class PropositionController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId()
+                    'id' => $proposition->getProduct()->getId(),
+                    'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
         );
+    }
+
+    /**
+     * Get data locale code
+     *
+     * @return string
+     */
+    protected function getCurrentLocaleCode()
+    {
+        return $this->userContext->getCurrentLocaleCode();
     }
 }

@@ -1,5 +1,10 @@
 <div class="tab-pane active" id="attributes">
     {% include 'PimEnrichBundle:Product:_attributes.html.twig' %}
+    {% if not form.vars.groups %}
+        <div class="alert alert-info">
+            {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+        </div>
+    {% endif %}
 </div>
 
 {% if resource_granted("pim_enrich_product_categories_view")
@@ -22,7 +27,6 @@
 </div>
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
-<div class="tab-pane" id="propositions">
-    {% include 'PimEnterpriseEnrichBundle:Product:_propositions.html.twig' %}
+<div class="tab-pane" id="propositions" data-url="{{ path('pimee_enrich_product_propositions', { id: product.id, dataLocale: dataLocale }) }}">
 </div>
 {% endif %}

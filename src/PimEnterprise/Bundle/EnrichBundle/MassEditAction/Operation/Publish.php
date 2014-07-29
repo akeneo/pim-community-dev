@@ -79,8 +79,15 @@ class Publish extends ProductMassEditOperation
      */
     protected function doPerform(ProductInterface $product)
     {
-        if ($this->securityContext->isGranted(Attributes::OWNER, $product)) {
-            $this->manager->publish($product);
+        if (!$this->securityContext->isGranted(Attributes::OWNER, $product)) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Cannot publish product "%s" because current user does not own it',
+                    (string) $product
+                )
+            );
         }
+
+        $this->manager->publish($product);
     }
 }

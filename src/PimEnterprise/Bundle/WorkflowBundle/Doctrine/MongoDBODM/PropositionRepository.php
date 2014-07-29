@@ -29,13 +29,29 @@ class PropositionRepository extends DocumentRepository implements PropositionRep
 
     /**
      * {@inheritdoc}
+     */
+    public function findByProduct(ProductInterface $product)
+    {
+        return $this
+            ->createQueryBuilder('Proposition')
+            ->field('product')->references($product)
+            ->getQuery()->execute();
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @return \Doctrine\ODM\MongoDB\Query\Builder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
-        return $this
-            ->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p');
+
+        if (isset($parameters['product'])) {
+            $this->applyDatagridContext($qb, $parameters['product']);
+        }
+
+        return $qb;
     }
 
     /**

@@ -4,10 +4,10 @@ namespace PimEnterprise\Bundle\ImportExportBundle\Manager;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
-use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
-use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as PimJobExecutionManager;
+use Pim\Bundle\ImportExportBundle\Manager\JobExecutionManager as BaseJobExecutionManager;
+use PimEnterprise\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\JobProfileAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override job execution manager to introduce permissions
@@ -15,13 +15,16 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class JobExecutionManager extends PimJobExecutionManager
+class JobExecutionManager extends BaseJobExecutionManager
 {
     /** @var JobProfileAccessRepository */
     protected $accessRepository;
 
     /** @var SecurityContextInterface */
     protected $securityContext;
+
+    /** @var JobExecutionRepository */
+    protected $repository;
 
     /**
      * Constructor
@@ -58,8 +61,8 @@ class JobExecutionManager extends PimJobExecutionManager
         );
 
         $subQB = $this->accessRepository->getGrantedJobsQB(
-            $this->securityContext->getUser(),
-            JobProfileVoter::EXECUTE_JOB_PROFILE
+            $this->securityContext->getToken()->getUser(),
+            Attributes::EXECUTE_JOB_PROFILE
         );
 
         return $this->repository->getLastOperations($types, $subQB);

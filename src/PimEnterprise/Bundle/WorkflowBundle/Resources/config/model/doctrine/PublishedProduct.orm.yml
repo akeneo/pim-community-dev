@@ -15,8 +15,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
             type: datetime
         updated:
             type: datetime
-        originalProductId:
-            type: integer
     manyToOne:
         family:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Family
@@ -73,7 +71,12 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
                 - refresh
     oneToOne:
         version:
-          targetEntity: Pim\Bundle\VersioningBundle\Model\Version
-          joinColumns:
-            version_id:
-                referencedColumnName: id
+            targetEntity: Pim\Bundle\VersioningBundle\Model\Version
+            joinColumns:
+                version_id:
+                    referencedColumnName: id
+        originalProduct:
+            targetEntity: Pim\Bundle\CatalogBundle\Model\ProductInterface
+            joinColumns:
+                original_product_id:
+                    referencedColumnName: id

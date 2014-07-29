@@ -3,8 +3,8 @@ parameters:
     pimee_security.voter.category.class: PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter
     pimee_security.voter.product.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter
     pimee_security.voter.job_profile.class: PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter
-    pimee_security.voter.product_ownership.class: PimEnterprise\Bundle\SecurityBundle\Voter\ProductOwnershipVoter
     pimee_security.voter.proposition_ownership.class: PimEnterprise\Bundle\SecurityBundle\Voter\PropositionOwnershipVoter
+    pimee_security.voter.locale.class: PimEnterprise\Bundle\SecurityBundle\Voter\LocaleVoter
 
 services:
     pimee_security.voter.attribute_group:
@@ -35,14 +35,14 @@ services:
         tags:
             - { name: security.voter }
 
-    pimee_security.voter.product_ownership:
-        class: %pimee_security.voter.product_ownership.class%
-        arguments:
-            - '@pimee_security.repository.category_ownership'
+    pimee_security.voter.proposition_ownership:
+        class: %pimee_security.voter.proposition_ownership.class%
         tags:
             - { name: security.voter }
 
-    pimee_security.voter.proposition_ownership:
-        class: %pimee_security.voter.proposition_ownership.class%
+    pimee_security.voter.locale:
+        class: %pimee_security.voter.locale.class%
+        arguments:
+            - '@pimee_security.manager.locale_access'
         tags:
             - { name: security.voter }

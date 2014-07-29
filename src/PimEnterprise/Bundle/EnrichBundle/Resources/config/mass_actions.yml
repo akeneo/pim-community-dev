@@ -1,9 +1,25 @@
 parameters:
-    pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
-    pimee_enrich.mass_edit_action.publish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
+    pim_enrich.mass_edit_action.change_status.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus
     pim_enrich.mass_edit_action.edit_common_attributes.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes
+    pim_enrich.mass_edit_action.classify.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Classify
+    pim_enrich.mass_edit_action.change_family.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\ChangeFamily
+    pim_enrich.mass_edit_action.add_to_groups.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups
+    pimee_enrich.mass_edit_action.publish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Publish
+    pimee_enrich.mass_edit_action.unpublish.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation\Unpublish
+    pimee_enrich.mass_edit_action.operator.published_product.class: PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operator\PublishedProductMassEditOperator
 
 services:
+
+    pimee_enrich.mass_edit_action.operator.published_product:
+        public: false
+        parent: pim_enrich.mass_edit_action.operator
+        class: %pimee_enrich.mass_edit_action.operator.published_product.class%
+        arguments:
+            - '@pimee_workflow.manager.published_product'
+        tags:
+            - { name: pim_enrich.mass_edit_action_operator, datagrid: published-product-grid }
+
+
     pim_enrich.mass_edit_action.classify:
         public: false
         class: %pim_enrich.mass_edit_action.classify.class%
@@ -27,8 +43,21 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: publish
-                acl: pimee_workflow_published_product_publish
+                acl: pim_enrich_product_edit
                 operator: pim_enrich.mass_edit_action.operator.product
+
+    pimee_enrich.mass_edit_action.unpublish:
+        public: false
+        class: %pimee_enrich.mass_edit_action.unpublish.class%
+        arguments:
+            - '@pimee_workflow.manager.published_product'
+            - '@security.context'
+        tags:
+            -
+                name: pim_enrich.mass_edit_action
+                alias: unpublish
+                acl: pimee_workflow_published_product_index
+                operator: pimee_enrich.mass_edit_action.operator.published_product
 
     pim_enrich.mass_edit_action.edit_common_attributes:
         public: false
@@ -40,6 +69,7 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.manager.product_mass_action'
+            - {'metric': %pim_catalog.entity.metric.class%, 'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
             - '@security.context'
         tags:
             -

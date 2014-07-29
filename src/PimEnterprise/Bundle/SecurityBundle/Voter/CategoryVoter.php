@@ -2,27 +2,21 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Category voter, allows to know if products of a category can be edited or consulted by a
- * user depending on his roles
+ * user depending on his user groups
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class CategoryVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const VIEW_PRODUCTS = 'CATEGORY_VIEW_PRODUCTS';
-
-    /** @staticvar string */
-    const EDIT_PRODUCTS = 'CATEGORY_EDIT_PRODUCTS';
-
     /**
      * @var CategoryAccessManager
      */
@@ -41,7 +35,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [self::VIEW_PRODUCTS, self::EDIT_PRODUCTS]);
+        return in_array($attribute, [Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS]);
     }
 
     /**
@@ -62,11 +56,11 @@ class CategoryVoter implements VoterInterface
         if ($this->supportsClass($object)) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
-                    $result       = VoterInterface::ACCESS_DENIED;
-                    $grantedRoles = $this->extractRoles($attribute, $object);
+                    $result        = VoterInterface::ACCESS_DENIED;
+                    $grantedGroups = $this->extractGroups($attribute, $object);
 
-                    foreach ($grantedRoles as $role) {
-                        if ($token->getUser()->hasRole($role)) {
+                    foreach ($grantedGroups as $group) {
+                        if ($token->getUser()->hasGroup($group)) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }
@@ -78,21 +72,21 @@ class CategoryVoter implements VoterInterface
     }
 
     /**
-     * Get roles for specific attribute and object
+     * Get user groups for specific attribute and object
      *
      * @param string            $attribute
      * @param CategoryInterface $object
      *
-     * @return Role[]
+     * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    protected function extractRoles($attribute, $object)
+    protected function extractGroups($attribute, $object)
     {
-        if ($attribute === self::EDIT_PRODUCTS) {
-            $grantedRoles = $this->accessManager->getEditRoles($object);
+        if ($attribute === Attributes::EDIT_PRODUCTS) {
+            $grantedGroups = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getViewRoles($object);
+            $grantedGroups = $this->accessManager->getViewUserGroups($object);
         }
 
-        return $grantedRoles;
+        return $grantedGroups;
     }
 }

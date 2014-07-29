@@ -1,5 +1,6 @@
 parameters:
     pim_datagrid.datagrid.product.context_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator
+    pim_datagrid.datagrid.product.filters_configurator.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator
     pimee_datagrid.datagrid.product.row_actions_configurator.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator
 
 services:
@@ -19,4 +20,5 @@ services:
         arguments:
             - '@pim_datagrid.datagrid.product.configuration_registry'
             - '@security.context'
-            - '@pim_catalog.repository.category'
+            - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.locale'

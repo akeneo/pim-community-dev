@@ -45,12 +45,13 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $this->preSetData($event);
     }
 
-    function it_injects_defined_roles_in_the_form_data(
+    function it_injects_defined_user_groups_in_the_form_data(
         FormEvent $event,
         Category $category,
         Form $form,
         Form $viewForm,
         Form $editForm,
+        Form $ownForm,
         $accessManager
     ) {
         $event->getData()->willReturn($category);
@@ -61,12 +62,15 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
+        $form->get('own')->willReturn($ownForm);
 
-        $accessManager->getViewRoles($category)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditRoles($category)->willReturn(['bar', 'baz']);
+        $accessManager->getViewUserGroups($category)->willReturn(['foo', 'bar', 'baz']);
+        $accessManager->getEditUserGroups($category)->willReturn(['bar', 'baz']);
+        $accessManager->getOwnUserGroups($category)->willReturn(['bar', 'baz']);
 
         $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();
+        $ownForm->setData(['bar', 'baz'])->shouldBeCalled();
 
         $this->postSetData($event);
     }
@@ -77,6 +81,8 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         Form $form,
         Form $viewForm,
         Form $editForm,
+        Form $ownForm,
+        Form $applyForm,
         $accessManager
     ) {
         $event->getData()->willReturn($category);
@@ -88,12 +94,48 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $form->get('permissions')->willReturn($form);
         $form->get('view')->willReturn($viewForm);
         $form->get('edit')->willReturn($editForm);
+        $form->get('own')->willReturn($ownForm);
+        $form->get('apply_on_children')->willReturn($applyForm);
 
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
+        $ownForm->getData()->willReturn(['three']);
+        $applyForm->getData()->willReturn(false);
 
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'])->shouldBeCalled();
 
-        $accessManager->setAccess($category, ['one', 'two'], ['three'])->shouldBeCalled();
+        $this->postSubmit($event);
+    }
+
+    function it_applies_the_new_permissions_on_children(
+        FormEvent $event,
+        Category $category,
+        Form $form,
+        Form $viewForm,
+        Form $editForm,
+        Form $ownForm,
+        Form $applyForm,
+        $accessManager
+    ) {
+        $event->getData()->willReturn($category);
+        $category->isRoot()->willReturn(true);
+        $category->getId()->willReturn(1);
+
+        $event->getForm()->willReturn($form);
+        $form->isValid()->willReturn(true);
+        $form->get('permissions')->willReturn($form);
+        $form->get('view')->willReturn($viewForm);
+        $form->get('edit')->willReturn($editForm);
+        $form->get('own')->willReturn($ownForm);
+        $form->get('apply_on_children')->willReturn($applyForm);
+
+        $viewForm->getData()->willReturn(['one', 'two']);
+        $editForm->getData()->willReturn(['three']);
+        $ownForm->getData()->willReturn(['three']);
+        $applyForm->getData()->willReturn(true);
+
+        $accessManager->setAccess($category, ['one', 'two'], ['three'], ['three'])->shouldBeCalled();
+        $accessManager->updateChildrenAccesses($category, ['one', 'two'], ['three'], ['three'], [], [], [])->shouldBeCalled();
 
         $this->postSubmit($event);
     }

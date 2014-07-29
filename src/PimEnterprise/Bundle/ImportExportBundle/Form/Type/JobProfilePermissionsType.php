@@ -19,8 +19,8 @@ class JobProfilePermissionsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('execute', 'pimee_security_roles', ['label' => 'job_profile.permissions.execute.label']);
-        $builder->add('edit', 'pimee_security_roles', ['label' => 'job_profile.permissions.edit.label']);
+        $builder->add('execute', 'pimee_security_groups', ['label' => 'job_profile.permissions.execute.label']);
+        $builder->add('edit', 'pimee_security_groups', ['label' => 'job_profile.permissions.edit.label']);
     }
 
     /**

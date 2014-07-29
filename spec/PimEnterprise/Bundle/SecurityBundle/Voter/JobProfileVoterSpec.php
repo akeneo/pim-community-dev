@@ -9,10 +9,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class JobProfileVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(JobProfileVoter::EDIT_JOB_PROFILE, JobProfileVoter::EXECUTE_JOB_PROFILE);
+    protected $attributes = array(Attributes::EDIT_JOB_PROFILE, Attributes::EXECUTE_JOB_PROFILE);
 
     function let(JobProfileAccessManager $accessManager, TokenInterface $token)
     {
@@ -29,17 +30,17 @@ class JobProfileVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, JobProfileVoter $jobProfile)
     {
         $this
-            ->vote($token, $jobProfile, [JobProfileVoter::EDIT_JOB_PROFILE])
+            ->vote($token, $jobProfile, [Attributes::EDIT_JOB_PROFILE])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         JobInstance $jobProfile
     ) {
-        $accessManager->getEditRoles($jobProfile)->willReturn(array());
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array());
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array());
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array());
 
         $this
             ->vote($token, $jobProfile, $this->attributes)
@@ -53,11 +54,11 @@ class JobProfileVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($jobProfile)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(false);
+        $accessManager->getEditUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $jobProfile, array(JobProfileVoter::EDIT_JOB_PROFILE))
+            ->vote($token, $jobProfile, array(Attributes::EDIT_JOB_PROFILE))
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -68,11 +69,11 @@ class JobProfileVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
-        $accessManager->getExecuteRoles($jobProfile)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(true);
+        $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $jobProfile, array(JobProfileVoter::EXECUTE_JOB_PROFILE))
+            ->vote($token, $jobProfile, array(Attributes::EXECUTE_JOB_PROFILE))
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

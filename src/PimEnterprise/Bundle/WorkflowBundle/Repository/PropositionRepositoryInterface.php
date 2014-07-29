@@ -58,4 +58,13 @@ interface PropositionRepositoryInterface extends ObjectRepository
      * @return null|Proposition
      */
     public function findUserProposition(ProductInterface $product, $username);
+
+    /**
+     * Find all by product
+     *
+     * @param ProductInterface $product
+     *
+     * @return null|Proposition[]
+     */
+    public function findByProduct(ProductInterface $product);
 }

@@ -1,29 +1,11 @@
-parameters:
-    pimee_datagrid.extension.filter.proposition_filter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Filter\PropositionFilterExtension
-    pimee_datagrid.extension.sorter.proposition_sorter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\PropositionSorterExtension
-    pimee_datagrid.extension.pager.proposition_pager.class:   PimEnterprise\Bundle\DataGridBundle\Extension\Pager\PropositionPagerExtension
-
 services:
-    pimee_datagrid.extension.filter.proposition_filter:
-        class: %pimee_datagrid.extension.filter.proposition_filter.class%
+    pim_datagrid.extension.selector.orm_selector:
+        class: %pim_datagrid.extension.selector.orm_selector.class%
         arguments:
+            - %pim_catalog.storage_driver%
             - '@oro_datagrid.datagrid.request_params'
-            - '@translator'
-            - %pimee_filter.datasource.proposition_adapter.class%
+        calls:
+            - [addEligibleDatasource, ['pim_datasource_product']]
+            - [addEligibleDatasource, ['pimee_datasource_published_product']]
         tags:
              - { name: oro_datagrid.extension }
-
-    pimee_datagrid.extension.sorter.proposition_sorter:
-        class: %pimee_datagrid.extension.sorter.proposition_sorter.class%
-        arguments:
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-            - { name: oro_datagrid.extension }
-
-    pimee_datagrid.extension.pager.proposition_pager:
-        class: %pimee_datagrid.extension.pager.proposition_pager.class%
-        arguments:
-            - '@pimee_datagrid.extension.pager.proposition.pager'
-            - '@oro_datagrid.datagrid.request_params'
-        tags:
-            - { name: oro_datagrid.extension }

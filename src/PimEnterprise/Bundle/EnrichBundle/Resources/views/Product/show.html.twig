@@ -2,14 +2,71 @@
 
 {% oro_title_set({ params: { "%product.sku%": product.label } }) %}
 
-{% block head_script %}
-    {{ parent() }}
-{% endblock %}
-
 {% block content %}
-    <div class="layout-content">
-        <div class="no-data">
-            Product {{ product.sku }} in view mode
+    {% set title = 'product.title'|trans %}
+
+    {% set buttons %}
+        {{ elements.backLink(path('pim_enrich_product_index', { dataLocale: dataLocale })) }}
+    {% endset %}
+
+    {% set subtitle %}
+        {% include 'PimEnrichBundle:Product:_locale-switcher.html.twig' %}
+    {% endset %}
+
+    {% set left %}
+        <ul class="inline">
+            <li>
+                {{ 'Family'|trans|capitalize }}: {{ product.family|capitalize|default('N/A'|trans) }}
+            </li>
+
+            {% if product.groups|length != 0 %}
+            <li>
+                {{ 'Groups'|trans|capitalize }}:
+                {% for group in product.groups %}
+                    <a id="group-products-{{ group.id }}" href="#"
+                    {% if group.type.isVariant %}
+                        data-toggle="tooltip" data-placement="bottom" data-html="true"
+                        data-original-title="{{ 'info.group.axis'|trans({'%attributes%': group.attributes|join(', ')}) }}"
+                    {% endif %}
+                    >
+                        {{ group.label }}</a>{% if not loop.last %}, {% endif %}
+                    </a>
+                {% endfor %}
+            </li>
+            {% endif %}
+            <li>{{ 'Created'|trans }}: {{ created ? created.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ created ? created.author : 'N/A'|trans }}</li>
+            <li>{{ 'Last update'|trans }}: {{ updated ? updated.loggedAt|date("Y-m-d h:i:s") : 'N/A'|trans }} {{ 'by'|trans }} {{ updated ? updated.author : 'N/A'|trans }}</li>
+       </ul>
+    {% endset %}
+
+    {{ elements.page_header(title, buttons, subtitle, left) }}
+
+    <div class="layout-content product-edit product-view form-horizontal">
+        <div class="row-fluid tab-pane">
+            {% for group in group_product_values(product.values, dataLocale) %}
+                <div class="row-fluid">
+                    <h3>
+                        {{ group.groupLabel }}
+                    </h3>
+                    {% for value in group.values %}
+                        <div class="control-group attribute-field{{ value.attribute.localizable ? ' localizable' : '' }}">
+                            <label class="control-label">
+                                {{ value.attribute }}{{ value.attribute.scopable ? ' - ' ~ value.scope : '' }}
+                            </label>
+                            <div class="controls">
+                                <div class="value-field">
+                                    {{ present_product_value(value) }}
+                                </div>
+                                <div class="icons-container"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-info">
+                    {{ 'attribute group.permissions.no_access_to_attributes'|trans }}
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

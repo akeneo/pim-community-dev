@@ -2,12 +2,15 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
-use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
+use Oro\Bundle\UserBundle\Entity\User;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionOwnershipRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PropositionRepositoryInterface;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Proposition ORM repository
@@ -15,7 +18,9 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class PropositionRepository extends EntityRepository implements PropositionRepositoryInterface
+class PropositionRepository extends EntityRepository implements
+    PropositionRepositoryInterface,
+    PropositionOwnershipRepositoryInterface
 {
     /**
      * {@inheritdoc}
@@ -32,12 +37,58 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
 
     /**
      * {@inheritdoc}
+     */
+    public function findByProduct(ProductInterface $product)
+    {
+        return $this->findBy(['product' => $product]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findApprovableByUser(UserInterface $user, $limit = null)
+    {
+        $qb = $this->createQueryBuilder('p');
+
+        $qb
+            ->join('p.product', 'product')
+            ->leftJoin('product.categories', 'category')
+            ->innerJoin('PimEnterpriseSecurityBundle:CategoryAccess', 'a', 'WITH', 'a.category = category')
+            ->where(
+                $qb->expr()->eq('a.ownProducts', true)
+            )
+            ->andWhere(
+                $qb->expr()->in('a.userGroup', ':userGroups')
+            )
+            ->andWhere(
+                $qb->expr()->eq('p.status', Proposition::READY)
+            )
+            ->orderBy('p.createdAt', 'desc')
+            ->setParameter('userGroups', $user->getGroups()->toArray());
+
+        if (null !== $limit) {
+            $qb->setMaxResults($limit);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
      *
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function createDatagridQueryBuilder()
+    public function createDatagridQueryBuilder(array $parameters = [])
     {
-        return $this->createQueryBuilder('p');
+        $qb = $this->getEntityManager()->createQueryBuilder()
+            ->select('p, p.createdAt as createdAt, p.changes as changes, p.author as author, p.status as status')
+            ->from($this->_entityName, 'p', 'p.id');
+
+        if (isset($parameters['product'])) {
+            $this->applyDatagridContext($qb, $parameters['product']);
+        }
+
+        return $qb;
     }
 
     /**
@@ -47,7 +98,8 @@ class PropositionRepository extends EntityRepository implements PropositionRepos
      */
     public function applyDatagridContext($qb, $productId)
     {
-        $qb->innerJoin('p.product', 'product', 'WITH', $qb->expr()->eq('product.id', $productId));
+        $qb->innerJoin('p.product', 'product', 'WITH', 'product.id = :product');
+        $qb->setParameter('product', $productId);
 
         return $this;
     }

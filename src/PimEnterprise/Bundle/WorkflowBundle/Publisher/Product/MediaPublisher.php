@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractMedia;
+use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
@@ -64,6 +64,6 @@ class MediaPublisher implements PublisherInterface
      */
     public function supports($object)
     {
-        return $object instanceof AbstractMedia;
+        return $object instanceof AbstractProductMedia;
     }
 }

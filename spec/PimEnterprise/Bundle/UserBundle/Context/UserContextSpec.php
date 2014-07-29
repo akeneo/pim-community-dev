@@ -12,8 +12,8 @@ use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
 use Pim\Bundle\CatalogBundle\Manager\LocaleManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class UserContextSpec extends ObjectBehavior
 {
@@ -24,7 +24,6 @@ class UserContextSpec extends ObjectBehavior
 
     function let(
         SecurityContextInterface $securityContext,
-        SecurityFacade $securityFacade,
         LocaleManager $localeManager,
         ChannelManager $channelManager,
         CategoryManager $categoryManager,
@@ -36,7 +35,6 @@ class UserContextSpec extends ObjectBehavior
 
         $this->beConstructedWith(
             $securityContext,
-            $securityFacade,
             $localeManager,
             $channelManager,
             $categoryManager,
@@ -47,7 +45,7 @@ class UserContextSpec extends ObjectBehavior
     function it_gets_the_default_tree_if_accessible($user, $securityContext, CategoryInterface $secondTree)
     {
         $user->getDefaultTree()->willReturn($secondTree);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $secondTree)->willReturn(true);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(true);
 
         $this->getAccessibleUserTree()->shouldReturn($secondTree);
     }
@@ -57,7 +55,7 @@ class UserContextSpec extends ObjectBehavior
         CategoryInterface $firstTree, CategoryInterface $secondTree, CategoryInterface $thirdTree
     ) {
         $user->getDefaultTree()->willReturn($secondTree);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $secondTree)->willReturn(false);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $secondTree)->willReturn(false);
 
         $categoryManager->getAccessibleTrees($user)->willReturn([$thirdTree, $firstTree]);
 
@@ -68,7 +66,7 @@ class UserContextSpec extends ObjectBehavior
         $user, $securityContext, $categoryManager, CategoryInterface $firstTree
     ) {
         $user->getDefaultTree()->willReturn($firstTree);
-        $securityContext->isGranted(CategoryVoter::VIEW_PRODUCTS, $firstTree)->willReturn(false);
+        $securityContext->isGranted(Attributes::VIEW_PRODUCTS, $firstTree)->willReturn(false);
 
         $categoryManager->getAccessibleTrees($user)->willReturn([]);
 

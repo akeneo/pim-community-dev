@@ -6,10 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
-use PimEnterprise\Bundle\SecurityBundle\Voter\ProductVoter;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Product Controller
@@ -35,18 +40,28 @@ class ProductController extends BaseProductController
     {
         try {
             $this->userContext->getAccessibleUserTree();
-
-            return parent::indexAction($request);
         } catch (\LogicException $e) {
             $this->addFlash('error', 'category.permissions.no_access_to_products');
 
             return $this->redirectToRoute('oro_default');
         }
+
+        if (null === $dataLocale = $this->getDataLocale()) {
+            $this->addFlash('error', 'locale.permissions.no_access_to_products');
+
+            return $this->redirectToRoute('oro_default');
+        }
+
+        return array(
+            'locales'    => $this->getUserLocales(),
+            'dataLocale' => $dataLocale,
+        );
     }
 
     /**
      * Dispatch to product view or product edit when a user click on a product grid row
      *
+     * @param Request $request
      * @param integer $id
      *
      * @return RedirectResponse
@@ -55,14 +70,22 @@ class ProductController extends BaseProductController
      *
      * @AclAncestor("pim_enrich_product_edit")
      */
-    public function dispatchAction($id)
+    public function dispatchAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
-        if ($this->securityContext->isGranted(ProductVoter::PRODUCT_EDIT, $product)) {
-            return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $id));
+        $editProductGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
+        $locale = $this->userContext->getCurrentLocale();
+        $editLocaleGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
-        } elseif ($this->securityContext->isGranted(ProductVoter::PRODUCT_VIEW, $product)) {
-            return $this->redirectToRoute('pimee_enrich_product_show', array('id' => $id));
+        if ($editProductGranted && $editLocaleGranted) {
+            $parameters = $this->editAction($this->request, $id);
+
+            return $this->render('PimEnrichBundle:Product:edit.html.twig', $parameters);
+
+        } elseif ($this->securityContext->isGranted(Attributes::VIEW_PRODUCT, $product)) {
+            $parameters = $this->showAction($this->request, $id);
+
+            return $this->render('PimEnrichBundle:Product:show.html.twig', $parameters);
         }
 
         throw new AccessDeniedException();
@@ -81,9 +104,18 @@ class ProductController extends BaseProductController
     public function showAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
+        $locale = $this->userContext->getCurrentLocale();
+        $viewLocaleGranted = $this->securityContext->isGranted(Attributes::VIEW_PRODUCTS, $locale);
+        if (!$viewLocaleGranted) {
+            throw new AccessDeniedException();
+        }
 
         return [
-            'product' => $product,
+            'product'    => $product,
+            'dataLocale' => $this->getDataLocaleCode(),
+            'locales'    => $this->getUserLocales(),
+            'created'    => $this->versionManager->getOldestLogEntry($product),
+            'updated'    => $this->versionManager->getNewestLogEntry($product),
         ];
     }
 
@@ -109,5 +141,84 @@ class ProductController extends BaseProductController
         $value = $product->getValue($attributeCode, $locale, $scope);
 
         return new Response((string) $value);
+    }
+
+    /**
+     * Propositions of a product
+     *
+     * @param Request $request
+     * @param integer $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function propositionsAction(Request $request, $id)
+    {
+        return $this->render(
+            'PimEnterpriseEnrichBundle:Product:_propositions.html.twig',
+            array(
+                'product' => $this->findProductOr404($id),
+                'dataLocale' => $this->getDataLocaleCode()
+            )
+        );
+    }
+
+    /**
+     * Override to return only granted user locales
+     *
+     * @return Locale[]
+     */
+    protected function getUserLocales()
+    {
+        return $this->userContext->getGrantedUserLocales();
+    }
+
+    /**
+     * Returns the the data locale object
+     * If user doesn't have permissions to see product data in any locale, returns null
+     *
+     * @return string|null
+     */
+    protected function getDataLocale()
+    {
+        try {
+            return $this->userContext->getCurrentGrantedLocale();
+        } catch (\LogicException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Returns the code of the data locale
+     * If user doesn't have permissions to see product data in any locale, returns null
+     *
+     * @return string|null
+     */
+    protected function getDataLocaleCode()
+    {
+        try {
+            return $this->userContext->getCurrentGrantedLocale()->getCode();
+        } catch (\LogicException $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Override to get only the granted path for the filled tree
+     *
+     * {@inheritdoc}
+     */
+    protected function getFilledTree(CategoryInterface $parent, Collection $categories)
+    {
+        return $this->categoryManager->getGrantedFilledTree($parent, $categories);
+    }
+
+    /**
+     * Override to get only the granted count for the granted tree
+     *
+     * {@inheritdoc}
+     */
+    protected function getProductCountByTree(ProductInterface $product)
+    {
+        return $this->productCatManager->getProductCountByGrantedTree($product);
     }
 }

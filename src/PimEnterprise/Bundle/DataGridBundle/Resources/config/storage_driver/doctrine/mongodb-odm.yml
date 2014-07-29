@@ -1,4 +1,3 @@
 parameters:
-    pimee_filter.datasource.proposition_adapter.class:              Pim\Bundle\FilterBundle\Datasource\MongoDbOdm\OdmFilterDatasourceAdapter
-    pimee_datagrid.extension.pager.proposition.pager.class:         Pim\Bundle\DataGridBundle\Extension\Pager\MongoDbOdm\Pager
-    pimee_datagrid.extension.sorter.proposition.field_sorter.class: Pim\Bundle\DataGridBundle\Extension\Sorter\MongoDbOdm\FieldSorter
+    pimee_datagrid.datasource.result_record.hydrator.product_history.class: PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\ProductHistoryHydrator
+    pimee_datagrid.datasource.result_record.hydrator.proposition.class:     PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM\PropositionHydrator

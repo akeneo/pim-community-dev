@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\CatalogBundle\Entity\Repository;
 
-use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as PimAttributeRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as BaseAttributeRepository;
 
 /**
  * Override attribute repository
@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as PimAttribu
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeRepository extends PimAttributeRepository
+class AttributeRepository extends BaseAttributeRepository
 {
     /**
      * {@inheritdoc}

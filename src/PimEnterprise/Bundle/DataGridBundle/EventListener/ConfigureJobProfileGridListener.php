@@ -6,7 +6,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\JobProfileVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Grid listener to configure job profile grid row actions
@@ -49,7 +49,7 @@ class ConfigureJobProfileGridListener
      */
     protected function getActionConfiguration(ResultRecordInterface $record)
     {
-        if (!$this->securityContext->isGranted(JobProfileVoter::EDIT_JOB_PROFILE, $record->getRootEntity())) {
+        if (!$this->securityContext->isGranted(Attributes::EDIT_JOB_PROFILE, $record->getRootEntity())) {
             return ['edit' => false, 'delete' => false];
         }
     }

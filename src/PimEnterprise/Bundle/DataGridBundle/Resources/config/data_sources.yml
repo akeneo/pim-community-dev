@@ -1,11 +1,40 @@
 parameters:
-    pimee_datagrid.datasource.proposition.class: PimEnterprise\Bundle\DataGridBundle\Datasource\PropositionDatasource
+    pimee_datagrid.datasource.product_history.class: Pim\Bundle\DataGridBundle\Datasource\Datasource
+    pimee_datagrid.datasource.proposition.class:     Pim\Bundle\DataGridBundle\Datasource\Datasource
 
 services:
-    pimee_datagrid.datasource.proposition:
+    pim_catalog.product_history.product:
+        class: %pim_datagrid.datasource.default.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pimee_datagrid.datasource.result_record.hydrator.product_history'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_product_history }
+
+    pim_catalog.datasource.published_product:
+        class: %pim_datagrid.datasource.product.class%
+        arguments:
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.product'
+            - '@pimee_workflow.repository.published_product_mass_action'
+        tags:
+            - { name: oro_datagrid.datasource, type: pimee_datasource_published_product }
+
+    pimee_catalog.datasource.proposition:
         class: %pimee_datagrid.datasource.proposition.class%
         arguments:
-            - '@pimee_workflow.object_manager.proposition'
-            - '@pim_datagrid.datasource.result_record.hydrator.default'
+            - '@pim_catalog.object_manager.product'
+            - '@pim_datagrid.datasource.result_record.hydrator.proposition'
         tags:
-            - { name: oro_datagrid.datasource, type: pim_proposition }
+            - { name: oro_datagrid.datasource, type: pimee_datasource_proposition }
+
+    pim_datagrid.datasource.support_resolver:
+        class: %pim_datagrid.datasource.support_resolver.class%
+        arguments:
+            - %pim_catalog.storage_driver%
+        calls:
+            - [addSmartDatasource, ['pim_datasource_product']]
+            - [addSmartDatasource, ['pim_datasource_smart']]
+            - [addSmartDatasource, ['pimee_datasource_product_history']]
+            - [addSmartDatasource, ['pimee_datasource_published_product']]
+            - [addSmartDatasource, ['pimee_datasource_proposition']]

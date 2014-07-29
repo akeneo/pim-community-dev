@@ -46,13 +46,13 @@ class JobProfileAccessProcessor extends TransformerProcessor
      * OUT :
      * [
      *      'code': 'general',
-     *      'role': 'administrator',
+     *      'group': 'administrator',
      *      'executeJobProfile': true,
      *      'editJobProfile': true,
      * ],
      * [
      *      'code': 'general',
-     *      'role': 'user',
+     *      'group': 'user',
      *      'executeJobProfile': true,
      *      'editJobProfile': false,
      * ]
@@ -66,23 +66,23 @@ class JobProfileAccessProcessor extends TransformerProcessor
         $items = [];
 
         if (isset($data[self::ACCESS_EXECUTE])) {
-            foreach ($data[self::ACCESS_EXECUTE] as $role) {
-                $tmp[$role][self::ACCESS_EXECUTE] = true;
+            foreach ($data[self::ACCESS_EXECUTE] as $group) {
+                $tmp[$group][self::ACCESS_EXECUTE] = true;
             }
             unset($data[self::ACCESS_EXECUTE]);
         }
 
         if (isset($data[self::ACCESS_EDIT])) {
-            foreach ($data[self::ACCESS_EDIT] as $role) {
-                $tmp[$role][self::ACCESS_EDIT] = true;
-                $tmp[$role][self::ACCESS_EXECUTE] = true;
+            foreach ($data[self::ACCESS_EDIT] as $group) {
+                $tmp[$group][self::ACCESS_EDIT] = true;
+                $tmp[$group][self::ACCESS_EXECUTE] = true;
             }
             unset($data[self::ACCESS_EDIT]);
         }
 
-        foreach ($tmp as $role => $accesses) {
+        foreach ($tmp as $group => $accesses) {
             $item = $data;
-            $item['role'] = $role;
+            $item['userGroup'] = $group;
             $item['executeJobProfile'] = isset($accesses[self::ACCESS_EXECUTE]);
             $item['editJobProfile'] = isset($accesses[self::ACCESS_EDIT]);
             $items[] = $item;

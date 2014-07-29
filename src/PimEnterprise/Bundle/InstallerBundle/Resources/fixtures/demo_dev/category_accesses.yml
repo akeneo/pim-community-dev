@@ -1,13 +1,85 @@
 category_accesses:
     master:
-        view: [administrator, manager, user]
-        edit: [administrator, manager, user]
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
     collections:
-        view: [administrator, manager, user]
-        edit: [administrator, manager]
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
     books:
-        view: [administrator, manager, user]
-        edit: [administrator, manager]
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
     computers:
-        view: [administrator, manager]
-        edit: [administrator, manager]
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    colors:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    europe_sales:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    desktops:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    laptops:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    notebooks:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    accessories:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    games:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    software:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    apparels_shoes:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shirts:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    jeans:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes_male:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes_female:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes_eu:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes_male_eu:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]
+    shoes_female_eu:
+        view: [IT support, Redactor, Manager]
+        edit: [IT support, Redactor, Manager]
+        own: [IT support, Redactor, Manager]

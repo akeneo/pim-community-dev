@@ -9,7 +9,7 @@ Feature: Enforce read-only permissions for an attribute group
     And the following product:
       | sku | family |
       | foo | boots  |
-    And role "administrator" has the permission to view the attribute group "info"
+    And user group "IT support" has the permission to view the attribute group "info"
     And I am logged in as "Peter"
 
   Scenario: Successfully disable read-only fields for an attribute group in the product edit form

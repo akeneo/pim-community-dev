@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener;
 
 use Oro\Bundle\DataGridBundle\Event\BuildBefore;
 use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
  * Inject the product id for proposition datagrid
@@ -33,9 +34,14 @@ class InjectProductForPropositionSubscriber
      */
     public function buildBefore(BuildBefore $event)
     {
-        $productId = $this->requestParams->get('product');
+        $productId = $this->requestParams->get('product', null);
 
-        $datagridConfig = $event->getConfig();
-        $datagridConfig->offsetSetByPath("[source][product]", $productId);
+        if (null !== $productId) {
+            $datagridConfig = $event->getConfig();
+            $datagridConfig->offsetSetByPath(
+                sprintf(ContextConfigurator::SOURCE_PATH, ContextConfigurator::REPOSITORY_PARAMETERS_KEY),
+                ['product' => $productId]
+            );
+        }
     }
 }

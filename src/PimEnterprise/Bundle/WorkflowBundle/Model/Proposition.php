@@ -27,7 +27,7 @@ class Proposition
     /** @var string */
     protected $author;
 
-    /** @var DateTime */
+    /** @var \DateTime */
     protected $createdAt;
 
     /** @var array */
@@ -35,6 +35,12 @@ class Proposition
 
     /** @var integer */
     protected $status;
+
+    /** @var array */
+    protected $categoryIds = [];
+
+    /** @var string not persisted, used to contextualize the proposition */
+    protected $dataLocale = null;
 
     /**
      * Constructor
@@ -93,7 +99,7 @@ class Proposition
     }
 
     /**
-     * @param DateTime $createdAt
+     * @param \DateTime $createdAt
      *
      * @return Proposition
      */
@@ -105,7 +111,7 @@ class Proposition
     }
 
     /**
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreatedAt()
     {
@@ -160,5 +166,62 @@ class Proposition
     public function isInProgress()
     {
         return self::IN_PROGRESS === $this->status;
+    }
+
+    /**
+     * Set the category ids
+     * NB: Only used with MongoDB
+     *
+     * @param array $categoryIds
+     */
+    public function setCategoryIds(array $categoryIds)
+    {
+        $this->categoryIds = $categoryIds;
+    }
+
+    /**
+     * Get the product category ids
+     * NB: Only used with MongoDB
+     *
+     * @return array
+     */
+    public function getCategoryIds()
+    {
+        return $this->categoryIds;
+    }
+
+    /**
+     * Removes a category id
+     *
+     * @param integer $categoryId
+     */
+    public function removeCategoryId($categoryId)
+    {
+        if (false === $key = array_search($categoryId, $this->categoryIds)) {
+            return;
+        }
+
+        unset($this->categoryIds[$key]);
+        $this->categoryIds = array_values($this->categoryIds);
+    }
+
+    /**
+     * @param string $dataLocale
+     *
+     * @return Proposition
+     */
+    public function setDataLocale($dataLocale)
+    {
+        $this->dataLocale = $dataLocale;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDataLocale()
+    {
+        return $this->dataLocale;
     }
 }

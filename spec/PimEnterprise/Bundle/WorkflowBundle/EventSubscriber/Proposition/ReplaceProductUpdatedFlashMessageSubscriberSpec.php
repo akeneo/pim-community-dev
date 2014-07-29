@@ -59,7 +59,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_the_response_kernel_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            KernelEvents::RESPONSE => 'replaceFlash',
+            KernelEvents::RESPONSE => ['replaceFlash', 129]
         ]);
     }
 

@@ -3,13 +3,13 @@
 namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Prophecy\Argument;
-use Oro\Bundle\UserBundle\Entity\Role;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class AttributeGroupAccessManagerSpec extends ObjectBehavior
 {
@@ -21,30 +21,30 @@ class AttributeGroupAccessManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, 'PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess');
     }
 
-    function it_provides_roles_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
+    function it_provides_user_groups_that_have_access_to_an_attribute_group(AttributeGroup $group, $repository)
     {
-        $repository->getGrantedRoles($group, AttributeGroupVoter::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
-        $repository->getGrantedRoles($group, AttributeGroupVoter::EDIT_ATTRIBUTES)->willReturn(['baz']);
+        $repository->getGrantedUserGroups($group, Attributes::VIEW_ATTRIBUTES)->willReturn(['foo', 'baz']);
+        $repository->getGrantedUserGroups($group, Attributes::EDIT_ATTRIBUTES)->willReturn(['baz']);
 
-        $this->getViewRoles($group)->shouldReturn(['foo', 'baz']);
-        $this->getEditRoles($group)->shouldReturn(['baz']);
+        $this->getViewUserGroups($group)->shouldReturn(['foo', 'baz']);
+        $this->getEditUserGroups($group)->shouldReturn(['baz']);
     }
 
-    function it_grants_access_on_an_attribute_group_for_the_provided_roles(
+    function it_grants_access_on_an_attribute_group_for_the_provided_user_groups(
         AttributeGroup $group,
         $repository,
         $objectManager,
-        Role $user,
-        Role $admin
+        Group $manager,
+        Group $redactor
     ) {
         $repository->findOneBy(Argument::any())->willReturn(array());
-        $repository->revokeAccess($group, [$admin, $user])->shouldBeCalled();
+        $repository->revokeAccess($group, [$redactor, $manager])->shouldBeCalled();
 
         $objectManager
             ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess'))
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
-        $this->setAccess($group, [$user, $admin], [$admin]);
+        $this->setAccess($group, [$manager, $redactor], [$redactor]);
     }
 }

@@ -8,8 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Behat\Behat\Context\Step;
@@ -22,47 +21,79 @@ use Behat\Behat\Context\Step;
  */
 class EnterpriseFixturesContext extends BaseFixturesContext
 {
+    protected $enterpriseEntities = [
+        'Published' => 'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
+    ];
+
     /**
      * {@inheritdoc}
      */
-    public function createProduct($data)
+    public function createProduct($data, $skipDefaultCategory = false)
     {
         if (!is_array($data)) {
             $data = ['sku' => $data];
         }
-        $defaultCategory = null;
-        foreach ($this->getCategoryRepository()->findAll() as $category) {
-            if ($category->isRoot()) {
-                $defaultCategory = $category->getCode();
-            }
-        }
 
-        if (!$defaultCategory) {
-            throw new \LogicException(
-                'Cannot find the default category in which to put all the products non associated to any category'
+        if (!$skipDefaultCategory) {
+            $defaultCategory = null;
+            foreach ($this->getCategoryRepository()->findAll() as $category) {
+                if ($category->isRoot()) {
+                    $defaultCategory = $category->getCode();
+                }
+            }
+
+            if (!$defaultCategory) {
+                throw new \LogicException(
+                    'Cannot find the default category in which to put all the products non associated to any category'
+                );
+            }
+            $data = array_merge(
+                ['categories' => $defaultCategory],
+                $data
             );
         }
 
-        return parent::createProduct(
-            array_merge(
-                ['categories' => $defaultCategory],
-                $data
-            )
-        );
+        return parent::createProduct($data);
     }
 
+    /**
+     * @param TableNode $table
+     */
+    public function theFollowingProductValues(TableNode $table)
+    {
+        foreach ($table->getHash() as $row) {
+            $row = array_merge(['locale' => null, 'scope' => null, 'value' => null], $row);
+
+            $attributeCode = $row['attribute'];
+            if ($row['locale']) {
+                $attributeCode .= '-' . $row['locale'];
+            }
+            if ($row['scope']) {
+                $attributeCode .= '-' . $row['scope'];
+            }
+
+            $data = [
+                'sku'          => $row['product'],
+                $attributeCode => $this->replacePlaceholders($row['value'])
+            ];
+
+            $this->createProduct($data, true);
+        }
+
+        $this->flush();
+    }
 
     /**
-     * @Given /^role "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
+     * @Given /^user group "([^"]*)" has the permission to (view|edit) the attribute group "([^"]*)"$/
      */
-    public function roleHasThePermissionToEditTheAttributeGroup($role, $accessLevel, $attributeGroup)
+    public function userGroupHasThePermissionToEditTheAttributeGroup($userGroup, $accessLevel, $attributeGroup)
     {
-        $role = $this->getRole($role);
+        $userGroup = $this->getUserGroup($userGroup);
         $attributeGroup = $this->getAttributeGroup($attributeGroup);
 
         $this
             ->getAccessManager('attribute_group')
-            ->setAccess($attributeGroup, [$role], $accessLevel === 'edit' ? [$role] : []);
+            ->setAccess($attributeGroup, [$userGroup], $accessLevel === 'edit' ? [$userGroup] : []);
     }
 
     /**
@@ -173,9 +204,45 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @Given /^the following category accesses:$/
      */
-    public function theFollowingAccesses(TableNode $table)
+    public function theFollowingCategoryAccesses(TableNode $table)
     {
         $this->createAccesses($table, 'category');
+    }
+
+    /**
+     * @Given /^the following locale accesses:$/
+     */
+    public function theFollowingLocaleAccesses(TableNode $table)
+    {
+        $this->createAccesses($table, 'locale');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getEntities()
+    {
+        return array_merge($this->entities, $this->enterpriseEntities);
+    }
+
+    /**
+     * @param string $sku
+     *
+     * @return \Pim\Bundle\CatalogBundle\Model\Product
+     *
+     * @throws \InvalidArgumentException
+     */
+    public function getPublished($sku)
+    {
+        $published = $this->getPublishedProductManager()->findByIdentifier($sku);
+
+        if (!$published) {
+            throw new \InvalidArgumentException(sprintf('Could not find a published product with sku "%s"', $sku));
+        }
+
+        $this->refresh($published);
+
+        return $published;
     }
 
     /**
@@ -189,7 +256,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         $expectedCount = count($expectedPropositions);
         $actualCount   = count($actualPropositions);
         if ($expectedCount !== $actualCount) {
-            throw $this->createExpectationException(
+            throw new \Exception(
                 sprintf(
                     'Expecting %d propositions, actually saw %d',
                     $expectedCount,
@@ -201,7 +268,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
         foreach ($expectedPropositions as $key => $proposition) {
             $cells = $actualPropositions[$key]->findAll('css', 'td');
             if ($cells[1]->getText() !== $proposition['author']) {
-                throw $this->createExpectationException(
+                throw new \Exception(
                     sprintf(
                         'Proposition #%d author is expected to be "%s", actually is "%s"',
                         $key + 1,
@@ -212,7 +279,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             }
 
             if ($cells[2]->getText() !== $proposition['product']) {
-                throw $this->createExpectationException(
+                throw new \Exception(
                     sprintf(
                         'Proposition #%d product is expected to be "%s", actually is "%s"',
                         $key + 1,
@@ -227,23 +294,45 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @param TableNode $table
      *
-     * @Given /^the following published products:$/
+     * @Given /^the following published products?:$/
      */
     public function theFollowingPublishedProduct(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
-            $product = $this->createProduct($data);
-
-            $this->getPublishedManager()->publish($product);
+            $this->createPublishedProduct($data);
         }
     }
 
     /**
-     * @return PublishedProductManager
+     * @Given /^(\w+) should have proposed the following values for products (.*):$/
      */
-    protected function getPublishedManager()
+    public function someoneShouldHaveProposedTheFollowingValuesForProducts($username, $products, TableNode $table)
     {
-        return $this->getContainer()->get('pimee_workflow.manager.published_product');
+        $steps = [];
+        foreach ($this->listToArray($products) as $product) {
+            $steps[] = new Step\Given(sprintf('I edit the "%s" product', $product));
+
+            foreach ($table->getHash() as $data) {
+                $steps[] = new Step\Given(
+                    sprintf('the field %s should contain "%s"', $data['attribute'], $data['value'])
+                );
+                $steps[] = new Step\Given(sprintf('I should see that %s is a modified value', $data['attribute']));
+            }
+        }
+
+        return $steps;
+    }
+
+    /**
+     * @param $data
+     *
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
+     */
+    protected function createPublishedProduct($data)
+    {
+        $product = $this->createProduct($data);
+
+        return $this->getPublishedProductManager()->publish($product);
     }
 
     /**
@@ -273,22 +362,34 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
+     */
+    protected function getPublishedProductManager()
+    {
+        return $this->getContainer()->get('pimee_workflow.manager.published_product');
+    }
+
+    /**
      * Get the access level according to the access type and action (view or edit)
      *
-     * @param $type
-     * @param $action
+     * @param string $type
+     * @param string $action
      *
      * @return string
      * @throws \Exception
      */
     protected function getAccessLevelByAccessTypeAndAction($type, $action)
     {
-        if ('attribute group' === $type) {
-            return ($action === 'edit') ? AttributeGroupVoter::EDIT_ATTRIBUTES : AttributeGroupVoter::VIEW_ATTRIBUTES;
+        if ('none' === $action) {
+            return $action;
         }
 
-        if ('category' === $type) {
-            return ($action === 'edit') ? CategoryVoter::EDIT_PRODUCTS : CategoryVoter::VIEW_PRODUCTS;
+        if ('attribute group' === $type) {
+            return ($action === 'edit') ? Attributes::EDIT_ATTRIBUTES : Attributes::VIEW_ATTRIBUTES;
+        }
+
+        if ('category' === $type || 'locale' === $type) {
+            return ($action === 'edit') ? Attributes::EDIT_PRODUCTS : Attributes::VIEW_PRODUCTS;
         }
 
         throw new \Exception('Undefined access type');
@@ -307,10 +408,29 @@ class EnterpriseFixturesContext extends BaseFixturesContext
 
         foreach ($table->getHash() as $data) {
             $access = $this->$getterAccessType($data[$accessType]);
-            $role  = $this->getRole($data['role']);
+            $userGroup = $this->getUserGroup($data['user group']);
             $accessLevel = $this->getAccessLevelByAccessTypeAndAction($accessType, $data['access']);
 
-            $this->getAccessManager($accessType)->grantAccess($access, $role, $accessLevel);
+            $accessManager = $this->getAccessManager($accessType);
+
+            if ('none' === $accessLevel) {
+                $viewGroups = $accessManager->getViewUserGroups($access);
+
+                $key = array_search($userGroup, $viewGroups, true);
+                if (false !== $key) {
+                    unset($viewGroups[$key]);
+                }
+
+                $editGroups = $accessManager->getEditUserGroups($access);
+                $key = array_search($userGroup, $editGroups, true);
+                if (false !== $key) {
+                    unset($editGroups[$key]);
+                }
+
+                $accessManager->setAccess($access, $viewGroups, $editGroups);
+            } else {
+                $accessManager->grantAccess($access, $userGroup, $accessLevel);
+            }
         }
 
         $registry = $this->getSmartRegistry()

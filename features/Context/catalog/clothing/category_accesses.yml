@@ -1,12 +1,33 @@
 category_accesses:
     2014_collection:
-        edit: [administrator, manager, user]
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager]
     summer_collection:
-        edit: [administrator, manager, user]
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager]
     winter_collection:
-        edit: [administrator, manager, user]
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager]
     winter_top:
-        edit: [administrator]
-        view: [manager]
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager]
     tees:
-        edit: [administrator]
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support]
+    jackets:
+        view: [IT support, Manager, Redactor]
+        edit: [IT support, Manager, Redactor]
+        own: [IT support, Manager]
+    tshirts:
+        view: [IT support, Manager]
+        edit: [IT support]
+        own: [IT support]
+    jeans:
+        view: [IT support]
+        edit: [IT support]
+        own: [IT support]

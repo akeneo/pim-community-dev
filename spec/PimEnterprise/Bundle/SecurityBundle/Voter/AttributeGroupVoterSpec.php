@@ -9,10 +9,11 @@ use Oro\Bundle\UserBundle\Entity\User;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(AttributeGroupVoter::VIEW_ATTRIBUTES, AttributeGroupVoter::EDIT_ATTRIBUTES);
+    protected $attributes = array(Attributes::VIEW_ATTRIBUTES, Attributes::EDIT_ATTRIBUTES);
 
     function let(AttributeGroupAccessManager $accessManager, TokenInterface $token)
     {
@@ -29,17 +30,17 @@ class AttributeGroupVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, AttributeGroupVoter $wrongClass)
     {
         $this
-            ->vote($token, $wrongClass, [AttributeGroupVoter::VIEW_ATTRIBUTES])
+            ->vote($token, $wrongClass, [Attributes::VIEW_ATTRIBUTES])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_role(
+    function it_returns_denied_access_if_user_has_no_group(
         $accessManager,
         $token,
         AttributeGroup $attGroup
     ) {
-        $accessManager->getEditRoles($attGroup)->willReturn(array());
-        $accessManager->getViewRoles($attGroup)->willReturn(array());
+        $accessManager->getEditUserGroups($attGroup)->willReturn(array());
+        $accessManager->getViewUserGroups($attGroup)->willReturn(array());
 
         $this
             ->vote($token, $attGroup, $this->attributes)
@@ -53,11 +54,11 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(false);
-        $accessManager->getEditRoles($attGroup)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(false);
+        $accessManager->getEditUserGroups($attGroup)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $attGroup, array(AttributeGroupVoter::EDIT_ATTRIBUTES))
+            ->vote($token, $attGroup, array(Attributes::EDIT_ATTRIBUTES))
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -68,11 +69,11 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasRole('foo')->willReturn(true);
-        $accessManager->getViewRoles($attGroup)->willReturn(array('foo'));
+        $user->hasGroup('foo')->willReturn(true);
+        $accessManager->getViewUserGroups($attGroup)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $attGroup, array(AttributeGroupVoter::VIEW_ATTRIBUTES))
+            ->vote($token, $attGroup, array(Attributes::VIEW_ATTRIBUTES))
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

@@ -3,12 +3,14 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\NoResultException;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductRepository;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
 
 /**
@@ -20,34 +22,65 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {
     /**
-     * Expected by interface but we let ORM entity repository work with its magic here
-     *
      * {@inheritdoc}
      */
-    public function findOneByOriginalProductId($originalId)
+    public function findOneByOriginalProduct(ProductInterface $originalProduct)
     {
-        return parent::findOneByOriginalProductId($originalId);
+        return $this->findOneBy(['originalProduct' => $originalProduct->getId()]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function findByOriginalProductIds(array $originalIds)
+    public function findByOriginalProducts(array $originalProducts)
     {
-        return parent::findBy(['originalProductId' => $originalIds]);
+        $originalIds = [];
+        foreach ($originalProducts as $product) {
+            $originalIds[] = $product->getId();
+        }
+
+        $qb = $this->createQueryBuilder('pp');
+        $qb
+            ->where($qb->expr()->in('pp.originalProduct', ':originalIds'))
+            ->setParameter(':originalIds', $originalIds);
+
+        return $qb->getQuery()->getResult();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getProductIdsMapping()
+    public function getPublishedVersionIdByOriginalProductId($originalId)
     {
         $qb = $this->createQueryBuilder('pp');
-        $qb->select('pp.id, pp.originalProductId');
+        $qb
+            ->select('IDENTITY(pp.version) AS version_id')
+            ->where('pp.originalProduct = :originalId')
+            ->setParameter('originalId', $originalId);
+
+        try {
+            $versionId = (int) $qb->getQuery()->getSingleScalarResult();
+        } catch (NoResultException $e) {
+            $versionId = null;
+        }
+
+        return $versionId;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProductIdsMapping(array $originalIds = [])
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $qb->select('pp.id AS published_id, IDENTITY(pp.originalProduct) AS original_id');
+        if (!empty($originalIds)) {
+            $qb->andWhere($qb->expr()->in('pp.originalProduct', $originalIds));
+        }
 
         $ids = [];
         foreach ($qb->getQuery()->getScalarResult() as $row) {
-            $ids[intval($row['originalProductId'])] = intval($row['id']);
+            $ids[intval($row['original_id'])] = intval($row['published_id']);
         }
 
         return $ids;
@@ -112,6 +145,25 @@ class PublishedProductRepository extends ProductRepository implements PublishedP
             ->innerJoin('pp.associations', 'ppa')
             ->andWhere('ppa.associationType = :association_type')
             ->setParameter('association_type', $associationType);
+
+        return $this->getCountFromQB($qb);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function countPublishedProductsForAttributeOption(AttributeOption $option)
+    {
+        $qb = $this->createQueryBuilder('pp');
+
+        if ($option->getAttribute()->getAttributeType() === 'pim_catalog_simpleselect') {
+            $qb
+                ->innerJoin('pp.values', 'ppv', 'WITH', $qb->expr()->eq('ppv.option', $option->getId()));
+        } else {
+            $qb
+                ->innerJoin('pp.values', 'ppv')
+                ->innerJoin('ppv.options', 'ppo', 'WITH', $qb->expr()->eq('ppo.id', $option->getId()));
+        }
 
         return $this->getCountFromQB($qb);
     }

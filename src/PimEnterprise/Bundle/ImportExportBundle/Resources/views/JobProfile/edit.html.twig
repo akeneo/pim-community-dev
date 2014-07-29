@@ -59,7 +59,7 @@
             </div>
 
             {% if resource_granted(resourceName) %}
-            <div class="tab-pane buffer-top active" id="permissions">
+            <div class="tab-pane buffer-top" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
             {% endif %}

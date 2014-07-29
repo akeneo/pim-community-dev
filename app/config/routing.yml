@@ -15,11 +15,11 @@ pim_importexport:
 pim_webservice:
     resource: "@PimWebServiceBundle/Resources/config/routing.yml"
 
-pim_workflow:
-    resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
+pimee_datagrid:
+    resource: "@PimEnterpriseDataGridBundle/Resources/config/routing.yml"
 
-pim_security:
-    resource: "@PimEnterpriseSecurityBundle/Resources/config/routing.yml"
+pimee_workflow:
+    resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
 
 pim_versioning:
     resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"

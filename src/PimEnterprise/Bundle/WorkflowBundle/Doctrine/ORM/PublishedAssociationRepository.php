@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use Pim\Bundle\CatalogBundle\Doctrine\EntityRepository;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface;
 
 /**
@@ -25,5 +26,25 @@ class PublishedAssociationRepository extends EntityRepository implements Publish
                 'associationType' => $type,
             ]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function removePublishedProduct(PublishedProductInterface $published, $nbAssociationTypes = null)
+    {
+        $qb = $this->createQueryBuilder('pp');
+        $rootEntity = current($qb->getRootEntities());
+        $productsMapping = $this->_em->getClassMetadata($rootEntity)->getAssociationMapping('products');
+
+        // DELETE FROM pimee_workflow_published_product_association_published_product WHERE  product_id = ?
+        $sql = sprintf(
+            "DELETE p FROM %s p WHERE %s = %d",
+            $productsMapping['joinTable']['name'],
+            $productsMapping['joinTable']['inverseJoinColumns'][0]['name'],
+            $published->getId()
+        );
+
+        $this->_em->getConnection()->prepare($sql)->execute();
     }
 }

@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 
@@ -16,8 +17,8 @@ use Pim\Bundle\VersioningBundle\Model\Version;
  */
 class PublishedProduct extends AbstractProduct implements ReferableInterface, PublishedProductInterface
 {
-    /** @var mixed */
-    protected $originalProductId;
+    /** @var ProductInterface */
+    protected $originalProduct;
 
     /** @var  Version */
     protected $version;
@@ -25,17 +26,17 @@ class PublishedProduct extends AbstractProduct implements ReferableInterface, Pu
     /**
      * {@inheritdoc}
      */
-    public function getOriginalProductId()
+    public function getOriginalProduct()
     {
-        return $this->originalProductId;
+        return $this->originalProduct;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setOriginalProductId($productId)
+    public function setOriginalProduct(ProductInterface $productId)
     {
-        $this->originalProductId = $productId;
+        $this->originalProduct = $productId;
 
         return $this;
     }

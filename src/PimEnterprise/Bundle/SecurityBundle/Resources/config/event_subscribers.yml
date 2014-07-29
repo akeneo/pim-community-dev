@@ -1,0 +1,44 @@
+parameters:
+    pimee_security.event_subscriber.enrich.disable_product_value_form.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\DisableProductValueFieldSubscriber
+    pimee_security.event_subscriber.enrich.product.class:                    PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\ProductSubscriber
+    pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
+    pimee_security.event_subscriber.enrich.add_owner_groups_parameter.class:  PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddOwnerGroupsParameterSubscriber
+    pimee_security.event_subscriber.enrich.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber
+
+services:
+    pimee_security.event_subscriber.enrich.disable_product_value_form:
+        class: %pimee_security.event_subscriber.enrich.disable_product_value_form.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.enrich.product:
+        class: %pimee_security.event_subscriber.enrich.product.class%
+        arguments:
+            - '@security.context'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.enrich.job_permissions:
+        class: %pimee_security.event_subscriber.enrich.job_permissions.class%
+        arguments:
+            - '@security.context'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.enrich.add_owner_groups_parameter:
+        class: %pimee_security.event_subscriber.enrich.add_owner_groups_parameter.class%
+        arguments:
+            - '@pimee_security.repository.category_access'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.enrich.add_category_permissions:
+        class: %pimee_security.event_subscriber.enrich.add_category_permissions.class%
+        arguments:
+            - '@pimee_security.manager.category_access'
+        tags:
+            - { name: kernel.event_subscriber }

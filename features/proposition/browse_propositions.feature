@@ -11,10 +11,10 @@ Feature: Browse propositions for a specific product
       | black-boots | boots  |
       | white-boots | boots  |
     And the following propositions:
-      | product     | status      | author | locale |
-      | black-boots | in progress | Julia  | fr_FR  |
-      | black-boots | ready       | Mary   | en_US  |
-      | white-boots | ready       | Sandra | en_US  |
+      | product     | status      | author |
+      | black-boots | in progress | Julia  |
+      | black-boots | ready       | Mary   |
+      | white-boots | ready       | Sandra |
     And I am logged in as "Julia"
 
   Scenario: Successfully display propositions

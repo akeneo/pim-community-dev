@@ -1,0 +1,17 @@
+parameters:
+    pimee_enrich.twig.version_extension.class: PimEnterprise\Bundle\EnrichBundle\Twig\VersionExtension
+    pim_enrich.twig.category_extension.class:  PimEnterprise\Bundle\EnrichBundle\Twig\CategoryExtension
+
+services:
+    pimee_enrich.twig.version_extension:
+        class: %pimee_enrich.twig.version_extension.class%
+        tags:
+            - { name: twig.extension }
+
+    pim_enrich.twig.category_extension:
+        class: %pim_enrich.twig.category_extension.class%
+        arguments:
+            - '@pim_catalog.manager.product_category'
+            - '@pimee_workflow.manager.published_product_category'
+        tags:
+            - { name: twig.extension }

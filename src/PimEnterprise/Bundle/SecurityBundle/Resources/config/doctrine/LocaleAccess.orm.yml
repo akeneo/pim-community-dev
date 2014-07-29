@@ -1,0 +1,40 @@
+PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess:
+    type: entity
+    table: pimee_security_locale_access
+    repositoryClass: PimEnterprise\Bundle\SecurityBundle\Entity\Repository\LocaleAccessRepository
+    uniqueConstraints:
+        locale_user_group_idx:
+            columns:
+                - locale_id
+                - user_group_id
+    fields:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+        viewProducts:
+            type: boolean
+            column: view_products
+            options:
+                default: false
+        editProducts:
+            type: boolean
+            column: edit_products
+            options:
+                default: false
+    manyToOne:
+        locale:
+            targetEntity: Pim\Bundle\CatalogBundle\Entity\Locale
+            joinColumns:
+                locale_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false
+        userGroup:
+            targetEntity: Oro\Bundle\UserBundle\Entity\Group
+            joinColumns:
+                user_group_id:
+                    referencedColumnName: id
+                    onDelete: CASCADE
+                    nullable: false

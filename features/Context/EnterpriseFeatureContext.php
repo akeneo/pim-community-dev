@@ -23,7 +23,7 @@ class EnterpriseFeatureContext extends FeatureContext
         $this->useContext('webApi', new WebApiContext($parameters['base_url']));
         $this->useContext('datagrid', new DataGridContext());
         $this->useContext('command', new CommandContext());
-        $this->useContext('navigation', new NavigationContext());
+        $this->useContext('navigation', new EnterpriseNavigationContext());
         $this->useContext('transformations', new TransformationContext());
         $this->useContext('assertions', new AssertionContext());
     }
@@ -51,6 +51,41 @@ class EnterpriseFeatureContext extends FeatureContext
         }
 
         throw $this->createExpectationException('Modified value icon was not found');
+    }
+
+    /**
+     * @Then /^I should see the permission (.*) with user groups (.*)$/
+     */
+    public function iShouldSeeThePermissionFieldWithRoles($field, $userGroups)
+    {
+        try {
+            $element = $this->getSubcontext('navigation')->getCurrentPage()->findField($field);
+            if (!$element) {
+                throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
+            }
+        } catch (ElementNotFoundException $e) {
+            throw $this->createExpectationException(sprintf('Expecting to see field "%s".', $field));
+        }
+
+        $selectedOptions = $element->getParent()->getParent()->findAll('css', 'li.select2-search-choice div');
+        $selectedRoles = [];
+        foreach ($selectedOptions as $option) {
+            $selectedRoles[] = $option->getHtml();
+        }
+
+        $expectedUserGroups = $this->getMainContext()->listToArray($userGroups);
+        $missingUserGroups = array_diff($selectedRoles, $expectedUserGroups);
+        $extraUserGroups = array_diff($expectedUserGroups, $selectedRoles);
+        if (count($missingUserGroups) > 0 || count($extraUserGroups) > 0) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'For permission %s, user groups %s are expected, user groups granted are %s',
+                    $field,
+                    implode(', ', $expectedUserGroups),
+                    implode(', ', $selectedRoles)
+                )
+            );
+        }
     }
 
     /**

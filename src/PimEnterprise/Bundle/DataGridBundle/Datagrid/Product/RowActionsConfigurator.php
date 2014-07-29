@@ -3,12 +3,13 @@
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Product;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
-use Oro\Bundle\DataGridBundle\Extension\Action\ActionExtension;
 use Oro\Bundle\DataGridBundle\Datagrid\Common\DatagridConfiguration;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
+use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfigurationRegistry;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ConfiguratorInterface;
-use PimEnterprise\Bundle\SecurityBundle\Voter\CategoryVoter;
+use Pim\Bundle\CatalogBundle\Entity\Repository\LocaleRepository;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Row actions configurator for product grid
@@ -27,25 +28,28 @@ class RowActionsConfigurator implements ConfiguratorInterface
     /** @var SecurityContextInterface */
     protected $securityContext;
 
-    /** @var CategoryRepository */
-    protected $categoryRepository;
+    /** @var ProductRepositoryInterface */
+    protected $productRepository;
 
-    /** @var array */
-    protected $actionConfiguration = [];
+    /** @var LocaleRepository */
+    protected $localeRepository;
 
     /**
-     * @param ConfigurationRegistry    $registry
-     * @param SecurityContextInterface $securityContext
-     * @param CategoryRepository       $categoryRepository
+     * @param ConfigurationRegistry      $registry
+     * @param SecurityContextInterface   $securityContext
+     * @param ProductRepositoryInterface $productRepository
+     * @param LocaleRepository           $localeRepository
      */
     public function __construct(
         ConfigurationRegistry $registry,
         SecurityContextInterface $securityContext,
-        CategoryRepository $categoryRepository
+        ProductRepositoryInterface $productRepository,
+        LocaleRepository $localeRepository
     ) {
         $this->registry = $registry;
         $this->securityContext = $securityContext;
-        $this->categoryRepository = $categoryRepository;
+        $this->productRepository = $productRepository;
+        $this->localeRepository = $localeRepository;
     }
 
     /**
@@ -55,7 +59,32 @@ class RowActionsConfigurator implements ConfiguratorInterface
     {
         $this->configuration = $configuration;
         $this->addDispatchAction();
-        $this->checkEditActions();
+        $this->addRowActions();
+    }
+
+    /**
+     * Returns a callback to ease the configuration of different actions for each row
+     *
+     * @return callable
+     */
+    public function getActionConfigurationClosure()
+    {
+        return function (ResultRecordInterface $record) {
+            $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
+            $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
+
+            $editGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
+            $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWNER, $product) : false;
+            $localeGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
+
+            return [
+                'show'            => !$editGranted || !$localeGranted,
+                'edit'            => $editGranted && $localeGranted,
+                'edit_categories' => $ownershipGranted && $localeGranted,
+                'delete'          => $editGranted && $localeGranted,
+                'toggle_status'   => $editGranted && $localeGranted
+            ];
+        };
     }
 
     /**
@@ -87,34 +116,19 @@ class RowActionsConfigurator implements ConfiguratorInterface
     }
 
     /**
-     * Check if the user has the permission to use the row actions.
+     * Add dynamic row action and configure the closure
      *
      * @return null
      */
-    protected function checkEditActions()
+    protected function addRowActions()
     {
         $this->addShowRowAction();
         $this->addShowLinkProperty();
-
-        $path = sprintf('[source][%s]', ContextConfigurator::CURRENT_TREE_ID_KEY);
-        $tree = $this->categoryRepository->find($this->configuration->offsetGetByPath($path));
-
-        if ($this->securityContext->isGranted(CategoryVoter::EDIT_PRODUCTS, $tree)) {
-            $this->actionConfiguration = ['show' => false];
-        } else {
-            $this->actionConfiguration = [
-                'edit'            => false,
-                'edit_categories' => false,
-                'delete'          => false,
-            ];
-        }
-
         $this->configuration->offsetSetByPath(
-            sprintf('[%s]', ActionExtension::ACTION_CONFIGURATION_KEY),
-            function () {
-                return $this->getActionConfiguration();
-            }
+            '[action_configuration]',
+            $this->getActionConfigurationClosure()
         );
+
     }
 
     /**
@@ -157,7 +171,7 @@ class RowActionsConfigurator implements ConfiguratorInterface
         $showLink = [];
         $showLink['type'] = 'url';
         $showLink['route'] = 'pimee_enrich_product_show';
-        $showLink['params'][] = 'id';
+        $showLink['params'] = ['id', 'dataLocale'];
 
         $this->configuration->offsetSetByPath('[properties][show_link]', $showLink);
 

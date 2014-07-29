@@ -6,6 +6,11 @@ pimee_workflow_published_product_publish:
     defaults: { _controller: pimee_workflow.controller.published_product:publishAction }
     requirements:
         id: '[0-9a-f]+'
+pimee_workflow_published_product_unpublish:
+    path: /{id}/unpublish
+    defaults: { _controller: pimee_workflow.controller.published_product:unpublishAction }
+    requirements:
+        id: '[0-9a-f]+'
 pimee_workflow_published_product_view:
     path: /{id}/view
     defaults: { _controller: pimee_workflow.controller.published_product:viewAction }

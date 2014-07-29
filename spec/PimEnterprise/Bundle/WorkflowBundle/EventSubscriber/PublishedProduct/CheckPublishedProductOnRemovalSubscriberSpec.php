@@ -3,8 +3,9 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use PhpSpec\ObjectBehavior;
+use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
@@ -25,14 +26,14 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     function it_subscribes_to_pre_remove_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-                CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
-                CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_TREE             => 'checkCategoryLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
-                CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
-            ]);
+            Event\ProductEvents::PRE_REMOVE           => 'checkProductHasBeenPublished',
+            Event\FamilyEvents::PRE_REMOVE            => 'checkFamilyLinkedToPublishedProduct',
+            Event\AttributeEvents::PRE_REMOVE         => 'checkAttributeLinkedToPublishedProduct',
+            Event\CategoryEvents::PRE_REMOVE_CATEGORY => 'checkCategoryLinkedToPublishedProduct',
+            Event\CategoryEvents::PRE_REMOVE_TREE     => 'checkCategoryLinkedToPublishedProduct',
+            Event\AssociationTypeEvents::PRE_REMOVE   => 'checkAssociationTypeLinkedToPublishedProduct',
+            Event\GroupEvents::PRE_REMOVE             => 'checkGroupLinkedToPublishedProduct'
+        ]);
     }
 
     function it_checks_if_a_product_is_not_published(
@@ -42,7 +43,7 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     ) {
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
-        $publishedRepository->findOneByOriginalProductId(1)->willReturn(false);
+        $publishedRepository->findOneByOriginalProduct($product)->willReturn(null);
 
         $this->checkProductHasBeenPublished($event);
     }
@@ -50,11 +51,12 @@ class CheckPublishedProductOnRemovalSubscriberSpec extends ObjectBehavior
     function it_throws_an_exception_if_the_product_is_published(
         $publishedRepository,
         AbstractProduct $product,
+        PublishedProductInterface $published,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
         $product->getId()->willReturn(1);
-        $publishedRepository->findOneByOriginalProductId(1)->willReturn(true);
+        $publishedRepository->findOneByOriginalProduct($product)->willReturn($published);
 
         $this
             ->shouldThrow(new PublishedProductConsistencyException('Impossible to remove a published product'))

@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyException;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInterface;
@@ -41,13 +41,13 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public static function getSubscribedEvents()
     {
         return [
-            CatalogEvents::PRE_REMOVE_PRODUCT          => 'checkProductHasBeenPublished',
-            CatalogEvents::PRE_REMOVE_FAMILY           => 'checkFamilyLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_ATTRIBUTE        => 'checkAttributeLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_CATEGORY         => 'checkCategoryLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_TREE             => 'checkCategoryLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE => 'checkAssociationTypeLinkedToPublishedProduct',
-            CatalogEvents::PRE_REMOVE_GROUP            => 'checkGroupLinkedToPublishedProduct'
+            Event\ProductEvents::PRE_REMOVE           => 'checkProductHasBeenPublished',
+            Event\FamilyEvents::PRE_REMOVE            => 'checkFamilyLinkedToPublishedProduct',
+            Event\AttributeEvents::PRE_REMOVE         => 'checkAttributeLinkedToPublishedProduct',
+            Event\CategoryEvents::PRE_REMOVE_CATEGORY => 'checkCategoryLinkedToPublishedProduct',
+            Event\CategoryEvents::PRE_REMOVE_TREE     => 'checkCategoryLinkedToPublishedProduct',
+            Event\AssociationTypeEvents::PRE_REMOVE   => 'checkAssociationTypeLinkedToPublishedProduct',
+            Event\GroupEvents::PRE_REMOVE             => 'checkGroupLinkedToPublishedProduct'
         ];
     }
 
@@ -61,7 +61,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     public function checkProductHasBeenPublished(GenericEvent $event)
     {
         $product   = $event->getSubject();
-        $published = $this->publishedRepository->findOneByOriginalProductId($product->getId());
+        $published = $this->publishedRepository->findOneByOriginalProduct($product);
 
         if ($published) {
             throw new PublishedProductConsistencyException('Impossible to remove a published product');
@@ -98,7 +98,7 @@ class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterfa
     {
         $category = $event->getSubject();
         $categoryIds = $this->categoryRepository->getAllChildrenIds($category);
-        $categoryIds[] = $category->getId() ;
+        $categoryIds[] = $category->getId();
 
         $publishedCount = $this->publishedRepository->countPublishedProductsForCategoryAndChildren($categoryIds);
 

@@ -1,26 +1,23 @@
 datagrid:
     product-history-grid:
         source:
-            type: pim_orm
+            type: pimee_datasource_product_history
             entity: %pim_versioning.entity.version.class%
-            repository_method: createProductDatagridQueryBuilder
+            repository_method: createDatagridQueryBuilder
         columns:
             version:
                 label: Version
-                type: field
                 frontend_type: integer
-            published_version_id:
+            published:
                 label: Published
                 type: twig
                 template: PimEnterpriseDataGridBundle:Property:published.html.twig
                 frontend_type: html
             author:
                 label: Author
-                type: field
                 frontend_type: string
             loggedAt:
-                label: Logged at
-                type: field
+                label: Logged At
                 frontend_type: datetime
             old:
                 label: Old values

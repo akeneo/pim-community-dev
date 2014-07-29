@@ -6,22 +6,17 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Job profile voter, allows to know if a job profile can be executed or edited by
- * a user depending on his roles
+ * a user depending on his user groups
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class JobProfileVoter implements VoterInterface
 {
-    /** @staticvar string */
-    const EXECUTE_JOB_PROFILE = 'EXECUTE_JOB_PROFILE';
-
-    /** @staticvar string */
-    const EDIT_JOB_PROFILE    = 'EDIT_JOB_PROFILE';
-
     /** @var JobProfileAccessManager */
     protected $accessManager;
 
@@ -40,7 +35,7 @@ class JobProfileVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(self::EXECUTE_JOB_PROFILE, self::EDIT_JOB_PROFILE));
+        return in_array($attribute, array(Attributes::EXECUTE_JOB_PROFILE, Attributes::EDIT_JOB_PROFILE));
     }
 
     /**
@@ -62,10 +57,10 @@ class JobProfileVoter implements VoterInterface
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
                     $result = VoterInterface::ACCESS_DENIED;
-                    $grantedRoles = $this->extractRoles($attribute, $object);
+                    $grantedGroups = $this->extractGroups($attribute, $object);
 
-                    foreach ($grantedRoles as $role) {
-                        if ($token->getUser()->hasRole($role)) {
+                    foreach ($grantedGroups as $group) {
+                        if ($token->getUser()->hasGroup($group)) {
                             return VoterInterface::ACCESS_GRANTED;
                         }
                     }
@@ -77,21 +72,21 @@ class JobProfileVoter implements VoterInterface
     }
 
     /**
-     * Get roles for specific job profile
+     * Get user groups for specific job profile
      *
      * @param string      $attribute
      * @param JobInstance $object
      *
-     * @return Role[]
+     * @return \Oro\Bundle\UserBundle\Entity\Group[]
      */
-    protected function extractRoles($attribute, $object)
+    protected function extractGroups($attribute, $object)
     {
-        if ($attribute === self::EDIT_JOB_PROFILE) {
-            $grantedRoles = $this->accessManager->getEditRoles($object);
+        if ($attribute === Attributes::EDIT_JOB_PROFILE) {
+            $grantedGroups = $this->accessManager->getEditUserGroups($object);
         } else {
-            $grantedRoles = $this->accessManager->getExecuteRoles($object);
+            $grantedGroups = $this->accessManager->getExecuteUserGroups($object);
         }
 
-        return $grantedRoles;
+        return $grantedGroups;
     }
 }

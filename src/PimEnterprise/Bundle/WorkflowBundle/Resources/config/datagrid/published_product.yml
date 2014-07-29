@@ -3,10 +3,11 @@ datagrid:
         options:
             entityHint: product
             requireJSModules:
+                - pim/datagrid/export-action
                 - pim/datagrid/configure-columns-action
         source:
             acl_resource:      pim_enrich_product_index
-            type:              pim_product
+            type:              pimee_datasource_published_product
             entity:            %pimee_workflow.entity.published_product.class%
             repository_method: createDatagridQueryBuilder
         columns:
@@ -47,6 +48,12 @@ datagrid:
                 route: pimee_workflow_published_product_view
                 params:
                     - id
+                    - dataLocale
+            unpublish_link:
+                type: url
+                route: pimee_workflow_published_product_unpublish
+                params:
+                    - id
         actions:
             view:
                 type:      navigate
@@ -54,6 +61,33 @@ datagrid:
                 icon:      eye-open
                 link:      view_link
                 rowAction: true
+            unpublish:
+                type:  ajax
+                label: Unpublish the product
+                icon:  cloud-download
+                link:  unpublish_link
+        action_configuration: '@pimee_datagrid.datagrid.published_product.grid_helper->getActionConfigurationClosure'
+        mass_actions:
+            mass_edit:
+                type: edit
+                acl_resource: pimee_workflow_published_product_index
+                label: pim.grid.mass_action.mass_edit
+                handler: product_mass_edit
+                route: pim_enrich_mass_edit_action_choose
+                icon: edit
+            quick_export_csv:
+                type: export
+                label: pim.grid.mass_action.quick_export.csv_all
+                icon: download
+                handler: product_quick_export
+                route: pimee_datagrid_export_published_product_index
+                route_parameters:
+                    _format: csv
+                    _contentType: text/csv
+                context:
+                    withHeader: true
+                messages:
+                    empty_selection: No products selected
         sorters:
             columns:
                 family:
@@ -94,10 +128,10 @@ datagrid:
                             multiple: true
                             choices: '@pim_catalog.manager.group->getChoices'
                 enabled:
-                    type:        product_enabled
-                    parent_type: choice
-                    label:       Status
-                    data_name:   enabled
+                    type:      product_enabled
+                    ftype:     choice
+                    label:     Status
+                    data_name: enabled
                     options:
                         field_options:
                             choices:
@@ -112,6 +146,7 @@ datagrid:
                             choices: '@pim_catalog.manager.channel->getChannelChoices'
                 category:
                     type:      published_product_category
+                    ftype:     product_category
                     label:     Category
                     data_name: category
                 completeness:
@@ -119,12 +154,18 @@ datagrid:
                     label:     Complete
                     data_name: ratio
                 created:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   created
-                    label:       Created At
+                    type:      product_date
+                    ftype:     date
+                    data_name: created
+                    label:     Created At
                 updated:
-                    type:        product_date
-                    parent_type: date
-                    data_name:   updated
-                    label:       Updated At
+                    type:      product_date
+                    ftype:     date
+                    data_name: updated
+                    label:     Updated At
+            default:
+                category:
+                    value:
+                        treeId: %pim_filter.product_category_filter.class%::UNKNOWN_TREE
+                        categoryId: %pim_filter.product_category_filter.class%::ALL_CATEGORY
+                    type: %pim_filter.product_category_filter.class%::DEFAULT_TYPE

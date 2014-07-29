@@ -2,9 +2,6 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
-use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
-
-use Symfony\Component\Security\Core\SecurityContextInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -12,10 +9,12 @@ use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttributes as BaseEditCommonAttributes;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Overriden EditCommonAttributes operation to check permissions
+ * Edit common attributes of given products
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -41,6 +40,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
+        array $classes,
         SecurityContextInterface $securityContext
     ) {
         parent::__construct(
@@ -49,20 +49,36 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $currencyManager,
             $catalogContext,
             $productBuilder,
-            $massActionManager
+            $massActionManager,
+            $classes
         );
+
         $this->securityContext = $securityContext;
     }
 
     /**
+     * Get form options
+     *
+     * @return array
+     */
+    public function getFormOptions()
+    {
+        return array(
+            'locales'          => $this->userContext->getGrantedUserLocales(Attributes::EDIT_PRODUCTS),
+            'common_attributes' => $this->commonAttributes,
+        );
+    }
+
+    /**
      * {@inheritdoc}
+     *
+     * Prevent performing operation if current user does not own the product
+     * Otherwise, product is directly updated and propostion is also created
      */
     protected function doPerform(ProductInterface $product)
     {
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $product)) {
-            return;
+        if ($this->securityContext->isGranted(Attributes::OWNER, $product)) {
+            return parent::doPerform($product);
         }
-
-        return parent::doPerform($product);
     }
 }

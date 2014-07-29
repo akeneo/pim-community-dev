@@ -4,11 +4,11 @@ namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Translation\TranslatorInterface;
-use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as PimAvailableAttributesType;
+use Pim\Bundle\EnrichBundle\Form\Type\AvailableAttributesType as BaseAvailableAttributesType;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
-use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Override available attributes type to remove attributes where permissions are revoked
@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AvailableAttributesType extends PimAvailableAttributesType
+class AvailableAttributesType extends BaseAvailableAttributesType
 {
     /** @var AttributeGroupAccessRepository */
     protected $attGroupAccessRepo;
@@ -49,7 +49,7 @@ class AvailableAttributesType extends PimAvailableAttributesType
     {
         $revokedAttributeIds = $this->attGroupAccessRepo->getRevokedAttributeIds(
             $this->userContext->getUser(),
-            AttributeGroupVoter::EDIT_ATTRIBUTES
+            Attributes::EDIT_ATTRIBUTES
         );
 
         $builder->add(
