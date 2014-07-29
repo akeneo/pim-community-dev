@@ -15,7 +15,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class AddUserListener implements EventSubscriberInterface
+class AddUserSubscriber implements EventSubscriberInterface
 {
     /**
      * @var SecurityContextInterface

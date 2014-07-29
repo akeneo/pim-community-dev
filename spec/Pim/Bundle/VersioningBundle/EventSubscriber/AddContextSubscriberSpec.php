@@ -10,7 +10,7 @@ use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 
-class AddContextListenerSpec extends ObjectBehavior
+class AddContextSubscriberSpec extends ObjectBehavior
 {
     function let(
         VersionManager $versionManager,
