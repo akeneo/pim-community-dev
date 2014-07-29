@@ -51,7 +51,7 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
         $this->normalizer = new ProductNormalizer($this->mediaManager);
         $this->serializer = $this->getMockForAbstractClass(
-            '\Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat\Serializer'
+            '\Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat\AbstractSerializer'
         );
         $this->normalizer->setSerializer($this->serializer);
     }
@@ -480,9 +480,4 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
 
         return $metric;
     }
-}
-
-abstract class Serializer implements SerializerInterface, NormalizerInterface
-{
-
 }
