@@ -54,4 +54,3 @@ services:
             - '@pimee_security.manager.datagtrid_view_access'
         tags:
             - { name: security.voter }
-
