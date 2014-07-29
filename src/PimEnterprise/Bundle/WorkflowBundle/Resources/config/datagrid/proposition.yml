@@ -60,7 +60,7 @@ datagrid:
             columns:
                 status:
                     type:        proposition_choice
-                    parent_type: choice
+                    ftype:       choice
                     data_name:   status
                     label:       pimee_workflow.proposition.status.label
                     options:
