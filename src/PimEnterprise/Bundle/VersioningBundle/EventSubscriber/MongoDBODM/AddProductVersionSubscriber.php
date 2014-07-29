@@ -1,8 +1,8 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\EventListener\MongoDBODM;
+namespace PimEnterprise\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
-use Pim\Bundle\VersioningBundle\EventListener\MongoDBODM\AddProductVersionListener as BaseAddProductVersionListener;
+use Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber as BaseAddProductVersionSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AddProductVersionListener extends BaseAddProductVersionListener
+class AddProductVersionSubscriber extends BaseAddProductVersionSubscriber
 {
     /**
      * {@inheritdoc}

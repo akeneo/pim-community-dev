@@ -51,9 +51,11 @@ class SynchronizePropositionCategoriesSubscriber implements EventSubscriber
     public function getSubscribedEvents()
     {
         return [
+            // @codingStandardsIgnoreStart
             MongoDBODMEvents::prePersist,
             MongoDBODMEvents::preUpdate,
             ORMEvents::preRemove,
+            // @codingStandardsIgnoreEnd
         ];
     }
 
