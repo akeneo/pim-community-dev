@@ -1,10 +1,10 @@
 parameters:
-    pim_user.event_listener.user_preferences.class:  Pim\Bundle\UserBundle\EventListener\UserPreferencesListener
-    pim_user.event_subscriber.group.class:           Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
+    pim_user.event_subscriber.user_preferences.class: Pim\Bundle\UserBundle\EventSubscriber\UserPreferencesListener
+    pim_user.event_subscriber.group.class:            Pim\Bundle\UserBundle\EventSubscriber\GroupSubscriber
 
 services:
-    pim_user.event_listener.user_preferences:
-        class: %pim_user.event_listener.user_preferences.class%
+    pim_user.event_subscriber.user_preferences:
+        class: %pim_user.event_subscriber.user_preferences.class%
         calls:
             - [ setContainer, [ '@service_container' ] ]
         tags:
