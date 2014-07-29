@@ -13,6 +13,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
+use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter;
@@ -71,6 +72,10 @@ class ProductVersionController extends AbstractDoctrineController
      * Revert the entity to the current version
      *
      * @param Version $version
+     *
+     * @return RedirectResponse|JsonResponse
+     *
+     * @AclAncestor("pimee_versioning_revert_product")
      */
     public function revertAction(Version $version)
     {
