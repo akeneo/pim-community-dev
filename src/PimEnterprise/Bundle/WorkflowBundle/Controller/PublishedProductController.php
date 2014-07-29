@@ -150,10 +150,12 @@ class PublishedProductController extends AbstractController
         $this->addFlash('success', 'flash.product.unpublished');
 
         if ($request->isXmlHttpRequest()) {
-            return new JsonResponse([
-                'successful' => true,
-                'message' => $this->translator->trans('flash.product.unpublished')
-            ]);
+            return new JsonResponse(
+                [
+                    'successful' => true,
+                    'message' => $this->translator->trans('flash.product.unpublished')
+                ]
+            );
         }
 
         return parent::redirectToRoute(
