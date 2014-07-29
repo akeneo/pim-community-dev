@@ -5,6 +5,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
  * Normalize a doctrine collection
@@ -37,18 +38,13 @@ class CollectionNormalizer extends SerializerAwareNormalizer implements Normaliz
         foreach ($object as $item) {
             $normalizedItem = $this->serializer->normalize($item, $format, $context);
             if (is_array($normalizedItem)) {
-                foreach (array_keys($normalizedItem) as $key) {
+                foreach ($normalizedItem as $key => $value) {
                     if (array_key_exists($key, $result)) {
-                        throw new \RuntimeException(
-                            sprintf(
-                                'Key "%s" is already used (value: "%s")',
-                                $key,
-                                $result[$key]
-                            )
-                        );
+                        $result[$key] = $result[$key] . ',' . $value;
+                    } else {
+                        $result = array_merge($result, $normalizedItem);
                     }
                 }
-                $result = array_merge($result, $normalizedItem);
             } else {
                 if (is_array($result)) {
                     $result = '';
@@ -62,7 +58,7 @@ class CollectionNormalizer extends SerializerAwareNormalizer implements Normaliz
         }
 
         if (!isset($context['field_name'])) {
-            throw new \InvalidArgumentException(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Missing required "field_name" context value, got "%s"',
                     implode(', ', array_keys($context))
