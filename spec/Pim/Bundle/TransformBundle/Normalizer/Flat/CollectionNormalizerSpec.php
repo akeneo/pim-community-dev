@@ -6,6 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 class CollectionNormalizerSpec extends ObjectBehavior
 {
@@ -65,17 +66,29 @@ class CollectionNormalizerSpec extends ObjectBehavior
     }
 
 
-    function it_throws_exception_when_normalization_of_an_element_produces_an_already_used_key(
+    function it_concatenate_normalized_elements_using_the_same_key(
         $serializer,
         Collection $collection
     ) {
         $collection->getIterator()->willReturn(new \ArrayIterator([4, 8, 15]));
-        $serializer->normalize(4, null, [])->willReturn(['1st' => 'Four']);
-        $serializer->normalize(8, null, [])->willReturn(['2nd' => 'Eight']);
-        $serializer->normalize(15, null, [])->willReturn(['2nd' => 'Fifteen']);
+        $serializer->normalize(4, null, ['field_name' => 'even'])->willReturn(['even' => 'Four']);
+        $serializer->normalize(8, null, ['field_name' => 'even'])->willReturn(['even' => 'Eight']);
+        $serializer->normalize(15, null, ['field_name' => 'even'])->willReturn(['even' => 'Fifteen']);
+
+        $this->normalize($collection, null, ['field_name' => 'even'])->shouldReturn(['even' => 'Four,Eight,Fifteen']);
+    }
+
+    function its_normalize_method_throw_exception_when_required_field_name_key_is_not_passed(
+        $serializer,
+        Collection $collection
+    ) {
+        $collection->getIterator()->willReturn(new \ArrayIterator([4, 8, 15]));
+        $serializer->normalize(4, null, ['foo' => 'bar'])->willReturn('Four');
+        $serializer->normalize(8, null, ['foo' => 'bar'])->willReturn('Eight');
+        $serializer->normalize(15, null, ['foo' => 'bar'])->willReturn('Fifteen');
 
         $this
-            ->shouldThrow(new \RuntimeException('Key "2nd" is already used (value: "Eight")'))
-            ->duringNormalize($collection);
+            ->shouldThrow(new InvalidArgumentException('Missing required "field_name" context value, got "foo"'))
+            ->duringNormalize($collection, null, ['foo' => 'bar']);
     }
 }
