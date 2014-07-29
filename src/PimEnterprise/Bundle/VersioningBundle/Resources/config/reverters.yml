@@ -1,0 +1,10 @@
+parameters:
+    pimee_versioning.reverter.product.class: PimEnterprise\Bundle\VersioningBundle\Reverter\ProductReverter
+
+services:
+    pimee_versioning.reverter.product:
+        class: %pimee_versioning.reverter.product.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - '@pim_serializer'
+            - '@pim_catalog.manager.product'

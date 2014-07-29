@@ -13,12 +13,12 @@ use PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM\PublishedProductRepo
  */
 class ProductMassActionRepositorySpec extends ObjectBehavior
 {
-    public function let(DocumentManager $dm, FamilyRepository $familyRepository, PublishedProductRepository $publishedRepository)
+    function let(DocumentManager $dm, FamilyRepository $familyRepository, PublishedProductRepository $publishedRepository)
     {
         $this->beConstructedWith($dm, Argument::any(), $familyRepository, $publishedRepository);
     }
 
-    public function it_throws_an_exception_if_there_is_a_product_published($publishedRepository)
+    function it_throws_an_exception_if_there_is_a_product_published($publishedRepository)
     {
         $ids = [1, 2];
         $publishedRepository->getProductIdsMapping($ids)->willReturn([1]);
