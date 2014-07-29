@@ -66,7 +66,6 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
         $jobs = $this->getAllJobs();
 
         foreach ($jobs as $key => $job) {
-            // Do not load job when fixtures file is not available
             if (!is_readable($job->getRawConfiguration()['filePath'])) {
                 unset($jobs[$key]);
             }
@@ -92,7 +91,8 @@ abstract class AbstractLoadFixturesData extends AbstractFixture implements
             new ArrayInput(
                 [
                     'command'     => 'akeneo:batch:job',
-                    'code'        => $job->getCode()
+                    'code'        => $job->getCode(),
+                    '--no-debug'  => true
                 ]
             ),
             new ConsoleOutput()
