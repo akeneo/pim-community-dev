@@ -51,6 +51,7 @@
 - Define attribute type classes as parameters
 - Products on which mass edit operation is not performed are also ignored from operation finalize method
 - Create specific serializer service for versioning
+- Create a metric factory
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
