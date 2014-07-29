@@ -2,6 +2,8 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
+
 /**
  * Association flat denormalizer
  *
@@ -38,7 +40,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
                 $this->getAssociationType($context['association_type_code'])
             );
         } else {
-            throw new \Exception(
+            throw new InvalidArgumentException(
                 'Association entity or association type code should be passed in context"'
             );
         }

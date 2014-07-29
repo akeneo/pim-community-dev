@@ -4,6 +4,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
  * Product value flat denormalizer
@@ -47,7 +48,7 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
             $context['value']  = $value;
         } else {
             //TODO: implements this part in a cleaner way
-            throw new \Exception('Value should be passed in context');
+            throw new InvalidArgumentException('Value should be passed in context');
         }
 
         // Call denormalizer with attribute type

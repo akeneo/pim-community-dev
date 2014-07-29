@@ -3,6 +3,8 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
+use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
+use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -94,6 +96,8 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      * @param array $context
      *
      * @return object
+     *
+     * @throws InvalidArgumentException
      */
     protected function getEntity(array $data, array $context)
     {
@@ -104,7 +108,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
             if (isset($data['code'])) {
                 $entity = $this->findEntity($data['code']);
             } else {
-                throw new \Exception(
+                throw new InvalidArgumentException(
                     sprintf('Missing identifier "%s" to get "%s" identity', 'code', $this->entityClass)
                 );
             }
@@ -129,12 +133,14 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      * @param string $identifier
      *
      * @return object|false
+     *
+     * @throws RevertException
      */
     protected function findEntity($identifier)
     {
         $entity = $this->getRepository()->findByReference($identifier);
         if (!$entity) {
-            throw new \Exception(
+            throw new RevertException(
                 sprintf('Entity "%s" with identifier "%s" not found', $this->entityClass, $identifier)
             );
         }
