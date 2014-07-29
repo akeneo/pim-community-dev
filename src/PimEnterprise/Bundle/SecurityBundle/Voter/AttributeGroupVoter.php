@@ -56,37 +56,15 @@ class AttributeGroupVoter implements VoterInterface
         if ($this->supportsClass($object)) {
             foreach ($attributes as $attribute) {
                 if ($this->supportsAttribute($attribute)) {
-                    $result       = VoterInterface::ACCESS_DENIED;
-                    $grantedUserGroups = $this->extractUserGroups($attribute, $object);
+                    $result = VoterInterface::ACCESS_DENIED;
 
-                    foreach ($grantedUserGroups as $userGroup) {
-                        if ($token->getUser()->hasGroup($userGroup)) {
-                            return VoterInterface::ACCESS_GRANTED;
-                        }
+                    if ($this->accessManager->isUserGranted($token->getUser(), $object, $attribute)) {
+                        return VoterInterface::ACCESS_GRANTED;
                     }
                 }
             }
         }
 
         return $result;
-    }
-
-    /**
-     * Get user groups for specific attribute and object
-     *
-     * @param string         $attribute
-     * @param AttributeGroup $object
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\Group[]
-     */
-    protected function extractUserGroups($attribute, $object)
-    {
-        if ($attribute === Attributes::EDIT_ATTRIBUTES) {
-            $grantedGroups = $this->accessManager->getEditUserGroups($object);
-        } else {
-            $grantedGroups = $this->accessManager->getViewUserGroups($object);
-        }
-
-        return $grantedGroups;
     }
 }

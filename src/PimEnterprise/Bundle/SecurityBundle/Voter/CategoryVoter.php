@@ -53,40 +53,20 @@ class CategoryVoter implements VoterInterface
     {
         $result = VoterInterface::ACCESS_ABSTAIN;
 
-        if ($this->supportsClass($object)) {
-            foreach ($attributes as $attribute) {
-                if ($this->supportsAttribute($attribute)) {
-                    $result        = VoterInterface::ACCESS_DENIED;
-                    $grantedGroups = $this->extractGroups($attribute, $object);
+        if (!$this->supportsClass($object)) {
+            return $result;
+        }
 
-                    foreach ($grantedGroups as $group) {
-                        if ($token->getUser()->hasGroup($group)) {
-                            return VoterInterface::ACCESS_GRANTED;
-                        }
-                    }
+        foreach ($attributes as $attribute) {
+            if ($this->supportsAttribute($attribute)) {
+                $result = VoterInterface::ACCESS_DENIED;
+
+                if ($this->accessManager->isUserGranted($token->getUser(), $object, $attribute)) {
+                    return VoterInterface::ACCESS_GRANTED;
                 }
             }
         }
 
         return $result;
-    }
-
-    /**
-     * Get user groups for specific attribute and object
-     *
-     * @param string            $attribute
-     * @param CategoryInterface $object
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\Group[]
-     */
-    protected function extractGroups($attribute, $object)
-    {
-        if ($attribute === Attributes::EDIT_PRODUCTS) {
-            $grantedGroups = $this->accessManager->getEditUserGroups($object);
-        } else {
-            $grantedGroups = $this->accessManager->getViewUserGroups($object);
-        }
-
-        return $grantedGroups;
     }
 }
