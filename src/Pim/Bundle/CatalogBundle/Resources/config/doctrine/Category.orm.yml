@@ -2,11 +2,6 @@ Pim\Bundle\CatalogBundle\Entity\Category:
     type: entity
     table: pim_catalog_category
     repositoryClass: Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository
-    inheritanceType: SINGLE_TABLE
-    discriminatorColumn:
-        name: discr
-        type: string
-        length: 20
     uniqueConstraints:
         pim_category_code_uc:
             columns:
