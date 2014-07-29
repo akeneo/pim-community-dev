@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class DatagridViewAccessManager
 {
-
     /** @var AttributeRepository */
     protected $attributeRepository;
 

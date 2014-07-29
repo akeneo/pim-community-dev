@@ -40,17 +40,11 @@ class DatagridViewManager extends BaseDatagridViewManager
      */
     public function findPublic($alias)
     {
-        $views = [];
-        $allViews = $this->datagridViewRepository->findBy(
-            [
-                'datagridAlias' => $alias,
-                'type'          => DatagridView::TYPE_PUBLIC
-            ]
-        );
+        $views = parent::findPublic($alias);
 
-        foreach ($allViews as $view) {
-            if ($this->securityContext->isGranted(Attributes::VIEW_DATAGRID_VIEW, $view)) {
-                $views[] = $view;
+        foreach ($views as $key => $view) {
+            if (false === $this->securityContext->isGranted(Attributes::VIEW_DATAGRID_VIEW, $view)) {
+                unset($views[$key]);
             }
         }
 
