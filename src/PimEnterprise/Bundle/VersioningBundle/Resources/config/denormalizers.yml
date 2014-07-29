@@ -53,9 +53,6 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.association.class%
-            - %pim_catalog.entity.association_type.class%
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.group.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
@@ -107,6 +104,7 @@ services:
         class: %pimee_versioning.denormalizer.metric.class%
         arguments:
             - ['pim_catalog_metric']
+            - '@pim_catalog.factory.metric'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

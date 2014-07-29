@@ -6,6 +6,8 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeOptionRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
+ * Attribute option flat denormalizer used for following attribute types:
+ * - pim_catalog_simpleselect
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -54,6 +56,8 @@ class AttributeOptionDenormalizer extends AbstractValueDenormalizer
     }
 
     /**
+     * Find Option entity from identifier
+     *
      * @param string $identifier
      *
      * @return AttributeOption

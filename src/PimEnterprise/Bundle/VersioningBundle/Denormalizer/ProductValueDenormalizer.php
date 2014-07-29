@@ -4,17 +4,16 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
+ * Product value flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProductValueDenormalizer extends AbstractEntityDenormalizer
 {
-    /** @var \Pim\Bundle\CatalogBundle\Builder\ProductBuilder */
+    /** @var ProductBuilder */
     protected $productBuilder;
 
     /**
@@ -52,7 +51,8 @@ class ProductValueDenormalizer extends AbstractEntityDenormalizer
         }
 
         // Call denormalizer with attribute type
-        $dataValue = $this->serializer->denormalize($data, $value->getAttribute()->getAttributeType(), $format, $context);
+        $attributeType = $value->getAttribute()->getAttributeType();
+        $dataValue = $this->serializer->denormalize($data, $attributeType, $format, $context);
         if (null !== $dataValue) {
             $value->setData($dataValue);
         }

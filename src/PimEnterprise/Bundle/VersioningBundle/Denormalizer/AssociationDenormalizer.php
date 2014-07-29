@@ -2,40 +2,14 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-
 /**
+ * Association flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
-    /** @var string */
-    protected $assocTypeClass;
-
-    /** @var string */
-    protected $productClass;
-
-    /** @var string */
-    protected $groupClass;
-
-    /**
-     * @param ManagerRegistry $registry
-     * @param string          $entityClass
-     * @param string          $assocTypeClass
-     * @param string          $productClass
-     * @param string          $groupClass
-     */
-    public function __construct(ManagerRegistry $registry, $entityClass, $assocTypeClass, $productClass, $groupClass)
-    {
-        parent::__construct($registry, $entityClass);
-
-        $this->assocTypeClass = $assocTypeClass;
-        $this->productClass   = $productClass;
-        $this->groupClass     = $groupClass;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -51,11 +25,7 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param array $data
-     * @param       $format
-     * @param array $context
-     *
-     * @return object
+     * {@inheritdoc}
      */
     protected function doDenormalize($data, $format, array $context)
     {
@@ -74,18 +44,20 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
         }
 
         if ('groups' === $context['part']) {
+            $groupClass = $this->getTargetClass('groups');
             $identifiers = explode(',', $data);
             foreach ($identifiers as $identifier) {
-                $group = $this->serializer->denormalize($identifier, $this->groupClass, $format);
+                $group = $this->serializer->denormalize($identifier, $groupClass, $format);
                 if (null !== $group) {
                     $association->addGroup($group);
                 }
             }
         } else {
             if (strlen($data) > 0) { // TODO: test should be in product denormalizer
+                $productClass = $this->getTargetClass('products');
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
-                    $product = $this->serializer->denormalize($identifier, $this->productClass, $format);
+                    $product = $this->serializer->denormalize($identifier, $productClass, $format);
                     if (null !== $product) {
                         $association->addProduct($product);
                     }
@@ -97,6 +69,8 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
+     * Get association type entity from its identifier
+     *
      * @param string $identifier
      *
      * @return AssociationType
@@ -111,6 +85,8 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
      */
     protected function getAssociationTypeRepository()
     {
-        return $this->managerRegistry->getRepository($this->assocTypeClass);
+        $assocTypeClass = $this->getTargetClass('associationType');
+
+        return $this->managerRegistry->getRepository($assocTypeClass);
     }
 }

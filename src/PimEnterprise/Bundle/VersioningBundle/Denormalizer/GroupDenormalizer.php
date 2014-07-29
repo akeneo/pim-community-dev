@@ -3,6 +3,7 @@
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
 
 /**
+ * Group flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

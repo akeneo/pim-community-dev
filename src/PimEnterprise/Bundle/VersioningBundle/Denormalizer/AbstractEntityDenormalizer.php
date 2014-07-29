@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
+ * Abstract denormalizer class for flat entity denormalizers
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -23,7 +24,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     /** @var SerializerInterface */
     protected $serializer;
 
-    /** @var array */
+    /** @var string[] */
     protected $supportedFormats = array('csv');
 
     /**
@@ -54,8 +55,9 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      * Get an existing entity (or create a new one)
      * Set all data values to entity
      *
-     * @param array $data
-     * @param array $context
+     * @param mixed  $data
+     * @param string $format
+     * @param array  $context
      *
      * @return mixed
      */
@@ -86,7 +88,10 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     }
 
     /**
-     * @param string $identifier
+     * Get an entity from the context or from database
+     *
+     * @param array $data
+     * @param array $context
      *
      * @return object
      */
@@ -109,6 +114,8 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     }
 
     /**
+     * Instanciate entity from denormalizer entity class name
+     *
      * @return object
      */
     protected function createEntity()
@@ -117,6 +124,8 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
     }
 
     /**
+     * Find an entity from its identifier
+     *
      * @param string $identifier
      *
      * @return object|false
@@ -131,5 +140,21 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
         }
 
         return $entity;
+    }
+
+    /**
+     * Get target class name from metadatas
+     * This avoid to inject entity class names linked to denormalizer entity
+     *
+     * @param string $associationName
+     *
+     * @return string
+     */
+    protected function getTargetClass($associationName)
+    {
+        $om = $this->managerRegistry->getManagerForClass($this->entityClass);
+        $classMetadata = $om->getClassMetadata($this->entityClass);
+
+        return $classMetadata->getAssociationTargetClass($associationName);
     }
 }

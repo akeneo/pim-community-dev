@@ -11,15 +11,23 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 
 /**
+ * Product flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProductDenormalizer extends AbstractEntityDenormalizer
 {
+    /** @staticvar string */
     const FIELD_ENABLED      = 'enabled';
+
+    /** @staticvar string */
     const FIELD_FAMILY       = 'family';
+
+    /** @staticvar string */
     const FIELD_CATEGORIES   = 'categories';
+
+    /** @staticvar string */
     const FIELD_GROUPS       = 'groups';
 
     /** @var string */
@@ -82,7 +90,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param string $data
+     * Denormalize the product family
+     *
+     * @param string           $data
+     * @param string           $format
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeFamily($data, $format, array $context = array(), ProductInterface $product)
@@ -97,7 +109,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param string $data
+     * Denormalize product categories
+     *
+     * @param string           $data
+     * @param string           $format
+     * @oaram array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeCategories($data, $format, array $context = array(), ProductInterface $product)
@@ -118,7 +134,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
+     * Denormalize product groups
+     *
      * @param string           $data
+     * @param string           $format
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeGroups($data, $format, array $context = array(), ProductInterface $product)
@@ -139,7 +159,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
+     * Denormalize product associations
+     *
      * @param string           &$data
+     * @param string           $format
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeAssociations(&$data, $format, array $context = array(), ProductInterface $product)
@@ -180,7 +204,11 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     }
 
     /**
-     * @param                  $data
+     * Denormalize product values
+     *
+     * @param string           $data
+     * @param string           $format
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeValues($data, $format, array $context = array(), ProductInterface $product)
@@ -203,27 +231,20 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
 
             // Denormalize data value.
             // The value is already added to the product so automatically updated
+            $productValue = $product->getValue(
+                $attribute->getCode(),
+                $attributeInfos['locale_code'],
+                $attributeInfos['scope_code']
+            );
             $this->serializer->denormalize(
                 $dataValue,
                 $valueClass,
                 $format,
                 [
                     'product' => $product,
-                    'entity' => $product->getValue(
-                        $attribute->getCode(),
-                        $attributeInfos['locale_code'],
-                        $attributeInfos['scope_code']
-                    )
+                    'entity'  => $productValue
                 ] + $attributeInfos
             );
         }
-    }
-
-    protected function getTargetClass($associationName)
-    {
-        $om = $this->managerRegistry->getManagerForClass($this->entityClass);
-        $classMetadata = $om->getClassMetadata($this->entityClass);
-
-        return $classMetadata->getAssociationTargetClass($associationName);
     }
 }

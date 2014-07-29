@@ -5,6 +5,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
 /**
+ * Abstract value flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +19,7 @@ abstract class AbstractValueDenormalizer implements DenormalizerInterface
     protected $supportedTypes;
 
     /**
-     * @param string $supportedTypes
+     * @param string[] $supportedTypes
      */
     public function __construct(array $supportedTypes)
     {

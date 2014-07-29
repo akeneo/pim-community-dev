@@ -2,15 +2,31 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
 
-use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 
 /**
+ * Metric flat denormalizer used for attribute types:
+ * - pim_catalog_metric
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class MetricDenormalizer extends AbstractValueDenormalizer
 {
+    /** @var MetricFactory */
+    protected $factory;
+
+    /**
+     * @param array         $supportedTypes
+     * @param MetricFactory $factory
+     */
+    public function __construct(array $supportedTypes, MetricFactory $factory)
+    {
+        parent::__construct($supportedTypes);
+
+        $this->factory = $factory;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -19,9 +35,8 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $value = $context['value'];
 
         if (null === $metric = $value->getMetric()) {
-            $metric = new Metric();
+            $this->factory->createMetric($value->getAttribute()->getMetricFamily());
             $metric->setData($data);
-            $metric->setFamily($value->getAttribute()->getMetricFamily());
         } else {
             $metric->setUnit($data);
         }
