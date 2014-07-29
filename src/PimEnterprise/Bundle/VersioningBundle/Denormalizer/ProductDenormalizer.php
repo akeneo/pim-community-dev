@@ -28,22 +28,54 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var string */
+    protected $familyClass;
+
+    /** @var string */
+    protected $categoryClass;
+
+    /** @var string */
+    protected $groupClass;
+
+    /** @var string */
+    protected $associationClass;
+
+    /** @var string */
+    protected $productValueClass;
+
     /**
      * @param ManagerRegistry  $managerRegistry
      * @param string           $entityClass
      * @param ProductBuilder   $productBuilder
      * @param FieldNameBuilder $fieldNameBuilder
+     * @param string           $familyClass
+     * @param string           $categoryClass
+     * @param string           $groupClass
+     * @param string           $associationClass
+     * @param string           $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
-        FieldNameBuilder $fieldNameBuilder
+        FieldNameBuilder $fieldNameBuilder,
+        $familyClass,
+        $categoryClass,
+        $groupClass,
+        $associationClass,
+        $productValueClass
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
-        $this->productBuilder   = $productBuilder;
-        $this->fieldNameBuilder = $fieldNameBuilder;
+        $this->productBuilder    = $productBuilder;
+        $this->fieldNameBuilder  = $fieldNameBuilder;
+
+        // TODO: Should use class metadatas
+        $this->familyClass       = $familyClass;
+        $this->categoryClass     = $categoryClass;
+        $this->groupClass        = $groupClass;
+        $this->associationClass  = $associationClass;
+        $this->productValueClass = $productValueClass;
     }
 
     /**
@@ -59,23 +91,23 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         if (isset($data[self::FIELD_FAMILY])) {
-            $this->denormalizeFamily($data[self::FIELD_FAMILY], $product);
+            $this->denormalizeFamily($data[self::FIELD_FAMILY], $format, [], $product);
             unset($data[self::FIELD_FAMILY]);
         }
 
         if (isset($data[self::FIELD_CATEGORIES])) {
-            $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $product);
+            $this->denormalizeCategories($data[self::FIELD_CATEGORIES], $format, [], $product);
             unset($data[self::FIELD_CATEGORIES]);
         }
 
         if (isset($data[self::FIELD_GROUPS])) {
-            $this->denormalizeGroups($data[self::FIELD_GROUPS], $product);
+            $this->denormalizeGroups($data[self::FIELD_GROUPS], $format, [], $product);
             unset($data[self::FIELD_GROUPS]);
         }
 
-        $this->denormalizeAssociations($data, $product);
+        $this->denormalizeAssociations($data, $format, [], $product);
 
-        $this->denormalizeValues($data, $product);
+        $this->denormalizeValues($data, $format, [], $product);
 
         return $product;
     }
@@ -84,10 +116,15 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string $data
      * @param ProductInterface $product
      */
-    protected function denormalizeFamily($data, ProductInterface $product)
+    protected function denormalizeFamily($data, $format, array $context = array(), ProductInterface $product)
     {
         if (strlen($data) > 0) {
-            $family = $this->serializer->denormalize($data, 'Pim\Bundle\CatalogBundle\Entity\Family', 'csv');
+            $family = $this->serializer->denormalize(
+                $data,
+                $this->familyClass,
+                $format,
+                $context
+            );
         } else {
             $family = null;
         }
@@ -99,7 +136,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string $data
      * @param ProductInterface $product
      */
-    protected function denormalizeCategories($data, ProductInterface $product)
+    protected function denormalizeCategories($data, $format, array $context = array(), ProductInterface $product)
     {
         // Remove existing categories
         foreach ($product->getCategories() as $category) {
@@ -110,7 +147,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $categoryCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($categoryCodes as $categoryCode) {
             $product->addCategory(
-                $this->serializer->denormalize($categoryCode, 'Pim\Bundle\CatalogBundle\Entity\Category', 'csv')
+                $this->serializer->denormalize($categoryCode, $this->categoryClass, $format)
             );
         }
     }
@@ -119,7 +156,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           $data
      * @param ProductInterface $product
      */
-    protected function denormalizeGroups($data, ProductInterface $product)
+    protected function denormalizeGroups($data, $format, array $context = array(), ProductInterface $product)
     {
         // Remove existing groups
         foreach ($product->getGroups() as $group) {
@@ -130,7 +167,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $groupCodes = strlen($data) > 0 ? explode(",", $data) : array();
         foreach ($groupCodes as $groupCode) {
             $product->addGroup(
-                $this->serializer->denormalize($groupCode, 'Pim\Bundle\CatalogBundle\Entity\Group', 'csv')
+                $this->serializer->denormalize($groupCode, $this->groupClass, $format)
             );
         }
     }
@@ -139,7 +176,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           &$data
      * @param ProductInterface $product
      */
-    protected function denormalizeAssociations(&$data, ProductInterface $product)
+    protected function denormalizeAssociations(&$data, $format, array $context = array(), ProductInterface $product)
     {
         // Remove existing associations
         foreach ($product->getAssociations() as $association) {
@@ -161,8 +198,8 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 $association = $product->getAssociationForTypeCode($associationTypeCode);
                 $association = $this->serializer->denormalize(
                     $data[$assocFieldName],
-                    'Pim\Bundle\CatalogBundle\Model\Association',
-                    'csv',
+                    $this->associationClass,
+                    $format,
                     ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
                 );
 
@@ -181,7 +218,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      *
      * TODO: parameters should be $data, $format, $context (with product)
      */
-    protected function denormalizeValues($data, ProductInterface $product)
+    protected function denormalizeValues($data, $format, array $context = array(), ProductInterface $product)
     {
         // Remove existing values
         foreach ($product->getValues() as $value) {
@@ -202,8 +239,8 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
             // The value is already added to the product so automatically updated
             $this->serializer->denormalize(
                 $dataValue,
-                'Pim\Bundle\CatalogBundle\Model\ProductValue',
-                'csv',
+                $this->productValueClass,
+                $format,
                 [
                     'product' => $product,
                     'entity' => $product->getValue(
