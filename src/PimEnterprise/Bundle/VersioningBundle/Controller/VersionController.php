@@ -75,7 +75,7 @@ class VersionController extends AbstractDoctrineController
     {
         $this->reverter->revert($version);
 
-        $this->addFlash('success', 'Successfully revert to the previous version');
+        $this->addFlash('success', 'flash.version.revert.product');
 
         return $this->redirectToRoute('pim_enrich_product_edit', ['id' => $version->getResourceId()]);
     }
