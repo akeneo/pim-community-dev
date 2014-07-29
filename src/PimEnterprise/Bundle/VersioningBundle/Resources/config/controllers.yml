@@ -1,10 +1,10 @@
 parameters:
-    pimee_versioning.controller.version.class: PimEnterprise\Bundle\VersioningBundle\Controller\VersionController
+    pimee_versioning.controller.product_version.class: PimEnterprise\Bundle\VersioningBundle\Controller\ProductVersionController
 
 services:
-    pimee_versioning.controller.version:
+    pimee_versioning.controller.product_version:
         scope: request
-        class: %pimee_versioning.controller.version.class%
+        class: %pimee_versioning.controller.product_version.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
-            - '@pimee_versioning.reverter.version'
+            - '@pimee_versioning.reverter.product'

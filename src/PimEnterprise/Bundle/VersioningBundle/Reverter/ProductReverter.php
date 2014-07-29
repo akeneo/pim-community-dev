@@ -10,36 +10,34 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * Version reverter that allow to revert an entity to a previous snapshot
+ * Product version reverter that allow to revert a product to a previous snapshot
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * @TODO: Make it works for all entities
  */
-class VersionReverter
+class ProductReverter
 {
-    /** @var SerializerInterface */
-    protected $serializer;
+    /** @var DenormalizerInterface */
+    protected $denormalizer;
 
     /** @var ManagerRegistry */
-    protected $manager;
+    protected $registry;
 
     /** @var ProductManager */
     protected $productManager;
 
     /**
-     * @param ProductManager      $manager
+     * @param ManagerRegistry     $registry
      * @param SerializerInterface $serializer
      * @param ProductManager      $productManager
      */
     public function __construct(
-        ManagerRegistry $manager,
-        DenormalizerInterface $serializer,
+        ManagerRegistry $registry,
+        DenormalizerInterface $denormalizer,
         ProductManager $productManager
     ) {
-        $this->manager        = $manager;
-        $this->serializer     = $serializer;
+        $this->registry       = $registry;
+        $this->denormalizer   = $denormalizer;
         $this->productManager = $productManager;
     }
 
@@ -54,8 +52,8 @@ class VersionReverter
         $data       = $version->getSnapshot();
         $resourceId = $version->getResourceId();
 
-        $currentObject = $this->manager->getRepository($class)->find($resourceId);
-        $revertedObject = $this->serializer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
+        $currentObject = $this->registry->getRepository($class)->find($resourceId);
+        $revertedObject = $this->denormalizer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
 
         $this->productManager->saveProduct($revertedObject);
     }

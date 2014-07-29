@@ -34,13 +34,13 @@ datagrid:
         properties:
             id: ~
             revert_link:
-                type: url
-                route: pimee_versioning_version_revert
+                type:  url
+                route: pimee_versioning_revert_product
                 params:
                     - id
         actions:
             revert:
-                type:   navigate
+                type:   ajax
                 label:  Revert to this version
                 icon:   undo
                 link:   revert_link
