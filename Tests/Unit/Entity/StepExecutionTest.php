@@ -191,6 +191,13 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
             array('%something%' => 'Item2'),
             array('baz' => false)
         );
+        $item = new \stdClass();
+        $this->stepExecution->addWarning(
+            'baz',
+            '%something% is wrong with object 3',
+            array('%something%' => 'Item3'),
+            $item
+        );
 
         $this->assertEquals(
             array(
@@ -205,6 +212,12 @@ class StepExecutionTest extends \PHPUnit_Framework_TestCase
                     'reason' => '%something% is wrong on line 2',
                     'reasonParameters' => array('%something%' => 'Item2'),
                     'item'   => array('baz' => false)
+                ),
+                array(
+                    'name'   => 'my_step_execution.steps.baz.title',
+                    'reason' => '%something% is wrong with object 3',
+                    'reasonParameters' => array('%something%' => 'Item3'),
+                    'item'   => array('id' => '[unknown]', 'class' => 'stdClass', 'string' => '[unknown]')
                 )
             ),
             $getWarnings($this->stepExecution->getWarnings())

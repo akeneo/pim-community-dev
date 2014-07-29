@@ -507,6 +507,13 @@ class StepExecution
         if (strpos($element, '.')) {
             $element = substr($element, 0, strpos($element, '.'));
         }
+        if (is_object($item)) {
+            $item = [
+                'class'  => get_class($item),
+                'id'     => method_exists($item, 'getId') ? $item->getId() : '[unknown]',
+                'string' => method_exists($item, '__toString') ? (string) $item : '[unknown]',
+            ];
+        }
         $this->warnings->add(
             new Warning(
                 $this,
