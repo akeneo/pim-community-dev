@@ -28,54 +28,22 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
     /** @var ProductBuilder */
     protected $productBuilder;
 
-    /** @var string */
-    protected $familyClass;
-
-    /** @var string */
-    protected $categoryClass;
-
-    /** @var string */
-    protected $groupClass;
-
-    /** @var string */
-    protected $associationClass;
-
-    /** @var string */
-    protected $productValueClass;
-
     /**
      * @param ManagerRegistry  $managerRegistry
      * @param string           $entityClass
      * @param ProductBuilder   $productBuilder
      * @param FieldNameBuilder $fieldNameBuilder
-     * @param string           $familyClass
-     * @param string           $categoryClass
-     * @param string           $groupClass
-     * @param string           $associationClass
-     * @param string           $productValueClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
         ProductBuilder $productBuilder,
-        FieldNameBuilder $fieldNameBuilder,
-        $familyClass,
-        $categoryClass,
-        $groupClass,
-        $associationClass,
-        $productValueClass
+        FieldNameBuilder $fieldNameBuilder
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
         $this->productBuilder    = $productBuilder;
         $this->fieldNameBuilder  = $fieldNameBuilder;
-
-        // TODO: Should use class metadatas
-        $this->familyClass       = $familyClass;
-        $this->categoryClass     = $categoryClass;
-        $this->groupClass        = $groupClass;
-        $this->associationClass  = $associationClass;
-        $this->productValueClass = $productValueClass;
     }
 
     /**
