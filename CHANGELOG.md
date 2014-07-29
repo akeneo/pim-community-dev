@@ -73,6 +73,7 @@
 - Upload on a job with a custom step (non ItemStep) doesn't crash anymore
 - Memory leak fixed in pim:version:refresh command
 - Fixed a bug when try to remove the family of a product
+- Wrong date conversion fixes on grid and form
 
 ## BC breaks
 - Remove FlexibleEntityBundle
