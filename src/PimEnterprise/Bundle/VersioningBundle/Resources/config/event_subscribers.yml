@@ -1,0 +1,2 @@
+parameters:
+    pim_versioning.event_subscriber.addversion.class: PimEnterprise\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber

@@ -59,6 +59,7 @@ services:
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.association.class%
+            - %pim_catalog.entity.association_type.class%
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 

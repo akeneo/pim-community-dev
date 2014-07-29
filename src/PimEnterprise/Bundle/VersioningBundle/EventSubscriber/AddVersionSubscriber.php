@@ -1,8 +1,8 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\EventListener;
+namespace PimEnterprise\Bundle\VersioningBundle\EventSubscriber;
 
-use Pim\Bundle\VersioningBundle\EventListener\AddVersionListener as BaseAddVersionListener;
+use Pim\Bundle\VersioningBundle\EventSubscriber\AddVersionSubscriber as BaseAddVersionSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AddVersionListener extends BaseAddVersionListener
+class AddVersionSubscriber extends BaseAddVersionSubscriber
 {
     /**
      * {@inheritdoc}
