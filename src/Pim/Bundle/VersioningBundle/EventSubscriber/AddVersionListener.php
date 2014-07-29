@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\EventListener;
+namespace Pim\Bundle\VersioningBundle\EventSubscriber;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\ORM\EntityManager;

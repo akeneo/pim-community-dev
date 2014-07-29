@@ -22,6 +22,11 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_class/product_class/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_value_class/product_value_class/g'
     find ./src/ -type f -name '*.yml'  -print0 | xargs -0 sed -i 's/parent_type/ftype/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventListener/VersioningBundle\\EventSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\AddContextListener/VersioningBundle\\EventSubscriber\\AddContextSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\AddUserListener/VersioningBundle\\EventSubscriber\\AddUserSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\AddVersionListener/VersioningBundle\\EventSubscriber\\AddVersionSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\MongoDBODM\\AddVersionListener/VersioningBundle\\EventSubscriber\\MongoDBODM\\AddProductVersionSubscriber/g'
 ```
 
 BatchBundle

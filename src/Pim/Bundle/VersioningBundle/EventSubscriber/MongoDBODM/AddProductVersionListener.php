@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\VersioningBundle\EventListener\MongoDBODM;
+namespace Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\EventSubscriber;
