@@ -35,7 +35,7 @@ class MetricDenormalizer extends AbstractValueDenormalizer
         $value = $context['value'];
 
         if (null === $metric = $value->getMetric()) {
-            $this->factory->createMetric($value->getAttribute()->getMetricFamily());
+            $metric = $this->factory->createMetric($value->getAttribute()->getMetricFamily());
             $metric->setData($data);
         } else {
             $metric->setUnit($data);
