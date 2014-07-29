@@ -50,7 +50,9 @@ class ProductNormalizerTest extends \PHPUnit_Framework_TestCase
         $this->flatProductValueNormalizerFilter = $this->getFlatProductValueNormalizerFilterMock();
 
         $this->normalizer = new ProductNormalizer($this->mediaManager);
-        $this->serializer = $this->getMockForAbstractClass('\Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat\Serializer');
+        $this->serializer = $this->getMockForAbstractClass(
+            '\Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat\Serializer'
+        );
         $this->normalizer->setSerializer($this->serializer);
     }
 

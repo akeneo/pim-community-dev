@@ -1,0 +1,10 @@
+parameters:
+    pim_transform.builder.field_name.class: Pim\Bundle\TransformBundle\Builder\FieldNameBuilder
+
+services:
+    pim_transform.builder.field_name:
+        class: %pim_transform.builder.field_name.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+            - %pim_catalog.entity.association_type.class%
+            - %pim_catalog.entity.attribute.class%
