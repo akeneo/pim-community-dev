@@ -750,6 +750,24 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     }
 
     /**
+     * @Then /^I should( not)? see the "([^"]*)" view$/
+     */
+    public function iShouldSeeTheView($not, $viewLabel)
+    {
+        $view = $this->datagrid->findView($viewLabel);
+
+        if (('' !== $not && null !== $view) || ('' === $not && null === $view)) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'View "%s" should%s be available.',
+                    $viewLabel,
+                    $not
+                )
+            );
+        }
+    }
+
+    /**
      * Create an expectation exception
      *
      * @param string $message
