@@ -43,7 +43,7 @@ class PermissionFilter extends OroChoiceFilter
      * @param FormFactoryInterface               $factory
      * @param FilterUtility                      $util
      * @param SecurityContextInterface           $securityContext
-     * @param ProductCategoryRepositoryInterface $categoryRepository
+     * @param ProductCategoryRepositoryInterface $productRepository
      * @param CategoryAccessRepository           $accessRepository
      */
     public function __construct(
