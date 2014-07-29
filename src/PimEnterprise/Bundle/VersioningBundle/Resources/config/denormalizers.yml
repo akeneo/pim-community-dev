@@ -65,11 +65,6 @@ services:
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
 
-    pimee_versioning.denormalizer.dummy:
-        class: %pimee_versioning.denormalizer.dummy.class%
-        tags:
-            - { name: pim_serializer.normalizer, priority: 30 }
-
     pimee_versioning.denormalizer.base_value:
         class: %pimee_versioning.denormalizer.base_value.class%
         arguments:
