@@ -4,6 +4,26 @@ UPGRADE FROM 1.1 to 1.2
 General
 -------
 
+Fix BC breaks
+-------------
+
+If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
+
+*It does not cover all possible BC breaks, as the changes of arguments of a service, consider using this script on versioned files to be able to check the changes with a `git diff` for instance*
+
+Based on a pim standard installation, execute the following command in your project folder :
+
+```
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim.attribute_constraint_guesser/pim_catalog.constraint_guesser.attribute/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.validator.attribute_constraint_guesser/pim_catalog.validator.constraint_guesser.chained_attribute/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/Model\\Media/Model\\ProductMedia/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog_media/pim_catalog_product_media/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/EnrichBundle\\MassEditAction/EnrichBundle\\MassEditAction\\Operation/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_class/product_class/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/flexible_value_class/product_value_class/g'
+    find ./src/ -type f -name '*.yml'  -print0 | xargs -0 sed -i 's/parent_type/ftype/g'
+```
+
 BatchBundle
 -----------
 
@@ -23,22 +43,22 @@ As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
 CatalogBundle
 -------------
 
-In ./src/Pim/Bundle/CatalogBundle/Resources/config/managers.yml:
+The Media model has been renamed to ProductMedia, please run the following commands against your database :
 
-With 1.1 :
-```
-    flexible_class:               %pim_catalog.entity.product.class%
-    flexible_value_class:         %pim_catalog.entity.product_value.class%
-```
+    RENAME TABLE pim_catalog_media TO pim_catalog_product_media;
 
-With 1.2 :
-```
-    product_class:                %pim_catalog.entity.product.class%
-    product_value_class:          %pim_catalog.entity.product_value.class%
-```
+The virtual attribute group `Other` has been deleted. The attribute group is now a mandatory parameter for creating of editing an attribute group. This means you now have to set an attribute group for all the orphans attributes.
 
-./src/Pim/Bundle/CatalogBundle/Manager/ProductManager.php has been updated to use these new configuration parameters
+This can be done thanks to the following queries :
 
+```
+    INSERT INTO `pim_catalog_attribute_group` (`code`, `sort_order`, `created`, `updated`)
+    VALUES ('other', 100, NOW(), NOW());
+
+    UPDATE `pim_catalog_attribute` a
+    SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
+    WHERE a.`group_id` IS NULL
+```
 
 MongoDB implementation
 ----------------------
@@ -57,17 +77,4 @@ OroSegmentationTreeBundle
 The bundle has been removed from Oro Platform, entities extending AbstractSegment should implement the desired
 methods themselves and repositories extending SegmentRepository should extend Gedmo\Tree\Entity\Repository\NestedTreeRepository
 
-EnrichBundle
---------------
-The virtual attribute group `Other` has been deleted. The attribute group is now a mandatory parameter for creating of editing
-an attribute group. This means you now have to set an attribute group for all the orphans attributes. This can be done
-thanks to the following queries :
 
-```
-    INSERT INTO `pim_catalog_attribute_group` (`code`, `sort_order`, `created`, `updated`)
-    VALUES ('other', 100, NOW(), NOW());
-
-    UPDATE `pim_catalog_attribute` a
-    SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
-    WHERE a.`group_id` IS NULL
-```

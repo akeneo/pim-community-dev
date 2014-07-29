@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
@@ -78,7 +78,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $product2->removeCategory($category)->shouldBeCalled();
 
         $eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_CATEGORY,
+            CategoryEvents::PRE_REMOVE_CATEGORY,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
 
@@ -96,7 +96,7 @@ class CategoryManagerSpec extends ObjectBehavior
         $tree->getProducts()->willReturn([]);
 
         $eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_TREE,
+            CategoryEvents::PRE_REMOVE_TREE,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
 

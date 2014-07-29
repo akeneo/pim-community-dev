@@ -47,6 +47,20 @@ abstract class ProductMassEditOperation extends AbstractMassEditAction
     }
 
     /**
+     * Return the options to use when save all products
+     *
+     * @return array
+     */
+    public function getSavingOptions()
+    {
+        return [
+            'recalculate' => false,
+            'flush'       => true,
+            'schedule'    => $this->affectsCompleteness()
+        ];
+    }
+
+    /**
      * Perform operation on the product instance
      *
      * @param ProductInterface $product

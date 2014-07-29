@@ -37,7 +37,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
-use Pim\Bundle\EnrichBundle\EnrichEvents;
+use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 
 /**
  * Product Controller
@@ -220,7 +220,7 @@ class ProductController extends AbstractDoctrineController
     {
         $product = $this->findProductOr404($id);
 
-        $this->dispatch(EnrichEvents::PRE_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(ProductEvents::PRE_EDIT, new GenericEvent($product));
 
         $this->productManager->ensureAllAssociationTypes($product);
 
@@ -230,7 +230,7 @@ class ProductController extends AbstractDoctrineController
             $this->getEditFormOptions($product)
         );
 
-        $this->dispatch(EnrichEvents::POST_EDIT_PRODUCT, new GenericEvent($product));
+        $this->dispatch(ProductEvents::POST_EDIT, new GenericEvent($product));
 
         $channels = $this->getRepository('PimCatalogBundle:Channel')->findAll();
         $trees    = $this->getProductCountByTree($product);
@@ -653,7 +653,7 @@ class ProductController extends AbstractDoctrineController
         );
 
         $event = new GenericEvent($this, ['parameters' => $defaultParameters]);
-        $this->dispatch(EnrichEvents::PRE_RENDER_PRODUCT_EDIT, $event);
+        $this->dispatch(ProductEvents::PRE_RENDER_EDIT, $event);
 
         return $event->getArgument('parameters');
     }

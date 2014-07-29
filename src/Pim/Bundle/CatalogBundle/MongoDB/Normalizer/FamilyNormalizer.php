@@ -4,7 +4,7 @@ namespace Pim\Bundle\CatalogBundle\MongoDB\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
+use Pim\Bundle\TransformBundle\Normalizer\Structured\TranslationNormalizer;
 
 /**
  * Family normalizer

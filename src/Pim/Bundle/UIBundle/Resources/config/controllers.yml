@@ -1,0 +1,8 @@
+parameters:
+    pim_ui.controller.ajax_option.class: Pim\Bundle\UIBundle\Controller\AjaxOptionController
+
+services:
+    pim_ui.controller.ajax_option:
+        class: %pim_ui.controller.ajax_option.class%
+        arguments:
+            - '@doctrine'

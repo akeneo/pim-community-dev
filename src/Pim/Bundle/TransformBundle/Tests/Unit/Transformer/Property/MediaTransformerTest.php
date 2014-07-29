@@ -4,7 +4,7 @@ namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
 use Pim\Bundle\TransformBundle\Transformer\Property\MediaTransformer;
 use Symfony\Component\HttpFoundation\File\File;
-use Pim\Bundle\CatalogBundle\Model\Media;
+use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 
 /**
  * Tests related class
@@ -20,7 +20,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testTransform()
     {
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $this->assertEquals(null, $transformer->transform(''));
         $this->assertEquals(null, $transformer->transform(' '));
         $d = tempnam('/tmp', 'pim-media-transformer-test');
@@ -56,9 +56,9 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
     public function testUpdateProductValue($hasFile, $mediaExists)
     {
         $f = tempnam('/tmp', 'pim-media-transformer-test');
-        $this->media = $mediaExists ? new Media() : null;
+        $this->media = $mediaExists ? new ProductMedia() : null;
         $file = $hasFile ? new File($f) : null;
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $productValue = $this->getValue($hasFile, $mediaExists);
         $columnInfo = $this->getMock('Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoInterface');
         $transformer->setValue($productValue, $columnInfo, $file);
@@ -73,7 +73,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnvalid()
     {
-        $transformer = new MediaTransformer();
+        $transformer = new MediaTransformer('Pim\Bundle\CatalogBundle\Model\ProductMedia');
         $transformer->transform('/bogus-file');
     }
 
@@ -92,7 +92,7 @@ class MediaTransformerTest extends \PHPUnit_Framework_TestCase
                 $productValue
                     ->expects($this->once())
                     ->method('setMedia')
-                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Model\Media'))
+                    ->with($this->isInstanceOf('Pim\Bundle\CatalogBundle\Model\ProductMedia'))
                     ->will(
                         $this->returnCallback(
                             function ($createdMedia) use ($test) {

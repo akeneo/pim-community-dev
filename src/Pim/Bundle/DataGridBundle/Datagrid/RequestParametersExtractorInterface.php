@@ -20,4 +20,24 @@ interface RequestParametersExtractorInterface
      * @return string
      */
     public function getParameter($key);
+
+    /**
+     * Return the datagrid parameter
+     *
+     * @param string $key
+     * @param mixed  $defaultValue
+     *
+     * @return string
+     */
+    public function getDatagridParameter($key, $defaultValue = null);
+
+    /**
+     * Return the request parameter
+     *
+     * @param string $key
+     * @param mixed  $defaultValue
+     *
+     * @return string
+     */
+    public function getRequestParameter($key, $defaultValue = null);
 }

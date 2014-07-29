@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\ORM\QueryBuilder;
-use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
+use Pim\Bundle\DataGridBundle\Datagrid\RequestParametersExtractorInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
@@ -22,10 +22,10 @@ class IsAssociatedFilterSpec extends ObjectBehavior
     function let(
         FormFactoryInterface $factory,
         ProductFilterUtility $utility,
-        RequestParameters $params,
+        RequestParametersExtractorInterface $extractor,
         CustomAssociationTypeRepository $assocRepository
     ) {
-        $this->beConstructedWith($factory, $utility, $params, $assocRepository);
+        $this->beConstructedWith($factory, $utility, $extractor, $assocRepository);
     }
 
     function it_is_an_oro_choice_filter()
@@ -39,7 +39,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         ProductRepositoryInterface $prodRepository,
         ProductQueryBuilderInterface $pqb,
         QueryBuilder $qb,
-        $params,
+        $extractor,
         $assocRepository,
         ProductManager $productManager,
         AssociationType $assocType,
@@ -48,10 +48,10 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         AbstractProduct $productAssociatedOne,
         AbstractProduct $productAssociatedTwo
     ) {
-        $params->get('associationType', null)->willReturn(1);
+        $extractor->getDatagridParameter('associationType')->willReturn(1);
         $assocRepository->findOneBy(Argument::any())->willReturn($assocType);
 
-        $params->get('product', null)->willReturn(11);
+        $extractor->getDatagridParameter('product')->willReturn(11);
         $utility->getProductManager()->willReturn($productManager);
         $productManager->find(11)->willReturn($productOwner);
 

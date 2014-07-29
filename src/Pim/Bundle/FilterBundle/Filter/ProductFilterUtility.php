@@ -16,9 +16,6 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  */
 class ProductFilterUtility extends BaseFilterUtility
 {
-    /** @staticvar string */
-    const PARENT_TYPE_KEY = 'parent_type';
-
     /** @var ProductManager */
     protected $productManager;
 
@@ -28,14 +25,6 @@ class ProductFilterUtility extends BaseFilterUtility
     public function __construct(ProductManager $manager)
     {
         $this->productManager = $manager;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getParamMap()
-    {
-        return [self::PARENT_TYPE_KEY => self::TYPE_KEY];
     }
 
     /**

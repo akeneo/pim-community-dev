@@ -33,7 +33,7 @@ class MediaTypeTest extends TypeTestCase
         $this->assertField('removed', 'checkbox');
 
         $this->assertEquals(
-            'Pim\Bundle\CatalogBundle\Model\Media',
+            'Pim\Bundle\CatalogBundle\Model\ProductMedia',
             $this->form->getConfig()->getDataClass()
         );
 

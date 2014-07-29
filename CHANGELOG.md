@@ -80,7 +80,7 @@
 - Remove CategoryWriter and use the generic doctrine writer instead
 - Remove entity argument from FiltersConfigurator constructor
 - Rely on CatalogBundle/Version and not anymore on CatalogBundle/PimCatalogBundle to get the current version of the PIM
-- The Pim\Bundle\CatalogBundle\MassEditAction namespace has been renamed to Pim\Bundle\CatalogBundle\MassEditOperation
+- The Pim\Bundle\EnrichBundle\MassEditAction namespace has been renamed to Pim\Bundle\EnrichBundle\MassEditAction\Operation
 - Mass edit operator has been moved to an Operator sub-namespace
 - Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditActionInterface has been renamed Pim\Bundle\EnrichBundle\MassEditAction\Operation\MassEditOperationInterface
 - Changed the HydratorInterface::hydrate() method signature
@@ -144,6 +144,17 @@
 - Upgraded to 0.2.* version of akeneo/batch-bundle
 - Rename `Pim\Bundle\TransformBundle\DependencyInjection\Compiler\ReplacePimSerializerArgumentsPass` by `Pim\Bundle\Transform\DependencyInjection\Compiler\SerializerPass` and change construct parameters
 - AddVersionListener and VersionBuilder use new `pim_versioning.serializer` service
+- In InGroupFilter and IsAssociatedFilter constructors, replace the RequestParameters argument by a RequestParametersExtractorInterface
+- Change constructor of `Pim\Bundle\DataGridBundle\Controller\ProductExportController` to inject the product repository `Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface` as fourth argument
+- Rename Pim\CatalogBundle\Model\Media to Pim\CatalogBundle\Model\ProductMedia to reflect the coupling between product media and product value and allow the future introduction of generic media
+- Add a $metricClass argument in MetricTransformer constructor
+- Add a $mediaClass argument in MediaTransformer constructor
+- Add a $metricClass argument in MetricType constructor
+- Change the arguments of ProductBuilder to pass classes (product, value, price) as an array
+- Change the arguments of EditCommonAttributes to pass classes (metric, media, price) as an array
+- Remove not used parameter `pim_import_export.entity.export.class`
+- Remove file `Pim\Bundle\ImportExportBundle\DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass`
+- Replace the filter config parent_type by ftype
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

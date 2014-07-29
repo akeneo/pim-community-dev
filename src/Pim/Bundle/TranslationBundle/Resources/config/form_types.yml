@@ -1,3 +1,6 @@
+parameters:
+    pim_translation.form.type.translatable_field.class: Pim\Bundle\TranslationBundle\Form\Type\TranslatableFieldType
+
 services:
     pim_translation.form.type.translatable_field:
         class: %pim_translation.form.type.translatable_field.class%

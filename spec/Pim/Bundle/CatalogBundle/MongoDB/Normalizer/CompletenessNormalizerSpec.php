@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\Completeness;
 use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\TransformBundle\Normalizer\TranslationNormalizer;
 
 class CompletenessNormalizerSpec extends ObjectBehavior
 {
@@ -23,7 +22,6 @@ class CompletenessNormalizerSpec extends ObjectBehavior
     }
 
     function it_normalizes_completeness(
-        TranslationNormalizer $normalizer,
         Completeness $completeness,
         Channel $channel,
         Locale $locale
@@ -34,8 +32,6 @@ class CompletenessNormalizerSpec extends ObjectBehavior
         $completeness->getChannel()->willReturn($channel);
         $completeness->getLocale()->willReturn($locale);
         $completeness->getRatio()->willReturn(42);
-
-        $normalizer->normalize($completeness, 'mongodb_json', [])->willReturn(['label' => 'translations']);
 
         $this->normalize($completeness, 'mongodb_json', [])->shouldReturn([
             "ecommerce-en_US" => 42

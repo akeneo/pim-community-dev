@@ -19,7 +19,7 @@ users:
         password: julia
         email: 'julia@example.com'
         firstname: Julia
-        lastname: Morgan
+        lastname: Stark
         owner: Main
         catalog_locale: en_US
         catalog_scope: ecommerce

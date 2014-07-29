@@ -6,7 +6,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\CategoryEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 
 /**
@@ -220,7 +220,7 @@ class CategoryManager
      */
     public function remove(CategoryInterface $category)
     {
-        $eventName = $category->isRoot() ? CatalogEvents::PRE_REMOVE_TREE : CatalogEvents::PRE_REMOVE_CATEGORY;
+        $eventName = $category->isRoot() ? CategoryEvents::PRE_REMOVE_TREE : CategoryEvents::PRE_REMOVE_CATEGORY;
         $this->eventDispatcher->dispatch($eventName, new GenericEvent($category));
 
         foreach ($category->getProducts() as $product) {

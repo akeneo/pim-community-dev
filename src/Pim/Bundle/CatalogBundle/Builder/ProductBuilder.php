@@ -31,6 +31,11 @@ class ProductBuilder
     protected $productValueClass;
 
     /**
+     * @var string
+     */
+    protected $productPriceClass;
+
+    /**
      * @var ObjectManager
      */
     protected $objectManager;
@@ -53,27 +58,26 @@ class ProductBuilder
     /**
      * Constructor
      *
-     * @param string          $productClass      Product class name
-     * @param string          $productValueClass Product value class name
-     * @param ObjectManager   $objectManager     Storage manager
-     * @param ChannelManager  $channelManager    Channel Manager
-     * @param LocaleManager   $localeManager     Locale Manager
-     * @param CurrencyManager $currencyManager   Currency manager
+     * @param ObjectManager   $objectManager   Storage manager
+     * @param ChannelManager  $channelManager  Channel Manager
+     * @param LocaleManager   $localeManager   Locale Manager
+     * @param CurrencyManager $currencyManager Currency manager
+     * @param array           $classes         Product, product value and price classes
      */
     public function __construct(
-        $productClass,
-        $productValueClass,
         ObjectManager $objectManager,
         ChannelManager $channelManager,
         LocaleManager $localeManager,
-        CurrencyManager $currencyManager
+        CurrencyManager $currencyManager,
+        array $classes
     ) {
-        $this->productClass      = $productClass;
-        $this->productValueClass = $productValueClass;
         $this->objectManager     = $objectManager;
         $this->channelManager    = $channelManager;
         $this->localeManager     = $localeManager;
         $this->currencyManager   = $currencyManager;
+        $this->productClass      = $classes['product'];
+        $this->productValueClass = $classes['product_value'];
+        $this->productPriceClass = $classes['product_price'];
     }
 
     /**
@@ -153,7 +157,7 @@ class ProductBuilder
     public function addPriceForCurrency(ProductValueInterface $value, $currency)
     {
         if (!$this->hasPriceForCurrency($value, $currency)) {
-            $value->addPrice(new ProductPrice(null, $currency));
+            $value->addPrice(new $this->productPriceClass(null, $currency));
         }
 
         return $this->getPriceForCurrency($value, $currency);

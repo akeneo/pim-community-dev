@@ -1,0 +1,28 @@
+parameters:
+    pim_enrich.event_listener.user_context.class: Pim\Bundle\EnrichBundle\EventListener\UserContextListener
+    pim_enrich.event_listener.request.class: Pim\Bundle\EnrichBundle\EventListener\RequestListener
+    pim_enrich.event_subscriber.translate_flash_messages.class: Pim\Bundle\EnrichBundle\EventListener\TranslateFlashMessagesSubscriber
+
+services:
+    # User context listener
+    stof_doctrine_extensions.event_listener.locale:
+        class: %pim_enrich.event_listener.user_context.class%
+        arguments:
+            - '@security.context'
+            - '@pim_translation.listener.add_locale'
+            - '@pim_catalog.context.catalog'
+            - '@pim_user.context.user'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_enrich.event_listener.request:
+        class: %pim_enrich.event_listener.request.class%
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pim_enrich.event_subscriber.translate_flash_messages:
+        class: %pim_enrich.event_subscriber.translate_flash_messages.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: kernel.event_subscriber }

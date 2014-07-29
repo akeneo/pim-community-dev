@@ -109,7 +109,6 @@ flash:
     updated: Atributo atualizado com sucesso
     removed: Atributo removido com sucesso
     identifier not removable: O identificador do atributo não pode ser removido
-    used by groups: 'Esse atributo não pode ser removido porque está sendo usado por %count% grupos'
     option created: Opção criada com sucesso
     error creating option: Ocorreu um erro ao tentar criar a opção. Por favor, tente novamente
   attribute group:

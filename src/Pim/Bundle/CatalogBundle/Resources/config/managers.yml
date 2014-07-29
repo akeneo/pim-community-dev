@@ -1,14 +1,21 @@
 parameters:
-    pim_catalog.persister.product.class: Pim\Bundle\CatalogBundle\Persistence\BasicPersister
+    pim_catalog.manager.association.class:         Pim\Bundle\CatalogBundle\Manager\AssociationManager
+    pim_catalog.manager.association_type.class:    Pim\Bundle\CatalogBundle\Manager\AssociationTypeManager
+    pim_catalog.manager.attribute.class:           Pim\Bundle\CatalogBundle\Manager\AttributeManager
+    pim_catalog.manager.attribute_group.class:     Pim\Bundle\CatalogBundle\Manager\AttributeGroupManager
+    pim_catalog.manager.category.class:            Pim\Bundle\CatalogBundle\Manager\CategoryManager
+    pim_catalog.manager.channel.class:             Pim\Bundle\CatalogBundle\Manager\ChannelManager
+    pim_catalog.manager.completeness.class:        Pim\Bundle\CatalogBundle\Manager\CompletenessManager
+    pim_catalog.manager.currency.class:            Pim\Bundle\CatalogBundle\Manager\CurrencyManager
+    pim_catalog.manager.family.class:              Pim\Bundle\CatalogBundle\Manager\FamilyManager
+    pim_catalog.manager.group.class:               Pim\Bundle\CatalogBundle\Manager\GroupManager
+    pim_catalog.manager.locale.class:              Pim\Bundle\CatalogBundle\Manager\LocaleManager
+    pim_catalog.manager.media.class:               Pim\Bundle\CatalogBundle\Manager\MediaManager
+    pim_catalog.manager.product.class:             Pim\Bundle\CatalogBundle\Manager\ProductManager
+    pim_catalog.manager.product_mass_action.class: Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager
+    pim_catalog.manager.product_category.class:    Pim\Bundle\CatalogBundle\Manager\ProductCategoryManager
 
 services:
-    # Persister
-    pim_catalog.persister.product:
-        class: %pim_catalog.persister.product.class%
-        arguments:
-            - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_catalog.manager.completeness'
-
     # Managers
     pim_catalog.manager.product:
         class: %pim_catalog.manager.product.class%
@@ -38,16 +45,6 @@ services:
         arguments:
             - '@pim_catalog.repository.product_category'
             - '@pim_catalog.repository.category'
-
-    pim_catalog.builder.product:
-        class: %pim_catalog.builder.product.class%
-        arguments:
-            - %pim_catalog.entity.product.class%
-            - %pim_catalog.entity.product_value.class%
-            - '@pim_catalog.object_manager.product'
-            - '@pim_catalog.manager.channel'
-            - '@pim_catalog.manager.locale'
-            - '@pim_catalog.manager.currency'
 
     pim_catalog.manager.category:
         class: %pim_catalog.manager.category.class%
