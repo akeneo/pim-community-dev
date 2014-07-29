@@ -27,6 +27,7 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\AddUserListener/VersioningBundle\\EventSubscriber\\AddUserSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\AddVersionListener/VersioningBundle\\EventSubscriber\\AddVersionSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/VersioningBundle\\EventSubscriber\\MongoDBODM\\AddVersionListener/VersioningBundle\\EventSubscriber\\MongoDBODM\\AddProductVersionSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_versioning.event_listener/pim_versioning.event_subscriber/g'
 ```
 
 BatchBundle
@@ -38,12 +39,6 @@ Please run the following commands against your database :
     CREATE TABLE akeneo_batch_warning (id INT AUTO_INCREMENT NOT NULL, step_execution_id INT DEFAULT NULL, name VARCHAR(100) DEFAULT NULL, reason LONGTEXT DEFAULT NULL, reason_parameters LONGTEXT NOT NULL COMMENT '(DC2Type:array)', item LONGTEXT NOT NULL COMMENT '(DC2Type:array)', INDEX IDX_8EE0AE736C7DA296 (step_execution_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
     ALTER TABLE akeneo_batch_warning ADD CONSTRAINT FK_8EE0AE736C7DA296 FOREIGN KEY (step_execution_id) REFERENCES akeneo_batch_step_execution (id) ON DELETE CASCADE;
     ALTER TABLE akeneo_batch_step_execution DROP warnings;
-
-
-FlexibleEntityBundle
---------------------
-
-As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
 
 CatalogBundle
 -------------
@@ -82,4 +77,7 @@ OroSegmentationTreeBundle
 The bundle has been removed from Oro Platform, entities extending AbstractSegment should implement the desired
 methods themselves and repositories extending SegmentRepository should extend Gedmo\Tree\Entity\Repository\NestedTreeRepository
 
+FlexibleEntityBundle
+--------------------
 
+As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
