@@ -12,6 +12,7 @@ parameters:
     pimee_versioning.denormalizer.prices.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\PricesDenormalizer
     pimee_versioning.denormalizer.metric.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MetricDenormalizer
     pimee_versioning.denormalizer.datetime.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\DateTimeDenormalizer
+    pimee_versioning.denormalizer.media.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MediaDenormalizer
 
 services:
     pimee_versioning.denormalizer.product:
@@ -112,5 +113,13 @@ services:
         class: %pimee_versioning.denormalizer.datetime.class%
         arguments:
             - ['pim_catalog_date']
+        tags:
+            - { name: pim_serializer.normalizer, priority: 90 }
+
+    pimee_versioning.denormalizer.media:
+        class: %pimee_versioning.denormalizer.media.class%
+        arguments:
+            - ['pim_catalog_image', 'pim_catalog_file']
+            - '@pim_catalog.manager.media'
         tags:
             - { name: pim_serializer.normalizer, priority: 90 }
