@@ -41,8 +41,9 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
+            /** @var \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface $published */
             $published = $this->publishedRepository->findOneBy(['id' => $record->getValue('id')]);
-            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $published);
+            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
 
             return [
                 'unpublish' => $ownershipGranted,
