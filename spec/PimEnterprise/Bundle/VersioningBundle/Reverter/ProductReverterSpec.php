@@ -10,7 +10,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 
-class VersionReverterSpec extends ObjectBehavior
+class ProductReverterSpec extends ObjectBehavior
 {
     function let(
         ManagerRegistry $registry,
