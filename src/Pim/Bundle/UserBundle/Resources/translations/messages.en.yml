@@ -70,6 +70,13 @@ Entity: Entity
 Capabilities: Capabilities
 Save and close: Save and close
 Has role : Has role
+role:
+    edit: Edit role
+    create: Create role
+
+rights:
+    entity: Standard rights
+    action: Resource groups
 
 # Security
 (default): Default permission on entities
