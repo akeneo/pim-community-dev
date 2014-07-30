@@ -148,20 +148,4 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
 
         return $entity;
     }
-
-    /**
-     * Get target class name from metadatas
-     * This avoid to inject entity class names linked to denormalizer entity
-     *
-     * @param string $associationName
-     *
-     * @return string
-     */
-    protected function getTargetClass($associationName)
-    {
-        $om = $this->managerRegistry->getManagerForClass($this->entityClass);
-        $classMetadata = $om->getClassMetadata($this->entityClass);
-
-        return $classMetadata->getAssociationTargetClass($associationName);
-    }
 }

@@ -13,19 +13,34 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {
+    /** @var string */
+    protected $assocTypeClass;
+
+    /** @var string */
+    protected $groupClass;
+
+    /** @var string */
+    protected $productClass;
+
     /**
      * @param ManagerRegistry $managerRegistry
      * @param string          $entityClass
      * @param string          $assocTypeClass
+     * @param string          $productClass
+     * @param string          $groupClass
      */
     public function __construct(
         ManagerRegistry $managerRegistry,
         $entityClass,
-        $assocTypeClass
+        $assocTypeClass,
+        $productClass,
+        $groupClass
     ) {
         parent::__construct($managerRegistry, $entityClass);
 
         $this->assocTypeClass = $assocTypeClass;
+        $this->productClass   = $productClass;
+        $this->groupClass     = $groupClass;
     }
 
     /**
@@ -62,20 +77,18 @@ class AssociationDenormalizer extends AbstractEntityDenormalizer
         }
 
         if ('groups' === $context['part']) {
-            $groupClass = $this->getTargetClass('groups');
             $identifiers = explode(',', $data);
             foreach ($identifiers as $identifier) {
-                $group = $this->serializer->denormalize($identifier, $groupClass, $format);
+                $group = $this->serializer->denormalize($identifier, $this->groupClass, $format);
                 if (null !== $group) {
                     $association->addGroup($group);
                 }
             }
         } else {
             if (strlen($data) > 0) { // TODO: test should be in product denormalizer
-                $productClass = $this->getTargetClass('products');
                 $identifiers = explode(',', $data);
                 foreach ($identifiers as $identifier) {
-                    $product = $this->serializer->denormalize($identifier, $productClass, $format);
+                    $product = $this->serializer->denormalize($identifier, $this->productClass, $format);
                     if (null !== $product) {
                         $association->addProduct($product);
                     }
