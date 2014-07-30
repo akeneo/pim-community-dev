@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener\ORM;
+namespace Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;

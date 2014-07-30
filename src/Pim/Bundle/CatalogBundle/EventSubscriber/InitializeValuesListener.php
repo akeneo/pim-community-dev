@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener;
+namespace Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\CatalogBundle\Event\ProductEvents;

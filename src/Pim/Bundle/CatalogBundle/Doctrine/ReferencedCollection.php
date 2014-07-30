@@ -15,7 +15,7 @@ use Doctrine\Common\Persistence\ManagerRegistry;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @see       Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\EntitiesTypeSubscriber
+ * @see       Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\EntitiesTypeSubscriber
  */
 class ReferencedCollection extends AbstractLazyCollection
 {

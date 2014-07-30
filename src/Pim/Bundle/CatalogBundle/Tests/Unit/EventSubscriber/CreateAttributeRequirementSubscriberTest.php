@@ -1,8 +1,8 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventListener;
+namespace Pim\Bundle\CatalogBundle\Tests\Unit\EventSubscriber;
 
-use Pim\Bundle\CatalogBundle\EventListener\CreateAttributeRequirementSubscriber;
+use Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber;
 
 /**
  * Test related class

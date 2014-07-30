@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventListener;
+namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber;
 
 use Doctrine\Common\Persistence\Mapping\ClassMetadata;
 

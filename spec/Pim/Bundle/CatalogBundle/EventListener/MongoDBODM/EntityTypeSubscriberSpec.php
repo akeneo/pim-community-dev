@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
+namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -103,7 +103,7 @@ class EntityTypeSubscriberSpec extends ObjectBehavior
             'foo' => ['type' => 'text'],
             'bar' => [
                 'type'         => 'entity',
-                'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM\FooStub'
+                'targetEntity' => 'spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM\FooStub'
             ],
         ];
 

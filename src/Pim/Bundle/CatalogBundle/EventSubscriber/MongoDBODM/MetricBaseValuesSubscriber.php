@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
+namespace Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;

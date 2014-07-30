@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventListener\ORM;
+namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\ORM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Pim\Bundle\CatalogBundle\EventListener\MongoDBODM;
+namespace spec\Pim\Bundle\CatalogBundle\EventSubscriber\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Doctrine\ORM\Event\LifecycleEventArgs;
