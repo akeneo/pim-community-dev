@@ -76,7 +76,7 @@ role:
 
 rights:
     entity: Standard rights
-    action: Resource groups
+    action: Permissions
 
 # Security
 (default): Default permission on entities

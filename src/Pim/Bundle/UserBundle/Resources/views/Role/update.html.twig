@@ -18,7 +18,7 @@
                             var $target = $($(this).attr('href'));
                             var hasGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.granted').length;
                             var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
-                            var iconClass = hasGranted ? (hasMissing ? 'circle' : 'ok') : 'remove';
+                            var iconClass = hasMissing ? (hasGranted ? 'circle' : 'remove') : 'ok';
                             var $icon = $(this).find('i').first();
                             if (!$icon.length) {
                                 $icon = $('<i>', { 'class': 'acl-group-permission-toggle' }).prependTo($(this));
@@ -112,7 +112,7 @@
                                     </li>
                                 {% endfor %}
                                 <li class="tab">
-                                    <a href="#tabs-group-none" data-toggle="tab">{{ 'Other'|trans }}</a>
+                                    <a href="#tabs-group-system" data-toggle="tab">{{ 'System'|trans }}</a>
                                 </li>
                             </ul>
                         </div>
@@ -127,10 +127,10 @@
                                     </div>
                                 </div>
                             {% endfor %}
-                            <div id="tabs-group-none" class="tab-pane fullheight">
-                                <h3>{{ 'Other'|trans }}</h3>
+                            <div id="tabs-group-system" class="tab-pane fullheight">
+                                <h3>{{ 'System'|trans }}</h3>
                                 <div class="acl-group">
-                                    {% for child in form[privilegeBlock].children if child.vars.value.group is empty %}
+                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups %}
                                         {{ form_widget(child) }}
                                     {% endfor %}
                                 </div>
