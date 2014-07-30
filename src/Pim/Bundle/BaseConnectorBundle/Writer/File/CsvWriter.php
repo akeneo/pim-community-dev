@@ -220,7 +220,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         } else {
             $this->stepExecution->addWarning(
                 $this->getName(),
-                sprintf('Copy of "%s" failed.',  $media->getFilename()),
+                sprintf('Copy of "%s" failed.', $media->getFilename()),
                 [],
                 $media
             );
