@@ -20,11 +20,11 @@ class RegisterQueryGeneratorsPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pim_catalog.event_listener.mongodb.update_normalized_product_data')) {
+        if (!$container->hasDefinition('pim_catalog.event_subscriber.mongodb.update_normalized_product_data')) {
             return;
         }
 
-        $service = $container->getDefinition('pim_catalog.event_listener.mongodb.update_normalized_product_data');
+        $service = $container->getDefinition('pim_catalog.event_subscriber.mongodb.update_normalized_product_data');
 
         $taggedServices = $container->findTaggedServiceIds('pim_catalog.mongodb_odm_query_generator');
 
