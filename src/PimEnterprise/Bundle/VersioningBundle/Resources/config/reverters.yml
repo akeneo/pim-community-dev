@@ -6,5 +6,5 @@ services:
         class: %pimee_versioning.reverter.product.class%
         arguments:
             - '@pim_catalog.doctrine.smart_manager_registry'
-            - '@pim_serializer'
+            - '@pimee_versioning.serializer'
             - '@pim_catalog.manager.product'

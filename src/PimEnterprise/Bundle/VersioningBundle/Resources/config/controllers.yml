@@ -7,4 +7,5 @@ services:
         class: %pimee_versioning.controller.product_version.class%
         parent: pim_enrich.controller.abstract_doctrine
         arguments:
+            - %pim_versioning.entity.version.class%
             - '@pimee_versioning.reverter.product'

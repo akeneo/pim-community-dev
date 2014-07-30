@@ -207,18 +207,20 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         $assocFieldNames  = $this->fieldNameBuilder->getAssociationFieldNames();
         foreach ($assocFieldNames as $assocFieldName) {
             if (isset($data[$assocFieldName])) {
-                list($associationTypeCode, $part) = explode('-', $assocFieldName);
+                if (strlen($data[$assocFieldName]) > 0) {
+                    list($associationTypeCode, $part) = explode('-', $assocFieldName);
 
-                $association = $product->getAssociationForTypeCode($associationTypeCode);
-                $association = $this->serializer->denormalize(
-                    $data[$assocFieldName],
-                    $this->associationClass,
-                    $format,
-                    ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
-                );
+                    $association = $product->getAssociationForTypeCode($associationTypeCode);
+                    $association = $this->serializer->denormalize(
+                        $data[$assocFieldName],
+                        $this->associationClass,
+                        $format,
+                        ['entity' => $association, 'association_type_code' => $associationTypeCode, 'part' => $part]
+                    );
 
-                if (!$product->getAssociationForTypeCode($associationTypeCode)) {
-                    $product->addAssociation($association);
+                    if (!$product->getAssociationForTypeCode($associationTypeCode)) {
+                        $product->addAssociation($association);
+                    }
                 }
 
                 unset($data[$assocFieldName]);

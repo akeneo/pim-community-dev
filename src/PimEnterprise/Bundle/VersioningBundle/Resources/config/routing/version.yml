@@ -3,3 +3,4 @@ pimee_versioning_revert_product:
     defaults: { _controller: pimee_versioning.controller.product_version:revertAction }
     requirements:
         id: '[0-9a-f]+'
+    methods: [GET]

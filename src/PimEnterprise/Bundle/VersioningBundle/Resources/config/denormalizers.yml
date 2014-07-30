@@ -15,6 +15,15 @@ parameters:
     pimee_versioning.denormalizer.media.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MediaDenormalizer
 
 services:
+    pimee_versioning.serializer:
+        class: %pim_serializer.class%
+
+    pimee_versioning.encoder.csv:
+        public: false
+        class: %pim_serializer.encoder.csv.class%
+        tags:
+            - { name: pimee_versioning.serializer.encoder, priority: 90 }
+
     pimee_versioning.denormalizer.product:
         class: %pimee_versioning.denormalizer.product.class%
         arguments:
@@ -28,7 +37,7 @@ services:
             - %pim_catalog.entity.group.class%
             - %pim_catalog.entity.product_value.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.family:
         class: %pimee_versioning.denormalizer.family.class%
@@ -36,7 +45,7 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.family.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.category:
         class: %pimee_versioning.denormalizer.category.class%
@@ -44,7 +53,7 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.category.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.group:
         class: %pimee_versioning.denormalizer.group.class%
@@ -52,7 +61,7 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.group.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.association:
         class: %pimee_versioning.denormalizer.association.class%
@@ -61,7 +70,7 @@ services:
             - %pim_catalog.entity.association.class%
             - %pim_catalog.entity.association_type.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.product_value:
         class: %pimee_versioning.denormalizer.product_value.class%
@@ -69,14 +78,14 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pim_catalog.entity.product_value.class%
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.base_value:
         class: %pimee_versioning.denormalizer.base_value.class%
         arguments:
             - ['pim_catalog_identifier', 'pim_catalog_text', 'pim_catalog_textarea', 'pim_catalog_number', 'pim_catalog_boolean']
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.attribute_option:
         class: %pimee_versioning.denormalizer.attribute_option.class%
@@ -84,7 +93,7 @@ services:
             - ['pim_catalog_simpleselect']
             - '@pim_catalog.repository.attribute_option'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.attribute_options:
         class: %pimee_versioning.denormalizer.attribute_options.class%
@@ -92,7 +101,7 @@ services:
             - ['pim_catalog_multiselect']
             - '@pim_catalog.repository.attribute_option'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.prices:
         class: %pimee_versioning.denormalizer.prices.class%
@@ -100,7 +109,7 @@ services:
             - ['pim_catalog_price_collection']
             - '@pim_catalog.builder.product'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.metric:
         class: %pimee_versioning.denormalizer.metric.class%
@@ -108,14 +117,14 @@ services:
             - ['pim_catalog_metric']
             - '@pim_catalog.factory.metric'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.datetime:
         class: %pimee_versioning.denormalizer.datetime.class%
         arguments:
             - ['pim_catalog_date']
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }
 
     pimee_versioning.denormalizer.media:
         class: %pimee_versioning.denormalizer.media.class%
@@ -123,4 +132,4 @@ services:
             - ['pim_catalog_image', 'pim_catalog_file']
             - '@pim_catalog.manager.media'
         tags:
-            - { name: pim_serializer.normalizer, priority: 90 }
+            - { name: pimee_versioning.serializer.normalizer, priority: 90 }

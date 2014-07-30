@@ -29,6 +29,9 @@ class ProductVersionController extends AbstractDoctrineController
     /** @var ProductReverter */
     protected $reverter;
 
+    /** @var string */
+    protected $versionClass;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -39,6 +42,7 @@ class ProductVersionController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
+     * @param string                   $versionClass
      * @param ProductReverter          $reverter
      */
     public function __construct(
@@ -51,6 +55,7 @@ class ProductVersionController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
+        $versionClass,
         ProductReverter $reverter
     ) {
         parent::__construct(
@@ -65,6 +70,7 @@ class ProductVersionController extends AbstractDoctrineController
             $doctrine
         );
 
+        $this->versionClass = $versionClass;
         $this->reverter = $reverter;
     }
 
@@ -77,8 +83,9 @@ class ProductVersionController extends AbstractDoctrineController
      *
      * @AclAncestor("pimee_versioning_revert_product")
      */
-    public function revertAction(Version $version)
+    public function revertAction($id)
     {
+        $version = $this->findOr404($this->versionClass, $id);
         $this->reverter->revert($version);
 
         if ($this->request->isXmlHttpRequest()) {
