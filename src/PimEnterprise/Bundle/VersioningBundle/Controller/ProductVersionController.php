@@ -88,11 +88,7 @@ class ProductVersionController extends AbstractDoctrineController
         $version = $this->findOr404($this->versionClass, $id);
         $this->reverter->revert($version);
 
-        if ($this->request->isXmlHttpRequest()) {
-            return new JsonResponse(
-                ['successful' => true, 'message' => $this->translator->trans('flash.version.revert.product')]
-            );
-        }
+        $this->addFlash('success', 'flash.version.revert.product');
 
         return $this->redirectToRoute('pim_enrich_product_edit', ['id' => $version->getResourceId()]);
     }

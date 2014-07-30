@@ -40,7 +40,7 @@ datagrid:
                     - id
         actions:
             revert:
-                type:   ajax
+                type:   navigate
                 label:  Revert to this version
                 icon:   undo
                 link:   revert_link
