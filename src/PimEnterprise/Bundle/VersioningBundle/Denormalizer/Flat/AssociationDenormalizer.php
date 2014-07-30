@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Flat\Denormalizer;
+namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;

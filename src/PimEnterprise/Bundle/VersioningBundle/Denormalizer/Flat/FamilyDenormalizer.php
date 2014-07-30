@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Flat\Denormalizer;
+namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 /**
  * Family flat denormalizer
