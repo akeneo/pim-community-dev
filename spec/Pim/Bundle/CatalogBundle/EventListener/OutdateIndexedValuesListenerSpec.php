@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
-class OutdateIndexedValuesListenerSpec extends ObjectBehavior
+class OutdateIndexedValuesSubscriberSpec extends ObjectBehavior
 {
     function it_is_a_doctrine_subscriber()
     {

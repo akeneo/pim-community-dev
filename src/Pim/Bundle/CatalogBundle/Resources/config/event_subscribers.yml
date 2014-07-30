@@ -1,11 +1,11 @@
 parameters:
     pim_catalog.event_subscriber.create_attribute_requirement.class: Pim\Bundle\CatalogBundle\EventSubscriber\CreateAttributeRequirementSubscriber
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\MetricBaseValuesSubscriber
-    pim_catalog.event_subscriber.localizable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableListener
-    pim_catalog.event_subscriber.scopable.class:                     Pim\Bundle\CatalogBundle\EventSubscriber\ScopableListener
-    pim_catalog.event_subscriber.timestampable.class:                Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableListener
-    pim_catalog.event_subscriber.initialize_values.class:            Pim\Bundle\CatalogBundle\EventSubscriber\InitializeValuesListener
-    pim_catalog.event_subscriber.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventSubscriber\OutdateIndexedValuesListener
+    pim_catalog.event_subscriber.localizable.class:                  Pim\Bundle\CatalogBundle\EventSubscriber\LocalizableSubscriber
+    pim_catalog.event_subscriber.scopable.class:                     Pim\Bundle\CatalogBundle\EventSubscriber\ScopableSubscriber
+    pim_catalog.event_subscriber.timestampable.class:                Pim\Bundle\CatalogBundle\EventSubscriber\TimestampableSubscriber
+    pim_catalog.event_subscriber.initialize_values.class:            Pim\Bundle\CatalogBundle\EventSubscriber\InitializeValuesSubscriber
+    pim_catalog.event_subscriber.outdate_indexed_values.class:       Pim\Bundle\CatalogBundle\EventSubscriber\OutdateIndexedValuesSubscriber
     pim_catalog.event_subscriber.category.check_channels.class:      Pim\Bundle\CatalogBundle\EventSubscriber\Category\CheckChannelsOnDeletionSubscriber
 
 services:

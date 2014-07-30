@@ -32,7 +32,11 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_user.event_listener/pim_user.event_subscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/CatalogBundle\\EventListener/CatalogBundle\\EventSubscriber/g'
     find ./src/ -type f -print0 | xargs -0 sed -i 's/pim_catalog.event_listener/pim_catalog.event_subscriber/g'
-
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/OutdateIndexedValuesListener/OutdateIndexedValuesSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/ScopableListener/ScopableSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/TimestampableListener/TimestampableSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/InitializeValuesListener/InitializeValuesSubscriber/g'
+    find ./src/ -type f -print0 | xargs -0 sed -i 's/LocalizableListener/LocalizableSubscriber/g'
 ```
 
 BatchBundle

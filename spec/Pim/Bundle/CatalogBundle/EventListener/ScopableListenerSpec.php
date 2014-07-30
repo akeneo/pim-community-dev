@@ -8,7 +8,7 @@ use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
-class ScopableListenerSpec extends ObjectBehavior
+class ScopableSubscriberSpec extends ObjectBehavior
 {
     function let(CatalogContext $context)
     {

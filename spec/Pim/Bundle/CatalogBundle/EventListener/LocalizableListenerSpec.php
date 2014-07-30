@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
-class LocalizableListenerSpec extends ObjectBehavior
+class LocalizableSubscriberSpec extends ObjectBehavior
 {
     function let(CatalogContext $context)
     {
