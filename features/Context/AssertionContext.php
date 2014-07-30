@@ -254,6 +254,47 @@ class AssertionContext extends RawMinkContext
     }
 
     /**
+     * @param TableNode $table
+     *
+     * @Then /^I should see this exact history:$/
+     */
+    public function iShouldSeeThisExactHistory(TableNode $table)
+    {
+        $actualUpdates = array();
+        $rows = $this->getCurrentPage()->getHistoryRows();
+        foreach ($rows as $row) {
+            $version = (int) $row->find('css', 'td.number-cell')->getHtml();
+            $allData = $row->findAll('css', 'td>ul');
+
+            $beforeData = str_replace(" ", "", strip_tags($allData[0]->getHtml()));
+            $beforeData = explode("\n", $beforeData);
+            foreach ($beforeData as $dataItem) {
+                if ("" !== $dataItem) {
+                    list($property, $value) = explode(':', $dataItem);
+                    $actualUpdates[$version.$property] = [
+                        'version'  => $version,
+                        'property' => $property,
+                        'before'   => $value
+                    ];
+                }
+            }
+
+            $afterData = str_replace(" ", "", strip_tags($allData[1]->getHtml()));
+            $afterData = explode("\n", $afterData);
+            foreach ($afterData as $dataItem) {
+                if ("" !== $dataItem) {
+                    list($property, $value) = explode(':', $dataItem);
+                    $actualUpdates[$version.$property]['after'] = $value;
+                }
+            }
+        }
+        $actualUpdates = array_values($actualUpdates);
+        $expectedUpdates = $table->getHash();
+
+        assertEquals($actualUpdates, $expectedUpdates);
+    }
+
+    /**
      * @param string $fileName
      *
      * @Given /^file "([^"]*)" should exist$/
