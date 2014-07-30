@@ -11,22 +11,22 @@ namespace PimEnterprise\Bundle\SecurityBundle;
 final class Attributes
 {
     /** @staticvar string */
-    const VIEW = 'VIEW';
+    const VIEW = 'VIEW_RESOURCE';
 
     /** @staticvar string */
-    const EDIT = 'EDIT';
+    const EDIT = 'EDIT_RESOURCE';
 
     /** @staticvar string */
-    const EXECUTE = 'EXECUTE';
+    const EXECUTE = 'EXECUTE_RESOURCE';
 
     /** @staticvar string */
-    const OWN = 'OWN';
+    const OWN = 'OWN_RESOURCE';
 
     /** @staticvar string */
-    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
+    const VIEW_ATTRIBUTES = 'VIEW_ATTRIBUTES';
 
     /** @staticvar string */
-    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+    const EDIT_ATTRIBUTES = 'EDIT_ATTRIBUTES';
 
     /** @staticvar string */
     const VIEW_PRODUCTS = 'VIEW_PRODUCTS';
