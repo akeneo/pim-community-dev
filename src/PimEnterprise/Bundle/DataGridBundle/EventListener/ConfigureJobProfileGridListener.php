@@ -49,7 +49,7 @@ class ConfigureJobProfileGridListener
      */
     protected function getActionConfiguration(ResultRecordInterface $record)
     {
-        if (!$this->securityContext->isGranted(Attributes::EDIT_JOB_PROFILE, $record->getRootEntity())) {
+        if (!$this->securityContext->isGranted(Attributes::EDIT, $record->getRootEntity())) {
             return ['edit' => false, 'delete' => false];
         }
     }

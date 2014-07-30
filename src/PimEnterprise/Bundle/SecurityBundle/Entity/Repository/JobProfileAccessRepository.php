@@ -107,7 +107,7 @@ class JobProfileAccessRepository extends EntityRepository implements AccessRepos
      */
     protected function getAccessField($accessLevel)
     {
-        return ($accessLevel === Attributes::EDIT_JOB_PROFILE)
+        return ($accessLevel === Attributes::EDIT)
             ? 'ja.editJobProfile'
             : 'ja.executeJobProfile';
     }

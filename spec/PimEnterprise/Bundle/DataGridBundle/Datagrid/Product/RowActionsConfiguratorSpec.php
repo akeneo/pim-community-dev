@@ -48,7 +48,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_configures_the_grid($datagridConfiguration, $securityContext)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCT, Argument::any())->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT, Argument::any())->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $this->configure($datagridConfiguration);
@@ -56,7 +56,7 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_configures_the_view_actions_for_a_row($record, $product, $securityContext)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(false);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, Argument::any())->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
@@ -73,8 +73,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_configures_the_edit_actions_for_a_row($record, $product, $securityContext, $locale)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();
@@ -91,8 +91,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_hides_actions_except_the_show_for_a_row_if_user_can_not_edit_the_product($record, $product, $securityContext, $locale)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(false);
 
         $closure = $this->getActionConfigurationClosure();
@@ -109,8 +109,8 @@ class RowActionsConfiguratorSpec extends ObjectBehavior
 
     function it_hides_the_edit_categories_action_if_user_does_not_own_the_product($record, $product, $securityContext, $locale)
     {
-        $securityContext->isGranted(Attributes::EDIT_PRODUCT, $product)->willReturn(true);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::EDIT, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
         $securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale)->willReturn(true);
 
         $closure = $this->getActionConfigurationClosure();

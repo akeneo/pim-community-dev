@@ -49,7 +49,7 @@ class UnmapProductValuesSubscriber implements EventSubscriberInterface
         $form = $event->getForm();
 
         if ('pim_product_edit' !== $form->getName()
-            || $this->securityContext->isGranted(Attributes::OWNER, $form->getData())) {
+            || $this->securityContext->isGranted(Attributes::OWN, $form->getData())) {
             return;
         }
 

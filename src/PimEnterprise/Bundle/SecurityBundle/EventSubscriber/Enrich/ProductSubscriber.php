@@ -59,7 +59,7 @@ class ProductSubscriber implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        if (false === $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $event->getSubject())) {
+        if (false === $this->securityContext->isGranted(Attributes::EDIT, $event->getSubject())) {
             throw new AccessDeniedException();
         }
         $locale = $this->userContext->getCurrentLocale();

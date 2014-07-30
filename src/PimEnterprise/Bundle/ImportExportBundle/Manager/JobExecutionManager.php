@@ -62,7 +62,7 @@ class JobExecutionManager extends BaseJobExecutionManager
 
         $subQB = $this->accessRepository->getGrantedJobsQB(
             $this->securityContext->getToken()->getUser(),
-            Attributes::EXECUTE_JOB_PROFILE
+            Attributes::EXECUTE
         );
 
         return $this->repository->getLastOperations($types, $subQB);

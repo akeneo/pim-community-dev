@@ -23,8 +23,8 @@ class JobProfileAccessManagerSpec extends ObjectBehavior
 
     function it_provides_user_groups_that_have_access_to_a_job_profile(JobInstance $jobProfile, $repository)
     {
-        $repository->getGrantedUserGroups($jobProfile, Attributes::EXECUTE_JOB_PROFILE)->willReturn(['foo', 'bar']);
-        $repository->getGrantedUserGroups($jobProfile, Attributes::EDIT_JOB_PROFILE)->willReturn(['bar']);
+        $repository->getGrantedUserGroups($jobProfile, Attributes::EXECUTE)->willReturn(['foo', 'bar']);
+        $repository->getGrantedUserGroups($jobProfile, Attributes::EDIT)->willReturn(['bar']);
 
         $this->getExecuteUserGroups($jobProfile)->shouldReturn(['foo', 'bar']);
         $this->getEditUserGroups($jobProfile)->shouldReturn(['bar']);

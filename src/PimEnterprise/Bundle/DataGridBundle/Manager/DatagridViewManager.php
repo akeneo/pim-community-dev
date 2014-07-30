@@ -43,7 +43,7 @@ class DatagridViewManager extends BaseDatagridViewManager
         $views = parent::findPublic($alias);
 
         foreach ($views as $key => $view) {
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_DATAGRID_VIEW, $view)) {
+            if (false === $this->securityContext->isGranted(Attributes::VIEW, $view)) {
                 unset($views[$key]);
             }
         }

@@ -7,26 +7,26 @@ namespace PimEnterprise\Bundle\SecurityBundle;
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- *
- * TODO @nidup :re-organize/rename constants after the merge of https://github.com/akeneo/pim-enterprise-dev/pull/174
- * TODO : needs VIEW, EDIT, EXECUTE, OWN, VIEW_PRODUCTS, EDIT_PRODUCTS, OWN_PRODUCTS, VIEW_ATTRIBUTES, EDIT_ATTRIBUTES
  */
 final class Attributes
 {
     /** @staticvar string */
-    const OWNER = 'OWNER';
+    const VIEW = 'VIEW_RESOURCE';
 
     /** @staticvar string */
-    const VIEW_PRODUCT = 'VIEW_PRODUCT';
+    const EDIT = 'EDIT_RESOURCE';
 
     /** @staticvar string */
-    const EDIT_PRODUCT = 'EDIT_PRODUCT';
+    const EXECUTE = 'EXECUTE_RESOURCE';
 
     /** @staticvar string */
-    const VIEW_ATTRIBUTES = 'GROUP_VIEW_ATTRIBUTES';
+    const OWN = 'OWN_RESOURCE';
 
     /** @staticvar string */
-    const EDIT_ATTRIBUTES = 'GROUP_EDIT_ATTRIBUTES';
+    const VIEW_ATTRIBUTES = 'VIEW_ATTRIBUTES';
+
+    /** @staticvar string */
+    const EDIT_ATTRIBUTES = 'EDIT_ATTRIBUTES';
 
     /** @staticvar string */
     const VIEW_PRODUCTS = 'VIEW_PRODUCTS';
@@ -36,13 +36,4 @@ final class Attributes
 
     /** @staticvar string */
     const OWN_PRODUCTS = 'OWN_PRODUCTS';
-
-    /** @staticvar string */
-    const EXECUTE_JOB_PROFILE = 'EXECUTE_JOB_PROFILE';
-
-    /** @staticvar string */
-    const EDIT_JOB_PROFILE    = 'EDIT_JOB_PROFILE';
-
-    /** @staticvar string */
-    const VIEW_DATAGRID_VIEW = 'VIEW_DATAGRID_VIEW';
 }

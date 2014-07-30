@@ -20,7 +20,7 @@ class PropositionOwnershipVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return Attributes::OWNER === $attribute;
+        return Attributes::OWN === $attribute;
     }
 
     /**

@@ -73,8 +73,8 @@ class RowActionsConfigurator implements ConfiguratorInterface
             $product = $this->productRepository->findOneBy(['id' => $record->getValue('id')]);
             $locale = $this->localeRepository->findOneBy(['code' => $record->getValue('dataLocale')]);
 
-            $editGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCT, $product);
-            $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWNER, $product) : false;
+            $editGranted = $this->securityContext->isGranted(Attributes::EDIT, $product);
+            $ownershipGranted = $editGranted ? $this->securityContext->isGranted(Attributes::OWN, $product) : false;
             $localeGranted = $this->securityContext->isGranted(Attributes::EDIT_PRODUCTS, $locale);
 
             return [

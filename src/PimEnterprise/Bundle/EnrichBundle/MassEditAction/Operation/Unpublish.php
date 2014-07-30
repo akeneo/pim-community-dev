@@ -54,7 +54,7 @@ class Unpublish extends PublishedProductMassEditOperation
         $publisheds   = $this->getObjectsToMassEdit();
         $notGranted = [];
         foreach ($publisheds as $published) {
-            if ($this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct()) === false) {
+            if ($this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct()) === false) {
                 $notGranted[] = (string) $published->getIdentifier();
             }
         }
@@ -79,7 +79,7 @@ class Unpublish extends PublishedProductMassEditOperation
      */
     protected function doPerform(PublishedProductInterface $published)
     {
-        if ($this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct())) {
+        if ($this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct())) {
             $this->manager->unpublish($published);
         }
     }

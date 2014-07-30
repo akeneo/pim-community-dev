@@ -33,7 +33,7 @@ class PublishSpec extends ObjectBehavior
     function it_publishes_each_product(ProductInterface $product, SecurityContextInterface $securityContext, PublishedProductManager $manager)
     {
         $this->setObjectsToMassEdit([$product]);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
         $manager->publish($product)->shouldBeCalled();
         $this->perform();
     }

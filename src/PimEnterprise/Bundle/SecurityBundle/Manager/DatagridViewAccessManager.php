@@ -60,7 +60,7 @@ class DatagridViewAccessManager
      */
     public function isUserGranted(UserInterface $user, DatagridView $view, $attribute)
     {
-        if (Attributes::VIEW_DATAGRID_VIEW !== $attribute) {
+        if (Attributes::VIEW !== $attribute) {
             throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
         }
 
