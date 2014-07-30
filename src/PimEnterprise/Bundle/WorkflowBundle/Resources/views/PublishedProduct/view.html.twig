@@ -8,7 +8,7 @@
     {% set buttons %}
         {{ elements.backLink(path('pimee_workflow_published_product_index', { dataLocale: dataLocale })) }}
         {{ elements.link('btn.editworkingcopy', path('pim_enrich_product_edit', {id: published.originalProduct.id, locale: dataLocale}), {icon: 'pencil'}) }}
-        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), published) %}
+        {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), published.originalProduct) %}
             {{ elements.link('btn.unpublish', path('pimee_workflow_published_product_unpublish', {id: published.id, dataLocale: dataLocale}), {icon: 'cloud-download'}) }}
         {% endif %}
     {% endset %}
