@@ -2,7 +2,8 @@
 
 namespace PimEnterprise\Bundle\VersioningBundle\EventSubscriber\MongoDBODM;
 
-use Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber as BaseAddProductVersionSubscriber;
+use Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
+    as BaseAddProductVersionSubscriber;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 
 /**
