@@ -496,22 +496,34 @@ class Grid extends Index
      */
     public function applyView($viewLabel)
     {
+        try {
+            $this->findView($viewLabel)->click();
+        } catch (\Exception $e) {
+            throw new \InvalidArgumentException(
+                sprintf('Impossible to apply view "%s"', $viewLabel)
+            );
+        }
+    }
+
+    /**
+     * Find a view in the list
+     *
+     * @param string $viewLabel
+     *
+     * @return NodeElement|mixed|null
+     */
+    public function findView($viewLabel)
+    {
         $this
             ->getElement('View selector')
             ->getParent()
             ->find('css', 'button.pimmultiselect')
             ->click();
 
-        try {
-            $this
-                ->getElement('Views list')
-                ->find('css', sprintf('label:contains("%s")', $viewLabel))
-                ->click();
-        } catch (\Exception $e) {
-            throw new \InvalidArgumentException(
-                sprintf('Impossible to apply view "%s"', $viewLabel)
-            );
-        }
+        return $this
+            ->getElement('Views list')
+            ->find('css', sprintf('label:contains("%s")', $viewLabel))
+        ;
     }
 
     /**
