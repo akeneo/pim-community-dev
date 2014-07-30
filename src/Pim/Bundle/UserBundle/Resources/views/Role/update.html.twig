@@ -16,8 +16,8 @@
                     var decorateTabs = function() {
                         $('.tab-groups').find('li.tab>a').each(function() {
                             var $target = $($(this).attr('href'));
-                            var hasGranted = $target.find('.acl-permission-toggle.granted').length;
-                            var hasMissing = $target.find('.acl-permission-toggle.non-granted').length;
+                            var hasGranted = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.granted').length;
+                            var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
                             var iconClass = hasGranted ? (hasMissing ? 'circle' : 'ok') : 'remove';
                             var $icon = $(this).find('i').first();
                             if (!$icon.length) {
@@ -47,6 +47,10 @@
                         decorateTabs();
                     });
 
+                    $('.acl-permission.default-field').each(function() {
+                        $(this).addClass('hide').find('.acl-permission-toggle.non-granted').click();
+                    });
+
                     decorateTabs();
                 });
             }
@@ -57,6 +61,7 @@
 {% set entityId = form.vars.value.id %}
 
 {% block content %}
+    {{ JSFV(form) }}
     {{ form_start(form, { action: entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create'), attr: { class: 'form-tabbed' }}) }}
 
         {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
