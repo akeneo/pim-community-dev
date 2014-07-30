@@ -29,5 +29,6 @@ class PimUserExtension extends Extension
         $loader->load('form_types.yml');
         $loader->load('repositories.yml');
         $loader->load('entities.yml');
+        $loader->load('twig.yml');
     }
 }
