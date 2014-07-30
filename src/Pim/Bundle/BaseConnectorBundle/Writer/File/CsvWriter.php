@@ -218,7 +218,12 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         if (true === $result) {
             $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
         } else {
-            $this->stepExecution->addWarning($this->getName(),  sprintf('Copy of "%s" failed.',  $media->getFilename()), [], $media);
+            $this->stepExecution->addWarning(
+                $this->getName(),
+                sprintf('Copy of "%s" failed.',  $media->getFilename()),
+                [],
+                $media
+            );
         }
     }
 
