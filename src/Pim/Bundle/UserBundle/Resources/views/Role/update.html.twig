@@ -1,0 +1,148 @@
+{% extends 'PimEnrichBundle::layout.html.twig' %}
+{% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% oro_title_set({params : { "%role%": form.vars.value.label } }) %}
+
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery'],
+            function ($) {
+                'use strict';
+
+                $(function() {
+                    var decorateTabs = function() {
+                        $('.tab-groups').find('li.tab>a').each(function() {
+                            var $target = $($(this).attr('href'));
+                            var hasGranted = $target.find('.acl-permission-toggle.granted').length;
+                            var hasMissing = $target.find('.acl-permission-toggle.non-granted').length;
+                            var iconClass = hasGranted ? (hasMissing ? 'circle' : 'ok') : 'remove';
+                            var $icon = $(this).find('i').first();
+                            if (!$icon.length) {
+                                $icon = $('<i>', { 'class': 'acl-group-permission-toggle' }).prependTo($(this));
+                            }
+                            $icon.removeClass('icon-ok icon-remove icon-circle').addClass('icon-' + iconClass);
+                        });
+                    };
+
+                    var togglePermission = function($icon, callback) {
+                        $icon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                        var $input = $icon.siblings('input[type="checkbox"]').eq(0);
+                        $input.prop('checked', !$input.is(':checked')).trigger('change');
+                        (callback || $.noop)();
+                    };
+
+                    $('.acl-permission i').on('click', function() {
+                        togglePermission($(this), decorateTabs)
+                    });
+
+                    $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
+                        var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
+                        var $target = $($(this).parent().attr('href'));
+                        $target.find('.acl-permission i.' + classToToggle).each(function() {
+                            togglePermission($(this));
+                        });
+                        decorateTabs();
+                    });
+
+                    decorateTabs();
+                });
+            }
+        );
+    </script>
+{% endblock %}
+
+{% set entityId = form.vars.value.id %}
+
+{% block content %}
+    {{ form_start(form, { action: entityId ? path('oro_user_role_update', { 'id': entityId}) : path('oro_user_role_create'), attr: { class: 'form-tabbed' }}) }}
+
+        {% set title = entityId ? 'role.edit'|trans ~ ' - ' ~ form.vars.value.label : 'role.create'|trans %}
+
+        {% set buttons %}
+            {{ elements.backLink(path('oro_user_role_index')) }}
+            {% if entityId %}
+                {{ elements.deleteLink(
+                    path('oro_api_delete_role', { id: entityId }),
+                    'oro_user_role_remove',
+                    path('oro_user_role_index'),
+                    'Are you sure you want to delete this role?'|trans,
+                    'Role removed'|trans
+                ) }}
+            {% endif %}
+            {{ elements.submitBtn }}
+        {% endset %}
+
+        {{ elements.page_header(title, buttons) }}
+
+        {% set tabs = ['General'] %}
+        {% for item in privilegesConfig|keys %}
+            {% set tabs = tabs|merge(['rights.' ~ item]) %}
+        {% endfor %}
+        {% set tabs = tabs|merge(['Users']) %}
+
+        {{ elements.form_navbar(tabs) }}
+
+        <div class="row-fluid tab-content">
+
+            {{ elements.form_errors(form) }}
+
+            <div class="tab-pane active buffer-top" id="general">
+                {{ form_row(form.label) }}
+                {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+            </div>
+
+            {% set groups = acl_groups() %}
+
+            {% for privilegeBlock, privilegeConfig in privilegesConfig %}
+                <div class="tab-pane" id="rights-{{ privilegeBlock }}">
+                    {% if 'groups' == privilegeConfig.view_type %}
+                        <div class="tab-groups">
+                            <ul class="nav nav-list">
+                                {% for group in groups %}
+                                    <li class="tab{{ loop.index == 1 ? ' active' : '' }}">
+                                        <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ group|trans }}</a>
+                                    </li>
+                                {% endfor %}
+                                <li class="tab">
+                                    <a href="#tabs-group-none" data-toggle="tab">{{ 'Other'|trans }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="tab-content">
+                            {% for group in groups %}
+                                <div id="tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" class="tab-pane fullheight">
+                                    <h3>{{ group|trans }}</h3>
+                                    <div class="acl-group">
+                                        {% for child in form[privilegeBlock].children if child.vars.value.group == group %}
+                                            {{ form_widget(child) }}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <div id="tabs-group-none" class="tab-pane fullheight">
+                                <h3>{{ 'Other'|trans }}</h3>
+                                <div class="acl-group">
+                                    {% for child in form[privilegeBlock].children if child.vars.value.group is empty %}
+                                        {{ form_widget(child) }}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        {{ form_widget(form[privilegeBlock]) }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="tab-pane" id="users">
+                {{ dataGrid.renderGrid('role-users-grid', {role_id: entityId}) }}
+                {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
+                {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+            </div>
+        </div>
+
+    {{ form_end(form) }}
+{% endblock %}
