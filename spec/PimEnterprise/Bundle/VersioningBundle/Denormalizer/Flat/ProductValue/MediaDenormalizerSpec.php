@@ -51,4 +51,13 @@ class MediaDenormalizerSpec extends ObjectBehavior
 
         $this->denormalize('preview.jpg', 'pim_catalog_image')->shouldReturn($media);
     }
+
+    function it_does_not_create_media_for_empty_filename(
+        $manager,
+        $factory,
+        Model\AbstractProductMedia $media
+    ) {
+        $this->denormalize(null, 'pim_catalog_image')->shouldReturn(null);
+        $this->denormalize('', 'pim_catalog_image')->shouldReturn(null);
+    }
 }
