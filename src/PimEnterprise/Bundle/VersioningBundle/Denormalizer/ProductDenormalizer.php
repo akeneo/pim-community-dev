@@ -128,7 +128,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      */
-    protected function denormalizeFamily($data, $format, array $context = array(), ProductInterface $product)
+    protected function denormalizeFamily($data, $format, array $context, ProductInterface $product)
     {
         if (strlen($data) > 0) {
             $family = $this->serializer->denormalize($data, $this->familyClass, $format, $context);
@@ -147,7 +147,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @oaram array            $context
      * @param ProductInterface $product
      */
-    protected function denormalizeCategories($data, $format, array $context = array(), ProductInterface $product)
+    protected function denormalizeCategories($data, $format, array $context, ProductInterface $product)
     {
         foreach ($product->getCategories() as $category) {
             $product->removeCategory($category);
@@ -169,7 +169,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      */
-    protected function denormalizeGroups($data, $format, array $context = array(), ProductInterface $product)
+    protected function denormalizeGroups($data, $format, array $context, ProductInterface $product)
     {
         foreach ($product->getGroups() as $group) {
             $product->removeGroup($group);
@@ -191,7 +191,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      */
-    protected function denormalizeAssociations(&$data, $format, array $context = array(), ProductInterface $product)
+    protected function denormalizeAssociations(&$data, $format, array $context, ProductInterface $product)
     {
         foreach ($product->getAssociations() as $association) {
             foreach ($association->getGroups() as $group) {
@@ -236,7 +236,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param array            $context
      * @param ProductInterface $product
      */
-    protected function denormalizeValues($data, $format, array $context = array(), ProductInterface $product)
+    protected function denormalizeValues($data, $format, array $context, ProductInterface $product)
     {
         foreach ($product->getValues() as $value) {
             $product->removeValue($value);
