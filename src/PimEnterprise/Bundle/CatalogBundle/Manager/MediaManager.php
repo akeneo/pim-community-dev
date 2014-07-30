@@ -21,8 +21,9 @@ class MediaManager extends BaseMediaManager
     /**
      * Constructor
      *
-     * @param Filesystem $filesystem
-     * @param string     $uploadDirectory
+     * @param Filesystem   $filesystem
+     * @param string       $uploadDirectory
+     * @param MediaFactory $factory
      */
     public function __construct(
         Filesystem $filesystem,
@@ -38,6 +39,8 @@ class MediaManager extends BaseMediaManager
      * Create a media and load file information
      *
      * @param string $filename
+     *
+     * @return \Pim\Bundle\CatalogBundle\Factory\Media
      *
      * @see PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MediaDenormalizer
      * @throws \InvalidArgumentException When file does not exist

@@ -1,18 +1,17 @@
 parameters:
-    pimee_versioning.denormalizer.product.class:           PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer
-    pimee_versioning.denormalizer.family.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\FamilyDenormalizer
-    pimee_versioning.denormalizer.category.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\CategoryDenormalizer
-    pimee_versioning.denormalizer.group.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\GroupDenormalizer
-    pimee_versioning.denormalizer.association.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\AssociationDenormalizer
-    pimee_versioning.denormalizer.product_value.class:     PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValueDenormalizer
-    pimee_versioning.denormalizer.dummy.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\DummyDenormalizer
-    pimee_versioning.denormalizer.base_value.class:        PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\BaseValueDenormalizer
-    pimee_versioning.denormalizer.attribute_option.class:  PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionDenormalizer
-    pimee_versioning.denormalizer.attribute_options.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\AttributeOptionsDenormalizer
-    pimee_versioning.denormalizer.prices.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\PricesDenormalizer
-    pimee_versioning.denormalizer.metric.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MetricDenormalizer
-    pimee_versioning.denormalizer.datetime.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\DateTimeDenormalizer
-    pimee_versioning.denormalizer.media.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue\MediaDenormalizer
+    pimee_versioning.denormalizer.product.class:           PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductDenormalizer
+    pimee_versioning.denormalizer.family.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\FamilyDenormalizer
+    pimee_versioning.denormalizer.category.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\CategoryDenormalizer
+    pimee_versioning.denormalizer.group.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\GroupDenormalizer
+    pimee_versioning.denormalizer.association.class:       PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\AssociationDenormalizer
+    pimee_versioning.denormalizer.product_value.class:     PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValueDenormalizer
+    pimee_versioning.denormalizer.base_value.class:        PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\BaseValueDenormalizer
+    pimee_versioning.denormalizer.attribute_option.class:  PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionDenormalizer
+    pimee_versioning.denormalizer.attribute_options.class: PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\AttributeOptionsDenormalizer
+    pimee_versioning.denormalizer.prices.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\PricesDenormalizer
+    pimee_versioning.denormalizer.metric.class:            PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\MetricDenormalizer
+    pimee_versioning.denormalizer.datetime.class:          PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\DateTimeDenormalizer
+    pimee_versioning.denormalizer.media.class:             PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue\MediaDenormalizer
 
 services:
     pimee_versioning.serializer:

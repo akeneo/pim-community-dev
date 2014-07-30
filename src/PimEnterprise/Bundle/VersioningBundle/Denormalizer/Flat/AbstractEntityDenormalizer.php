@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace PimEnterprise\Bundle\VersioningBundle\Flat\Denormalizer;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;

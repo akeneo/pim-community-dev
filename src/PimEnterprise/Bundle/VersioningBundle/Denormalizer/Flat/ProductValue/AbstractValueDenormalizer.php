@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
+namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 

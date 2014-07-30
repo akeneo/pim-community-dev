@@ -1,14 +1,14 @@
 <?php
 
-namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace PimEnterprise\Bundle\VersioningBundle\Flat\Denormalizer;
 
 /**
- * Group flat denormalizer
+ * Category flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class GroupDenormalizer extends AbstractEntityDenormalizer
+class CategoryDenormalizer extends AbstractEntityDenormalizer
 {
     /**
      * {@inheritdoc}
