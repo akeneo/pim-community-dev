@@ -1,4 +1,4 @@
 locale_accesses:
     en_US:
-        view: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]

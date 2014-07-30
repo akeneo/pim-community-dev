@@ -1,38 +1,38 @@
 job_profile_accesses:
     footwear_association_type_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_attribute_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_category_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_group_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_option_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
 
     footwear_association_type_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_attribute_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_category_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_group_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_option_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     footwear_product_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]

@@ -1,38 +1,38 @@
 job_profile_accesses:
     clothing_association_type_export:
-        execute: [IT support, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Redactor]
+        editJobProfile: [IT support]
     clothing_attribute_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     clothing_category_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     clothing_group_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     clothing_option_export:
-        execute: [IT support, Redactor]
-        edit: []
+        executeJobProfile: [IT support, Redactor]
+        editJobProfile: []
     clothing_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
 
     clothing_association_type_import:
-        execute: [IT support, Redactor]
-        edit: []
+        executeJobProfile: [IT support, Redactor]
+        editJobProfile: []
     clothing_attribute_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     clothing_category_import:
-        execute: [IT support, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Redactor]
+        editJobProfile: [IT support]
     clothing_group_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     clothing_option_import:
-        execute: [IT support, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Redactor]
+        editJobProfile: [IT support]
     clothing_product_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]

@@ -1,16 +1,21 @@
 category_accesses:
     2014_collection:
-        edit: [IT support, Manager, Redactor]
-        own: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
     summer_collection:
-        edit: [IT support, Manager, Redactor]
-        own: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
     winter_collection:
-        edit: [IT support, Manager, Redactor]
-        own: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
     winter_boots:
-        edit: [IT support, Manager, Redactor]
-        own: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
     sandals:
-        edit: [IT support, Manager, Redactor]
-        own: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
+        ownProducts: [IT support, Manager, Redactor]
