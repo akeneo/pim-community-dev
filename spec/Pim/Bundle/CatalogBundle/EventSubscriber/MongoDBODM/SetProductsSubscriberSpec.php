@@ -18,11 +18,11 @@ class SetProductsSubscriberSpec extends ObjectBehavior
             'Acme\\Model\\Product',
             [
                 [
-                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\ProductsAware',
+                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventSubscriber\\MongoDBODM\\ProductsAware',
                     'property' => 'foo',
                 ],
                 [
-                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventListener\\MongoDBODM\\InvalidProductsAware',
+                    'class' => 'spec\\Pim\\Bundle\\CatalogBundle\\EventSubscriber\\MongoDBODM\\InvalidProductsAware',
                     'property' => 'bar',
                 ],
             ]
