@@ -1,44 +1,44 @@
 job_profile_accesses:
     association_type_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     attribute_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     category_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     group_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     option_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     ecommerce_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     print_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     tablet_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
 
     association_type_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     attribute_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     category_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     group_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     option_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]
     product_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager, Redactor]

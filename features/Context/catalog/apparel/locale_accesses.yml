@@ -1,13 +1,13 @@
 locale_accesses:
     en_US:
-        view: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
     en_GB:
-        view: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
     fr_FR:
-        view: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]
     de_DE:
-        view: [IT support, Manager, Redactor]
-        edit: [IT support, Manager, Redactor]
+        viewProducts: [IT support, Manager, Redactor]
+        editProducts: [IT support, Manager, Redactor]

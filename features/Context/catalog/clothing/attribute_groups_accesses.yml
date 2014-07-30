@@ -1,14 +1,19 @@
 attribute_groups_accesses:
     info:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]
     marketing:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]
     sizes:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]
     colors:
-        edit: [IT support]
-        view: [Manager]
+        editAttributes: [IT support]
+        viewAttributes: [Manager]
     media:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]
     other:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]

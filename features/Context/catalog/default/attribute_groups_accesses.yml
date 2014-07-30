@@ -1,3 +1,4 @@
 attribute_groups_accesses:
     other:
-        edit: [IT support, Manager, Redactor]
+        viewAttributes: [IT support, Manager, Redactor]
+        editAttributes: [IT support, Manager, Redactor]

@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
-
 /**
  * Attribute group accesses import processor
  * Allows to bind data into an attribute group access and validate them
@@ -11,93 +9,23 @@ use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class AttributeGroupAccessProcessor extends TransformerProcessor
+class AttributeGroupAccessProcessor extends AbstractAccessProcessor
 {
-    /** @staticvar string */
-    const ACCESS_VIEW = 'view';
-
-    /** @staticvar string */
-    const ACCESS_EDIT = 'edit';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process($data)
-    {
-        $objects = [];
-
-        foreach ($this->transformDataToItems($data) as $item) {
-            $objects[] = parent::process($item);
-        }
-
-        return $objects;
-    }
-
-    /**
-     * Transform data to get an array of usable items.
-     *
-     * IN :
-     * [
-     *      'code': 'general',
-     *      'view': ['administrator', 'user']
-     *      'edit': ['administrator']
-     * ]
-     *
-     * OUT :
-     * [
-     *      'code': 'general',
-     *      'group': 'administrator',
-     *      'viewAttributes': true,
-     *      'editAttributes': true,
-     * ],
-     * [
-     *      'code': 'general',
-     *      'group': 'user',
-     *      'viewAttributes': true,
-     *      'editAttributes': false,
-     * ]
-     * @param array $data
-     *
-     * @return array usable items
-     */
-    protected function transformDataToItems($data)
-    {
-        $tmp = [];
-        $items = [];
-
-        if (isset($data[self::ACCESS_VIEW])) {
-            foreach ($data[self::ACCESS_VIEW] as $group) {
-                $tmp[$group][self::ACCESS_VIEW] = true;
-            }
-            unset($data[self::ACCESS_VIEW]);
-        }
-
-        if (isset($data[self::ACCESS_EDIT])) {
-            foreach ($data[self::ACCESS_EDIT] as $group) {
-                $tmp[$group][self::ACCESS_EDIT] = true;
-                $tmp[$group][self::ACCESS_VIEW] = true;
-            }
-            unset($data[self::ACCESS_EDIT]);
-        }
-
-        foreach ($tmp as $group => $accesses) {
-            $item = $data;
-            $item['userGroup'] = $group;
-            $item['viewAttributes'] = isset($accesses[self::ACCESS_VIEW]);
-            $item['editAttributes'] = isset($accesses[self::ACCESS_EDIT]);
-            $items[] = $item;
-        }
-
-        return $items;
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function getMapping()
     {
-        return array(
+        return [
             'code' => 'attributeGroup',
-        );
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSupportedPermissions()
+    {
+        return ['viewAttributes', 'editAttributes'];
     }
 }

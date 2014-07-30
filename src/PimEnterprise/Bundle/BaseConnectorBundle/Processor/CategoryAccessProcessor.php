@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\BaseConnectorBundle\Processor;
 
-use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
-
 /**
  * Category access import processor
  * Allows to bind data into a category access and validate them
@@ -11,106 +9,23 @@ use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CategoryAccessProcessor extends TransformerProcessor
+class CategoryAccessProcessor extends AbstractAccessProcessor
 {
-    /** @staticvar string */
-    const ACCESS_VIEW = 'view';
-
-    /** @staticvar string */
-    const ACCESS_EDIT = 'edit';
-
-    /** @staticvar string */
-    const ACCESS_OWN = 'own';
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process($data)
-    {
-        $objects = [];
-
-        foreach ($this->transformDataToItems($data) as $item) {
-            $objects[] = parent::process($item);
-        }
-
-        return $objects;
-    }
-
-    /**
-     * Transform data to get an array of usable items.
-     *
-     * IN :
-     * [
-     *      'code': 'general',
-     *      'view': ['administrator', 'user']
-     *      'edit': ['administrator']
-     * ]
-     *
-     * OUT :
-     * [
-     *      'code': 'general',
-     *      'group': 'administrator',
-     *      'viewProducts': true,
-     *      'editProducts': true,
-     * ],
-     * [
-     *      'code': 'general',
-     *      'group': 'user',
-     *      'viewProducts': true,
-     *      'editProducts': false,
-     * ]
-     * @param array $data
-     *
-     * @return array usable items
-     */
-    protected function transformDataToItems($data)
-    {
-        $tmp = [];
-        $items = [];
-
-        if (isset($data[self::ACCESS_VIEW])) {
-            foreach ($data[self::ACCESS_VIEW] as $group) {
-                $tmp[$group][self::ACCESS_VIEW] = true;
-            }
-            unset($data[self::ACCESS_VIEW]);
-        }
-
-        if (isset($data[self::ACCESS_EDIT])) {
-            foreach ($data[self::ACCESS_EDIT] as $group) {
-                $tmp[$group][self::ACCESS_EDIT] = true;
-                $tmp[$group][self::ACCESS_VIEW] = true;
-            }
-            unset($data[self::ACCESS_EDIT]);
-        }
-
-        if (isset($data[self::ACCESS_OWN])) {
-            foreach ($data[self::ACCESS_OWN] as $group) {
-                $tmp[$group][self::ACCESS_OWN] = true;
-                $tmp[$group][self::ACCESS_EDIT] = true;
-                $tmp[$group][self::ACCESS_VIEW] = true;
-            }
-            unset($data[self::ACCESS_OWN]);
-        }
-
-        foreach ($tmp as $group => $accesses) {
-            $item = $data;
-            $item['userGroup'] = $group;
-            $item['viewProducts'] = isset($accesses[self::ACCESS_VIEW]);
-            $item['editProducts'] = isset($accesses[self::ACCESS_EDIT]);
-            $item['ownProducts'] = isset($accesses[self::ACCESS_OWN]);
-            $items[] = $item;
-        }
-
-        return $items;
-    }
-
     /**
      * {@inheritdoc}
      */
     protected function getMapping()
     {
-        return array(
+        return [
             'code' => 'category',
-        );
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getSupportedPermissions()
+    {
+        return ['viewProducts', 'editProducts', 'ownProducts'];
     }
 }

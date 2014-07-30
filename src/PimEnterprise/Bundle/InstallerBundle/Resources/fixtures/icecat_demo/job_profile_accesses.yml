@@ -1,40 +1,40 @@
 job_profile_accesses:
     csv_product_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_published_product_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_category_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_category_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_association_type_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_association_type_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_group_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_group_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support]
     csv_attribute_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_attribute_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_option_import:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
     csv_option_export:
-        execute: [IT support, Manager, Redactor]
-        edit: [IT support, Manager]
+        executeJobProfile: [IT support, Manager, Redactor]
+        editJobProfile: [IT support, Manager]
