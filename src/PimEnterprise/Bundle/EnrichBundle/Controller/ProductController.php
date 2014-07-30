@@ -9,12 +9,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
 use Pim\Bundle\CatalogBundle\Manager\CategoryManager;
+use Pim\Bundle\CatalogBundle\Model\AvailableAttributes;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\Controller\ProductController as BaseProductController;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Product Controller
@@ -160,6 +161,27 @@ class ProductController extends BaseProductController
                 'dataLocale' => $this->getDataLocaleCode()
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addAttributesAction(Request $request, $id)
+    {
+        $product             = $this->findProductOr404($id);
+        $availableAttributes = new AvailableAttributes();
+        $attributesForm      = $this->getAvailableAttributesForm(
+            $product->getAttributes(),
+            $availableAttributes
+        );
+        $attributesForm->submit($request);
+
+        $this->productManager->addAttributesToProduct($product, $availableAttributes);
+        $this->productManager->saveProduct($product, ['bypass_proposition' => true]);
+
+        $this->addFlash('success', 'flash.product.attributes added');
+
+        return $this->redirectToRoute('pim_enrich_product_edit', array('id' => $product->getId()));
     }
 
     /**
