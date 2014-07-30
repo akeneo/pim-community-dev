@@ -34,19 +34,6 @@ class CategoryVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_group(
-        $accessManager,
-        $token,
-        Category $category
-    ) {
-        $accessManager->getEditUserGroups($category)->willReturn(array());
-        $accessManager->getViewUserGroups($category)->willReturn(array());
-
-        $this
-            ->vote($token, $category, $this->attributes)
-            ->shouldReturn(VoterInterface::ACCESS_DENIED);
-    }
-
     function it_returns_denied_access_if_user_has_no_access(
         $accessManager,
         $token,
@@ -54,11 +41,12 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasGroup('foo')->willReturn(false);
-        $accessManager->getEditUserGroups($category)->willReturn(array('foo'));
+
+        $accessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
+        $accessManager->isUserGranted($user, $category, Attributes::EDIT_PRODUCTS)->willReturn(false);
 
         $this
-            ->vote($token, $category, array(Attributes::EDIT_PRODUCTS))
+            ->vote($token, $category, $this->attributes)
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -69,11 +57,12 @@ class CategoryVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasGroup('foo')->willReturn(true);
-        $accessManager->getViewUserGroups($category)->willReturn(array('foo'));
+
+        $accessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
+        $accessManager->isUserGranted($user, $category, Attributes::EDIT_PRODUCTS)->willReturn(true);
 
         $this
-            ->vote($token, $category, array(Attributes::VIEW_PRODUCTS))
+            ->vote($token, $category, $this->attributes)
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

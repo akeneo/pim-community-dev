@@ -10,6 +10,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\AttributeGroupAccess;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AttributeGroupAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\SecurityBundle\Model\AttributeGroupAccessInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Attribute group access manager
@@ -39,6 +40,36 @@ class AttributeGroupAccessManager
     {
         $this->registry                  = $registry;
         $this->attGroupAccessClass = $attGroupAccessClass;
+    }
+
+    /**
+     * Check if a user is granted to an attribute on a given permission
+     *
+     * @param UserInterface  $user
+     * @param AttributeGroup $group
+     * @param string         $permission
+     *
+     * @return bool
+     *
+     * @throws \LogicException
+     */
+    public function isUserGranted(UserInterface $user, AttributeGroup $group, $permission)
+    {
+        if (Attributes::EDIT_ATTRIBUTES === $permission) {
+            $grantedUserGroups = $this->getEditUserGroups($group);
+        } elseif (Attributes::VIEW_ATTRIBUTES === $permission) {
+            $grantedUserGroups = $this->getViewUserGroups($group);
+        } else {
+            throw new \LogicException(sprintf('Attribute "%" is not supported.', $permission));
+        }
+
+        foreach ($grantedUserGroups as $userGroup) {
+            if ($user->hasGroup($userGroup)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

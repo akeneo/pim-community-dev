@@ -42,4 +42,7 @@ final class Attributes
 
     /** @staticvar string */
     const EDIT_JOB_PROFILE    = 'EDIT_JOB_PROFILE';
+
+    /** @staticvar string */
+    const VIEW_DATAGRID_VIEW = 'VIEW_DATAGRID_VIEW';
 }

@@ -10,6 +10,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Model\CategoryAccessInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Category access manager
@@ -82,6 +83,36 @@ class CategoryAccessManager
     public function getOwnUserGroups(CategoryInterface $category)
     {
         return $this->getAccessRepository()->getGrantedUserGroups($category, Attributes::OWN_PRODUCTS);
+    }
+
+    /**
+     * Check if a user is granted to an attribute on a given attribute
+     *
+     * @param UserInterface     $user
+     * @param CategoryInterface $category
+     * @param string            $attribute
+     *
+     * @return bool
+     *
+     * @throws \LogicException
+     */
+    public function isUserGranted(UserInterface $user, CategoryInterface $category, $attribute)
+    {
+        if (Attributes::EDIT_PRODUCTS === $attribute) {
+            $grantedUserGroups = $this->getEditUserGroups($category);
+        } elseif (Attributes::VIEW_PRODUCTS === $attribute) {
+            $grantedUserGroups = $this->getViewUserGroups($category);
+        } else {
+            throw new \LogicException(sprintf('Attribute "%" is not supported.', $attribute));
+        }
+
+        foreach ($grantedUserGroups as $userGroup) {
+            if ($user->hasGroup($userGroup)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

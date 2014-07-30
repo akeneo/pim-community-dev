@@ -10,6 +10,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {
@@ -34,19 +35,6 @@ class AttributeGroupVoterSpec extends ObjectBehavior
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_returns_denied_access_if_user_has_no_group(
-        $accessManager,
-        $token,
-        AttributeGroup $attGroup
-    ) {
-        $accessManager->getEditUserGroups($attGroup)->willReturn(array());
-        $accessManager->getViewUserGroups($attGroup)->willReturn(array());
-
-        $this
-            ->vote($token, $attGroup, $this->attributes)
-            ->shouldReturn(VoterInterface::ACCESS_DENIED);
-    }
-
     function it_returns_denied_access_if_user_has_no_access(
         $accessManager,
         $token,
@@ -54,11 +42,12 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasGroup('foo')->willReturn(false);
-        $accessManager->getEditUserGroups($attGroup)->willReturn(array('foo'));
+
+        $accessManager->isUserGranted($user, $attGroup, Attributes::VIEW_ATTRIBUTES)->willReturn(false);
+        $accessManager->isUserGranted($user, $attGroup, Attributes::EDIT_ATTRIBUTES)->willReturn(false);
 
         $this
-            ->vote($token, $attGroup, array(Attributes::EDIT_ATTRIBUTES))
+            ->vote($token, $attGroup, $this->attributes)
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -69,11 +58,12 @@ class AttributeGroupVoterSpec extends ObjectBehavior
         User $user
     ) {
         $token->getUser()->willReturn($user);
-        $user->hasGroup('foo')->willReturn(true);
-        $accessManager->getViewUserGroups($attGroup)->willReturn(array('foo'));
+
+        $accessManager->isUserGranted($user, $attGroup, Attributes::VIEW_ATTRIBUTES)->willReturn(true);
+        $accessManager->isUserGranted($user, $attGroup, Attributes::EDIT_ATTRIBUTES)->willReturn(false);
 
         $this
-            ->vote($token, $attGroup, array(Attributes::VIEW_ATTRIBUTES))
+            ->vote($token, $attGroup, $this->attributes)
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

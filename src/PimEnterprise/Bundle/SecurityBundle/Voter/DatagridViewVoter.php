@@ -2,30 +2,29 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
-use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Category voter, allows to know if products of a category can be edited or consulted by a
- * user depending on his user groups
+ * Datagrid view voter, allows to know if a datagrid view is usable by the current user.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class CategoryVoter implements VoterInterface
+class DatagridViewVoter implements VoterInterface
 {
-    /**
-     * @var CategoryAccessManager
-     */
+    /** @var DatagridViewAccessManager */
     protected $accessManager;
 
     /**
-     * @param CategoryAccessManager $accessManager
+     * Constructor
+     *
+     * @param DatagridViewAccessManager $accessManager
      */
-    public function __construct(CategoryAccessManager $accessManager)
+    public function __construct(DatagridViewAccessManager $accessManager)
     {
         $this->accessManager = $accessManager;
     }
@@ -35,7 +34,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW_PRODUCTS, Attributes::EDIT_PRODUCTS]);
+        return in_array($attribute, [Attributes::VIEW_DATAGRID_VIEW]);
     }
 
     /**
@@ -43,7 +42,7 @@ class CategoryVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof CategoryInterface;
+        return $class instanceof DatagridView;
     }
 
     /**
