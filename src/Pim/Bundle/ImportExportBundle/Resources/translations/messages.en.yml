@@ -79,6 +79,9 @@ pim_importexport:
             show: View import report details
             dl_log: Download import report log
             dl_files: Download imported files
+    acl_group:
+        export: Export profiles
+        import: Import profiles
 
 # Buttons
 btn:

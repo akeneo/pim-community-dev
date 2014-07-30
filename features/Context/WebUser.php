@@ -490,7 +490,7 @@ class WebUser extends RawMinkContext
             $actual   = implode(', ', $actual);
             $expected = implode(', ', $expected);
         } elseif ((null !== $parent = $field->getParent()) && $parent->hasClass('upload-zone')) {
-            # We are dealing with an upload field
+            // We are dealing with an upload field
             if (null === $filename = $parent->find('css', '.upload-filename')) {
                 throw new \LogicException('Cannot find filename of upload field');
             }
@@ -815,24 +815,18 @@ class WebUser extends RawMinkContext
      */
     public function iSetRightsToACLResources($permission, $resources)
     {
-        $permission = $permission === 'grant' ? 'System' : 'None';
+        $method = $permission . 'ResourceRights';
         foreach ($this->listToArray($resources) as $resource) {
-            $this->getCurrentPage()->clickResourceField($resource);
-            $this->wait();
-            $this->getCurrentPage()->setResourceRights($resource, $permission);
+            $this->getCurrentPage()->$method($resource, $permission);
         }
     }
 
     /**
      * @When /^I grant all rights$/
-     *
-     * @return Then
      */
     public function iGrantAllRightsToACLResources()
     {
-        $resources = implode(', ', $this->getCurrentPage()->getResourcesByPermission('None'));
-
-        return new Step\Then(sprintf('I grant rights to %s', $resources));
+        $this->getCurrentPage()->grantAllResourceRights();
     }
 
     /**
