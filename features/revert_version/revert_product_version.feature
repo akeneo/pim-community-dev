@@ -13,7 +13,6 @@ Feature: Revert a product to a previous version
     And I am on the "boat" product page
     And I disable the product
     And I visit the "History" tab
-    And there should be 2 update
     When I click on the "Revert to this version" action of the row which contains "sku: boat"
     Then product "boat" should be enabled
 
@@ -22,7 +21,6 @@ Feature: Revert a product to a previous version
     And I am on the "boat" product page
     And I enable the product
     And I visit the "History" tab
-    And there should be 2 update
     When I click on the "Revert to this version" action of the row which contains "sku: boat"
     Then product "boat" should be disabled
 
