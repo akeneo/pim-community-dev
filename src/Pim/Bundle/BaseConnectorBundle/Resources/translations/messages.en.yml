@@ -67,6 +67,7 @@ pim_base_connector:
         product_writer.title:                Product storage
         category_writer.title:               Category storage
         writer.title:                        Entity storage
+        csv_writer.title:                    Csv Writer
 
     ## Import/export configuration fields (for readers, processors, writers)
     export:

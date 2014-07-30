@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Normalizer\Flat;
 
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer;
 use Pim\Bundle\CatalogBundle\Exception\MissingIdentifierException;
