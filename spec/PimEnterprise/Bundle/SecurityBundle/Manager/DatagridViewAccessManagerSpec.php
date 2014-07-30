@@ -53,7 +53,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeRepository->findOneBy(['code' => 'col1'])->willReturn($attribute);
         $attributeGroupAccessManager->isUserGranted($user, $group, Attributes::VIEW_ATTRIBUTES)->willReturn(false);
 
-        $this->isUserGranted($user, $view, Attributes::VIEW_DATAGRID_VIEW)->shouldReturn(false);
+        $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(false);
     }
 
     function it_does_not_grant_access_if_user_has_not_access_to_a_filter(
@@ -69,7 +69,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $attributeRepository->findOneBy(['code' => 'filter1'])->willReturn($attribute);
         $attributeGroupAccessManager->isUserGranted($user, $group, Attributes::VIEW_ATTRIBUTES)->willReturn(false);
 
-        $this->isUserGranted($user, $view, Attributes::VIEW_DATAGRID_VIEW)->shouldReturn(false);
+        $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(false);
     }
 
     function it_does_not_grant_access_if_user_has_not_access_to_a_category_filter(
@@ -87,7 +87,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $categoryRepository->find('3')->willReturn($category);
         $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(false);
 
-        $this->isUserGranted($user, $view, Attributes::VIEW_DATAGRID_VIEW)->shouldReturn(false);
+        $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(false);
     }
 
     function it_grants_access(
@@ -111,6 +111,6 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $categoryRepository->find('3')->willReturn($category);
         $categoryAccessManager->isUserGranted($user, $category, Attributes::VIEW_PRODUCTS)->willReturn(true);
 
-        $this->isUserGranted($user, $view, Attributes::VIEW_DATAGRID_VIEW)->shouldReturn(true);
+        $this->isUserGranted($user, $view, Attributes::VIEW)->shouldReturn(true);
     }
 }

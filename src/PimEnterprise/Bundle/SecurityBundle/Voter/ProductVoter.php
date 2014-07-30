@@ -36,7 +36,7 @@ class ProductVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW_PRODUCT, Attributes::EDIT_PRODUCT, Attributes::OWNER]);
+        return in_array($attribute, [Attributes::VIEW, Attributes::EDIT, Attributes::OWN]);
     }
 
     /**
@@ -89,9 +89,9 @@ class ProductVoter implements VoterInterface
         }
 
         $productToCategory = [
-            Attributes::OWNER => Attributes::OWN_PRODUCTS,
-            Attributes::EDIT_PRODUCT => Attributes::EDIT_PRODUCTS,
-            Attributes::VIEW_PRODUCT => Attributes::VIEW_PRODUCTS,
+            Attributes::OWN => Attributes::OWN_PRODUCTS,
+            Attributes::EDIT => Attributes::EDIT_PRODUCTS,
+            Attributes::VIEW => Attributes::VIEW_PRODUCTS,
         ];
         if (!isset($productToCategory[$attribute])) {
             return false;

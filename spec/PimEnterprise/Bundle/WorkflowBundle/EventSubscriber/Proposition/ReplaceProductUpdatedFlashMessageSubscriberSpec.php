@@ -76,7 +76,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
         $attributes->get('id')->willReturn('1337');
         $repository->find('1337')->willReturn($product);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(false);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
 
         $noticeFoo->setTemplate('flash.proposition.updated')->shouldBeCalled();
         $noticeBar->setTemplate(Argument::any())->shouldNotBeCalled();
@@ -131,7 +131,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         $event->getRequestType()->willReturn(HttpKernelInterface::MASTER_REQUEST);
         $attributes->get('id')->willReturn('1337');
         $repository->find('1337')->willReturn($product);
-        $securityContext->isGranted(Attributes::OWNER, $product)->willReturn(true);
+        $securityContext->isGranted(Attributes::OWN, $product)->willReturn(true);
 
         $noticeFoo->setTemplate(Argument::any())->shouldNotBeCalled();
         $noticeBar->setTemplate(Argument::any())->shouldNotBeCalled();

@@ -95,7 +95,7 @@ class PropositionPersister implements ProductPersister
             $isOwner = true;
         } else {
             try {
-                $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+                $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
             } catch (AuthenticationCredentialsNotFoundException $e) {
                 // We are probably on a CLI context
                 $isOwner = true;

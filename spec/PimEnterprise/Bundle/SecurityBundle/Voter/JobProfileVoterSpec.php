@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 class JobProfileVoterSpec extends ObjectBehavior
 {
-    protected $attributes = array(Attributes::EDIT_JOB_PROFILE, Attributes::EXECUTE_JOB_PROFILE);
+    protected $attributes = array(Attributes::EDIT, Attributes::EXECUTE);
 
     function let(JobProfileAccessManager $accessManager, TokenInterface $token)
     {
@@ -30,7 +30,7 @@ class JobProfileVoterSpec extends ObjectBehavior
     function it_returns_abstain_access_if_not_supported_entity($token, JobProfileVoter $jobProfile)
     {
         $this
-            ->vote($token, $jobProfile, [Attributes::EDIT_JOB_PROFILE])
+            ->vote($token, $jobProfile, [Attributes::EDIT])
             ->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
@@ -58,7 +58,7 @@ class JobProfileVoterSpec extends ObjectBehavior
         $accessManager->getEditUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $jobProfile, array(Attributes::EDIT_JOB_PROFILE))
+            ->vote($token, $jobProfile, array(Attributes::EDIT))
             ->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
@@ -73,7 +73,7 @@ class JobProfileVoterSpec extends ObjectBehavior
         $accessManager->getExecuteUserGroups($jobProfile)->willReturn(array('foo'));
 
         $this
-            ->vote($token, $jobProfile, array(Attributes::EXECUTE_JOB_PROFILE))
+            ->vote($token, $jobProfile, array(Attributes::EXECUTE))
             ->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 }

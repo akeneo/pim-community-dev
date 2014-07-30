@@ -42,7 +42,7 @@ class GridHelper
     {
         return function (ResultRecordInterface $record) {
             $published = $this->publishedRepository->findOneBy(['id' => $record->getValue('id')]);
-            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWNER, $published);
+            $ownershipGranted = $this->securityContext->isGranted(Attributes::OWN, $published);
 
             return [
                 'unpublish' => $ownershipGranted,

@@ -89,6 +89,6 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
             return false;
         }
 
-        return $this->securityContext->isGranted(Attributes::OWNER, $product);
+        return $this->securityContext->isGranted(Attributes::OWN, $product);
     }
 }

@@ -34,7 +34,7 @@ class DatagridViewVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, [Attributes::VIEW_DATAGRID_VIEW]);
+        return in_array($attribute, [Attributes::VIEW]);
     }
 
     /**

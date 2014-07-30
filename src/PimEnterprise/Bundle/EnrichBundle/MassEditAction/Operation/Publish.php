@@ -54,7 +54,7 @@ class Publish extends ProductMassEditOperation
         $products   = $this->getObjectsToMassEdit();
         $notGranted = [];
         foreach ($products as $product) {
-            if ($this->securityContext->isGranted(Attributes::OWNER, $product) === false) {
+            if ($this->securityContext->isGranted(Attributes::OWN, $product) === false) {
                 $notGranted[] = (string) $product->getIdentifier();
             }
         }
@@ -79,7 +79,7 @@ class Publish extends ProductMassEditOperation
      */
     protected function doPerform(ProductInterface $product)
     {
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $product)) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $product)) {
             throw new \RuntimeException(
                 sprintf(
                     'Cannot publish product "%s" because current user does not own it',

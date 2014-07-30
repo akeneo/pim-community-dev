@@ -77,7 +77,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      */
     protected function doPerform(ProductInterface $product)
     {
-        if ($this->securityContext->isGranted(Attributes::OWNER, $product)) {
+        if ($this->securityContext->isGranted(Attributes::OWN, $product)) {
             return parent::doPerform($product);
         }
     }

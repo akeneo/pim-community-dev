@@ -35,7 +35,7 @@ class JobProfileVoter implements VoterInterface
      */
     public function supportsAttribute($attribute)
     {
-        return in_array($attribute, array(Attributes::EXECUTE_JOB_PROFILE, Attributes::EDIT_JOB_PROFILE));
+        return in_array($attribute, array(Attributes::EXECUTE, Attributes::EDIT));
     }
 
     /**
@@ -81,7 +81,7 @@ class JobProfileVoter implements VoterInterface
      */
     protected function extractGroups($attribute, $object)
     {
-        if ($attribute === Attributes::EDIT_JOB_PROFILE) {
+        if ($attribute === Attributes::EDIT) {
             $grantedGroups = $this->accessManager->getEditUserGroups($object);
         } else {
             $grantedGroups = $this->accessManager->getExecuteUserGroups($object);

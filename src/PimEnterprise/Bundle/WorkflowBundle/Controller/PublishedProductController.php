@@ -111,7 +111,7 @@ class PublishedProductController extends AbstractController
     {
         $product = $this->manager->findOriginalProduct($id);
 
-        $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $product);
+        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $product);
         if (!$isOwner) {
             throw new AccessDeniedException();
         }
@@ -141,7 +141,7 @@ class PublishedProductController extends AbstractController
     {
         $published = $this->manager->findPublishedProductById($id);
 
-        $isOwner = $this->securityContext->isGranted(Attributes::OWNER, $published->getOriginalProduct());
+        $isOwner = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
             throw new AccessDeniedException();
         }

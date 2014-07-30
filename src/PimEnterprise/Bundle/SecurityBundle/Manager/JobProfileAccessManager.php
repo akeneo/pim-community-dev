@@ -43,7 +43,7 @@ class JobProfileAccessManager
      */
     public function getExecuteUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EXECUTE_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EXECUTE);
     }
 
     /**
@@ -55,7 +55,7 @@ class JobProfileAccessManager
      */
     public function getEditUserGroups(JobInstance $jobProfile)
     {
-        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EDIT_JOB_PROFILE);
+        return $this->getRepository()->getGrantedUserGroups($jobProfile, Attributes::EDIT);
     }
 
     /**
@@ -69,13 +69,13 @@ class JobProfileAccessManager
     {
         $grantedGroups = [];
         foreach ($editGroups as $group) {
-            $this->grantAccess($jobProfile, $group, Attributes::EDIT_JOB_PROFILE);
+            $this->grantAccess($jobProfile, $group, Attributes::EDIT);
             $grantedGroups[] = $group;
         }
 
         foreach ($executeGroups as $group) {
             if (!in_array($group, $grantedGroups)) {
-                $this->grantAccess($jobProfile, $group, Attributes::EXECUTE_JOB_PROFILE);
+                $this->grantAccess($jobProfile, $group, Attributes::EXECUTE);
                 $grantedGroups[] = $group;
             }
         }
@@ -98,7 +98,7 @@ class JobProfileAccessManager
         $access = $this->getJobProfileAccess($jobProfile, $group);
         $access
             ->setExecuteJobProfile(true)
-            ->setEditJobProfile($accessLevel === Attributes::EDIT_JOB_PROFILE);
+            ->setEditJobProfile($accessLevel === Attributes::EDIT);
 
         $this->getObjectManager()->persist($access);
     }

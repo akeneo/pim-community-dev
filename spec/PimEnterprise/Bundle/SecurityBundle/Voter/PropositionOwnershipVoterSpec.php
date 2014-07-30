@@ -18,9 +18,9 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\Security\Core\Authorization\Voter\VoterInterface');
     }
 
-    function it_supports_the_OWNER_attribute()
+    function it_supports_the_OWN_attribute()
     {
-        $this->supportsAttribute(Attributes::OWNER)->shouldReturn(true);
+        $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
     function it_supports_proposition(Proposition $proposition)
@@ -28,7 +28,7 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $this->supportsClass($proposition)->shouldReturn(true);
     }
 
-    function it_grants_OWNER_access_to_user_that_has_created_the_prospotion(
+    function it_grants_OWN_access_to_user_that_has_created_the_prospotion(
         TokenInterface $token,
         Proposition $proposition,
         UserInterface $user
@@ -37,10 +37,10 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $user->getUsername()->willReturn('bob');
         $proposition->getAuthor()->willReturn('bob');
 
-        $this->vote($token, $proposition, ['OWNER'])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        $this->vote($token, $proposition, ['OWN'])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
-    function it_denies_OWNER_access_to_user_that_is_not_the_author_of_the_proposition(
+    function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_proposition(
         TokenInterface $token,
         Proposition $proposition,
         UserInterface $user
@@ -49,20 +49,20 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $user->getUsername()->willReturn('bob');
         $proposition->getAuthor()->willReturn('alice');
 
-        $this->vote($token, $proposition, ['OWNER'])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        $this->vote($token, $proposition, ['OWN'])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
-    function it_does_not_vote_if_the_attribute_OWNER_is_not_being_checked(
+    function it_does_not_vote_if_the_attribute_OWN_is_not_being_checked(
         TokenInterface $token,
         Proposition $proposition
     ) {
         $this->vote($token, $proposition, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_does_not_vote_if_checking_the_OWNER_access_of_something_else_than_a_proposition(
+    function it_does_not_vote_if_checking_the_OWN_access_of_something_else_than_a_proposition(
         TokenInterface $token,
         ProductInterface $product
     ) {
-        $this->vote($token, $product, ['OWNER'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+        $this->vote($token, $product, ['OWN'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 }

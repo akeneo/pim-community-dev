@@ -96,7 +96,7 @@ class PropositionController extends AbstractController
             throw new \LogicException('A proposition that is not ready can not be approved');
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -131,7 +131,7 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition->getProduct())) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
@@ -163,7 +163,7 @@ class PropositionController extends AbstractController
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWNER, $proposition)) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition)) {
             throw new AccessDeniedHttpException();
         }
 

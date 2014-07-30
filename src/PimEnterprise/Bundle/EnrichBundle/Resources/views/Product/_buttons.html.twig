@@ -10,7 +10,7 @@
     ) }}
 {% endif %}
 
-{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) %}
+{% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
     {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id, dataLocale: dataLocale}), {icon: 'cloud-upload'}) }}
 {% elseif proposition.inProgress and proposition.id is not null %}
     {{ elements.link('btn.send for approval', path('pimee_workflow_proposition_ready', { id: proposition.id, dataLocale: dataLocale })) }}
@@ -19,7 +19,7 @@
 {% endif %}
 
 {{ elements.submitDropdownBtn(
-    is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWNER'), product) ? 'btn.save working copy' : 'btn.save draft',
+    is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) ? 'btn.save working copy' : 'btn.save draft',
     {
         'Create': { 'text': 'btn.save and create' },
         'BackGrid': { 'text': 'btn.save and back' }

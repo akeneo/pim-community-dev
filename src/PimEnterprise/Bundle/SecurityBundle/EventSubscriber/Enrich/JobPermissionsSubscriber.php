@@ -55,7 +55,7 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
      */
     public function checkEditPermission(GenericEvent $event)
     {
-        $this->isGranted(Attributes::EDIT_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(Attributes::EDIT, $event->getSubject());
     }
 
     /**
@@ -65,7 +65,7 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
      */
     public function checkExecutePermission(GenericEvent $event)
     {
-        $this->isGranted(Attributes::EXECUTE_JOB_PROFILE, $event->getSubject());
+        $this->isGranted(Attributes::EXECUTE, $event->getSubject());
     }
 
     /**
@@ -78,8 +78,8 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
     public function checkShowPermission(GenericEvent $event)
     {
         $jobInstance = $event->getSubject();
-        if (false === $this->securityContext->isGranted(Attributes::EDIT_JOB_PROFILE, $jobInstance)
-            && false === $this->securityContext->isGranted(Attributes::EXECUTE_JOB_PROFILE, $jobInstance)) {
+        if (false === $this->securityContext->isGranted(Attributes::EDIT, $jobInstance)
+            && false === $this->securityContext->isGranted(Attributes::EXECUTE, $jobInstance)) {
             throw new AccessDeniedException();
         }
     }
@@ -91,7 +91,7 @@ class JobPermissionsSubscriber implements EventSubscriberInterface
      */
     public function checkJobExecutionPermission(GenericEvent $event)
     {
-        $this->isGranted(Attributes::EXECUTE_JOB_PROFILE, $event->getSubject()->getJobInstance());
+        $this->isGranted(Attributes::EXECUTE, $event->getSubject()->getJobInstance());
     }
 
     /**
