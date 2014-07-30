@@ -21,6 +21,9 @@ pimee_datagrid:
 pimee_workflow:
     resource: "@PimEnterpriseWorkflowBundle/Resources/config/routing.yml"
 
+pim_versioning:
+    resource: "@PimEnterpriseVersioningBundle/Resources/config/routing.yml"
+
 # Oro platform
 
 oro_default:
