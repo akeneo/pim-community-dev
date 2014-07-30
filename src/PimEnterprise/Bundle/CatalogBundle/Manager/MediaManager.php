@@ -68,6 +68,9 @@ class MediaManager extends BaseMediaManager
      */
     protected function delete(AbstractProductMedia $media)
     {
-        return;
+        $media->setOriginalFilename(null);
+        $media->setFilename(null);
+        $media->setFilepath(null);
+        $media->setMimeType(null);
     }
 }
