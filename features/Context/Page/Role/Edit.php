@@ -19,63 +19,44 @@ class Edit extends Form
     protected $path = '/user/role/update/{id}';
 
     /**
-     * Get ACL resource
-     *
-     * @param string $resource
-     *
-     * @return NodeElement
-     * @throws \InvalidArgumentException
+     * Grant rights to all ACL resources
      */
-    public function getResource($resource)
+    public function grantAllResourceRights()
     {
-        $element = $this->getElement('Container')->find('css', sprintf('strong:contains("%s")', $resource));
+        $iconSelector = '.acl-permission i.acl-permission-toggle.non-granted';
 
-        if (!$element) {
-            throw new \InvalidArgumentException(sprintf('Resource "%s" not found', $resource));
-        }
-
-        return $element->getParent()->getParent();
+        $this->getSession()->executeScript(
+            sprintf('$("%s").each(function () { $(this).click(); });', $iconSelector)
+        );
     }
 
     /**
-     * Get ACL resources with the specified permission
-     *
-     * @param string $permission
-     *
-     * @return string[]
-     */
-    public function getResourcesByPermission($permission)
-    {
-        $elements = $this
-            ->getElement('Container')
-            ->findAll('css', sprintf('div.access_level_value_link a:contains("%s")', $permission));
-
-        $resources = array();
-        foreach ($elements as $element) {
-            $resources[] = $element->getParent()->getParent()->getParent()->find('css', 'strong')->getText();
-        }
-
-        return $resources;
-    }
-
-    /**
-     * Click a ACL resource link to load the list of choices
+     * Grant ACL resource rights
      *
      * @param string $resource
      */
-    public function clickResourceField($resource)
+    public function grantResourceRights($resource)
     {
-        $this->getResource($resource)->find('css', '.access_level_value_link a')->click();
+        $resourceSelector = sprintf('.acl-permission strong:contains("%s")', $resource);
+        $iconSelector = 'i.acl-permission-toggle.non-granted';
+
+        $this->getSession()->executeScript(
+            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
+        );
     }
 
     /**
-     * Set ACL resource rights
+     * Remove ACL resource rights
      *
      * @param string $resource
-     * @param string $rights
      */
-    public function setResourceRights($resource, $rights)
+    public function removeResourceRights($resource)
     {
-        $this->getResource($resource)->find('css', 'select')->selectOption($rights);
+        $resourceSelector = sprintf('.acl-permission strong:contains("%s")', $resource);
+        $iconSelector = 'i.acl-permission-toggle.granted';
+
+        $this->getSession()->executeScript(
+            sprintf('$("%s").parent().parent().find("%s").click();', $resourceSelector, $iconSelector)
+        );
     }
 }

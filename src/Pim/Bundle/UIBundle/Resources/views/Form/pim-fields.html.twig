@@ -397,3 +397,32 @@
 {% block pim_number_widget %}
     {{ block('number_widget') }}
 {% endblock %}
+
+{% block oro_acl_privilege_widget %}
+    {% spaceless %}
+        {% if 'groups' == privileges_config.view_type %}
+            <div class="acl-permission{{ form.vars.value.identity.name == "(default)" ? ' default-field' : '' }}">
+                {{ form_widget(form.identity) }}
+                {{ form_widget(form.permissions) }}
+            </div>
+        {% else %}
+            <tr class="acl-permission{{ form.vars.value.identity.name == "(default)" ? ' default-field' : '' }}">
+                <td>
+                    {{ form_widget(form.identity) }}
+                </td>
+                {{ form_widget(form.permissions) }}
+            </tr>
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block oro_acl_permission_widget %}
+    {{ form_widget(form.name) }}
+    {{ form_widget(form.accessLevel) }}
+{% endblock %}
+
+{% block pim_acl_access_level_selector_widget %}
+    <i class="icon-{{ form.vars.checked ? 'ok ' : 'remove non-' }}granted acl-permission-toggle"></i>
+    {% set attr = attr|merge({ class: 'hide' }) %}
+    {{ block('checkbox_widget') }}
+{% endblock %}

@@ -1,0 +1,4 @@
+pim_importexport.acl_group.export:
+    order: 200
+pim_importexport.acl_group.import:
+    order: 210
