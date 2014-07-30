@@ -1,19 +1,20 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
+use Pim\Bundle\CatalogBundle\Entity\Family;
+use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Symfony\Component\Serializer\Serializer;
 
-class CategoryDenormalizerSpec extends ObjectBehavior
+class FamilyDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Family';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, CategoryRepository $repository)
+    function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepository $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
@@ -30,7 +31,7 @@ class CategoryDenormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_denormalization_in_csv_of_a_category()
+    function it_supports_denormalization_in_csv_of_a_family()
     {
         $this->supportsDenormalization([], self::ENTITY_CLASS, self::FORMAT_CSV)->shouldBe(true);
 
@@ -53,14 +54,14 @@ class CategoryDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_category($repository, CategoryInterface $category)
+    function it_denormalizes_family($repository, Family $family)
     {
-        $repository->findByReference('foo')->willReturn($category);
+        $repository->findByReference('foo')->willReturn($family);
 
-        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($category);
+        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($family);
     }
 
-    function it_throws_an_exception_if_category_is_unknown($repository)
+    function it_throws_an_exception_if_family_is_unknown($repository)
     {
         $repository->findByReference('foo')->willReturn(false);
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductValue;
+namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

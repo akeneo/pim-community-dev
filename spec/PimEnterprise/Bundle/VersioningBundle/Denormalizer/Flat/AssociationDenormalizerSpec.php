@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use PhpSpec\ObjectBehavior;

@@ -1,20 +1,19 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Family;
-use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
-use Symfony\Component\Serializer\Serializer;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
 
-class FamilyDenormalizerSpec extends ObjectBehavior
+class GroupDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Family';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
     const FORMAT_CSV   = 'csv';
 
-    function let(Serializer $serializer, ManagerRegistry $registry, FamilyRepository $repository)
+    function let(ManagerRegistry $registry, GroupRepository $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
@@ -31,7 +30,7 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_denormalization_in_csv_of_a_family()
+    function it_supports_denormalization_in_csv_of_a_group()
     {
         $this->supportsDenormalization([], self::ENTITY_CLASS, self::FORMAT_CSV)->shouldBe(true);
 
@@ -54,14 +53,14 @@ class FamilyDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_family($repository, Family $family)
+    function it_denormalizes_group($repository, Group $group)
     {
-        $repository->findByReference('foo')->willReturn($family);
+        $repository->findByReference('foo')->willReturn($group);
 
-        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($family);
+        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($group);
     }
 
-    function it_throws_an_exception_if_family_is_unknown($repository)
+    function it_throws_an_exception_if_group_is_unknown($repository)
     {
         $repository->findByReference('foo')->willReturn(false);
 

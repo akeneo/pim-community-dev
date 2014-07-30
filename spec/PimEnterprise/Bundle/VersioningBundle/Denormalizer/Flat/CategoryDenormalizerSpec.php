@@ -1,19 +1,19 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer;
+namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Prophecy\Argument;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Pim\Bundle\CatalogBundle\Entity\Group;
-use Pim\Bundle\CatalogBundle\Entity\Repository\GroupRepository;
+use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 
-class GroupDenormalizerSpec extends ObjectBehavior
+class CategoryDenormalizerSpec extends ObjectBehavior
 {
-    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Group';
+    const ENTITY_CLASS = 'Pim\Bundle\CatalogBundle\Entity\Category';
     const FORMAT_CSV   = 'csv';
 
-    function let(ManagerRegistry $registry, GroupRepository $repository)
+    function let(ManagerRegistry $registry, CategoryRepository $repository)
     {
         $registry->getRepository(self::ENTITY_CLASS)->willReturn($repository);
 
@@ -30,7 +30,7 @@ class GroupDenormalizerSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\Serializer\SerializerAwareInterface');
     }
 
-    function it_supports_denormalization_in_csv_of_a_group()
+    function it_supports_denormalization_in_csv_of_a_category()
     {
         $this->supportsDenormalization([], self::ENTITY_CLASS, self::FORMAT_CSV)->shouldBe(true);
 
@@ -53,14 +53,14 @@ class GroupDenormalizerSpec extends ObjectBehavior
         )->shouldBe(false);
     }
 
-    function it_denormalizes_group($repository, Group $group)
+    function it_denormalizes_category($repository, CategoryInterface $category)
     {
-        $repository->findByReference('foo')->willReturn($group);
+        $repository->findByReference('foo')->willReturn($category);
 
-        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($group);
+        $this->denormalize('foo', self::ENTITY_CLASS, self::FORMAT_CSV)->shouldReturn($category);
     }
 
-    function it_throws_an_exception_if_group_is_unknown($repository)
+    function it_throws_an_exception_if_category_is_unknown($repository)
     {
         $repository->findByReference('foo')->willReturn(false);
 
