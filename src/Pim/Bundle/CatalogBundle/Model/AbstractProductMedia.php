@@ -289,4 +289,16 @@ abstract class AbstractProductMedia
     {
         return (string) $this->filename;
     }
+
+    /**
+     * Reset the media file
+     *
+     * @return AbstractProductMedia
+     */
+    public function resetFile()
+    {
+        $this->file = null;
+
+        return $this;
+    }
 }

@@ -190,6 +190,7 @@ class MediaManager
             $media->setFilename($filename);
             $media->setFilepath($this->getFilePath($media));
             $media->setMimeType($file->getMimeType());
+            $media->resetFile();
         }
     }
 
