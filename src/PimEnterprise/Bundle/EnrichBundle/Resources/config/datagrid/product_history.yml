@@ -44,6 +44,7 @@ datagrid:
                 label:  Revert to this version
                 icon:   undo
                 link:   revert_link
+                acl_resource: pimee_versioning_revert_product
         action_configuration: '@pimee_datagrid.datagrid.product_history.grid_helper->getActionConfigurationClosure'
         sorters:
             columns:
