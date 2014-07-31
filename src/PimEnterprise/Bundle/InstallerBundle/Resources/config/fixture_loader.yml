@@ -1,7 +1,6 @@
 parameters:
-    # TODO: use the configuration registry instead of this hard coded path
-    pimee_installer.fixture_loader.job_loader.config_file: %kernel.root_dir%/../src/PimEnterprise/Bundle/InstallerBundle/Resources/config/fixture_jobs.yml
-    pim_installer.fixture_loader.job_loader.config_file:  %kernel.root_dir%/../vendor/akeneo/pim-community-dev/src/Pim/Bundle/InstallerBundle/Resources/config/fixtures_jobs.yml
+    pim_installer.fixture_loader.job_loader.config_file:   'PimInstallerBundle/Resources/config/fixtures_jobs.yml'
+    pimee_installer.fixture_loader.job_loader.config_file: 'PimEnterpriseInstallerBundle/Resources/config/fixture_jobs.yml'
 
 services:
     pim_installer.fixture_loader.job_loader:
