@@ -260,6 +260,7 @@ class ProductManager
      * @param boolean            $flush       Whether or not to flush the entity manager
      * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
      *
+     * @return null
      * @deprecated use saveAllProducts() instead. Will be removed in 1.3
      */
     public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)

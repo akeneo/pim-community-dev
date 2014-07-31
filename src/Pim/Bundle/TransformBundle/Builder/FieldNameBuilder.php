@@ -64,7 +64,7 @@ class FieldNameBuilder
      *     "price_currency" => <currency_code> // this key is optional
      * ]
      *
-     * @param $fieldName
+     * @param string $fieldName
      *
      * @return array
      */

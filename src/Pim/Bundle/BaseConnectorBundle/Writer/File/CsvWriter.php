@@ -210,7 +210,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     protected function copyMedia(AbstractProductMedia $media)
     {
-        if (null === $media->getFilePath()) {
+        if (null === $media->getFilePath() || '' === $media->getFileName()) {
             return;
         }
         $result = $this->mediaManager->copy($media, dirname($this->getPath()));
