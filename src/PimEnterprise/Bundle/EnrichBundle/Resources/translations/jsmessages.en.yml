@@ -1,3 +1,4 @@
 View the product: View the product
 permissions-changes.grant-{{ permission }}-to-{{ group }}: The group <strong>{{ group }}</strong> will <strong>{{ permission }}</strong> in this category
 permissions-changes.revoke-{{ permission }}-to-{{ group }}: The group <strong>{{ group }}</strong> will <strong>not {{ permission }}</strong> in this category
+pimee_enrich.product_history.action.revert: Revert to this version

@@ -1,6 +1,7 @@
 parameters:
     pimee_datagrid.datagrid.proposition.grid_helper.class:       PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition\GridHelper
     pimee_datagrid.datagrid.published_product.grid_helper.class: PimEnterprise\Bundle\DataGridBundle\Datagrid\PublishedProduct\GridHelper
+    pimee_datagrid.datagrid.product_history.grid_helper.class:   PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductHistory\GridHelper
 
 services:
     pimee_datagrid.datagrid.proposition.grid_helper:
@@ -11,3 +12,9 @@ services:
         arguments:
             - '@security.context'
             - '@pimee_workflow.repository.published_product'
+
+    pimee_datagrid.datagrid.product_history.grid_helper:
+        class: %pimee_datagrid.datagrid.product_history.grid_helper.class%
+        arguments:
+            - '@security.context'
+            - '@pim_catalog.repository.product'

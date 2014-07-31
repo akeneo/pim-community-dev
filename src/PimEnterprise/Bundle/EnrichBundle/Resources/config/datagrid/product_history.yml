@@ -40,10 +40,12 @@ datagrid:
                     - id
         actions:
             revert:
-                type:   ajax
-                label:  Revert to this version
+                type:   navigate
+                label:  pimee_enrich.product_history.action.revert
                 icon:   undo
                 link:   revert_link
+                acl_resource: pimee_versioning_product_version_revert
+        action_configuration: '@pimee_datagrid.datagrid.product_history.grid_helper->getActionConfigurationClosure'
         sorters:
             columns:
                 version:
