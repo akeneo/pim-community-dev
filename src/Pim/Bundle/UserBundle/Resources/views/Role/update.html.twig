@@ -111,6 +111,12 @@
                                         <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ group|trans }}</a>
                                     </li>
                                 {% endfor %}
+                                {% for child in form[privilegeBlock].children|reverse if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                    {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                    <li class="tab">
+                                        <a href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">{{ groupName|trans }}</a>
+                                    </li>
+                                {% endfor %}
                                 <li class="tab">
                                     <a href="#tabs-group-system" data-toggle="tab">{{ 'System'|trans }}</a>
                                 </li>
@@ -127,10 +133,19 @@
                                     </div>
                                 </div>
                             {% endfor %}
+                            {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                <div id="tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" class="tab-pane fullheight">
+                                    <h3>{{ groupName|trans }}</h3>
+                                    <div class="acl-group">
+                                        {{ form_widget(child) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
                             <div id="tabs-group-system" class="tab-pane fullheight">
                                 <h3>{{ 'System'|trans }}</h3>
                                 <div class="acl-group">
-                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups %}
+                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
                                         {{ form_widget(child) }}
                                     {% endfor %}
                                 </div>
