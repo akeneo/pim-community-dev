@@ -13,7 +13,8 @@ define(
                 ed.on('change', function() {
                     $('#' + ed.id).trigger('change');
                 });
-            }
+            },
+            forced_root_block: false
         };
         var destroyEditor = function(id) {
             var instance = tinymce.get(id);
