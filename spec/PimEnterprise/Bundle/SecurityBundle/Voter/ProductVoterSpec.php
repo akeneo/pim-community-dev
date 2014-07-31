@@ -109,7 +109,7 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryOne->getId()->willReturn(1);
         $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([1]);
 
-        $this->vote($token, $product, ['OWN'])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_OWN_access_to_user_that_does_not_have_a_group_which_has_the_ownership_of_the_product(
@@ -125,13 +125,13 @@ class ProductVoterSpec extends ObjectBehavior
         $categoryOne->getId()->willReturn(1);
         $categoryAccessRepository->getGrantedCategoryIds($user, Attributes::OWN_PRODUCTS)->willReturn([2, 3]);
 
-        $this->vote($token, $product, ['OWN'])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
     function it_does_not_vote_if_checking_the_OWN_access_of_something_else_than_a_product(
         TokenInterface $token,
         CategoryInterface $category
     ) {
-        $this->vote($token, $category, ['OWN'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+        $this->vote($token, $category, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 }
