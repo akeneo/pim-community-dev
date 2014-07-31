@@ -7,7 +7,6 @@ use Pim\Bundle\CatalogBundle\Repository\ProductRepositoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 
-
 /**
  * Helper for product history to display revert action
  *

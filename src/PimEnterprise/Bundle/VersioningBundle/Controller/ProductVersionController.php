@@ -81,7 +81,7 @@ class ProductVersionController extends AbstractDoctrineController
      *
      * @return RedirectResponse|JsonResponse
      *
-     * @AclAncestor("pimee_versioning_revert_product")
+     * @AclAncestor("pimee_versioning_product_version_revert")
      */
     public function revertAction($id)
     {
