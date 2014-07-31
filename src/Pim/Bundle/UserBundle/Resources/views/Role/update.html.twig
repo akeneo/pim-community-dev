@@ -38,7 +38,7 @@
                     $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
                         var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
                         var $target = $($(this).parent().attr('href'));
-                        $target.find('.acl-permission i.' + classToToggle).each(function() {
+                        $target.find('.acl-permission:not(.default-field) i.' + classToToggle).each(function() {
                             togglePermission($(this));
                         });
                         decorateTabs();
