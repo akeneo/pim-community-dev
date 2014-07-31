@@ -8,6 +8,7 @@ Feature: Revert a product to a previous version
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
 
+  @skip
   Scenario: Successfully revert the status of a product (disabled)
     Given an enabled "boat" product
     And I am on the "boat" product page
