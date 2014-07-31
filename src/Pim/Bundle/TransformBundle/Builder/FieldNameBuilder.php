@@ -132,7 +132,7 @@ class FieldNameBuilder
     public function extractAssociationFieldNameInfos($fieldName)
     {
         $matches = [];
-        $regex = '/^([a-zA-Z_]+)-(groups|products)$/';
+        $regex = '/^([a-zA-Z0-9_]+)-(groups|products)$/';
         if (preg_match($regex, $fieldName, $matches)) {
             return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
         }

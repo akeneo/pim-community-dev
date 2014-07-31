@@ -181,6 +181,10 @@ class FieldNameBuilderSpec extends ObjectBehavior
             ->shouldReturn(['assoc_type_code' => 'X_SELL', 'part' => 'products']);
 
         $this
+            ->extractAssociationFieldNameInfos('10Foo-groups')
+            ->shouldReturn(['assoc_type_code' => '10Foo', 'part' => 'groups']);
+
+        $this
             ->extractAssociationFieldNameInfos('X_SELL-foo')
             ->shouldBe(null);
 
