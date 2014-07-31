@@ -429,14 +429,12 @@
 {% block oro_acl_permission_collection_widget %}
     {% if 'entity' == form.parent.vars.value.extensionKey %}
         {% for field in privileges_config['permissions'] %}
-            <div class="acl-permission">
-                {% for permission in form %}
-                    {% if permission.vars.value.name == field %}
-                        <strong>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</strong>
-                        {{ form_widget(permission) }}
-                    {% endif %}
-                {% endfor %}
-            </div>
+            {% for permission in form if permission.vars.value.name == field %}
+                <div class="acl-permission{{ field == 'ASSIGN' ? ' default-field' : ''}}">
+                    <strong>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</strong>
+                    {{ form_widget(permission) }}
+                </div>
+            {% endfor %}
         {% endfor %}
     {% else %}
         {% for field in privileges_config['permissions'] %}
