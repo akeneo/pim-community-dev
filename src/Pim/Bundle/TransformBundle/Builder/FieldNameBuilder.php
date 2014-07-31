@@ -56,7 +56,7 @@ class FieldNameBuilder
      * Extract attribute field name informations with attribute code, locale code, scope code
      * and optionally price currency
      *
-     * Returned array is like:
+     * Returned array like:
      * [
      *     "attribute"   => AbstractAttribute,
      *     "locale_code" => <locale_code>|null,
@@ -114,6 +114,28 @@ class FieldNameBuilder
             'locale_code' => $localeCode,
             'scope_code'  => $scopeCode,
         ] + $priceArray;
+    }
+
+    /**
+     * Extract field name informations from a potential association field name
+     *
+     * Returned array like:
+     * [
+     *     "assoc_type_code"   => <assoc_type_code>,
+     *     "part" => "groups"|"products",
+     * ]
+     *
+     * @param string $fieldName
+     *
+     * @return string[]|null
+     */
+    public function extractAssociationFieldNameInfos($fieldName)
+    {
+        $matches = [];
+        $regex = '/^([a-zA-Z_]+)-(groups|products)$/';
+        if (preg_match($regex, $fieldName, $matches)) {
+            return ['assoc_type_code' => $matches[1], 'part' => $matches[2]];
+        }
     }
 
     /**

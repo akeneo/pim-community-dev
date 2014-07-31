@@ -169,4 +169,23 @@ class FieldNameBuilderSpec extends ObjectBehavior
             ]
         );
     }
+
+    function it_extracts_association_field_name_informations()
+    {
+        $this
+            ->extractAssociationFieldNameInfos('X_SELL-groups')
+            ->shouldReturn(['assoc_type_code' => 'X_SELL', 'part' => 'groups']);
+
+        $this
+            ->extractAssociationFieldNameInfos('X_SELL-products')
+            ->shouldReturn(['assoc_type_code' => 'X_SELL', 'part' => 'products']);
+
+        $this
+            ->extractAssociationFieldNameInfos('X_SELL-foo')
+            ->shouldBe(null);
+
+        $this
+            ->extractAssociationFieldNameInfos('bar')
+            ->shouldBe(null);
+    }
 }
