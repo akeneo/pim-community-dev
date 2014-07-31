@@ -8,11 +8,11 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 /**
  * Normalize a media value
  *
- * @see Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
- *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
 class MediaNormalizer extends AbstractProductValueDataNormalizer
 {

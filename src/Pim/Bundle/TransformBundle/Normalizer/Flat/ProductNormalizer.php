@@ -162,7 +162,9 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /**
      * Normalizes a value
      *
-     * @param mixed $value
+     * @param AbstractProductValue $value
+     * @param string               $format
+     * @param array                $context
      *
      * @return array
      */

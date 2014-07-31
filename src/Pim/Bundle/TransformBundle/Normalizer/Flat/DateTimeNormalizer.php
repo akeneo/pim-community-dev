@@ -5,11 +5,11 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 /**
  * Normalize a DateTime
  *
- * @see Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
- *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * @see       Pim\Bundle\TransformBundle\Normalizer\Flat\ProductNormalizer
  */
 class DateTimeNormalizer extends AbstractProductValueDataNormalizer
 {
