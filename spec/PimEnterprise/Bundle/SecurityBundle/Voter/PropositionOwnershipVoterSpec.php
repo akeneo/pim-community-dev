@@ -37,7 +37,7 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $user->getUsername()->willReturn('bob');
         $proposition->getAuthor()->willReturn('bob');
 
-        $this->vote($token, $proposition, ['OWN'])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        $this->vote($token, $proposition, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_proposition(
@@ -49,7 +49,7 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         $user->getUsername()->willReturn('bob');
         $proposition->getAuthor()->willReturn('alice');
 
-        $this->vote($token, $proposition, ['OWN'])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        $this->vote($token, $proposition, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
     function it_does_not_vote_if_the_attribute_OWN_is_not_being_checked(
@@ -63,6 +63,6 @@ class PropositionOwnershipVoterSpec extends ObjectBehavior
         TokenInterface $token,
         ProductInterface $product
     ) {
-        $this->vote($token, $product, ['OWN'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+        $this->vote($token, $product, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 }
