@@ -59,9 +59,12 @@ class FixtureJobLoader
     public function load()
     {
         $rawJobs = array();
+        $fileLocator = $this->container->get('file_locator');
 
         foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $this->reader->setFilePath($jobsFilePath);
+
+            $realPath = $fileLocator->locate('@'.$jobsFilePath);
+            $this->reader->setFilePath($realPath);
 
             // read the jobs list
             while ($rawJob = $this->reader->read()) {
