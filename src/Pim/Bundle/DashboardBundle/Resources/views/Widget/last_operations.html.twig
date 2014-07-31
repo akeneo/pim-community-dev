@@ -27,7 +27,7 @@
                 {% for operation in widget.params %}
                     <tr>
                         <td>
-                            {% set timeFormat = 'now'|date('Y-m-d') == operation.date|date('Y-m-d') ? 'h:i' : 'Y-m-d h:i' %}
+                            {% set timeFormat = 'now'|date('Y-m-d') == operation.date|date('Y-m-d') ? 'H:i' : 'Y-m-d H:i' %}
                             {{ operation.date|date(timeFormat) }}
                         </td>
                         <td>{{ ('pim_dashboard.widget.last_operations.job_type.' ~ operation.type)|trans }}</td>
