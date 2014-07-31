@@ -282,7 +282,7 @@ class FixturesContext extends RawMinkContext
         $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->handleMedia($product);
 
-        $this->getProductManager()->saveProduct($product);
+        $this->getProductManager()->saveProduct($product, ['recalculate' => false]);
 
         return $product;
     }
