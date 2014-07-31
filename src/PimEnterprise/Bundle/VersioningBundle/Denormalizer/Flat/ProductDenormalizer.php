@@ -230,7 +230,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
         }
 
         foreach (array_keys($data) as $fieldName) {
-            if ($matches = $this->fieldNameBuilder->extractAssociationFieldNameInfos($fieldName)) {
+            if (null !== $matches = $this->fieldNameBuilder->extractAssociationFieldNameInfos($fieldName)) {
                 throw new RevertException(
                     sprintf('Association type "%s" does not exist anymore', $matches['assoc_type_code'])
                 );
