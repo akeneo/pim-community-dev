@@ -20,9 +20,6 @@
                             var hasMissing = $target.find('.acl-permission:not(.default-field) .acl-permission-toggle.non-granted').length;
                             var iconClass = hasMissing ? (hasGranted ? 'circle' : 'remove') : 'ok';
                             var $icon = $(this).find('i').first();
-                            if (!$icon.length) {
-                                $icon = $('<i>', { 'class': 'acl-group-permission-toggle' }).prependTo($(this));
-                            }
                             $icon.removeClass('icon-ok icon-remove icon-circle').addClass('icon-' + iconClass);
                         });
                     };
@@ -41,14 +38,14 @@
                     $('.tab-groups').on('click', 'li.tab .acl-group-permission-toggle', function() {
                         var classToToggle = $(this).hasClass('icon-ok') ? 'granted' : 'non-granted';
                         var $target = $($(this).parent().attr('href'));
-                        $target.find('.acl-permission i.' + classToToggle).each(function() {
+                        $target.find('.acl-permission:not(.default-field) i.' + classToToggle).each(function() {
                             togglePermission($(this));
                         });
                         decorateTabs();
                     });
 
                     $('.acl-permission.default-field').each(function() {
-                        $(this).addClass('hide').find('.acl-permission-toggle.non-granted').click();
+                        $(this).find('.acl-permission-toggle.non-granted').click();
                     });
 
                     decorateTabs();
@@ -108,11 +105,26 @@
                             <ul class="nav nav-list">
                                 {% for group in groups %}
                                     <li class="tab{{ loop.index == 1 ? ' active' : '' }}">
-                                        <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">{{ group|trans }}</a>
+                                        <a href="#tabs-{{ group|replace({' ': '-', '.': '-'})|lower }}" data-toggle="tab">
+                                            <i class="acl-group-permission-toggle"></i>
+                                            {{ group|trans }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                                {% for child in form[privilegeBlock].children|reverse if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                    {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                    <li class="tab">
+                                        <a href="#tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" data-toggle="tab">
+                                            <i class="acl-group-permission-toggle"></i>
+                                            {{ groupName|trans }}
+                                        </a>
                                     </li>
                                 {% endfor %}
                                 <li class="tab">
-                                    <a href="#tabs-group-system" data-toggle="tab">{{ 'System'|trans }}</a>
+                                    <a href="#tabs-group-system" data-toggle="tab">
+                                        <i class="acl-group-permission-toggle"></i>
+                                        {{ 'System'|trans }}
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -127,10 +139,19 @@
                                     </div>
                                 </div>
                             {% endfor %}
+                            {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and child.vars.value.extensionKey == 'entity' and child.vars.value.identity.name != '(default)' %}
+                                {% set groupName = 'oro_security.acl_group.' ~ child.vars.value.identity.name|lower %}
+                                <div id="tabs-{{ groupName|replace({' ': '-', '.': '-'}) }}" class="tab-pane fullheight">
+                                    <h3>{{ groupName|trans }}</h3>
+                                    <div class="acl-group">
+                                        {{ form_widget(child) }}
+                                    </div>
+                                </div>
+                            {% endfor %}
                             <div id="tabs-group-system" class="tab-pane fullheight">
                                 <h3>{{ 'System'|trans }}</h3>
                                 <div class="acl-group">
-                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups %}
+                                    {% for child in form[privilegeBlock].children if child.vars.value.group not in groups and (child.vars.value.extensionKey != 'entity' or child.vars.value.identity.name == '(default)') %}
                                         {{ form_widget(child) }}
                                     {% endfor %}
                                 </div>
