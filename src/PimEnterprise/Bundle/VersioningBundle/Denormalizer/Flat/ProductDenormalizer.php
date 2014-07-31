@@ -190,6 +190,8 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      * @param string           $format
      * @param array            $context
      * @param ProductInterface $product
+     *
+     * @throws RevertException
      */
     protected function denormalizeAssociations(&$data, $format, array $context, ProductInterface $product)
     {
@@ -224,6 +226,14 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
                 }
 
                 unset($data[$assocFieldName]);
+            }
+        }
+
+        foreach (array_keys($data) as $fieldName) {
+            if (null !== $matches = $this->fieldNameBuilder->extractAssociationFieldNameInfos($fieldName)) {
+                throw new RevertException(
+                    sprintf('Association type "%s" does not exist anymore', $matches['assoc_type_code'])
+                );
             }
         }
     }
