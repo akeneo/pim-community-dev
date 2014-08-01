@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Tests\Unit\Transformer\Property;
 
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 
@@ -76,7 +77,8 @@ class MetricTransformerTest extends \PHPUnit_Framework_TestCase
                 )
             );
 
-        $transformer = new MetricTransformer('Pim\Bundle\CatalogBundle\Model\Metric');
+        $metricFactory = new MetricFactory('Pim\Bundle\CatalogBundle\Model\Metric');
+        $transformer = new MetricTransformer($metricFactory);
         $transformer->setValue($object, $columnInfo, $data);
         $this->assertInstanceOf('Pim\Bundle\CatalogBundle\Model\Metric', $metric);
         $this->assertEquals('metric_family', $metric->getFamily());
