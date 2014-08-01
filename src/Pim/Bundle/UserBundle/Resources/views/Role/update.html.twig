@@ -25,6 +25,13 @@
                     };
 
                     var togglePermission = function($icon, callback) {
+                        if ($icon.parent().hasClass('default-field-toggle')) {
+                            var permission = $icon.parent().data('permission');
+                            var $defaultIcon = $('.default-field[data-permission="' + permission + '"]').find('i.' + ($icon.hasClass('granted') ? 'granted' : 'non-granted'));
+                            $defaultIcon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
+                            var $defaultInput = $defaultIcon.siblings('input[type="checkbox"]').eq(0);
+                            $defaultInput.prop('checked', !$defaultInput.is(':checked'));
+                        }
                         $icon.toggleClass('icon-ok granted').toggleClass('icon-remove non-granted');
                         var $input = $icon.siblings('input[type="checkbox"]').eq(0);
                         $input.prop('checked', !$input.is(':checked')).trigger('change');
@@ -42,10 +49,6 @@
                             togglePermission($(this));
                         });
                         decorateTabs();
-                    });
-
-                    $('.acl-permission.default-field').each(function() {
-                        $(this).find('.acl-permission-toggle.non-granted').click();
                     });
 
                     decorateTabs();
@@ -93,7 +96,9 @@
 
             <div class="tab-pane active buffer-top" id="general">
                 {{ form_row(form.label) }}
-                {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+                {% if form.owner is defined %}
+                    {{ form_row(form.owner, {attr : { class: 'hide' }}) }}
+                {% endif %}
             </div>
 
             {% set groups = acl_groups() %}
