@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\FormInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class UpdateProductDraftStatusSubscriberSpec extends ObjectBehavior
 {
@@ -40,7 +40,7 @@ class UpdateProductDraftStatusSubscriberSpec extends ObjectBehavior
         $formFactory,
         $request,
         ProductDraftEvent $event,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         FormInterface $form
     ) {
         $event->getProductDraft()->willReturn($productDraft);

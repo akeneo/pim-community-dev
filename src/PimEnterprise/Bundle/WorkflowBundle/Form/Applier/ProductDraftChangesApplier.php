@@ -12,7 +12,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Applies product changes
@@ -47,11 +47,11 @@ class ProductDraftChangesApplier
      * Apply product draft to a product
      *
      * @param ProductInterface $product
-     * @param Proposition      $productDraft
+     * @param ProductDraft $productDraft
      *
      * @throws ValidatorException
      */
-    public function apply(ProductInterface $product, Proposition $productDraft)
+    public function apply(ProductInterface $product, ProductDraft $productDraft)
     {
         if ($this->dispatcher->hasListeners(ProductDraftEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(

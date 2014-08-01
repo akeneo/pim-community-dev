@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 
 /**
- * Proposition events
+ * ProductDraft events
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

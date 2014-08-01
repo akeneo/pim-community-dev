@@ -145,7 +145,7 @@ class ProductController extends BaseProductController
     }
 
     /**
-     * Propositions of a product
+     * Drafts of a product
      *
      * @param Request $request
      * @param integer $id

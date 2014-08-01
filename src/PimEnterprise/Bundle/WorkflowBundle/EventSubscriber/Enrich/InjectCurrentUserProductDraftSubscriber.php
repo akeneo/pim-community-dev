@@ -91,7 +91,7 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
      * @param string          $username
      * @param string          $locale
      *
-     * @return Proposition|null
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
      */
     protected function getProposition(AbstractProduct $product, $username, $locale)
     {

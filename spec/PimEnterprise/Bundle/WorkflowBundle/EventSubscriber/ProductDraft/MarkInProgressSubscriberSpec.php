@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class MarkInProgressSubscriberSpec extends ObjectBehavior
 {
@@ -24,10 +24,10 @@ class MarkInProgressSubscriberSpec extends ObjectBehavior
 
     function it_sets_updated_product_draft_as_in_progress(
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getProductDraft()->willReturn($productDraft);
-        $productDraft->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
 
         $this->markAsInProgress($event);
     }

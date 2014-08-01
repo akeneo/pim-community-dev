@@ -11,7 +11,7 @@ use Symfony\Component\Form\FormView;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
 {
@@ -39,7 +39,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $formFactory,
         GenericEvent $event,
         ProductInterface $product,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getArgument('parameters')->willReturn([
             'product' => $product,

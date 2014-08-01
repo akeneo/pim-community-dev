@@ -8,12 +8,12 @@ use Doctrine\ORM\QueryBuilder;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Doctrine\Repository;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
- * Proposition ORM repository
+ * ProductDraft ORM repository
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -61,7 +61,7 @@ class ProductDraftRepository extends EntityRepository implements
                 $qb->expr()->in('a.userGroup', ':userGroups')
             )
             ->andWhere(
-                $qb->expr()->eq('p.status', Proposition::READY)
+                $qb->expr()->eq('p.status', ProductDraft::READY)
             )
             ->orderBy('p.createdAt', 'desc')
             ->setParameter('userGroups', $user->getGroups()->toArray());

@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Repository;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * Proposition ownership repository interface
+ * ProductDraft ownership repository interface
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -18,7 +18,7 @@ interface ProductDraftOwnershipRepositoryInterface
      * @param UserInterface $user
      * @param integer       $limit
      *
-     * @return Proposition[]
+     * @return ProductDraft[]
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
 }

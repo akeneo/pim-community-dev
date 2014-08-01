@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class MetadataSubscriberSpec extends ObjectBehavior
 {
@@ -66,7 +66,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_removes_all_metadata(
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([
@@ -104,7 +104,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_ignores_missing_metadata_when_removing_them(
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([

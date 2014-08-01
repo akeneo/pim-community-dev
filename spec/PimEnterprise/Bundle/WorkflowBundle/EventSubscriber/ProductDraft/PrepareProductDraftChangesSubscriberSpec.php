@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
 {
@@ -28,7 +28,7 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_keeps_media_between_product_draft_updates(ProductDraftEvent $event, Proposition $productDraft)
+    function it_keeps_media_between_product_draft_updates(ProductDraftEvent $event, ProductDraft $productDraft)
     {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([
@@ -67,7 +67,7 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
 
     function it_merges_changes_from_current_product_draft_with_submitted_changes(
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([

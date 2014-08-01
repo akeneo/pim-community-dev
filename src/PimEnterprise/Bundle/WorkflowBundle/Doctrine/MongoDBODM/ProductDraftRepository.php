@@ -5,10 +5,10 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Doctrine\MongoDBODM;
 use Doctrine\ODM\MongoDB\DocumentRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
- * Proposition ODM repository
+ * ProductDraft ODM repository
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

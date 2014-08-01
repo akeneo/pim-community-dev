@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 /**
@@ -22,7 +22,7 @@ class GridHelper
     public function getActionConfigurationClosure()
     {
         return function (ResultRecordInterface $record) {
-            if (Proposition::IN_PROGRESS === $record->getValue('status')) {
+            if (ProductDraft::IN_PROGRESS === $record->getValue('status')) {
                 return ['approve' => false, 'refuse' => false];
             } else {
                 return ['remove' => false];
@@ -38,8 +38,8 @@ class GridHelper
     public function getStatusChoices()
     {
         return [
-            Proposition::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
-            Proposition::READY => 'pimee_workflow.product_draft.status.ready',
+            ProductDraft::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
+            ProductDraft::READY => 'pimee_workflow.product_draft.status.ready',
         ];
     }
 }

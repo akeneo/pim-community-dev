@@ -12,7 +12,7 @@ use Doctrine\ODM\MongoDB\Event\PreUpdateEventArgs as MongoDBODMPreUpdateEventsAr
 use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ODM\MongoDB\UnitOfWork;
@@ -45,7 +45,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
     function it_synchronizes_product_draft_document_before_it_is_persisted(
         MongoDBODMLifecycleEventArgs $event,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
@@ -63,7 +63,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
     function it_synchronizes_product_draft_document_before_it_is_updated(
         MongoDBODMPreUpdateEventsArgs $event,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
@@ -85,8 +85,8 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        Proposition $productDraftA,
-        Proposition $productDraftB,
+        ProductDraft $productDraftA,
+        ProductDraft $productDraftB,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {
@@ -115,9 +115,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         CategoryInterface $category,
         ProductInterface $productA,
         ProductInterface $productB,
-        Proposition $productDraftAA,
-        Proposition $productDraftAB,
-        Proposition $productDraftBA
+        ProductDraft $productDraftAA,
+        ProductDraft $productDraftAB,
+        ProductDraft $productDraftBA
     ) {
         $event->getEntity()->willReturn($category);
         $category->getId()->willReturn(4);
@@ -163,7 +163,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {

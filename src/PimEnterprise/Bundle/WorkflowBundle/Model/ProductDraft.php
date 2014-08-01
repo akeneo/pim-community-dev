@@ -5,12 +5,12 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Proposition of changes of a product
+ * Product draft
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class Proposition
+class ProductDraft
 {
     /** @staticvar integer */
     const IN_PROGRESS = 0;
@@ -61,7 +61,7 @@ class Proposition
     /**
      * @param ProductInterface $product
      *
-     * @return Proposition
+     * @return ProductDraft
      */
     public function setProduct(ProductInterface $product)
     {
@@ -80,8 +80,9 @@ class Proposition
 
     /**
      * @param string $author
+
      *
-     * @return Proposition
+*@return ProductDraft
      */
     public function setAuthor($author)
     {
@@ -101,7 +102,7 @@ class Proposition
     /**
      * @param \DateTime $createdAt
      *
-     * @return Proposition
+    * @return ProductDraft
      */
     public function setCreatedAt(\DateTime $createdAt)
     {
@@ -120,8 +121,9 @@ class Proposition
 
     /**
      * @param array $changes
+
      *
-     * @return Proposition
+*@return ProductDraft
      */
     public function setChanges(array $changes)
     {
@@ -208,7 +210,7 @@ class Proposition
     /**
      * @param string $dataLocale
      *
-     * @return Proposition
+     * @return ProductDraft
      */
     public function setDataLocale($dataLocale)
     {

@@ -10,7 +10,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
@@ -36,7 +36,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $manager,
         $applier,
         $dispatcher,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ProductInterface $product,
         ObjectManager $manager
     ) {
@@ -57,21 +57,21 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(
         $registry,
         $dispatcher,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
         $productDraft->isInProgress()->willReturn(false);
         $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
-        $productDraft->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->setStatus(ProductDraft::IN_PROGRESS)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->refuse($productDraft);
     }
     function it_removes_in_progress_product_draft_when_refusing_it(
         $registry,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
@@ -88,7 +88,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $repository,
         UserInterface $user,
         ProductInterface $product,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -103,7 +103,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         UserInterface $user,
         ProductInterface $product,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
@@ -125,13 +125,13 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_marks_product_draft_as_ready(
         $registry,
         $dispatcher,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         ObjectManager $manager
     ) {
         $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_READY, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
-        $productDraft->setStatus(Proposition::READY)->shouldBeCalled();
+        $productDraft->setStatus(ProductDraft::READY)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
         $this->markAsReady($productDraft);

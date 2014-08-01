@@ -10,7 +10,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Behat\Behat\Context\Step;
 
 /**
@@ -98,7 +98,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $data['author'],
                 []
             );
-            $productDraft->setStatus($data['status'] === 'ready' ? Proposition::READY : Proposition::IN_PROGRESS);
+            $productDraft->setStatus($data['status'] === 'ready' ? ProductDraft::READY : ProductDraft::IN_PROGRESS);
             $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
             $manager->persist($productDraft);
         }

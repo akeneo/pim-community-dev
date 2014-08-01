@@ -9,7 +9,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class ProductDraftOwnershipVoterSpec extends ObjectBehavior
 {
@@ -23,14 +23,14 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
         $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
-    function it_supports_product_draft(Proposition $productDraft)
+    function it_supports_product_draft(ProductDraft $productDraft)
     {
         $this->supportsClass($productDraft)->shouldReturn(true);
     }
 
     function it_grants_OWN_access_to_user_that_has_created_the_prospotion(
         TokenInterface $token,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -42,7 +42,7 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
 
     function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_product_draft(
         TokenInterface $token,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
@@ -54,7 +54,7 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
 
     function it_does_not_vote_if_the_attribute_OWN_is_not_being_checked(
         TokenInterface $token,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }

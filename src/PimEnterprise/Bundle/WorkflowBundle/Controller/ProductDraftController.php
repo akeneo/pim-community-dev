@@ -2,7 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Controller;
 
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
- * Proposition controller
+ * ProductDraft controller
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -89,10 +89,10 @@ class ProductDraftController extends AbstractController
     public function approveAction($id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
-        if (Proposition::READY !== $productDraft->getStatus()) {
+        if (ProductDraft::READY !== $productDraft->getStatus()) {
             throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
@@ -128,7 +128,7 @@ class ProductDraftController extends AbstractController
     public function refuseAction($id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
@@ -160,7 +160,7 @@ class ProductDraftController extends AbstractController
     public function readyAction($id)
     {
         if (null === $productDraft = $this->repository->find($id)) {
-            throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
+            throw new NotFoundHttpException(sprintf('Product draft "%s" not found', $id));
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {

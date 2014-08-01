@@ -12,7 +12,7 @@ use Doctrine\ORM\Event\LifecycleEventArgs as ORMLifecycleEventsArgs;
 use Doctrine\ORM\Events as ORMEvents;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
@@ -72,7 +72,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             return;
         }
         $document = $event->getDocument();
-        if ($document instanceof Proposition) {
+        if ($document instanceof ProductDraft) {
             $this->syncProductProposition($document);
         }
     }
@@ -90,7 +90,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             return;
         }
         $document = $event->getDocument();
-        if ($document instanceof Proposition) {
+        if ($document instanceof ProductDraft) {
             $this->syncProductProposition($document);
         } elseif ($document instanceof ProductInterface && $event->hasChangedField('categoryIds')) {
             $this->syncProductPropositions(
@@ -127,9 +127,9 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     /**
      * Synchronize category ids of product draft
      *
-     * @param Proposition $productDraft
+     * @param ProductDraft $productDraft
      */
-    protected function syncProductProposition(Proposition $productDraft)
+    protected function syncProductProposition(ProductDraft $productDraft)
     {
         $categoryIds = $productDraft
             ->getProduct()

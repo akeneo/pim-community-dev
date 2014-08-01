@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ObjectRepository;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
- * Proposition repository interface
+ * ProductDraft repository interface
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -55,7 +55,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return null|Proposition
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
      */
     public function findUserProposition(ProductInterface $product, $username);
 
@@ -64,7 +64,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @param ProductInterface $product
      *
-     * @return null|Proposition[]
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]|null
      */
     public function findByProduct(ProductInterface $product);
 }

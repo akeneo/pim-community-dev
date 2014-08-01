@@ -12,7 +12,7 @@ class ProductDraftFactorySpec extends ObjectBehavior
     ) {
         $productDraft = $this->createProposition($product, 'admin');
 
-        $productDraft->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition');
+        $productDraft->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft');
         $productDraft->getProduct()->shouldReturn($product);
         $productDraft->getAuthor()->shouldReturn('admin');
         $productDraft->getChanges()->shouldReturn([]);

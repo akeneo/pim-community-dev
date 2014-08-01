@@ -3,7 +3,7 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Factory;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Product product draft factory
@@ -14,16 +14,16 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 class ProductDraftFactory
 {
     /**
-     * Create and configure a Proposition instance
+     * Create and configure a ProductDraft instance
      *
      * @param ProductInterface $product
      * @param string           $username
      *
-     * @return Proposition
+     * @return ProductDraft
      */
     public function createProposition(ProductInterface $product, $username)
     {
-        $productDraft = new Proposition();
+        $productDraft = new ProductDraft();
         $productDraft
             ->setProduct($product)
             ->setAuthor($username)

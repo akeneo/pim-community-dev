@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Model;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
-class PropositionSpec extends ObjectBehavior
+class ProductDraftSpec extends ObjectBehavior
 {
     function it_removes_category_id()
     {

@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Twig extension to present product draft changes
@@ -127,14 +127,13 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * Present an attribute change
      *
      * @param array       $change
-     * @param Proposition $productDraft
+     * @param ProductDraft $productDraft
      *
      * @return string
-     *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function presentChange(array $change, Proposition $productDraft)
+    public function presentChange(array $change, ProductDraft $productDraft)
     {
         $change['__context__'] = array_merge(
             [

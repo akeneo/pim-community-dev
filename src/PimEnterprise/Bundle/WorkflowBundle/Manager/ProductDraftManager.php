@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
@@ -73,9 +73,9 @@ class ProductDraftManager
     /**
      * Approve a product draft
      *
-     * @param Proposition $productDraft
+     * @param ProductDraft $productDraft
      */
-    public function approve(Proposition $productDraft)
+    public function approve(ProductDraft $productDraft)
     {
         $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_APPROVE,
@@ -96,14 +96,14 @@ class ProductDraftManager
     /**
      * Refuse a product draft
      *
-     * @param Proposition $productDraft
+     * @param ProductDraft $productDraft
      */
-    public function refuse(Proposition $productDraft)
+    public function refuse(ProductDraft $productDraft)
     {
         $manager = $this->registry->getManagerForClass(get_class($productDraft));
 
         if (!$productDraft->isInProgress()) {
-            $productDraft->setStatus(Proposition::IN_PROGRESS);
+            $productDraft->setStatus(ProductDraft::IN_PROGRESS);
         } else {
             $manager->remove($productDraft);
         }
@@ -121,7 +121,7 @@ class ProductDraftManager
      *
      * @param ProductInterface $product
      *
-     * @return Proposition
+     * @return ProductDraft
      *
      * @throws \LogicException
      */
@@ -143,15 +143,15 @@ class ProductDraftManager
     /**
      * Mark a product draft as ready
      *
-     * @param Proposition $productDraft
+     * @param ProductDraft $productDraft
      */
-    public function markAsReady(Proposition $productDraft)
+    public function markAsReady(ProductDraft $productDraft)
     {
         $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_READY,
             new ProductDraftEvent($productDraft)
         );
-        $productDraft->setStatus(Proposition::READY);
+        $productDraft->setStatus(ProductDraft::READY);
 
         $manager = $this->registry->getManagerForClass(get_class($productDraft));
         $manager->flush();

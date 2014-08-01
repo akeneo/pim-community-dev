@@ -5,7 +5,7 @@ namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 /**
  * Voter of the product draft ownership attribute
@@ -28,7 +28,7 @@ class ProductDraftOwnershipVoter implements VoterInterface
      */
     public function supportsClass($class)
     {
-        return $class instanceof Proposition;
+        return $class instanceof ProductDraft;
     }
 
     /**

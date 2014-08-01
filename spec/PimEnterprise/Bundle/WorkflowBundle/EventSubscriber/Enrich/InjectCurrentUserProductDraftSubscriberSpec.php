@@ -9,7 +9,7 @@ use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 
@@ -31,7 +31,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $applier,
         AbstractProduct $product,
         UserInterface $user,
-        Proposition $productDraft,
+        ProductDraft $productDraft,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);

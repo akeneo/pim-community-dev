@@ -5,7 +5,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 
@@ -31,7 +31,7 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
     function it_converts_uploading_media_into_object(
         $factory,
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([
@@ -65,7 +65,7 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
 
     function it_ignores_changes_not_related_to_media(
         ProductDraftEvent $event,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $changes = [
             'values' => [

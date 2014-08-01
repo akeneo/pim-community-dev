@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class ProductDraftChangesApplierSpec extends ObjectBehavior
 {
@@ -26,7 +26,7 @@ class ProductDraftChangesApplierSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         FormInterface $form,
         Model\AbstractProduct $product,
-        Proposition $productDraft
+        ProductDraft $productDraft
     ) {
         $formFactory->createBuilder('form', $product, ['csrf_protection' => false])->willReturn($formBuilder);
         $valuesFieldOptions = [
