@@ -8,7 +8,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Mark a proposition as in progress before updating it
+ * Mark a product draft as in progress before updating it
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -26,7 +26,7 @@ class MarkInProgressSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Mark the proposition as in progress
+     * Mark the product draft as in progress
      *
      * @param ProductDraftEvent $event
      */

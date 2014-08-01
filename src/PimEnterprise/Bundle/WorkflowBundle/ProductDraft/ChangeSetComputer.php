@@ -11,7 +11,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 
 /**
- * Product change set computer during proposition workflow
+ * Product change set computer during product draft workflow
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

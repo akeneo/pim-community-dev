@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Doctrine\ODM\MongoDB\UnitOfWork;
 
 /**
- * Keeps proposition categoryIds field synchronized with its related product's categories
+ * Keeps product draft categoryIds field synchronized with its related product's categories
  *
  * As events in mongodb-odm and orm are named identically, and as this subscriber is registered
  * inside mongodb-odm and orm event managers, then event received as parameter must be typehinted against
@@ -60,7 +60,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Handle synchronization of propostion before proposition document insertion
+     * Handle synchronization of propostion before product draft document insertion
      *
      * @param LifecycleEventArgs $event
      *
@@ -78,7 +78,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Handle synchronization of propostion(s) before proposition or product document update
+     * Handle synchronization of propostion(s) before product draft or product document update
      *
      * @param LifecycleEventArgs $event
      *
@@ -125,7 +125,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Synchronize category ids of proposition
+     * Synchronize category ids of product draft
      *
      * @param Proposition $productDraft
      */
@@ -144,7 +144,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Synchronize category ids of propositions of product of which categories has been changed
+     * Synchronize category ids of product drafts of product of which categories has been changed
      *
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
@@ -175,7 +175,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     }
 
     /**
-     * Get propositions related to a product
+     * Get product drafts related to a product
      *
      * @param ProductInterface $product
      *

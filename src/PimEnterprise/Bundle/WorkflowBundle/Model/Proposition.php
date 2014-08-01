@@ -39,7 +39,7 @@ class Proposition
     /** @var array */
     protected $categoryIds = [];
 
-    /** @var string not persisted, used to contextualize the proposition */
+    /** @var string not persisted, used to contextualize the product draft */
     protected $dataLocale = null;
 
     /**
@@ -159,7 +159,7 @@ class Proposition
     }
 
     /**
-     * Wether or not proposition is in progress
+     * Wether or not product draft is in progress
      *
      * @return boolean
      */

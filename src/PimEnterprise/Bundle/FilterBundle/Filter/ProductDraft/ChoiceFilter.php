@@ -7,7 +7,7 @@ use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
 use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
- * Choice filter for proposition
+ * Choice filter for product draft
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

@@ -15,7 +15,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 class ChangeFamily extends BaseChangeFamily
 {
     /**
-     * Override to bypass the creation of a proposition
+     * Override to bypass the creation of a product draft
      *
      * @return array
      */

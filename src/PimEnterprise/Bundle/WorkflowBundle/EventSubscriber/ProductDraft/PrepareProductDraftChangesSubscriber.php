@@ -7,7 +7,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 
 /**
- * Merge values to keep previous proposition changes that
+ * Merge values to keep previous product draft changes that
  * are not sent in the current request (like localized attributes or files)
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
@@ -32,7 +32,7 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Keep media changes when from previous proposition
+     * Keep media changes when from previous product draft
      *
      * @param ProductDraftEvent $event
      */

@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Twig extension to present proposition changes
+ * Twig extension to present product draft changes
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

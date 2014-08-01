@@ -9,7 +9,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 
 /**
- * Update the proposition with the current request data
+ * Update the product draft with the current request data
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -47,8 +47,8 @@ class UpdateProductDraftStatusSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Update a proposition status by submitting the current request
-     * against a proposition form
+     * Update a product draft status by submitting the current request
+     * against a product draft form
      *
      * @param ProductDraftEvent $event
      */

@@ -57,7 +57,7 @@ class MetadataSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Remove metadata before applying proposition changes
+     * Remove metadata before applying product draft changes
      *
      * @param ProductDraftEvent $event
      */

@@ -13,7 +13,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 interface ProductDraftOwnershipRepositoryInterface
 {
     /**
-     * Return propositions that can be approved by the given user
+     * Return product drafts that can be approved by the given user
      *
      * @param UserInterface $user
      * @param integer       $limit

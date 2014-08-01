@@ -7,7 +7,7 @@ use Oro\Bundle\DataGridBundle\Datagrid\RequestParameters;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 
 /**
- * Inject the product id for proposition datagrid
+ * Inject the product id for product draft datagrid
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

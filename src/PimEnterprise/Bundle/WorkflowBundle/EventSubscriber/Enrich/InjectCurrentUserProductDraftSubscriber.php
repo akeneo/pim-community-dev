@@ -13,7 +13,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 use Symfony\Component\Validator\Exception\ValidatorException;
 
 /**
- * Inject current user proposition in a product before editing a product
+ * Inject current user product draft in a product before editing a product
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -61,7 +61,7 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
     }
 
     /**
-     * Inject current proposition into the product
+     * Inject current product draft into the product
      *
      * @param GenericEvent $event
      */
@@ -85,7 +85,7 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
     }
 
     /**
-     * Get a proposition
+     * Get a product draft
      *
      * @param AbstractProduct $product
      * @param string          $username

@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 
 /**
- * Manage product propositions
+ * Manage product product drafts
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -71,7 +71,7 @@ class ProductDraftManager
     }
 
     /**
-     * Approve a proposition
+     * Approve a product draft
      *
      * @param Proposition $productDraft
      */
@@ -94,7 +94,7 @@ class ProductDraftManager
     }
 
     /**
-     * Refuse a proposition
+     * Refuse a product draft
      *
      * @param Proposition $productDraft
      */
@@ -117,7 +117,7 @@ class ProductDraftManager
     }
 
     /**
-     * Find or create a proposition
+     * Find or create a product draft
      *
      * @param ProductInterface $product
      *
@@ -141,7 +141,7 @@ class ProductDraftManager
     }
 
     /**
-     * Mark a proposition as ready
+     * Mark a product draft as ready
      *
      * @param Proposition $productDraft
      */

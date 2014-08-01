@@ -93,7 +93,7 @@ class ProductDraftController extends AbstractController
         }
 
         if (Proposition::READY !== $productDraft->getStatus()) {
-            throw new \LogicException('A proposition that is not ready can not be approved');
+            throw new \LogicException('A product draft that is not ready can not be approved');
         }
 
         if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
@@ -149,7 +149,7 @@ class ProductDraftController extends AbstractController
     }
 
     /**
-     * Mark a proposition as ready
+     * Mark a product draft as ready
      *
      * @param integer|string $id
      *

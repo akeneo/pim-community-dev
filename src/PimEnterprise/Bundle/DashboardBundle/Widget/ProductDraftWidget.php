@@ -8,7 +8,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftOwnershipReposito
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 
 /**
- * Widget to display product propositions
+ * Widget to display product product drafts
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

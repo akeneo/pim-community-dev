@@ -30,7 +30,7 @@ class ProductDraftEvent extends Event
     }
 
     /**
-     * Get the proposition
+     * Get the product draft
      *
      * @return Proposition
      */

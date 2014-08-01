@@ -8,7 +8,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
- * Voter of the proposition ownership attribute
+ * Voter of the product draft ownership attribute
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

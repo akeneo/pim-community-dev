@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**
- * Store product through propositions
+ * Store product through product drafts
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -143,7 +143,7 @@ class ProductDraftPersister implements ProductPersister
     }
 
     /**
-     * Persist a proposition of the product
+     * Persist a product draft of the product
      *
      * @param ObjectManager    $manager
      * @param ProductInterface $product

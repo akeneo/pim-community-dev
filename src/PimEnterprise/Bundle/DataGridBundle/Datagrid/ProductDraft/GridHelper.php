@@ -6,7 +6,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;
 
 /**
- * Helper for proposition datagrid
+ * Helper for product draft datagrid
  *
  * @author    Filips Alpe <filips@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -15,7 +15,7 @@ class GridHelper
 {
     /**
      * Returns callback that will disable approve and refuse buttons
-     * given proposition status
+     * given product draft status
      *
      * @return callable
      */
@@ -31,7 +31,7 @@ class GridHelper
     }
 
     /**
-     * Returns available proposition status choices
+     * Returns available product draft status choices
      *
      * @return array
      */

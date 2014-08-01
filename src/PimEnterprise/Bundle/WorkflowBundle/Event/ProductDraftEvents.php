@@ -11,7 +11,7 @@ namespace PimEnterprise\Bundle\WorkflowBundle\Event;
 class ProductDraftEvents
 {
     /**
-     * This event is dispatched before proposition is flushed to database
+     * This event is dispatched before product draft is flushed to database
      *
      * The event listener receives an
      * PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ProductDraftEvent instance
@@ -21,7 +21,7 @@ class ProductDraftEvents
     const PRE_UPDATE = 'pimee_workflow.product_draft.pre_update';
 
     /**
-     * This event is dispatched before proposition is applied a product
+     * This event is dispatched before product draft is applied a product
      *
      * The event listener receives an
      * PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ProductDraftEvent instance
@@ -31,7 +31,7 @@ class ProductDraftEvents
     const PRE_APPLY = 'pimee_workflow.product_draft.pre_apply';
 
     /**
-     * This event is dispatched before proposition is approved
+     * This event is dispatched before product draft is approved
      *
      * The event listener receives an
      * PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ProductDraftEvent instance
@@ -41,7 +41,7 @@ class ProductDraftEvents
     const PRE_APPROVE = 'pimee_workflow.product_draft.pre_approve';
 
     /**
-     * This event is dispatched before proposition is refused
+     * This event is dispatched before product draft is refused
      *
      * The event listener receives an
      * PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ProductDraftEvent instance
@@ -51,7 +51,7 @@ class ProductDraftEvents
     const PRE_REFUSE = 'pimee_workflow.product_draft.pre_refuse';
 
     /**
-     * This event is dispatched before proposition is marked as ready
+     * This event is dispatched before product draft is marked as ready
      *
      * The event listener receives an
      * PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ProductDraftEvent instance

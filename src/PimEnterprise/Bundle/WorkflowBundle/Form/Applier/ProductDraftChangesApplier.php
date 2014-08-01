@@ -44,7 +44,7 @@ class ProductDraftChangesApplier
     }
 
     /**
-     * Apply proposition to a product
+     * Apply product draft to a product
      *
      * @param ProductInterface $product
      * @param Proposition      $productDraft
@@ -101,7 +101,7 @@ class ProductDraftChangesApplier
     }
 
     /**
-     * Wether or not a a product value is marked as modified (meaning a proposition has changed its value)
+     * Wether or not a a product value is marked as modified (meaning a product draft has changed its value)
      *
      * @param array  $attribute The attribute as stored in the product form view
      * @param string $scope     The scope to check

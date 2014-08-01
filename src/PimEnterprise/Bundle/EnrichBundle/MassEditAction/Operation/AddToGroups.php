@@ -13,7 +13,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\AddToGroups as BaseAddToGro
 class AddToGroups extends BaseAddToGroups
 {
     /**
-     * Override to bypass the creation of a proposition
+     * Override to bypass the creation of a product draft
      *
      * @return array
      */

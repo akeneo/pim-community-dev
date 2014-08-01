@@ -12,7 +12,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use Pim\Bundle\EnrichBundle\Flash\Message;
 
 /**
- * Replace "product updated" flash by "proposition updated" if necessary
+ * Replace "product updated" flash by "product draft updated" if necessary
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

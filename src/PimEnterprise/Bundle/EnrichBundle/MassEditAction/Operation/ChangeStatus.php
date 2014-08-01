@@ -13,7 +13,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus as BaseChangeS
 class ChangeStatus extends BaseChangeStatus
 {
     /**
-     * Override to bypass the creation of a proposition
+     * Override to bypass the creation of a product draft
      *
      * @return array
      */

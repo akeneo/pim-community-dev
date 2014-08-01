@@ -32,7 +32,7 @@ class Classify extends BaseClassify
     }
 
     /**
-     * Override to bypass the creation of a proposition
+     * Override to bypass the creation of a product draft
      *
      * @return array
      */
