@@ -48,7 +48,7 @@ class ProductPublisherSpec extends ObjectBehavior
 
     function it_publishes_a_product($versionManager, $product, Version $version)
     {
-        $versionManager->getNewestLogEntry($product, true)->willReturn($version);
+        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
 
         $published = $this->publish($product);
 
@@ -57,7 +57,7 @@ class ProductPublisherSpec extends ObjectBehavior
 
     function it_sets_the_version_during_publishing($versionManager, $product, Version $version)
     {
-        $versionManager->getNewestLogEntry($product, true)->willReturn($version);
+        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
         $version->isPending()->willReturn(false);
 
         $published = $this->publish($product);
@@ -72,7 +72,7 @@ class ProductPublisherSpec extends ObjectBehavior
         Version $pendingVersion,
         Version $newVersion
     ) {
-        $versionManager->getNewestLogEntry($product, true)->willReturn($pendingVersion);
+        $versionManager->getNewestLogEntry($product, null)->willReturn($pendingVersion);
         $pendingVersion->isPending()->willReturn(true);
 
         $versionManager->buildVersion($product)->willReturn([$pendingVersion, $newVersion]);

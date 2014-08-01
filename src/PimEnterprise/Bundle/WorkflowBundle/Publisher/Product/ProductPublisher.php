@@ -164,7 +164,7 @@ class ProductPublisher implements PublisherInterface
      */
     protected function setVersion(ProductInterface $product, PublishedProductInterface $published)
     {
-        $version = $this->versionManager->getNewestLogEntry($product, true);
+        $version = $this->versionManager->getNewestLogEntry($product, null);
 
         if (!$version || $version->isPending()) {
             $createdVersions = $this->versionManager->buildVersion($product);
