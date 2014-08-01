@@ -9,7 +9,7 @@ Feature: Display product draft widget
     And I am logged in as "Julia"
     When I am on the dashboard page
     Then I should see "Proposals to review"
-    And I should see "No product drafts to review"
+    And I should see "No proposals to review"
 
   Scenario: Successfully display all product drafts that I can review
     Given a "clothing" catalog configuration
@@ -70,7 +70,7 @@ Feature: Display product draft widget
     And I am logged in as "Julia"
     When I go to the dashboard page
     Then I should see "Proposals to review"
-    And I should see "No product drafts to review"
+    And I should see "No proposals to review"
 
   Scenario: Successfully hide the widget if the current user is not the owner of any categories
     Given the "clothing" catalog configuration
