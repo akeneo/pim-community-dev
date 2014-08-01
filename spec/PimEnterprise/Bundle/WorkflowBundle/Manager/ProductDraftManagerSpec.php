@@ -92,7 +92,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter')->willReturn($productDraft);
+        $repository->findUserProductDraft($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product);
     }
@@ -107,8 +107,8 @@ class ProductDraftManagerSpec extends ObjectBehavior
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter')->willReturn(null);
-        $factory->createProposition($product, 'peter')->willReturn($productDraft);
+        $repository->findUserProductDraft($product, 'peter')->willReturn(null);
+        $factory->createProductDraft($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product)->shouldReturn($productDraft);
     }

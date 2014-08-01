@@ -57,7 +57,7 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
      */
-    public function findUserProposition(ProductInterface $product, $username);
+    public function findUserProductDraft(ProductInterface $product, $username);
 
     /**
      * Find all by product

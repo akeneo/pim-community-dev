@@ -70,7 +70,7 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
         $product = $event->getSubject();
 
         if ((null !== $user = $this->userContext->getUser())
-            && (null !== $productDraft = $this->getProposition(
+            && (null !== $productDraft = $this->getProductDraft(
                 $product,
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
@@ -93,8 +93,8 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
      *
      * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft|null
      */
-    protected function getProposition(AbstractProduct $product, $username, $locale)
+    protected function getProductDraft(AbstractProduct $product, $username, $locale)
     {
-        return $this->repository->findUserProposition($product, $username, $locale);
+        return $this->repository->findUserProductDraft($product, $username, $locale);
     }
 }

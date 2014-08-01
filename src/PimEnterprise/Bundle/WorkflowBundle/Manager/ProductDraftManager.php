@@ -131,10 +131,10 @@ class ProductDraftManager
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $productDraft = $this->repository->findUserProposition($product, $username);
+        $productDraft = $this->repository->findUserProductDraft($product, $username);
 
         if (null === $productDraft) {
-            $productDraft = $this->factory->createProposition($product, $username);
+            $productDraft = $this->factory->createProductDraft($product, $username);
         }
 
         return $productDraft;

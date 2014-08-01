@@ -38,7 +38,7 @@ class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInter
     public static function getSubscribedEvents()
     {
         return [
-            ProductEvents::PRE_RENDER_EDIT => 'addPropositionFormView',
+            ProductEvents::PRE_RENDER_EDIT => 'addProductDraftFormView',
         ];
     }
 
@@ -47,7 +47,7 @@ class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInter
      *
      * @param GenericEvent $event
      */
-    public function addPropositionFormView(GenericEvent $event)
+    public function addProductDraftFormView(GenericEvent $event)
     {
         try {
             $parameters = $event->getArgument('parameters');

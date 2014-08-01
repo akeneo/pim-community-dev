@@ -105,7 +105,7 @@ class ProductDraftPersister implements ProductPersister
         if ($isOwner || $options['bypass_product_draft'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
-            $this->persistProposition($manager, $product);
+            $this->persistProductDraft($manager, $product);
         }
     }
 
@@ -152,7 +152,7 @@ class ProductDraftPersister implements ProductPersister
      *
      * @throws \LogicException
      */
-    private function persistProposition(ObjectManager $manager, ProductInterface $product)
+    private function persistProductDraft(ObjectManager $manager, ProductInterface $product)
     {
         if (null === $submittedData = $this->collector->getData()) {
             throw new \LogicException('No product data were collected');
@@ -160,8 +160,8 @@ class ProductDraftPersister implements ProductPersister
 
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
-        if (null === $productDraft = $this->repository->findUserProposition($product, $username, $locale)) {
-            $productDraft = $this->factory->createProposition($product, $username, $locale);
+        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username, $locale)) {
+            $productDraft = $this->factory->createProductDraft($product, $username, $locale);
             $manager->persist($productDraft);
         }
 

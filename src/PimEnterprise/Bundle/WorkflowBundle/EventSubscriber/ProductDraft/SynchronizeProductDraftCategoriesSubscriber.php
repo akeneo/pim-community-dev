@@ -73,7 +73,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
         }
         $document = $event->getDocument();
         if ($document instanceof ProductDraft) {
-            $this->syncProductProposition($document);
+            $this->syncProductDraft($document);
         }
     }
 
@@ -91,9 +91,9 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
         }
         $document = $event->getDocument();
         if ($document instanceof ProductDraft) {
-            $this->syncProductProposition($document);
+            $this->syncProductDraft($document);
         } elseif ($document instanceof ProductInterface && $event->hasChangedField('categoryIds')) {
-            $this->syncProductPropositions(
+            $this->syncProductDrafts(
                 $document,
                 $event->getDocumentManager()->getUnitOfWork()
             );
@@ -118,7 +118,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
         }
 
         foreach ($category->getProducts() as $product) {
-            foreach ($this->getPropositions($product) as $productDraft) {
+            foreach ($this->getProductDrafts($product) as $productDraft) {
                 $productDraft->removeCategoryId($category->getId());
             }
         }
@@ -129,7 +129,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @param ProductDraft $productDraft
      */
-    protected function syncProductProposition(ProductDraft $productDraft)
+    protected function syncProductDraft(ProductDraft $productDraft)
     {
         $categoryIds = $productDraft
             ->getProduct()
@@ -149,7 +149,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      * @param ProductInterface $product
      * @param UnitOfWork       $uow
      */
-    protected function syncProductPropositions(ProductInterface $product, UnitOfWork $uow)
+    protected function syncProductDrafts(ProductInterface $product, UnitOfWork $uow)
     {
         $categoryIds = $product
             ->getCategories()
@@ -160,7 +160,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             )
             ->toArray();
 
-        $productDrafts = $this->getPropositions($product);
+        $productDrafts = $this->getProductDrafts($product);
         foreach ($productDrafts as $productDraft) {
             $uow->scheduleExtraUpdate(
                 $productDraft,
@@ -181,7 +181,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      *
      * @return array
      */
-    protected function getPropositions(ProductInterface $product)
+    protected function getProductDrafts(ProductInterface $product)
     {
         return $this->registry->getRepository($this->productDraftClassName)->findByProduct($product);
     }

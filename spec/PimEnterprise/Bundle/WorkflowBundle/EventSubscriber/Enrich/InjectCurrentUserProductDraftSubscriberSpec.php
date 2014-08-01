@@ -38,7 +38,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $catalogContext->getLocaleCode()->willReturn('en_US');
         $user->getUsername()->willReturn('julia');
-        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn($productDraft);
+        $repository->findUserProductDraft($product, 'julia', 'en_US')->willReturn($productDraft);
         $applier->apply($product, $productDraft)->shouldBeCalled();
 
         $this->inject($event);
@@ -80,7 +80,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $userContext->getUser()->willReturn($user);
         $user->getUsername()->willReturn('julia');
         $catalogContext->getLocaleCode()->willReturn('en_US');
-        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn(null);
+        $repository->findUserProductDraft($product, 'julia', 'en_US')->willReturn(null);
         $applier->apply($product, Argument::any())->shouldNotBeCalled();
 
         $this->inject($event);

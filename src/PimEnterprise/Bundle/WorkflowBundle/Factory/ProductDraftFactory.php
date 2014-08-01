@@ -21,7 +21,7 @@ class ProductDraftFactory
      *
      * @return ProductDraft
      */
-    public function createProposition(ProductInterface $product, $username)
+    public function createProductDraft(ProductInterface $product, $username)
     {
         $productDraft = new ProductDraft();
         $productDraft

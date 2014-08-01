@@ -30,7 +30,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
     function it_registers_to_the_enrich_pre_product_render_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            ProductEvents::PRE_RENDER_EDIT => 'addPropositionFormView',
+            ProductEvents::PRE_RENDER_EDIT => 'addProductDraftFormView',
         ]);
     }
 
@@ -54,7 +54,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
             ])
             ->shouldBeCalled();
 
-        $this->addPropositionFormView($event);
+        $this->addProductDraftFormView($event);
     }
 
     function it_does_nothing_if_event_does_not_have_a_parameters_argument(
@@ -63,7 +63,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $event->getArgument('parameters')->willThrow(new \InvalidArgumentException());
         $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
 
-        $this->addPropositionFormView($event);
+        $this->addProductDraftFormView($event);
     }
 
     function it_does_nothing_if_parameters_does_not_have_a_product(
@@ -72,6 +72,6 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $event->getArgument('parameters')->willReturn([]);
         $event->setArgument('parameters', Argument::any())->shouldNotBeCalled();
 
-        $this->addPropositionFormView($event);
+        $this->addProductDraftFormView($event);
     }
 }

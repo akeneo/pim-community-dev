@@ -25,7 +25,7 @@ class ProductDraftRepository extends EntityRepository implements
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(ProductInterface $product, $username)
+    public function findUserProductDraft(ProductInterface $product, $username)
     {
         return $this->findOneBy(
             [

@@ -18,7 +18,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     /**
      * {@inheritdoc}
      */
-    public function findUserProposition(ProductInterface $product, $username)
+    public function findUserProductDraft(ProductInterface $product, $username)
     {
         return $this
             ->createQueryBuilder('ProductDraft')

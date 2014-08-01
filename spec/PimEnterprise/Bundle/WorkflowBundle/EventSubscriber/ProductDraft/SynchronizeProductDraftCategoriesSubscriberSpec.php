@@ -24,9 +24,9 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 {
     function let(ManagerRegistry $registry, ProductDraftRepositoryInterface $repository)
     {
-        $this->beConstructedWith($registry, 'PropositionClassName');
+        $this->beConstructedWith($registry, 'ProductDraftClassName');
 
-        $registry->getRepository('PropositionClassName')->willReturn($repository);
+        $registry->getRepository('ProductDraftClassName')->willReturn($repository);
     }
 
     function it_is_a_doctrine_event_subscriber()

@@ -93,7 +93,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $product = $this->getProduct($data['product']);
             $product->setLocale($data['locale']);
 
-            $productDraft = $this->getProductDraftFactory()->createProposition(
+            $productDraft = $this->getProductDraftFactory()->createProductDraft(
                 $product,
                 $data['author'],
                 []
