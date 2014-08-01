@@ -166,12 +166,14 @@ class ProductPublisher implements PublisherInterface
     {
         $version = $this->versionManager->getNewestLogEntry($product, null);
 
-        if (!$version) {
-            $version = current($this->versionManager->buildVersion($product));
-            $this->versionManager->getObjectManager()->persist($version);
-        } elseif ($version->isPending()) {
-            $this->versionManager->buildPendingVersion($version);
-            $this->versionManager->getObjectManager()->persist($version);
+        if (!$version || $version->isPending()) {
+            $createdVersions = $this->versionManager->buildVersion($product);
+            foreach ($createdVersions as $createdVersion) {
+                if ($createdVersion->getChangeset()) {
+                    $this->versionManager->getObjectManager()->persist($createdVersion);
+                    $version = $createdVersion;
+                }
+            }
         }
 
         $published->setVersion($version);
