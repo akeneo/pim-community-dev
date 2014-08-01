@@ -53,12 +53,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     protected $attributeType;
 
     /**
-     * Kind of storage to store values
-     * @var string $backendStorage
-     */
-    protected $backendStorage;
-
-    /**
      * Kind of field to store values
      * @var string $backendType
      */
@@ -327,30 +321,6 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
         $this->updated = $updated;
 
         return $this;
-    }
-
-    /**
-     * Set backend storage
-     *
-     * @param string $storage
-     *
-     * @return AbstractAttribute
-     */
-    public function setBackendStorage($storage)
-    {
-        $this->backendStorage = $storage;
-
-        return $this;
-    }
-
-    /**
-     * Get backend storage
-     *
-     * @return string
-     */
-    public function getBackendStorage()
-    {
-        return $this->backendStorage;
     }
 
     /**

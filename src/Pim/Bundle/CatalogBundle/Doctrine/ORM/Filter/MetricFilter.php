@@ -27,7 +27,7 @@ class MetricFilter extends BaseFilter
 
         if ($operator === 'EMPTY') {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
@@ -40,7 +40,7 @@ class MetricFilter extends BaseFilter
             $this->qb->andWhere($condition);
         } else {
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
