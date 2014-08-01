@@ -1,5 +1,5 @@
 @javascript
-Feature: Mass edit products through propositon
+Feature: Mass edit products through product draft
   In order to prevent changes on product when I am not allowed to
   As a contributor
   I need to be able to propose values without changing actual product values through mass edit

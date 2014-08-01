@@ -152,7 +152,7 @@ class ProductController extends BaseProductController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function propositionsAction(Request $request, $id)
+    public function draftsAction(Request $request, $id)
     {
         return $this->render(
             'PimEnterpriseEnrichBundle:Product:_propositions.html.twig',

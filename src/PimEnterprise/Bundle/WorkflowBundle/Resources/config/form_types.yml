@@ -35,5 +35,5 @@ services:
         class: %pimee_workflow.form.type.product.highlight_modified_values_view.class%
         arguments:
             - '@pim_enrich.form.type.product.view'
-            - '@pimee_workflow.applier.proposition_changes_applier'
+            - '@pimee_workflow.applier.product_draft_changes_applier'
             - '@router'

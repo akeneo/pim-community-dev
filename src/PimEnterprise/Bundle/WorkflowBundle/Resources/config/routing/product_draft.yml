@@ -1,0 +1,11 @@
+pimee_workflow_product_draft_approve:
+    path: /{id}/approve
+    defaults: { _controller: pimee_workflow.controller.product_draft:approveAction }
+
+pimee_workflow_product_draft_refuse:
+    path: /{id}/refuse
+    defaults: { _controller: pimee_workflow.controller.product_draft:refuseAction }
+
+pimee_workflow_product_draft_ready:
+    path: /{id}/ready
+    defaults: { _controller: pimee_workflow.controller.product_draft:readyAction }

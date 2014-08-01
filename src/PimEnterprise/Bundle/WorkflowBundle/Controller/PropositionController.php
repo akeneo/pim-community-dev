@@ -102,9 +102,9 @@ class PropositionController extends AbstractController
 
         try {
             $this->manager->approve($proposition);
-            $this->addFlash('success', 'flash.propositon.approve.success');
+            $this->addFlash('success', 'flash.product_draft.approve.success');
         } catch (ValidatorException $e) {
-            $this->addFlash('error', 'flash.propositon.approve.error', ['%error%' => $e->getMessage()]);
+            $this->addFlash('error', 'flash.product_draft.approve.error', ['%error%' => $e->getMessage()]);
         }
 
         return $this->redirect(

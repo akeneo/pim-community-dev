@@ -90,5 +90,5 @@ pim_enrich.mass_edit_action:
             fourth: Confirm
 
 flash.product.updated: Product working copy has been updated
-flash.proposition.updated: Draft has been successfully saved
+flash.product_draft.updated: Draft has been successfully saved
 flash.locale.updated: The locale and permissions have been updated

@@ -1,6 +1,6 @@
-proposition:
-    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/proposition.yml'
-    prefix: /proposition
+product_draft:
+    resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/product_draft.yml'
+    prefix: /product_draft
 published_product:
     resource: '@PimEnterpriseWorkflowBundle/Resources/config/routing/published_product.yml'
     prefix: /workflow/published-product
