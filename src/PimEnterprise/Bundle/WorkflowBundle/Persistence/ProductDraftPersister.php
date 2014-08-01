@@ -160,27 +160,27 @@ class ProductDraftPersister implements ProductPersister
 
         $username = $this->getUser()->getUsername();
         $locale = $product->getLocale();
-        if (null === $proposition = $this->repository->findUserProposition($product, $username, $locale)) {
-            $proposition = $this->factory->createProposition($product, $username, $locale);
-            $manager->persist($proposition);
+        if (null === $productDraft = $this->repository->findUserProposition($product, $username, $locale)) {
+            $productDraft = $this->factory->createProposition($product, $username, $locale);
+            $manager->persist($productDraft);
         }
 
         $event = $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_UPDATE,
             new ProductDraftEvent(
-                $proposition,
+                $productDraft,
                 $this->changeSet->compute($product, $submittedData)
             )
         );
         $changes = $event->getChanges();
 
         if (empty($changes)) {
-            $manager->remove($proposition);
+            $manager->remove($productDraft);
 
             return $manager->flush();
         }
 
-        $proposition->setChanges($changes);
+        $productDraft->setChanges($changes);
 
         $manager->flush();
     }

@@ -85,9 +85,9 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $valuePresenter,
         Model\AbstractProductValue $value,
         Model\ProductInterface $product,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $proposition->getProduct()->willReturn($product);
+        $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
 
         $change = [
@@ -102,7 +102,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $valuePresenter->supports($value, $change)->willReturn(true);
         $valuePresenter->present($value, $change)->willReturn('<b>changes</b>');
 
-        $this->presentChange($change, $proposition)->shouldReturn('<b>changes</b>');
+        $this->presentChange($change, $productDraft)->shouldReturn('<b>changes</b>');
     }
 
     function it_injects_translator_in_translator_aware_presenter(
@@ -113,10 +113,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\AbstractProductValue $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        Proposition $proposition
+        Proposition $productDraft
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
-        $proposition->getProduct()->willReturn($product);
+        $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'foo' => 'bar',
@@ -135,7 +135,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $presenter->setTranslator($translator)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $proposition);
+        $this->presentChange($change, $productDraft);
     }
 
     function it_injects_renderer_in_renderer_aware_presenter(
@@ -146,10 +146,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\AbstractProductValue $value,
         Model\ProductInterface $product,
         PresenterInterface $presenter,
-        Proposition $proposition
+        Proposition $productDraft
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
-        $proposition->getProduct()->willReturn($product);
+        $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'foo' => 'bar',
@@ -168,7 +168,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $presenter->setRenderer($renderer)->shouldBeCalled();
 
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $proposition);
+        $this->presentChange($change, $productDraft);
     }
 
     function it_injects_twig_in_twig_aware_presenter(
@@ -180,10 +180,10 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         \Twig_Environment $twig,
-        Proposition $proposition
+        Proposition $productDraft
     ){
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
-        $proposition->getProduct()->willReturn($product);
+        $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
         $change = [
             'foo' => 'bar',
@@ -203,6 +203,6 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
 
         $this->initRuntime($twig);
         $this->addPresenter($presenter, 0);
-        $this->presentChange($change, $proposition);
+        $this->presentChange($change, $productDraft);
     }
 }

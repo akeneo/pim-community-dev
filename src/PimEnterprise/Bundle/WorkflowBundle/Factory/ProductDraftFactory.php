@@ -23,12 +23,12 @@ class ProductDraftFactory
      */
     public function createProposition(ProductInterface $product, $username)
     {
-        $proposition = new Proposition();
-        $proposition
+        $productDraft = new Proposition();
+        $productDraft
             ->setProduct($product)
             ->setAuthor($username)
             ->setCreatedAt(new \DateTime());
 
-        return $proposition;
+        return $productDraft;
     }
 }

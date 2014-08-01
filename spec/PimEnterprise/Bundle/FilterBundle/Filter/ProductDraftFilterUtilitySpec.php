@@ -9,19 +9,19 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 
 class ProductDraftFilterUtilitySpec extends ObjectBehavior
 {
-    function let(ProductDraftRepositoryInterface $propositionRepository)
+    function let(ProductDraftRepositoryInterface $productDraftRepository)
     {
-        $this->beConstructedWith($propositionRepository);
+        $this->beConstructedWith($productDraftRepository);
     }
 
     function it_applies_a_filter_on_field(
-        $propositionRepository,
+        $productDraftRepository,
         FilterDatasourceAdapterInterface $ds,
         QueryBuilder $qb
     ) {
         $ds->getQueryBuilder()->willReturn($qb);
 
-        $propositionRepository->applyFilter($qb, 'foo', 'bar', 'baz')->shouldBeCalled();
+        $productDraftRepository->applyFilter($qb, 'foo', 'bar', 'baz')->shouldBeCalled();
 
         $this->applyFilter($ds, 'foo', 'bar', 'baz');
     }

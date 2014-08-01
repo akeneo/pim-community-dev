@@ -38,8 +38,8 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
      */
     public function keepMedia(ProductDraftEvent $event)
     {
-        $proposition = $event->getProposition();
-        $currentChanges = $proposition->getChanges();
+        $productDraft = $event->getProductDraft();
+        $currentChanges = $productDraft->getChanges();
         if (!isset($currentChanges['values'])) {
             return;
         }
@@ -60,10 +60,10 @@ class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
      */
     public function mergeValues(ProductDraftEvent $event)
     {
-        $proposition = $event->getProposition();
+        $productDraft = $event->getProductDraft();
         $submittedChanges = $event->getChanges();
 
-        $oldValue = array_merge(['values'=>[]], $proposition->getChanges());
+        $oldValue = array_merge(['values'=>[]], $productDraft->getChanges());
         $newValue = array_merge(['values'=>[]], $submittedChanges);
 
         $event->setChanges(

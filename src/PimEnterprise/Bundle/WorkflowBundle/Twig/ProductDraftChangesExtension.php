@@ -127,14 +127,14 @@ class ProductDraftChangesExtension extends \Twig_Extension
      * Present an attribute change
      *
      * @param array       $change
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      *
      * @return string
      *
      * @throws \InvalidArgumentException
      * @throws \LogicException
      */
-    public function presentChange(array $change, Proposition $proposition)
+    public function presentChange(array $change, Proposition $productDraft)
     {
         $change['__context__'] = array_merge(
             [
@@ -149,7 +149,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
         $locale = $change['__context__']['locale'];
         $scope = $change['__context__']['scope'];
 
-        if (null === $value = $proposition->getProduct()->getValue($attribute, $locale, $scope)) {
+        if (null === $value = $productDraft->getProduct()->getValue($attribute, $locale, $scope)) {
             $value = $this->createFakeValue();
         }
 

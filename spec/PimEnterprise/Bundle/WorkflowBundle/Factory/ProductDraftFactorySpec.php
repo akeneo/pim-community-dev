@@ -10,11 +10,11 @@ class ProductDraftFactorySpec extends ObjectBehavior
     function it_should_creates_a_proposition(
         AbstractProduct $product
     ) {
-        $proposition = $this->createProposition($product, 'admin');
+        $productDraft = $this->createProposition($product, 'admin');
 
-        $proposition->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition');
-        $proposition->getProduct()->shouldReturn($product);
-        $proposition->getAuthor()->shouldReturn('admin');
-        $proposition->getChanges()->shouldReturn([]);
+        $productDraft->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\Proposition');
+        $productDraft->getProduct()->shouldReturn($product);
+        $productDraft->getAuthor()->shouldReturn('admin');
+        $productDraft->getChanges()->shouldReturn([]);
     }
 }

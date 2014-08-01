@@ -88,20 +88,20 @@ class ProductDraftController extends AbstractController
      */
     public function approveAction($id)
     {
-        if (null === $proposition = $this->repository->find($id)) {
+        if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        if (Proposition::READY !== $proposition->getStatus()) {
+        if (Proposition::READY !== $productDraft->getStatus()) {
             throw new \LogicException('A proposition that is not ready can not be approved');
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition->getProduct())) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
         try {
-            $this->manager->approve($proposition);
+            $this->manager->approve($productDraft);
             $this->addFlash('success', 'flash.product_draft.approve.success');
         } catch (ValidatorException $e) {
             $this->addFlash('error', 'flash.product_draft.approve.error', ['%error%' => $e->getMessage()]);
@@ -111,7 +111,7 @@ class ProductDraftController extends AbstractController
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId(),
+                    'id' => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -127,21 +127,21 @@ class ProductDraftController extends AbstractController
      */
     public function refuseAction($id)
     {
-        if (null === $proposition = $this->repository->find($id)) {
+        if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition->getProduct())) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft->getProduct())) {
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->refuse($proposition);
+        $this->manager->refuse($productDraft);
 
         return $this->redirect(
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId(),
+                    'id' => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )
@@ -159,21 +159,21 @@ class ProductDraftController extends AbstractController
      */
     public function readyAction($id)
     {
-        if (null === $proposition = $this->repository->find($id)) {
+        if (null === $productDraft = $this->repository->find($id)) {
             throw new NotFoundHttpException(sprintf('Proposition "%s" not found', $id));
         }
 
-        if (!$this->securityContext->isGranted(Attributes::OWN, $proposition)) {
+        if (!$this->securityContext->isGranted(Attributes::OWN, $productDraft)) {
             throw new AccessDeniedHttpException();
         }
 
-        $this->manager->markAsReady($proposition);
+        $this->manager->markAsReady($productDraft);
 
         return $this->redirect(
             $this->generateUrl(
                 'pim_enrich_product_edit',
                 [
-                    'id' => $proposition->getProduct()->getId(),
+                    'id' => $productDraft->getProduct()->getId(),
                     'dataLocale' => $this->getCurrentLocaleCode()
                 ]
             )

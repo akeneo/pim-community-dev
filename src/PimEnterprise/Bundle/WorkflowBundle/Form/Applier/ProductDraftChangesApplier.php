@@ -47,16 +47,16 @@ class ProductDraftChangesApplier
      * Apply proposition to a product
      *
      * @param ProductInterface $product
-     * @param Proposition      $proposition
+     * @param Proposition      $productDraft
      *
      * @throws ValidatorException
      */
-    public function apply(ProductInterface $product, Proposition $proposition)
+    public function apply(ProductInterface $product, Proposition $productDraft)
     {
         if ($this->dispatcher->hasListeners(ProductDraftEvents::PRE_APPLY)) {
             $event = $this->dispatcher->dispatch(
                 ProductDraftEvents::PRE_APPLY,
-                new ProductDraftEvent($proposition)
+                new ProductDraftEvent($productDraft)
             );
         }
 
@@ -93,7 +93,7 @@ class ProductDraftChangesApplier
             )
             ->getForm();
 
-        $form->submit($proposition->getChanges(), false);
+        $form->submit($productDraft->getChanges(), false);
 
         if (null !== $error = $this->getFormErrorsAsString($form)) {
             throw new ValidatorException($error);

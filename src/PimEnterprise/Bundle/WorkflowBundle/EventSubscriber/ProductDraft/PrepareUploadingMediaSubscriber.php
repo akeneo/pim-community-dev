@@ -43,8 +43,8 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
      */
     public function prepareMedia(ProductDraftEvent $event)
     {
-        $proposition = $event->getProposition();
-        $changes = $proposition->getChanges();
+        $productDraft = $event->getProductDraft();
+        $changes = $productDraft->getChanges();
 
         if (!isset($changes['values'])) {
             return;
@@ -65,7 +65,7 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
             }
         }
 
-        $proposition->setChanges($changes);
+        $productDraft->setChanges($changes);
     }
 
     /**

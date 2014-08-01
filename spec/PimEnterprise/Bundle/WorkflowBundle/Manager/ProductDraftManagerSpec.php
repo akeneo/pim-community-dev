@@ -36,51 +36,51 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $manager,
         $applier,
         $dispatcher,
-        Proposition $proposition,
+        Proposition $productDraft,
         ProductInterface $product,
         ObjectManager $manager
     ) {
-        $proposition->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
-        $proposition->getProduct()->willReturn($product);
-        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+        $productDraft->getChanges()->willReturn(['foo' => 'bar', 'b' => 'c']);
+        $productDraft->getProduct()->willReturn($product);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
-        $applier->apply($product, $proposition)->shouldBeCalled();
+        $applier->apply($product, $productDraft)->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
         $manager->saveProduct($product, ['bypass_proposition' => true])->shouldBeCalled();
-        $manager->remove($proposition)->shouldBeCalled();
+        $manager->remove($productDraft)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->approve($proposition);
+        $this->approve($productDraft);
     }
 
     function it_marks_as_in_progress_proposition_which_is_ready_when_refusing_it(
         $registry,
         $dispatcher,
-        Proposition $proposition,
+        Proposition $productDraft,
         ObjectManager $manager
     ) {
-        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
-        $proposition->isInProgress()->willReturn(false);
+        $productDraft->isInProgress()->willReturn(false);
         $dispatcher->dispatch(ProductDraftEvents::PRE_REFUSE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
-        $proposition->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $productDraft->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->refuse($proposition);
+        $this->refuse($productDraft);
     }
     function it_removes_in_progress_proposition_when_refusing_it(
         $registry,
-        Proposition $proposition,
+        Proposition $productDraft,
         ObjectManager $manager
     ) {
-        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
-        $proposition->isInProgress()->willReturn(true);
-        $manager->remove($proposition)->shouldBeCalled();
+        $productDraft->isInProgress()->willReturn(true);
+        $manager->remove($productDraft)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->refuse($proposition);
+        $this->refuse($productDraft);
     }
 
     function it_finds_a_proposition_when_it_already_exists(
@@ -88,11 +88,11 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $repository,
         UserInterface $user,
         ProductInterface $product,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
-        $repository->findUserProposition($product, 'peter')->willReturn($proposition);
+        $repository->findUserProposition($product, 'peter')->willReturn($productDraft);
 
         $this->findOrCreate($product);
     }
@@ -103,14 +103,14 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $factory,
         UserInterface $user,
         ProductInterface $product,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
         $user->getUsername()->willReturn('peter');
         $userContext->getUser()->willReturn($user);
         $repository->findUserProposition($product, 'peter')->willReturn(null);
-        $factory->createProposition($product, 'peter')->willReturn($proposition);
+        $factory->createProposition($product, 'peter')->willReturn($productDraft);
 
-        $this->findOrCreate($product)->shouldReturn($proposition);
+        $this->findOrCreate($product)->shouldReturn($productDraft);
     }
 
     function it_throws_exception_when_find_proposition_and_current_cannot_be_resolved(
@@ -125,15 +125,15 @@ class ProductDraftManagerSpec extends ObjectBehavior
     function it_marks_proposition_as_ready(
         $registry,
         $dispatcher,
-        Proposition $proposition,
+        Proposition $productDraft,
         ObjectManager $manager
     ) {
-        $registry->getManagerForClass(get_class($proposition->getWrappedObject()))->willReturn($manager);
+        $registry->getManagerForClass(get_class($productDraft->getWrappedObject()))->willReturn($manager);
 
         $dispatcher->dispatch(ProductDraftEvents::PRE_READY, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
-        $proposition->setStatus(Proposition::READY)->shouldBeCalled();
+        $productDraft->setStatus(Proposition::READY)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 
-        $this->markAsReady($proposition);
+        $this->markAsReady($productDraft);
     }
 }

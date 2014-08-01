@@ -33,16 +33,16 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     protected $registry;
 
     /** @var string */
-    protected $propositionClassName;
+    protected $productDraftClassName;
 
     /**
      * @param ManagerRegistry $registry
-     * @param string          $propositionClassName
+     * @param string          $productDraftClassName
      */
-    public function __construct(ManagerRegistry $registry, $propositionClassName)
+    public function __construct(ManagerRegistry $registry, $productDraftClassName)
     {
         $this->registry = $registry;
-        $this->propositionClassName = $propositionClassName;
+        $this->productDraftClassName = $productDraftClassName;
     }
 
     /**
@@ -118,8 +118,8 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
         }
 
         foreach ($category->getProducts() as $product) {
-            foreach ($this->getPropositions($product) as $proposition) {
-                $proposition->removeCategoryId($category->getId());
+            foreach ($this->getPropositions($product) as $productDraft) {
+                $productDraft->removeCategoryId($category->getId());
             }
         }
     }
@@ -127,11 +127,11 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
     /**
      * Synchronize category ids of proposition
      *
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      */
-    protected function syncProductProposition(Proposition $proposition)
+    protected function syncProductProposition(Proposition $productDraft)
     {
-        $categoryIds = $proposition
+        $categoryIds = $productDraft
             ->getProduct()
             ->getCategories()
             ->map(
@@ -140,7 +140,7 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
                 }
             )
             ->toArray();
-        $proposition->setCategoryIds($categoryIds);
+        $productDraft->setCategoryIds($categoryIds);
     }
 
     /**
@@ -160,13 +160,13 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
             )
             ->toArray();
 
-        $propositions = $this->getPropositions($product);
-        foreach ($propositions as $proposition) {
+        $productDrafts = $this->getPropositions($product);
+        foreach ($productDrafts as $productDraft) {
             $uow->scheduleExtraUpdate(
-                $proposition,
+                $productDraft,
                 [
                     'categoryIds' => [
-                        $proposition->getCategoryIds(),
+                        $productDraft->getCategoryIds(),
                         $categoryIds
                     ]
                 ]
@@ -183,6 +183,6 @@ class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
      */
     protected function getPropositions(ProductInterface $product)
     {
-        return $this->registry->getRepository($this->propositionClassName)->findByProduct($product);
+        return $this->registry->getRepository($this->productDraftClassName)->findByProduct($product);
     }
 }

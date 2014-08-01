@@ -45,36 +45,36 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
 
     function it_synchronizes_proposition_document_before_it_is_persisted(
         MongoDBODMLifecycleEventArgs $event,
-        Proposition $proposition,
+        Proposition $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
     ) {
-        $event->getDocument()->willReturn($proposition);
-        $proposition->getProduct()->willReturn($product);
+        $event->getDocument()->willReturn($productDraft);
+        $productDraft->getProduct()->willReturn($product);
         $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
-        $proposition->setCategoryIds([4, 8])->shouldBeCalled();
+        $productDraft->setCategoryIds([4, 8])->shouldBeCalled();
 
         $this->prePersist($event);
     }
 
     function it_synchronizes_proposition_document_before_it_is_updated(
         MongoDBODMPreUpdateEventsArgs $event,
-        Proposition $proposition,
+        Proposition $productDraft,
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB
     ) {
-        $event->getDocument()->willReturn($proposition);
-        $proposition->getProduct()->willReturn($product);
+        $event->getDocument()->willReturn($productDraft);
+        $productDraft->getProduct()->willReturn($product);
         $product->getCategories()->willReturn(new ArrayCollection([$catA->getWrappedObject(), $catB->getWrappedObject()]));
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
-        $proposition->setCategoryIds([4, 8])->shouldBeCalled();
+        $productDraft->setCategoryIds([4, 8])->shouldBeCalled();
 
         $this->preUpdate($event);
     }
@@ -85,8 +85,8 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        Proposition $propositionA,
-        Proposition $propositionB,
+        Proposition $productDraftA,
+        Proposition $productDraftB,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {
@@ -99,12 +99,12 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
-        $repository->findByProduct($product)->willReturn([$propositionA, $propositionB]);
-        $propositionA->getCategoryIds()->willReturn([]);
-        $propositionB->getCategoryIds()->willReturn([15, 16]);
+        $repository->findByProduct($product)->willReturn([$productDraftA, $productDraftB]);
+        $productDraftA->getCategoryIds()->willReturn([]);
+        $productDraftB->getCategoryIds()->willReturn([15, 16]);
 
-        $uow->scheduleExtraUpdate($propositionA, ['categoryIds' => [[      ], [4, 8]]])->shouldBeCalled();
-        $uow->scheduleExtraUpdate($propositionB, ['categoryIds' => [[15, 16], [4, 8]]])->shouldBeCalled();
+        $uow->scheduleExtraUpdate($productDraftA, ['categoryIds' => [[      ], [4, 8]]])->shouldBeCalled();
+        $uow->scheduleExtraUpdate($productDraftB, ['categoryIds' => [[15, 16], [4, 8]]])->shouldBeCalled();
 
         $this->preUpdate($event);
     }
@@ -115,20 +115,20 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         CategoryInterface $category,
         ProductInterface $productA,
         ProductInterface $productB,
-        Proposition $propositionAA,
-        Proposition $propositionAB,
-        Proposition $propositionBA
+        Proposition $productDraftAA,
+        Proposition $productDraftAB,
+        Proposition $productDraftBA
     ) {
         $event->getEntity()->willReturn($category);
         $category->getId()->willReturn(4);
         $category->getProducts()->willReturn([$productA, $productB]);
 
-        $repository->findByProduct($productA)->willReturn([$propositionAA, $propositionAB]);
-        $repository->findByProduct($productB)->willReturn([$propositionBA]);
+        $repository->findByProduct($productA)->willReturn([$productDraftAA, $productDraftAB]);
+        $repository->findByProduct($productB)->willReturn([$productDraftBA]);
 
-        $propositionAA->removeCategoryId(4)->shouldBeCalled();
-        $propositionAB->removeCategoryId(4)->shouldBeCalled();
-        $propositionBA->removeCategoryId(4)->shouldBeCalled();
+        $productDraftAA->removeCategoryId(4)->shouldBeCalled();
+        $productDraftAB->removeCategoryId(4)->shouldBeCalled();
+        $productDraftBA->removeCategoryId(4)->shouldBeCalled();
 
         $this->preRemove($event);
     }
@@ -163,7 +163,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ProductInterface $product,
         CategoryInterface $catA,
         CategoryInterface $catB,
-        Proposition $proposition,
+        Proposition $productDraft,
         DocumentManager $dm,
         UnitOfWork $uow
     ) {
@@ -176,7 +176,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $catA->getId()->willReturn(4);
         $catB->getId()->willReturn(8);
 
-        $repository->findByProduct($product)->willReturn([$proposition]);
+        $repository->findByProduct($product)->willReturn([$productDraft]);
 
         $uow->scheduleExtraUpdate(Argument::cetera())->shouldNotBeCalled();
 

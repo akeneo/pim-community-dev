@@ -26,7 +26,7 @@ class ProductDraftChangesApplierSpec extends ObjectBehavior
         FormBuilderInterface $formBuilder,
         FormInterface $form,
         Model\AbstractProduct $product,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
         $formFactory->createBuilder('form', $product, ['csrf_protection' => false])->willReturn($formBuilder);
         $valuesFieldOptions = [
@@ -43,9 +43,9 @@ class ProductDraftChangesApplierSpec extends ObjectBehavior
         $formBuilder->getForm()->willReturn($form);
         $form->all()->willReturn([]);
 
-        $proposition->getChanges()->willReturn(['foo' => 'bar']);
+        $productDraft->getChanges()->willReturn(['foo' => 'bar']);
         $form->submit(['foo' => 'bar'], false)->shouldBeCalled();
 
-        $this->apply($product, $proposition);
+        $this->apply($product, $productDraft);
     }
 }

@@ -40,11 +40,11 @@ class UpdateProductDraftStatusSubscriberSpec extends ObjectBehavior
         $formFactory,
         $request,
         ProductDraftEvent $event,
-        Proposition $proposition,
+        Proposition $productDraft,
         FormInterface $form
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $formFactory->create('pimee_workflow_proposition', $proposition)->willReturn($form);
+        $event->getProductDraft()->willReturn($productDraft);
+        $formFactory->create('pimee_workflow_proposition', $productDraft)->willReturn($form);
         $form->submit($request)->shouldBeCalled();
 
         $this->update($event);

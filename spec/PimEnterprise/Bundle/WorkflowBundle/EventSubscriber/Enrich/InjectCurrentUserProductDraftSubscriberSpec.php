@@ -31,15 +31,15 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $applier,
         AbstractProduct $product,
         UserInterface $user,
-        Proposition $proposition,
+        Proposition $productDraft,
         GenericEvent $event
     ) {
         $event->getSubject()->willReturn($product);
         $userContext->getUser()->willReturn($user);
         $catalogContext->getLocaleCode()->willReturn('en_US');
         $user->getUsername()->willReturn('julia');
-        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn($proposition);
-        $applier->apply($product, $proposition)->shouldBeCalled();
+        $repository->findUserProposition($product, 'julia', 'en_US')->willReturn($productDraft);
+        $applier->apply($product, $productDraft)->shouldBeCalled();
 
         $this->inject($event);
     }

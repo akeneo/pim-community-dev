@@ -33,7 +33,7 @@ class MarkInProgressSubscriber implements EventSubscriberInterface
     public function markAsInProgress(ProductDraftEvent $event)
     {
         $event
-            ->getProposition()
+            ->getProductDraft()
             ->setStatus(Proposition::IN_PROGRESS);
     }
 }

@@ -14,18 +14,18 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 class ProductDraftEvent extends Event
 {
     /** @var Proposition */
-    protected $proposition;
+    protected $productDraft;
 
     /** @var array */
     protected $changes;
 
     /**
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      * @param array       $changes
      */
-    public function __construct(Proposition $proposition, array $changes = null)
+    public function __construct(Proposition $productDraft, array $changes = null)
     {
-        $this->proposition = $proposition;
+        $this->productDraft = $productDraft;
         $this->changes = $changes;
     }
 
@@ -34,9 +34,9 @@ class ProductDraftEvent extends Event
      *
      * @return Proposition
      */
-    public function getProposition()
+    public function getProductDraft()
     {
-        return $this->proposition;
+        return $this->productDraft;
     }
 
     /**

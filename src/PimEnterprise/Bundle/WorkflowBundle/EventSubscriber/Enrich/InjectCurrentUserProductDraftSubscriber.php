@@ -70,13 +70,13 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
         $product = $event->getSubject();
 
         if ((null !== $user = $this->userContext->getUser())
-            && (null !== $proposition = $this->getProposition(
+            && (null !== $productDraft = $this->getProposition(
                 $product,
                 $user->getUsername(),
                 $this->catalogContext->getLocaleCode()
             ))) {
             try {
-                $this->applier->apply($product, $proposition);
+                $this->applier->apply($product, $productDraft);
             } catch (ValidatorException $e) {
                 // Do nothing here at the moment
                 //TODO: remove this try catch and load the form directly with the potential errors

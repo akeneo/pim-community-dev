@@ -39,18 +39,18 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $formFactory,
         GenericEvent $event,
         ProductInterface $product,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
         $event->getArgument('parameters')->willReturn([
             'product' => $product,
         ]);
 
-        $manager->findOrCreate($product)->willReturn($proposition);
+        $manager->findOrCreate($product)->willReturn($productDraft);
 
         $event
             ->setArgument('parameters', [
                 'product' => $product,
-                'proposition' => $proposition,
+                'proposition' => $productDraft,
             ])
             ->shouldBeCalled();
 

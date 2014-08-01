@@ -63,13 +63,13 @@ class MetadataSubscriber implements EventSubscriberInterface
      */
     public function removeMetadata(ProductDraftEvent $event)
     {
-        $proposition = $event->getProposition();
-        $changes = $proposition->getChanges();
+        $productDraft = $event->getProductDraft();
+        $changes = $productDraft->getChanges();
 
         foreach (array_keys($changes) as $key) {
             unset($changes[$key][self::KEY]);
         }
 
-        $proposition->setChanges($changes);
+        $productDraft->setChanges($changes);
     }
 }

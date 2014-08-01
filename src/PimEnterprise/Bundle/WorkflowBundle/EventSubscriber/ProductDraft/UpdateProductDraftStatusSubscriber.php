@@ -56,7 +56,7 @@ class UpdateProductDraftStatusSubscriber implements EventSubscriberInterface
     {
         $this
             ->formFactory
-            ->create('pimee_workflow_proposition', $event->getProposition())
+            ->create('pimee_workflow_proposition', $event->getProductDraft())
             ->submit($this->container->get('request'));
     }
 }

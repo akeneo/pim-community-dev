@@ -66,10 +66,10 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_removes_all_metadata(
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'name_en_US' => [
                 'varchar' => 'foo',
                 '__context__' => [
@@ -88,7 +88,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
             ],
         ]);
 
-        $proposition
+        $productDraft
             ->setChanges([
                 'name_en_US' => [
                     'varchar' => 'foo',
@@ -104,10 +104,10 @@ class MetadataSubscriberSpec extends ObjectBehavior
 
     function it_ignores_missing_metadata_when_removing_them(
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'name_en_US' => [
                 'varchar' => 'foo',
             ],
@@ -121,7 +121,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
             ],
         ]);
 
-        $proposition
+        $productDraft
             ->setChanges([
                 'name_en_US' => [
                     'varchar' => 'foo',

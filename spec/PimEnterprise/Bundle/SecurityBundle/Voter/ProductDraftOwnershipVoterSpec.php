@@ -23,40 +23,40 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
         $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
-    function it_supports_proposition(Proposition $proposition)
+    function it_supports_proposition(Proposition $productDraft)
     {
-        $this->supportsClass($proposition)->shouldReturn(true);
+        $this->supportsClass($productDraft)->shouldReturn(true);
     }
 
     function it_grants_OWN_access_to_user_that_has_created_the_prospotion(
         TokenInterface $token,
-        Proposition $proposition,
+        Proposition $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('bob');
-        $proposition->getAuthor()->willReturn('bob');
+        $productDraft->getAuthor()->willReturn('bob');
 
-        $this->vote($token, $proposition, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
+        $this->vote($token, $productDraft, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
     function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_proposition(
         TokenInterface $token,
-        Proposition $proposition,
+        Proposition $productDraft,
         UserInterface $user
     ) {
         $token->getUser()->willReturn($user);
         $user->getUsername()->willReturn('bob');
-        $proposition->getAuthor()->willReturn('alice');
+        $productDraft->getAuthor()->willReturn('alice');
 
-        $this->vote($token, $proposition, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
+        $this->vote($token, $productDraft, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_DENIED);
     }
 
     function it_does_not_vote_if_the_attribute_OWN_is_not_being_checked(
         TokenInterface $token,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $this->vote($token, $proposition, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
+        $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
     function it_does_not_vote_if_checking_the_OWN_access_of_something_else_than_a_proposition(

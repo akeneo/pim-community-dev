@@ -31,10 +31,10 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
     function it_converts_uploading_media_into_object(
         $factory,
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'values' => [
                 'foo' => [
                     'media' => [
@@ -58,14 +58,14 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
             ]
         ];
 
-        $proposition->setChanges($changes)->shouldBeCalled();
+        $productDraft->setChanges($changes)->shouldBeCalled();
 
         $this->prepareMedia($event);
     }
 
     function it_ignores_changes_not_related_to_media(
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
         $changes = [
             'values' => [
@@ -74,9 +74,9 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
                 ]
             ]
         ];
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn($changes);
-        $proposition->setChanges($changes)->shouldBeCalled();
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn($changes);
+        $productDraft->setChanges($changes)->shouldBeCalled();
 
         $this->prepareMedia($event);
     }

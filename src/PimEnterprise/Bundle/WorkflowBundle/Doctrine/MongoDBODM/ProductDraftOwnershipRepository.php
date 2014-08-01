@@ -19,20 +19,20 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterfa
 class ProductDraftOwnershipRepository implements ProductDraftOwnershipRepositoryInterface
 {
     /** @var ProductDraftRepositoryInterface */
-    protected $propositionRepo;
+    protected $draftRepository;
 
     /** @var CategoryAccessRepository */
     protected $catAccessRepo;
 
     /**
-     * @param ProductDraftRepositoryInterface $propositionRepo
+     * @param ProductDraftRepositoryInterface $draftRepository
      * @param CategoryAccessRepository       $catAccessRepo
      */
     public function __construct(
-        ProductDraftRepositoryInterface $propositionRepo,
+        ProductDraftRepositoryInterface $draftRepository,
         CategoryAccessRepository $catAccessRepo
     ) {
-        $this->propositionRepo = $propositionRepo;
+        $this->draftRepository = $draftRepository;
         $this->catAccessRepo = $catAccessRepo;
     }
 
@@ -41,7 +41,7 @@ class ProductDraftOwnershipRepository implements ProductDraftOwnershipRepository
      */
     public function findApprovableByUser(UserInterface $user, $limit = null)
     {
-        $qb = $this->propositionRepo->createQueryBuilder();
+        $qb = $this->draftRepository->createQueryBuilder();
         $qb
             ->field('status')->equals(Proposition::READY)
             ->field('categoryIds')->in($this->getGrantedCategoryIds($user))

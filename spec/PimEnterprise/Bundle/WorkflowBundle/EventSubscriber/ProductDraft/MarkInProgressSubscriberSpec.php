@@ -24,10 +24,10 @@ class MarkInProgressSubscriberSpec extends ObjectBehavior
 
     function it_sets_updated_proposition_as_in_progress(
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->setStatus(Proposition::IN_PROGRESS)->shouldBeCalled();
 
         $this->markAsInProgress($event);
     }

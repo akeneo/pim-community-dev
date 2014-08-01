@@ -28,10 +28,10 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_keeps_media_between_proposition_updates(ProductDraftEvent $event, Proposition $proposition)
+    function it_keeps_media_between_proposition_updates(ProductDraftEvent $event, Proposition $productDraft)
     {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'values' => [
                 'foo' => [
                     'varchar' => 'Foo',
@@ -67,10 +67,10 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
 
     function it_merges_changes_from_current_proposition_with_submitted_changes(
         ProductDraftEvent $event,
-        Proposition $proposition
+        Proposition $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'values' => [
                 'foo_en_US' => [
                     'varchar' => 'The Foo',

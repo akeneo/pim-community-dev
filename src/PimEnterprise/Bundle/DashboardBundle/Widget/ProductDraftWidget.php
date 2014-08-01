@@ -71,11 +71,11 @@ class ProductDraftWidget implements WidgetInterface
             return ['show' => false];
         }
 
-        $propositions = $this->ownershipRepository->findApprovableByUser($user, 10);
+        $productDrafts = $this->ownershipRepository->findApprovableByUser($user, 10);
 
         return [
             'show'   => true,
-            'params' => $propositions
+            'params' => $productDrafts
         ];
     }
 }

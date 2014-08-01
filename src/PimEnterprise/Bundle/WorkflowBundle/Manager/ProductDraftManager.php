@@ -73,20 +73,20 @@ class ProductDraftManager
     /**
      * Approve a proposition
      *
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      */
-    public function approve(Proposition $proposition)
+    public function approve(Proposition $productDraft)
     {
         $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_APPROVE,
-            new ProductDraftEvent($proposition)
+            new ProductDraftEvent($productDraft)
         );
 
-        $product = $proposition->getProduct();
-        $this->applier->apply($product, $proposition);
+        $product = $productDraft->getProduct();
+        $this->applier->apply($product, $productDraft);
 
-        $manager = $this->registry->getManagerForClass(get_class($proposition));
-        $manager->remove($proposition);
+        $manager = $this->registry->getManagerForClass(get_class($productDraft));
+        $manager->remove($productDraft);
         $manager->flush();
 
         $this->manager->handleMedia($product);
@@ -96,21 +96,21 @@ class ProductDraftManager
     /**
      * Refuse a proposition
      *
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      */
-    public function refuse(Proposition $proposition)
+    public function refuse(Proposition $productDraft)
     {
-        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager = $this->registry->getManagerForClass(get_class($productDraft));
 
-        if (!$proposition->isInProgress()) {
-            $proposition->setStatus(Proposition::IN_PROGRESS);
+        if (!$productDraft->isInProgress()) {
+            $productDraft->setStatus(Proposition::IN_PROGRESS);
         } else {
-            $manager->remove($proposition);
+            $manager->remove($productDraft);
         }
 
         $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_REFUSE,
-            new ProductDraftEvent($proposition)
+            new ProductDraftEvent($productDraft)
         );
 
         $manager->flush();
@@ -131,29 +131,29 @@ class ProductDraftManager
             throw new \LogicException('Current user cannot be resolved');
         }
         $username = $this->userContext->getUser()->getUsername();
-        $proposition = $this->repository->findUserProposition($product, $username);
+        $productDraft = $this->repository->findUserProposition($product, $username);
 
-        if (null === $proposition) {
-            $proposition = $this->factory->createProposition($product, $username);
+        if (null === $productDraft) {
+            $productDraft = $this->factory->createProposition($product, $username);
         }
 
-        return $proposition;
+        return $productDraft;
     }
 
     /**
      * Mark a proposition as ready
      *
-     * @param Proposition $proposition
+     * @param Proposition $productDraft
      */
-    public function markAsReady(Proposition $proposition)
+    public function markAsReady(Proposition $productDraft)
     {
         $this->dispatcher->dispatch(
             ProductDraftEvents::PRE_READY,
-            new ProductDraftEvent($proposition)
+            new ProductDraftEvent($productDraft)
         );
-        $proposition->setStatus(Proposition::READY);
+        $productDraft->setStatus(Proposition::READY);
 
-        $manager = $this->registry->getManagerForClass(get_class($proposition));
+        $manager = $this->registry->getManagerForClass(get_class($productDraft));
         $manager->flush();
     }
 }

@@ -58,9 +58,9 @@ class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInter
             return;
         }
 
-        $proposition = $this->manager->findOrCreate($parameters['product']);
+        $productDraft = $this->manager->findOrCreate($parameters['product']);
 
-        $parameters['proposition'] = $proposition;
+        $parameters['proposition'] = $productDraft;
 
         $event->setArgument('parameters', $parameters);
     }
