@@ -19,7 +19,7 @@ Feature: Sort product drafts
 
   Scenario: Successfully sort product drafts in the grid
     Given I edit the "black-boots" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     Then the grid should contain 2 elements
     And the rows should be sorted descending by proposed at
     And I should be able to sort the rows by author, proposed at and status

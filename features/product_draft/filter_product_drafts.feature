@@ -19,7 +19,7 @@ Feature: Filter product drafts
 
   Scenario: Successfully filter product drafts
     Given I edit the "black-boots" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     Then the grid should contain 2 elements
     And I should see entities Sandra and Mary
     And I should be able to use the following filters:

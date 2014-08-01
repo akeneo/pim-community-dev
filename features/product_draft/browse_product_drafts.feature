@@ -19,7 +19,7 @@ Feature: Browse product drafts for a specific product
 
   Scenario: Successfully display product drafts
     Given I edit the "black-boots" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     Then the grid should contain 2 elements
     And I should see the columns Author, Changes, Proposed at and Status
     And I should see entities Julia and Mary
