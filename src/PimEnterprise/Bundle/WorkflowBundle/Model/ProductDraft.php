@@ -80,9 +80,8 @@ class ProductDraft
 
     /**
      * @param string $author
-
      *
-*@return ProductDraft
+     * @return ProductDraft
      */
     public function setAuthor($author)
     {
@@ -121,9 +120,8 @@ class ProductDraft
 
     /**
      * @param array $changes
-
      *
-*@return ProductDraft
+     * @return ProductDraft
      */
     public function setChanges(array $changes)
     {
