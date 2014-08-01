@@ -71,6 +71,7 @@ Capabilities: Capabilities
 Save and close: Save and close
 Has role : Has role
 role:
+    title: role
     edit: Edit role
     create: Create role
 
