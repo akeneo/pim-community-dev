@@ -17,6 +17,7 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: boat"
     Then product "boat" should be enabled
 
+  @skip
   Scenario: Successfully revert the status of a product (enable)
     Given a disabled "boat" product
     And I am on the "boat" product page
@@ -41,9 +42,10 @@ Feature: Revert a product to a previous version
     When I click on the "Revert to this version" action of the row which contains "sku: jean"
     Then the family of product "jean" should be "pants"
 
+  @skip
   Scenario: Successfully revert the category of a product
     Given the following product:
-      | sku     | categories                   |
+      | sku     | categories        |
       | sandals | winter_collection |
     And I edit the "sandals" product
     And I visit the "Categories" tab
