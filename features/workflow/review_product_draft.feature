@@ -29,7 +29,7 @@ Feature: Review a product changes product draft
       | SKU   | your-jacket  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "SKU"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -41,7 +41,7 @@ Feature: Review a product changes product draft
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Name"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -53,7 +53,7 @@ Feature: Review a product changes product draft
       | mobile Description | An awesome coat |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Description"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -68,7 +68,7 @@ Feature: Review a product changes product draft
       | Marketing | tablet Number in stock    | 200   |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Number in stock"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -86,7 +86,7 @@ Feature: Review a product changes product draft
       | Marketing | € Price | 150   |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Price"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -100,7 +100,7 @@ Feature: Review a product changes product draft
       | Manufacturer | Nike  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Manufacturer"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -112,7 +112,7 @@ Feature: Review a product changes product draft
       | Weather conditions | Hot, Cold |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Weather conditions"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -124,7 +124,7 @@ Feature: Review a product changes product draft
       | Media | Datasheet | file(akeneo.txt) |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Datasheet"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -137,7 +137,7 @@ Feature: Review a product changes product draft
       | Media | Side view | file(akeneo.jpg) |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Side view"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -150,7 +150,7 @@ Feature: Review a product changes product draft
       | Handmade | state(yes) |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Handmade"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -162,7 +162,7 @@ Feature: Review a product changes product draft
       | ecommerce Release date | 2014-05-20 |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "ecommerce - Release date"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -174,7 +174,7 @@ Feature: Review a product changes product draft
       | Sizes | Length | 40    |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "approve" action of the row which contains "Length"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
@@ -187,7 +187,7 @@ Feature: Review a product changes product draft
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "refuse" action of the row which contains "Name"
     Then the grid should contain 1 element
     And the row "Mary" should contain:
@@ -202,7 +202,7 @@ Feature: Review a product changes product draft
       | Name  | Coat  |
     And I am logged in as "Julia"
     And I edit the "my-jacket" product
-    When I visit the "Product drafts" tab
+    When I visit the "Proposals" tab
     And I click on the "remove" action of the row which contains "Name"
     Then the grid should contain 0 element
     When I visit the "Attributes" tab
