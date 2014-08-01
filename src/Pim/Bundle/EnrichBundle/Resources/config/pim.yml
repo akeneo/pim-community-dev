@@ -24,6 +24,9 @@ imports:
     - { resource: @PimEnrichBundle/Resources/config/bundles/stof_doctrine_extensions.yml }
     - { resource: @PimEnrichBundle/Resources/config/bundles/twig.yml }
 
+pim_catalog:
+    storage_driver: '%pim_catalog_storage_driver%'
+
 services:
     oro.cache.abstract:
         abstract:  true
