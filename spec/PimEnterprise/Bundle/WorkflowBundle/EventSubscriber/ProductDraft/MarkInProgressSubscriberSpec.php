@@ -22,7 +22,7 @@ class MarkInProgressSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_sets_updated_proposition_as_in_progress(
+    function it_sets_updated_product_draft_as_in_progress(
         ProductDraftEvent $event,
         Proposition $productDraft
     ) {

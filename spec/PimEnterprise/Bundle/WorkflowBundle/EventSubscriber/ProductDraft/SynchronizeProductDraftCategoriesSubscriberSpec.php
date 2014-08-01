@@ -43,7 +43,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_synchronizes_proposition_document_before_it_is_persisted(
+    function it_synchronizes_product_draft_document_before_it_is_persisted(
         MongoDBODMLifecycleEventArgs $event,
         Proposition $productDraft,
         ProductInterface $product,
@@ -61,7 +61,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $this->prePersist($event);
     }
 
-    function it_synchronizes_proposition_document_before_it_is_updated(
+    function it_synchronizes_product_draft_document_before_it_is_updated(
         MongoDBODMPreUpdateEventsArgs $event,
         Proposition $productDraft,
         ProductInterface $product,
@@ -79,7 +79,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $this->preUpdate($event);
     }
 
-    function it_synchronizes_product_proposition_documents_when_its_category_is_updated(
+    function it_synchronizes_product_product_draft_documents_when_its_category_is_updated(
         $repository,
         MongoDBODMPreUpdateEventsArgs $event,
         ProductInterface $product,
@@ -157,7 +157,7 @@ class SynchronizeProductDraftCategoriesSubscriberSpec extends ObjectBehavior
         $this->preRemove($event);
     }
 
-    function it_does_not_synchronize_product_proposition_documents_when_its_category_has_not_been_updated(
+    function it_does_not_synchronize_product_product_draft_documents_when_its_category_has_not_been_updated(
         $repository,
         MongoDBODMPreUpdateEventsArgs $event,
         ProductInterface $product,

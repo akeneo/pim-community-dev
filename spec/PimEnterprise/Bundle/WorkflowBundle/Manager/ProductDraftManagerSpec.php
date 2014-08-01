@@ -31,7 +31,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->beConstructedWith($registry, $manager, $userContext, $factory, $repository, $applier, $dispatcher);
     }
 
-    function it_applies_changes_to_the_product_when_approving_a_proposition(
+    function it_applies_changes_to_the_product_when_approving_a_product_draft(
         $registry,
         $manager,
         $applier,
@@ -54,7 +54,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->approve($productDraft);
     }
 
-    function it_marks_as_in_progress_proposition_which_is_ready_when_refusing_it(
+    function it_marks_as_in_progress_product_draft_which_is_ready_when_refusing_it(
         $registry,
         $dispatcher,
         Proposition $productDraft,
@@ -69,7 +69,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
 
         $this->refuse($productDraft);
     }
-    function it_removes_in_progress_proposition_when_refusing_it(
+    function it_removes_in_progress_product_draft_when_refusing_it(
         $registry,
         Proposition $productDraft,
         ObjectManager $manager
@@ -83,7 +83,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->refuse($productDraft);
     }
 
-    function it_finds_a_proposition_when_it_already_exists(
+    function it_finds_a_product_draft_when_it_already_exists(
         $userContext,
         $repository,
         UserInterface $user,
@@ -97,7 +97,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->findOrCreate($product);
     }
 
-    function it_creates_a_proposition_when_it_does_not_exist(
+    function it_creates_a_product_draft_when_it_does_not_exist(
         $userContext,
         $repository,
         $factory,
@@ -113,7 +113,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->findOrCreate($product)->shouldReturn($productDraft);
     }
 
-    function it_throws_exception_when_find_proposition_and_current_cannot_be_resolved(
+    function it_throws_exception_when_find_product_draft_and_current_cannot_be_resolved(
         $userContext,
         ProductInterface $product
     ) {
@@ -122,7 +122,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $this->shouldThrow(new \LogicException('Current user cannot be resolved'))->duringFindOrCreate($product, 'fr_FR');
     }
 
-    function it_marks_proposition_as_ready(
+    function it_marks_product_draft_as_ready(
         $registry,
         $dispatcher,
         Proposition $productDraft,

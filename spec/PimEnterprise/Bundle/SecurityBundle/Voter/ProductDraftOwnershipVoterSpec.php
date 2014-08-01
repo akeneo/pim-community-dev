@@ -23,7 +23,7 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
         $this->supportsAttribute(Attributes::OWN)->shouldReturn(true);
     }
 
-    function it_supports_proposition(Proposition $productDraft)
+    function it_supports_product_draft(Proposition $productDraft)
     {
         $this->supportsClass($productDraft)->shouldReturn(true);
     }
@@ -40,7 +40,7 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
         $this->vote($token, $productDraft, [Attributes::OWN])->shouldReturn(VoterInterface::ACCESS_GRANTED);
     }
 
-    function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_proposition(
+    function it_denies_OWN_access_to_user_that_is_not_the_author_of_the_product_draft(
         TokenInterface $token,
         Proposition $productDraft,
         UserInterface $user
@@ -59,7 +59,7 @@ class ProductDraftOwnershipVoterSpec extends ObjectBehavior
         $this->vote($token, $productDraft, ['SOMETHING'])->shouldReturn(VoterInterface::ACCESS_ABSTAIN);
     }
 
-    function it_does_not_vote_if_checking_the_OWN_access_of_something_else_than_a_proposition(
+    function it_does_not_vote_if_checking_the_OWN_access_of_something_else_than_a_product_draft(
         TokenInterface $token,
         ProductInterface $product
     ) {

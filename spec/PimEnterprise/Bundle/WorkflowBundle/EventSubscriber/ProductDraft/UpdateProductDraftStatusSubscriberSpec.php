@@ -29,14 +29,14 @@ class UpdateProductDraftStatusSubscriberSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
-    function it_subscribes_to_the_proposition_pre_update_event()
+    function it_subscribes_to_the_product_draft_pre_update_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
             ProductDraftEvents::PRE_UPDATE => 'update',
         ]);
     }
 
-    function it_updates_the_proposition_status_using_the_proposition_form(
+    function it_updates_the_product_draft_status_using_the_product_draft_form(
         $formFactory,
         $request,
         ProductDraftEvent $event,

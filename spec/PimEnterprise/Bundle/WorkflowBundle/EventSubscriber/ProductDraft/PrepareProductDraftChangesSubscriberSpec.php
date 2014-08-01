@@ -15,7 +15,7 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
-    function it_subscribes_3_times_to_proposition_pre_update_event()
+    function it_subscribes_3_times_to_product_draft_pre_update_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
             ProductDraftEvents::PRE_UPDATE => [
@@ -28,7 +28,7 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_keeps_media_between_proposition_updates(ProductDraftEvent $event, Proposition $productDraft)
+    function it_keeps_media_between_product_draft_updates(ProductDraftEvent $event, Proposition $productDraft)
     {
         $event->getProductDraft()->willReturn($productDraft);
         $productDraft->getChanges()->willReturn([
@@ -65,7 +65,7 @@ class PrepareProductDraftChangesSubscriberSpec extends ObjectBehavior
         $this->keepMedia($event);
     }
 
-    function it_merges_changes_from_current_proposition_with_submitted_changes(
+    function it_merges_changes_from_current_product_draft_with_submitted_changes(
         ProductDraftEvent $event,
         Proposition $productDraft
     ) {

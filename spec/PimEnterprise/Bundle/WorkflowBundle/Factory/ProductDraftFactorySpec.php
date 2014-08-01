@@ -7,7 +7,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 class ProductDraftFactorySpec extends ObjectBehavior
 {
-    function it_should_creates_a_proposition(
+    function it_should_creates_a_product_draft(
         AbstractProduct $product
     ) {
         $productDraft = $this->createProposition($product, 'admin');

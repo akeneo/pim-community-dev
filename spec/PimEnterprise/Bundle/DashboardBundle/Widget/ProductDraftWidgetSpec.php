@@ -27,12 +27,12 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\DashboardBundle\Widget\WidgetInterface');
     }
 
-    function it_exposes_the_proposition_widget_template()
+    function it_exposes_the_product_draft_widget_template()
     {
         $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig');
     }
 
-    function it_exposes_the_proposition_widget_template_parameters()
+    function it_exposes_the_product_draft_widget_template_parameters()
     {
         $this->getParameters()->shouldBeArray();
     }
@@ -43,11 +43,11 @@ class ProductDraftWidgetSpec extends ObjectBehavior
         $this->getParameters()->shouldReturn(['show' => false]);
     }
 
-    function it_passes_propositions_from_the_repository_to_the_template($accessRepository, $user, $ownershipRepository)
+    function it_passes_product_drafts_from_the_repository_to_the_template($accessRepository, $user, $ownershipRepository)
     {
         $accessRepository->isOwner($user)->willReturn(true);
-        $ownershipRepository->findApprovableByUser($user, 10)->willReturn(['proposition one', 'proposition two']);
+        $ownershipRepository->findApprovableByUser($user, 10)->willReturn(['product draft one', 'product draft two']);
 
-        $this->getParameters()->shouldReturn(['show' => true, 'params' => ['proposition one', 'proposition two']]);
+        $this->getParameters()->shouldReturn(['show' => true, 'params' => ['product draft one', 'product draft two']]);
     }
 }

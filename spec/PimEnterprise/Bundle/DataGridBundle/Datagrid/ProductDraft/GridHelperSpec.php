@@ -7,7 +7,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 class GridHelperSpec extends ObjectBehavior
 {
-    function it_provides_proposition_status_choices()
+    function it_provides_product_draft_status_choices()
     {
         $this->getStatusChoices()->shouldReturn(
             [

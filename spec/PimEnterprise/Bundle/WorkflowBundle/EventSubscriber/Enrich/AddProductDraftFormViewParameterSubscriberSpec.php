@@ -34,7 +34,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         ]);
     }
 
-    function it_adds_a_proposition_form_view_to_the_product_edit_parameters(
+    function it_adds_a_product_draft_form_view_to_the_product_edit_parameters(
         $manager,
         $formFactory,
         GenericEvent $event,

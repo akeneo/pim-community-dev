@@ -67,7 +67,7 @@ class InjectCurrentUserProductDraftSubscriberSpec extends ObjectBehavior
         $this->inject($event);
     }
 
-    function it_applies_nothing_if_there_is_no_proposition(
+    function it_applies_nothing_if_there_is_no_product_draft(
         $userContext,
         $catalogContext,
         $repository,

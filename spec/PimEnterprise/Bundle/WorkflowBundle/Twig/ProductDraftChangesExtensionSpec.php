@@ -50,7 +50,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $this->getPresenters()->shouldReturn([$valuePresenter, $attributePresenter]);
     }
 
-    function it_presents_proposition_change_attribute_using_a_supporting_presenter(
+    function it_presents_product_draft_change_attribute_using_a_supporting_presenter(
         $valueRepository,
         $attributeRepository,
         $attributePresenter,
@@ -66,12 +66,12 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $this->presentAttribute(['__context__' => ['attribute' => 'description']], 'foo')->shouldReturn('Name');
     }
 
-    function it_presents_proposition_change_attribute_using_the_default_value_if_id_is_unavailable()
+    function it_presents_product_draft_change_attribute_using_the_default_value_if_id_is_unavailable()
     {
         $this->presentAttribute([], 'foo')->shouldReturn('foo');
     }
 
-    function it_presents_proposition_change_attribute_using_the_default_value_if_value_is_unavailable(
+    function it_presents_product_draft_change_attribute_using_the_default_value_if_value_is_unavailable(
         $valueRepository
     ) {
         $valueRepository->find(123)->willReturn(null);
@@ -79,7 +79,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         $this->presentAttribute(['__context__' => ['attribute_id' => '123']], 'foo')->shouldReturn('foo');
     }
 
-    function it_presents_proposition_using_a_supporting_presenter(
+    function it_presents_product_draft_using_a_supporting_presenter(
         $valueRepository,
         $attributePresenter,
         $valuePresenter,
