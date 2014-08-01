@@ -1,7 +1,7 @@
 pimee_dashboard:
     widget:
         product_drafts:
-            title:   Product drafs to review
+            title:   Product drafts to review
             date:    Date
             author:  Author
             product: Product
