@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
+namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;

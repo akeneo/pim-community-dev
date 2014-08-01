@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;

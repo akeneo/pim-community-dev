@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
+use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 
 /**
  * A collector of changes that a client is sending to a product edit form

@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\Proposition;
+namespace PimEnterprise\Bundle\DataGridBundle\Datagrid\ProductDraft;
 
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Oro\Bundle\DataGridBundle\Datasource\ResultRecordInterface;

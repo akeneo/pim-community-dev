@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\FilterBundle\Filter\Proposition;
+namespace PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;

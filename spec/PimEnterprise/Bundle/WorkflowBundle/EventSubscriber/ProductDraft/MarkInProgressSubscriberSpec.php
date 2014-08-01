@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
+namespace spec\PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

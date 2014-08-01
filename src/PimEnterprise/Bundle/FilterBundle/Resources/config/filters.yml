@@ -1,5 +1,5 @@
 parameters:
-    pimee_filter.product_draft_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Proposition\ChoiceFilter
+    pimee_filter.product_draft_choice_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft\ChoiceFilter
     pim_filter.product_category_filter.class:     PimEnterprise\Bundle\FilterBundle\Filter\Product\CategoryFilter
     pimee_filter.product_permission_filter.class: PimEnterprise\Bundle\FilterBundle\Filter\Product\PermissionFilter
 

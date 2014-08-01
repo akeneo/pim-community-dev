@@ -14,8 +14,8 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangeSetComputerInterface;
+use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
+use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangeSetComputerInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Repository\ProductDraftRepositoryInterface;
 
 /**

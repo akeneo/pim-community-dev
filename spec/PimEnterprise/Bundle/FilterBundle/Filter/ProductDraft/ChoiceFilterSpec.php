@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Proposition;
+namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\ProductDraft;
 
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
