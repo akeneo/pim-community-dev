@@ -27,8 +27,17 @@ class ProductPublisherSpec extends ObjectBehavior
     function let(
         PublisherInterface $publisher,
         RelatedAssociationPublisher $associationsPublisher,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        AbstractProduct $product
     ) {
+        $product->getGroups()->willReturn([]);
+        $product->getCategories()->willReturn([]);
+        $product->getAssociations()->willReturn([]);
+        $product->getCompletenesses()->willReturn([]);
+        $product->getValues()->willReturn([]);
+        $product->getFamily()->willReturn(null);
+        $product->getId()->willReturn(1);
+
         $this->beConstructedWith(
             'PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct',
             $publisher,
@@ -37,20 +46,18 @@ class ProductPublisherSpec extends ObjectBehavior
         );
     }
 
-    function it_publishes_a_product($versionManager, AbstractProduct $product, Version $version)
+    function it_publishes_a_product($versionManager, $product, Version $version)
     {
-        $this->initProduct($product);
-        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
+        $versionManager->getNewestLogEntry($product, true)->willReturn($version);
 
         $published = $this->publish($product);
 
         $published->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct');
     }
 
-    function it_sets_the_version_during_publishing($versionManager, AbstractProduct $product, Version $version)
+    function it_sets_the_version_during_publishing($versionManager, $product, Version $version)
     {
-        $this->initProduct($product);
-        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
+        $versionManager->getNewestLogEntry($product, true)->willReturn($version);
         $version->isPending()->willReturn(false);
 
         $published = $this->publish($product);
@@ -58,29 +65,26 @@ class ProductPublisherSpec extends ObjectBehavior
         $published->getVersion()->shouldReturn($version);
     }
 
-    function it_builds_the_version_if_needed_during_publishing($versionManager, AbstractProduct $product, Version $version, ObjectManager $objectManager)
-    {
-        $this->initProduct($product);
-        $versionManager->getNewestLogEntry($product, null)->willReturn($version);
-        $version->isPending()->willReturn(true);
+    function it_builds_the_version_if_needed_during_publishing(
+        $versionManager,
+        $product,
+        ObjectManager $objectManager,
+        Version $pendingVersion,
+        Version $newVersion
+    ) {
+        $versionManager->getNewestLogEntry($product, true)->willReturn($pendingVersion);
+        $pendingVersion->isPending()->willReturn(true);
 
-        $versionManager->buildPendingVersion($version)->shouldBeCalled();
+        $versionManager->buildVersion($product)->willReturn([$pendingVersion, $newVersion]);
+        $pendingVersion->getChangeset()->willReturn(['foo' => 'bar']);
+        $newVersion->getChangeset()->willReturn([]);
+
         $versionManager->getObjectManager()->willReturn($objectManager);
-        $objectManager->persist($version)->shouldBeCalled();
+        $objectManager->persist($pendingVersion)->shouldBeCalled();
+        $objectManager->persist($newVersion)->shouldNotBeCalled();
 
         $published = $this->publish($product);
 
-        $published->getVersion()->shouldReturn($version);
-    }
-
-    private function initProduct(AbstractProduct $product)
-    {
-        $product->getGroups()->willReturn([]);
-        $product->getCategories()->willReturn([]);
-        $product->getAssociations()->willReturn([]);
-        $product->getCompletenesses()->willReturn([]);
-        $product->getValues()->willReturn([]);
-        $product->getFamily()->willReturn(null);
-        $product->getId()->willReturn(1);
+        $published->getVersion()->shouldReturn($pendingVersion);
     }
 }
