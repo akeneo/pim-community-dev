@@ -427,10 +427,14 @@
 {% endblock %}
 
 {% block oro_acl_permission_collection_widget %}
-    {% if 'entity' == form.parent.vars.value.extensionKey and '(default)' != form.parent.vars.value.identity.name %}
+    {% if 'entity' == form.parent.vars.value.extensionKey %}
         {% for field in privileges_config['permissions'] %}
             {% for permission in form if permission.vars.value.name == field %}
-                <div class="acl-permission{{ field == 'ASSIGN' ? ' default-field' : ''}}">
+                {% set additionalClass = field == 'ASSIGN' or '(default)' == form.parent.vars.value.identity.name ? ' default-field' : '' %}
+                {% if 'entity:Oro\\Bundle\\UserBundle\\Entity\\Role' == form.parent.vars.value.identity.id %}
+                    {% set additionalClass = additionalClass ~ ' default-field-toggle' %}
+                {% endif %}
+                <div class="acl-permission{{ additionalClass }}" data-permission="{{ field }}">
                     <strong>{{ ('oro_security.acl.' ~ form.parent.vars.value.identity.name ~ '.' ~ field)|lower|trans }}</strong>
                     {{ form_widget(permission) }}
                 </div>
