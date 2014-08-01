@@ -51,14 +51,14 @@ class ProductDraftPersister implements ProductPersister
     protected $changeSet;
 
     /**
-     * @param ManagerRegistry                $registry
-     * @param CompletenessManager            $completenessManager
-     * @param SecurityContextInterface       $securityContext
+     * @param ManagerRegistry                 $registry
+     * @param CompletenessManager             $completenessManager
+     * @param SecurityContextInterface        $securityContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
-     * @param EventDispatcherInterface       $dispatcher
-     * @param ChangesCollector               $collector
-     * @param ChangeSetComputerInterface     $changeSet
+     * @param EventDispatcherInterface        $dispatcher
+     * @param ChangesCollector                $collector
+     * @param ChangeSetComputerInterface      $changeSet
      */
     public function __construct(
         ManagerRegistry $registry,

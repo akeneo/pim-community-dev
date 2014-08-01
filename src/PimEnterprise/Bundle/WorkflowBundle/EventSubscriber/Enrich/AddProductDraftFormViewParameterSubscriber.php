@@ -24,7 +24,7 @@ class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInter
 
     /**
      * @param FormFactoryInterface $formFactory
-     * @param ProductDraftManager   $manager
+     * @param ProductDraftManager  $manager
      */
     public function __construct(FormFactoryInterface $formFactory, ProductDraftManager $manager)
     {

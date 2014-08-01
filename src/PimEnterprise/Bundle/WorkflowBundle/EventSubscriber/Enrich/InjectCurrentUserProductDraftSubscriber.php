@@ -33,8 +33,8 @@ class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterfac
     protected $applier;
 
     /**
-     * @param UserContext                    $userContext
-     * @param CatalogContext                 $catalogContext
+     * @param UserContext                     $userContext
+     * @param CatalogContext                  $catalogContext
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftChangesApplier      $applier
      */

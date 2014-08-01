@@ -47,7 +47,7 @@ class ProductDraftController extends AbstractController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ObjectRepository         $repository
-     * @param ProductDraftManager       $manager
+     * @param ProductDraftManager      $manager
      * @param UserContext              $userContext
      */
     public function __construct(

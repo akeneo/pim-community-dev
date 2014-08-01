@@ -44,13 +44,13 @@ class ProductDraftManager
     protected $dispatcher;
 
     /**
-     * @param ManagerRegistry                $registry
-     * @param ProductManager                 $manager
-     * @param UserContext                    $userContext
+     * @param ManagerRegistry                 $registry
+     * @param ProductManager                  $manager
+     * @param UserContext                     $userContext
      * @param ProductDraftFactory             $factory
      * @param ProductDraftRepositoryInterface $repository
      * @param ProductDraftChangesApplier      $applier
-     * @param EventDispatcherInterface       $dispatcher
+     * @param EventDispatcherInterface        $dispatcher
      */
     public function __construct(
         ManagerRegistry $registry,

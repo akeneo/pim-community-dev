@@ -27,9 +27,9 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     protected $urlGenerator;
 
     /**
-     * @param ProductFormView           $productFormView
+     * @param ProductFormView            $productFormView
      * @param ProductDraftChangesApplier $applier
-     * @param UrlGeneratorInterface     $urlGenerator
+     * @param UrlGeneratorInterface      $urlGenerator
      */
     public function __construct(
         ProductFormViewInterface $productFormView,

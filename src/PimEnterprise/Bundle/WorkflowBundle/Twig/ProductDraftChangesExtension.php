@@ -126,7 +126,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * Present an attribute change
      *
-     * @param array       $change
+     * @param array        $change
      * @param ProductDraft $productDraft
      *
      * @return string

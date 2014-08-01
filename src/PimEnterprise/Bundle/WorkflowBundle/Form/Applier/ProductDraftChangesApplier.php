@@ -47,7 +47,7 @@ class ProductDraftChangesApplier
      * Apply product draft to a product
      *
      * @param ProductInterface $product
-     * @param ProductDraft $productDraft
+     * @param ProductDraft     $productDraft
      *
      * @throws ValidatorException
      */

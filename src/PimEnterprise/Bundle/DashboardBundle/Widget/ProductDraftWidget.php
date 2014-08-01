@@ -33,9 +33,9 @@ class ProductDraftWidget implements WidgetInterface
     /**
      * Constructor
      *
-     * @param CategoryAccessRepository                $accessRepository
+     * @param CategoryAccessRepository                 $accessRepository
      * @param ProductDraftOwnershipRepositoryInterface $ownershipRepository
-     * @param UserContext                             $userContext
+     * @param UserContext                              $userContext
      */
     public function __construct(
         CategoryAccessRepository $accessRepository,

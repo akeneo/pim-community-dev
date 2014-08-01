@@ -21,7 +21,7 @@ class ProductDraftEvent extends Event
 
     /**
      * @param ProductDraft $productDraft
-     * @param array       $changes
+     * @param array        $changes
      */
     public function __construct(ProductDraft $productDraft, array $changes = null)
     {

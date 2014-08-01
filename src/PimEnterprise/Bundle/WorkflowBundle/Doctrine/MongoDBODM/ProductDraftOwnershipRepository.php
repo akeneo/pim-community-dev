@@ -26,7 +26,7 @@ class ProductDraftOwnershipRepository implements ProductDraftOwnershipRepository
 
     /**
      * @param ProductDraftRepositoryInterface $draftRepository
-     * @param CategoryAccessRepository       $catAccessRepo
+     * @param CategoryAccessRepository        $catAccessRepo
      */
     public function __construct(
         ProductDraftRepositoryInterface $draftRepository,
