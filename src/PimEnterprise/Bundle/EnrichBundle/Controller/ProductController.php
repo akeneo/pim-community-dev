@@ -177,7 +177,7 @@ class ProductController extends BaseProductController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->saveProduct($product, ['bypass_proposition' => true]);
+        $this->productManager->saveProduct($product, ['bypass_product_draft' => true]);
 
         $this->addFlash('success', 'flash.product.attributes added');
 

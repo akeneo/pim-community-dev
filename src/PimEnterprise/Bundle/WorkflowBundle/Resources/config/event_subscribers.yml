@@ -29,7 +29,7 @@ services:
             - { name: kernel.event_subscriber }
 
     ##
-    # Proposition event subscribers
+    # Product drafts event subscribers
     ##
     pimee_workflow.event_subscriber.product_draft.prepare_uploading_media:
         class: %pimee_workflow.event_subscriber.product_draft.prepare_uploading_media.class%

@@ -47,7 +47,7 @@ class ProductDraftManagerSpec extends ObjectBehavior
         $dispatcher->dispatch(ProductDraftEvents::PRE_APPROVE, Argument::type('PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent'))->shouldBeCalled();
         $applier->apply($product, $productDraft)->shouldBeCalled();
         $manager->handleMedia($product)->shouldBeCalled();
-        $manager->saveProduct($product, ['bypass_proposition' => true])->shouldBeCalled();
+        $manager->saveProduct($product, ['bypass_product_draft' => true])->shouldBeCalled();
         $manager->remove($productDraft)->shouldBeCalled();
         $manager->flush()->shouldBeCalled();
 

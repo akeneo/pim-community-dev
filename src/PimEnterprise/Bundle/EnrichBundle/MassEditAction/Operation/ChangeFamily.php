@@ -22,7 +22,7 @@ class ChangeFamily extends BaseChangeFamily
     public function getSavingOptions()
     {
         $options = parent::getSavingOptions();
-        $options['bypass_proposition'] = true;
+        $options['bypass_product_draft'] = true;
 
         return $options;
     }

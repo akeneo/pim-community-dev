@@ -19,11 +19,11 @@ class RegisterProductDraftPresentersPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        if (!$container->hasDefinition('pimee_workflow.twig.extension.proposition_changes')) {
+        if (!$container->hasDefinition('pimee_workflow.twig.extension.product_draft_changes')) {
             return;
         }
 
-        $definition = $container->getDefinition('pimee_workflow.twig.extension.proposition_changes');
+        $definition = $container->getDefinition('pimee_workflow.twig.extension.product_draft_changes');
         foreach ($container->findTaggedServiceIds('pimee_workflow.presenter') as $id => $attribute) {
 
             $container->getDefinition($id)->setPublic(false);

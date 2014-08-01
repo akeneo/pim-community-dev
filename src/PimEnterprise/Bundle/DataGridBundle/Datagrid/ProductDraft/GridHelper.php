@@ -38,8 +38,8 @@ class GridHelper
     public function getStatusChoices()
     {
         return [
-            Proposition::IN_PROGRESS => 'pimee_workflow.proposition.status.in_progress',
-            Proposition::READY => 'pimee_workflow.proposition.status.ready',
+            Proposition::IN_PROGRESS => 'pimee_workflow.product_draft.status.in_progress',
+            Proposition::READY => 'pimee_workflow.product_draft.status.ready',
         ];
     }
 }

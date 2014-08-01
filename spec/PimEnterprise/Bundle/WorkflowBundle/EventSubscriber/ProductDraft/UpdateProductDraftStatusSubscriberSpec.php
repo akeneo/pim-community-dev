@@ -44,7 +44,7 @@ class UpdateProductDraftStatusSubscriberSpec extends ObjectBehavior
         FormInterface $form
     ) {
         $event->getProductDraft()->willReturn($productDraft);
-        $formFactory->create('pimee_workflow_proposition', $productDraft)->willReturn($form);
+        $formFactory->create('pimee_workflow_product_draft', $productDraft)->willReturn($form);
         $form->submit($request)->shouldBeCalled();
 
         $this->update($event);

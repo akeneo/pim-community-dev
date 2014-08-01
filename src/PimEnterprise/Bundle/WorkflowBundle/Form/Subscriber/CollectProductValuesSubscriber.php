@@ -68,7 +68,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
         foreach ($data['values'] as $key => $changes) {
             if (isset($changes['media']['file']) && $changes['media']['file'] instanceof UploadedFile) {
                 $media = $this->factory->createMedia($changes['media']['file']);
-                $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
+                $this->mediaManager->handle($media, 'product-draft-' . md5(time() . uniqid()));
 
                 $data['values'][$key]['media']['filename'] = $media->getFilename();
                 $data['values'][$key]['media']['originalFilename'] = $media->getOriginalFilename();

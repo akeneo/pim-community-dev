@@ -50,7 +50,7 @@ class AddProductDraftFormViewParameterSubscriberSpec extends ObjectBehavior
         $event
             ->setArgument('parameters', [
                 'product' => $product,
-                'proposition' => $productDraft,
+                'productDraft' => $productDraft,
             ])
             ->shouldBeCalled();
 

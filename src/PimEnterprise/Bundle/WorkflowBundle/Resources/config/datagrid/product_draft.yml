@@ -1,7 +1,7 @@
 datagrid:
     product-draft-grid:
         options:
-            entityHint: proposition
+            entityHint: product_draft
         source:
             type: pimee_datasource_product_draft
             entity: %pimee_workflow.model.product_draft.class%

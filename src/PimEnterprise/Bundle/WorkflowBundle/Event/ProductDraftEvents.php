@@ -18,7 +18,7 @@ class ProductDraftEvents
      *
      * @staticvar string
      */
-    const PRE_UPDATE = 'pimee_workflow.proposition.pre_update';
+    const PRE_UPDATE = 'pimee_workflow.product_draft.pre_update';
 
     /**
      * This event is dispatched before proposition is applied a product
@@ -28,7 +28,7 @@ class ProductDraftEvents
      *
      * @staticvar string
      */
-    const PRE_APPLY = 'pimee_workflow.proposition.pre_apply';
+    const PRE_APPLY = 'pimee_workflow.product_draft.pre_apply';
 
     /**
      * This event is dispatched before proposition is approved
@@ -38,7 +38,7 @@ class ProductDraftEvents
      *
      * @staticvar string
      */
-    const PRE_APPROVE = 'pimee_workflow.proposition.pre_approve';
+    const PRE_APPROVE = 'pimee_workflow.product_draft.pre_approve';
 
     /**
      * This event is dispatched before proposition is refused
@@ -48,7 +48,7 @@ class ProductDraftEvents
      *
      * @staticvar string
      */
-    const PRE_REFUSE = 'pimee_workflow.proposition.pre_refuse';
+    const PRE_REFUSE = 'pimee_workflow.product_draft.pre_refuse';
 
     /**
      * This event is dispatched before proposition is marked as ready
@@ -58,5 +58,5 @@ class ProductDraftEvents
      *
      * @staticvar string
      */
-    const PRE_READY = 'pimee_workflow.proposition.pre_ready';
+    const PRE_READY = 'pimee_workflow.product_draft.pre_ready';
 }

@@ -83,7 +83,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
      */
     public function getName()
     {
-        return 'pimee_workflow_proposition_changes_extension';
+        return 'pimee_workflow_product_draft_changes_extension';
     }
 
     /**
@@ -93,12 +93,12 @@ class ProductDraftChangesExtension extends \Twig_Extension
     {
         return [
             new \Twig_SimpleFunction(
-                'present_proposition_attribute',
+                'present_product_draft_attribute',
                 [$this, 'presentAttribute'],
                 ['is_safe' => ['html']]
             ),
             new \Twig_SimpleFunction(
-                'present_proposition_change',
+                'present_product_draft_change',
                 [$this, 'presentChange'],
                 ['is_safe' => ['html']]
             ),

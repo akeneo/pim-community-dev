@@ -9,7 +9,7 @@ use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 
 /**
- * Add the proposition form view to the product edit template parameters
+ * Add the product draft form view to the product edit template parameters
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -60,7 +60,7 @@ class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInter
 
         $productDraft = $this->manager->findOrCreate($parameters['product']);
 
-        $parameters['proposition'] = $productDraft;
+        $parameters['productDraft'] = $productDraft;
 
         $event->setArgument('parameters', $parameters);
     }

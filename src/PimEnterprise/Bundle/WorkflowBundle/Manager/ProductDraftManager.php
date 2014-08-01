@@ -90,7 +90,7 @@ class ProductDraftManager
         $manager->flush();
 
         $this->manager->handleMedia($product);
-        $this->manager->saveProduct($product, ['bypass_proposition' => true]);
+        $this->manager->saveProduct($product, ['bypass_product_draft' => true]);
     }
 
     /**

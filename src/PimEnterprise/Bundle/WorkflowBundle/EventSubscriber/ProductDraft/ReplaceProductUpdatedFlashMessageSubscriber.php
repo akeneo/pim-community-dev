@@ -70,7 +70,7 @@ class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInte
                     continue;
                 }
                 if ('flash.product.updated' === $flash->getTemplate() && !$this->isOwner($id)) {
-                    $flash->setTemplate('flash.proposition.updated');
+                    $flash->setTemplate('flash.product_draft.updated');
                 }
             }
         }

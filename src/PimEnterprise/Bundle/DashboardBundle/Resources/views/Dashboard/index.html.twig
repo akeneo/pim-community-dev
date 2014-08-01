@@ -12,7 +12,7 @@
             </div>
 
             <div class="row">
-                {% set widgetsArray = ['completeness', 'last_operations', 'propositions'] %}
+                {% set widgetsArray = ['completeness', 'last_operations', 'product_drafts'] %}
 
                 {% for widget in widgetsArray %}
                     {{ render(controller('pim_dashboard.controller.widget:showAction', { 'alias': widget })) }}

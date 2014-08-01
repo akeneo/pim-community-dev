@@ -21,7 +21,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     public function findUserProposition(ProductInterface $product, $username)
     {
         return $this
-            ->createQueryBuilder('Proposition')
+            ->createQueryBuilder('ProductDraft')
             ->field('author')->equals($username)
             ->field('product')->references($product)
             ->getQuery()->getSingleResult();
@@ -33,7 +33,7 @@ class ProductDraftRepository extends DocumentRepository implements ProductDraftR
     public function findByProduct(ProductInterface $product)
     {
         return $this
-            ->createQueryBuilder('Proposition')
+            ->createQueryBuilder('ProductDraft')
             ->field('product')->references($product)
             ->getQuery()->execute();
     }

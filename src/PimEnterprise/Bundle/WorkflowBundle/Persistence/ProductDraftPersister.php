@@ -87,7 +87,7 @@ class ProductDraftPersister implements ProductPersister
      */
     public function persist(ProductInterface $product, array $options)
     {
-        $options = array_merge(['bypass_proposition' => false], $options);
+        $options = array_merge(['bypass_product_draft' => false], $options);
 
         $manager = $this->registry->getManagerForClass(get_class($product));
 
@@ -102,7 +102,7 @@ class ProductDraftPersister implements ProductPersister
             }
         }
 
-        if ($isOwner || $options['bypass_proposition'] || !$manager->contains($product)) {
+        if ($isOwner || $options['bypass_product_draft'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
             $this->persistProposition($manager, $product);

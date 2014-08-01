@@ -78,7 +78,7 @@ class ReplaceProductUpdatedFlashMessageSubscriberSpec extends ObjectBehavior
         $repository->find('1337')->willReturn($product);
         $securityContext->isGranted(Attributes::OWN, $product)->willReturn(false);
 
-        $noticeFoo->setTemplate('flash.proposition.updated')->shouldBeCalled();
+        $noticeFoo->setTemplate('flash.product_draft.updated')->shouldBeCalled();
         $noticeBar->setTemplate(Argument::any())->shouldNotBeCalled();
         $successFoo->setTemplate(Argument::any())->shouldNotBeCalled();
 
