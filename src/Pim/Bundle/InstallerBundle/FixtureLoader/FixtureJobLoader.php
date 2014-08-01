@@ -5,6 +5,7 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
+use Pim\Bundle\InstallerBundle\Exception\FixtureLoaderException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -47,8 +48,12 @@ class FixtureJobLoader
         $this->reader = $container->get('pim_base_connector.reader.file.yaml');
         $this->em = $container->get('doctrine.orm.entity_manager');
         $this->processor = $container->get('pim_base_connector.processor.job_instance');
-        $this->installerDataPath = $this->getInstallerDataPath();
         $this->jobsFilePaths = $jobsFilePaths;
+
+        $this->installerDataPath = $this->getInstallerDataPath();
+        if (!is_dir($this->installerDataPath)) {
+            throw new FixtureLoaderException(sprintf('Path "%s" not found', $this->installerDataPath));
+        }
     }
 
     /**
