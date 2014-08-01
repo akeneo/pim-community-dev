@@ -29,7 +29,7 @@ class ProductDraftWidgetSpec extends ObjectBehavior
 
     function it_exposes_the_proposition_widget_template()
     {
-        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:propositions.html.twig');
+        $this->getTemplate()->shouldReturn('PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig');
     }
 
     function it_exposes_the_proposition_widget_template_parameters()

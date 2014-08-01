@@ -52,7 +52,7 @@ class ProductDraftWidget implements WidgetInterface
      */
     public function getTemplate()
     {
-        return 'PimEnterpriseDashboardBundle:Widget:propositions.html.twig';
+        return 'PimEnterpriseDashboardBundle:Widget:product_drafts.html.twig';
     }
 
     /**
