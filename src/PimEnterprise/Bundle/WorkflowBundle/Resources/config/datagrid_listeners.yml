@@ -1,21 +1,21 @@
 parameters:
-    pimee_workflow.datagrid.event_listener.inject_product_for_proposition.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForPropositionSubscriber
+    pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Datagrid\EventListener\InjectProductForProductDraftSubscriber
 
 services:
-    pimee_workflow.event_listener.propositions_grid_listener:
+    pimee_workflow.event_listener.product_drafts_grid_listener:
         class: %pim_datagrid.event_listener.add_parameters_to_grid.class%
         arguments:
           - [ product ]
           - '@oro_datagrid.datagrid.request_params'
         tags:
-          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.proposition-grid, method: onBuildAfter }
+          - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.after.product-draft-grid, method: onBuildAfter }
 
-    pimee_workflow.datagrid.event_listener.inject_product_for_proposition:
-        class: %pimee_workflow.datagrid.event_listener.inject_product_for_proposition.class%
+    pimee_workflow.datagrid.event_listener.inject_product_for_product_draft:
+        class: %pimee_workflow.datagrid.event_listener.inject_product_for_product_draft.class%
         arguments:
             - '@oro_datagrid.datagrid.request_params'
         tags:
-            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.proposition-grid, method: buildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datgrid.build.before.product-draft-grid, method: buildBefore }
 
     pim_enrich.event_listener.product_grid_before_listener:
         class: %pim_datagrid.event_listener.configure_product_grid_listener.class%

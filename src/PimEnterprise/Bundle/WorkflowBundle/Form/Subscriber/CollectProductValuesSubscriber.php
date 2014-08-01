@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Pim\Bundle\CatalogBundle\Factory\MediaFactory;
 use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use PimEnterprise\Bundle\WorkflowBundle\Proposition\ChangesCollector;
+use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 
 /**
  * A collector of changes that a client is sending to a product edit form
@@ -68,7 +68,7 @@ class CollectProductValuesSubscriber implements EventSubscriberInterface
         foreach ($data['values'] as $key => $changes) {
             if (isset($changes['media']['file']) && $changes['media']['file'] instanceof UploadedFile) {
                 $media = $this->factory->createMedia($changes['media']['file']);
-                $this->mediaManager->handle($media, 'proposition-' . md5(time() . uniqid()));
+                $this->mediaManager->handle($media, 'product-draft-' . md5(time() . uniqid()));
 
                 $data['values'][$key]['media']['filename'] = $media->getFilename();
                 $data['values'][$key]['media']['originalFilename'] = $media->getOriginalFilename();

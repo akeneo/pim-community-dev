@@ -45,7 +45,7 @@ class AddOwnerGroupsParameterSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Add a proposition form view parameter to the template parameters
+     * Add a product draft form view parameter to the template parameters
      *
      * @param GenericEvent $event
      */

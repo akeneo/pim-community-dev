@@ -1,12 +1,12 @@
 parameters:
-    pimee_dashboard.widget.proposition.class: PimEnterprise\Bundle\DashboardBundle\Widget\PropositionWidget
+    pimee_dashboard.widget.product_draft.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget
 
 services:
-    pimee_dashboard.widget.proposition:
-        class: %pimee_dashboard.widget.proposition.class%
+    pimee_dashboard.widget.product_draft:
+        class: %pimee_dashboard.widget.product_draft.class%
         arguments:
             - '@pimee_security.repository.category_access'
-            - '@pimee_workflow.repository.proposition_ownership'
+            - '@pimee_workflow.repository.product_draft_ownership'
             - '@pim_user.context.user'
         tags:
-            - { name: pim_dashboard.widget, alias: propositions }
+            - { name: pim_dashboard.widget, alias: product_drafts }

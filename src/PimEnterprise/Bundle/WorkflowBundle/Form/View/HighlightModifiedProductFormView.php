@@ -7,10 +7,10 @@ use Symfony\Component\Form\FormView;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
-use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\PropositionChangesApplier;
+use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
 
 /**
- * Product form view decorator that adds classes and fields on which proposition value is applied
+ * Product form view decorator that adds classes and fields on which product draft value is applied
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -20,20 +20,20 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     /** @var ProductFormView */
     protected $productFormView;
 
-    /** @var PropositionChangesApplier */
+    /** @var ProductDraftChangesApplier */
     protected $applier;
 
     /** @var UrlGeneratorInterface */
     protected $urlGenerator;
 
     /**
-     * @param ProductFormView           $productFormView
-     * @param PropositionChangesApplier $applier
-     * @param UrlGeneratorInterface     $urlGenerator
+     * @param ProductFormView            $productFormView
+     * @param ProductDraftChangesApplier $applier
+     * @param UrlGeneratorInterface      $urlGenerator
      */
     public function __construct(
         ProductFormViewInterface $productFormView,
-        PropositionChangesApplier $applier,
+        ProductDraftChangesApplier $applier,
         UrlGeneratorInterface $urlGenerator
     ) {
         $this->productFormView = $productFormView;

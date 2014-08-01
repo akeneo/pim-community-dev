@@ -27,6 +27,6 @@
 </div>
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
-<div class="tab-pane" id="propositions" data-url="{{ path('pimee_enrich_product_propositions', { id: product.id, dataLocale: dataLocale }) }}">
+<div class="tab-pane" id="product-drafts" data-url="{{ path('pimee_enrich_product_product_drafts', { id: product.id, dataLocale: dataLocale }) }}">
 </div>
 {% endif %}

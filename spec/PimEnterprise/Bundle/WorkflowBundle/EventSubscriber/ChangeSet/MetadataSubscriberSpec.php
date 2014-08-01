@@ -6,11 +6,11 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
-use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
+use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 
 class MetadataSubscriberSpec extends ObjectBehavior
 {
@@ -23,7 +23,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn([
             ChangeSetEvents::PREPARE_CHANGE => 'addMetadata',
-            PropositionEvents::PRE_APPROVE => 'removeMetadata',
+            ProductDraftEvents::PRE_APPROVE => 'removeMetadata',
         ]);
     }
 
@@ -65,11 +65,11 @@ class MetadataSubscriberSpec extends ObjectBehavior
     }
 
     function it_removes_all_metadata(
-        PropositionEvent $event,
-        Proposition $proposition
+        ProductDraftEvent $event,
+        ProductDraft $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'name_en_US' => [
                 'varchar' => 'foo',
                 '__context__' => [
@@ -88,7 +88,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
             ],
         ]);
 
-        $proposition
+        $productDraft
             ->setChanges([
                 'name_en_US' => [
                     'varchar' => 'foo',
@@ -103,11 +103,11 @@ class MetadataSubscriberSpec extends ObjectBehavior
     }
 
     function it_ignores_missing_metadata_when_removing_them(
-        PropositionEvent $event,
-        Proposition $proposition
+        ProductDraftEvent $event,
+        ProductDraft $productDraft
     ) {
-        $event->getProposition()->willReturn($proposition);
-        $proposition->getChanges()->willReturn([
+        $event->getProductDraft()->willReturn($productDraft);
+        $productDraft->getChanges()->willReturn([
             'name_en_US' => [
                 'varchar' => 'foo',
             ],
@@ -121,7 +121,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
             ],
         ]);
 
-        $proposition
+        $productDraft
             ->setChanges([
                 'name_en_US' => [
                     'varchar' => 'foo',

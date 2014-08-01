@@ -1,15 +1,15 @@
 parameters:
-    pimee_workflow.controller.proposition.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
+    pimee_workflow.controller.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
 
 services:
-    pimee_workflow.controller.proposition:
-        class: %pimee_workflow.controller.proposition.class%
+    pimee_workflow.controller.product_draft:
+        class: %pimee_workflow.controller.product_draft.class%
         parent: pim_enrich.controller.abstract
         scope: request
         arguments:
-            - '@pimee_workflow.repository.proposition'
-            - '@pimee_workflow.manager.proposition'
+            - '@pimee_workflow.repository.product_draft'
+            - '@pimee_workflow.manager.product_draft'
             - '@pim_user.context.user'
 
     pimee_workflow.controller.published_product:

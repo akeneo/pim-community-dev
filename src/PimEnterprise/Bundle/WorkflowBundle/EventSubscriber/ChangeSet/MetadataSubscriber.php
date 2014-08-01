@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 
@@ -26,7 +26,7 @@ class MetadataSubscriber implements EventSubscriberInterface
     {
         return [
             ChangeSetEvents::PREPARE_CHANGE => 'addMetadata',
-            PropositionEvents::PRE_APPROVE => 'removeMetadata',
+            ProductDraftEvents::PRE_APPROVE => 'removeMetadata',
         ];
     }
 
@@ -57,19 +57,19 @@ class MetadataSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Remove metadata before applying proposition changes
+     * Remove metadata before applying product draft changes
      *
-     * @param PropositionEvent $event
+     * @param ProductDraftEvent $event
      */
-    public function removeMetadata(PropositionEvent $event)
+    public function removeMetadata(ProductDraftEvent $event)
     {
-        $proposition = $event->getProposition();
-        $changes = $proposition->getChanges();
+        $productDraft = $event->getProductDraft();
+        $changes = $productDraft->getChanges();
 
         foreach (array_keys($changes) as $key) {
             unset($changes[$key][self::KEY]);
         }
 
-        $proposition->setChanges($changes);
+        $productDraft->setChanges($changes);
     }
 }

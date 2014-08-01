@@ -1,8 +1,8 @@
 parameters:
-    pimee_filter.proposition_utility.class: PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility
+    pimee_filter.product_draft_utility.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility
 
 services:
-    pimee_filter.proposition_utility:
-        class: %pimee_filter.proposition_utility.class%
+    pimee_filter.product_draft_utility:
+        class: %pimee_filter.product_draft_utility.class%
         arguments:
-            - '@pimee_workflow.repository.proposition'
+            - '@pimee_workflow.repository.product_draft'

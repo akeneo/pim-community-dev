@@ -32,16 +32,16 @@
     </li>
     <li>{{ 'Status'|trans }}:
         {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
-            {{ 'pimee_workflow.proposition.status.working_copy'|trans|capitalize }}
+            {{ 'pimee_workflow.product_draft.status.working_copy'|trans|capitalize }}
         {% else %}
-            {% if proposition.inProgress %}
-                {% if proposition.id is not null %}
-                    {{ 'pimee_workflow.proposition.status.in_progress'|trans|capitalize }}
+            {% if productDraft.inProgress %}
+                {% if productDraft.id is not null %}
+                    {{ 'pimee_workflow.product_draft.status.in_progress'|trans|capitalize }}
                 {% else %}
-                    {{ 'pimee_workflow.proposition.status.working_copy'|trans|capitalize }}
+                    {{ 'pimee_workflow.product_draft.status.working_copy'|trans|capitalize }}
                 {% endif %}
             {% else %}
-                {{ 'pimee_workflow.proposition.status.ready'|trans|capitalize }}
+                {{ 'pimee_workflow.product_draft.status.ready'|trans|capitalize }}
             {% endif %}
         {% endif %}
     </li>

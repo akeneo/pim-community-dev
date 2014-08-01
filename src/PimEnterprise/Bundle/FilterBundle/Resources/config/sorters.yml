@@ -2,7 +2,7 @@ parameters:
     pimee_datagrid.extension.sorter.field_sorter.class: PimEnterprise\Bundle\DataGridBundle\Extension\Sorter\Proposition\FieldSorter
 
 services:
-    pimee_datagrid.extension.sorter.proposition.field_sorter:
+    pimee_datagrid.extension.sorter.product_draft.field_sorter:
         class: %pimee_datagrid.extension.sorter.field_sorter.class%
         tags:
-            - { name: pimee_datagrid.extension.sorter, type: proposition_field }
+            - { name: pimee_datagrid.extension.sorter, type: product_draft_field }

@@ -145,17 +145,17 @@ class ProductController extends BaseProductController
     }
 
     /**
-     * Propositions of a product
+     * Drafts of a product
      *
      * @param Request $request
      * @param integer $id
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function propositionsAction(Request $request, $id)
+    public function draftsAction(Request $request, $id)
     {
         return $this->render(
-            'PimEnterpriseEnrichBundle:Product:_propositions.html.twig',
+            'PimEnterpriseEnrichBundle:Product:_product_drafts.html.twig',
             array(
                 'product' => $this->findProductOr404($id),
                 'dataLocale' => $this->getDataLocaleCode()
@@ -177,7 +177,7 @@ class ProductController extends BaseProductController
         $attributesForm->submit($request);
 
         $this->productManager->addAttributesToProduct($product, $availableAttributes);
-        $this->productManager->saveProduct($product, ['bypass_proposition' => true]);
+        $this->productManager->saveProduct($product, ['bypass_product_draft' => true]);
 
         $this->addFlash('success', 'flash.product.attributes added');
 

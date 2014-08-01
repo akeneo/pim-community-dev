@@ -6,7 +6,6 @@ use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
 use Prophecy\Argument;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use Pim\Bundle\CatalogBundle\Repository\ProductCategoryRepositoryInterface;

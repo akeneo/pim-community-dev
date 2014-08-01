@@ -4,8 +4,6 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
-use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\Association;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
