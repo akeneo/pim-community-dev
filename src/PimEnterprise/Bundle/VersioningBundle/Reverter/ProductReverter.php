@@ -6,8 +6,10 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
+use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\ValidatorInterface;
 
 /**
  * Product version reverter that allow to revert a product to a previous snapshot
@@ -26,25 +28,33 @@ class ProductReverter
     /** @var ProductManager */
     protected $productManager;
 
+    /** @var ValidatorInterface */
+    protected $validator;
+
     /**
      * @param ManagerRegistry     $registry
      * @param SerializerInterface $serializer
      * @param ProductManager      $productManager
+     * @param ValidatorInterface  $validator
      */
     public function __construct(
         ManagerRegistry $registry,
         DenormalizerInterface $denormalizer,
-        ProductManager $productManager
+        ProductManager $productManager,
+        ValidatorInterface $validator
     ) {
         $this->registry       = $registry;
         $this->denormalizer   = $denormalizer;
         $this->productManager = $productManager;
+        $this->validator      = $validator;
     }
 
     /**
      * Revert an entity to a previous version
      *
      * @param Version $version
+     *
+     * @throws RevertException
      */
     public function revert(Version $version)
     {
@@ -54,6 +64,12 @@ class ProductReverter
 
         $currentObject = $this->registry->getRepository($class)->find($resourceId);
         $revertedObject = $this->denormalizer->denormalize($data, $class, "csv", ['entity' => $currentObject]);
+
+        /** @var \Symfony\Component\Validator\ConstraintViolationList $violationsList */
+        $violationsList = $this->validator->validate($revertedObject);
+        if ($violationsList->count() > 0) {
+            throw new RevertException('This version can not be restored. Some errors occurs during the validation.');
+        }
 
         $this->productManager->saveProduct($revertedObject);
     }

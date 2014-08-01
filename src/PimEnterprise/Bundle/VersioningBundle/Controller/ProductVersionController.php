@@ -79,16 +79,20 @@ class ProductVersionController extends AbstractDoctrineController
      *
      * @param Version $version
      *
-     * @return RedirectResponse|JsonResponse
+     * @return RedirectResponse
      *
      * @AclAncestor("pimee_versioning_product_version_revert")
      */
     public function revertAction($id)
     {
-        $version = $this->findOr404($this->versionClass, $id);
-        $this->reverter->revert($version);
+        try {
+            $version = $this->findOr404($this->versionClass, $id);
+            $this->reverter->revert($version);
 
-        $this->addFlash('success', 'flash.version.revert.product');
+            $this->addFlash('success', 'flash.version.revert.product');
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+        }
 
         return $this->redirectToRoute('pim_enrich_product_edit', ['id' => $version->getResourceId()]);
     }
