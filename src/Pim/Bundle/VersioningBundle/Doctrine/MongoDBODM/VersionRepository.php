@@ -69,6 +69,7 @@ class VersionRepository extends DocumentRepository implements VersionRepositoryI
     public function createDatagridQueryBuilder(array $params = [])
     {
         $qb = $this->createQueryBuilder();
+        $qb->field('pending')->equals(false);
 
         if (!empty($params['objectClass']) && !empty($params['objectId'])) {
             $qb->field('resourceName')->equals($params['objectClass']);
