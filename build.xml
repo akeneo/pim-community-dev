@@ -79,6 +79,11 @@
                 <include name="behat.yml" />
             </fileset>
         </replaceregexp>
+        <replaceregexp match="tags: .*$" replace="tags: ${behat.tags}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
 
