@@ -78,9 +78,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^the following propositions:$/
+     * @Given /^the following product drafts:$/
      */
-    public function theFollowingPropositions(TableNode $table)
+    public function theFollowingProductDrafts(TableNode $table)
     {
         foreach ($table->getHash() as $data) {
             $data = array_merge(
@@ -93,14 +93,14 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             $product = $this->getProduct($data['product']);
             $product->setLocale($data['locale']);
 
-            $proposition = $this->getPropositionFactory()->createProposition(
+            $productDraft = $this->getProductDraftFactory()->createProposition(
                 $product,
                 $data['author'],
                 []
             );
-            $proposition->setStatus($data['status'] === 'ready' ? Proposition::READY : Proposition::IN_PROGRESS);
-            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($proposition));
-            $manager->persist($proposition);
+            $productDraft->setStatus($data['status'] === 'ready' ? Proposition::READY : Proposition::IN_PROGRESS);
+            $manager = $this->getSmartRegistry()->getManagerForClass(get_class($productDraft));
+            $manager->persist($productDraft);
         }
         $manager->flush();
     }
@@ -227,44 +227,44 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @Given /^I should the following proposition:$/
+     * @Given /^I should the following product drafts:$/
      */
-    public function iShouldTheFollowingProposition(TableNode $table)
+    public function iShouldTheFollowingProductDrafts(TableNode $table)
     {
-        $expectedPropositions = $table->getHash();
-        $actualPropositions = $this->getSession()->getPage()->findAll('css', '#propositions-widget tbody tr');
+        $expectedProductDrafts = $table->getHash();
+        $actualProductDrafts = $this->getSession()->getPage()->findAll('css', '#product-drafts-widget tbody tr');
 
-        $expectedCount = count($expectedPropositions);
-        $actualCount   = count($actualPropositions);
+        $expectedCount = count($expectedProductDrafts);
+        $actualCount   = count($actualProductDrafts);
         if ($expectedCount !== $actualCount) {
             throw new \Exception(
                 sprintf(
-                    'Expecting %d propositions, actually saw %d',
+                    'Expecting %d product drafts, actually saw %d',
                     $expectedCount,
                     $actualCount
                 )
             );
         }
 
-        foreach ($expectedPropositions as $key => $proposition) {
-            $cells = $actualPropositions[$key]->findAll('css', 'td');
-            if ($cells[1]->getText() !== $proposition['author']) {
+        foreach ($expectedProductDrafts as $key => $productDraft) {
+            $cells = $actualProductDrafts[$key]->findAll('css', 'td');
+            if ($cells[1]->getText() !== $productDraft['author']) {
                 throw new \Exception(
                     sprintf(
-                        'Proposition #%d author is expected to be "%s", actually is "%s"',
+                        'Product draft #%d author is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $proposition['author'],
+                        $productDraft['author'],
                         $cells[1]->getText()
                     )
                 );
             }
 
-            if ($cells[2]->getText() !== $proposition['product']) {
+            if ($cells[2]->getText() !== $productDraft['product']) {
                 throw new \Exception(
                     sprintf(
-                        'Proposition #%d product is expected to be "%s", actually is "%s"',
+                        'Product draft #%d product is expected to be "%s", actually is "%s"',
                         $key + 1,
-                        $proposition['product'],
+                        $productDraft['product'],
                         $cells[2]->getText()
                     )
                 );
@@ -329,9 +329,9 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * @return ProductDraftFactory
      */
-    protected function getPropositionFactory()
+    protected function getProductDraftFactory()
     {
-        return $this->getContainer()->get('pimee_workflow.factory.proposition');
+        return $this->getContainer()->get('pimee_workflow.factory.product_draft');
     }
 
     /**

@@ -1,5 +1,5 @@
 @javascript
-Feature: Submit a product changes proposition
+Feature: Submit a product changes product draft
   In order to prevent changes on product when I am not allowed to
   As a contributor
   I need to be able to propose values without changing actual product values
@@ -123,14 +123,14 @@ Feature: Submit a product changes proposition
     And I should see that Handmade is a modified value
 
   @skip
-  Scenario: Successfully accept a date attribute product changes proposition
+  Scenario: Successfully accept a date attribute product changes product draft
     When I change the "ecommerce Release date" to "2014-05-20"
     And I save the product
     Then the english ecommerce release_date of "my-jacket" should be "2014-05-14"
     But the field ecommerce Release date should contain "May 20, 2014"
     And I should see that ecommerce Release date is a modified value
 
-  Scenario: Successfully accept a metric attribute product changes proposition
+  Scenario: Successfully accept a metric attribute product changes product draft
     When I visit the "Sizes" group
     And I change the "Length" to "40"
     And I save the product
