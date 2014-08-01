@@ -28,29 +28,10 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     /**
      * {@inheritdoc}
      */
-    public function createProduct($data, $skipDefaultCategory = false)
+    public function createProduct($data)
     {
         if (!is_array($data)) {
             $data = ['sku' => $data];
-        }
-
-        if (!$skipDefaultCategory) {
-            $defaultCategory = null;
-            foreach ($this->getCategoryRepository()->findAll() as $category) {
-                if ($category->isRoot()) {
-                    $defaultCategory = $category->getCode();
-                }
-            }
-
-            if (!$defaultCategory) {
-                throw new \LogicException(
-                    'Cannot find the default category in which to put all the products non associated to any category'
-                );
-            }
-            $data = array_merge(
-                ['categories' => $defaultCategory],
-                $data
-            );
         }
 
         return parent::createProduct($data);
@@ -77,7 +58,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
                 $attributeCode => $this->replacePlaceholders($row['value'])
             ];
 
-            $this->createProduct($data, true);
+            $this->createProduct($data);
         }
 
         $this->flush();
