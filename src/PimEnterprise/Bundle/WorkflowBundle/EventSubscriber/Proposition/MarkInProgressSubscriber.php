@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 
 /**
@@ -21,16 +21,16 @@ class MarkInProgressSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PropositionEvents::PRE_UPDATE => 'markAsInProgress',
+            ProductDraftEvents::PRE_UPDATE => 'markAsInProgress',
         ];
     }
 
     /**
      * Mark the proposition as in progress
      *
-     * @param PropositionEvent $event
+     * @param ProductDraftEvent $event
      */
-    public function markAsInProgress(PropositionEvent $event)
+    public function markAsInProgress(ProductDraftEvent $event)
     {
         $event
             ->getProposition()

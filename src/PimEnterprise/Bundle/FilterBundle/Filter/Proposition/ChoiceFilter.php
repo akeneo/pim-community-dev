@@ -4,7 +4,7 @@ namespace PimEnterprise\Bundle\FilterBundle\Filter\Proposition;
 
 use Oro\Bundle\FilterBundle\Filter\ChoiceFilter as OroChoiceFilter;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility;
+use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 /**
  * Choice filter for proposition
@@ -25,7 +25,7 @@ class ChoiceFilter extends OroChoiceFilter
             return false;
         }
 
-        $field    = $this->get(PropositionFilterUtility::DATA_NAME_KEY);
+        $field    = $this->get(ProductDraftFilterUtility::DATA_NAME_KEY);
         $operator = $this->getOperator($data['type']);
         $value    = $data['value'];
 

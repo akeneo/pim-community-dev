@@ -1,6 +1,6 @@
 parameters:
     pimee_workflow.manager.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager
-    pimee_workflow.manager.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Manager\PropositionManager
+    pimee_workflow.manager.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager
 
 services:
     pimee_workflow.manager.published_product:

@@ -2,12 +2,12 @@ parameters:
     pimee_workflow.event_subscriber.published_product.check_removal.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\CheckPublishedProductOnRemovalSubscriber
     pimee_workflow.event_subscriber.published_product.consistency_exception.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\PublishedProduct\PublishedProductConsistencyExceptionSubscriber
     pimee_workflow.event_subscriber.product_draft.prepare_uploading_media.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareUploadingMediaSubscriber
-    pimee_workflow.event_subscriber.product_draft.prepare_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PreparePropositionChangesSubscriber
+    pimee_workflow.event_subscriber.product_draft.prepare_changes.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\PrepareProductDraftChangesSubscriber
     pimee_workflow.event_subscriber.product_draft.mark_in_progress.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\MarkInProgressSubscriber
     pimee_workflow.event_subscriber.product_draft.replace_flash_message.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition\ReplaceProductUpdatedFlashMessageSubscriber
     pimee_workflow.event_subscriber.changeset.metadata.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\ChangeSet\MetadataSubscriber
-    pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserPropositionSubscriber
-    pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddPropositionFormViewParameterSubscriber
+    pimee_workflow.event_subscriber.enrich.inject_current_user_product_draft.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\InjectCurrentUserProductDraftSubscriber
+    pimee_workflow.event_subscriber.enrich.add_product_draft_form_view_parameter.class: PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich\AddProductDraftFormViewParameterSubscriber
 
 services:
     ##

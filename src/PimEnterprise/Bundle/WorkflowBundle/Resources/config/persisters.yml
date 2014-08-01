@@ -1,5 +1,5 @@
 parameters:
-    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\PropositionPersister
+    pim_catalog.persister.product.class: PimEnterprise\Bundle\WorkflowBundle\Persistence\ProductDraftPersister
 
 services:
     pim_catalog.persister.product:

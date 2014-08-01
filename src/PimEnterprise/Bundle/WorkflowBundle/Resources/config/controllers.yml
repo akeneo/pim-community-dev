@@ -1,5 +1,5 @@
 parameters:
-    pimee_workflow.controller.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PropositionController
+    pimee_workflow.controller.product_draft.class: PimEnterprise\Bundle\WorkflowBundle\Controller\ProductDraftController
     pimee_workflow.controller.published_product.class: PimEnterprise\Bundle\WorkflowBundle\Controller\PublishedProductController
 
 services:

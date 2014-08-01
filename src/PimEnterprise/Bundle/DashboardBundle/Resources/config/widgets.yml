@@ -1,5 +1,5 @@
 parameters:
-    pimee_dashboard.widget.product_draft.class: PimEnterprise\Bundle\DashboardBundle\Widget\PropositionWidget
+    pimee_dashboard.widget.product_draft.class: PimEnterprise\Bundle\DashboardBundle\Widget\ProductDraftWidget
 
 services:
     pimee_dashboard.widget.product_draft:

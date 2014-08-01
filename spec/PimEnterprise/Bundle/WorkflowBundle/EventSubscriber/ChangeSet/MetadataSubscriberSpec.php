@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
@@ -23,7 +23,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
     {
         $this->getSubscribedEvents()->shouldReturn([
             ChangeSetEvents::PREPARE_CHANGE => 'addMetadata',
-            PropositionEvents::PRE_APPROVE => 'removeMetadata',
+            ProductDraftEvents::PRE_APPROVE => 'removeMetadata',
         ]);
     }
 
@@ -65,7 +65,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
     }
 
     function it_removes_all_metadata(
-        PropositionEvent $event,
+        ProductDraftEvent $event,
         Proposition $proposition
     ) {
         $event->getProposition()->willReturn($proposition);
@@ -103,7 +103,7 @@ class MetadataSubscriberSpec extends ObjectBehavior
     }
 
     function it_ignores_missing_metadata_when_removing_them(
-        PropositionEvent $event,
+        ProductDraftEvent $event,
         Proposition $proposition
     ) {
         $event->getProposition()->willReturn($proposition);

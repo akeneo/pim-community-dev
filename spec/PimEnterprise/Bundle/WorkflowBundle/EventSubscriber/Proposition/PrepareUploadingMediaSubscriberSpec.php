@@ -6,8 +6,8 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 
 class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
 {
@@ -24,13 +24,13 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
     function it_registers_to_the_before_changes_applying_event()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            PropositionEvents::PRE_APPLY => 'prepareMedia'
+            ProductDraftEvents::PRE_APPLY => 'prepareMedia'
         ]);
     }
 
     function it_converts_uploading_media_into_object(
         $factory,
-        PropositionEvent $event,
+        ProductDraftEvent $event,
         Proposition $proposition
     ) {
         $event->getProposition()->willReturn($proposition);
@@ -64,7 +64,7 @@ class PrepareUploadingMediaSubscriberSpec extends ObjectBehavior
     }
 
     function it_ignores_changes_not_related_to_media(
-        PropositionEvent $event,
+        ProductDraftEvent $event,
         Proposition $proposition
     ) {
         $changes = [

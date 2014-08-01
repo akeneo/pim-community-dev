@@ -1,5 +1,5 @@
 parameters:
-    pimee_filter.product_draft_utility.class: PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility
+    pimee_filter.product_draft_utility.class: PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility
 
 services:
     pimee_filter.product_draft_utility:

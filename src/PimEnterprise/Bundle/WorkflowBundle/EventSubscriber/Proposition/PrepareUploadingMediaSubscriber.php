@@ -3,8 +3,8 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Proposition;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Event\PropositionEvent;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvents;
+use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 
 /**
@@ -32,16 +32,16 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            PropositionEvents::PRE_APPLY => 'prepareMedia'
+            ProductDraftEvents::PRE_APPLY => 'prepareMedia'
         ];
     }
 
     /**
      * Convert uploading media into object
      *
-     * @param PropositionEvent $event
+     * @param ProductDraftEvent $event
      */
-    public function prepareMedia(PropositionEvent $event)
+    public function prepareMedia(ProductDraftEvent $event)
     {
         $proposition = $event->getProposition();
         $changes = $proposition->getChanges();

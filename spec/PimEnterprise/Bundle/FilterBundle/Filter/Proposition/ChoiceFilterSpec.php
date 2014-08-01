@@ -5,18 +5,18 @@ namespace spec\PimEnterprise\Bundle\FilterBundle\Filter\Proposition;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Form\FormFactoryInterface;
 use Pim\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
-use PimEnterprise\Bundle\FilterBundle\Filter\PropositionFilterUtility;
+use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory, PropositionFilterUtility $utility)
+    function let(FormFactoryInterface $factory, ProductDraftFilterUtility $utility)
     {
         $this->beConstructedWith($factory, $utility);
 
         $this->init(
             'foo',
             [
-                PropositionFilterUtility::DATA_NAME_KEY => 'data_name_key'
+                ProductDraftFilterUtility::DATA_NAME_KEY => 'data_name_key'
             ]
         );
     }

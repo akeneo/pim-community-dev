@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Model\Product;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PropositionFactory;
+use PimEnterprise\Bundle\WorkflowBundle\Factory\ProductDraftFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\Proposition;
 use Behat\Behat\Context\Step;
 
@@ -327,7 +327,7 @@ class EnterpriseFixturesContext extends BaseFixturesContext
     }
 
     /**
-     * @return PropositionFactory
+     * @return ProductDraftFactory
      */
     protected function getPropositionFactory()
     {
