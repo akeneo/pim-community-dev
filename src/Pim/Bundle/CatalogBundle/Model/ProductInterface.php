@@ -245,4 +245,18 @@ interface ProductInterface
      * {@inheritdoc}
      */
     public function getReference();
+
+    /**
+     * Get a string with categories linked to product
+     *
+     * @return string
+     */
+    public function getCategoryCodes();
+
+    /**
+     * Get a string with groups
+     *
+     * @return string
+     */
+    public function getGroupCodes();
 }

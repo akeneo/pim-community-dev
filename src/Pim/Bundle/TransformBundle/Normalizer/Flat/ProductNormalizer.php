@@ -4,6 +4,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -186,6 +187,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
          * through other normalizers.
          */
         $result = null;
+
+        if (is_array($data)) {
+            $data = new ArrayCollection($data);
+        }
+
         if (is_null($data)) {
             $result = [$fieldName => ''];
         } elseif (is_int($data)) {
