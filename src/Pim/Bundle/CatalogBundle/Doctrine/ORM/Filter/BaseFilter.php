@@ -55,7 +55,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 
         if ($operator === 'EMPTY') {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias)
@@ -65,7 +65,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
             $condition .= ' AND '.$this->prepareCriteriaCondition($backendField, $operator, $value);
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
