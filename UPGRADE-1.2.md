@@ -69,7 +69,7 @@ This can be done thanks to the following queries :
     WHERE a.`group_id` IS NULL;
     
     ALTER TABLE `pim_catalog_attribute`
-    DROP `backend_type`;
+    DROP `backend_storage`;
 ```
 
 MongoDB implementation
