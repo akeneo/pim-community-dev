@@ -5,7 +5,6 @@ namespace Pim\Bundle\InstallerBundle\FixtureLoader;
 use Doctrine\ORM\EntityManagerInterface;
 use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 use Pim\Bundle\BaseConnectorBundle\Reader\File\YamlReader;
-use Pim\Bundle\InstallerBundle\Exception\FixtureLoaderException;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
