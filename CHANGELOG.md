@@ -160,6 +160,7 @@
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
 - Remove backendStorage property on attribute entities
+- Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
