@@ -52,7 +52,7 @@ class FixtureJobLoader
 
         $this->installerDataPath = $this->getInstallerDataPath();
         if (!is_dir($this->installerDataPath)) {
-            throw new FixtureLoaderException(sprintf('Path "%s" not found', $this->installerDataPath));
+            throw new \Exception(sprintf('Path "%s" not found', $this->installerDataPath));
         }
     }
 
