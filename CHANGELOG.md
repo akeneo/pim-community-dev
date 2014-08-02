@@ -48,6 +48,7 @@
 - Add method remove in Category, Group, Attribute, Association type and family managers.
 - Call manager's method remove from these entity controllers
 - Remove the count of products by category in the context of the management of the categories (perf)
+- Remove the hard coded mysql socket file on parameters.yml.dist
 - Define attribute type classes as parameters
 - Products on which mass edit operation is not performed are also ignored from operation finalize method
 - Create specific serializer service for versioning
