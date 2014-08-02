@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
@@ -31,6 +32,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      * @param CatalogContext           $catalogContext
      * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
+     * @param MetricFactory            $metricFactory
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(
@@ -40,6 +42,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
+        MetricFactory $metricFactory,
         array $classes,
         SecurityContextInterface $securityContext
     ) {
@@ -50,6 +53,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
             $catalogContext,
             $productBuilder,
             $massActionManager,
+            $metricFactory,
             $classes
         );
 
