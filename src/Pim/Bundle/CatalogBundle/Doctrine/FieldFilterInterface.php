@@ -9,7 +9,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface FieldFilterInterface
+interface FieldFilterInterface extends FilterInterface
 {
     /**
      * Add an attribute to filter
@@ -21,4 +21,13 @@ interface FieldFilterInterface
      * @return FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value);
+
+    /**
+     * This filter supports the field
+     *
+     * @param string $field
+     *
+     * @return boolean
+     */
+    public function supportsField($field);
 }

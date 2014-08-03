@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements FilterInterface, AttributeFilterInterface, FieldFilterInterface
+class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
 {
     /**
      * @var QueryBuilder
@@ -97,9 +97,38 @@ class BaseFilter implements FilterInterface, AttributeFilterInterface, FieldFilt
     /**
      * {@inheritdoc}
      */
-    public function supports($field, $operator)
+    public function supportsField($field)
     {
         return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean',
+                'pim_catalog_date'
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array(
+            $operator,
+            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN', 'EMPTY']
+        );
     }
 
     /**

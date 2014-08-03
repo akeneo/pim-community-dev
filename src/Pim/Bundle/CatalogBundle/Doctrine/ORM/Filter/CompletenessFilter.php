@@ -6,7 +6,6 @@ use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessJoin;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 
 /**
  * Completeness filter
@@ -15,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class CompletenessFilter implements FilterInterface, FieldFilterInterface
+class CompletenessFilter implements FieldFilterInterface
 {
     /**
      * @var QueryBuilder
@@ -65,8 +64,16 @@ class CompletenessFilter implements FilterInterface, FieldFilterInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($field, $operator)
+    public function supportsField($field)
     {
         return $field === 'completeness';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return true;
     }
 }

@@ -54,4 +54,20 @@ class MetricFilter extends BaseFilter
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_metric';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['=', '<', '<=', '>', '>=', 'EMPTY']);
+    }
 }

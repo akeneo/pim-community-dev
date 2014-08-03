@@ -19,12 +19,11 @@ interface FilterInterface
     public function setQueryBuilder($queryBuilder);
 
     /**
-     * This filter supports the field
+     * This filter supports the operator
      *
-     * @param string $field
      * @param string $operator
      *
      * @return boolean
      */
-    public function supports($field, $operator);
+    public function supportsOperator($field);
 }

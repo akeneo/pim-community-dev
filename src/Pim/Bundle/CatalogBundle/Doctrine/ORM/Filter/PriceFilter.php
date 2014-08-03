@@ -60,6 +60,22 @@ class PriceFilter extends BaseFilter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_price_collection';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['=', '<', '<=', '>', '>=', 'EMPTY']);
+    }
+
+    /**
      * Prepare price condition to join
      *
      * @param string $joinAlias

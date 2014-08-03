@@ -2,6 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+
 /**
  * Date filter
  *
@@ -65,9 +67,18 @@ class DateFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function supports($field, $operator)
+    public function supportsField($field)
     {
         return in_array($field, ['created', 'updated']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        // TODO : avoid to extend BaseFilter
+        return false;
     }
 
     /**

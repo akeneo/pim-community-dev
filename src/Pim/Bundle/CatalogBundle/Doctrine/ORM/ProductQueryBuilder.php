@@ -29,22 +29,10 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     protected $context;
 
     /** @var array */
-    protected $attributeFilters = [
-        'pim_catalog_multiselect'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter',
-        'pim_catalog_simpleselect'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionFilter',
-        'pim_catalog_metric'           => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter',
-        'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
-    ];
+    protected $attributeFilters = [];
 
-    /** @var array priorized field filters */
-    protected $fieldFilters = [
-        /*
-        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-        'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
-        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
-        'created'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
-        'updated'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',*/
-    ];
+    /** @var array of priorized field filters */
+    protected $fieldFilters = [];
 
     /** @var array */
     protected $attributeSorters = [
@@ -104,28 +92,25 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        $attributeType = $attribute->getAttributeType();
-        $allowed = $this->getAllowedOperators($attribute);
-        $operators = is_array($operator) ? $operator : array($operator);
-        foreach ($operators as $key) {
-            if (!in_array($key, $allowed)) {
-                throw new ProductQueryException(
-                    sprintf('%s is not allowed for type %s, use %s', $key, $attributeType, implode(', ', $allowed))
-                );
+        ksort($this->attributeFilters);
+        foreach ($this->attributeFilters as $filters) {
+            foreach ($filters as $filter) {
+                if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
+                    $filter->setQueryBuilder($this->getQueryBuilder());
+                    $filter->addAttributeFilter($attribute, $operator, $value);
+
+                    return $this;
+                }
             }
         }
 
-        if (isset($this->attributeFilters[$attributeType])) {
-            $filterClass = $this->attributeFilters[$attributeType];
-        } else {
-            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
-        }
-
-        // TODO : add a CatalogContextAware interface to avoid to inject context everywhere ?
-        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
-        $filter->addAttributeFilter($attribute, $operator, $value);
-
-        return $this;
+        throw new \LogicException(
+            sprintf(
+                'Attribute "%s" with operator "%s" is not supported',
+                $attribute->getCode(),
+                $operator
+            )
+        );
     }
 
     /**
@@ -136,7 +121,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         ksort($this->fieldFilters);
         foreach ($this->fieldFilters as $filters) {
             foreach ($filters as $filter) {
-                if ($filter->supports($field, $operator)) {
+                if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
                     $filter->setQueryBuilder($this->getQueryBuilder());
                     $filter->addFieldFilter($field, $operator, $value);
 
@@ -205,39 +190,5 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             }
             $this->attributeFilters[$priority][]= $filter;
         }
-    }
-
-    /**
-     * Get allowed operators for related attribute
-     *
-     * @param AbstractAttribute $attribute
-     *
-     * @throws ProductQueryException
-     *
-     * @return array
-     */
-    protected function getAllowedOperators($attribute)
-    {
-        $operators = [
-            'pim_catalog_identifier'       => ['=', 'NOT LIKE', 'LIKE', 'IN'],
-            'pim_catalog_text'             => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
-            'pim_catalog_textarea'         => ['=', 'NOT LIKE', 'LIKE', 'EMPTY'],
-            'pim_catalog_simpleselect'     => ['IN', 'NOT IN'],
-            'pim_catalog_multiselect'      => ['IN', 'NOT IN'],
-            'pim_catalog_number'           => ['=', '<', '<=', '>', '>=', 'EMPTY'],
-            'pim_catalog_boolean'          => ['='],
-            'pim_catalog_date'             => ['=', '<', '<=', '>', '>=', 'BETWEEN', 'EMPTY'],
-            'pim_catalog_price_collection' => ['=', '<', '<=', '>', '>=', 'EMPTY'],
-            'pim_catalog_metric'           => ['=', '<', '<=', '>', '>=', 'EMPTY']
-        ];
-
-        $attributeType = $attribute->getAttributeType();
-        if (!isset($operators[$attributeType])) {
-            throw new \LogicException(
-                sprintf('Attribute type %s is not configured for attribute %s', $attributeType, $attribute->getCode())
-            );
-        }
-
-        return $operators[$attributeType];
     }
 }

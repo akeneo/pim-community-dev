@@ -80,8 +80,25 @@ class EntityFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function supports($field, $operator)
+    public function supportsField($field)
     {
         return in_array($field, ['family', 'groups']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        // TODO : avoid to extend BaseFilter
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return true;
     }
 }
