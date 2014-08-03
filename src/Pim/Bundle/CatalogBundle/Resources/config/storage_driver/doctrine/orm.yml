@@ -9,6 +9,11 @@ parameters:
     pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
     pim_catalog.doctrine.product_query_builder.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder
 
+    pim_catalog.doctrine.query.filter.base.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter
+    pim_catalog.doctrine.query.filter.entity.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter
+    pim_catalog.doctrine.query.filter.date.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter
+    pim_catalog.doctrine.query.filter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter
+
 services:
     pim_catalog.object_manager.product:
         alias: doctrine.orm.entity_manager
@@ -72,3 +77,32 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - %pim_catalog.entity.product.class%
+
+    pim_catalog.doctrine.query.filter.base:
+        class: %pim_catalog.doctrine.query.filter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 50 }
+
+    pim_catalog.doctrine.query.filter.entity:
+        class: %pim_catalog.doctrine.query.filter.entity.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.date:
+        class: %pim_catalog.doctrine.query.filter.date.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.filter.completeness:
+        class: %pim_catalog.doctrine.query.filter.completeness.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+

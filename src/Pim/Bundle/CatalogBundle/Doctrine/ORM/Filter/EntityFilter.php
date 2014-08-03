@@ -76,4 +76,12 @@ class EntityFilter extends BaseFilter
 
         return $this;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($field, $operator)
+    {
+        return in_array($field, ['family', 'groups']);
+    }
 }

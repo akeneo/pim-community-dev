@@ -5,6 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
+use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
@@ -17,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
+class BaseFilter implements FilterInterface, AttributeFilterInterface, FieldFilterInterface
 {
     /**
      * @var QueryBuilder
@@ -34,15 +35,21 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     protected $aliasCounter = 1;
 
     /**
-     * Instanciate a sorter
+     * Instanciate the base filter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
     }
 
     /**
@@ -85,6 +92,14 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
         $this->qb->andWhere($condition);
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($field, $operator)
+    {
+        return true;
     }
 
     /**

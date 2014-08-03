@@ -63,6 +63,14 @@ class DateFilter extends BaseFilter
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function supports($field, $operator)
+    {
+        return in_array($field, ['created', 'updated']);
+    }
+
+    /**
      * Get the literal expression of the date
      *
      * @param string  $data

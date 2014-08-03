@@ -8,6 +8,9 @@ use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
+use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 
 /**
  * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
@@ -33,13 +36,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         'pim_catalog_price_collection' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\PriceFilter'
     ];
 
-    /** @var array */
+    /** @var array priorized field filters */
     protected $fieldFilters = [
+        /*
         'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
         'groups'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\EntityFilter',
         'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\CompletenessFilter',
         'created'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
-        'updated'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',
+        'updated'      => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter',*/
     ];
 
     /** @var array */
@@ -129,16 +133,19 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        if (isset($this->fieldFilters[$field])) {
-            $filterClass = $this->fieldFilters[$field];
-        } else {
-            $filterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter';
+        ksort($this->fieldFilters);
+        foreach ($this->fieldFilters as $filters) {
+            foreach ($filters as $filter) {
+                if ($filter->supports($field, $operator)) {
+                    $filter->setQueryBuilder($this->getQueryBuilder());
+                    $filter->addFieldFilter($field, $operator, $value);
+
+                    return $this;
+                }
+            }
         }
 
-        $filter = new $filterClass($this->getQueryBuilder(), $this->context);
-        $filter->addFieldFilter($field, $operator, $value);
-
-        return $this;
+        throw new \LogicException(sprintf('Field "%s" with operator "%s" is not supported', $field, $operator));
     }
 
     /**
@@ -176,6 +183,28 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
         $sorter->addFieldSorter($field, $direction);
 
         return $this;
+    }
+
+    /**
+     * Register the filter
+     *
+     * @param FilterInterface $filter
+     * @param integer         $priority
+     */
+    public function registerFilter(FilterInterface $filter, $priority)
+    {
+        if ($filter instanceof FieldFilterInterface) {
+            if (!isset($this->fieldFilters[$priority])) {
+                $this->fieldFilters[$priority]= [];
+            }
+            $this->fieldFilters[$priority][]= $filter;
+        }
+        if ($filter instanceof AttributeFilterInterface) {
+            if (!isset($this->attributeFilters[$priority])) {
+                $this->attributeFilters[$priority]= [];
+            }
+            $this->attributeFilters[$priority][]= $filter;
+        }
     }
 
     /**
