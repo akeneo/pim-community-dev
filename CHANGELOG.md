@@ -53,6 +53,7 @@
 - Create specific serializer service for versioning
 - Create a metric factory
 - Improve UI for defining role permissions
+- Throw exception on install command if fixture directory not found
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
