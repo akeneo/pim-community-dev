@@ -60,7 +60,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
         $this->qb->resetDQLPart('join');
 
         $this->qb->leftJoin(
-            $this->qb->getRootAlias().'.'.$attribute->getBackendStorage(),
+            $this->qb->getRootAlias().'.values',
             $joinAlias,
             'WITH',
             $condition

@@ -82,7 +82,6 @@ class AttributeManager
         $attribute = new $class();
         $attribute->setEntityType($this->productClass);
 
-        $attribute->setBackendStorage(AbstractAttributeType::BACKEND_STORAGE_ATTRIBUTE_VALUE);
         if ($type) {
             $attributeType = $this->factory->get($type);
             $attribute->setBackendType($attributeType->getBackendType());

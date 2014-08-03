@@ -28,7 +28,6 @@ class BaseFilterSpec extends ObjectBehavior
         $sku->getId()->willReturn(42);
         $sku->getCode()->willReturn('sku');
         $sku->getBackendType()->willReturn('varchar');
-        $sku->getBackendStorage()->willReturn('values');
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
 
