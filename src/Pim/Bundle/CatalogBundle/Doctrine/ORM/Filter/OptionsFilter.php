@@ -24,7 +24,7 @@ class OptionsFilter extends EntityFilter
 
         if (in_array('empty', $value)) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias)
@@ -37,7 +37,7 @@ class OptionsFilter extends EntityFilter
         } else {
             $this->qb
                 ->innerJoin(
-                    $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                    $this->qb->getRootAlias().'.values',
                     $joinAlias,
                     'WITH',
                     $this->prepareAttributeJoinCondition($attribute, $joinAlias)

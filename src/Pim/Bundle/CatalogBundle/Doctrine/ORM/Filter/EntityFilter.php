@@ -25,7 +25,7 @@ class EntityFilter extends BaseFilter
         // inner join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+            $this->qb->getRootAlias().'.values',
             $joinAlias,
             'WITH',
             $condition
