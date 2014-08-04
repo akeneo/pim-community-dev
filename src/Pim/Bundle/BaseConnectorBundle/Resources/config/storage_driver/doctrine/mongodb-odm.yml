@@ -10,3 +10,6 @@ services:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_versioning.doctrine.orm.pending_version_mass_persister'
             - '@pim_serializer'
+            - '@database_connection'
+            - '@pim_transform.cache.product_cache_clearer'
+
