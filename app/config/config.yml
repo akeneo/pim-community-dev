@@ -1,6 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
+    - { resource: @PimEnrichBundle/Resources/config/pim.yml }
 
 framework:
     #esi:             ~
@@ -32,9 +33,6 @@ twig:
     strict_variables: "%kernel.debug%"
     globals:
         uservoice_key: %uservoice_key%
-    form:
-        resources:
-            - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'
 
 # Assetic Configuration
 assetic:
@@ -89,27 +87,3 @@ swiftmailer:
     username:                 "%mailer_user%"
     password:                 "%mailer_password%"
     spool:                    { type: memory }
-
-pim_catalog:
-    storage_driver: 'doctrine/orm'
-
-services:
-    oro.cache.abstract:
-        abstract:  true
-        class:     Doctrine\Common\Cache\PhpFileCache
-        arguments: [%kernel.cache_dir%]
-    twig.extension.intl:
-         class: Twig_Extensions_Extension_Intl
-         tags:
-             - { name: twig.extension }
-    doctrine.dbal.default.wrapped_connection:
-        factory_service:      doctrine.dbal.default_connection
-        factory_method:       getWrappedConnection
-        class:                PDO
-    session.handler.pdo:
-        class:                Symfony\Component\HttpFoundation\Session\Storage\Handler\PdoSessionHandler
-        arguments:
-            - "@doctrine.dbal.default.wrapped_connection"
-            -
-              db_table:       oro_session
-              db_id_col:      id

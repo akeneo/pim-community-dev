@@ -29,10 +29,13 @@ parameters:
     installed:            ~
 
     installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
-    # use PimEnterpriseInstallerBundle:minimal for minimal data set
+    # use PimInstallerBundle:minimal for minimal data set
 
     uservoice_key:        ~
     mass_edit_limit:      1000
+
+    # Catalog storage driver can be doctrine/orm or doctrine/mongodb-odm
+    pim_catalog_storage_driver: doctrine/orm
 
     ## Uncomment to configure mongodb
     # mongodb_server: 'mongodb://localhost:27017'
