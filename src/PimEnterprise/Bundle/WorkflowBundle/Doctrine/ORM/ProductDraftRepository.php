@@ -64,7 +64,8 @@ class ProductDraftRepository extends EntityRepository implements
                 $qb->expr()->eq('p.status', ProductDraft::READY)
             )
             ->orderBy('p.createdAt', 'desc')
-            ->setParameter('userGroups', $user->getGroups()->toArray());
+            ->setParameter('userGroups', $user->getGroups()->toArray())
+            ->groupBy('p.id');
 
         if (null !== $limit) {
             $qb->setMaxResults($limit);
