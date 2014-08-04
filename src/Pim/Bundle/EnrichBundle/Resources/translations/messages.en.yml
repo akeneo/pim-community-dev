@@ -575,6 +575,7 @@ pim_enrich:
             add_attribute: Add attribute to a family
             remove_attribute: Remove attribute from a family
         attribute_group:
+            index: List attribute groups
             create: Create an attribute group
             edit: Edit an attribute group
             remove: Remove an attribute group

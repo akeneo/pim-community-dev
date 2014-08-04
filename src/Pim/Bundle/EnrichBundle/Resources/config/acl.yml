@@ -131,6 +131,10 @@ pim_enrich_family_remove_atribute:
     group_name: pim_enrich.acl_group.family
 
 # Attribute group
+pim_enrich_attribute_group_index:
+    type: action
+    label: pim_enrich.acl.attribute_group.index
+    group_name: pim_enrich.acl_group.attribute_group
 pim_enrich_attribute_group_create:
     type: action
     label: pim_enrich.acl.attribute_group.create
