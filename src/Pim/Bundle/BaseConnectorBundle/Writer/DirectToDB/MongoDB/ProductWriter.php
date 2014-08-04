@@ -57,10 +57,6 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     protected $cacheClearer;
 
-    /**
-     * Collection
-     */
-    protected $collection;
     
     public function __construct(
         ProductManager $productManager,
