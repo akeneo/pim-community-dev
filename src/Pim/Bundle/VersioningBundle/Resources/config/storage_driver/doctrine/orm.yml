@@ -1,5 +1,6 @@
 parameters:
-    pim_versioning.repository.version.class: Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
+    pim_versioning.repository.version.class:                  Pim\Bundle\VersioningBundle\Doctrine\ORM\VersionRepository
+    pim_versioning.doctrine.orm.pending_mass_persister.class: Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingMassPersister
 
 services:
     pim_versioning.repository.version:
@@ -9,3 +10,14 @@ services:
         arguments: [%pim_versioning.entity.version.class%]
         tags:
             - { name: 'pim_repository' }
+
+    pim_versioning.doctrine.orm.pending_mass_persister:
+        class: %pim_versioning.doctrine.orm.pending_mass_persister.class%
+        arguments:
+            - '@pim_versioning.builder.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_serializer'
+            - %pim_versioning.entity.version.class%
+            - '@database_connection'
+            - '@doctrine.orm.default_entity_manager'
+            - '@pim_catalog.doctrine.table_name_builder'
