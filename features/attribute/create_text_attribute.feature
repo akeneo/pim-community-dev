@@ -17,28 +17,29 @@ Feature: Create an attribute
     And I save the attribute
     Then I should see "Attribute successfully created"
 
-  @info Codes 'associations', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
+  @info Codes 'id', associationTypes', 'categories', 'categoryId', 'completeness', 'enabled', 'family', 'groups', 'associations', 'products', 'scope', 'treeId', 'values', '*_groups' and '*_products' are reserved for grid filters and import/export column names
   Scenario: Fail to create a text attribute with an invalid or reserved code
     Given I change the Code to an invalid value
     And I change the "Attribute group" to "Other"
     And I save the attribute
     Then I should see validation error "Attribute code may contain only letters, numbers and underscores"
     And the following attribute codes should not be available:
-      | code         |
-      | associations |
-      | categories   |
-      | categoryId   |
-      | completeness |
-      | enabled      |
-      | family       |
-      | groups       |
-      | associations |
-      | products     |
-      | scope        |
-      | treeId       |
-      | values       |
-      | my_groups    |
-      | my_products  |
+      | code             |
+      | id               |
+      | associationTypes |
+      | categories       |
+      | categoryId       |
+      | completeness     |
+      | enabled          |
+      | family           |
+      | groups           |
+      | associations     |
+      | products         |
+      | scope            |
+      | treeId           |
+      | values           |
+      | my_groups        |
+      | my_products      |
 
   Scenario: Fail to create a text attribute with an invalid validation regex
     Given I fill in the following information:
@@ -51,6 +52,6 @@ Feature: Create an attribute
 
   Scenario: Fail to create a text attribute when the group is missing
     Given I fill in the following information:
-      | Code              | short_description  |
+      | Code | short_description |
     And I save the attribute
     Then I should see validation error "This value should not be blank."
