@@ -191,7 +191,7 @@ class BatchCommand extends ContainerAwareCommand
      */
     protected function getDefaultEntityManager()
     {
-        return $this->getContainer()->get('doctrine')->getEntityManager();
+        return $this->getContainer()->get('doctrine')->getManager();
     }
 
     /**
