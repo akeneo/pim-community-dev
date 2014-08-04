@@ -25,7 +25,6 @@ class PimVersioningExtension extends Extension
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
         $loader->load('builders.yml');
-        $loader->load('persisters.yml');
         $loader->load('event_subscribers.yml');
         $loader->load('serializers.yml');
 
