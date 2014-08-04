@@ -359,12 +359,11 @@
             </fileset>
         </replaceregexp>
 
-        <replaceregexp
-            file="${basedir}/app/config/config.yml"
-            match="storage_driver: 'doctrine/orm'"
-            replace="storage_driver: 'doctrine/mongodb-odm'"
-            flags="g"
-        />
+        <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*" />
+            </fileset>
+        </replaceregexp>
     </target>
 
     <target name="setupdb" description="Setup db">
