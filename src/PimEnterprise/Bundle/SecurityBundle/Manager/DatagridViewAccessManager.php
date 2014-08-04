@@ -137,7 +137,7 @@ class DatagridViewAccessManager
     protected function getCategoryIdFromViewFilters(DatagridView $view)
     {
         $matches = [];
-        preg_match('/f\[category\]\[value\]\[categoryId\]=(\d|-\d)/', urldecode($view->getFilters()), $matches);
+        preg_match('/f\[category\]\[value\]\[categoryId\]=((?:-)?\d+)/', urldecode($view->getFilters()), $matches);
 
         // no filter on categories
         if (empty($matches[1])) {
