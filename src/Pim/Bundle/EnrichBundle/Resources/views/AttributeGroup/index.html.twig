@@ -1,6 +1,6 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% set currentGroup = group is defined ? group.id : null %}
+{% set currentGroup = group is defined and group is not empty ? group.id : null %}
 
 {% block head_script_component %}
     {{ parent() }}
@@ -29,7 +29,7 @@
                 <ul>
                     {% for groupId, groupName in groups %}
                         <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
-                            <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                            <a href="{{ resource_granted('pim_enrich_attribute_group_edit') ? path('pim_enrich_attributegroup_edit', {'id': groupId}) : 'javascript:void(0);' }}">{{ groupName }}</a>
                         </li>
                     {% endfor %}
                 </ul>
