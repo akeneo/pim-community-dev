@@ -62,6 +62,7 @@ abstract class AbstractPendingMassPersister
         $pendingVersions = [];
         foreach ($versionables as $versionable) {
             $changeset = $this->normalizer->normalize($versionable, 'csv', ['versioning' => true]);
+
             $pendingVersions[] = $this->versionBuilder
                 ->createPendingVersion($versionable, $author, $changeset, $context);
         }
