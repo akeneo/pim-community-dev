@@ -15,9 +15,9 @@ Feature: Define permissions for a category
     And I save the category
     When I edit the "newcategory" category
     And I visit the "Permissions" tab
-    Then I should see the permission View products with user groups IT support, Manager and Redactor
-    And I should see the permission Edit products with user groups IT support, Manager and Redactor
-    And I should see the permission Own products with user groups IT support and Manager
+    Then I should see the permission Allowed to view products with user groups IT support, Manager and Redactor
+    And I should see the permission Allowed to edit products with user groups IT support, Manager and Redactor
+    And I should see the permission Allowed to own products with user groups IT support and Manager
 
   Scenario: By default, update children when the parent's permissions are changed
     Given the following categories:
@@ -29,8 +29,8 @@ Feature: Define permissions for a category
     And I edit the "shoes" category
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Manager |
+      | Allowed to view products | Manager |
     And I save the category
     When I edit the "classy" category
     And I visit the "Permissions" tab
-    Then I should see the permission View products with user groups Manager
+    Then I should see the permission Allowed to view products with user groups Manager

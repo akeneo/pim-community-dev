@@ -23,11 +23,19 @@ class AttributeGroupPermissionsTypeSpec extends ObjectBehavior
         $this->buildForm($builder, []);
 
         $builder
-            ->add('view', 'pimee_security_groups', ['label' => 'attribute group.permissions.view.label'])
+            ->add(
+                'view',
+                'pimee_security_groups',
+                ['label' => 'attribute group.permissions.view.label', 'help' => 'attribute group.permissions.view.help']
+            )
             ->shouldHaveBeenCalled();
 
         $builder
-            ->add('edit', 'pimee_security_groups', ['label' => 'attribute group.permissions.edit.label'])
+            ->add(
+                'edit',
+                'pimee_security_groups',
+                ['label' => 'attribute group.permissions.edit.label', 'help' => 'attribute group.permissions.edit.help']
+            )
             ->shouldHaveBeenCalled();
     }
 
