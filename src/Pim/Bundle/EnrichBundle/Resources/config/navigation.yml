@@ -35,7 +35,7 @@ oro_menu_config:
         pim_enrich_attributegroup:
             label: pim_menu.item.attribute_group
             route: pim_enrich_attributegroup_create
-            aclResourceId: pim_enrich_attribute_group_create
+            aclResourceId: pim_enrich_attribute_group_index
             extras:
                 routes: ['/^pim_enrich_attribute_group_\w+$/']
         pim_enrich_categorytree:
