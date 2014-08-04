@@ -32,7 +32,9 @@ class MediaFactory
     public function createMedia(File $file = null)
     {
         $media = new $this->mediaClass();
-        $media->setFile($file);
+        if ($file) {
+            $media->setFile($file);
+        }
 
         return $media;
     }

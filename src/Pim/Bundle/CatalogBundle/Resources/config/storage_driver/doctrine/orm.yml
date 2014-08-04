@@ -5,8 +5,8 @@ parameters:
     pim_catalog.repository.product_mass_action.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductMassActionRepository
     pim_catalog.repository.product_category.class:                 Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductCategoryRepository
     pim_catalog.doctrine.completeness_generator.class:             Pim\Bundle\CatalogBundle\Doctrine\ORM\CompletenessGenerator
-    pim_catalog.event_listener.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventListener\ORM\InjectProductReferenceSubscriber
-    pim_catalog.event_listener.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventListener\ORM\MetricBaseValuesSubscriber
+    pim_catalog.event_subscriber.orm.inject_product_reference.class: Pim\Bundle\CatalogBundle\EventSubscriber\ORM\InjectProductReferenceSubscriber
+    pim_catalog.event_subscriber.metric_base_values.class:           Pim\Bundle\CatalogBundle\EventSubscriber\ORM\MetricBaseValuesSubscriber
     pim_catalog.doctrine.product_query_builder.class:              Pim\Bundle\CatalogBundle\Doctrine\ORM\ProductQueryBuilder
 
 services:
@@ -24,8 +24,8 @@ services:
             - %pim_catalog.entity.product_value.class%
             - %pim_catalog.entity.attribute.class%
 
-    pim_catalog.event_listener.orm.inject_product_reference:
-        class: %pim_catalog.event_listener.orm.inject_product_reference.class%
+    pim_catalog.event_subscriber.orm.inject_product_reference:
+        class: %pim_catalog.event_subscriber.orm.inject_product_reference.class%
         arguments:
             - %pim_catalog.entity.product.class%
         tags:

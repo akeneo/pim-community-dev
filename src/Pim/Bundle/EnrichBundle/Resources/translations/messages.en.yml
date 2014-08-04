@@ -575,6 +575,7 @@ pim_enrich:
             add_attribute: Add attribute to a family
             remove_attribute: Remove attribute from a family
         attribute_group:
+            index: List attribute groups
             create: Create an attribute group
             edit: Edit an attribute group
             remove: Remove an attribute group
@@ -602,6 +603,18 @@ pim_enrich:
             create: Create an association type
             edit: Edit an association type
             remove: Remove an association type
+    acl_group:
+        association_type: Association types
+        attribute: Attributes
+        attribute_group: Attribute groups
+        category: Categories
+        channel: Channels
+        currency: Currencies
+        family: Families
+        group: Groups
+        group_type: Group types
+        locale: Locales
+        product: Products
 
 # Menu entries
 pim_menu:

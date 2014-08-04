@@ -6,7 +6,7 @@ use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\AssociationTypeEvents;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AssociationTypeRepository;
 
@@ -33,7 +33,7 @@ class AssociationTypeManagerSpec extends ObjectBehavior
         AssociationType $associationType
     ) {
         $eventDispatcher->dispatch(
-            CatalogEvents::PRE_REMOVE_ASSOCIATION_TYPE,
+            AssociationTypeEvents::PRE_REMOVE,
             Argument::type('Symfony\Component\EventDispatcher\GenericEvent')
         )->shouldBeCalled();
 

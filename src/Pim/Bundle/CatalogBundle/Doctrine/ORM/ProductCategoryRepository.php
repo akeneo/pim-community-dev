@@ -137,12 +137,52 @@ class ProductCategoryRepository implements ProductCategoryRepositoryInterface
     {
         $rootAlias  = $qb->getRootAlias();
         if ($include) {
-            $expression = $qb->expr()->in($rootAlias .'.id', $productIds);
+            $expression = $qb->expr()->in($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
 
         } else {
-            $expression = $qb->expr()->notIn($rootAlias .'.id', $productIds);
+            $expression = $qb->expr()->notIn($rootAlias.'.id', $productIds);
             $qb->andWhere($expression);
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByUnclassified($qb)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.md5(microtime());
+        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $qb->andWhere($qb->expr()->isNull($alias.'.id'));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIds($qb, array $categoryIds)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.md5(microtime());
+        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $qb->andWhere($qb->expr()->in($alias.'.id', ':filterCatIds'));
+        $qb->setParameter('filterCatIds', $categoryIds);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilterByCategoryIdsOrUnclassified($qb, array $categoryIds)
+    {
+        $rootAlias = $qb->getRootAlias();
+        $alias = 'filterCategory'.md5(microtime());
+        $qb->leftJoin($rootAlias.'.categories', $alias);
+        $qb->andWhere(
+            $qb->expr()->orX(
+                $qb->expr()->in($alias.'.id', ':filterCatIds'),
+                $qb->expr()->isNull($alias.'.id')
+            )
+        );
+        $qb->setParameter('filterCatIds', $categoryIds);
     }
 }

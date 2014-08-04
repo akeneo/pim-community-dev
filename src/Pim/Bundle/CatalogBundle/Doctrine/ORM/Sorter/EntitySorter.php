@@ -26,7 +26,7 @@ class EntitySorter extends BaseSorter
         // join to value
         $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
         $this->qb->leftJoin(
-            $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+            $this->qb->getRootAlias().'.values',
             $joinAlias,
             'WITH',
             $condition

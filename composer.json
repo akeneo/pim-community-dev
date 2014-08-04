@@ -24,11 +24,8 @@
         "symfony/icu": "1.1.0",
         "akeneo/measure-bundle": "0.2.*",
         "akeneo/batch-bundle": "0.2.*@stable",
-        "oro/platform": "1.0.0-beta8",
-        "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200",
-        "knplabs/knp-menu": "2.0.x-dev#835ee51d911e4d8c9adf129907ebbebfa9a1e906",
-        "knplabs/knp-menu-bundle": "2.0.x-dev#838c4a0f9b0631b37d699d9a7ebd695707298678",
-        "escapestudios/wsse-authentication-bundle": "2.3.x-dev#f1bd591f4a3be8b21288d967ddb3b723db70fee3"
+        "oro/platform": "1.0.0-beta11",
+        "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
@@ -42,7 +39,7 @@
         "behat/common-contexts": "*",
         "sensiolabs/behat-page-object-extension": "1.0.x-dev#6692ad7237597d1f7acfdacf1c7bbb138f56e3a9",
         "kriswallsmith/buzz": ">=0.5",
-        "phpspec/phpspec": "dev-develop@dev",
+        "phpspec/phpspec": "dev-master@dev",
         "akeneo/phpspec-skip-example-extension": "1.0.*@dev",
         "phpunit/phpunit": "3.7.*@stable",
         "squizlabs/php_codesniffer": "1.*@stable",

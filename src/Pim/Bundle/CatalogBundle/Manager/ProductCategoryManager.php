@@ -47,7 +47,7 @@ class ProductCategoryManager
     }
 
     /**
-     * @return CategoryInterface
+     * @return CategoryRepository
      */
     public function getCategoryRepository()
     {

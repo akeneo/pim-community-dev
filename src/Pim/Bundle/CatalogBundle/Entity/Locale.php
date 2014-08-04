@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
@@ -16,12 +15,6 @@ use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
  * @UniqueEntity("code")
- *
- * @Config(
- *     defaultValues={
- *         "entity"={"label"="Locale", "plural_label"="Locales"}
- *     }
- * )
  *
  * @ExclusionPolicy("all")
  */

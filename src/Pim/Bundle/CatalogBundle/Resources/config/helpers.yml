@@ -1,0 +1,10 @@
+parameters:
+    pim_catalog.helper.locale.class: Pim\Bundle\CatalogBundle\Helper\LocaleHelper
+
+services:
+    # Locale helper
+    pim_catalog.helper.locale:
+        class: %pim_catalog.helper.locale.class%
+        arguments:
+            - '@pim_user.context.user'
+            - '@pim_catalog.manager.locale'

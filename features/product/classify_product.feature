@@ -12,9 +12,6 @@ Feature: Classify a product
       | coffee |
     And I am logged in as "Julia"
 
-  #TODO to remove when we'll deal with unclassified rights
-  # in EE, a product is automatically added to a tree
-  @ce
   Scenario: Associate a product to categories
     Given I edit the "tea" product
     When I visit the "Categories" tab

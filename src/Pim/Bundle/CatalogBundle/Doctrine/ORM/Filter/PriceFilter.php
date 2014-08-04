@@ -27,7 +27,7 @@ class PriceFilter extends BaseFilter
 
         if ('EMPTY' === $operator) {
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition
@@ -45,7 +45,7 @@ class PriceFilter extends BaseFilter
             $this->qb->andWhere($exprOr);
         } else {
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition

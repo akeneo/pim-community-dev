@@ -4,6 +4,7 @@ namespace Pim\Bundle\EnrichBundle\MassEditAction\Operation;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Pim\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\CatalogBundle\PimCatalogBundle;
 use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
@@ -13,7 +14,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductMassActionManager;
 use Pim\Bundle\CatalogBundle\Manager\CurrencyManager;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
-use Pim\Bundle\CatalogBundle\Model\ProductMedia;
 use Pim\Bundle\CatalogBundle\Model\Metric;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
@@ -59,14 +59,14 @@ class EditCommonAttributes extends ProductMassEditOperation
     /** @var ProductBuilder */
     protected $productBuilder;
 
+    /** @var MetricFactory */
+    protected $metricFactory;
+
     /** @var string */
     protected $productPriceClass;
 
     /** @var string */
     protected $productMediaClass;
-
-    /** @var string */
-    protected $metricClass;
 
     /**
      * Constructor
@@ -77,6 +77,7 @@ class EditCommonAttributes extends ProductMassEditOperation
      * @param CatalogContext           $catalogContext
      * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
+     * @param MetricFactory            $metricFactory
      * @param array                    $classes
      */
     public function __construct(
@@ -86,6 +87,7 @@ class EditCommonAttributes extends ProductMassEditOperation
         CatalogContext $catalogContext,
         ProductBuilder $productBuilder,
         ProductMassActionManager $massActionManager,
+        MetricFactory $metricFactory,
         array $classes
     ) {
         $this->productManager = $productManager;
@@ -98,7 +100,7 @@ class EditCommonAttributes extends ProductMassEditOperation
         $this->values = new ArrayCollection();
         $this->productPriceClass = $classes['product_price'];
         $this->productMediaClass = $classes['product_media'];
-        $this->metricClass = $classes['metric'];
+        $this->metricFactory = $metricFactory;
     }
 
     /**
@@ -485,8 +487,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     protected function setProductMetric(ProductValueInterface $productValue, ProductValueInterface $value)
     {
         if (null === $metric = $productValue->getMetric()) {
-            $metric = new $this->metricClass();
-            $metric->setFamily($value->getAttribute()->getMetricFamily());
+            $metric = $this->metricFactory->createMetric($value->getAttribute()->getMetricFamily());
             $productValue->setMetric($metric);
         }
         $metric->setUnit($value->getMetric()->getUnit());

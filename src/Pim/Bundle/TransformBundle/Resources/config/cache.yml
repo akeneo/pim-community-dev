@@ -1,0 +1,15 @@
+parameters:
+    pim_transform.cache.doctrine_cache.class: Pim\Bundle\TransformBundle\Cache\DoctrineCache
+    pim_transform.cache.attribute_cache.class: Pim\Bundle\TransformBundle\Cache\AttributeCache
+
+services:
+    pim_transform.cache.doctrine_cache:
+        class: %pim_transform.cache.doctrine_cache.class%
+        arguments:
+            - '@pim_catalog.doctrine.smart_manager_registry'
+
+    pim_transform.cache.attribute_cache:
+        class: %pim_transform.cache.attribute_cache.class%
+        arguments:
+            - '@doctrine'
+            - %pim_catalog.entity.attribute.class%

@@ -79,6 +79,7 @@ class VersionRepository extends EntityRepository implements VersionRepositoryInt
 
         $qb = $this->getEntityManager()->createQueryBuilder()
             ->select('v.id, v.changeset as changeset, v.loggedAt as loggedAt, v.version as version')
+            ->addSelect('v.resourceId as resourceId')
             ->from($this->_entityName, 'v', 'v.id');
 
         $qb

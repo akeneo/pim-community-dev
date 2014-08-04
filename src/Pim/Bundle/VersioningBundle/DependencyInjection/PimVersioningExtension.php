@@ -21,12 +21,12 @@ class PimVersioningExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('parameters.yml');
+        $loader->load('entities.yml');
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
         $loader->load('builders.yml');
         $loader->load('persisters.yml');
-        $loader->load('event_listeners.yml');
+        $loader->load('event_subscribers.yml');
         $loader->load('serializers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');

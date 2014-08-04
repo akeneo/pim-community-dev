@@ -70,6 +70,35 @@ Entity: Entity
 Capabilities: Capabilities
 Save and close: Save and close
 Has role : Has role
+role:
+    title: role
+    edit: Edit role
+    create: Create role
+
+rights:
+    action: Permissions
+
+oro_security:
+    acl_group:
+        user: Users
+        role: Roles
+        group: User groups
+    acl:
+        user:
+            view: List users
+            create: Create a user
+            edit: Edit users
+            delete: Remove a user
+        role:
+            view: List roles
+            create: Create a role
+            edit: Edit roles
+            delete: Remove a role
+        group:
+            view: List user groups
+            create: Create a user group
+            edit: Edit user groups
+            delete: Remove a user group
 
 # Security
 (default): Default permission on entities

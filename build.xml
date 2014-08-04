@@ -74,6 +74,16 @@
             </fileset>
         </replaceregexp>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
+        <replaceregexp match="pim-behat" replace="${behat.base_url}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" />
+            </fileset>
+        </replaceregexp>
+        <replaceregexp match="tags: .*$" replace="tags: ${behat.tags}" byline="true">
+            <fileset dir="${basedir}">
+                <include name="behat.yml" />
+            </fileset>
+        </replaceregexp>
         <copy file="${basedir}/phpdoc.xml.dist" tofile="${basedir}/phpdoc.xml" />
     </target>
 
@@ -355,12 +365,11 @@
             </fileset>
         </replaceregexp>
 
-        <replaceregexp
-            file="${basedir}/app/config/config.yml"
-            match="storage_driver: 'doctrine/orm'"
-            replace="storage_driver: 'doctrine/mongodb-odm'"
-            flags="g"
-        />
+        <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="parameters*" />
+            </fileset>
+        </replaceregexp>
     </target>
 
     <target name="setupdb" description="Setup db">

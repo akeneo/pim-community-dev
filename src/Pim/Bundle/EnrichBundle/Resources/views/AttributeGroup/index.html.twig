@@ -1,6 +1,6 @@
 {% extends 'PimEnrichBundle::layout.html.twig' %}
 
-{% set currentGroup = group is defined ? group.id : null %}
+{% set currentGroup = group is defined and group is not empty ? group.id : null %}
 
 {% block head_script_component %}
     {{ parent() }}
@@ -11,6 +11,7 @@
 {% block content %}
     <div id="group-container" class="row-fluid">
         <div class="sidebar-list">
+            {% set editGranted = resource_granted('pim_enrich_attribute_group_edit') %}
             {% if resource_granted('pim_enrich_attribute_group_sort') %}
                 <form id="pim_enrich_attributegroup_sort" action="{{ path('pim_enrich_attributegroup_sort') }}" method="POST">
                     <ul id="entities-sortable">
@@ -20,7 +21,11 @@
                                     <i class="icon-reorder"></i>
                                     <input name="{{ groupId }}" type="hidden" value="{{ loop.index }}">
                                 </span>
-                                <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                {% if editGranted %}
+                                    <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                                {% else %}
+                                    {{ groupName }}
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>
@@ -29,7 +34,11 @@
                 <ul>
                     {% for groupId, groupName in groups %}
                         <li class="{{ groupId == currentGroup ? 'active' : '' }}" data-id="{{ groupId }}">
-                            <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                            {% if editGranted %}
+                                <a href="{{ path('pim_enrich_attributegroup_edit', {'id': groupId}) }}">{{ groupName }}</a>
+                            {% else %}
+                                {{ groupName }}
+                            {% endif %}
                         </li>
                     {% endfor %}
                 </ul>

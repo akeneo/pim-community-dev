@@ -2,8 +2,7 @@
 
 namespace Pim\Bundle\DataGridBundle\Manager;
 
-use Doctrine\ORM\EntityManager;
-use Oro\Bundle\UserBundle\Entity\User;
+use Doctrine\ORM\EntityRepository;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 use Oro\Bundle\DataGridBundle\Datagrid\Manager as DatagridManager;
@@ -18,8 +17,8 @@ use Oro\Bundle\DataGridBundle\Extension\Formatter\Configuration as FormatterConf
  */
 class DatagridViewManager
 {
-    /** @var EntityManager */
-    protected $entityManager;
+    /** @var EntityRepository */
+    protected $datagridViewRepository;
 
     /** @var DatagridManager */
     protected $datagridManager;
@@ -27,26 +26,25 @@ class DatagridViewManager
     /**
      * Constructor
      *
-     * @param EntityManager   $entityManager
-     * @param DatagridManager $datagridManager
+     * @param EntityRepository $repository
+     * @param DatagridManager  $datagridManager
      */
-    public function __construct(EntityManager $entityManager, DatagridManager $datagridManager)
+    public function __construct(EntityRepository $repository, DatagridManager $datagridManager)
     {
-        $this->entityManager   = $entityManager;
+        $this->datagridViewRepository = $repository;
         $this->datagridManager = $datagridManager;
     }
 
     /**
-     * Returns all public views and the default user's view
+     * Returns all public views
      *
      * @param string $alias
-     * @param User   $user
      *
      * @return DatagridView
      */
-    public function findAllForUser($alias, User $user)
+    public function findPublic($alias)
     {
-        return $this->entityManager->getRepository('PimDataGridBundle:DatagridView')->findBy(
+        return $this->datagridViewRepository->findBy(
             [
                 'datagridAlias' => $alias,
                 'type'          => DatagridView::TYPE_PUBLIC

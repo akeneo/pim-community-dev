@@ -4,7 +4,6 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
-use Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
@@ -18,12 +17,6 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- *
- * @Config(
- *     defaultValues={
- *         "entity"={"label"="Category", "plural_label"="Categories"}
- *     }
- * )
  *
  * @ExclusionPolicy("all")
  */

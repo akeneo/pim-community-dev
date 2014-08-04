@@ -5,9 +5,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Event\FilterProductEvent;
-use Pim\Bundle\CatalogBundle\Event\FilterProductValueEvent;
-use Pim\Bundle\CatalogBundle\CatalogEvents;
+use Pim\Bundle\CatalogBundle\Event\ProductEvent;
+use Pim\Bundle\CatalogBundle\Event\ProductValueEvent;
+use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
@@ -260,6 +260,7 @@ class ProductManager
      * @param boolean            $flush       Whether or not to flush the entity manager
      * @param boolean            $schedule    Whether or not to schedule the product for completeness recalculation
      *
+     * @return null
      * @deprecated use saveAllProducts() instead. Will be removed in 1.3
      */
     public function saveAll(array $products, $recalculate = false, $flush = true, $schedule = true)
@@ -321,8 +322,8 @@ class ProductManager
         $class = $this->getProductName();
 
         $product = new $class();
-        $event = new FilterProductEvent($this, $product);
-        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT, $event);
+        $event = new ProductEvent($this, $product);
+        $this->eventDispatcher->dispatch(ProductEvents::CREATE, $event);
 
         return $product;
     }
@@ -337,8 +338,8 @@ class ProductManager
         $class = $this->getProductValueName();
         $value = new $class();
 
-        $event = new FilterProductValueEvent($this, $value);
-        $this->eventDispatcher->dispatch(CatalogEvents::CREATE_PRODUCT_VALUE, $event);
+        $event = new ProductValueEvent($this, $value);
+        $this->eventDispatcher->dispatch(ProductEvents::CREATE_VALUE, $event);
 
         return $value;
     }
@@ -462,7 +463,7 @@ class ProductManager
      */
     public function remove(ProductInterface $product, $flush = true)
     {
-        $this->eventDispatcher->dispatch(CatalogEvents::PRE_REMOVE_PRODUCT, new GenericEvent($product));
+        $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($product));
 
         $this->objectManager->remove($product);
         if (true === $flush) {

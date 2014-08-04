@@ -5,7 +5,7 @@ parameters:
             selector:    product_value_base
         filter:
             type:        product_value_string
-            parent_type: string
+            ftype:       string
             options:
                 field_options:
                     attr:
@@ -17,7 +17,7 @@ parameters:
             selector:    product_value_base
         filter:
             type:        product_value_string
-            parent_type: string
+            ftype:       string
             options:
                 field_options:
                     attr:
@@ -29,7 +29,7 @@ parameters:
             selector:    product_value_base
         filter:
             type:        product_value_string
-            parent_type: string
+            ftype:       string
             options:
                 field_options:
                     attr:
@@ -41,7 +41,7 @@ parameters:
             selector:    product_value_option
         filter:
             type:        product_value_choice
-            parent_type: ajax_choice
+            ftype:       ajax_choice
             options:
                 field_options:
                     multiple: true
@@ -52,7 +52,7 @@ parameters:
             selector:    product_value_options
         filter:
             type:        product_value_choice
-            parent_type: ajax_choice
+            ftype:       ajax_choice
             options:
                 field_options:
                     multiple: true
@@ -63,7 +63,7 @@ parameters:
             selector:    product_value_base
         filter:
             type:        product_value_number
-            parent_type: number
+            ftype: number
             options:
                 field_options:
                     attr:
@@ -77,7 +77,7 @@ parameters:
             template:      PimDataGridBundle:Property:boolean.html.twig
         filter:
             type:        product_value_boolean
-            parent_type: boolean
+            ftype: boolean
         sorter:          product_value
     pim_datagrid.product.attribute_type.pim_catalog_date:
         column:
@@ -86,7 +86,7 @@ parameters:
             frontend_type: date
         filter:
             type:          product_value_date
-            parent_type:   date
+            ftype:   date
             options:
                 field_options:
                     attr:
@@ -94,7 +94,7 @@ parameters:
         sorter:            product_value
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
-            type:          product_value_field
+            type:          product_value_file
             selector:      product_value_media
             frontend_type: string
         sorter:            ~
@@ -111,7 +111,7 @@ parameters:
             selector:    product_value_price
         filter:
             type:        product_value_price
-            parent_type: price
+            ftype:       price
             options:
                 field_options:
                     attr:
@@ -125,7 +125,7 @@ parameters:
             template:      PimDataGridBundle:Property:metric.html.twig
         filter:
             type:          product_value_metric
-            parent_type:   metric
+            ftype:         metric
             options:
                 field_options:
                     attr:

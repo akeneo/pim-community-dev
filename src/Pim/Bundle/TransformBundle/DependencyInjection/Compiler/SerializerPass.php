@@ -13,7 +13,7 @@ use Pim\Bundle\TransformBundle\DependencyInjection\Reference\ReferenceFactory;
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  *
- * @see Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass
+ * @see       Symfony\Bundle\FrameworkBundle\DependencyInjection\Compiler\SerializerPass
  */
 class SerializerPass implements CompilerPassInterface
 {

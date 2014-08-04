@@ -3,6 +3,7 @@
 namespace spec\Pim\Bundle\CatalogBundle\AttributeType;
 
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Factory\MetricFactory;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactory;
 use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
@@ -14,9 +15,15 @@ use Akeneo\Bundle\MeasureBundle\Manager\MeasureManager;
 
 class MetricTypeSpec extends ObjectBehavior
 {
-    function let(AttributeConstraintGuesser $guesser, MeasureManager $manager)
+    function let(AttributeConstraintGuesser $guesser, MeasureManager $manager, MetricFactory $metricFactory)
     {
-        $this->beConstructedWith(AbstractAttributeType::BACKEND_TYPE_METRIC, 'pim_enrich_metric', $guesser, $manager, 'Pim\Bundle\CatalogBundle\Model\Metric');
+        $this->beConstructedWith(
+            AbstractAttributeType::BACKEND_TYPE_METRIC,
+            'pim_enrich_metric',
+            $guesser,
+            $manager,
+            $metricFactory
+        );
     }
 
     function it_builds_the_attribute_forms(FormFactory $factory, AbstractAttribute $size)

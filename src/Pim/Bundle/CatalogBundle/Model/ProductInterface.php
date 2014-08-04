@@ -208,6 +208,15 @@ interface ProductInterface
     public function getAssociationForType(AssociationType $association);
 
     /**
+     * Get the product association for an association type code
+     *
+     * @param string $typeCode
+     *
+     * @return AbstractAssociation|null
+     */
+    public function getAssociationForTypeCode($typeCode);
+
+    /**
      * Set product associations
      *
      * @param AbstractAssociation[] $associations
@@ -236,4 +245,18 @@ interface ProductInterface
      * {@inheritdoc}
      */
     public function getReference();
+
+    /**
+     * Get a string with categories linked to product
+     *
+     * @return string
+     */
+    public function getCategoryCodes();
+
+    /**
+     * Get a string with groups
+     *
+     * @return string
+     */
+    public function getGroupCodes();
 }

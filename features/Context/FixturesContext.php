@@ -23,6 +23,7 @@ use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductPrice;
 use Pim\Bundle\CatalogBundle\Model\Media;
 use Pim\Bundle\CatalogBundle\Model\Metric;
+use Pim\Bundle\DataGridBundle\Entity\DatagridView;
 
 /**
  * A context for creating entities
@@ -281,8 +282,7 @@ class FixturesContext extends RawMinkContext
         $this->getProductBuilder()->addMissingProductValues($product);
         $this->getProductManager()->handleMedia($product);
 
-        $this->persist($product);
-        $this->flush();
+        $this->getProductManager()->saveProduct($product, ['recalculate' => false]);
 
         return $product;
     }
@@ -483,6 +483,16 @@ class FixturesContext extends RawMinkContext
     {
         foreach ($table->getHash() as $data) {
             $this->createCategory(array($data));
+        }
+    }
+
+    /**
+     * @Given /^the following datagrid views:$/
+     */
+    public function theFollowingDatagridViews(TableNode $table)
+    {
+        foreach ($table->getHash() as $data) {
+            $this->createDatagridView($data);
         }
     }
 
@@ -1597,6 +1607,34 @@ class FixturesContext extends RawMinkContext
         $this->persist($attributeGroup);
 
         return $attributeGroup;
+    }
+
+    /**
+     * Create a datagrid view
+     *
+     * @param array $data
+     *
+     * @return DatagridView
+     */
+    protected function createDatagridView(array $data)
+    {
+        $columns = array_map(
+            function ($column) {
+                return trim($column);
+            },
+            explode(',', $data['columns'])
+        );
+
+        $view = new DatagridView();
+        $view->setLabel($data['label']);
+        $view->setDatagridAlias($data['alias']);
+        $view->setFilters(urlencode($data['filters']));
+        $view->setColumns($columns);
+        $view->setOwner($this->getUser('Peter'));
+
+        $this->persist($view);
+
+        return $view;
     }
 
     /**

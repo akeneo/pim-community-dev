@@ -1,0 +1,42 @@
+parameters:
+    pim_ui.form.type.ajax_entity.class:                Pim\Bundle\UIBundle\Form\Type\AjaxEntityType
+    pim_ui.form.type.number.class:                     Pim\Bundle\UIBundle\Form\Type\NumberType
+    pim_ui.form.type.switch.class:                     Pim\Bundle\UIBundle\Form\Type\SwitchType
+    pim_ui.form.transformer.ajax_entity.factory.class: Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformerFactory
+    pim_ui.form.transformer.ajax_entity.class:         Pim\Bundle\UIBundle\Form\Transformer\AjaxEntityTransformer
+
+services:
+    pim_ui.form.extension.help:
+        class: Pim\Bundle\UIBundle\Form\Extension\FormTypeHelpExtension
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    pim_ui.form.extension.select2:
+        class: Pim\Bundle\UIBundle\Form\Extension\FormTypeSelect2Extension
+        tags:
+            - { name: form.type_extension, alias: form }
+
+    pim_ui.form.type.switch:
+        class: %pim_ui.form.type.switch.class%
+        tags:
+            - { name: form.type, alias: switch }
+
+    pim_ui.form.type.number:
+        class: %pim_ui.form.type.number.class%
+        tags:
+            - { name: form.type, alias: pim_number }
+
+    pim_ui.form.type.ajax_entity:
+        class: %pim_ui.form.type.ajax_entity.class%
+        arguments:
+            - '@router'
+            - '@pim_ui.form.transformer.ajax_entity.factory'
+            - '@pim_user.context.user'
+        tags:
+            - { name: form.type, alias: pim_ajax_entity }
+
+    pim_ui.form.transformer.ajax_entity.factory:
+        class: %pim_ui.form.transformer.ajax_entity.factory.class%
+        arguments:
+            - '@doctrine'
+            - %pim_ui.form.transformer.ajax_entity.class%

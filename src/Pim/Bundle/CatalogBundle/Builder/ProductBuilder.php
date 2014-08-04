@@ -58,11 +58,11 @@ class ProductBuilder
     /**
      * Constructor
      *
-     * @param ObjectManager   $objectManager     Storage manager
-     * @param ChannelManager  $channelManager    Channel Manager
-     * @param LocaleManager   $localeManager     Locale Manager
-     * @param CurrencyManager $currencyManager   Currency manager
-     * @param array           $classes           Product, product value and price classes
+     * @param ObjectManager   $objectManager   Storage manager
+     * @param ChannelManager  $channelManager  Channel Manager
+     * @param LocaleManager   $localeManager   Locale Manager
+     * @param CurrencyManager $currencyManager Currency manager
+     * @param array           $classes         Product, product value and price classes
      */
     public function __construct(
         ObjectManager $objectManager,

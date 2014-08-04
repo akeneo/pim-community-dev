@@ -47,8 +47,12 @@ class FixtureJobLoader
         $this->reader = $container->get('pim_base_connector.reader.file.yaml');
         $this->em = $container->get('doctrine.orm.entity_manager');
         $this->processor = $container->get('pim_base_connector.processor.job_instance');
-        $this->installerDataPath = $this->getInstallerDataPath();
         $this->jobsFilePaths = $jobsFilePaths;
+
+        $this->installerDataPath = $this->getInstallerDataPath();
+        if (!is_dir($this->installerDataPath)) {
+            throw new \Exception(sprintf('Path "%s" not found', $this->installerDataPath));
+        }
     }
 
     /**
@@ -59,9 +63,12 @@ class FixtureJobLoader
     public function load()
     {
         $rawJobs = array();
+        $fileLocator = $this->container->get('file_locator');
 
         foreach ($this->jobsFilePaths as $jobsFilePath) {
-            $this->reader->setFilePath($jobsFilePath);
+
+            $realPath = $fileLocator->locate('@'.$jobsFilePath);
+            $this->reader->setFilePath($realPath);
 
             // read the jobs list
             while ($rawJob = $this->reader->read()) {

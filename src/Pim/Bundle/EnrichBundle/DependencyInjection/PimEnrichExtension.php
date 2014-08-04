@@ -3,12 +3,9 @@
 namespace Pim\Bundle\EnrichBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Symfony\Component\Yaml\Parser as YamlParser;
-use Symfony\Component\Config\Resource\FileResource;
 
 /**
  * Enrich extension
@@ -17,7 +14,7 @@ use Symfony\Component\Config\Resource\FileResource;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PimEnrichExtension extends Extension implements PrependExtensionInterface
+class PimEnrichExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -27,8 +24,6 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $config = $this->processConfiguration(new Configuration(), $configs);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('parameters.yml');
-        $loader->load('services.yml');
         $loader->load('controllers.yml');
         $loader->load('handlers.yml');
         $loader->load('forms.yml');
@@ -38,106 +33,14 @@ class PimEnrichExtension extends Extension implements PrependExtensionInterface
         $loader->load('attribute_icons.yml');
         $loader->load('mass_actions.yml');
         $loader->load('factories.yml');
-        $loader->load('event_subscribers.yml');
+        $loader->load('twig.yml');
+        $loader->load('providers.yml');
+        $loader->load('event_listeners.yml');
+        $loader->load('form_subscribers.yml');
+        $loader->load('resolvers.yml');
 
         if ($config['record_mails']) {
             $loader->load('mail_recorder.yml');
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function prepend(ContainerBuilder $container)
-    {
-        $bundles = $container->getParameter('kernel.bundles');
-
-        $prependConfig = array(
-            'TwigBundle'                     => 'twig',
-            'AsseticBundle'                  => 'assetic',
-            'DoctrineBundle'                 => 'doctrine',
-            'KnpPaginatorBundle'             => 'knp_paginator',
-            'FOSRestBundle'                  => 'fos_rest',
-            'FOSJsRoutingBundle'             => 'fos_js_routing',
-            'BeSimpleSoapBundle'             => 'be_simple_soap',
-            'StofDoctrineExtensionsBundle'   => 'stof_doctrine_extensions',
-            'EscapeWSSEAuthenticationBundle' => 'escape_wsse_authentication',
-            'LiipImagineBundle'              => 'liip_imagine',
-            'GenemuFormBundle'               => 'genemu_form',
-            'OroUIBundle'                    => 'oro_ui',
-            'OroTranslationBundle'           => 'oro_translation',
-            'JMSDiExtraBundle'               => 'jms_di_extra',
-            'OroEntityExtendBundle'          => 'oro_entity_extend',
-            'OroFilterBundle'                => 'oro_filter',
-            'AkeneoBatchBundle'              => 'akeneo_batch',
-            'KnpGaufretteBundle'             => 'knp_gaufrette',
-            'JDareClankBundle'               => 'clank',
-            'A2lixTranslationFormBundle'     => 'a2lix_translation_form',
-            'APYJsFormValidationBundle'      => 'apy_js_form_validation',
-            'LexikMaintenanceBundle'         => 'lexik_maintenance',
-            'OroRequireJSBundle'             => 'oro_require_js',
-            'OroHelpBundle'                  => 'oro_help',
-            'OroUserBundle'                  => 'oro_user',
-        );
-
-        foreach ($prependConfig as $bundle => $alias) {
-            if (isset($bundles[$bundle])) {
-                $this->prependExtensionConfig($container, $alias);
-            }
-        }
-    }
-
-    /**
-     * Prepend configuration of a bundle to the container
-     *
-     * @param ContainerBuilder $container
-     * @param string           $extensionAlias
-     */
-    private function prependExtensionConfig(ContainerBuilder $container, $extensionAlias)
-    {
-        $container->prependExtensionConfig(
-            $extensionAlias,
-            $this->getBundleConfig($container, $extensionAlias)
-        );
-    }
-
-    /**
-     * Get the bundle configuration from a file
-     *
-     * @param ContainerBuilder $container
-     * @param string           $extensionAlias
-     *
-     * @return array
-     */
-    private function getBundleConfig(ContainerBuilder $container, $extensionAlias)
-    {
-        $configFile = realpath(
-            sprintf('%s/../Resources/config/bundles/%s.yml', __DIR__, $extensionAlias)
-        );
-
-        if (!is_file($configFile)) {
-            throw new \InvalidArgumentException(
-                sprintf('Could not load file %s', $configFile)
-            );
-        }
-
-        $container->addResource(new FileResource($configFile));
-        $yamlParser = new YamlParser();
-        $config = $yamlParser->parse(file_get_contents($configFile));
-
-        if (!array_key_exists($extensionAlias, $config)) {
-            $configKeys = array_keys($config);
-
-            throw new \RuntimeException(
-                sprintf(
-                    'Found file %s but it didn\'t start with "%s", got "%s" instead.',
-                    $configFile,
-                    $extensionAlias,
-                    reset($configKeys)
-                )
-            );
-        }
-
-        return $config[$extensionAlias];
     }
 }

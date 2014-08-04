@@ -3,7 +3,6 @@
 namespace Pim\Bundle\ImportExportBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
  * The Pim Import Export Bundle
@@ -14,12 +13,4 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 class PimImportExportBundle extends Bundle
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function build(ContainerBuilder $container)
-    {
-        $container
-            ->addCompilerPass(new DependencyInjection\Compiler\ResolveDoctrineOrmTargetEntitiesPass());
-    }
 }
