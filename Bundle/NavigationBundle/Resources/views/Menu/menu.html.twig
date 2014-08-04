@@ -1,3 +1,4 @@
+{% extends 'OroNavigationBundle:Menu:menu_base.html.twig' %}
 {% macro attributes(attributes) %}
     {% for name, value in attributes %}
         {%- if value is not none and value is not sameas(false) -%}
