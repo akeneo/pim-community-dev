@@ -5,26 +5,28 @@ Permissions: Permissions
 pane.accordion.permissions: Permissions
 
 attribute group.permissions:
-    view.label: Permissions to view attributes
-    edit.label: Permissions to edit attributes
+    view.label: Allowed to view attributes
+    view.help: Allow to view the products in this attribute group
+    edit.label: Allowed to edit attributes
+    edit.help: Allow to view the products in this attribute group
     no_access_to_attributes: You don't have access to any attributes of this product. Please contact your administrator.
 
 category.permissions:
-    view.label: View products
+    view.label: Allowed to view products
     view.help: Allow to view the products in this category
-    edit.label: Edit products
+    edit.label: Allowed to edit products
     edit.help: Allow to edit the products in this category (implies the view permission)
-    own.label: Own products
-    own.help: Allow to own the products in this category (implies the edit permission)
+    own.label: Allowed to own products
+    own.help: Allowed to review, publish, unpublish, classify, associate products in this category (implies the edit permission)
     no_access_to_products: You don't have access to products in any tree, please contact your administrator
     apply_on_children.label: Apply changes on children
     apply_on_children.help: Copy the permissions changes on all children, existing permissions on children are kept
 
 locale.permissions:
-    view.label: View products data
-    view.help: Allow to view the products data in this locale
-    edit.label: Edit products data
-    edit.help: Allow to edit the products data in this locale (implies the view permission)
+    view.label: Allowed to view product information
+    view.help: Allow to view the product information in this locale
+    edit.label: Allowed to edit product information
+    edit.help: Allow to edit the product information in this locale (implies the view permission)
     no_access_to_products: You don't have access to product data in any activated locale, please contact your administrator
 
 pimee_enrich:

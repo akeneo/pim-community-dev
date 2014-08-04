@@ -14,12 +14,12 @@ Feature: Define permissions for an attribute group
 
   Scenario: Successfully display the fields for attribute group permissions
     Given I visit the "Permissions" tab
-    Then I should see the Permissions to view attributes and Permissions to edit attributes fields
+    Then I should see the Allowed to view attributes and Allowed to edit attributes fields
 
   Scenario: Successfully display editable fields for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to edit attributes | IT support, Manager |
+      | Allowed to edit attributes | IT support, Manager |
     And I save the attribute group
     And I edit the "foo" product
     Then I should see the SKU, Name and Manufacturer fields
@@ -33,8 +33,8 @@ Feature: Define permissions for an attribute group
   Scenario: Successfully disable read-only fields for an attribute group
     Given I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to view attributes | IT support, Manager |
-      | Permissions to edit attributes | Manager             |
+      | Allowed to view attributes | IT support, Manager |
+      | Allowed to edit attributes | Manager             |
     And I save the attribute group
     And I edit the "foo" product
     Then I should see the SKU, Name and Manufacturer fields

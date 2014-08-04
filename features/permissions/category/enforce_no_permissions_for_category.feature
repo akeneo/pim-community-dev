@@ -17,9 +17,9 @@ Feature: Enforce no permissions for a category
     And I am on the "2014_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Manager |
-      | Edit products | Manager |
-      | Own products  | Manager |
+      | Allowed to view products | Manager |
+      | Allowed to edit products | Manager |
+      | Allowed to own products  | Manager |
     And I save the category
     And I am on the products page
     Then I should be on the homepage
@@ -35,9 +35,9 @@ Feature: Enforce no permissions for a category
     And I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Manager |
-      | Edit products | Manager |
-      | Own products  | Manager |
+      | Allowed to view products | Manager |
+      | Allowed to edit products | Manager |
+      | Allowed to own products  | Manager |
     And I save the category
     And I am on the products page
     And the grid should contain 2 elements
@@ -62,7 +62,7 @@ Feature: Enforce no permissions for a category
     When I am on the "protected_tree" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Manager |
+      | Allowed to view products | Manager |
     And I save the category
     When I am on the products page
     Then the grid should contain 4 elements
@@ -79,9 +79,9 @@ Feature: Enforce no permissions for a category
     And I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | IT support |
-      | Edit products | IT support |
-      | Own products  | IT support |
+      | Allowed to view products | IT support |
+      | Allowed to edit products | IT support |
+      | Allowed to own products  | IT support |
     And I save the category
     And I edit the "grantedOne" product
     When I visit the "Associations" tab
@@ -97,9 +97,9 @@ Feature: Enforce no permissions for a category
     And I am on the "summer_collection" category page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | View products | Manager |
-      | Edit products | Manager |
-      | Own products  | Manager |
+      | Allowed to view products | Manager |
+      | Allowed to edit products | Manager |
+      | Allowed to own products  | Manager |
     And I save the category
     Given I am on the "hm_jackets" variant group page
     Then the grid should contain 0 elements
