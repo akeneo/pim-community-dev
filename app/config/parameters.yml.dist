@@ -29,7 +29,7 @@ parameters:
     installed:            ~
 
     installer_data:       PimEnterpriseInstallerBundle:icecat_demo_dev
-    # use PimInstallerBundle:minimal for minimal data set
+    # use PimEnterpriseInstallerBundle:minimal for minimal data set
 
     uservoice_key:        ~
     mass_edit_limit:      1000
