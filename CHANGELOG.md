@@ -1,4 +1,24 @@
-# 1.2.0
+# 1.2.0-x
+
+## Improvements
+- Create a metric factory
+- Improve UI for defining role permissions
+- Throw exception on install command if fixture directory not found
+- Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
+- Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
+- Replace buttons by icons to manage datagrid views
+
+## Bug fixes
+- The message 'there are unsaved changes' is missing in the Role edit form
+- Display a file attribute attribute as column in product grid displays Array
+- History tab crashes when product imported without real time versioning
+- Creating an attribute with the code "id" should be forbidden
+
+## BC breaks
+- Remove backendStorage property on attribute entities
+- Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
+
+# 1.2.0-RC1
 
 ## Features
 - Add an option to automatically sort the choices of simple and multi select attributes
@@ -51,11 +71,6 @@
 - Define attribute type classes as parameters
 - Products on which mass edit operation is not performed are also ignored from operation finalize method
 - Create specific serializer service for versioning
-- Create a metric factory
-- Improve UI for defining role permissions
-- Throw exception on install command if fixture directory not found
-- Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
-- Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
@@ -162,8 +177,6 @@
 - Replace the filter config parent_type by ftype
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
-- Remove backendStorage property on attribute entities
-- Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
