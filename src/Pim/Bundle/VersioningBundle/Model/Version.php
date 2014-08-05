@@ -94,7 +94,7 @@ class Version
      *
      * @param integer $id
      *
-     * @return AbstractProduct
+     * @return Version
      */
     public function setId($id)
     {
