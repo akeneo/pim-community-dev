@@ -20,3 +20,5 @@ services:
             - '@pim_user.context.user'
             - '@pimee_workflow.manager.published_product'
             - '@pim_versioning.manager.version'
+            - '@pim_catalog.manager.completeness'
+            - '@pim_catalog.manager.channel'
