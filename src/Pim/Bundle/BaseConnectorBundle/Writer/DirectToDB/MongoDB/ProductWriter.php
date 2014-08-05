@@ -5,7 +5,7 @@ namespace Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
-use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 
@@ -39,7 +39,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var DocumentManager */
      protected $documentManager;
 
-    /**@var PendingVersionMassPersister */
+    /**@var PendingMassPersister */
      protected $pendingPersister;
 
     /** @var NormalizerInterface */
@@ -49,15 +49,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $collection;
 
     /**
-     * @param ProductManager              $productManager
-     * @param DocumentManager             $documentManager
-     * @param PendingVersionMassPersister $pendingPersister
-     * @param NormalizerInterface         $normalizer
+     * @param ProductManager       $productManager
+     * @param DocumentManager      $documentManager
+     * @param PendingMassPersister $pendingPersister
+     * @param NormalizerInterface  $normalizer
      */
     public function __construct(
         ProductManager $productManager,
         DocumentManager $documentManager,
-        PendingVersionMassPersister $pendingPersister,
+        PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer
     ) {
         $this->productManager   = $productManager;
