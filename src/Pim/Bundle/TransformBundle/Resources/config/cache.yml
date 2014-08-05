@@ -23,6 +23,7 @@ services:
             - '@doctrine'
         calls:
             - [ addNonClearableEntity, [ %pim_catalog.entity.attribute.class% ] ]
+            - [ addNonClearableEntity, [ %pim_catalog.entity.category.class% ] ]
 
     pim_transform.converter.metric:
         class: %pim_transform.converter.metric.class%
