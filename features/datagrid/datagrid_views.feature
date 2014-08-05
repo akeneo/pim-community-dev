@@ -19,10 +19,8 @@ Feature: Datagrid views
 
   Scenario: Successfully create a new view
     Given I filter by "Family" with value "Sneakers"
-    And I press the "Create view" button
-    And I fill in the following information in the popin:
+    And I create the view:
       | label | Sneakers only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see "Datagrid view successfully created"
     And I should see "Views Sneakers only"
@@ -38,10 +36,8 @@ Feature: Datagrid views
 
   Scenario: Successfully update a view
     Given I filter by "Family" with value "Boots"
-    And I press the "Create view" button
-    And I fill in the following information in the popin:
+    And I create the view:
       | label | Some shoes |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see "Datagrid view successfully created"
     And I should see "Views Some shoes"
@@ -50,7 +46,7 @@ Feature: Datagrid views
     When I hide the filter "Family"
     And I show the filter "Family"
     And I filter by "Family" with value "Sneakers"
-    And I press the "Update" button
+    And I update the view
     And I apply the "Some shoes" view
     Then I should be on the products page
     And I should see "Views Some shoes"
@@ -59,10 +55,8 @@ Feature: Datagrid views
 
   Scenario: Successfully delete a view
     Given I filter by "Family" with value "Boots"
-    And I press the "Create view" button
-    And I fill in the following information in the popin:
+    And I create the view:
       | label | Boots only |
-    And I press the "OK" button
     Then I should be on the products page
     And I should see "Datagrid view successfully created"
     And I should see "Views Boots only"
