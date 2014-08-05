@@ -56,6 +56,7 @@
 - Throw exception on install command if fixture directory not found
 - Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
 - Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
+- Replace buttons by icons to manage datagrid views
 
 ## Bug fixes
 - Replaced usage of Symfony process to launch background job with a simple exec, more reliable on a heavily loaded environment
