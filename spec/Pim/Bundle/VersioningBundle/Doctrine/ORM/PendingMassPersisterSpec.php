@@ -16,7 +16,7 @@ use Doctrine\DBAL\Connection;
 
 use PhpSpec\ObjectBehavior;
 
-class PendingVersionMassPersisterSpec extends ObjectBehavior
+class PendingMassPersisterSpec extends ObjectBehavior
 {
     function let(
         VersionBuilder $versionBuilder,
@@ -30,10 +30,10 @@ class PendingVersionMassPersisterSpec extends ObjectBehavior
             $versionBuilder,
             $versionManager,
             $normalizer,
+            'VersionClass',
             $connection,
             $entityManager,
-            $tableNameBuilder,
-            'VersionClass'
+            $tableNameBuilder
         );
     }
 
