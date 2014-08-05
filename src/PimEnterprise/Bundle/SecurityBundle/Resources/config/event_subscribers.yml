@@ -4,6 +4,7 @@ parameters:
     pimee_security.event_subscriber.enrich.job_permissions.class:            PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\JobPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_owner_groups_parameter.class:  PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddOwnerGroupsParameterSubscriber
     pimee_security.event_subscriber.enrich.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber
+    pimee_security.event_subscriber.enrich.add_default_user_group.class:     PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber
 
 services:
     pimee_security.event_subscriber.enrich.disable_product_value_form:
@@ -39,6 +40,14 @@ services:
     pimee_security.event_subscriber.enrich.add_category_permissions:
         class: %pimee_security.event_subscriber.enrich.add_category_permissions.class%
         arguments:
+            - '@pimee_security.manager.category_access'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.enrich.add_default_user_group:
+        class: %pimee_security.event_subscriber.enrich.add_default_user_group.class%
+        arguments:
+            - '@pim_user.repository.group'
             - '@pimee_security.manager.category_access'
         tags:
             - { name: kernel.event_subscriber }

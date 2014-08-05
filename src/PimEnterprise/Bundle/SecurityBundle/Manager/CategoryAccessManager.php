@@ -372,6 +372,7 @@ class CategoryAccessManager
             ->setOwnProducts($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
+        $this->getObjectManager()->flush();
     }
 
     /**
