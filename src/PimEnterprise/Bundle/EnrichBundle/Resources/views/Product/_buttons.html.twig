@@ -11,11 +11,11 @@
 {% endif %}
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
-    {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id, dataLocale: dataLocale}), {icon: 'cloud-upload'}) }}
+    {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id, dataLocale: dataLocale}), {class: 'btn-info', icon: 'cloud-upload'}) }}
 {% elseif productDraft.inProgress and productDraft.id is not null %}
-    {{ elements.link('btn.send for approval', path('pimee_workflow_product_draft_ready', { id: productDraft.id, dataLocale: dataLocale })) }}
+    {{ elements.link('btn.send for approval', path('pimee_workflow_product_draft_ready', { id: productDraft.id, dataLocale: dataLocale }), {class: 'btn-info'}) }}
 {% elseif not productDraft.inProgress %}
-    <span href="#" class="btn disabled">{{ 'btn.sent for approval'|trans }}</span>
+    <span href="#" class="btn btn-info disabled">{{ 'btn.sent for approval'|trans }}</span>
 {% endif %}
 
 {{ elements.submitDropdownBtn(
