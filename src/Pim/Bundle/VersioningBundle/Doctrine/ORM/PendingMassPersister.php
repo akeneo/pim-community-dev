@@ -6,12 +6,8 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Driver\Connection;
 
@@ -56,10 +52,10 @@ class PendingMassPersister extends AbstractPendingMassPersister
         VersionBuilder $versionBuilder,
         VersionManager $versionManager,
         NormalizerInterface $normalizer,
+        $versionClass,
         Connection $connection,
         EntityManager $entityManager,
-        TableNameBuilder $tableNameBuilder,
-        $versionClass
+        TableNameBuilder $tableNameBuilder
     ) {
         parent::__construct($versionBuilder, $versionManager, $normalizer, $versionClass);
         $this->connection       = $connection;

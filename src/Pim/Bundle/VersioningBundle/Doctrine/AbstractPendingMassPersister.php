@@ -4,7 +4,6 @@ namespace Pim\Bundle\VersioningBundle\Doctrine;
 
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

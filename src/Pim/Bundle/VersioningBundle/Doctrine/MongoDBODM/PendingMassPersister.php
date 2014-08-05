@@ -4,15 +4,9 @@ namespace Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM;
 
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
-use Pim\Bundle\VersioningBundle\Model\Version;
 use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
-
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\VersionNormalizer;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Doctrine\ODM\MongoDB\DocumentManager;
 
 /**
@@ -32,8 +26,8 @@ class PendingMassPersister extends AbstractPendingMassPersister
      * @param VersionBuilder      $versionBuilder
      * @param VersionManager      $versionManager
      * @param NormalizerInterface $normalizer
-     * @param DocumentManager     $documentManager
      * @param string              $versionClass
+     * @param DocumentManager     $documentManager
      */
     public function __construct(
         VersionBuilder $versionBuilder,
