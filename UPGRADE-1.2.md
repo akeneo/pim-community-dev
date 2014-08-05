@@ -66,7 +66,10 @@ This can be done thanks to the following queries :
 
     UPDATE `pim_catalog_attribute` a
     SET a.`group_id` = (SELECT g.`id` FROM `pim_catalog_attribute_group` g WHERE g.`code`='other')
-    WHERE a.`group_id` IS NULL
+    WHERE a.`group_id` IS NULL;
+    
+    ALTER TABLE `pim_catalog_attribute`
+    DROP `backend_storage`;
 ```
 
 MongoDB implementation

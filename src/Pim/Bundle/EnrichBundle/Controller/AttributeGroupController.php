@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Form\Handler\AttributeGroupHandler;
@@ -33,6 +34,11 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
  */
 class AttributeGroupController extends AbstractDoctrineController
 {
+    /**
+     * @var SecurityFacade
+     */
+    protected $securityFacade;
+
     /**
      * @var AttributeGroupHandler
      */
@@ -65,6 +71,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param TranslatorInterface      $translator
      * @param EventDispatcherInterface $eventDispatcher
      * @param ManagerRegistry          $doctrine
+     * @param SecurityFacade           $securityFacade
      * @param AttributeGroupHandler    $formHandler
      * @param Form                     $form
      * @param AttributeGroupManager    $manager
@@ -80,6 +87,7 @@ class AttributeGroupController extends AbstractDoctrineController
         TranslatorInterface $translator,
         EventDispatcherInterface $eventDispatcher,
         ManagerRegistry $doctrine,
+        SecurityFacade $securityFacade,
         AttributeGroupHandler $formHandler,
         Form $form,
         AttributeGroupManager $manager,
@@ -97,6 +105,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $doctrine
         );
 
+        $this->securityFacade = $securityFacade;
         $this->formHandler    = $formHandler;
         $this->form           = $form;
         $this->manager        = $manager;
@@ -106,17 +115,26 @@ class AttributeGroupController extends AbstractDoctrineController
      * Create attribute group
      *
      * @Template()
-     * @AclAncestor("pim_enrich_attribute_group_create")
+     * @AclAncestor("pim_enrich_attribute_group_index")
      * @return array
      */
     public function createAction()
     {
-        $group = new AttributeGroup();
+        if ($this->securityFacade->isGranted('pim_enrich_attribute_group_create')) {
+            $group = new AttributeGroup();
 
-        if ($this->formHandler->process($group)) {
-            $this->addFlash('success', 'flash.attribute group.created');
+            if ($this->formHandler->process($group)) {
+                $this->addFlash('success', 'flash.attribute group.created');
 
-            return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+                return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));
+            }
+
+            $form = $this->form->createView();
+            $attributesForm = $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView();
+        } else {
+            $group = null;
+            $form = null;
+            $attributesForm = null;
         }
 
         $groups = $this->getRepository('PimCatalogBundle:AttributeGroup')->getIdToLabelOrderedBySortOrder();
@@ -124,8 +142,8 @@ class AttributeGroupController extends AbstractDoctrineController
         return array(
             'groups'         => $groups,
             'group'          => $group,
-            'form'           => $this->form->createView(),
-            'attributesForm' => $this->getAvailableAttributesForm($this->getGroupedAttributes())->createView(),
+            'form'           => $form,
+            'attributesForm' => $attributesForm,
         );
     }
 

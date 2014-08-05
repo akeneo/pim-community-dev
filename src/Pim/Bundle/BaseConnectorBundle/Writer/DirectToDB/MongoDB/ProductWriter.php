@@ -11,6 +11,7 @@ use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -36,7 +37,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var DocumentManager */
      protected $documentManager;
 
-    /**@var PendingVersionMassPersister */
+    /**@var PendingMassPersister */
      protected $pendingPersister;
 
     /** @var NormalizerInterface */
@@ -51,14 +52,14 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /**
      * @param ProductManager              $productManager
      * @param DocumentManager             $documentManager
-     * @param PendingVersionMassPersister $pendingPersister
+     * @param PendingMassPersister        $pendingPersister
      * @param NormalizerInterface         $normalizer
      * @param ProductCacheClearer         $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
         DocumentManager $documentManager,
-        PendingVersionMassPersister $pendingPersister,
+        PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer,
         ProductCacheClearer $cacheClearer
     ) {

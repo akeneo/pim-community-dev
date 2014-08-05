@@ -32,7 +32,7 @@ class OptionFilter extends EntityFilter
             }
 
             $this->qb->leftJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $this->prepareAttributeJoinCondition($attribute, $joinAlias)
@@ -44,7 +44,7 @@ class OptionFilter extends EntityFilter
             $condition .= ' AND ( '. $this->qb->expr()->in($optionAlias, $value) .' ) ';
 
             $this->qb->innerJoin(
-                $this->qb->getRootAlias().'.' . $attribute->getBackendStorage(),
+                $this->qb->getRootAlias().'.values',
                 $joinAlias,
                 'WITH',
                 $condition

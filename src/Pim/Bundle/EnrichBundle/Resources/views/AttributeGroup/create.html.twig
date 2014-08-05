@@ -1,5 +1,7 @@
 {% extends 'PimEnrichBundle:AttributeGroup:index.html.twig' %}
 
 {% block groupTab %}
-    {% include 'PimEnrichBundle:AttributeGroup:form.html.twig' %}
+    {% if form is defined and form is not empty %}
+        {% include 'PimEnrichBundle:AttributeGroup:form.html.twig' %}
+    {% endif %}
 {% endblock %}

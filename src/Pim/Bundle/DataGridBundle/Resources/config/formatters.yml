@@ -4,6 +4,7 @@ parameters:
     pim_datagrid.extension.formatter.property.product_value.attribute_option_property.class:  Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\AttributeOptionProperty
     pim_datagrid.extension.formatter.property.product_value.price_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\PriceProperty
     pim_datagrid.extension.formatter.property.product_value.image_property.class:             Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\ImageProperty
+    pim_datagrid.extension.formatter.property.product_value.file_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\FileProperty
     pim_datagrid.extension.formatter.property.product_value.metric_property.class:            Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\MetricProperty
     pim_datagrid.extension.formatter.property.product_value.boolean_property.class:           Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\BooleanProperty
     pim_datagrid.extension.formatter.property.product_value.date_property.class:              Pim\Bundle\DataGridBundle\Extension\Formatter\Property\ProductValue\DateProperty
@@ -45,6 +46,13 @@ services:
             - '@twig'
         tags:
             - { name: oro_datagrid.extension.formatter.property, type: product_value_image }
+
+    pim_datagrid.extension.formatter.property.product_value.file_property:
+        class: %pim_datagrid.extension.formatter.property.product_value.file_property.class%
+        arguments:
+            - '@translator'
+        tags:
+            - { name: oro_datagrid.extension.formatter.property, type: product_value_file }
 
     pim_datagrid.extension.formatter.property.product_value.metric_property:
         class: %pim_datagrid.extension.formatter.property.product_value.metric_property.class%

@@ -5,42 +5,27 @@ namespace Pim\Bundle\VersioningBundle\Doctrine\ORM;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\VersioningBundle\Builder\VersionBuilder;
 use Pim\Bundle\VersioningBundle\Model\Version;
-
-use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\Doctrine\AbstractPendingMassPersister;
 use Pim\Bundle\CatalogBundle\Doctrine\TableNameBuilder;
-
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
 use Doctrine\ORM\EntityManager;
 use Doctrine\DBAL\Driver\Connection;
 
 /**
- * Service to massively insert pending versions.
+ * Interface for service to massively insert pending versions.
  * Useful for massive imports of products.
  *
  * @author    Benoit Jacquemont <benoit@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class PendingVersionMassPersister
+class PendingMassPersister extends AbstractPendingMassPersister
 {
-    /** @var VersionBuilder */
-    protected $versionBuilder;
-
-    /** @var VersionManager */
-    protected $versionManager;
-
-    /** @var NormalizerInterface */
-    protected $normalizer;
-
     /** @var Connection */
     protected $connection;
 
     /** @var EntityManager */
     protected $entityManager;
-
-    /** @var string */
-    protected $versionClass;
 
     /** @var string */
     protected $versionTable;
@@ -58,51 +43,28 @@ class PendingVersionMassPersister
      * @param VersionBuilder      $versionBuilder
      * @param VersionManager      $versionManager
      * @param NormalizerInterface $normalizer
+     * @param string              $versionClass
      * @param Connection          $connection
      * @param EntityManager       $entityManager
      * @param TableNameBuilder    $tableNameBuilder
-     * @param string              $versionClass
      */
     public function __construct(
         VersionBuilder $versionBuilder,
         VersionManager $versionManager,
         NormalizerInterface $normalizer,
+        $versionClass,
         Connection $connection,
         EntityManager $entityManager,
-        TableNameBuilder $tableNameBuilder,
-        $versionClass
+        TableNameBuilder $tableNameBuilder
     ) {
-        $this->versionBuilder   = $versionBuilder;
-        $this->versionManager   = $versionManager;
-        $this->normalizer       = $normalizer;
+        parent::__construct($versionBuilder, $versionManager, $normalizer, $versionClass);
         $this->connection       = $connection;
         $this->entityManager    = $entityManager;
         $this->tableNameBuilder = $tableNameBuilder;
-        $this->versionClass     = $versionClass;
     }
 
     /**
-     * Create the pending versions for the products provided
-     *
-     * @param ProductInterface[] $products
-     */
-    public function persistPendingVersions(array $products)
-    {
-        $author = $this->versionManager->getUsername();
-        $context = $this->versionManager->getContext();
-
-        $pendingVersions = [];
-        foreach ($products as $product) {
-            $changeset = $this->normalizer->normalize($product, 'csv', ['versioning' => true]);
-            $pendingVersions[] = $this->versionBuilder->createPendingVersion($product, $author, $changeset, $context);
-        }
-        $this->batchInsertPendingVersions($pendingVersions);
-    }
-
-    /**
-     * Insert into pending versions
-     *
-     * @param array $pendingVersions
+     * {@inheritDoc}
      */
     protected function batchInsertPendingVersions(array $pendingVersions)
     {

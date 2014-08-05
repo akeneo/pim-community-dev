@@ -124,7 +124,7 @@ services:
         class: %pim_transform.transformer.property.metric.class%
         public: false
         arguments:
-            - %pim_catalog.entity.metric.class%
+            - '@pim_catalog.factory.metric'
 
     pim_transform.transformer.property.date:
         class: %pim_transform.transformer.property.date.class%

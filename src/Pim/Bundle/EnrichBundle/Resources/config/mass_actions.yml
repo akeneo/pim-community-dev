@@ -62,7 +62,8 @@ services:
             - '@pim_catalog.context.catalog'
             - '@pim_catalog.builder.product'
             - '@pim_catalog.manager.product_mass_action'
-            - {'metric': %pim_catalog.entity.metric.class%, 'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
+            - '@pim_catalog.factory.metric'
+            - {'product_media': %pim_catalog.entity.product_media.class%, 'product_price': %pim_catalog.entity.product_price.class%}
         tags:
             -
                 name: pim_enrich.mass_edit_action

@@ -56,6 +56,11 @@ class MetricNormalizer implements NormalizerInterface
      */
     public function normalize($metric, $format = null, array $context = [])
     {
+        if (null === $metric->getData() || "" === $metric->getData() ||
+            null === $metric->getUnit() || "" === $metric->getUnit()) {
+            return null;
+        }
+
         $this->createMetricBaseValues($metric);
 
         $data = [];

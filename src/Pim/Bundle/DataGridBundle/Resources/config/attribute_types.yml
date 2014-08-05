@@ -94,7 +94,7 @@ parameters:
         sorter:            product_value
     pim_datagrid.product.attribute_type.pim_catalog_file:
         column:
-            type:          product_value_field
+            type:          product_value_file
             selector:      product_value_media
             frontend_type: string
         sorter:            ~
