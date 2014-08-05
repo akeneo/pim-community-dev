@@ -349,19 +349,19 @@
 
         <replaceregexp match="# mongodb" replace="mongodb" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*" />
+                <include name="pim_parameters*" />
             </fileset>
         </replaceregexp>
 
         <replaceregexp match="mongodb_database:.*$" replace="mongodb_database: %mongodb.database%" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*" />
+                <include name="pim_parameters*" />
             </fileset>
         </replaceregexp>
 
         <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*" />
+                <include name="pim_parameters*" />
             </fileset>
         </replaceregexp>
     </target>

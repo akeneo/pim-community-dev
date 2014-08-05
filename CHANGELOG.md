@@ -4,8 +4,9 @@
 - Create a metric factory
 - Improve UI for defining role permissions
 - Throw exception on install command if fixture directory not found
-- Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
+- Setup `pim_catalog.storage_driver` in `pim_parameters.yml` instead of `config.yml`
 - Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
+- Externalize non crucial PIM parameters in `pim_parameters.yml`
 - Replace buttons by icons to manage datagrid views
 
 ## Bug fixes
@@ -177,6 +178,8 @@
 - Replace the filter config parent_type by ftype
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
+- Remove backendStorage property on attribute entities
+- Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
