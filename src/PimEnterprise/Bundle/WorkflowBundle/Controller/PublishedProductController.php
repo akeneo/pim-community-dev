@@ -14,9 +14,11 @@ use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Oro\Bundle\SecurityBundle\Annotation\AclAncestor;
+use Pim\Bundle\CatalogBundle\Manager\ChannelManager;
+use Pim\Bundle\CatalogBundle\Manager\CompletenessManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractController;
-use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use Pim\Bundle\VersioningBundle\Manager\VersionManager;
+use PimEnterprise\Bundle\UserBundle\Context\UserContext;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 
@@ -37,6 +39,12 @@ class PublishedProductController extends AbstractController
     /** @var VersionManager */
     protected $versionManager;
 
+    /** @var CompletenessManager */
+    protected $completenessManager;
+
+    /** @var ChannelManager */
+    protected $channelManager;
+
     /**
      * @param Request                  $request
      * @param EngineInterface          $templating
@@ -49,6 +57,8 @@ class PublishedProductController extends AbstractController
      * @param UserContext              $userContext
      * @param PublishedProductManager  $manager
      * @param VersionManager           $versionManager
+     * @param CompletenessManager      $completenessManager
+     * @param ChannelManager           $channelManager
      */
     public function __construct(
         Request $request,
@@ -61,7 +71,9 @@ class PublishedProductController extends AbstractController
         EventDispatcherInterface $eventDispatcher,
         UserContext $userContext,
         PublishedProductManager $manager,
-        VersionManager $versionManager
+        VersionManager $versionManager,
+        CompletenessManager $completenessManager,
+        ChannelManager $channelManager
     ) {
         parent::__construct(
             $request,
@@ -73,9 +85,11 @@ class PublishedProductController extends AbstractController
             $translator,
             $eventDispatcher
         );
-        $this->userContext    = $userContext;
-        $this->manager        = $manager;
-        $this->versionManager = $versionManager;
+        $this->userContext         = $userContext;
+        $this->manager             = $manager;
+        $this->versionManager      = $versionManager;
+        $this->completenessManager = $completenessManager;
+        $this->channelManager      = $channelManager;
     }
 
     /**
@@ -98,8 +112,8 @@ class PublishedProductController extends AbstractController
     /**
      * Publish a product
      *
-     * @param Request $request
-     * @param integer $id
+     * @param Request        $request
+     * @param integer|string $id
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
@@ -128,8 +142,8 @@ class PublishedProductController extends AbstractController
     /**
      * Unpublish a product
      *
-     * @param Request $request
-     * @param integer $id
+     * @param Request        $request
+     * @param integer|string $id
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
@@ -139,7 +153,7 @@ class PublishedProductController extends AbstractController
      */
     public function unpublishAction(Request $request, $id)
     {
-        $published = $this->manager->findPublishedProductById($id);
+        $published = $this->findPublishedOr404($id);
 
         $isOwner = $this->securityContext->isGranted(Attributes::OWN, $published->getOriginalProduct());
         if (!$isOwner) {
@@ -165,10 +179,10 @@ class PublishedProductController extends AbstractController
     }
 
     /**
-     * View a product
+     * View a published product
      *
-     * @param Request $request
-     * @param integer $id
+     * @param Request        $request
+     * @param integer|string $id
      *
      * @Template
      * @AclAncestor("pimee_workflow_published_product_index")
@@ -176,7 +190,7 @@ class PublishedProductController extends AbstractController
      */
     public function viewAction(Request $request, $id)
     {
-        $published = $this->manager->findPublishedProductById($id);
+        $published = $this->findPublishedOr404($id);
         $original = $published->getOriginalProduct();
 
         return [
@@ -186,6 +200,59 @@ class PublishedProductController extends AbstractController
             'created'    => $this->versionManager->getOldestLogEntry($original),
             'updated'    => $this->versionManager->getNewestLogEntry($original),
         ];
+    }
+
+    /**
+     * Displays completeness for a published product
+     *
+     * @param integer|string $id
+     *
+     * @return Response
+     */
+    public function completenessAction($id)
+    {
+        $published = $this->findPublishedOr404($id);
+        $channels = $this->channelManager->getFullChannels();
+        $locales = $this->userContext->getUserLocales();
+
+        $completenesses = $this->completenessManager->getProductCompleteness(
+            $published,
+            $channels,
+            $locales,
+            $this->getDataLocale()
+        );
+
+        return $this->templating->renderResponse(
+            'PimEnrichBundle:Completeness:_completeness.html.twig',
+            array(
+                'product'        => $published,
+                'channels'       => $channels,
+                'locales'        => $locales,
+                'completenesses' => $completenesses
+            )
+        );
+    }
+
+    /**
+     * Find a published product by its id or return a 404 response
+     *
+     * @param integer|string $id
+     *
+     * @return PublishedProduct
+     *
+     * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+     */
+    protected function findPublishedOr404($id)
+    {
+        $published = $this->manager->findPublishedProductById($id);
+
+        if (!$published) {
+            throw $this->createNotFoundException(
+                sprintf('Published product with id %s could not be found.', (string) $id)
+            );
+        }
+
+        return $published;
     }
 
     /**
