@@ -1,4 +1,9 @@
-# 1.2.0
+# 1.2.0 RC2
+## BC breaks
+- MongoDB: Media are now part of the product as embedded document and not in a external collection
+
+
+# 1.2.0 RC1
 
 ## Features
 - Add an option to automatically sort the choices of simple and multi select attributes
