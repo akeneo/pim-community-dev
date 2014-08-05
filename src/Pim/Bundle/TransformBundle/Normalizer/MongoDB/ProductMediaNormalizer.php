@@ -22,7 +22,8 @@ class ProductMediaNormalizer implements NormalizerInterface
     /**
      * @param MongoObjectsFactory $mongoFactory
      */
-    public function __construct(MongoObjectsFactory $mongoFactory) {
+    public function __construct(MongoObjectsFactory $mongoFactory)
+    {
         $this->mongoFactory = $mongoFactory;
     }
 
