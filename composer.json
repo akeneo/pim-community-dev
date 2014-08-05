@@ -19,8 +19,7 @@
     "require": {
         "php": ">=5.4.4",
         "akeneo/pim-community-dev": "1.2.x-dev",
-        "phpspec/php-diff": "1.0.2",
-        "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200"
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
