@@ -17,6 +17,7 @@
 ## BC breaks
 - Remove backendStorage property on attribute entities
 - Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
+- Added ProductCacheClearer to share cache clearing between product writers
 
 # 1.2.0-RC1
 

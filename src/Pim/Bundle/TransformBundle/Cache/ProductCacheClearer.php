@@ -38,7 +38,7 @@ class ProductCacheClearer
         'Pim\\Bundle\\CatalogBundle\\Entity\\Currency',
         'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
         'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
-        'Pim\\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
+        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
         'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement',
         'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
         'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
