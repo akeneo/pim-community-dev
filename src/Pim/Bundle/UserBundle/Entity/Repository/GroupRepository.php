@@ -36,6 +36,16 @@ class GroupRepository extends BaseGroupRepository implements ReferableEntityRepo
     }
 
     /**
+     * Get the default user group
+     *
+     * @return null|object
+     */
+    public function getDefaultUserGroup()
+    {
+        return $this->findByReference(User::GROUP_DEFAULT);
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getReferenceProperties()
