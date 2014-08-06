@@ -79,6 +79,7 @@
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
         "incenteev-parameters": {
+            "keep-outdated": true,
             "file": "app/config/parameters.yml",
             "env-map": {
                 "database_host": "PIM_DATABASE_HOST",
