@@ -21,7 +21,10 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addEntityFields($builder);
-        $this->addDynamicAttributesFields($builder, $options);
+
+        if ($options['enable_values']) {
+            $this->addDynamicAttributesFields($builder, $options);
+        }
     }
 
     /**
@@ -61,6 +64,7 @@ class ProductType extends AbstractType
     {
         $resolver->setDefaults(
             array(
+                'enable_values'    => true,
                 'currentLocale'    => null,
                 'comparisonLocale' => null,
             )
