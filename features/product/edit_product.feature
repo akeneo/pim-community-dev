@@ -18,3 +18,13 @@ Feature: Edit a product
     When I press the "Save" button
     Then I should be on the product "sandal" edit page
     Then the product Name should be "My Sandal"
+
+  Scenario: Don't see the attributes tab when the user can't edit a product
+    Given I am logged in as "Peter"
+    And I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Products" group
+    And I remove rights to Edit a product
+    And I save the role
+    When I am on the "sandal" product page
+    Then I should not see "Attributes"

@@ -213,7 +213,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_index")
      * @return array
      */
     public function editAction(Request $request, $id)
@@ -274,7 +274,7 @@ class ProductController extends AbstractDoctrineController
      * @param integer $id
      *
      * @Template("PimEnrichBundle:Product:edit.html.twig")
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_index")
      * @return RedirectResponse
      */
     public function updateAction(Request $request, $id)
@@ -602,6 +602,7 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
+            'enable_values'    => $this->securityFacade->isGranted('pim_enrich_product_edit'),
             'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
             'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
             'currentLocale'    => $this->getDataLocaleCode(),
