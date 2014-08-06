@@ -36,7 +36,6 @@ class ProductController extends FOSRestController
      */
     public function getAction(Request $request, $identifier)
     {
-
         $channels = $this->prepareChannels($request);
         $locales = $this->prepareLocales($request);
 
@@ -125,7 +124,6 @@ class ProductController extends FOSRestController
      */
     protected function serializeProduct(ProductInterface $product, $channels, $locales)
     {
-        $serializer = $this->get('pim_serializer');
         $url = $this->generateUrl(
             'oro_api_get_product',
             array(
@@ -133,15 +131,8 @@ class ProductController extends FOSRestController
             ),
             true
         );
-        $data = $serializer->serialize(
-            $product,
-            'json',
-            [
-                'locales'  => $locales,
-                'channels' => $channels,
-                'resource' => $url
-            ]
-        );
+        $handler = $this->get('pim_webservice.handler.rest.product');
+        $data = $handler->get($product, $channels, $locales, $url);
 
         return $data;
     }
