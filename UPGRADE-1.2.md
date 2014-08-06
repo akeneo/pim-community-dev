@@ -1,11 +1,8 @@
-UPGRADE FROM 1.1 to 1.2
-=======================
+# UPGRADE FROM 1.1 to 1.2
 
-General
--------
+## General
 
-Fix BC breaks
--------------
+### Fix BC breaks
 
 If you have a standard installation with some custom code inside, the following command allows to update changed services or use statements.
 
@@ -39,8 +36,7 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/LocalizableListener/LocalizableSubscriber/g'
 ```
 
-BatchBundle
------------
+## BatchBundle
 
 Please run the following commands against your database :
 
@@ -49,8 +45,7 @@ Please run the following commands against your database :
     ALTER TABLE akeneo_batch_warning ADD CONSTRAINT FK_8EE0AE736C7DA296 FOREIGN KEY (step_execution_id) REFERENCES akeneo_batch_step_execution (id) ON DELETE CASCADE;
     ALTER TABLE akeneo_batch_step_execution DROP warnings;
 
-CatalogBundle
--------------
+## CatalogBundle
 
 The Media model has been renamed to ProductMedia, please run the following commands against your database :
 
@@ -72,17 +67,14 @@ This can be done thanks to the following queries :
     DROP `backend_storage`;
 ```
 
-MongoDB implementation
-----------------------
+## MongoDB implementation
 
-Normalized data updates
-.......................
+### Normalized data updates
 
-We removed null values from normalizedData field to avoid storing useless values
+We removed null values from normalizedData field to avoid storing useless values.
 The normalized media now contains originalFilename.
 
-Media migration
-...............
+### Media migration
 
 The media object is now stored as an embedded document inside the product instead
 of being in its own collection. This avoids unnecessary queries and makes media
@@ -110,18 +102,15 @@ media collection with the mongo client:
 
 ```
 
-DataGridBundle
---------------
+## DataGridBundle
 
 Change of ConfiguratorInterface and configurators are now services to make them easier to customize
 
-OroSegmentationTreeBundle
---------------
+## OroSegmentationTreeBundle
 
 The bundle has been removed from Oro Platform, entities extending AbstractSegment should implement the desired
 methods themselves and repositories extending SegmentRepository should extend Gedmo\Tree\Entity\Repository\NestedTreeRepository
 
-FlexibleEntityBundle
---------------------
+## FlexibleEntityBundle
 
 As announced during last release in UPGRADE-1.1.md, the bundle has been removed.
