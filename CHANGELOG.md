@@ -17,7 +17,7 @@
 ## BC breaks
 - Remove backendStorage property on attribute entities
 - Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
-- MongoDB: Media are now part of the product as embedded document and not in a external collection. A migration script is provided. See the UPGRADE file.
+- MongoDB: Media are now part of the product as embedded document and not in an external collection. A migration script is provided. See the UPGRADE file.
 
 # 1.2.0-RC1
 
