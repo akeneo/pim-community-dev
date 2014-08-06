@@ -74,26 +74,30 @@ This can be done thanks to the following queries :
 
 MongoDB implementation
 ----------------------
+
 Normalized data updates
 .......................
+
 We removed null values from normalizedData field to avoid storing useless values
 The normalized media now contains originalFilename.
 
 Media migration
 ...............
-The media object is now stored as a embedded document inside the product instead
-of being in its own collection. This avoid unnecessary queries and makes media
+
+The media object is now stored as an embedded document inside the product instead
+of being in its own collection. This avoids unnecessary queries and makes media
 behave like other objects link to value (metric and price).
 
 To migrate existing media data from 1.1 to 1.2, launch the following script:
-<!>Make sure to backup your database (with mongodump for example) before launching this script<!>
-Execute this script:
+
+**Make sure to backup your database (with mongodump for example) before launching this script**
 
 ```
     $ php upgrades/1.1-1.2/mongodb/migrate_images.php <mongodb_server> <mongodb_database>
 ```
-Please note that if you use different collections for product and media,
-please change them at the beginning of the script to accomodate your environment.
+
+*Please note that if you use different collections for product and media,
+please change them at the beginning of the script to accomodate your environment.*
 
 Once this script has been executed without errors, you can remove the now useless
 media collection with the mongo client:
