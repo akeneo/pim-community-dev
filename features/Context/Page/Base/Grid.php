@@ -534,7 +534,11 @@ class Grid extends Index
      */
     protected function activateFilter($filterName)
     {
-        if (!$this->getFilter($filterName)->isVisible()) {
+        try {
+            if (!$this->getFilter($filterName)->isVisible()) {
+                $this->clickOnFilterToManage($filterName);
+            }
+        } catch (\InvalidArgumentException $e) {
             $this->clickOnFilterToManage($filterName);
         }
     }
