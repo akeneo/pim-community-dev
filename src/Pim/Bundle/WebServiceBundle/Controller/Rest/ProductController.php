@@ -4,6 +4,7 @@ namespace Pim\Bundle\WebServiceBundle\Controller\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -36,21 +37,11 @@ class ProductController extends FOSRestController
      */
     public function getAction(Request $request, $identifier)
     {
-        $channels = $this->prepareChannels($request);
-        $locales = $this->prepareLocales($request);
-
-        return $this->handleGetRequest($identifier, $channels, $locales);
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function prepareChannels(Request $request)
-    {
-        $channels = $request->get('channels', $request->get('channel', null));
         $userContext       = $this->get('pim_user.context.user');
         $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
+        $availableLocales  = $userContext->getUserLocaleCodes();
 
+        $channels = $request->get('channels', $request->get('channel', null));
         if ($channels !== null) {
             $channels = explode(',', $channels);
 
@@ -63,18 +54,7 @@ class ProductController extends FOSRestController
             $channels = $availableChannels;
         }
 
-        return $channels;
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function prepareLocales(Request $request)
-    {
         $locales = $request->get('locales', $request->get('locale', null));
-        $userContext = $this->get('pim_user.context.user');
-        $availableLocales  = $userContext->getUserLocaleCodes();
-
         if ($locales !== null) {
             $locales = explode(',', $locales);
 
@@ -87,7 +67,7 @@ class ProductController extends FOSRestController
             $locales = $availableLocales;
         }
 
-        return $locales;
+        return $this->handleGetRequest($identifier, $channels, $locales);
     }
 
     /**
@@ -108,7 +88,11 @@ class ProductController extends FOSRestController
             return new Response(sprintf('Product "%s" not found', $identifier), 404);
         }
 
-        $serializedData = $this->serializeProduct($product, $channels, $locales);
+        try {
+            $serializedData = $this->serializeProduct($product, $channels, $locales);
+        } catch (AccessDeniedException $exception) {
+            return new Response(sprintf('Access denied to the product "%s"', $product->getIdentifier()), 403);
+        }
 
         return new Response($serializedData);
     }
