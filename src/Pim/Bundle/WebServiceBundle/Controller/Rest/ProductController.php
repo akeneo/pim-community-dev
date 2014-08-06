@@ -8,6 +8,7 @@ use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product API controller
@@ -86,6 +87,22 @@ class ProductController extends FOSRestController
             return new Response(sprintf('Product "%s" not found', $identifier), 404);
         }
 
+        $serializedData = $this->serializeProduct($product, $channels, $locales);
+
+        return new Response($serializedData);
+    }
+
+    /**
+     * Serialize a single product
+     *
+     * @param ProductInterface $product
+     * @param string[]         $channels
+     * @param string[]         $locales
+     *
+     * @return Response
+     */
+    protected function serializeProduct(ProductInterface $product, $channels, $locales)
+    {
         $serializer = $this->get('pim_serializer');
         $data = $serializer->serialize(
             $product,
@@ -103,6 +120,6 @@ class ProductController extends FOSRestController
             ]
         );
 
-        return new Response($data);
+        return $data;
     }
 }
