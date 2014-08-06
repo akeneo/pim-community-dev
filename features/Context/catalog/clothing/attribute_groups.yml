@@ -23,3 +23,7 @@ attribute_groups:
         sort_order: 100
         labels:
             en_US: Other
+    legacy:
+        sort_order: 90
+        labels:
+            en_US: old group not used anymore

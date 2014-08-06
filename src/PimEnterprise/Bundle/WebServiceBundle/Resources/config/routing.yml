@@ -1,4 +1,0 @@
-api:
-    resource: '@PimEnterpriseWebServiceBundle/Controller/Rest/ProductController.php'
-    type:   rest
-    prefix: api/rest/

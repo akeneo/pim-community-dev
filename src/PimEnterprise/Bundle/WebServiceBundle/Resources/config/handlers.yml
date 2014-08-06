@@ -7,4 +7,3 @@ services:
         arguments:
             - '@pim_serializer'
             - '@security.context'
-

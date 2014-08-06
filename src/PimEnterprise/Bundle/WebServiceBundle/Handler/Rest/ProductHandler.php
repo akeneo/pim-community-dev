@@ -4,8 +4,9 @@ namespace PimEnterprise\Bundle\WebServiceBundle\Handler\Rest;
 
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-use Pim\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
  * Owerride product handler to apply permissions
@@ -43,6 +44,10 @@ class ProductHandler
      */
     public function get(ProductInterface $product, $channels, $locales, $url)
     {
+        if (false === $this->securityContext->isGranted(Attributes::VIEW, $product)) {
+           throw new AccessDeniedException(sprintf('Access denied to the product "%s"', $product->getIdentifier()));
+        }
+
         $data = $this->serializer->serialize(
             $product,
             'json',
