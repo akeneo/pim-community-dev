@@ -8,6 +8,7 @@
 - Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
 - Externalize non local PIM parameters in `pim_parameters.yml`
 - Replace buttons by icons to manage datagrid views
+- Add post create event on enrich part when an attribute group is created
 
 ## Bug fixes
 - The message 'there are unsaved changes' is missing in the Role edit form
