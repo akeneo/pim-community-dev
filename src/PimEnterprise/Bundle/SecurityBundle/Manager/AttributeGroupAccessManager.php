@@ -137,6 +137,7 @@ class AttributeGroupAccessManager
             ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
 
         $this->getObjectManager()->persist($access);
+        $this->getObjectManager()->flush();
     }
 
     /**
