@@ -362,8 +362,9 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param Group             $group
      * @param string            $accessLevel
+     * @param boolean           $flush
      */
-    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel)
+    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel, $flush = false)
     {
         $access = $this->getCategoryAccess($category, $group);
         $access
@@ -372,7 +373,9 @@ class CategoryAccessManager
             ->setOwnProducts($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
-        $this->getObjectManager()->flush();
+        if (true === $flush) {
+            $this->getObjectManager()->flush();
+        }
     }
 
     /**

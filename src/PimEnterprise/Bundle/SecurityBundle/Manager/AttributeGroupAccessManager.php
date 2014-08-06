@@ -128,8 +128,9 @@ class AttributeGroupAccessManager
      * @param AttributeGroup $attributeGroup
      * @param UserGroup      $userGroup
      * @param string         $accessLevel
+     * @param boolean        $flush
      */
-    public function grantAccess(AttributeGroup $attributeGroup, UserGroup $userGroup, $accessLevel)
+    public function grantAccess(AttributeGroup $attributeGroup, UserGroup $userGroup, $accessLevel, $flush = false)
     {
         $access = $this->getAttributeGroupAccess($attributeGroup, $userGroup);
         $access
@@ -137,7 +138,9 @@ class AttributeGroupAccessManager
             ->setEditAttributes($accessLevel === Attributes::EDIT_ATTRIBUTES);
 
         $this->getObjectManager()->persist($access);
-        $this->getObjectManager()->flush();
+        if (true === $flush) {
+            $this->getObjectManager()->flush();
+        }
     }
 
     /**
