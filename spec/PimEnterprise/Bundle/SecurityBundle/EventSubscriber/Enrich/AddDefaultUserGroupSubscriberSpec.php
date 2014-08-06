@@ -4,25 +4,32 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
 class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
 {
-    function let(GroupRepository $groupRepository, CategoryAccessManager $catAccessManager)
-    {
-        $this->beConstructedWith($groupRepository, $catAccessManager);
+    function let(
+        GroupRepository $groupRepository,
+        CategoryAccessManager $catAccessManager,
+        AttributeGroupAccessManager $attGrpAccessManager
+    ) {
+        $this->beConstructedWith($groupRepository, $catAccessManager, $attGrpAccessManager);
     }
 
     function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
-                CategoryEvents::POST_CREATE => 'addDefaultUserGroup'
+                CategoryEvents::POST_CREATE       => 'addDefaultUserGroupForTree',
+                AttributeGroupEvents::POST_CREATE => 'addDefaultUserGroupForAttributeGroup'
             ]
         );
     }
@@ -40,14 +47,14 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $groupRepository->getDefaultUserGroup()->willReturn($userGroup);
         $catAccessManager->grantAccess($category, $userGroup, Attributes::EDIT_PRODUCTS)->shouldBeCalled();
 
-        $this->addDefaultUserGroup($event)->shouldReturn(null);
+        $this->addDefaultUserGroupForTree($event)->shouldReturn(null);
     }
 
     function it_does_not_grant_anything_on_a_non_category(GenericEvent $event)
     {
         $event->getSubject()->willReturn(null);
 
-        $this->addDefaultUserGroup($event)->shouldReturn(null);
+        $this->addDefaultUserGroupForTree($event)->shouldReturn(null);
     }
 
     function it_does_not_grant_access_if_the_category_is_not_a_tree(
@@ -57,6 +64,28 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $event->getSubject()->willReturn($category);
         $category->isRoot()->willReturn(false);
 
-        $this->addDefaultUserGroup($event)->shouldReturn(null);
+        $this->addDefaultUserGroupForTree($event)->shouldReturn(null);
+    }
+
+    function it_grants_access_to_the_attribute_group_for_default_user_group(
+        $groupRepository,
+        $attGrpAccessManager,
+        GenericEvent $event,
+        AttributeGroup $attributeGroup,
+        Group $userGroup
+    ) {
+        $event->getSubject()->willReturn($attributeGroup);
+
+        $groupRepository->getDefaultUserGroup()->willReturn($userGroup);
+        $attGrpAccessManager->grantAccess($attributeGroup, $userGroup, Attributes::EDIT_PRODUCTS)->shouldBeCalled();
+
+        $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);
+    }
+
+    function it_does_not_grant_anything_on_a_non_attribute_group(GenericEvent $event)
+    {
+        $event->getSubject()->willReturn(null);
+
+        $this->addDefaultUserGroupForAttributeGroup($event)->shouldReturn(null);
     }
 }
