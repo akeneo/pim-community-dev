@@ -13,7 +13,9 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use Doctrine\MongoDB\Collection;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -90,8 +92,12 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var MongoObjectsFactory */
     protected $mongoFactory;
 
+    /** @var string */
+    protected $productClass;
+
     /** @var Collection */
     protected $collection;
+
 
     /**
      * @param ProductManager           $productManager
@@ -100,6 +106,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param NormalizerInterface      $normalizer
      * @parma EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
+     * @param string                   $productClass:
      */
     public function __construct(
         ProductManager $productManager,
@@ -107,7 +114,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         PendingMassPersister $pendingPersister,
         NormalizerInterface $normalizer,
         EventDispatcherInterface $eventDispatcher,
-        MongoObjectsFactory $mongoFactory
+        MongoObjectsFactory $mongoFactory,
+        $productClass
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
@@ -115,6 +123,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->normalizer       = $normalizer;
         $this->eventDispatcher  = $eventDispatcher;
         $this->mongoFactory     = $mongoFactory;
+        $this->productClass     = $productClass;
     }
 
     /**
@@ -122,7 +131,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $products)
     {
-        $this->collection = $this->documentManager->getDocumentCollection(get_class(reset($products)));
+        $this->collection = $this->documentManager->getDocumentCollection($this->productClass);
 
         $productsToInsert = array();
         $productsToUpdate = array();

@@ -12,3 +12,4 @@ services:
             - '@pim_serializer'
             - '@event_dispatcher'
             - '@pim_catalog.mongodb.mongo_objects_factory'
+            - %pim_catalog.entity.product.class%
