@@ -10,3 +10,5 @@ services:
             - '@doctrine.odm.mongodb.document_manager'
             - '@pim_versioning.doctrine.mongodb.pending_mass_persister'
             - '@pim_serializer'
+            - '@event_dispatcher'
+            - '@pim_catalog.mongodb.mongo_objects_factory'
