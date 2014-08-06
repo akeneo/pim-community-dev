@@ -2,10 +2,13 @@
 
 namespace PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
 
+use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
 use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
+use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -28,10 +31,14 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
      * @param GroupRepository       $groupRepository
      * @param CategoryAccessManager $catAccessManager
      */
-    public function __construct(GroupRepository $groupRepository, CategoryAccessManager $catAccessManager)
-    {
-        $this->groupRepository  = $groupRepository;
-        $this->catAccessManager = $catAccessManager;
+    public function __construct(
+        GroupRepository $groupRepository,
+        CategoryAccessManager $catAccessManager,
+        AttributeGroupAccessManager $attGrpAccessManager
+    ) {
+        $this->groupRepository     = $groupRepository;
+        $this->catAccessManager    = $catAccessManager;
+        $this->attGrpAccessManager = $attGrpAccessManager;
     }
 
     /**
@@ -40,21 +47,36 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            CategoryEvents::POST_CREATE => 'addDefaultUserGroup'
+            CategoryEvents::POST_CREATE       => 'addDefaultUserGroupForTree',
+            AttributeGroupEvents::POST_CREATE => 'addDefaultUserGroupForAttributeGroup'
         ];
     }
 
     /**
-     * Add default user group
+     * Add default user group for tree
      *
      * @param GenericEvent $event
      */
-    public function addDefaultUserGroup(GenericEvent $event)
+    public function addDefaultUserGroupForTree(GenericEvent $event)
     {
         $object = $event->getSubject();
         if ($object instanceof CategoryInterface && $object->isRoot()) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
             $this->catAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_PRODUCTS);
+        }
+    }
+
+    /**
+     * Add default user group for attribute group
+     *
+     * @param GenericEvent $event
+     */
+    public function addDefaultUserGroupForAttributeGroup(GenericEvent $event)
+    {
+        $object = $event->getSubject();
+        if ($object instanceof AttributeGroup) {
+            $userGroup = $this->groupRepository->getDefaultUserGroup();
+            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_PRODUCTS);
         }
     }
 

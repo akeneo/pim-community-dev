@@ -49,5 +49,6 @@ services:
         arguments:
             - '@pim_user.repository.group'
             - '@pimee_security.manager.category_access'
+            - '@pimee_security.manager.attribute_group_access'
         tags:
             - { name: kernel.event_subscriber }
