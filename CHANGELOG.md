@@ -4,8 +4,9 @@
 - Create a metric factory
 - Improve UI for defining role permissions
 - Throw exception on install command if fixture directory not found
-- Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
+- Setup `pim_catalog.storage_driver` in `pim_parameters.yml` instead of `config.yml`
 - Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
+- Externalize non local PIM parameters in `pim_parameters.yml`
 - Replace buttons by icons to manage datagrid views
 
 ## Bug fixes
