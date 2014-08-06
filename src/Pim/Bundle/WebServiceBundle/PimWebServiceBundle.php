@@ -3,6 +3,8 @@
 namespace Pim\Bundle\WebServiceBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Pim\Bundle\TransformBundle\DependencyInjection\Compiler\SerializerPass;
 
 /**
  * Web service bundle
@@ -13,4 +15,11 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class PimWebServiceBundle extends Bundle
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function build(ContainerBuilder $container)
+    {
+        $container->addCompilerPass(new SerializerPass('pim_webservice.serializer'));
+    }
 }

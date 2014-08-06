@@ -24,5 +24,6 @@ class PimWebServiceExtension extends Extension
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('handlers.yml');
+        $loader->load('serializers.yml');
     }
 }
