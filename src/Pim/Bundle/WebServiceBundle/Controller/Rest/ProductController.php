@@ -36,11 +36,22 @@ class ProductController extends FOSRestController
      */
     public function getAction(Request $request, $identifier)
     {
+
+        $channels = $this->prepareChannels($request);
+        $locales = $this->prepareLocales($request);
+
+        return $this->handleGetRequest($identifier, $channels, $locales);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function prepareChannels(Request $request)
+    {
+        $channels = $request->get('channels', $request->get('channel', null));
         $userContext       = $this->get('pim_user.context.user');
         $availableChannels = array_keys($userContext->getChannelChoicesWithUserChannel());
-        $availableLocales  = $userContext->getUserLocaleCodes();
 
-        $channels = $request->get('channels', $request->get('channel', null));
         if ($channels !== null) {
             $channels = explode(',', $channels);
 
@@ -53,7 +64,18 @@ class ProductController extends FOSRestController
             $channels = $availableChannels;
         }
 
+        return $channels;
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function prepareLocales(Request $request)
+    {
         $locales = $request->get('locales', $request->get('locale', null));
+        $userContext = $this->get('pim_user.context.user');
+        $availableLocales  = $userContext->getUserLocaleCodes();
+
         if ($locales !== null) {
             $locales = explode(',', $locales);
 
@@ -66,7 +88,7 @@ class ProductController extends FOSRestController
             $locales = $availableLocales;
         }
 
-        return $this->handleGetRequest($identifier, $channels, $locales);
+        return $locales;
     }
 
     /**
@@ -99,24 +121,25 @@ class ProductController extends FOSRestController
      * @param string[]         $channels
      * @param string[]         $locales
      *
-     * @return Response
+     * @return array
      */
     protected function serializeProduct(ProductInterface $product, $channels, $locales)
     {
         $serializer = $this->get('pim_serializer');
+        $url = $this->generateUrl(
+            'oro_api_get_product',
+            array(
+                'identifier' => $product->getIdentifier()->getData()
+            ),
+            true
+        );
         $data = $serializer->serialize(
             $product,
             'json',
             [
-                'locales' => $locales,
+                'locales'  => $locales,
                 'channels' => $channels,
-                'resource' => $this->generateUrl(
-                    'oro_api_get_product',
-                    array(
-                        'identifier' => $product->getIdentifier()->getData()
-                    ),
-                    true
-                )
+                'resource' => $url
             ]
         );
 
