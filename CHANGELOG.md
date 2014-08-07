@@ -18,6 +18,7 @@
 ## BC breaks
 - Remove backendStorage property on attribute entities
 - Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to add `DisableFamilyFieldsSubscriber` as third argument and `AddAttributeAsLabelSubscriber` as fourth argument
 
 # 1.2.0-RC1
 
