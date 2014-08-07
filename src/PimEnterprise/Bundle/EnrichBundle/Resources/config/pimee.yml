@@ -1,0 +1,7 @@
+imports:
+    - { resource: @PimEnrichBundle/Resources/config/pim.yml }
+
+twig:
+    form:
+        resources:
+            - 'PimEnterpriseUIBundle:Form:pimee-fields.html.twig'

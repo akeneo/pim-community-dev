@@ -1,7 +1,7 @@
 imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
-    - { resource: @PimEnrichBundle/Resources/config/pim.yml }
+    - { resource: @PimEnterpriseEnrichBundle/Resources/config/pimee.yml }
 
 framework:
     #esi:             ~
