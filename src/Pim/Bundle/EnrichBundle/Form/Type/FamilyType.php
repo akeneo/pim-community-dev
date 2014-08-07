@@ -5,7 +5,7 @@ namespace Pim\Bundle\EnrichBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
+use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFamilyFieldsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeAsLabelSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\AddAttributeRequirementsSubscriber;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
@@ -19,26 +19,36 @@ use Pim\Bundle\EnrichBundle\Form\Subscriber\DisableFieldSubscriber;
  */
 class FamilyType extends AbstractType
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
 
-    /**
-     * @var AddAttributeRequirementsSubscriber
-     */
+    /** @var AddAttributeRequirementsSubscriber */
     protected $requireSubscriber;
+
+    /** @var DisableFamilyFieldsSubscriber */
+    protected $disablePropertiesSubscriber;
+
+    /** @var AddAttributeAsLabelSubscriber */
+    protected $attributeAsLabelSubscriber;
 
     /**
      * Constructor
      *
      * @param AddAttributeRequirementsSubscriber $requireSubscriber
      * @param string                             $attributeClass
+     * @param DisableFamilyFieldsSubscriber      $disableSubscriber
+     * @param AddAttributeAsLabelSubscriber      $attributeAsLabelSubscriber
      */
-    public function __construct(AddAttributeRequirementsSubscriber $requireSubscriber, $attributeClass)
-    {
+    public function __construct(
+        AddAttributeRequirementsSubscriber $requireSubscriber,
+        $attributeClass,
+        DisableFamilyFieldsSubscriber $disableSubscriber,
+        AddAttributeAsLabelSubscriber $attributeAsLabelSubscriber
+    ) {
         $this->requireSubscriber = $requireSubscriber;
         $this->attributeClass    = $attributeClass;
+        $this->disablePropertiesSubscriber = $disableSubscriber;
+        $this->attributeAsLabelSubscriber = $attributeAsLabelSubscriber;
     }
 
     /**
@@ -113,10 +123,9 @@ class FamilyType extends AbstractType
      */
     protected function addEventSubscribers(FormBuilderInterface $builder)
     {
-        $factory = $builder->getFormFactory();
-
         $builder
-            ->addEventSubscriber(new AddAttributeAsLabelSubscriber($this->attributeClass, $factory))
+            ->addEventSubscriber($this->disablePropertiesSubscriber)
+            ->addEventSubscriber($this->attributeAsLabelSubscriber)
             ->addEventSubscriber($this->requireSubscriber)
             ->addEventSubscriber(new DisableFieldSubscriber('code'));
     }

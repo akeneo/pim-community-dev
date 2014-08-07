@@ -4,9 +4,11 @@
 - Create a metric factory
 - Improve UI for defining role permissions
 - Throw exception on install command if fixture directory not found
-- Setup `pim_catalog.storage_driver` in `parameters.yml` instead of `config.yml`
+- Setup `pim_catalog.storage_driver` in `pim_parameters.yml` instead of `config.yml`
 - Load PIM configuration via the import of the file `pim.yml` instead of a preprend configuration
+- Externalize non local PIM parameters in `pim_parameters.yml`
 - Replace buttons by icons to manage datagrid views
+- Add post create event on enrich part when an attribute group is created
 
 ## Bug fixes
 - The message 'there are unsaved changes' is missing in the Role edit form
@@ -17,6 +19,9 @@
 ## BC breaks
 - Remove backendStorage property on attribute entities
 - Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
+- Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to add `DisableFamilyFieldsSubscriber` as third argument and `AddAttributeAsLabelSubscriber` as fourth argument
+- Rename pim_catalog.datasource.smart and pim_catalog.datasource.product respectively by pim_datagrid.datasource.smart and pim_datagrid.datasource.product
+- Add method setMassActionRepository and remove the MassActionRepositoryInterface from constructor
 - Introduce a dedicated pim_webservice.serializer to handle REST API
 
 # 1.2.0-RC1
@@ -178,6 +183,7 @@
 - Replace the filter config parent_type by ftype
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
+- Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 

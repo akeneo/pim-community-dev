@@ -4,6 +4,7 @@ namespace Pim\Bundle\DataGridBundle\Datasource;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\DataGridBundle\Datasource\DatasourceInterface as OroDatasourceInterface;
+use Pim\Bundle\CatalogBundle\Repository\MassActionRepositoryInterface;
 use Pim\Bundle\DataGridBundle\Datasource\ResultRecord\HydratorInterface;
 
 /**
@@ -40,6 +41,13 @@ interface DatasourceInterface extends OroDatasourceInterface
      * @return mixed
      */
     public function getMassActionRepository();
+
+    /**
+     * Define mass action repository for datasource
+     *
+     * @param MassActionRepositoryInterface $massActionRepository
+     */
+    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository);
 
     /**
      * Set hydrator
