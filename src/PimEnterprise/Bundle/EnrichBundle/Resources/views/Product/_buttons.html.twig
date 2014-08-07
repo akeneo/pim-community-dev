@@ -11,7 +11,15 @@
 {% endif %}
 
 {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), product) %}
-    {{ elements.link('btn.publish', path('pimee_workflow_published_product_publish', {id: form.vars.value.id, dataLocale: dataLocale}), {class: 'btn-info', icon: 'cloud-upload'}) }}
+    {{ elements.confirmLink(
+        path('pimee_workflow_published_product_publish', {id: form.vars.value.id, dataLocale: dataLocale}),
+        path('pim_enrich_product_edit', {id: form.vars.value.id, dataLocale: dataLocale}),
+        'flash.product.published'|trans,
+        'publish',
+        'cloud-upload',
+        'confirmation.product.publish'|trans,
+        'btn-info'
+    ) }}
 {% elseif productDraft.inProgress and productDraft.id is not null %}
     {{ elements.link('btn.send for approval', path('pimee_workflow_product_draft_ready', { id: productDraft.id, dataLocale: dataLocale }), {class: 'btn-info'}) }}
 {% elseif not productDraft.inProgress %}

@@ -14,6 +14,7 @@ Feature: Publish a product
       | my-jacket | jackets | Jackets    |
     And I edit the "my-jacket" product
     When I press the "Publish" button
+    And I confirm the publishing
     And I am on the published index page
     Then the grid should contain 1 elements
     And I should see product my-jacket

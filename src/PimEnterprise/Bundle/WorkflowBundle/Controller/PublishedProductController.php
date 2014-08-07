@@ -131,6 +131,16 @@ class PublishedProductController extends AbstractController
         }
 
         $this->manager->publish($product);
+
+        if ($request->isXmlHttpRequest()) {
+            return new JsonResponse(
+                [
+                    'successful' => true,
+                    'message' => $this->translator->trans('flash.product.published')
+                ]
+            );
+        }
+
         $this->addFlash('success', 'flash.product.published');
 
         return parent::redirectToRoute(
@@ -161,7 +171,6 @@ class PublishedProductController extends AbstractController
         }
 
         $this->manager->unpublish($published);
-        $this->addFlash('success', 'flash.product.unpublished');
 
         if ($request->isXmlHttpRequest()) {
             return new JsonResponse(
@@ -171,6 +180,8 @@ class PublishedProductController extends AbstractController
                 ]
             );
         }
+
+        $this->addFlash('success', 'flash.product.unpublished');
 
         return parent::redirectToRoute(
             'pimee_workflow_published_product_index',
