@@ -13,7 +13,7 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_default }
 
-    pim_catalog.datasource.smart:
+    pim_datagrid.datasource.smart:
         class: %pim_datagrid.datasource.default.class%
         arguments:
             - '@pim_catalog.object_manager.product'
@@ -21,7 +21,7 @@ services:
         tags:
             - { name: oro_datagrid.datasource, type: pim_datasource_smart }
 
-    pim_catalog.datasource.product:
+    pim_datagrid.datasource.product:
         class: %pim_datagrid.datasource.product.class%
         arguments:
             - '@pim_catalog.object_manager.product'
