@@ -40,6 +40,8 @@ class ProductHandler
      * @param string[]         $locales
      * @param string           $url
      *
+     * @throws AccessDeniedException
+     *
      * @return array
      */
     public function get(ProductInterface $product, $channels, $locales, $url)
