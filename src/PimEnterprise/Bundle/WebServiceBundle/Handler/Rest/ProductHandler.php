@@ -6,6 +6,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\WebServiceBundle\Handler\Rest\ProductHandler as BaseProductHandler;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
 
 /**
@@ -14,7 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
-class ProductHandler
+class ProductHandler extends BaseProductHandler
 {
     /** @var SerializerInterface */
     protected $serializer;
@@ -50,16 +51,6 @@ class ProductHandler
            throw new AccessDeniedException(sprintf('Access denied to the product "%s"', $product->getIdentifier()));
         }
 
-        $data = $this->serializer->serialize(
-            $product,
-            'json',
-            [
-                'locales'  => $locales,
-                'channels' => $channels,
-                'resource' => $url
-            ]
-        );
-
-        return $data;
+        return parent::get($product, $channels, $locales, $url);
     }
 }
