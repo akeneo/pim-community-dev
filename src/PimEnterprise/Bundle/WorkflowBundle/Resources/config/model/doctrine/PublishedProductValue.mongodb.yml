@@ -29,7 +29,6 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             reference: true
             type: one
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
-
             inversedBy: values
         option:
             type: entity
@@ -49,10 +48,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
             embedded: true
             type: many
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
-#            orderBy:
-#                currency: ASC
-    referenceOne:
         media:
-            simple: true
-            cascade: all
+            embedded: true
+            type: one
             targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia
