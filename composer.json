@@ -18,9 +18,8 @@
     },
     "require": {
         "php": ">=5.4.4",
-        "akeneo/pim-community-dev": "1.2.x-dev#871ec4fda6772ba0713043ce682ca49f9779dd48",
-        "phpspec/php-diff": "1.0.2",
-        "doctrine/mongodb-odm-bundle": " 3.0.*@dev"
+        "akeneo/pim-community-dev": "1.2.x-dev",
+        "phpspec/php-diff": "1.0.2"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
