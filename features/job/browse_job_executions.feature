@@ -21,8 +21,8 @@ Feature: Browse job executions
     When I am on the "clothing_category_export" export job edit page
     And I visit the "Permissions" tab
     And I fill in the following information:
-      | Permissions to execute job profile | Redactor |
-      | Permissions to edit job profile    | Redactor |
+      | Allowed to execute job profile | Redactor |
+      | Allowed to edit job profile    | Redactor |
     And I save the job profile
     Then I am on the export executions page
     And the grid should contain 3 elements

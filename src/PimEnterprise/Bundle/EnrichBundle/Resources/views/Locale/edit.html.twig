@@ -2,6 +2,35 @@
 
 {% oro_title_set({ params: { "%locale.code%": form.vars.value.code } }) %}
 
+{% block head_script %}
+    {{ parent() }}
+    <script type="text/javascript">
+        require(
+            ['jquery', 'pimee/manage-permissions'],
+            function ($, managePermissions) {
+                'use strict';
+
+                $(function () {
+                    var options = {
+                        elementId: '#{{form.permissions.vars.id}}',
+                        changeBlockLabel: '{{ 'Changes'|trans }}',
+                        grantMessage: 'permission-changes.locale.grant',
+                        revokeMessage: 'permission-changes.locale.revoke',
+                        update: {
+                            add: {
+                                '{{ form.permissions.edit.vars.id }}': ['{{ form.permissions.view.vars.id }}']
+                            },
+                            remove: {
+                                '{{ form.permissions.view.vars.id }}': ['{{ form.permissions.edit.vars.id }}'],
+                            }
+                        }
+                    };
+                    managePermissions(options);
+                });
+            });
+    </script>
+{% endblock %}
+
 {% block content %}
 
     {{ JSFV(form) }}
