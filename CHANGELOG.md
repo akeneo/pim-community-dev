@@ -22,6 +22,7 @@
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to add `DisableFamilyFieldsSubscriber` as third argument and `AddAttributeAsLabelSubscriber` as fourth argument
 - Rename pim_catalog.datasource.smart and pim_catalog.datasource.product respectively by pim_datagrid.datasource.smart and pim_datagrid.datasource.product
 - Add method setMassActionRepository and remove the MassActionRepositoryInterface from constructor
+- Introduce a dedicated pim_webservice.serializer to handle REST API
 
 # 1.2.0-RC1
 

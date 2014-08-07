@@ -1,20 +1,21 @@
 <?php
 
-namespace Pim\Bundle\TransformBundle\DependencyInjection;
+namespace Pim\Bundle\WebServiceBundle\DependencyInjection;
 
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Config\FileLocator;
+use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\Finder\Finder;
 
 /**
- * Transform bundle extension
+ * This is the class that loads and manages your bundle configuration
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
- * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
-class PimTransformExtension extends Extension
+class PimWebServiceExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -22,17 +23,7 @@ class PimTransformExtension extends Extension
     public function load(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('transformers.yml');
-        $loader->load('guessers.yml');
-        $loader->load('converters.yml');
-        $loader->load('cache.yml');
-        $loader->load('builders.yml');
-
-        $storageDriver = $container->getParameter('pim_catalog.storage_driver');
-        $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
-        if (file_exists(__DIR__ . '/../Resources/config/' . $storageConfig)) {
-            $loader->load($storageConfig);
-        }
+        $loader->load('handlers.yml');
 
         $this->loadSerializerConfig($configs, $container);
     }
@@ -48,6 +39,5 @@ class PimTransformExtension extends Extension
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
         $loader->load('serializer.yml');
         $loader->load('structured.yml');
-        $loader->load('flat.yml');
     }
 }
