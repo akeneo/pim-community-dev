@@ -5,7 +5,7 @@ namespace Pim\Bundle\WebServiceBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Finder\Finder;
 
 /**
@@ -22,8 +22,22 @@ class PimWebServiceExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('handlers.yml');
-        $loader->load('serializers.yml');
+
+        $this->loadSerializerConfig($configs, $container);
+    }
+
+    /**
+     * Load serializer related configuration
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    protected function loadSerializerConfig(array $configs, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
+        $loader->load('serializer.yml');
+        $loader->load('structured.yml');
     }
 }
