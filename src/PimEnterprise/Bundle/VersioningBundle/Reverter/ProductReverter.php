@@ -5,7 +5,6 @@ namespace PimEnterprise\Bundle\VersioningBundle\Reverter;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\VersioningBundle\Model\Version;
-use PimEnterprise\Bundle\VersioningBundle\Denormalizer\ProductDenormalizer;
 use PimEnterprise\Bundle\VersioningBundle\Exception\RevertException;
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Serializer\SerializerInterface;

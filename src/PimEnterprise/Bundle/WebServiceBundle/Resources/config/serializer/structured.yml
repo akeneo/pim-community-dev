@@ -13,3 +13,5 @@ services:
     # Filters
     pim_webservice.serializer.filter.granted_product_value:
         class: %pim_webservice.serializer.filter.granted_product_value.class%
+        arguments:
+            - '@security.context'
