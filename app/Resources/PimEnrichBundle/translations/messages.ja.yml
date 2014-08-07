@@ -256,8 +256,8 @@ default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
 Translate from: 言語の選択
-"Yes": true
-"No": false
+switch_on:
+switch_off:
 Close: 閉じる
 Choose a color: 色を選択
 Create: 作成
