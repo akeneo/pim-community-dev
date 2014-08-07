@@ -22,7 +22,7 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
     protected $securityFacade;
 
     /** @var array */
-    protected $propertyFields = ['code', 'label'];
+    protected $nonDisabledFields = ['attributes', 'attributeRequirements', 'attributeAsLabel', 'jsfv_identifier'];
 
     /**
      * @param SecurityFacade $securityFacade
@@ -54,7 +54,7 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
         ) {
             $form = $event->getForm();
             foreach ($form as $field) {
-                if (in_array($field->getName(), $this->propertyFields)) {
+                if (!in_array($field->getName(), $this->nonDisabledFields)) {
                     $this->disableField($field);
                 }
             }
