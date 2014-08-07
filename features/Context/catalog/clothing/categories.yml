@@ -30,3 +30,11 @@ categories:
         labels:
             en_US: Jeans
         parent: summer_collection
+    sandals:
+        labels:
+            en_US: Sandals
+        parent: summer_collection
+    old_sandals:
+        labels:
+            en_US: Old category not used anymore
+        parent: summer_collection

@@ -31,3 +31,11 @@ category_accesses:
         viewProducts: [IT support]
         editProducts: [IT support]
         ownProducts: [IT support]
+    sandals:
+        viewProducts: [IT support]
+        editProducts: [IT support]
+        ownProducts: [IT support]
+    old_sandals:
+        viewProducts: []
+        editProducts: []
+        ownProducts: []

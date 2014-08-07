@@ -125,7 +125,7 @@ abstract class AbstractEntityDenormalizer implements SerializerAwareInterface, D
      */
     protected function createEntity()
     {
-        return new $this->entityClass;
+        return new $this->entityClass();
     }
 
     /**
