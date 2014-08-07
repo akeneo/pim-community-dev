@@ -39,7 +39,7 @@ class GrantedProductValueNormalizerFilter implements NormalizerFilterInterface
                 }
                 $attributeGroup = $value->getAttribute()->getGroup();
 
-                return (true === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup));
+                return $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup);
             }
         );
 
