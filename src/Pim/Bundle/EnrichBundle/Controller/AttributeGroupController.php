@@ -2,7 +2,9 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -124,6 +126,7 @@ class AttributeGroupController extends AbstractDoctrineController
             $group = new AttributeGroup();
 
             if ($this->formHandler->process($group)) {
+                $this->eventDispatcher->dispatch(AttributeGroupEvents::POST_CREATE, new GenericEvent($group));
                 $this->addFlash('success', 'flash.attribute group.created');
 
                 return $this->redirectToRoute('pim_enrich_attributegroup_edit', array('id' => $group->getId()));

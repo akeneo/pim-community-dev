@@ -37,7 +37,7 @@ class Edit extends Form
      */
     public function grantResourceRights($resource)
     {
-        $resourceSelector = sprintf('.acl-permission strong:contains("%s")', $resource);
+        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
         $iconSelector = 'i.acl-permission-toggle.non-granted';
 
         $this->getSession()->executeScript(
@@ -52,7 +52,7 @@ class Edit extends Form
      */
     public function removeResourceRights($resource)
     {
-        $resourceSelector = sprintf('.acl-permission strong:contains("%s")', $resource);
+        $resourceSelector = sprintf(".acl-permission strong:contains('%s')", $resource);
         $iconSelector = 'i.acl-permission-toggle.granted';
 
         $this->getSession()->executeScript(

@@ -4,10 +4,12 @@ namespace Pim\Bundle\WebServiceBundle\Controller\Rest;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use FOS\RestBundle\Controller\Annotations\RouteResource;
 use FOS\RestBundle\Controller\Annotations\NamePrefix;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 
 /**
  * Product API controller
@@ -86,23 +88,36 @@ class ProductController extends FOSRestController
             return new Response(sprintf('Product "%s" not found', $identifier), 404);
         }
 
-        $serializer = $this->get('pim_serializer');
-        $data = $serializer->serialize(
-            $product,
-            'json',
-            [
-                'locales' => $locales,
-                'channels' => $channels,
-                'resource' => $this->generateUrl(
-                    'oro_api_get_product',
-                    array(
-                        'identifier' => $product->getIdentifier()->getData()
-                    ),
-                    true
-                )
-            ]
-        );
+        try {
+            $serializedData = $this->serializeProduct($product, $channels, $locales);
+        } catch (AccessDeniedException $exception) {
+            return new Response(sprintf('Access denied to the product "%s"', $product->getIdentifier()), 403);
+        }
 
-        return new Response($data);
+        return new Response($serializedData);
+    }
+
+    /**
+     * Serialize a single product
+     *
+     * @param ProductInterface $product
+     * @param string[]         $channels
+     * @param string[]         $locales
+     *
+     * @return array
+     */
+    protected function serializeProduct(ProductInterface $product, $channels, $locales)
+    {
+        $url = $this->generateUrl(
+            'oro_api_get_product',
+            array(
+                'identifier' => $product->getIdentifier()->getData()
+            ),
+            true
+        );
+        $handler = $this->get('pim_webservice.handler.rest.product');
+        $data = $handler->get($product, $channels, $locales, $url);
+
+        return $data;
     }
 }

@@ -79,7 +79,7 @@ class UserHandler extends AbstractUserHandler
     {
         if (!$user->hasGroup(User::GROUP_DEFAULT)) {
             $group = $this->manager->getStorageManager()
-                ->getRepository('OroUserBundle:Group')->findOneBy(array('name' => User::GROUP_DEFAULT));
+                ->getRepository('OroUserBundle:Group')->getDefaultUserGroup();
 
             if (!$group) {
                 throw new \RuntimeException('Default user group not found');
