@@ -182,6 +182,7 @@
 - Replace the filter config parent_type by ftype
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
+- Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
