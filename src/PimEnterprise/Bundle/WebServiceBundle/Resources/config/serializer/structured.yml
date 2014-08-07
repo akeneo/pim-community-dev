@@ -1,0 +1,15 @@
+parameters:
+    pim_webservice.serializer.filter.granted_product_value.class: PimEnterprise\Bundle\WebServiceBundle\Normalizer\Filter\GrantedProductValueNormalizerFilter
+
+services:
+    # Normalizers
+    pim_webservice.serializer.normalizer.granted_product:
+        class: %pim_serializer.normalizer.product.class%
+        calls:
+            - [setFilters, [['@pim_serializer.filter.product_value', '@pim_webservice.serializer.filter.granted_product_value']]]
+        tags:
+            - { name: pim_webservice.serializer.normalizer, priority: 100 }
+
+    # Filters
+    pim_webservice.serializer.filter.granted_product_value:
+        class: %pim_webservice.serializer.filter.granted_product_value.class%
