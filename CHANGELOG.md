@@ -20,6 +20,8 @@
 - Remove backendStorage property on attribute entities
 - Inject MetricFactory in `Pim\Bundle\CatalogBundle\AttributeType\MetricType`, `Pim\Bundle\EnrichBundle\MassEditAction\Operation\EditCommonAttribute` and `Pim\Bundle\TransformBundle\Transformer\Property\MetricTransformer` instead of metric entity class parameter
 - Change constructor of `Pim\Bundle\EnrichBundle\Form\Type\FamilyType` to add `DisableFamilyFieldsSubscriber` as third argument and `AddAttributeAsLabelSubscriber` as fourth argument
+- Rename pim_catalog.datasource.smart and pim_catalog.datasource.product respectively by pim_datagrid.datasource.smart and pim_datagrid.datasource.product
+- Add method setMassActionRepository and remove the MassActionRepositoryInterface from constructor
 
 # 1.2.0-RC1
 
@@ -180,6 +182,7 @@
 - Replace the filter config parent_type by ftype
 - Rename CatalogBundle, VersioningBundle, UserBundle listeners to subscribers
 - Change constructor of `Pim\Bundle\DataGridBundle\Manager\DatagridViewManager` to inject the datagrid view repository as first argument (instead of the manager)
+- Rename service `pim_catalog.validator.attribute_constraint_guesser` by `pim_catalog.validator.constraint_guesser.chained_attribute`
 
 # 1.1.0 - "Rabbit Punch" (2014-04-16)
 
