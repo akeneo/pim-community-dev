@@ -15,6 +15,7 @@
 - Display a file attribute attribute as column in product grid displays Array
 - History tab crashes when product imported without real time versioning
 - Creating an attribute with the code "id" should be forbidden
+- Switch not well displayed on other locales than en_US
 
 ## BC breaks
 - Remove backendStorage property on attribute entities
