@@ -1,6 +1,6 @@
 <?php
 
-namespace PimEnterprise\Bundle\WebServiceBundle\Normalizer\Filter;
+namespace PimEnterprise\Bundle\TransformBundle\Normalizer\Filter;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Collections\Collection;
