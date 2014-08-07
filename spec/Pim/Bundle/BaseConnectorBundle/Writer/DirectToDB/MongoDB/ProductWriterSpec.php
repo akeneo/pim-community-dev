@@ -19,6 +19,9 @@ use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class ProductWriterSpec extends ObjectBehavior
 {
     function let(
