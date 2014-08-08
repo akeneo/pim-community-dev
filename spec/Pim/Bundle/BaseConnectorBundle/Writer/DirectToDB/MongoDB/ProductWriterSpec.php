@@ -14,8 +14,8 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\MongoDB\Collection;
-
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 
@@ -32,7 +32,8 @@ class ProductWriterSpec extends ObjectBehavior
         EventDispatcherInterface $eventDispatcher,
         MongoObjectsFactory $mongoFactory,
         StepExecution $stepExecution,
-        Collection $collection
+        Collection $collection,
+        ProductCacheClearer $clearer
     ) {
         $documentManager->getDocumentCollection('pim_product')->willReturn($collection);
         $collection->getName()->willReturn('pim_product_collection');
@@ -43,7 +44,8 @@ class ProductWriterSpec extends ObjectBehavior
             $normalizer,
             $eventDispatcher,
             $mongoFactory,
-            'pim_product'
+            'pim_product',
+            $clearer
         );
 
         $this->setStepExecution($stepExecution);
