@@ -1,4 +1,5 @@
 imports:
+    - { resource: pim_parameters.yml }
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: @PimEnterpriseEnrichBundle/Resources/config/pimee.yml }
