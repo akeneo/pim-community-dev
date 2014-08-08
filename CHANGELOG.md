@@ -1,4 +1,4 @@
-# 1.2.0-x
+# 1.2.0-RC2
 
 ## Improvements
 - Create a metric factory
