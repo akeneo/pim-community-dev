@@ -25,6 +25,7 @@
 - Rename pim_catalog.datasource.smart and pim_catalog.datasource.product respectively by pim_datagrid.datasource.smart and pim_datagrid.datasource.product
 - Add method setMassActionRepository and remove the MassActionRepositoryInterface from constructor
 - Introduce a dedicated pim_webservice.serializer to handle REST API
+- Rename ACL `pim_enrich_family_edit` to `pim_enrich_family_edit_properties`. This ACL now only check the access to the properties tab.
 
 # 1.2.0-RC1
 

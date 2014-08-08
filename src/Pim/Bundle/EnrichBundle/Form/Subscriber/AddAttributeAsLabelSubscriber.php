@@ -70,7 +70,7 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
                         'select2'         => true,
-                        'disabled'        => !$this->securityFacade->isGranted('pim_enrich_family_edit'),
+                        'disabled'        => !$this->securityFacade->isGranted('pim_enrich_family_edit_properties'),
                     )
                 )
             );

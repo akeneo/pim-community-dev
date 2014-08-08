@@ -571,7 +571,7 @@ pim_enrich:
         family:
             index: List families
             create: Create a family
-            edit: Edit a family
+            edit_properties: Edit properties of a family
             remove: Remove a family
             add_attribute: Add attribute to a family
             remove_attribute: Remove attribute from a family
