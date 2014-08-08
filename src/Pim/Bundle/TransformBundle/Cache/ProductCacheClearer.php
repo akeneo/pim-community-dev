@@ -28,24 +28,7 @@ class ProductCacheClearer
      *
      * @var array
      */
-    protected $nonClearableEntities = array(
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution',
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\JobInstance',
-        'Akeneo\\Bundle\\BatchBundle\\Entity\\StepExecution',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Family',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Channel',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Locale',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\Currency',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\FamilyTranslation',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroup',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeGroupTranslation',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeRequirement',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\AttributeTranslation',
-        'Pim\\Bundle\\CatalogBundle\\Entity\\CategoryTranslation',
-        'Oro\\Bundle\\UserBundle\\Entity\\User',
-        'Oro\\Bundle\\OrganizationBundle\\Entity\\BusinessUnit',
-        'Oro\\Bundle\\UserBundle\\Entity\\UserApi',
-    );
+    protected $nonClearableEntities = array();
 
     /**
      * Constructor
