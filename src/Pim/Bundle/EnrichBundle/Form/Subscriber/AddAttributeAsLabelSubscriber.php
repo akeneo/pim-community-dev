@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -17,27 +18,27 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
  */
 class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
 {
-    /**
-     * Form factory
-     * @var FormFactoryInterface
-     */
+    /** @var FormFactoryInterface */
     protected $factory;
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $attributeClass;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * Constructor
      *
      * @param string               $attributeClass
      * @param FormFactoryInterface $factory
+     * @param SecurityFacade       $securityFacade
      */
-    public function __construct($attributeClass, FormFactoryInterface $factory)
+    public function __construct($attributeClass, FormFactoryInterface $factory, SecurityFacade $securityFacade)
     {
         $this->attributeClass = $attributeClass;
         $this->factory        = $factory;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -68,7 +69,8 @@ class AddAttributeAsLabelSubscriber implements EventSubscriberInterface
                         'class'           => $this->attributeClass,
                         'choices'         => $data->getAttributeAsLabelChoices(),
                         'auto_initialize' => false,
-                        'select2'         => true
+                        'select2'         => true,
+                        'disabled'        => !$this->securityFacade->isGranted('pim_enrich_family_edit_properties'),
                     )
                 )
             );

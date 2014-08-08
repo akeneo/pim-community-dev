@@ -43,7 +43,7 @@ class PimTransformExtension extends Extension
      * @param array            $configs
      * @param ContainerBuilder $container
      */
-    private function loadSerializerConfig(array $configs, ContainerBuilder $container)
+    protected function loadSerializerConfig(array $configs, ContainerBuilder $container)
     {
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
         $loader->load('serializer.yml');

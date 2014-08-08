@@ -182,7 +182,7 @@ class GroupController extends AbstractController
      *
      * @return array
      *
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_index")
      * @Template("PimEnrichBundle:Group:_productList.html.twig")
      */
     public function productListAction(Group $group)

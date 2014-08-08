@@ -10,7 +10,7 @@ use PhpSpec\ObjectBehavior;
 /**
  * @require \MongoId
  */
-class PriceNormalizerSpec extends ObjectBehavior
+class ProductPriceNormalizerSpec extends ObjectBehavior
 {
     function let(MongoObjectsFactory $mongoFactory)
     {

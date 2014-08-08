@@ -1,3 +1,0 @@
-services:
-    pim_versioning.serializer:
-        class: %pim_serializer.class%

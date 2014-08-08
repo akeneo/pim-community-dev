@@ -2,6 +2,7 @@
 
 namespace spec\Pim\Bundle\EnrichBundle\Form\Subscriber;
 
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -11,9 +12,9 @@ use Symfony\Component\Form\FormInterface;
 
 class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
 {
-    function let(FormFactoryInterface $factory)
+    function let(FormFactoryInterface $factory, SecurityFacade $securityFacade)
     {
-        $this->beConstructedWith('Acme\\Foo\\Bar', $factory);
+        $this->beConstructedWith('Acme\\Foo\\Bar', $factory, $securityFacade);
     }
 
     function it_is_an_event_subscriber()
@@ -33,7 +34,8 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
         Family $family,
         FormInterface $form,
         FormInterface $field,
-        $factory
+        $factory,
+        $securityFacade
     ) {
         $event->getForm()->willReturn($form);
         $event->getData()->willReturn($family);
@@ -44,13 +46,16 @@ class AddAttributeAsLabelSubscriberSpec extends ObjectBehavior
             'description' => 'Description',
         ]);
 
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
+
         $factory->createNamed('attributeAsLabel', 'entity', 'name', [
             'required'        => true,
             'label'           => 'Attribute used as label',
             'class'           => 'Acme\\Foo\\Bar',
             'choices'         => ['name' => 'Name', 'description' => 'Description'],
             'auto_initialize' => false,
-            'select2'         => true
+            'select2'         => true,
+            'disabled'        => false
         ])->willReturn($field);
 
         $form->add($field)->shouldBeCalled();

@@ -23,9 +23,9 @@ pim_enrich_product_create:
     type: action
     label: pim_enrich.acl.product.create
     group_name: pim_enrich.acl_group.product
-pim_enrich_product_edit:
+pim_enrich_product_edit_attributes:
     type: action
-    label: pim_enrich.acl.product.edit
+    label: pim_enrich.acl.product.edit_attributes
     group_name: pim_enrich.acl_group.product
 pim_enrich_product_remove:
     type: action
@@ -112,9 +112,9 @@ pim_enrich_family_create:
     type: action
     label: pim_enrich.acl.family.create
     group_name: pim_enrich.acl_group.family
-pim_enrich_family_edit:
+pim_enrich_family_edit_properties:
     type: action
-    label: pim_enrich.acl.family.edit
+    label: pim_enrich.acl.family.edit_properties
     group_name: pim_enrich.acl_group.family
 pim_enrich_family_remove:
     type: action

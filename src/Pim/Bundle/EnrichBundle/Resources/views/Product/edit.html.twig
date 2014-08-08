@@ -7,6 +7,10 @@
     {% include 'PimEnrichBundle:Product:_js-handler.html.twig' %}
 {% endblock %}
 
+{% if elements is not defined %}
+    {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
+{% endif %}
+
 {% block content %}
 
     {% if resource_granted('pim_enrich_product_add_attribute') %}
