@@ -41,7 +41,10 @@ class OroNavigationExtension extends Extension
                 }
 
                 if (isset($bundleConfig['oro_titles'])) {
-                    $titlesConfig += is_array($bundleConfig['oro_titles']) ? $bundleConfig['oro_titles'] : array();
+                    $titlesConfig = array_merge(
+                        $titlesConfig,
+                        is_array($bundleConfig['oro_titles']) ? $bundleConfig['oro_titles'] : []
+                    );
                 }
             }
         }
