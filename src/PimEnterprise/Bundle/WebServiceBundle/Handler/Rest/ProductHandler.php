@@ -48,7 +48,7 @@ class ProductHandler extends BaseProductHandler
     public function get(ProductInterface $product, $channels, $locales, $url)
     {
         if (false === $this->securityContext->isGranted(Attributes::VIEW, $product)) {
-           throw new AccessDeniedException(sprintf('Access denied to the product "%s"', $product->getIdentifier()));
+            throw new AccessDeniedException(sprintf('Access denied to the product "%s"', $product->getIdentifier()));
         }
 
         return parent::get($product, $channels, $locales, $url);
