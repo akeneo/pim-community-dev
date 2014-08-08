@@ -1,3 +1,6 @@
 parameters:
-    pim_user.entity.role.class: Oro\Bundle\UserBundle\Entity\Role
-    pim_user.entity.group.class: Oro\Bundle\UserBundle\Entity\Group
+    pim_user.entity.role.class:     Oro\Bundle\UserBundle\Entity\Role
+    pim_user.entity.group.class:    Oro\Bundle\UserBundle\Entity\Group
+    pim_user.entity.user.class:     Oro\Bundle\UserBundle\Entity\User,
+    pim_user.entity.user_api.class: Oro\Bundle\UserBundle\Entity\UserApi
+    pim_user.entity.business_entity.class: Oro\Bundle\OrganizationBundle\Entity\BusinessUnit

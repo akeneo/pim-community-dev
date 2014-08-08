@@ -13,3 +13,4 @@ services:
             - '@event_dispatcher'
             - '@pim_catalog.mongodb.mongo_objects_factory'
             - %pim_catalog.entity.product.class%
+            - '@pim_transform.cache.product_cache_clearer'
