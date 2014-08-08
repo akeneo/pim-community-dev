@@ -1,4 +1,16 @@
 View the product: View the product
-permissions-changes.grant-{{ permission }}-to-{{ group }}: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this category
-permissions-changes.revoke-{{ permission }}-to-{{ group }}: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this category
 pimee_enrich.product_history.action.revert: Revert to this version
+
+permission-changes:
+    category:
+        grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this category
+        revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this category
+    locale:
+        grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> in this locale
+        revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> in this locale
+    attribute group:
+        grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong> of this attribute group
+        revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong> of this attribute group
+    job profile:
+        grant: The group <strong>{{ group }}</strong> will <strong>be {{ permission }}</strong>
+        revoke: The group <strong>{{ group }}</strong> will <strong>not be {{ permission }}</strong>
