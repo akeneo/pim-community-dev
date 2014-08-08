@@ -49,8 +49,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     protected $realTimeVersioning = true;
 
     /**
-     * Constructor 
-     * 
+     * Constructor
+     *
      * @param ProductManager      $productManager
      * @param ProductCacheClearer $cacheClearer
      * @param VersionManager      $versionManager
@@ -61,7 +61,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         VersionManager $versionManager
     ) {
         $this->productManager  = $productManager;
-        $this->cacheClearer   = $cacheClearer;
+        $this->cacheClearer    = $cacheClearer;
         $this->versionManager  = $versionManager;
     }
 

@@ -15,7 +15,6 @@ use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
-use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -109,7 +108,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
      * @param string                   $productClass:
-     * @param ProductCacheClearer         $cacheClearer
+     * @param ProductCacheClearer      $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
