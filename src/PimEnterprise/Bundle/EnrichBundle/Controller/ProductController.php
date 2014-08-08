@@ -69,7 +69,7 @@ class ProductController extends BaseProductController
      *
      * @throws AccessDeniedException
      *
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_index")
      */
     public function dispatchAction(Request $request, $id)
     {
@@ -99,7 +99,7 @@ class ProductController extends BaseProductController
      * @param integer $id
      *
      * @Template
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_index")
      * @return array
      */
     public function showAction(Request $request, $id)
