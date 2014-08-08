@@ -1,6 +1,14 @@
 # 1.2.0-x
 
 ## Improvements
+
+## Bug fixes
+
+## BC breaks
+
+# 1.2.0-RC2
+
+## Improvements
 - Create a metric factory
 - Improve UI for defining role permissions
 - Throw exception on install command if fixture directory not found
