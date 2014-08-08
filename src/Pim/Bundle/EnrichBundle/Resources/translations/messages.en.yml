@@ -98,6 +98,7 @@ btn:
 
 # Confirmation messages
 confirmation:
+    confirm:         Confirmation
     delete:          Delete confirmation
     leave:           Are you sure you want to leave this page?
     discard changes: You will lose changes to the %entity% if you leave the page.

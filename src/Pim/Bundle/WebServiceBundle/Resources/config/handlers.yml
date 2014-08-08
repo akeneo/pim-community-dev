@@ -1,0 +1,8 @@
+parameters:
+    pim_webservice.handler.rest.product.class: Pim\Bundle\WebServiceBundle\Handler\Rest\ProductHandler
+
+services:
+    pim_webservice.handler.rest.product:
+        class: %pim_webservice.handler.rest.product.class%
+        arguments:
+            - '@pim_webservice.serializer'

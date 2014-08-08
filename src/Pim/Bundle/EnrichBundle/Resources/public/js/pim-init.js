@@ -100,7 +100,12 @@ define(
                                 data: { _method: $el.data('method') },
                                 success: function() {
                                     var navigation = Navigation.getInstance();
-                                    navigation.navigate('#url=' + $el.attr('data-redirect-url'), { trigger: true });
+                                    var targetUrl = '#url=' + $el.attr('data-redirect-url');
+                                    // If already on the desired page, make sure it is refreshed
+                                    if (targetUrl === window.location.hash) {
+                                        navigation.navigate(targetUrl.substr(0, targetUrl.length -1));
+                                    }
+                                    navigation.navigate(targetUrl, { trigger: true });
                                     navigation.addFlashMessage('success', $el.attr('data-success-message'));
                                 },
                                 error: function(xhr) {
