@@ -11,7 +11,15 @@
             {{ elements.link('btn.editworkingcopy', path('pim_enrich_product_edit', {id: published.originalProduct.id, locale: dataLocale}), {icon: 'pencil'}) }}
         {% endif %}
         {% if is_granted(constant('PimEnterprise\\Bundle\\SecurityBundle\\Attributes::OWN'), published.originalProduct) %}
-            {{ elements.link('btn.unpublish', path('pimee_workflow_published_product_unpublish', {id: published.id, dataLocale: dataLocale}), {class: 'btn-info', icon: 'cloud-download'}) }}
+            {{ elements.confirmLink(
+                path('pimee_workflow_published_product_unpublish', {id: published.id, dataLocale: dataLocale}),
+                path('pimee_workflow_published_product_index', {dataLocale: dataLocale}),
+                'flash.product.unpublished'|trans,
+                'unpublish',
+                'cloud-download',
+                'confirmation.product.unpublish'|trans,
+                'btn-info'
+            ) }}
         {% endif %}
     {% endset %}
 

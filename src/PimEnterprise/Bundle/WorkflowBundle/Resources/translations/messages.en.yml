@@ -37,3 +37,7 @@ pim_title:
         index:  Published products
         view: Published product
 btn.editworkingcopy: Edit working copy
+confirmation:
+    product:
+        publish: Are you sure you want to publish this product ?
+        unpublish: Are you sure you want to unpublish this product ?

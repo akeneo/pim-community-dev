@@ -13,6 +13,7 @@ Feature: Unpublish a product
     And I am logged in as "Julia"
     And I am on the "my-jacket" published show page
     When I press the "Unpublish" button
+    And I confirm the publishing
     Then I should be on the published index page
     And the grid should contain 1 elements
     And I should see product my-leather-jacket
