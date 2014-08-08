@@ -203,7 +203,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->collection->batchInsert($docs);
         $productsCount = count($docs);
         for ($i = 0; $i < $productsCount; $i++) {
-            $this->stepExecution->incrementSummaryInfo('created');
+            $this->stepExecution->incrementSummaryInfo('create');
         }
     }
 
@@ -219,7 +219,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 '_id' => $doc['_id']
             ];
             $this->collection->update($criteria, $doc);
-            $this->stepExecution->incrementSummaryInfo('updated');
+            $this->stepExecution->incrementSummaryInfo('update');
         }
     }
 
