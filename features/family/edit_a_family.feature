@@ -54,3 +54,9 @@ Feature: Edit a family
     Then the field Code should be disabled
     And the field Attribute used as label should be disabled
     And the field English (United States) should be disabled
+    # restore permissions (TODO: refactor this part)
+    Then I am on the "Administrator" role page
+    And I visit the "Permissions" tab
+    And I visit the "Families" group
+    And I grant rights to Edit properties of a family
+    And I save the role
