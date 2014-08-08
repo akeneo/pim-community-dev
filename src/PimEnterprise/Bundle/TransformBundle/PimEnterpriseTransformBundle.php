@@ -3,8 +3,6 @@
 namespace PimEnterprise\Bundle\TransformBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Pim\Bundle\TransformBundle\DependencyInjection\Compiler;
 
 /**
  * EE Transform bundle
