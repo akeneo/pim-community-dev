@@ -15,6 +15,7 @@ pimee_workflow:
             remove:  Remove
     published_product:
         index: Published Products
+        title:  Published product
     acl.published_product:
         index: Manage published products
     product:
@@ -34,8 +35,12 @@ pim_menu:
         published_product: Published products
 pim_title:
     published_product:
-        index:  Published products
-        view: Published product
+        index: Published products
+        view: Published products %product.sku% | View
+    product:
+        dispatch: "Products %product.sku%"
+        show: "Products %product.sku% | Show"
+
 btn.editworkingcopy: Edit working copy
 confirmation:
     product:

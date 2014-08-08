@@ -3,7 +3,7 @@
 {% oro_title_set({ params: { "%product.sku%": published.label } }) %}
 
 {% block content %}
-    {% set title = 'pim_title.published_product.view'|trans %}
+    {% set title = 'pimee_workflow.published_product.title'|trans %}
 
     {% set buttons %}
         {{ elements.backLink(path('pimee_workflow_published_product_index', { dataLocale: dataLocale })) }}
