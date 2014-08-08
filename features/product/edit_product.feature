@@ -24,7 +24,7 @@ Feature: Edit a product
     And I am on the "Administrator" role page
     And I visit the "Permissions" tab
     And I visit the "Products" group
-    And I remove rights to Edit a product
+    And I remove rights to Edit attributes of a product
     And I save the role
     When I am on the "sandal" product page
     Then I should not see "Attributes"
