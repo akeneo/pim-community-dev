@@ -68,7 +68,7 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         $data = [];
         $data['_id'] = $this->mongoFactory->createMongoId();
         $data['attribute'] = $value->getAttribute()->getId();
-        $data['entity'] = $this->mongoFactory->createMongoDBRef($productCollection, $productId);
+        $data['entity'] = $this->mongoFactory->createMongoDBRef($productId, $productCollection);
 
         if (null !== $value->getLocale()) {
             $data['locale'] = $value->getLocale();
