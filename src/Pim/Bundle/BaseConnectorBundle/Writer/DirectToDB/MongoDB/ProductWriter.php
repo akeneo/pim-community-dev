@@ -100,13 +100,13 @@ class ProductWriter extends AbstractConfigurableStepElement implements
 
 
     /**
-     * @param ProductManager           $productManager
-     * @param DocumentManager          $documentManager
-     * @param PendingMassPersister     $pendingPersister
-     * @param NormalizerInterface      $normalizer
+     * @param ProductManager       $productManager
+     * @param DocumentManager      $documentManager
+     * @param PendingMassPersister $pendingPersister
+     * @param NormalizerInterface  $normalizer
      * @parma EventDispatcherInterface $eventDispatcher
-     * @param MongoObjectsFactory      $mongoFactory
-     * @param string                   $productClass:
+     * @param MongoObjectsFactory  $mongoFactory
+     * @param string               $productClass:
      */
     public function __construct(
         ProductManager $productManager,
