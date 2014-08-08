@@ -462,7 +462,6 @@ pim_enrich:
   acl:
     locale:
       index: Liste des locales
-      access: Accès aux locales
     currency:
       index: Liste des devises
       toggle: Activer/désactiver devises
