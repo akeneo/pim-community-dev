@@ -605,6 +605,7 @@ abstract class AbstractProductValue implements ProductValueInterface
         if (is_object($this->media)) {
             $this->media->setValue($this);
         }
+
         return $this->media;
     }
 

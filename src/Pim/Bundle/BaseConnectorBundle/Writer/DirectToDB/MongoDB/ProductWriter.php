@@ -2,20 +2,21 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Doctrine\MongoDB\Collection;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
 use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\EventDispatcher\GenericEvent;
-use Doctrine\ODM\MongoDB\DocumentManager;
-use Doctrine\MongoDB\Collection;
+use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -98,15 +99,18 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     /** @var Collection */
     protected $collection;
 
+    /** @var ProductCacheClearer */
+    protected $cacheClearer;
 
     /**
      * @param ProductManager           $productManager
      * @param DocumentManager          $documentManager
      * @param PendingMassPersister     $pendingPersister
      * @param NormalizerInterface      $normalizer
-     * @parma EventDispatcherInterface $eventDispatcher
+     * @param EventDispatcherInterface $eventDispatcher
      * @param MongoObjectsFactory      $mongoFactory
      * @param string                   $productClass:
+     * @param ProductCacheClearer      $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
@@ -115,7 +119,8 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         NormalizerInterface $normalizer,
         EventDispatcherInterface $eventDispatcher,
         MongoObjectsFactory $mongoFactory,
-        $productClass
+        $productClass,
+        ProductCacheClearer $cacheClearer
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
@@ -124,6 +129,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->eventDispatcher  = $eventDispatcher;
         $this->mongoFactory     = $mongoFactory;
         $this->productClass     = $productClass;
+        $this->cacheClearer     = $cacheClearer;
     }
 
     /**
@@ -164,6 +170,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->eventDispatcher->dispatch(self::POST_INSERT, new GenericEvent($productsToInsert));
         $this->eventDispatcher->dispatch(self::POST_UPDATE, new GenericEvent($productsToUpdate));
         $this->documentManager->clear();
+        $this->cacheClearer->clear();
     }
 
     /**
@@ -196,7 +203,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->collection->batchInsert($docs);
         $productsCount = count($docs);
         for ($i = 0; $i < $productsCount; $i++) {
-            $this->stepExecution->incrementSummaryInfo('created');
+            $this->stepExecution->incrementSummaryInfo('create');
         }
     }
 
@@ -212,7 +219,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 '_id' => $doc['_id']
             ];
             $this->collection->update($criteria, $doc);
-            $this->stepExecution->incrementSummaryInfo('updated');
+            $this->stepExecution->incrementSummaryInfo('update');
         }
     }
 

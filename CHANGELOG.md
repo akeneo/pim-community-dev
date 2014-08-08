@@ -28,6 +28,7 @@
 - Introduce a dedicated pim_webservice.serializer to handle REST API
 - Rename ACL `pim_enrich_family_edit` to `pim_enrich_family_edit_properties`. This ACL now only check the access to the properties tab.
 - Rename ACL `pim_enrich_product_edit` to `pim_enrich_product_edit_attributes`. This ACL now only check the access to the attributes tab.
+- Added ProductCacheClearer to share cache clearing between product writers
 
 # 1.2.0-RC1
 

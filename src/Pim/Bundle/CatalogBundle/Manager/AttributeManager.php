@@ -7,7 +7,6 @@ use Symfony\Component\EventDispatcher\GenericEvent;
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Event\AttributeEvents;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 use Pim\Bundle\CatalogBundle\AttributeType\AttributeTypeFactory;
 
 /**

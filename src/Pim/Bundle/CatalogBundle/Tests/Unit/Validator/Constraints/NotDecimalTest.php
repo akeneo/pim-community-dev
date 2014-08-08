@@ -18,6 +18,6 @@ class NotDecimalTest extends \PHPUnit_Framework_TestCase
      */
     public function testExtendsConstraint()
     {
-        $this->assertInstanceOf('Symfony\Component\Validator\Constraint', new NotDecimal);
+        $this->assertInstanceOf('Symfony\Component\Validator\Constraint', new NotDecimal());
     }
 }
