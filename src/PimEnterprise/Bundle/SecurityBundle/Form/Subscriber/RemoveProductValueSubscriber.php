@@ -45,15 +45,18 @@ class RemoveProductValueSubscriber implements EventSubscriberInterface
     public function removeProductValues(FormEvent $event)
     {
         $form       = $event->getForm();
-        $formValues = $form->get('values');
 
-        foreach ($formValues as $formValue) {
-            $productValue = $formValue->getData();
-            $attribute = $productValue->getAttribute();
-            $attributeGroup = $attribute->getGroup();
-            if (false === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
-                $formValueName = $formValue->getName();
-                $formValues->remove($formValueName);
+        if ($form->has('values')) {
+            $formValues = $form->get('values');
+
+            foreach ($formValues as $formValue) {
+                $productValue = $formValue->getData();
+                $attribute = $productValue->getAttribute();
+                $attributeGroup = $attribute->getGroup();
+                if (false === $this->securityContext->isGranted(Attributes::VIEW_ATTRIBUTES, $attributeGroup)) {
+                    $formValueName = $formValue->getName();
+                    $formValues->remove($formValueName);
+                }
             }
         }
     }
