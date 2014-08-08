@@ -24,6 +24,7 @@
 - History tab crashes when product imported without real time versioning
 - Creating an attribute with the code "id" should be forbidden
 - Switch not well displayed on other locales than en_US
+- Associations are now well saved on product import
 
 ## BC breaks
 - Remove backendStorage property on attribute entities
