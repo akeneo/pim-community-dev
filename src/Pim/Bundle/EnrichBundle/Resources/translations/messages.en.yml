@@ -545,7 +545,7 @@ pim_enrich:
         product:
             index: List products
             create: Create a product
-            edit: Edit a product
+            edit_attributes: Edit attributes of a product
             remove: Remove a product
             add_attribute: Add an attribute to a product
             remove_attribute: Remove an attribute from a product

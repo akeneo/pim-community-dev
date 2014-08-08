@@ -1,6 +1,6 @@
 {% set activeTab = false %}
 
-{% if resource_granted('pim_enrich_product_edit') %}
+{% if resource_granted('pim_enrich_product_edit_attributes') %}
     <div class="tab-pane active" id="attributes">
         {% include 'PimEnrichBundle:Product:_attributes.html.twig' %}
     </div>

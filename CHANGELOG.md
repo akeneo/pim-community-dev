@@ -1,4 +1,4 @@
-# 1.2.0-RC2
+# 1.2.0-x
 
 ## Improvements
 - Create a metric factory
@@ -26,6 +26,7 @@
 - Add method setMassActionRepository and remove the MassActionRepositoryInterface from constructor
 - Introduce a dedicated pim_webservice.serializer to handle REST API
 - Rename ACL `pim_enrich_family_edit` to `pim_enrich_family_edit_properties`. This ACL now only check the access to the properties tab.
+- Rename ACL `pim_enrich_product_edit` to `pim_enrich_product_edit_attributes`. This ACL now only check the access to the attributes tab.
 
 # 1.2.0-RC1
 

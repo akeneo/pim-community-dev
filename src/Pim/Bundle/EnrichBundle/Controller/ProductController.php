@@ -246,7 +246,7 @@ class ProductController extends AbstractDoctrineController
      *
      * @return Response|RedirectResponse
      *
-     * @AclAncestor("pim_enrich_product_edit")
+     * @AclAncestor("pim_enrich_product_edit_attributes")
      */
     public function toggleStatusAction(Request $request, $id)
     {
@@ -602,7 +602,7 @@ class ProductController extends AbstractDoctrineController
     protected function getEditFormOptions(ProductInterface $product)
     {
         return array(
-            'enable_values'    => $this->securityFacade->isGranted('pim_enrich_product_edit'),
+            'enable_values'    => $this->securityFacade->isGranted('pim_enrich_product_edit_attributes'),
             'enable_family'    => $this->securityFacade->isGranted('pim_enrich_product_change_family'),
             'enable_state'     => $this->securityFacade->isGranted('pim_enrich_product_change_state'),
             'currentLocale'    => $this->getDataLocaleCode(),
