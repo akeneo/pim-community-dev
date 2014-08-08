@@ -64,12 +64,12 @@
         </replaceregexp>
         <replaceregexp match="upload_dir:.*$" replace="upload_dir: %kernel.root_dir%/uploads/%upload.dir%" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*.yml" />
+                <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
         <replaceregexp match="installer_data:.*$" replace="installer_data: PimInstallerBundle:minimal" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*.yml" />
+                <include name="pim_parameters.yml" />
             </fileset>
         </replaceregexp>
         <copy file="${basedir}/behat.yml.dist" tofile="${basedir}/behat.yml" />
@@ -292,22 +292,21 @@
 
         <replaceregexp match="# mongodb" replace="mongodb" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*" />
+                <include name="pim_parameters*" />
             </fileset>
         </replaceregexp>
 
         <replaceregexp match="mongodb_database:.*$" replace="mongodb_database: %mongodb.database%" byline="true">
             <fileset dir="${basedir}/app/config/">
-                <include name="parameters*" />
+                <include name="pim_parameters*" />
             </fileset>
         </replaceregexp>
 
-        <replaceregexp
-            file="${basedir}/app/config/config.yml"
-            match="storage_driver: 'doctrine/orm'"
-            replace="storage_driver: 'doctrine/mongodb-odm'"
-            flags="g"
-        />
+        <replaceregexp match="pim_catalog_storage_driver: doctrine/orm" replace="pim_catalog_storage_driver: doctrine/mongodb-odm" byline="true">
+            <fileset dir="${basedir}/app/config/">
+                <include name="pim_parameters*" />
+            </fileset>
+        </replaceregexp>
     </target>
 
     <target name="setupdb" description="Setup db">
