@@ -5,7 +5,6 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;

@@ -3,13 +3,7 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
-use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Criteria condition utils
@@ -26,7 +20,7 @@ class CriteriaCondition
     protected $qb;
 
     /**
-     * @param QueryBuilder   $qb
+     * @param QueryBuilder $qb
      */
     public function __construct(QueryBuilder $qb)
     {

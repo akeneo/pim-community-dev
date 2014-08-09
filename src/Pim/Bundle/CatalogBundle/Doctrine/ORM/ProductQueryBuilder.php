@@ -4,9 +4,7 @@ namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
 
 use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Exception\ProductQueryException;
 use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
