@@ -29,6 +29,7 @@ class MetricFilter implements AttributeFilterInterface
     protected $context;
 
     /**
+     * TODO : replace by a timestamp ?
      * Alias counter, to avoid duplicate alias name
      * @return integer
      */
