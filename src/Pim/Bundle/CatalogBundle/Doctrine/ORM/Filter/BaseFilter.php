@@ -127,7 +127,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
     {
         return in_array(
             $operator,
-            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN', 'EMPTY']
+            ['IN', 'NOT IN', '=', '<', '<=', '>', '>=', 'EMPTY', 'BETWEEN']
         );
     }
 

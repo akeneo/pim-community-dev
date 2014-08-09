@@ -2,7 +2,8 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Date filter
@@ -10,9 +11,37 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @author    Julien Janvier <julien.janvier@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ *
+ * TODO : should implement attribute filter interface
  */
-class DateFilter extends BaseFilter
+class DateFilter implements FieldFilterInterface
 {
+    /**
+     * @var QueryBuilder
+     */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /**
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -75,10 +104,12 @@ class DateFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
+    public function supportsOperator($operator)
     {
-        // TODO : avoid to extend BaseFilter
-        return false;
+        return in_array(
+            $operator,
+            ['=', '<', '>', 'BETWEEN', 'EMPTY']
+        );
     }
 
     /**

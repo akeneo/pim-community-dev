@@ -106,8 +106,9 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         throw new \LogicException(
             sprintf(
-                'Attribute "%s" with operator "%s" is not supported',
+                'Attribute "%s" (%s) with operator "%s" is not supported',
                 $attribute->getCode(),
+                $attribute->getAttributeType(),
                 $operator
             )
         );
