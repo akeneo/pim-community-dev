@@ -6,8 +6,8 @@ use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
-use Pim\Bundle\TranslationBundle\Entity\AbstractTranslation;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
+use Pim\Bundle\TranslationBundle\Entity\Translatable;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -26,6 +26,8 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
 {
+    use Translatable;
+
     /**
      * @var integer $id
      */
@@ -50,19 +52,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
      * @var ArrayCollection $attributes
      */
     protected $attributes;
-
-    /**
-     * Used locale to override Translation listener's locale
-     * this is not a mapped field of entity metadata, just a simple property
-     *
-     * @var string $locale
-     */
-    protected $locale;
-
-    /**
-     * @var \Doctrine\Common\Collections\ArrayCollection $translations
-     */
-    protected $translations;
 
     /**
      * Constructor
@@ -130,78 +119,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     public function getType()
     {
         return $this->type;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setLocale($locale)
-    {
-        $this->locale = $locale;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTranslations()
-    {
-        return $this->translations;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTranslation($locale = null)
-    {
-        $locale = ($locale) ? $locale : $this->locale;
-        if (!$locale) {
-            return null;
-        }
-        foreach ($this->getTranslations() as $translation) {
-            if ($translation->getLocale() == $locale) {
-                return $translation;
-            }
-        }
-
-        $translationClass = $this->getTranslationFQCN();
-        $translation      = new $translationClass();
-        $translation->setLocale($locale);
-        $translation->setForeignKey($this);
-        $this->addTranslation($translation);
-
-        return $translation;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function addTranslation(AbstractTranslation $translation)
-    {
-        if (!$this->translations->contains($translation)) {
-            $this->translations->add($translation);
-        }
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function removeTranslation(AbstractTranslation $translation)
-    {
-        $this->translations->removeElement($translation);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getTranslationFQCN()
-    {
-        return 'Pim\Bundle\CatalogBundle\Entity\GroupTranslation';
     }
 
     /**
