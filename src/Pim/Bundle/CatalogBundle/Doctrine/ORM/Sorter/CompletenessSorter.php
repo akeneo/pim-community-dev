@@ -28,13 +28,27 @@ class CompletenessSorter implements FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return $field === 'completeness';
     }
 
     /**

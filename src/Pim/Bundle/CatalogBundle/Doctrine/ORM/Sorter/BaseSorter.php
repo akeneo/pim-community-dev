@@ -34,13 +34,45 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
     /**
      * Instanciate a sorter
      *
-     * @param QueryBuilder   $qb
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            [
+                'pim_catalog_identifier',
+                'pim_catalog_text',
+                'pim_catalog_textarea',
+                'pim_catalog_number',
+                'pim_catalog_boolean',
+                'pim_catalog_date'
+            ]
+        );
     }
 
     /**

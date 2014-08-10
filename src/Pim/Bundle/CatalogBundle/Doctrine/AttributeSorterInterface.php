@@ -11,7 +11,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-interface AttributeSorterInterface
+interface AttributeSorterInterface extends SorterInterface
 {
     /**
      * Sort by attribute value
@@ -22,4 +22,13 @@ interface AttributeSorterInterface
      * @return AttributeSorterInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction);
+
+    /**
+     * This filter supports the attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return boolean
+     */
+    public function supportsAttribute(AbstractAttribute $attribute);
 }

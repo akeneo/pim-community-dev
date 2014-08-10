@@ -17,6 +17,29 @@ class EntitySorter extends BaseSorter
     /**
      * {@inheritdoc}
      */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return in_array(
+            $attribute->getAttributeType(),
+            [
+                'pim_catalog_multiselect',
+                'pim_catalog_simpleselect'
+            ]
+        );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        // TODO : avoid to inherit from base sorter
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
         $aliasPrefix = 'sorter';

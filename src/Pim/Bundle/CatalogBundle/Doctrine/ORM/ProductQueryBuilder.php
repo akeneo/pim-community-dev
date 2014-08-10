@@ -9,10 +9,12 @@ use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
 use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\SorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 
 /**
- * Aims to customize a query builder to add useful shortcuts which allow to easily select, filter or sort a product
- * values
+ * Builds a product query builder by using  shortcuts to easily select, filter or sort products
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
  * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
@@ -26,26 +28,17 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /** @var CatalogContext */
     protected $context;
 
-    /** @var array */
+    /** @var AttributeFilterInterface[] priorized attribute filters */
     protected $attributeFilters = [];
 
-    /** @var array of priorized field filters */
+    /** @var FieldSorterInterface[] priorized field filters */
     protected $fieldFilters = [];
 
-    /** @var array */
-    protected $attributeSorters = [
-        'pim_catalog_multiselect'  => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
-        'pim_catalog_simpleselect' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter',
-        'pim_catalog_metric'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\MetricSorter'
-    ];
+    /** @var AttributeSorterInterface[] priorized attribute sorters */
+    protected $attributeSorters = [];
 
-    /** @var array */
-    protected $fieldSorters = [
-        'family'       => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter',
-        'completeness' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter',
-        'in_group'     => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter',
-        'is_associated' => 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\IsAssociatedSorter',
-    ];
+    /** @var FieldSorterInterface[] priorized field sorters */
+    protected $fieldSorters = [];
 
     /**
      * Constructor
@@ -137,17 +130,25 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
-        $attributeType = $attribute->getAttributeType();
-        if (isset($this->attributeSorters[$attributeType])) {
-            $sorterClass = $this->attributeSorters[$attributeType];
-        } else {
-            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
+        ksort($this->attributeSorters);
+        foreach ($this->attributeSorters as $sorters) {
+            foreach ($sorters as $sorter) {
+                if ($sorter->supportsAttribute($attribute)) {
+                    $sorter->setQueryBuilder($this->getQueryBuilder());
+                    $sorter->addAttributeSorter($attribute, $direction);
+
+                    return $this;
+                }
+            }
         }
 
-        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
-        $sorter->addAttributeSorter($attribute, $direction);
-
-        return $this;
+        throw new \LogicException(
+            sprintf(
+                'Attribute "%s" (%s) is not supported',
+                $attribute->getCode(),
+                $attribute->getAttributeType()
+            )
+        );
     }
 
     /**
@@ -155,18 +156,19 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        $field = (strpos($field, 'in_group_') !== false) ? 'in_group' : $field;
+        ksort($this->fieldSorters);
+        foreach ($this->fieldSorters as $sorters) {
+            foreach ($sorters as $sorter) {
+                if ($sorter->supportsField($field)) {
+                    $sorter->setQueryBuilder($this->getQueryBuilder());
+                    $sorter->addFieldSorter($field, $direction);
 
-        if (isset($this->fieldSorters[$field])) {
-            $sorterClass = $this->fieldSorters[$field];
-        } else {
-            $sorterClass = 'Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter';
+                    return $this;
+                }
+            }
         }
 
-        $sorter = new $sorterClass($this->getQueryBuilder(), $this->context);
-        $sorter->addFieldSorter($field, $direction);
-
-        return $this;
+        throw new \LogicException(sprintf('Field "%s" is not supported', $field));
     }
 
     /**
@@ -188,6 +190,28 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
                 $this->attributeFilters[$priority]= [];
             }
             $this->attributeFilters[$priority][]= $filter;
+        }
+    }
+
+    /**
+     * Register the sorter
+     *
+     * @param SorterInterface $sorter
+     * @param integer         $priority
+     */
+    public function registerSorter(SorterInterface $sorter, $priority)
+    {
+        if ($sorter instanceof FieldSorterInterface) {
+            if (!isset($this->fieldSorters[$priority])) {
+                $this->fieldSorters[$priority]= [];
+            }
+            $this->fieldSorters[$priority][]= $sorter;
+        }
+        if ($sorter instanceof AttributeSorterInterface) {
+            if (!isset($this->attributeSorters[$priority])) {
+                $this->attributeSorters[$priority]= [];
+            }
+            $this->attributeSorters[$priority][]= $sorter;
         }
     }
 }

@@ -16,6 +16,12 @@ parameters:
     pim_catalog.doctrine.query.filter.metric.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\MetricFilter
     pim_catalog.doctrine.query.filter.option.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionFilter
     pim_catalog.doctrine.query.filter.options.class:      Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\OptionsFilter
+    pim_catalog.doctrine.query.sorter.base.class:         Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\BaseSorter
+    pim_catalog.doctrine.query.sorter.entity.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\EntitySorter
+    pim_catalog.doctrine.query.sorter.family.class:       Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\FamilySorter
+    pim_catalog.doctrine.query.sorter.completeness.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\CompletenessSorter
+    pim_catalog.doctrine.query.sorter.in_group.class:     Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\InGroupSorter
+    pim_catalog.doctrine.query.sorter.is_associated.class: Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter\IsAssociatedSorter
 
 services:
     pim_catalog.object_manager.product:
@@ -136,3 +142,45 @@ services:
             - @pim_catalog.context.catalog
         tags:
             - { name: 'pim_catalog.doctrine.query.filter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.base:
+        class: %pim_catalog.doctrine.query.sorter.base.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 50 }
+
+    pim_catalog.doctrine.query.sorter.entity:
+        class: %pim_catalog.doctrine.query.sorter.entity.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.family:
+        class: %pim_catalog.doctrine.query.sorter.family.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.completeness:
+        class: %pim_catalog.doctrine.query.sorter.completeness.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.in_group:
+        class: %pim_catalog.doctrine.query.sorter.in_group.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
+
+    pim_catalog.doctrine.query.sorter.is_associated:
+        class: %pim_catalog.doctrine.query.sorter.is_associated.class%
+        arguments:
+            - @pim_catalog.context.catalog
+        tags:
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 30 }
