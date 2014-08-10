@@ -13,12 +13,8 @@ class EntityFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($qb, $context);
-    }
-
-    function it_is_an_attribute_filter()
-    {
-        $this->shouldImplement('Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface');
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($qb);
     }
 
     function it_is_a_field_filter()

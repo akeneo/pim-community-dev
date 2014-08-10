@@ -13,7 +13,8 @@ class DateFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($qb, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($qb);
 
         $qb->getRootAliases()->willReturn(array('p'));
     }
@@ -23,9 +24,9 @@ class DateFilterSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\DateFilter');
     }
 
-    function it_is_a_base_filter()
+    function it_is_a_field_filter()
     {
-        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter\BaseFilter');
+        $this->shouldBeAnInstanceOf('Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface');
     }
 
     function it_adds_a_less_than_filter_on_an_field_in_the_query(QueryBuilder $qb, Expr $expr)
