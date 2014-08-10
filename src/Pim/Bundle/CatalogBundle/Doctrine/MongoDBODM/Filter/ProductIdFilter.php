@@ -22,13 +22,37 @@ class ProductIdFilter implements FieldFilterInterface
     protected $context;
 
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * Instanciate the filter
+     *
+     * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsField($field)
+    {
+        return $field === 'id';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['IN', 'NOT IN']);
     }
 
     /**

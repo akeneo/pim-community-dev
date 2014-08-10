@@ -24,13 +24,19 @@ class OptionsFilter extends EntityFilter
     protected $context;
 
     /**
-     * @param QueryBuilder   $qb      the query builder
-     * @param CatalogContext $context the catalog context
+     * {@inheritdoc}
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function supportsAttribute(AbstractAttribute $attribute)
     {
-        $this->qb      = $qb;
-        $this->context = $context;
+        return $attribute->getAttributeType() === 'pim_catalog_multiselect';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['IN', 'NOT IN', 'EMPTY']);
     }
 
     /**

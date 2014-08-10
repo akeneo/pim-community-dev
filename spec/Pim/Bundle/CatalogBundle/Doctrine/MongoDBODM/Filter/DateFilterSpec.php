@@ -17,7 +17,8 @@ class DateFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($queryBuilder);
 
         $queryBuilder->field(Argument::any())->willReturn($queryBuilder);
     }

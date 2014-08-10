@@ -13,6 +13,7 @@ interface FilterInterface
 {
     /**
      * Inject the query builder
+     * TODO : QueryBuilderAwareInterface ?
      *
      * @param mixed $queryBuilder
      */

@@ -19,7 +19,8 @@ class EntityFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($qb, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($qb);
     }
 
     function it_is_an_attribute_filter()

@@ -15,7 +15,8 @@ class ProductIdFilterSpec extends ObjectBehavior
     {
         $context->getLocaleCode()->willReturn('en_US');
         $context->getScopeCode()->willReturn('mobile');
-        $this->beConstructedWith($queryBuilder, $context);
+        $this->beConstructedWith($context);
+        $this->setQueryBuilder($queryBuilder);
     }
 
     function it_is_a_field_filter()

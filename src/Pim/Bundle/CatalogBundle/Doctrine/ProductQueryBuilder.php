@@ -1,17 +1,9 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Doctrine\ORM;
+namespace Pim\Bundle\CatalogBundle\Doctrine;
 
-use Doctrine\ORM\QueryBuilder;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-use Pim\Bundle\CatalogBundle\Doctrine\ProductQueryBuilderInterface;
 use Pim\Bundle\CatalogBundle\Context\CatalogContext;
-use Pim\Bundle\CatalogBundle\Doctrine\FilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeFilterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\SorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\FieldSorterInterface;
-use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
 
 /**
  * Builds a product query builder by using  shortcuts to easily select, filter or sort products
@@ -22,7 +14,7 @@ use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
  */
 class ProductQueryBuilder implements ProductQueryBuilderInterface
 {
-    /** @var QueryBuilder */
+    /** @var mixed */
     protected $qb;
 
     /** @var CatalogContext */
@@ -53,11 +45,11 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
     /**
      * Get query builder
      *
-     * @param QueryBuilder $qb
+     * @param mixed $qb
      *
      * @return ProductQueryBuilder
      */
-    public function setQueryBuilder(QueryBuilder $qb)
+    public function setQueryBuilder($qb)
     {
         $this->qb = $qb;
 
@@ -94,7 +86,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         throw new \LogicException(
             sprintf(
-                'Attribute "%s" (%s) with operator "%s" is not supported',
+                'Filter attribute "%s" (%s) with operator "%s" is not supported',
                 $attribute->getCode(),
                 $attribute->getAttributeType(),
                 $operator
@@ -116,7 +108,13 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             }
         }
 
-        throw new \LogicException(sprintf('Field "%s" with operator "%s" is not supported', $field, $operator));
+        throw new \LogicException(
+            sprintf(
+                'Filter field "%s" with operator "%s" is not supported',
+                $field,
+                $operator
+            )
+        );
     }
 
     /**
@@ -135,7 +133,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
 
         throw new \LogicException(
             sprintf(
-                'Attribute "%s" (%s) is not supported',
+                'Sort attribute "%s" (%s) is not supported',
                 $attribute->getCode(),
                 $attribute->getAttributeType()
             )
@@ -156,7 +154,7 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
             }
         }
 
-        throw new \LogicException(sprintf('Field "%s" is not supported', $field));
+        throw new \LogicException(sprintf('Sort field "%s" is not supported', $field));
     }
 
     /**

@@ -18,6 +18,22 @@ class OptionFilter extends EntityFilter
     /**
      * {@inheritdoc}
      */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_simpleselect';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['IN', 'EMPTY']);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
         $field = ProductQueryUtility::getNormalizedValueFieldFromAttribute($attribute, $this->context);

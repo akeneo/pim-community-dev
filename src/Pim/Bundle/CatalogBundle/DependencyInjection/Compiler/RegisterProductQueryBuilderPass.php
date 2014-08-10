@@ -70,6 +70,6 @@ class RegisterProductQueryBuilderPass implements CompilerPassInterface
         }
         krsort($sortedServices);
 
-        return call_user_func_array('array_merge', $sortedServices);
+        return count($sortedServices) > 0 ? call_user_func_array('array_merge', $sortedServices) : [];
     }
 }

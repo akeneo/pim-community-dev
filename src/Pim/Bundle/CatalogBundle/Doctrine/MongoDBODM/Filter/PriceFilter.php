@@ -24,13 +24,37 @@ class PriceFilter implements AttributeFilterInterface
     protected $context;
 
     /**
-     * @param QueryBuilder   $qb
+     * Instanciate the filter
+     *
      * @param CatalogContext $context
      */
-    public function __construct(QueryBuilder $qb, CatalogContext $context)
+    public function __construct(CatalogContext $context)
     {
-        $this->qb      = $qb;
         $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsAttribute(AbstractAttribute $attribute)
+    {
+        return $attribute->getAttributeType() === 'pim_catalog_price_collection';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supportsOperator($operator)
+    {
+        return in_array($operator, ['<', '<=', '=', '>=', '>', 'EMPTY']);
     }
 
     /**
