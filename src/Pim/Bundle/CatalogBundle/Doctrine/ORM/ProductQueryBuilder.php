@@ -83,15 +83,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
     {
-        ksort($this->attributeFilters);
-        foreach ($this->attributeFilters as $filters) {
-            foreach ($filters as $filter) {
-                if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
-                    $filter->setQueryBuilder($this->getQueryBuilder());
-                    $filter->addAttributeFilter($attribute, $operator, $value);
+        foreach ($this->attributeFilters as $filter) {
+            if ($filter->supportsAttribute($attribute) && $filter->supportsOperator($operator)) {
+                $filter->setQueryBuilder($this->getQueryBuilder());
+                $filter->addAttributeFilter($attribute, $operator, $value);
 
-                    return $this;
-                }
+                return $this;
             }
         }
 
@@ -110,15 +107,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        ksort($this->fieldFilters);
-        foreach ($this->fieldFilters as $filters) {
-            foreach ($filters as $filter) {
-                if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
-                    $filter->setQueryBuilder($this->getQueryBuilder());
-                    $filter->addFieldFilter($field, $operator, $value);
+        foreach ($this->fieldFilters as $filter) {
+            if ($filter->supportsField($field) && $filter->supportsOperator($operator)) {
+                $filter->setQueryBuilder($this->getQueryBuilder());
+                $filter->addFieldFilter($field, $operator, $value);
 
-                    return $this;
-                }
+                return $this;
             }
         }
 
@@ -130,15 +124,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addAttributeSorter(AbstractAttribute $attribute, $direction)
     {
-        ksort($this->attributeSorters);
-        foreach ($this->attributeSorters as $sorters) {
-            foreach ($sorters as $sorter) {
-                if ($sorter->supportsAttribute($attribute)) {
-                    $sorter->setQueryBuilder($this->getQueryBuilder());
-                    $sorter->addAttributeSorter($attribute, $direction);
+        foreach ($this->attributeSorters as $sorter) {
+            if ($sorter->supportsAttribute($attribute)) {
+                $sorter->setQueryBuilder($this->getQueryBuilder());
+                $sorter->addAttributeSorter($attribute, $direction);
 
-                    return $this;
-                }
+                return $this;
             }
         }
 
@@ -156,15 +147,12 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      */
     public function addFieldSorter($field, $direction)
     {
-        ksort($this->fieldSorters);
-        foreach ($this->fieldSorters as $sorters) {
-            foreach ($sorters as $sorter) {
-                if ($sorter->supportsField($field)) {
-                    $sorter->setQueryBuilder($this->getQueryBuilder());
-                    $sorter->addFieldSorter($field, $direction);
+        foreach ($this->fieldSorters as $sorter) {
+            if ($sorter->supportsField($field)) {
+                $sorter->setQueryBuilder($this->getQueryBuilder());
+                $sorter->addFieldSorter($field, $direction);
 
-                    return $this;
-                }
+                return $this;
             }
         }
 
@@ -175,21 +163,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Register the filter
      *
      * @param FilterInterface $filter
-     * @param integer         $priority
      */
-    public function registerFilter(FilterInterface $filter, $priority)
+    public function registerFilter(FilterInterface $filter)
     {
         if ($filter instanceof FieldFilterInterface) {
-            if (!isset($this->fieldFilters[$priority])) {
-                $this->fieldFilters[$priority]= [];
-            }
-            $this->fieldFilters[$priority][]= $filter;
+            $this->fieldFilters[]= $filter;
         }
         if ($filter instanceof AttributeFilterInterface) {
-            if (!isset($this->attributeFilters[$priority])) {
-                $this->attributeFilters[$priority]= [];
-            }
-            $this->attributeFilters[$priority][]= $filter;
+            $this->attributeFilters[]= $filter;
         }
     }
 
@@ -197,21 +178,14 @@ class ProductQueryBuilder implements ProductQueryBuilderInterface
      * Register the sorter
      *
      * @param SorterInterface $sorter
-     * @param integer         $priority
      */
-    public function registerSorter(SorterInterface $sorter, $priority)
+    public function registerSorter(SorterInterface $sorter)
     {
         if ($sorter instanceof FieldSorterInterface) {
-            if (!isset($this->fieldSorters[$priority])) {
-                $this->fieldSorters[$priority]= [];
-            }
-            $this->fieldSorters[$priority][]= $sorter;
+            $this->fieldSorters[]= $sorter;
         }
         if ($sorter instanceof AttributeSorterInterface) {
-            if (!isset($this->attributeSorters[$priority])) {
-                $this->attributeSorters[$priority]= [];
-            }
-            $this->attributeSorters[$priority][]= $sorter;
+            $this->attributeSorters[]= $sorter;
         }
     }
 }

@@ -92,7 +92,7 @@ services:
         arguments:
             - @pim_catalog.context.catalog
         tags:
-            - { name: 'pim_catalog.doctrine.query.filter', priority: 50 }
+            - { name: 'pim_catalog.doctrine.query.filter', priority: 20 }
 
     pim_catalog.doctrine.query.filter.entity:
         class: %pim_catalog.doctrine.query.filter.entity.class%
@@ -148,7 +148,7 @@ services:
         arguments:
             - @pim_catalog.context.catalog
         tags:
-            - { name: 'pim_catalog.doctrine.query.sorter', priority: 50 }
+            - { name: 'pim_catalog.doctrine.query.sorter', priority: 20 }
 
     pim_catalog.doctrine.query.sorter.entity:
         class: %pim_catalog.doctrine.query.sorter.entity.class%
