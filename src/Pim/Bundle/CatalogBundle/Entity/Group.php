@@ -122,32 +122,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     }
 
     /**
-     * Get label
-     *
-     * @return string
-     */
-    public function getLabel()
-    {
-        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
-
-        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
-    }
-
-    /**
-     * Set label
-     *
-     * @param string $label
-     *
-     * @return Group
-     */
-    public function setLabel($label)
-    {
-        $this->getTranslation()->setLabel($label);
-
-        return $this;
-    }
-
-    /**
      * Add a product to the collection (if not already existing)
      *
      * @param ProductInterface $product
@@ -281,16 +255,6 @@ class Group implements TranslatableInterface, GroupSequenceProviderInterface, Re
     public function getGroupSequence()
     {
         return array('Default', strtolower($this->getType()->getCode()));
-    }
-
-    /**
-     * Returns the label of the group
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getLabel();
     }
 
     /**

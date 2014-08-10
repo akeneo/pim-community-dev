@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TranslationBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 
 /**
  * Default translatable entity implementation
@@ -22,7 +22,7 @@ trait Translatable
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
+     * @var \Doctrine\Common\Collections\ArrayCollection $translations
      */
     protected $translations;
 
@@ -96,5 +96,53 @@ trait Translatable
         $this->locale = $locale;
 
         return $this;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     *
+     * @throws \LogicException if the class doesn't implement ReferableInterface
+     */
+    public function getLabel()
+    {
+        if (!$this instanceof ReferableInterface) {
+            throw new \LogicException(
+                sprintf('%s() must be implemented or class %s must implement %s!',
+                    __METHOD__,
+                    __CLASS__,
+                    'Pim\Bundle\CatalogBundle\Model\ReferableInterface'
+                )
+            );
+        }
+
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getReference().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return TranslatableInterface
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
+    }
+
+    /**
+     * Returns the label of the translatable entity
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 }
