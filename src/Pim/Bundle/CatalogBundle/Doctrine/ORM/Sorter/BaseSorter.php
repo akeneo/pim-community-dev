@@ -100,6 +100,7 @@ class BaseSorter implements AttributeSorterInterface, FieldSorterInterface
         $this->qb->addOrderBy($joinAlias.'.'.$backendType, $direction);
 
         // Reapply previous join after the orderBy related join
+        // TODO : move this part in re-usable class
         $this->applyJoins($joinsSet);
 
         return $this;

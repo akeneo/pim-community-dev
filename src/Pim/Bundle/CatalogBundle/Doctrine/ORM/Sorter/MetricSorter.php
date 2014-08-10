@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Metric sorter
@@ -14,8 +18,38 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  *
  * TODO : never used cause disabled on frontend ?
  */
-class MetricSorter extends BaseSorter
+class MetricSorter implements AttributeSorterInterface
 {
+    /** @var QueryBuilder */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /**
+     * Alias counter, to avoid duplicate alias name
+     * @return integer
+     */
+    protected $aliasCounter = 1;
+
+    /**
+     * Instanciate a sorter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -48,5 +82,20 @@ class MetricSorter extends BaseSorter
         $this->qb->addOrderBy($joinAliasMetric.'.baseData', $direction);
 
         return $this;
+    }
+
+    /**
+     * Prepare join to attribute condition with current locale and scope criterias
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string            $joinAlias the value join alias
+     *
+     * @return string
+     */
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    {
+        $joinHelper = new ValueJoin($this->qb, $this->context);
+
+        return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 }

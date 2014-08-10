@@ -2,8 +2,12 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Sorter;
 
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Query\Expr\Join;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Doctrine\AttributeSorterInterface;
+use Pim\Bundle\CatalogBundle\Doctrine\ORM\ValueJoin;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Entity sorter
@@ -12,8 +16,38 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntitySorter extends BaseSorter
+class EntitySorter implements AttributeSorterInterface
 {
+    /** @var QueryBuilder */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /**
+     * Alias counter, to avoid duplicate alias name
+     * @return integer
+     */
+    protected $aliasCounter = 1;
+
+    /**
+     * Instanciate a sorter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQueryBuilder($queryBuilder)
+    {
+        $this->qb = $queryBuilder;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -22,19 +56,10 @@ class EntitySorter extends BaseSorter
         return in_array(
             $attribute->getAttributeType(),
             [
-                'pim_catalog_multiselect',
+                'pim_catalog_multiselect', // TODO : to disable, not make sense on a many relation
                 'pim_catalog_simpleselect'
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supportsField($field)
-    {
-        // TODO : avoid to inherit from base sorter
-        return false;
     }
 
     /**
@@ -68,5 +93,20 @@ class EntitySorter extends BaseSorter
         $this->qb->addOrderBy($joinAliasOptVal.'.value', $direction);
 
         return $this;
+    }
+
+    /**
+     * Prepare join to attribute condition with current locale and scope criterias
+     *
+     * @param AbstractAttribute $attribute the attribute
+     * @param string            $joinAlias the value join alias
+     *
+     * @return string
+     */
+    protected function prepareAttributeJoinCondition(AbstractAttribute $attribute, $joinAlias)
+    {
+        $joinHelper = new ValueJoin($this->qb, $this->context);
+
+        return $joinHelper->prepareCondition($attribute, $joinAlias);
     }
 }
