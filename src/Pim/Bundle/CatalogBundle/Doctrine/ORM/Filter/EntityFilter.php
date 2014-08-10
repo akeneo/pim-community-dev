@@ -2,8 +2,9 @@
 
 namespace Pim\Bundle\CatalogBundle\Doctrine\ORM\Filter;
 
-use Doctrine\ORM\Query\Expr\Join;
-use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Doctrine\ORM\QueryBuilder;
+use Pim\Bundle\CatalogBundle\Doctrine\FieldFilterInterface;
+use Pim\Bundle\CatalogBundle\Context\CatalogContext;
 
 /**
  * Entity filter
@@ -12,32 +13,32 @@ use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class EntityFilter extends BaseFilter
+class EntityFilter implements FieldFilterInterface
 {
+    /**
+     * @var QueryBuilder
+     */
+    protected $qb;
+
+    /** @var CatalogContext */
+    protected $context;
+
+    /**
+     * Instanciate the base filter
+     *
+     * @param CatalogContext $context
+     */
+    public function __construct(CatalogContext $context)
+    {
+        $this->context = $context;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function addAttributeFilter(AbstractAttribute $attribute, $operator, $value)
+    public function setQueryBuilder($queryBuilder)
     {
-        $backendType = $attribute->getBackendType();
-        $joinAlias = 'filter'.$attribute->getCode().$this->aliasCounter++;
-
-        // inner join to value
-        $condition = $this->prepareAttributeJoinCondition($attribute, $joinAlias);
-        $this->qb->innerJoin(
-            $this->qb->getRootAlias().'.values',
-            $joinAlias,
-            'WITH',
-            $condition
-        );
-
-        $joinAliasOpt = 'filterO'.$attribute->getCode().$this->aliasCounter;
-        $backendField = sprintf('%s.%s', $joinAliasOpt, 'id');
-        $condition = $this->prepareCriteriaCondition($backendField, $operator, $value);
-
-        $this->qb->innerJoin($joinAlias.'.'.$backendType, $joinAliasOpt, 'WITH', $condition);
-
-        return $this;
+        $this->qb = $queryBuilder;
     }
 
     /**
@@ -88,17 +89,8 @@ class EntityFilter extends BaseFilter
     /**
      * {@inheritdoc}
      */
-    public function supportsAttribute(AbstractAttribute $attribute)
-    {
-        // TODO : avoid to extend BaseFilter
-        return false;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function supportsOperator($operator)
     {
-        return true;
+        return in_array($operator, ['IN', 'NOT IN']);
     }
 }
