@@ -31,7 +31,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
      * @param CsvWriter             $writer
      * @param string                $archiveDir
      */
-    function __construct(InvalidItemsCollector $collector, CsvWriter $writer, $archiveDir)
+    public function __construct(InvalidItemsCollector $collector, CsvWriter $writer, $archiveDir)
     {
         $this->collector  = $collector;
         $this->writer     = $writer;
