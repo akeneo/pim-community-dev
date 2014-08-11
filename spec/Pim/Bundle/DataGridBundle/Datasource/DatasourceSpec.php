@@ -63,7 +63,7 @@ class DatasourceSpec extends ObjectBehavior
             'entity' => 'Product'
         ];
         $manager->getRepository('Product')->willReturn($repository);
-        $repository->createQueryBuilder()->shouldBeCalled();
+        $repository->createQueryBuilder('o')->shouldBeCalled();
         $grid->setDatasource($this)->shouldBeCalled();
         $this->process($grid, $config);
     }

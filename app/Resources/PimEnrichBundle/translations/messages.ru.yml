@@ -255,8 +255,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-"Yes": true
-"No": false
+switch_on:
+switch_off:
 Close: Закрыть
 Choose a color: Выбрать цвет
 Create: Создать

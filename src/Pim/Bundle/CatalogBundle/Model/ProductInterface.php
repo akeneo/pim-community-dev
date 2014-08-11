@@ -25,6 +25,15 @@ interface ProductInterface
     public function getId();
 
     /**
+     * Set id
+     *
+     * @param integer $id
+     *
+     * @return ProductInterface
+     */
+    public function setId($id);
+
+    /**
      * Get created datetime
      *
      * @return \DateTime

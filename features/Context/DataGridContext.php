@@ -185,11 +185,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $filters = $this->getMainContext()->listToArray($filters);
         foreach ($filters as $filter) {
-            $filterNode = $this->datagrid->getFilter($filter);
-            if ($filterNode->isVisible()) {
-                throw $this->createExpectationException(
-                    sprintf('Filter "%s" should not be visible', $filter)
-                );
+            try {
+                $filterNode = $this->datagrid->getFilter($filter);
+                if ($filterNode->isVisible()) {
+                    throw $this->createExpectationException(
+                        sprintf('Filter "%s" should not be visible', $filter)
+                    );
+                }
+            } catch (\InvalidArgumentException $e) {
+                // Filter not rendered, all is good
             }
         }
     }

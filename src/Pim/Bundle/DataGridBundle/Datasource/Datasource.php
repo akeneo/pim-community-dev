@@ -41,17 +41,20 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
     protected $parameters = [];
 
     /**
-     * @param ObjectManager                 $om
-     * @param HydratorInterface             $hydrator
-     * @param MassActionRepositoryInterface $massActionRepository
+     * @param ObjectManager     $om
+     * @param HydratorInterface $hydrator
      */
-    public function __construct(
-        ObjectManager $om,
-        HydratorInterface $hydrator,
-        MassActionRepositoryInterface $massActionRepository = null
-    ) {
-        $this->om = $om;
+    public function __construct(ObjectManager $om, HydratorInterface $hydrator)
+    {
+        $this->om       = $om;
         $this->hydrator = $hydrator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setMassActionRepository(MassActionRepositoryInterface $massActionRepository)
+    {
         $this->massActionRepository = $massActionRepository;
     }
 
@@ -69,7 +72,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
                 $this->qb = $this->getRepository()->$method();
             }
         } else {
-            $this->qb = $this->getRepository()->createQueryBuilder();
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $grid->setDatasource(clone $this);

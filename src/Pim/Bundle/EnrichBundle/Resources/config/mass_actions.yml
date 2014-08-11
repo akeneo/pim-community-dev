@@ -68,7 +68,7 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: edit-common-attributes
-                acl: pim_enrich_product_edit
+                acl: pim_enrich_product_edit_attributes
                 operator: pim_enrich.mass_edit_action.operator.product
 
     pim_enrich.mass_edit_action.classify:
@@ -116,5 +116,5 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: set-attribute-requirements
-                acl: pim_enrich_family_edit
+                acl: pim_enrich_family_edit_properties
                 operator: pim_enrich.mass_edit_action.operator.family

@@ -46,6 +46,5 @@ Feature: Edit a channel
     And I press the "Delete" button
     And I confirm the deletion
     And I am on the locales page
-    And I filter by "Activated" with value "yes"
     Then the grid should contain 1 element
     And I should see locale "en_US"

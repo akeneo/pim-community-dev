@@ -97,6 +97,8 @@ class LoadUserData extends AbstractInstallerFixture
             $user->addGroup($group);
         }
 
+        $user->addGroup($this->getGroup('all'));
+
         $locale = $this->getLocale($data['catalog_locale']);
         $user->setCatalogLocale($locale);
 

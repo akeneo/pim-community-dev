@@ -255,8 +255,8 @@ default: Standaard
 Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
-"Yes": true
-"No": false
+switch_on:
+switch_off:
 Close: Sluiten
 Choose a color: Kies een kleur
 Create: Aanmaken
