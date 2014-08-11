@@ -47,7 +47,7 @@ class AddCategoryPermissionsSubscriber implements EventSubscriberInterface
     {
         $category = $event->getSubject();
         $parent   = $category->getParent();
-        if ($parent) {
+        if (null !== $parent) {
             $this->accessManager->setAccess(
                 $category,
                 $this->accessManager->getViewUserGroups($parent),

@@ -16,11 +16,6 @@ class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
         $this->beConstructedWith($accessManager);
     }
 
-    function it_is_initializable()
-    {
-        $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber');
-    }
-
     function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn([

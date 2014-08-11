@@ -117,8 +117,8 @@ class CategoryAccessManager
 
     /**
      * Grant access on a category to specified user groups, own implies edit which implies read
-    *
-    * @param CategoryInterface $category   the category
+     *
+     * @param CategoryInterface $category   the category
      * @param Group[] $viewGroups the view user groups
      * @param Group[] $editGroups the edit user groups
      * @param Group[] $ownGroups  the own user groups
@@ -362,8 +362,9 @@ class CategoryAccessManager
      * @param CategoryInterface $category
      * @param Group             $group
      * @param string            $accessLevel
+     * @param boolean           $flush
      */
-    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel)
+    public function grantAccess(CategoryInterface $category, Group $group, $accessLevel, $flush = false)
     {
         $access = $this->getCategoryAccess($category, $group);
         $access
@@ -372,6 +373,9 @@ class CategoryAccessManager
             ->setOwnProducts($accessLevel === Attributes::OWN_PRODUCTS);
 
         $this->getObjectManager()->persist($access);
+        if (true === $flush) {
+            $this->getObjectManager()->flush();
+        }
     }
 
     /**
