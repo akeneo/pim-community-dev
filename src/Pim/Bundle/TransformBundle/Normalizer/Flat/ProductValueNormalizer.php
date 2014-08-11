@@ -5,6 +5,7 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 use Symfony\Component\Serializer\SerializerAwareInterface;
 use Symfony\Component\Serializer\SerializerInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 
 /**
@@ -67,7 +68,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         } elseif (is_bool($data)) {
             $result = [$fieldName => (string) (int) $data];
         } elseif (is_object($data)) {
-            // TODO : delegate to real normalizers and use a more explicit context for metric
             $context['field_name'] = $fieldName;
             $context['metric_format'] = empty($this->fields) ? 'multiple_fields' : 'single_field';
             $result = $this->serializer->normalize($data, $format, $context);

@@ -4,12 +4,10 @@ namespace Pim\Bundle\TransformBundle\Normalizer\Flat;
 
 use Symfony\Component\Serializer\Normalizer\SerializerAwareNormalizer;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\TransformBundle\Normalizer\Filter\NormalizerFilterInterface;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 
 /**
  * A normalizer to transform a product entity into a flat array
