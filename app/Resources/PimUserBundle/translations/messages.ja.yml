@@ -1,4 +1,3 @@
----
 oro.user.controller:
   group.message.saved: グループが保存されました
   role.message.saved: ロールを保存しました
