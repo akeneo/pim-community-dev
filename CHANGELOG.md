@@ -3,6 +3,7 @@
 ## Improvements
 
 ## Bug fixes
+- Fixed Mass edit on a never fulfilled price attribute
 
 ## BC breaks
 
