@@ -44,17 +44,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     /** @var NormalizerFilterInterface[] */
     protected $valuesFilters = [];
 
-    /** @var integer */
-    protected $precision;
-
-    /**
-     * @param integer $precision
-     */
-    public function __construct($precision = 4)
-    {
-        $this->precision = $precision;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -76,7 +65,8 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             $this->fields  = array_fill_keys($context['fields'], '');
             $this->results = $this->fields;
         } else {
-            $this->results = $this->normalizeValue($object->getIdentifier(), $format, $context);
+            // TODO getIdentifier returns ?
+            $this->results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
         }
 
         $this->normalizeFamily($object->getFamily());
@@ -142,7 +132,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             foreach ($filteredValues as $value) {
                 $normalizedValues = array_merge(
                     $normalizedValues,
-                    $this->normalizeValue($value, $format, $context)
+                    $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
@@ -153,7 +143,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             foreach ($product->getValues() as $value) {
                 $fieldValue = $this->getFieldValue($value);
                 if (isset($this->fields[$fieldValue])) {
-                    $normalizedValue = $this->normalizeValue($value, $format, $context);
+                    $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);
                 }
             }
@@ -168,7 +158,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      * @param array                $context
      *
      * @return array
-     */
+     *
     protected function normalizeValue(AbstractProductValue $value, $format = null, array $context = [])
     {
         $data = $value->getData();
@@ -185,7 +175,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
          * https://github.com/symfony/Serializer/blob/2.3/Serializer.php#L107),
          * Cases where product value data is null or a scalar need to be handled manually here and not
          * through other normalizers.
-         */
+         *
         $result = null;
 
         if (is_array($data)) {
@@ -219,7 +209,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         }
 
         return $result;
-    }
+    }*/
 
     /**
      * Normalize the field name for values
