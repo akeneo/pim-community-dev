@@ -1,4 +1,3 @@
----
 pim_base_connector:
   jobs:
     csv_product_export:
@@ -62,6 +61,7 @@ pim_base_connector:
     product_writer.title: 製品ストレージ
     category_writer.title: カテゴリストレージ
     writer.title: エンティティ ストレージ
+    csv_writer.title: CSVライター
   export:
     delimiter:
       label: 区切り文字

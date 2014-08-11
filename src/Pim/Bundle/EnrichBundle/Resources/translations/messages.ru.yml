@@ -1,4 +1,3 @@
----
 attribute:
   overview: обзор атрибутов
   create: создать атрибут
@@ -255,8 +254,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-switch_on:
-switch_off:
+"Yes": true
+"No": false
 Close: Закрыть
 Choose a color: Выбрать цвет
 Create: Создать

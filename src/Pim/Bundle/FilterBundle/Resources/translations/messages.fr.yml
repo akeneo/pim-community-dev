@@ -1,4 +1,3 @@
----
 oro.filter.form.label_type_equal: '='
 oro.filter.form.label_type_greater_equal: '>='
 oro.filter.form.label_type_greater_than: '>'

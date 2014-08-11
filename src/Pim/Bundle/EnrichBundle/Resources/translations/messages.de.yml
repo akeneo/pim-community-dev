@@ -1,4 +1,3 @@
----
 attribute:
   title: Attribut
   overview: Attribute Übersicht
@@ -282,8 +281,8 @@ default: Standard
 Axis: Achse
 Add attributes: Attribute hinzufügen
 Translate from: Übersetzen von
-switch_on: Ja
-switch_off: Nein
+"Yes": true
+"No": false
 Close: Schließen
 Choose a color: Wählen Sie eine Farbe
 Search: Suche

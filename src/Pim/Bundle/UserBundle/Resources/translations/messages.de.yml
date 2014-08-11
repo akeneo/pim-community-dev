@@ -1,4 +1,3 @@
----
 oro.user.controller:
   group.message.saved: Gruppe gespeichert
   role.message.saved: Rolle gespeichert

@@ -1,4 +1,3 @@
----
 Job: Job
 Connector: Connecteur
 pim_import_export:
@@ -68,6 +67,9 @@ pim_importexport:
       show: "Visualiser les détails du rapport d'import"
       dl_log: "Télécharger le rapport d'import"
       dl_files: Télécharger les fichiers importés
+  acl_group:
+    export: "Profils d'export"
+    import: "Profils d'import"
 btn:
   create:
     export profile: "Créer un profil d'export"

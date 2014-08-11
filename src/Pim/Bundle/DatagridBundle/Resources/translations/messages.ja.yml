@@ -1,0 +1,34 @@
+oro_datagrid.no_data_hint %entityHint%: '%entityHint% がありません。'
+oro_datagrid.not_found_hint %entityHint%: '検索条件に一致する %entityHint% が見つかりませんでした。検索条件を変更してみてください.'
+oro_datagrid.label_add_filter: フィルター管理
+oro_datagrid.label_loading_mask: 読み込み中...
+oro.grid.mass_action.selected_rows: 選択した行
+oro.grid.mass_action.confirm_title: 一括操作の確認
+oro.grid.mass_action.confirm_content: 実行してもよろしいですか？
+oro.grid.mass_action.confirm_ok: はい、実行します
+oro.grid.mass_action.error_title: 一括操作エラー
+oro.grid.mass_action.error_content: 一括操作を実行できません
+oro.grid.mass_action.delete.label: 削除
+oro.grid.mass_action.delete.confirm_title: 一括削除の確認
+oro.grid.mass_action.delete.confirm_content: 選択した項目を削除してもよろしいですか?
+oro.grid.datagrid.page_size.all: すべて
+oro.grid.mass_action.delete.success_message: '{0} 削除されたエンティティはありませんでした| {1} 1件のエンティティが削除されました|]1,Inf [%count% 件のエンティティが削除されました'
+datagrid_view:
+  views: ビュー
+  default: マイデフォルトビュー
+  create: ビューを作成
+  placeholder: 新しいビューの名前
+  remove: このビューを削除
+  save_changes: 更新
+  choose_label: ビューのラベルを選択
+  columns:
+    min_message: 最低でも1つの表示する列を選択してください
+  label:
+    unique_message: ラベルは一意でなければなりません
+    not_blank_message: ラベル名を入力してください
+confirmation.remove.datagrid view: このデータグリッド ビューを削除してもよろしいですか？
+flash.datagrid view:
+  created: データグリッドビューを作成しました
+  updated: データグリッドビューを更新しました
+  removed: データグリッドビューを削除しました
+  not removable: このビューを削除する権限を持っていません

@@ -1,4 +1,3 @@
----
 attribute:
   title: attribut
   overview: Liste des attributs
@@ -279,8 +278,8 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-switch_on: Oui
-switch_off: Non
+"Yes": true
+"No": false
 Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche

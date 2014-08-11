@@ -1,4 +1,3 @@
----
 Close: 閉じる
 Update: 更新
 Now: 今
@@ -10,3 +9,6 @@ after: 後
 from: 開始
 to: 終了
 and: と
+system_filter_group: システム
+oro_filter.filters.manage: フィルター管理
+oro_filter.placeholder.all: すべて
