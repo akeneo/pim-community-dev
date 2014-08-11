@@ -1,12 +1,14 @@
 # 1.2.0-x
 
 ## Improvements
+- CsvWriter can write files for any type of entity
 
 ## Bug fixes
 - Fixed Mass edit on a empty price values
 
 ## BC breaks
 - InvalidItemsCsvArchiver is not injected in the constructors of ProductCsvReader and ProductReader
+- CsvProductWriter should be used instead of CsvWriter for products
 
 # 1.2.0-RC2
 
