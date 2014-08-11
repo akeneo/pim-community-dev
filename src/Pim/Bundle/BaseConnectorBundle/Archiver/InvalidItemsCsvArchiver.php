@@ -3,6 +3,7 @@
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
 use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 
@@ -31,10 +32,15 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
      * @param CsvWriter             $writer
      * @param string                $archiveDir
      */
-    public function __construct(InvalidItemsCollector $collector, CsvWriter $writer, $archiveDir)
-    {
+    public function __construct(
+        InvalidItemsCollector $collector,
+        CsvWriter $writer,
+        Filesystem $filesystem,
+        $archiveDir
+    ) {
         $this->collector  = $collector;
         $this->writer     = $writer;
+        $this->filesystem = $filesystem;
         $this->archiveDir = $archiveDir;
     }
 
@@ -46,15 +52,16 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         if (!$this->collector->getInvalidItems()) {
             return;
         }
-
+        $key =  strtr(
+            $this->getRelativeArchivePath($jobExecution),
+            array('%filename%' => 'invalid_items.csv')
+        );
+        $this->filesystem->write($key, '', true);
         $this->writer->setFilePath(
             sprintf(
                 '%s/%s',
                 $this->archiveDir,
-                strtr(
-                    $this->getRelativeArchivePath($jobExecution),
-                    array('%filename%' => 'invalid_items.csv')
-                )
+                $key
             )
         );
         $this->writer->initialize();

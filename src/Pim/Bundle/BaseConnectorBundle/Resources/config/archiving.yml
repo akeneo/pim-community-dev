@@ -26,6 +26,7 @@ services:
         arguments:
             - '@pim_base_connector.event_listener.invalid_items_collector'
             - '@pim_base_connector.archiver.invalid_item_csv_writer'
+            - '@pim_archivist_filesystem'
             - '%archive_dir%'
         tags:
             - { name: pim_base_connector.archiver }

@@ -10,7 +10,7 @@ connector:
                     services:
                         reader:    pim_base_connector.reader.doctrine.product
                         processor: pim_base_connector.processor.product_to_flat_array
-                        writer:    pim_base_connector.writer.file.csv
+                        writer:    pim_base_connector.writer.file.csv_product
                     parameters:
                         batch_size: 10
         csv_category_export:
