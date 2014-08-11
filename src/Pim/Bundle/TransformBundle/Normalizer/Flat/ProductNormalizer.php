@@ -65,7 +65,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             $this->fields  = array_fill_keys($context['fields'], '');
             $this->results = $this->fields;
         } else {
-            // TODO getIdentifier returns ?
             $this->results = $this->serializer->normalize($object->getIdentifier(), $format, $context);
         }
 
@@ -149,67 +148,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             }
         }
     }
-
-    /**
-     * Normalizes a value
-     *
-     * @param AbstractProductValue $value
-     * @param string               $format
-     * @param array                $context
-     *
-     * @return array
-     *
-    protected function normalizeValue(AbstractProductValue $value, $format = null, array $context = [])
-    {
-        $data = $value->getData();
-        $fieldName = $this->getFieldValue($value);
-
-        /**
-         * For performance purpose, Symfony serializer doesn't allow to normalize differently an object
-         * for the same format.
-         * I.e. for the csv format, the same normalizer will be used to normalize all instance of AbstractProductValue.
-         *
-         * That's why we need to normalize the product value *data*, instead of the product value itself.
-         * Because of that, and because Symfony serializer only serializes object data
-         * (other data are normalized as they are given, see
-         * https://github.com/symfony/Serializer/blob/2.3/Serializer.php#L107),
-         * Cases where product value data is null or a scalar need to be handled manually here and not
-         * through other normalizers.
-         *
-        $result = null;
-
-        if (is_array($data)) {
-            $data = new ArrayCollection($data);
-        }
-
-        if (is_null($data)) {
-            $result = [$fieldName => ''];
-        } elseif (is_int($data)) {
-            $result = [$fieldName => (string) $data];
-        } elseif (is_float($data)) {
-            $result = [$fieldName => sprintf(sprintf('%%.%sF', $this->precision), $data)];
-        } elseif (is_string($data)) {
-            $result = [$fieldName => $data];
-        } elseif (is_bool($data)) {
-            $result = [$fieldName => (string) (int) $data];
-        } elseif (is_object($data)) {
-            $context['field_name'] = $fieldName;
-            $context['metric_format'] = empty($this->fields) ? 'multiple_fields' : 'single_field';
-            $result = $this->serializer->normalize($data, $format, $context);
-        }
-
-        if (null === $result) {
-            throw new \RuntimeException(
-                sprintf(
-                    'Cannot normalize product value "%s" which data is a(n) "%s"',
-                    $fieldName,
-                    is_object($data) ? get_class($data) : gettype($data)
-                )
-            );
-        }
-
-        return $result;
-    }*/
 
     /**
      * Normalize the field name for values
