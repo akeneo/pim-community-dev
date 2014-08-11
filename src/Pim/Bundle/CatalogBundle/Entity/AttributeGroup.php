@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\Translatable;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableTrait;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
@@ -21,7 +21,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  */
 class AttributeGroup implements TranslatableInterface, ReferableInterface, VersionableInterface
 {
-    use Translatable;
+    use TranslatableTrait;
 
     /** @staticvar string */
     const DEFAULT_GROUP_CODE = 'other';

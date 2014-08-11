@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\TranslationBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Default translatable entity implementation
  *
@@ -11,7 +9,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-trait Translatable
+trait TranslatableTrait
 {
     /**
      * Used locale to override Translation listener's locale
@@ -22,7 +20,7 @@ trait Translatable
     protected $locale;
 
     /**
-     * @var ArrayCollection $translations
+     * @var \Doctrine\Common\Collections\ArrayCollection $translations
      */
     protected $translations;
 

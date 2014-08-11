@@ -7,7 +7,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Doctrine\Common\Collections\ArrayCollection;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\Translatable;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableTrait;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
@@ -26,7 +26,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  */
 class Group implements TranslatableInterface, GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
 {
-    use Translatable;
+    use TranslatableTrait;
 
     /**
      * @var integer $id

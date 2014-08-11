@@ -5,7 +5,7 @@ namespace Pim\Bundle\CatalogBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\Translatable;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableTrait;
 use Pim\Bundle\CatalogBundle\Model\ReferableInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
@@ -20,7 +20,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
  */
 class AssociationType implements TranslatableInterface, ReferableInterface, VersionableInterface
 {
-    use Translatable;
+    use TranslatableTrait;
 
     /**
      * @var integer

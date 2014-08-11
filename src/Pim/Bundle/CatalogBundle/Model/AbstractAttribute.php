@@ -9,7 +9,7 @@ use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Locale;
 use Pim\Bundle\TranslationBundle\Entity\TranslatableInterface;
-use Pim\Bundle\TranslationBundle\Entity\Translatable;
+use Pim\Bundle\TranslationBundle\Entity\TranslatableTrait;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 
 /**
@@ -22,7 +22,7 @@ use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 abstract class AbstractAttribute implements TimestampableInterface, TranslatableInterface,
  GroupSequenceProviderInterface, ReferableInterface, VersionableInterface
 {
-    use Translatable;
+    use TranslatableTrait;
 
     /**
      * Attribute id
