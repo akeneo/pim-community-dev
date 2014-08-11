@@ -23,11 +23,6 @@ class InstallCommand extends ContainerAwareCommand
      */
     const APP_NAME = 'Akeneo PIM';
 
-    const TASK_ALL    = 'all';
-    const TASK_ASSETS = 'assets';
-    const TASK_CHECK  = 'check';
-    const TASK_DB     = 'db';
-
     /**
      * @var CommandExecutor $commandExecutor
      */
@@ -41,14 +36,7 @@ class InstallCommand extends ContainerAwareCommand
         $this
             ->setName('pim:install')
             ->setDescription(sprintf('%s Application Installer.', static::APP_NAME))
-            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation')
-            ->addOption(
-                'task',
-                null,
-                InputOption::VALUE_REQUIRED,
-                'Determines tasks called for installation (can be all, check, db or assets)',
-                self::TASK_ALL
-            );
+            ->addOption('force', null, InputOption::VALUE_NONE, 'Force installation');
     }
 
     /**
@@ -83,25 +71,24 @@ class InstallCommand extends ContainerAwareCommand
         $output->writeln('');
 
         try {
-            switch ($input->getOption('task')) {
-                case self::TASK_CHECK:
-                    $this->checkStep($input, $output);
-                    break;
-                case self::TASK_DB:
-                    $this->databaseStep($input, $output);
-                    break;
-                case self::TASK_ASSETS:
-                    $this->assetsStep($input, $output);
-                    break;
-                default:
-                    $this->checkStep($input, $output)
-                        ->databaseStep($input, $output)
-                        ->assetsStep($input, $output);
-                    break;
-            }
+
+            $this
+                ->initializeDirectory(
+                    $this->getContainer()->getParameter('upload_dir')
+                )
+                ->initializeDirectory(
+                    $this->getContainer()->getParameter('archive_dir')
+                );
+
+            $this
+                ->checkStep($input, $output)
+                ->databaseStep($input, $output)
+                ->assetsStep($input, $output);
         } catch (\Exception $e) {
             return $e->getCode();
         }
+
+
 
         $this->updateInstalledFlag($input, $output, date('c'));
 
@@ -175,5 +162,42 @@ class InstallCommand extends ContainerAwareCommand
         $params = $dumper->parse();
         $params['system']['installed'] = $installed;
         $dumper->dump($params);
+    }
+
+    /**
+     * Initialize directory
+     *
+     * @param $directory
+     *
+     * @return InstallCommand
+     */
+    protected function initializeDirectory($directory)
+    {
+        $this->cleanDirectory($directory);
+        mkdir($directory);
+
+        return $this;
+    }
+
+    /**
+     * Remove directory and all subcontent
+     *
+     * @param string $directory
+     */
+    protected function cleanDirectory($folder)
+    {
+        if (is_dir($folder)) {
+            $directory = opendir($folder);
+            while ($file = readdir($directory)) {
+                if ('.' !== $file && '..' !== $file) {
+                    $this->cleanDirectory($folder . DIRECTORY_SEPARATOR . $file);
+                }
+            }
+            closedir($directory);
+
+            rmdir($folder);
+        } else {
+            unlink($folder);
+        }
     }
 }
