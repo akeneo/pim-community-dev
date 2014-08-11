@@ -8,7 +8,7 @@ Feature: Display the attribute history
     And I am logged in as "Julia"
 
   @javascript
-  Scenario: Succesfully edit a attribute and see the history
+  Scenario: Successfully edit a attribute and see the history
     Given I am on the attributes page
     And I create a "Simple select" attribute
     Given I fill in the following information:

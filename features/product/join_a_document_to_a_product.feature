@@ -14,17 +14,17 @@ Feature: Join a document to a product
     And I am on the "Car" product page
 
   @ce
-  Scenario: Succesfully leave the document empty
+  Scenario: Successfully leave the document empty
     When I save the product
     Then I should see "Product successfully updated"
 
-  Scenario: Succesfully upload a document
+  Scenario: Successfully upload a document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
     Then I should see "akeneo.txt"
 
   @javascript
-  Scenario: Succesfully display the document
+  Scenario: Successfully display the document
     When I attach file "akeneo.txt" to "Description"
     And I save the product
     And I open "akeneo.txt" in the current window

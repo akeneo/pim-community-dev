@@ -433,7 +433,7 @@ class EditCommonAttributes extends ProductMassEditOperation
     {
         foreach ($value->getPrices() as $price) {
             if (null === $productPrice = $productValue->getPrice($price->getCurrency())) {
-                $this->productBuilder->addPriceForCurrency($productValue, $price->getCurrency());
+                $productPrice = $this->productBuilder->addPriceForCurrency($productValue, $price->getCurrency());
             }
             $productPrice->setData($price->getData());
         }
