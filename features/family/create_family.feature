@@ -10,7 +10,7 @@ Feature: Family creation
     And I am on the families page
     And I create a new family
 
-  Scenario: Succesfully create a family
+  Scenario: Successfully create a family
     Then I should see the Code field
     When I fill in the following information in the popin:
       | Code | CAR |

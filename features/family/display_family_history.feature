@@ -14,7 +14,7 @@ Feature: Display the family history
       | Description | General |
 
   @javascript
-  Scenario: Succesfully create a family and see the history
+  Scenario: Successfully create a family and see the history
     Given I am on the families page
     And I create a new family
     And I fill in the following information in the popin:

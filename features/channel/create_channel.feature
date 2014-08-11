@@ -4,7 +4,7 @@ Feature: Create a channel
   As an administrator
   I need to be able to create a channel
 
-  Scenario: Succesfully create a channel
+  Scenario: Successfully create a channel
     Given a "footwear" catalog configuration
     And I am logged in as "Peter"
     When I am on the channel creation page

@@ -3,7 +3,7 @@ Feature: Attribute group creation
   As a product manager
   I need to be able to create an attribute group
 
-  Scenario: Succesfully create an attribute group
+  Scenario: Successfully create an attribute group
     Given the "default" catalog configuration
     And I am logged in as "Julia"
     When I am on the attribute group creation page

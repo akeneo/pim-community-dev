@@ -4,7 +4,7 @@ Feature: Display the variant group history
   I need to have access to a variant group history
 
   @javascript
-  Scenario: Succesfully edit a variant group and see the history
+  Scenario: Successfully edit a variant group and see the history
     Given a "footwear" catalog configuration
     And I am logged in as "Julia"
     And I am on the variant groups page
