@@ -69,6 +69,16 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
     }
 
     /**
+     * Returns the label of the family
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -256,6 +266,32 @@ class Family implements TranslatableInterface, ReferableInterface, VersionableIn
                 );
             }
         )->toArray();
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return Family
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
     }
 
     /**

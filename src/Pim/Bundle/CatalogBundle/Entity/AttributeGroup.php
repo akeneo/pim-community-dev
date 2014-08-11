@@ -67,6 +67,16 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
     }
 
     /**
+     * Returns the label of the attribute group
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -249,6 +259,32 @@ class AttributeGroup implements TranslatableInterface, ReferableInterface, Versi
         }
 
         return $max;
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['. $this->getCode() .']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return AttributeGroup
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
     }
 
     /**

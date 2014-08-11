@@ -351,6 +351,32 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     }
 
     /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return CategoryInterface
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
+    }
+
+    /**
      * Returns the channels linked to the category
      *
      * @return ArrayCollection
@@ -358,6 +384,14 @@ class Category implements CategoryInterface, TranslatableInterface, ReferableInt
     public function getChannels()
     {
         return $this->channels;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 
     /**

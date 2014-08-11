@@ -147,6 +147,42 @@ class AssociationType implements TranslatableInterface, ReferableInterface, Vers
     }
 
     /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return AssociationType
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
+    }
+
+    /**
+     * Returns the label of the association type
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getReference()

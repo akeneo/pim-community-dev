@@ -637,6 +637,16 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     }
 
     /**
+     * To string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    /**
      * Get group
      *
      * @return AttributeGroup
@@ -1226,6 +1236,32 @@ abstract class AbstractAttribute implements TimestampableInterface, Translatable
     public function getTranslationFQCN()
     {
         return 'Pim\Bundle\CatalogBundle\Entity\AttributeTranslation';
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = ($this->getTranslation()) ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return string
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
     }
 
     /**

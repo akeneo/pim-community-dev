@@ -120,6 +120,42 @@ class GroupType implements TranslatableInterface, ReferableInterface
     }
 
     /**
+     * Returns the code
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
+
+    /**
+     * Get label
+     *
+     * @return string
+     */
+    public function getLabel()
+    {
+        $translated = $this->getTranslation() ? $this->getTranslation()->getLabel() : null;
+
+        return ($translated !== '' && $translated !== null) ? $translated : '['.$this->getCode().']';
+    }
+
+    /**
+     * Set label
+     *
+     * @param string $label
+     *
+     * @return Group
+     */
+    public function setLabel($label)
+    {
+        $this->getTranslation()->setLabel($label);
+
+        return $this;
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function getReference()
