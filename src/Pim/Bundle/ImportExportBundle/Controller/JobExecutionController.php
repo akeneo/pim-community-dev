@@ -2,6 +2,15 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
+use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
+use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Gaufrette\StreamMode;
+use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
+use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -9,20 +18,14 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\StreamedResponse;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 use Symfony\Component\Validator\ValidatorInterface;
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Gaufrette\StreamMode;
-use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
-use Pim\Bundle\BaseConnectorBundle\EventListener\JobExecutionArchivist;
-use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
-use Pim\Bundle\ImportExportBundle\Event\JobExecutionEvents;
 
 /**
  * Job execution controller
@@ -45,6 +48,12 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var SerializerInterface */
     protected $serializer;
 
+    /** @var JobExecutionManager */
+    protected $jobExecutionManager;
+
+    /** @var JobRepositoryInterface */
+    protected $jobRepository;
+
     /**
      * Constructor
      * @param Request                  $request
@@ -60,6 +69,8 @@ class JobExecutionController extends AbstractDoctrineController
      * @param JobExecutionArchivist    $archivist
      * @param string                   $jobType
      * @param SerializerInterface      $serializer
+     * @param JobExecutionManager      $jobExecutionManager
+     * @param JobRepositoryInterface   $jobRepository
      */
     public function __construct(
         Request $request,
@@ -74,7 +85,9 @@ class JobExecutionController extends AbstractDoctrineController
         BatchLogHandler $batchLogHandler,
         JobExecutionArchivist $archivist,
         $jobType,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        JobExecutionManager $jobExecutionManager,
+        JobRepositoryInterface $jobRepository
     ) {
         parent::__construct(
             $request,
@@ -88,10 +101,12 @@ class JobExecutionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->batchLogHandler = $batchLogHandler;
-        $this->archivist       = $archivist;
-        $this->jobType         = $jobType;
-        $this->serializer      = $serializer;
+        $this->batchLogHandler     = $batchLogHandler;
+        $this->archivist           = $archivist;
+        $this->jobType             = $jobType;
+        $this->serializer          = $serializer;
+        $this->jobExecutionManager = $jobExecutionManager;
+        $this->jobRepository       = $jobRepository;
     }
 
     /**
@@ -117,7 +132,6 @@ class JobExecutionController extends AbstractDoctrineController
     public function showAction(Request $request, $id)
     {
         $jobExecution = $this->findOr404('AkeneoBatchBundle:JobExecution', $id);
-
         $this->eventDispatcher->dispatch(JobExecutionEvents::PRE_SHOW, new GenericEvent($jobExecution));
 
         if ('json' === $request->getRequestFormat()) {
@@ -131,6 +145,11 @@ class JobExecutionController extends AbstractDoctrineController
                     'label' => ucfirst($label),
                     'files' => $files,
                 ];
+            }
+
+            if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
+                $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
+                $this->jobRepository->updateJobExecution($jobExecution);
             }
 
             return new JsonResponse(
