@@ -1,4 +1,3 @@
----
 oro.user.controller:
   group.message.saved: グループが保存されました
   role.message.saved: ロールを保存しました
@@ -19,6 +18,7 @@ oro.user.grid.roles:
 oro.user.grid.groups:
   columns:
     name: 名前
+user.title: ユーザー
 Users Management: ユーザー管理
 Create user: ユーザー作成
 New user: 新しいユーザー
@@ -38,6 +38,7 @@ Additional emails: 追加のメールアドレス
 Add another email: 別のメール アドレスを追加
 Catalog locale: カタログのロケール
 Catalog scope: カタログのスコープ
+Default tree: 既定のツリー
 Business Units: 部署
 Email synchronization settings: メール同期設定
 Host: ホスト
@@ -53,6 +54,7 @@ Birthday: 誕生日
 API key: API キー
 Generate key: キーを生成
 Primary: プライマリ
+Removed user: 削除されたユーザ
 Role: ロール
 Owner: オーナー
 General: 全般
@@ -60,6 +62,33 @@ Entity: エンティティ
 Capabilities: 機能
 Save and close: 保存して閉じる
 Has role: ロールあり
+role:
+  title: 権限
+  edit: 権限を編集
+  create: 権限を作成
+rights:
+  action: パーミッション
+oro_security:
+  acl_group:
+    user: ユーザー
+    role: 権限
+    group: ユーザーグループ
+  acl:
+    user:
+      view: ユーザー一覧
+      create: ユーザーを作成
+      edit: ユーザーを編集
+      delete: ユーザーを削除
+    role:
+      view: 権限一覧
+      create: 権限を作成
+      edit: 権限を編集
+      delete: 権限を削除
+    group:
+      view: ユーザーグループ一覧
+      create: ユーザーグループを作成
+      edit: ユーザーグループを編集
+      delete: ユーザーグループを削除
 (default): エンティティの既定のアクセス許可
 VIEW: ビュー
 CREATE: 作成
@@ -79,3 +108,12 @@ oro:
 Create group: グループを作成
 Has group: グループあり
 Save and Close: 保存して閉じる
+Log in: ログイン
+Remember me on this computer: ログイン状態を維持する
+Forgot your password?: パスワードをお忘れですか?
+Username or Email: ユーザー名またはメールアドレス
+Forgot Password: パスワードを忘れた
+Request: リクエスト
+Check Email: メールをチェック
+password_reset_email_sent: 'メールが %email% 宛に送信されました。パスワードをリセットするためのリンクが含まれています。'
+Go to homepage: ホームページに移動

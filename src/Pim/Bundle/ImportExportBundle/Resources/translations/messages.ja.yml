@@ -1,4 +1,3 @@
----
 Job: ジョブ
 Connector: コネクター
 pim_import_export:
@@ -29,12 +28,14 @@ pim_title.import_profile.show: '%job.label% のインポート プロファイ�
 pim_title.import_execution.index: インポート実行履歴
 pim_title.import_execution.show: インポートの実行 |詳細
 export profile:
+  title: エクスポートプロファイル
   overview: エクスポート プロファイルの概要
   create: エクスポート プロファイルを作成
   edit: エクスポート プロファイルを編集
 export report:
   overview: レポートのエクスポート
 import profile:
+  title: インポートプロファイル
   overview: インポート プロファイルの概要
   create: インポート プロファイルを作成
   edit: インポート プロファイルを編集
@@ -66,11 +67,17 @@ pim_importexport:
       show: インポート レポートの詳細の表示
       dl_log: インポート レポートログをダウンロード
       dl_files: インポートしたファイルをダウンロード
+  acl_group:
+    export: エクスポートプロファイル
+    import: インポートプロファイル
 btn:
   create:
     export profile: エクスポート プロファイルを作成
     import profile: インポート プロファイルを作成
 Upload and import: アップロードとインポート
+Upload and import now: アップロードしてインポートする
+import now: 今すぐインポート
+export now: 今すぐエクスポート
 confirmation:
   remove:
     export profile: 'エクスポート プロファイル %name% を削除してもよろしいですか。'
@@ -102,3 +109,17 @@ Display item: アイテムを表示
 Hide item: アイテムを隠す
 Collecting data about job execution...: ジョブの実行に関するデータを収集しています...
 You must select a file to upload: アップロードするファイルを選択してください
+Download log: ログをダウンロード
+Show profile: プロファイルを表示
+execution details: 実行の詳細
+job_execution.summary:
+  read: 読み込み
+  write: 書き込み
+  skip: スキップ
+  create: 作成
+  update: 更新
+Step: ステップ
+Status: ステータス
+Summary: サマリ
+Start: 開始
+End: 終了

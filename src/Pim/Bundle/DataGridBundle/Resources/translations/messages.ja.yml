@@ -1,4 +1,3 @@
----
 oro_datagrid.no_data_hint %entityHint%: '%entityHint% がありません。'
 oro_datagrid.not_found_hint %entityHint%: '検索条件に一致する %entityHint% が見つかりませんでした。検索条件を変更してみてください.'
 oro_datagrid.label_add_filter: フィルター管理

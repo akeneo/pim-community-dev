@@ -1,4 +1,3 @@
----
 attribute:
   overview: Attribuutoverzicht
   create: Attribuut aanmaken
@@ -255,8 +254,8 @@ default: Standaard
 Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
-switch_on:
-switch_off:
+"Yes": true
+"No": false
 Close: Sluiten
 Choose a color: Kies een kleur
 Create: Aanmaken

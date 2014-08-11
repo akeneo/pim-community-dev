@@ -1,4 +1,3 @@
----
 confirmation:
   remove:
     item: このアイテムを削除してもよろしいですか?
@@ -56,3 +55,14 @@ error:
     export profile: このエクスポートプロファイルは削除できません
     user: このユーザーは削除できません
     role: このロールは削除できません
+Edit: 編集
+Delete: 削除
+Edit attributes of the product: 製品の属性を編集
+Classify the product: 製品を分類
+Delete the product: 製品を削除
+Change status: ステータスの変更
+Toggle status: ステータスを切り替える
+pim.grid.mass_action.quick_export.csv_all: CSV (すべての属性)
+pim.grid.mass_action.delete: 削除
+pim.grid.mass_action.mass_edit: 一括編集
+jstree.create: 作成

@@ -1,52 +1,64 @@
----
 attribute:
+  title: 属性
   overview: 属性の概要
   create: 属性を作成
   edit: 属性を編集
 attribute group:
+  title: 属性グループ
   overview: 属性グループの概要
   create: 属性グループを作成
   edit: 属性グループを編集
 category:
+  title: カテゴリ
   overview: カテゴリの概要
   create: カテゴリを作成
   edit: カテゴリを編集
 tree:
+  title: ツリー
   create: ツリーを作成
   edit: ツリーを編集
 channel:
+  title: チャネル
   overview: チャンネルの概要
   create: チャンネルを作成
   edit: チャンネルを編集
 currency:
+  title: 通貨
   overview: 通貨の概要
   create: 通貨を作成
   edit: 通貨を編集
 family:
+  title: ファミリー
   overview: ファミリーの概要
   create: ファミリーを作成
   edit: ファミリーを編集
 locale:
+  title: ロケール
   overview: ロケールの概要
   create: ロケールを作成
   edit: ロケールを編集
 product:
+  title: 商品
   overview: 製品の概要
   create: 製品を作成
   edit: 製品を編集
 group:
+  title: グループ
   overview: グループの概要
   create: グループを作成
   edit: グループを編集
 group type:
+  title: グループタイプ
   overview: グループタイプの概要
   create: グループタイプの作成
   edit: グループタイプの編集
 variant group:
+  title: バリアントグループ
   overview: バリアントグループの概要
   create: バリアントグループを作成
   edit: バリアントグループを編集
 association type:
+  title: 関連タイプ
   overview: 関連タイプの概要
   create: 関連タイプの作成
   edit: 関連タイプの編集
@@ -109,6 +121,7 @@ flash:
     updated: 属性を更新しました
     removed: 属性を削除しました
     identifier not removable: 識別子の属性は削除できません
+    used by groups: 'この属性は %count% 件のバリアントグループが使用しているために削除できません。'
     option created: オプションを作成しました
     error creating option: オプションの保存中にエラーが発生しました、やり直してください
   attribute group:
@@ -117,6 +130,9 @@ flash:
     removed: 属性グループを削除しました
     attributes added: 属性を属性グループに追加しました
     attribute removed: 属性を属性グループから削除しました
+    not removed attributes: 属性が含まれている属性グループは削除できません。
+    not removed default: 既定の属性グループは削除できません。
+    not removed default attributes: 既定の属性グループから属性を削除できません。
   category:
     created: カテゴリを作成しました
     updated: カテゴリを更新しました
@@ -149,6 +165,8 @@ flash:
     attributes added: 属性を製品に追加しました
     attribute removed: 属性を製品から削除しました
     attribute not removable: この属性をこの製品から削除できません
+    enabled: 製品が有効になりました
+    disabled: 製品が無効になりました
   group:
     created: グループを作成しました
     updated: グループを更新しました
@@ -177,6 +195,7 @@ info:
     keep products: これらのカテゴリの製品は削除されません。
   product:
     no available attributes: これ以上追加する属性はありません
+    no family defined: ファミリーが未定義です
     change family: 製品ファミリーを変更
     change family to: ファミリーを変更
     merge attributes: 現在の属性は新しいファミリーのものとマージされます。
@@ -191,13 +210,19 @@ info:
     select products: このグループに所属するべき製品を選択してください。
     selectable products: 以下の選択可能な製品は各基準に対する定義済みの値があります。
     no group types: グループタイプがありません。ここをクリックして作成してください
+    more products: '%count% 件以上の商品...'
   association type:
     show products: 製品を表示
     show groups: グループを表示
     remove from products: '%count% 件の製品から関連タイプを削除します。'
     none exist: 関連タイプがありません。
     create one: ここをクリックして作成してください
+  attribute:
+    auto option sorting: もし有効にすると、オプションはローカライズされたラベルで自動的にソートされます
+  completeness:
+    not calculated: 未計算
 color:
+  title: カラー
   gray: グレー
   white: 白
   yellow: イエロー
@@ -256,10 +281,16 @@ default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
 Translate from: 言語の選択
-switch_on:
-switch_off:
+"Yes": true
+"No": false
 Close: 閉じる
 Choose a color: 色を選択
+Search: 検索
+Choose the attribute type: 属性の種類を選択
+Choose the attribute group: 属性グループを選択
+Drop a file or click here: ファイルをドロップまたはここをクリックしてください
+Drop an image or click here: イメージをドロップまたはここをクリックしてください
+Automatic option sorting: オプションの自動並べ替え
 Create: 作成
 Cancel: キャンセル
 Choose a family: ファミリーを選択してください
@@ -270,6 +301,8 @@ Completeness: 完全性
 Attribute used as label: ラベルとして使用する属性
 Global: グローバル
 Channel: チャンネル
+Expand all channels: すべてのチャネルを展開します。
+Collapse all channels: すべてのチャンネルを折りたたむ
 Always override: 常に上書き
 Ask: 依頼
 General Properties: 全般プロパティ
@@ -354,6 +387,29 @@ pim_catalog_metric: メトリック
 Activated: アクティベート
 Disable: 無効
 pim_enrich.mass_edit_action:
+  limit_exceeded: '%limit% 件以下の編集対象アイテムを選択してください'
+  product:
+    page_title: 商品
+    page_subtitle: '一括編集(1件)|一括編集(%count% 件)'
+    title: 操作を選択
+    subtitle: '選択した商品に対して実行したい操作を選択してください|選択した %count% 件の商品に対して実行したい操作を選択してください'
+    confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
+    steps:
+      first: 商品を選択してください
+      second: 操作を選択
+      third: 構成
+      fourth: 確認
+  family:
+    page_title: ファミリー
+    page_subtitle: '一括編集(1 件)|一括編集 (%count% 件)'
+    title: 操作を選択
+    subtitle: '選択したファミリーで実行したい操作を選択してください | 選択した %count% 件のファミリーで実行したい操作を選択してください'
+    confirm: '更新しようとしている以下の商品の内容について、ご確認ください。|更新しようとしている以下の %count% 件の商品の内容について、ご確認ください。'
+    steps:
+      first: ファミリーを選択
+      second: 操作を選択
+      third: 構成
+      fourth: 確認
   change-status:
     label: ステータスの変更 (有効/無効)
     description: 選択した製品は有効または無効になります。
@@ -375,6 +431,10 @@ pim_enrich.mass_edit_action:
     label: グループに追加
     description: 選択した製品を追加するグループを選択します
     success_flash: 製品を選択したグループに追加しました
+  set-attribute-requirements:
+    label: 属性の要件を設定
+    description: 以下の属性要件が選択したファミリーに適用されます
+    success_flash: 選択したファミリーに適用された属性要件
 To enable: 有効にするには
 Select attributes: 属性の選択
 Select: 選択
@@ -403,6 +463,8 @@ View group: 表示グループ
 Products: 製品
 pim_enrich:
   acl:
+    locale:
+      index: ロケール一覧
     currency:
       index: 通貨一覧
       toggle: 通貨切り替え
@@ -433,6 +495,7 @@ pim_enrich:
       edit: チャンネル編集
       remove: チャンネル削除
     family:
+      index: ファミリーのリスト
       create: ファミリーを作成
       edit: ファミリー編集
       remove: ファミリー削除
@@ -466,6 +529,18 @@ pim_enrich:
       create: 関連タイプ作成
       edit: 関連タイプ編集
       remove: 関連タイプ削除
+  acl_group:
+    association_type: 関連タイプ
+    attribute: 属性
+    attribute_group: 属性グループ
+    category: カテゴリ
+    channel: チャンネル
+    currency: 通貨
+    family: ファミリー
+    group: グループ
+    group_type: グループタイプ
+    locale: ロケール
+    product: 商品
 pim_menu:
   tab:
     collect: インポート
@@ -557,3 +632,4 @@ oro.locale:
       language: 使用したいシステムの言語を選択
       timezone: 日付と時刻を表示する時間帯を選択
       currency: 既定の通貨を選択
+Selected products successfully deleted: 選択した製品が正常に削除されました

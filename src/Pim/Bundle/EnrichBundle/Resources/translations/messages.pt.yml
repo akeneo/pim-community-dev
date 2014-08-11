@@ -1,4 +1,3 @@
----
 attribute:
   overview: visão geral dos atributos
   create: criar atributo
@@ -256,8 +255,8 @@ default: Padrão
 Axis: Eixo
 Add attributes: Adicionar atributos
 Translate from: Traduzir do
-switch_on:
-switch_off:
+"Yes": true
+"No": false
 Close: Fechar
 Choose a color: Escolha uma cor
 Create: Criar

@@ -1,4 +1,3 @@
----
 confirmation:
   remove:
     item: Êtes-vous certain de vouloir supprimer cet élément ?
@@ -62,6 +61,7 @@ Edit attributes of the product: Modifier les attributs du produit
 Classify the product: Classer le produit
 Delete the product: Supprimer le produit
 Change status: Changer le statut
+Toggle status: Changer le statut
 pim.grid.mass_action.quick_export.csv_all: CSV (tous les attributs)
 pim.grid.mass_action.delete: Supprimer
 pim.grid.mass_action.mass_edit: Edition de masse
