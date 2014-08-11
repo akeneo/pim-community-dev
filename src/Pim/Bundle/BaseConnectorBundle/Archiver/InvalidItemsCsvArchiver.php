@@ -30,6 +30,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
      * 
      * @param InvalidItemsCollector $collector
      * @param CsvWriter             $writer
+     * @param Filesystem            $filesystem
      * @param string                $archiveDir
      */
     public function __construct(
