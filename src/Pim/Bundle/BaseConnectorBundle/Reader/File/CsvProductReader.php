@@ -25,14 +25,11 @@ class CsvProductReader extends CsvReader
     /**
      * Constructor
      *
-     * @param InvalidItemsCsvArchiver $archiver
      * @param EntityManager           $entityManager
      * @param string                  $attributeClass
      */
-    public function __construct(InvalidItemsCsvArchiver $archiver, EntityManager $entityManager, $attributeClass)
+    public function __construct(EntityManager $entityManager, $attributeClass)
     {
-        parent::__construct($archiver);
-
         $repository = $entityManager->getRepository($attributeClass);
         $this->mediaAttributes = $repository->findMediaAttributeCodes();
     }
