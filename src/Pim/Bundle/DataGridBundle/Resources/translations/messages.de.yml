@@ -1,0 +1,34 @@
+oro_datagrid.no_data_hint %entityHint%: '%entityHint% existiert nicht.'
+oro_datagrid.not_found_hint %entityHint%: 'Kein %entityHint% stimmt mit der Suche überein. Versuchen Sie andere Suchkriterien ...'
+oro_datagrid.label_add_filter: Filter verwalten
+oro_datagrid.label_loading_mask: Lädt . . .
+oro.grid.mass_action.selected_rows: Ausgewählte Zeilen
+oro.grid.mass_action.confirm_title: Massenaktion-Bestätigung
+oro.grid.mass_action.confirm_content: Sind Sie sicher, dass Sie das tun möchten?
+oro.grid.mass_action.confirm_ok: Ja, ausführen
+oro.grid.mass_action.error_title: Massenaktion-Fehler
+oro.grid.mass_action.error_content: Massenaktion kann nicht durchgeführt werden
+oro.grid.mass_action.delete.label: Löschen
+oro.grid.mass_action.delete.confirm_title: Bestätigung zur Massenlöschung
+oro.grid.mass_action.delete.confirm_content: Sind Sie sicher, dass Sie die gewählten Elemente entfernen möchten?
+oro.grid.datagrid.page_size.all: Alle
+oro.grid.mass_action.delete.success_message: '{0} Keine Entität wurde entfernt|{1} Eine Entität wurde entfernt|]1,Inf[ %count% Entitäten wurden entfernt'
+datagrid_view:
+  views: Ansichten
+  default: Meine Standard-Ansicht
+  create: Ansicht erstellen
+  placeholder: Name der neuen Ansicht
+  remove: Diese Ansicht löschen
+  save_changes: Aktualisieren
+  choose_label: Wählen Sie eine Bezeichnung für die Ansicht
+  columns:
+    min_message: Sie müssen mindestens eine Spalte der Tabelle zur Anzeige auswählen
+  label:
+    unique_message: Die Bezeichnung muss eindeutig sein.
+    not_blank_message: Die Bezeichnung darf nicht leer sein.
+confirmation.remove.datagrid view: Sind Sie sicher, dass Sie diese Tabellen-Ansicht löschen möchten?
+flash.datagrid view:
+  created: Tabellen-Ansicht erfolgreich erstellt
+  updated: Tabellen-Ansicht erfolgreich aktualisiert
+  removed: Tabellen-Ansicht erfolgreich entfernt
+  not removable: Sie haben nicht die Rechte um diese Ansicht zu entfernen

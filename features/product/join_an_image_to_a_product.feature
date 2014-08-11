@@ -14,17 +14,17 @@ Feature: Join an image to a product
     And I am on the "Car" product page
 
   @ce
-  Scenario: Succesfully leave the image empty
+  Scenario: Successfully leave the image empty
     When I save the product
     Then I should see "Product successfully updated"
 
-  Scenario: Succesfully upload an image
+  Scenario: Successfully upload an image
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
     Then I should see "akeneo.jpg"
 
   @javascript
-  Scenario: Succesfully display the image in a popin
+  Scenario: Successfully display the image in a popin
     When I attach file "akeneo.jpg" to "Visual"
     And I save the product
     And I follow "akeneo.jpg"

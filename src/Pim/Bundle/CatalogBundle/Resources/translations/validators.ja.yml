@@ -1,0 +1,12 @@
+An identifier attribute already exists.: 識別子の属性は既に存在します。
+Attribute code may contain only letters, numbers and underscore: 属性のコードは、文字、数字およびアンダー スコアのみを含めることができます。
+This attribute type can't be used as a grid filter: この属性タイプは、グリッドのフィルターとして使用できません。
+This code is not available: このコードは使用できません。
+This attribute type must be required: この属性タイプは必須です
+This attribute type can't be required: この属性タイプは必須にできません
+This attribute type can't have unique value: この属性タイプはユニーク値を持つことができません
+No default value may be specified for this attribute type: この属性タイプにはデフォルト値を指定できない場合があります
+This value should be Yes or No: この値はYesまたはNoでなければなりません
+This value should not be blank: この値は空白にできません
+Option code may contain only letters, numbers and underscores: オプションのコードは半角英数字とアンダースコアが利用可能です
+This color is already used by another channel: この色は既に他のチャネルで使用しています。

@@ -17,11 +17,11 @@ Feature: Set the attribute used as label
       | Description | Bags     | textarea |
     And I am logged in as "Peter"
 
-  Scenario: Succesfully set a family attribute as the family label
+  Scenario: Successfully set a family attribute as the family label
     Given I am on the "Bags" family page
     Then eligible attributes as label should be SKU, Brand and Model
 
-  Scenario: Succesfully set a family attribute as the family label
+  Scenario: Successfully set a family attribute as the family label
     Given I am on the "Bags" family page
     And I fill in the following information:
       | Attribute used as label | Brand |
@@ -29,7 +29,7 @@ Feature: Set the attribute used as label
     Then I am on the families page
     And I should see "Brand"
 
-  Scenario: Succesfully display the chosen attribute as the title of the product
+  Scenario: Successfully display the chosen attribute as the title of the product
     Given the attribute "Brand" has been chosen as the family "Bags" label
     And the following products:
       | sku      | family | brand |
@@ -37,7 +37,7 @@ Feature: Set the attribute used as label
     When I am on the "bag-jean" product page
     Then the title of the product should be "Product/en Levis"
 
-  Scenario: Succesfully display the id as the title of the product
+  Scenario: Successfully display the id as the title of the product
     Given the following products:
       | sku      |
       | bag-jean |

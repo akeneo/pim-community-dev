@@ -72,7 +72,7 @@ class Datasource implements DatasourceInterface, ParameterizableInterface
                 $this->qb = $this->getRepository()->$method();
             }
         } else {
-            $this->qb = $this->getRepository()->createQueryBuilder();
+            $this->qb = $this->getRepository()->createQueryBuilder('o');
         }
 
         $grid->setDatasource(clone $this);

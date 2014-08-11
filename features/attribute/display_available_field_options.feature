@@ -22,7 +22,7 @@ Feature: Display available field options
       | Text Area  | Default value, Max characters, WYSIWYG enabled                                                                   |
       | Text       | Default value, Max characters, Validation rule                                                                   |
 
-  Scenario Outline: Succesfully display available values fields for attribute types
+  Scenario Outline: Successfully display available values fields for attribute types
     Given I create a "<type>" attribute
     And I visit the "Values" tab
     Then I should see the <fields> fields
