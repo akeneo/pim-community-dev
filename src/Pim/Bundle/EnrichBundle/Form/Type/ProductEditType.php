@@ -11,6 +11,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Pim\Bundle\EnrichBundle\Form\View\ProductFormViewInterface;
 use Pim\Bundle\EnrichBundle\Form\Subscriber\BindAssociationTargetsSubscriber;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 /**
  * Product edit form type
@@ -72,7 +74,17 @@ class ProductEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['enable_state']) {
-            $builder->add('enabled', 'hidden');
+            $builder->add(
+                $builder->create('enabled', 'hidden')
+                // TODO : use a data transformer
+                ->addEventListener(FormEvents::PRE_BIND, function (FormEvent $event) {
+                    if ($event->getData() === '0') {
+                        $event->setData(false);
+                    } else {
+                        $event->setData(true);
+                    }
+                })
+            );
         }
         $builder
             ->add(
