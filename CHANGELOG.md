@@ -3,9 +3,10 @@
 ## Improvements
 
 ## Bug fixes
-- Fixed Mass edit on a never fulfilled price attribute
+- Fixed Mass edit on a empty price values
 
 ## BC breaks
+- InvalidItemsCsvArchiver is not injected in the constructors of ProductCsvReader and ProductReader
 
 # 1.2.0-RC2
 
