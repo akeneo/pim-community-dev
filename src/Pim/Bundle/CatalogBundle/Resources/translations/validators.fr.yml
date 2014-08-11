@@ -1,0 +1,13 @@
+---
+An identifier attribute already exists.: Un attribut identifiant existe déjà.
+Attribute code may contain only letters, numbers and underscore: "Le code de l'attribut ne doit contenir que des lettres, chiffres et tirets bas"
+This attribute type can't be used as a grid filter: "Ce type d'attribut ne peut pas être utilisé comme filtre dans la grille"
+This code is not available: "Ce code n'est pas disponible"
+This attribute type must be required: "Ce type d'attribut doit être requis"
+This attribute type can't be required: "Ce type d'attribut ne peut être requis"
+This attribute type can't have unique value: "Ce type d'attribut ne peut pas avoir de valeur unique"
+No default value may be specified for this attribute type: "Aucune valeur par défaut ne peut être définie pour ce type d'attribut"
+This value should be Yes or No: Cette valeur doit être oui ou non
+This value should not be blank: Cette valeur ne doit pas être vide
+Option code may contain only letters, numbers and underscores: "Le code de l'option peut contenir uniquement des lettres, des chiffres et des traits de soulignement"
+This color is already used by another channel: Cette couleur est déjà utilisée par un autre canal
