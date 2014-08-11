@@ -171,3 +171,22 @@ Feature: Edit common attributes of many products at once
     And the english tablet Description of "boots" should be "Bar"
     And the english mobile Description of "pump" should be "Foo"
     And the english tablet Description of "pump" should be "Bar"
+
+  @info https://akeneo.atlassian.net/browse/PIM-3070
+  Scenario: Successfully mass edit a price not added to the product
+    Given I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | heels      |
+      | Family | high_heels |
+    And I press the "Save" button in the popin
+    And I am on the products page
+    When I mass-edit products heels
+    And I choose the "Edit attributes" operation
+    And I display the Price attribute
+    And I change the "$ Price" to "100"
+    And I change the "€ Price" to "150"
+    And I move on to the next step
+    Then the prices "Price" of products heels should be:
+      | amount | currency |
+      | 100    | USD      |
+      | 150    | EUR      |
