@@ -61,14 +61,13 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         } elseif (is_int($data)) {
             $result = [$fieldName => (string) $data];
         } elseif (is_float($data)) {
-            // precision ?
             $result = [$fieldName => sprintf(sprintf('%%.%sF', $this->precision), $data)];
         } elseif (is_string($data)) {
             $result = [$fieldName => $data];
         } elseif (is_bool($data)) {
             $result = [$fieldName => (string) (int) $data];
         } elseif (is_object($data)) {
-            // TODO : delegate to real normalizers
+            // TODO : delegate to real normalizers and use a more explicit context for metric
             $context['field_name'] = $fieldName;
             $context['metric_format'] = empty($this->fields) ? 'multiple_fields' : 'single_field';
             $result = $this->serializer->normalize($data, $format, $context);
