@@ -110,34 +110,21 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
+        $values = $this->getFilteredValues($product);
+
         if (empty($this->fields)) {
-
-            $filteredValues = array();
-            $normalizedValues = array();
-
-            foreach ($this->valuesFilters as $filter) {
-                $filteredValues = $filter->filter(
-                    $product->getValues(),
-                    array(
-                        'identifier'  => $product->getIdentifier(),
-                        'scopeCode'   => $context['scopeCode'],
-                        'localeCodes' => $context['localeCodes'],
-                    )
-                );
-            }
-
-            foreach ($filteredValues as $value) {
+            $normalizedValues = [];
+            foreach ($values as $value) {
                 $normalizedValues = array_merge(
                     $normalizedValues,
                     $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
-
             $this->results = array_merge($this->results, $normalizedValues);
 
         } else {
-            foreach ($product->getValues() as $value) {
+            foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
                 if (isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
@@ -145,6 +132,35 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
                 }
             }
         }
+    }
+
+    /**
+     * Get filtered values
+     *
+     * @param ProductInterface $product
+     * @param array            $context
+     *
+     * @return ProductValueInterface[]
+     */
+    protected function getFilteredValues(ProductInterface $product, array $context = [])
+    {
+        $values = $product->getValues();
+
+        if (count($this->valuesFilters) > 0) {
+            $filteredValues = [];
+            $context = [
+                'identifier'  => $product->getIdentifier(),
+                'scopeCode'   => isset($context['scopeCode']) ? $context['scopeCode'] : null,
+                'localeCodes' => isset($context['localeCodes']) ? $context['localeCodes'] : null,
+            ];
+            foreach ($this->valuesFilters as $filter) {
+                $filteredValues = $filter->filter($values, $context);
+            }
+
+            return $filteredValues;
+        }
+
+        return $values;
     }
 
     /**
