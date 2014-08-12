@@ -110,9 +110,11 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
      */
     protected function normalizeValues(ProductInterface $product, $format = null, array $context = [])
     {
-        $values = $this->getFilteredValues($product);
-
         if (empty($this->fields)) {
+
+            $values = $this->getFilteredValues($product);
+            $context['metric_format'] = 'multiple_fields';
+
             $normalizedValues = [];
             foreach ($values as $value) {
                 $normalizedValues = array_merge(
@@ -124,12 +126,18 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
             $this->results = array_merge($this->results, $normalizedValues);
 
         } else {
+
+            // TODO only used for quick export, find a way to homogeneize this part
+            $values = $product->getValues();
+            $context['metric_format'] = 'single_field';
+
             foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
                 if (isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);
                 }
+
             }
         }
     }

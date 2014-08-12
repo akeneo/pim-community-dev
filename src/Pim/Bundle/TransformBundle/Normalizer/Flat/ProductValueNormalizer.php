@@ -69,7 +69,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
             $result = [$fieldName => (string) (int) $data];
         } elseif (is_object($data)) {
             $context['field_name'] = $fieldName;
-            $context['metric_format'] = empty($this->fields) ? 'multiple_fields' : 'single_field';
             $result = $this->serializer->normalize($data, $format, $context);
         }
 
