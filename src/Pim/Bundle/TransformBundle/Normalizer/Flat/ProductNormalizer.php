@@ -112,7 +112,7 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         if (empty($this->fields)) {
 
-            $values = $this->getFilteredValues($product);
+            $values = $this->getFilteredValues($product, $context);
             $context['metric_format'] = 'multiple_fields';
 
             $normalizedValues = [];
@@ -155,8 +155,8 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
         $values = $product->getValues();
         $context = [
             'identifier'  => $product->getIdentifier(),
-            'scopeCode'   => isset($context['scopeCode']) ? $context['scopeCode'] : null,
-            'localeCodes' => isset($context['localeCodes']) ? $context['localeCodes'] : null
+            'scopeCode'   => $context['scopeCode'],
+            'localeCodes' => $context['localeCodes']
         ];
 
         foreach ($this->valuesFilters as $filter) {
