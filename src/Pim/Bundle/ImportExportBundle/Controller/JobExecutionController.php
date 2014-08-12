@@ -142,12 +142,7 @@ class JobExecutionController extends AbstractDoctrineController
             }
 
             if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
-                $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
-                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
-                $jobExecution->setEndTime(new \DateTime('now'));
-                $jobExecution->addFailureException(new \Exception('An exception occured during the job execution'));
-                $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->persist($jobExecution);
-                $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->flush();
+                $this->jobExecutionManager->markAsFailed($jobExecution);
             }
 
             return new JsonResponse(
