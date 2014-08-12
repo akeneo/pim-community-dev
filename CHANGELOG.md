@@ -4,6 +4,7 @@
 
 ## Bug fixes
 - Fixed Mass edit on a never fulfilled price attribute
+- Fixed flat product normalizer and filtered values (with many filters)
 
 ## BC breaks
 
