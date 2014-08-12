@@ -39,7 +39,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getPid')
             ->will($this->returnValue(1));
 
-        $jobExecutionManager = new JobExecutionManager($this->entityManager, 'JobExecution');
+        $jobExecutionManager = new JobExecutionManager($this->entityManager);
 
         $this->assertTrue($jobExecutionManager->checkRunningStatus($jobExecution));
     }
@@ -56,7 +56,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getPid')
             ->will($this->returnValue(10000));
 
-        $jobExecutionManager = new JobExecutionManager($this->entityManager, 'JobExecution');
+        $jobExecutionManager = new JobExecutionManager($this->entityManager);
 
         $this->assertFalse($jobExecutionManager->checkRunningStatus($jobExecution));
     }
@@ -76,8 +76,26 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
             ->method('getPid')
             ->will($this->returnValue(null));
 
-        $jobExecutionManager = new JobExecutionManager($this->entityManager, 'JobExecution');
+        $jobExecutionManager = new JobExecutionManager($this->entityManager);
 
         $jobExecutionManager->checkRunningStatus($jobExecution);
+    }
+
+    public function testMarkAsFailed()
+    {
+        $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+
+        $jobExecution->expects($this->once())
+            ->method('setStatus');
+        $jobExecution->expects($this->once())
+            ->method('setExitStatus');
+        $jobExecution->expects($this->once())
+            ->method('setEndTime');
+        $jobExecution->expects($this->once())
+            ->method('addFailureException');
+
+        $jobExecutionManager = new JobExecutionManager($this->entityManager);
+
+        $jobExecutionManager->markAsFailed($jobExecution);
     }
 }
