@@ -40,9 +40,9 @@ class JobExecutionManager
     {
         if (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode()) {
             return $this->processIsRunning($jobExecution);
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
