@@ -31,7 +31,7 @@ class JobExecutionManager
     }
 
     /**
-     * CHeck if the given JoExecution is still running using his PID
+     * Check if the given JoExecution is still running using his PID
      * @param JobExecution $jobExecution
      *
      * @return bool
@@ -59,7 +59,7 @@ class JobExecutionManager
             throw new \InvalidArgumentException('The job execution PID is not valid');
         }
 
-        return $returnCode === 0;
+        return 0 === $returnCode;
     }
 
     /**
