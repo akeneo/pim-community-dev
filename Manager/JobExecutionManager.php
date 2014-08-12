@@ -38,7 +38,9 @@ class JobExecutionManager
      */
     public function checkRunningStatus(JobExecution $jobExecution)
     {
-        if (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode()) {
+        if (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode() ||
+            ExitStatus::EXECUTING === $jobExecution->getExitStatus()->getExitCode()
+        ) {
             return $this->processIsRunning($jobExecution);
         }
 
