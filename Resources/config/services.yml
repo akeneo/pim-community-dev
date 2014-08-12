@@ -74,3 +74,6 @@ services:
 
     akeneo_batch.manager.job_execution:
         class: %akeneo_batch.manager.job_execution.class%
+        arguments:
+            - @doctrine.orm.entity_manager
+            - %akeneo_batch.entity.job_execution.class%
