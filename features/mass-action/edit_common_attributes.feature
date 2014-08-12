@@ -176,17 +176,17 @@ Feature: Edit common attributes of many products at once
   Scenario: Successfully mass edit a price not added to the product
     Given I create a new product
     And I fill in the following information in the popin:
-      | SKU    | heels      |
+      | SKU    | Shoes      |
       | Family | high_heels |
     And I press the "Save" button in the popin
     And I am on the products page
-    When I mass-edit products heels
+    When I mass-edit products Shoes
     And I choose the "Edit attributes" operation
     And I display the Price attribute
     And I change the "$ Price" to "100"
     And I change the "€ Price" to "150"
     And I move on to the next step
-    Then the prices "Price" of products heels should be:
+    Then the prices "Price" of products Shoes should be:
       | amount | currency |
       | 100    | USD      |
       | 150    | EUR      |
