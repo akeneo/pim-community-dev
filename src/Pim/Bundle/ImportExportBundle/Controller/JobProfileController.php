@@ -26,6 +26,7 @@ use Pim\Bundle\EnrichBundle\Form\Type\UploadType;
 use Pim\Bundle\ImportExportBundle\Factory\JobInstanceFactory;
 use Pim\Bundle\ImportExportBundle\Form\Type\JobInstanceType;
 use Pim\Bundle\ImportExportBundle\Event\JobProfileEvents;
+use Symfony\Component\Process\PhpExecutableFinder;
 
 /**
  * Job Profile controller
@@ -316,8 +317,11 @@ class JobProfileController extends AbstractDoctrineController
             $this->persist($jobExecution);
             $instanceCode = $jobExecution->getJobInstance()->getCode();
             $executionId = $jobExecution->getId();
+            $pathFinder = new PhpExecutableFinder();
+
             $cmd = sprintf(
-                'php %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
+                '%s %s/console akeneo:batch:job --env=%s --email="%s" %s %s %s >> %s/logs/batch_execute.log 2>&1',
+                $pathFinder->find(),
                 $this->rootDir,
                 $this->environment,
                 $this->getUser()->getEmail(),
@@ -330,7 +334,7 @@ class JobProfileController extends AbstractDoctrineController
             // when executed from HTTP request that stop fast (race condition that makes
             // the process cloning fail when the parent process, i.e. HTTP request, stops
             // at the same time)
-            exec($cmd.' &');
+            exec($cmd . ' &', $output);
 
             $this->eventDispatcher->dispatch(JobProfileEvents::POST_EXECUTE, new GenericEvent($jobInstance));
 

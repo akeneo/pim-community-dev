@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\ImportExportBundle\Controller;
 
+use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
-use Akeneo\Bundle\BatchBundle\Job\JobRepositoryInterface;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
 use Akeneo\Bundle\BatchBundle\Monolog\Handler\BatchLogHandler;
 use Doctrine\Common\Persistence\ManagerRegistry;
@@ -51,9 +51,6 @@ class JobExecutionController extends AbstractDoctrineController
     /** @var JobExecutionManager */
     protected $jobExecutionManager;
 
-    /** @var JobRepositoryInterface */
-    protected $jobRepository;
-
     /**
      * Constructor
      * @param Request                  $request
@@ -70,7 +67,6 @@ class JobExecutionController extends AbstractDoctrineController
      * @param string                   $jobType
      * @param SerializerInterface      $serializer
      * @param JobExecutionManager      $jobExecutionManager
-     * @param JobRepositoryInterface   $jobRepository
      */
     public function __construct(
         Request $request,
@@ -86,8 +82,7 @@ class JobExecutionController extends AbstractDoctrineController
         JobExecutionArchivist $archivist,
         $jobType,
         SerializerInterface $serializer,
-        JobExecutionManager $jobExecutionManager,
-        JobRepositoryInterface $jobRepository
+        JobExecutionManager $jobExecutionManager
     ) {
         parent::__construct(
             $request,
@@ -106,7 +101,6 @@ class JobExecutionController extends AbstractDoctrineController
         $this->jobType             = $jobType;
         $this->serializer          = $serializer;
         $this->jobExecutionManager = $jobExecutionManager;
-        $this->jobRepository       = $jobRepository;
     }
 
     /**
@@ -149,7 +143,11 @@ class JobExecutionController extends AbstractDoctrineController
 
             if (!$this->jobExecutionManager->checkRunningStatus($jobExecution)) {
                 $jobExecution->setStatus(new BatchStatus(BatchStatus::FAILED));
-                $this->jobRepository->updateJobExecution($jobExecution);
+                $jobExecution->setExitStatus(new ExitStatus(ExitStatus::FAILED));
+                $jobExecution->setEndTime(new \DateTime('now'));
+                $jobExecution->addFailureException(new \Exception('An exception occured during the job execution'));
+                $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->persist($jobExecution);
+                $this->getManagerForClass('AkeneoBatchBundle:JobExecution')->flush();
             }
 
             return new JsonResponse(
