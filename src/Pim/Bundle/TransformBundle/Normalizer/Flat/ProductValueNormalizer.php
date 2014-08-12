@@ -95,8 +95,6 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
     }
 
     /**
-     * TODO : twin in product normalizer
-     *
      * Normalize the field name for values
      *
      * @param ProductValueInterface $value
