@@ -69,6 +69,43 @@ HECTOHM:    Hectohm
 KILOHM:     Kilohm
 MEGOHM:     Megohm
 
+Voltage:   Voltage
+MILLIVOLT: Millivolt
+CENTIVOLT: Centivolt
+DECIVOLT:  Decivolt
+VOLT:      Volt
+DEKAVOLT:  Dekavolt
+HECTOVOLT: Hectovolt
+KILOVOLT:  Kilovolt
+MEGAVOLT:  Megavolt
+
+Intensity:   Intensity
+MILLIAMPERE: Milliampere
+CENTIAMPERE: Centiampere
+DECIAMPERE:  Deciampere
+AMPERE:      Ampere
+DEKAAMPERE:  Dekaampere
+HECTOAMPERE: Hectoampere
+KILOAMPERE:  Kiloampere
+MEGAAMPERE:  Megaampere
+
+ElectricCharge: Electric charge
+AMPEREHOUR:     Ampere hour
+MILLICOULOMB:   Millicoulomb
+CENTICOULOMB:   Centicoulomb
+DECICOULOMB:    Decicoulomb
+COULOMB:        Coulomb
+DEKACOULOMB:    Dekacoulomb
+HECTOCOULOMB:   Hectocoulomb
+KILOCOULOMB:    Kilocoulomb
+
+Duration:    Duration
+MILLISECOND: Millisecond
+SECOND:      Second
+MINUTE:      Minute
+HOUR:        Hour
+DAY:         Day
+
 Speed:              Speed
 FOOT_PER_SECOND:    Foot per second
 FOOT_PER_HOUR:      Foot per hour
