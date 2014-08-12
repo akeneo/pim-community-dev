@@ -8,6 +8,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Pim\Bundle\InstallerBundle\CommandExecutor;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Override OroInstaller command to add PIM custom rules
@@ -72,13 +73,8 @@ class InstallCommand extends ContainerAwareCommand
 
         try {
 
-            $this
-                ->initializeDirectory(
-                    $this->getContainer()->getParameter('upload_dir')
-                )
-                ->initializeDirectory(
-                    $this->getContainer()->getParameter('archive_dir')
-                );
+            $this->cleanDirectory($this->getContainer()->getParameter('upload_dir'));
+            $this->cleanDirectory($this->getContainer()->getParameter('archive_dir'));
 
             $this
                 ->checkStep($input, $output)
@@ -87,8 +83,6 @@ class InstallCommand extends ContainerAwareCommand
         } catch (\Exception $e) {
             return $e->getCode();
         }
-
-
 
         $this->updateInstalledFlag($input, $output, date('c'));
 
@@ -165,39 +159,16 @@ class InstallCommand extends ContainerAwareCommand
     }
 
     /**
-     * Initialize directory
-     *
-     * @param $directory
-     *
-     * @return InstallCommand
-     */
-    protected function initializeDirectory($directory)
-    {
-        $this->cleanDirectory($directory);
-        mkdir($directory);
-
-        return $this;
-    }
-
-    /**
      * Remove directory and all subcontent
      *
      * @param string $directory
      */
     protected function cleanDirectory($folder)
     {
-        if (is_dir($folder)) {
-            $directory = opendir($folder);
-            while ($file = readdir($directory)) {
-                if ('.' !== $file && '..' !== $file) {
-                    $this->cleanDirectory($folder . DIRECTORY_SEPARATOR . $file);
-                }
-            }
-            closedir($directory);
-
-            rmdir($folder);
-        } else {
-            unlink($folder);
+        $filesystem = new Filesystem();
+        if ($filesystem->exists($folder)) {
+            $filesystem->remove($folder);
         }
+        $filesystem->mkdir($folder);
     }
 }
