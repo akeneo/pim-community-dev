@@ -18,7 +18,7 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
     {
         $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
 
-        $jobExecution->expects($this->once())
+        $jobExecution->expects($this->exactly(2))
             ->method('getExitStatus')
             ->will($this->returnValue(new ExitStatus(ExitStatus::COMPLETED)));
 
