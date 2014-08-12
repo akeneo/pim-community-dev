@@ -23,18 +23,11 @@ class JobExecutionManager
     protected $entityManager;
 
     /**
-     * @var string
-     */
-    protected $jobExecutionClass;
-
-    /**
      * @param EntityManager $entityManager
-     * @param string        $jobExecutionClass
      */
-    public function __construct(EntityManager $entityManager, $jobExecutionClass)
+    public function __construct(EntityManager $entityManager)
     {
-        $this->entityManager     = $entityManager;
-        $this->jobExecutionClass = $jobExecutionClass;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -80,7 +73,7 @@ class JobExecutionManager
         $jobExecution->setEndTime(new \DateTime('now'));
         $jobExecution->addFailureException(new \Exception('An exception occured during the job execution'));
 
-        $this->getManagerForClass($this->jobExecutionClass)->persist($jobExecution);
-        $this->getManagerForClass($this->jobExecutionClass)->flush();
+        $this->entityManager->persist($jobExecution);
+        $this->entityManager->flush();
     }
 }
