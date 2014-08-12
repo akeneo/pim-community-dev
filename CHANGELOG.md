@@ -5,6 +5,7 @@
 ## Bug fixes
 - Fixed Mass edit on a never fulfilled price attribute
 - Fix TinyMCE WYSIWYG editor generating 'fake' history due to html reformatting
+- Fixed flat product normalizer and filtered values (with many filters)
 
 ## BC breaks
 

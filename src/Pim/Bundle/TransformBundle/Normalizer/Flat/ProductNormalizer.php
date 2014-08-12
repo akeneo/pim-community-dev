@@ -112,39 +112,58 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     {
         if (empty($this->fields)) {
 
-            $filteredValues = array();
-            $normalizedValues = array();
+            $values = $this->getFilteredValues($product, $context);
+            $context['metric_format'] = 'multiple_fields';
 
-            foreach ($this->valuesFilters as $filter) {
-                $filteredValues = $filter->filter(
-                    $product->getValues(),
-                    array(
-                        'identifier'  => $product->getIdentifier(),
-                        'scopeCode'   => $context['scopeCode'],
-                        'localeCodes' => $context['localeCodes'],
-                    )
-                );
-            }
-
-            foreach ($filteredValues as $value) {
+            $normalizedValues = [];
+            foreach ($values as $value) {
                 $normalizedValues = array_merge(
                     $normalizedValues,
                     $this->serializer->normalize($value, $format, $context)
                 );
             }
             ksort($normalizedValues);
-
             $this->results = array_merge($this->results, $normalizedValues);
 
         } else {
-            foreach ($product->getValues() as $value) {
+
+            // TODO only used for quick export, find a way to homogeneize this part
+            $values = $product->getValues();
+            $context['metric_format'] = 'single_field';
+
+            foreach ($values as $value) {
                 $fieldValue = $this->getFieldValue($value);
                 if (isset($this->fields[$fieldValue])) {
                     $normalizedValue = $this->serializer->normalize($value, $format, $context);
                     $this->results = array_merge($this->results, $normalizedValue);
                 }
+
             }
         }
+    }
+
+    /**
+     * Get filtered values
+     *
+     * @param ProductInterface $product
+     * @param array            $context
+     *
+     * @return ProductValueInterface[]
+     */
+    protected function getFilteredValues(ProductInterface $product, array $context = [])
+    {
+        $values = $product->getValues();
+        $context = [
+            'identifier'  => $product->getIdentifier(),
+            'scopeCode'   => $context['scopeCode'],
+            'localeCodes' => $context['localeCodes']
+        ];
+
+        foreach ($this->valuesFilters as $filter) {
+            $values = $filter->filter($values, $context);
+        }
+
+        return $values;
     }
 
     /**

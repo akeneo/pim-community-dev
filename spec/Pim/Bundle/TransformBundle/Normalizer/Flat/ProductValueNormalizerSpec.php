@@ -97,7 +97,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($collection);
         $value->getAttribute()->willReturn($simpleAttribute);
 
-        $serializer->normalize($collection, 'flat', ['field_name' => 'simple', 'metric_format' => 'multiple_fields'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $serializer->normalize($collection, 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 
@@ -109,7 +109,7 @@ class ProductValueNormalizerSpec extends ObjectBehavior
         $value->getData()->willReturn($array);
         $value->getAttribute()->willReturn($simpleAttribute);
 
-        $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple', 'metric_format' => 'multiple_fields'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
+        $serializer->normalize(Argument::any(), 'flat', ['field_name' => 'simple'])->shouldBeCalled()->willReturn(['simple' => 'red, blue']);
         $this->normalize($value, 'flat', [])->shouldReturn(['simple' => 'red, blue']);
     }
 }
