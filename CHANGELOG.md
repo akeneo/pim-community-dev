@@ -6,6 +6,7 @@
 - Fixed Mass edit on a never fulfilled price attribute
 
 ## BC breaks
+- Remove `task` option from install command
 
 # 1.2.0-RC2
 
