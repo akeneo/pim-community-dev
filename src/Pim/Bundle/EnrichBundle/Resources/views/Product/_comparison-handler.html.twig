@@ -33,9 +33,9 @@
                             $target.parent().removeClass('empty');
                             $target.parent().find('a[rel=slimbox]').slimbox();
                         } else if ($source.is('textarea.wysiwyg')) {
-                            wysiwyg.destroy($target.attr('id'));
+                            wysiwyg.destroy($target);
                             $target.val($source.val()).trigger('change');
-                            wysiwyg.init($target.attr('id'));
+                            wysiwyg.init($target, {}, true);
                         } else {
                             $target.val($source.val()).trigger('change');
                         }

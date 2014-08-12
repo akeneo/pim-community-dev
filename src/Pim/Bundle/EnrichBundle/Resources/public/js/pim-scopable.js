@@ -311,7 +311,7 @@ define(
                 _.each(this.fields, function (field) {
                     var $textarea = $(field).find('textarea.wysiwyg');
                     if ($textarea.length) {
-                        wysiwyg.destroy($textarea.attr('id'));
+                        wysiwyg.destroy($textarea);
                     }
                 });
 
@@ -323,7 +323,7 @@ define(
                     _.each(this.fields, function (field) {
                         var $textarea = $(field).find('textarea.wysiwyg');
                         if ($textarea.length) {
-                            wysiwyg.init($textarea.attr('id'), { readonly: $textarea.is('[disabled]') });
+                            wysiwyg.init($textarea);
                         }
 
                         var $fileInput = $(field).find('input[type=file][id]');
