@@ -24,7 +24,7 @@ define(
 
             $target.find('textarea.wysiwyg[id]:not([aria-hidden])').each(function () {
                 if (!$(this).closest('.attribute-field').hasClass('scopable')) {
-                    wysiwyg.init($(this).attr('id'), { readonly: $(this).is('[disabled]') });
+                    wysiwyg.init($(this));
                 }
             });
         };

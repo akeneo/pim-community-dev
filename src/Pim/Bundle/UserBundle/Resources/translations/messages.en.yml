@@ -23,6 +23,12 @@ oro.user.grid.groups:
     columns:
         name: "Name"
 
+# Page titles
+pim_title:
+    user.index: Users
+    user_role.index: Roles
+    user_group.index: Groups
+
 # User
 user.title: User
 Users Management: Users Management
