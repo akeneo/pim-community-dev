@@ -1,31 +1,28 @@
 {% extends 'PimEnrichBundle:MassEditAction:configure/layout.html.twig' %}
 
+{% set notGrantedIdentifiers = form.operation.notGrantedIdentifiers.vars.value %}
+{% set nbNotGranted = notGrantedIdentifiers|trim|length == 0 ? 0 : notGrantedIdentifiers|split(', ')|length %}
+{% set productCount = productCount - nbNotGranted %}
+
 {% block head_script %}
     {{ parent() }}
-    <script type="text/javascript">
-        require(
-            ['jquery'],
-            function($){
-                'use strict';
-                $(function() {
-                    var $nextBtn = $('a.next');
-                    if ($('#mass_unpublish_nb_granted').val() == 0) {
-                        $nextBtn.hide();
-                    }
-                });
-            }
-        );
-    </script>
+    {% if productCount == 0 %}
+        <script type="text/javascript">
+            require(
+                ['jquery'],
+                function($){
+                    'use strict';
+                    $(function() {
+                        $('a.next').hide();
+                    });
+                }
+            );
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block formContent %}
-
-    {% set notGrantedIdentifiers = form.operation.notGrantedIdentifiers.vars.value %}
-    {% set nbNotGranted = notGrantedIdentifiers|trim|length == 0 ? 0 : notGrantedIdentifiers|split(', ')|length %}
-    {% set nbGranted = productCount - nbNotGranted %}
-    <input type="hidden" id="mass_unpublish_nb_granted" value="{{nbGranted}}"/>
-
-    {% if nbGranted == 0 %}
+    {% if productCount == 0 %}
         {% set alertClass = 'error' %}
         {% set alertMessage = 'pim_enrich.mass_edit_action.unpublish.message.error'|trans %}
     {% elseif nbNotGranted > 0 %}

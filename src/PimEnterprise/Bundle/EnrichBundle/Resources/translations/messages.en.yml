@@ -75,6 +75,10 @@ pim_enrich:
                 warning: You're not the owner of all the selected products. You can't unpublish the products "%notGranted%".
                 info: The %nbProducts% selected products will be unpublished.
             not_editable: You don't have the permission to edit the products "%identifiers%".
+        classify:
+            message:
+                error: You're not the owner of the selected products, you can't classify them.
+                warning: You're not the owner of all the selected products. You can't classify the products "%notGranted%".
 
 # Mass edit operations
 pim_enrich.mass_edit_action:
