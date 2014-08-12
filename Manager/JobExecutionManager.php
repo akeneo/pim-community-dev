@@ -53,11 +53,13 @@ class JobExecutionManager
      */
     protected function processIsRunning(JobExecution $jobExecution)
     {
-        if (($pid = intval($jobExecution->getPid())) > 0) {
-            exec(sprintf('ps -p %s', $pid), $output, $returnCode);
-        } else {
+        $pid = intval($jobExecution->getPid());
+
+        if ($pid <= 0) {
             throw new \InvalidArgumentException('The job execution PID is not valid');
         }
+
+        exec(sprintf('ps -p %s', $pid), $output, $returnCode);
 
         return 0 === $returnCode;
     }
