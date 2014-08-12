@@ -2,6 +2,8 @@
 
 ## Improvements
 
+- Killed export process are now detected and displayed as failed
+
 ## Bug fixes
 
 ## BC breaks
