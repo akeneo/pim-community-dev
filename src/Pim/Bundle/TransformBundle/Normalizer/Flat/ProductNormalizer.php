@@ -153,19 +153,14 @@ class ProductNormalizer extends SerializerAwareNormalizer implements NormalizerI
     protected function getFilteredValues(ProductInterface $product, array $context = [])
     {
         $values = $product->getValues();
+        $context = [
+            'identifier'  => $product->getIdentifier(),
+            'scopeCode'   => isset($context['scopeCode']) ? $context['scopeCode'] : null,
+            'localeCodes' => isset($context['localeCodes']) ? $context['localeCodes'] : null
+        ];
 
-        if (count($this->valuesFilters) > 0) {
-            $filteredValues = [];
-            $context = [
-                'identifier'  => $product->getIdentifier(),
-                'scopeCode'   => isset($context['scopeCode']) ? $context['scopeCode'] : null,
-                'localeCodes' => isset($context['localeCodes']) ? $context['localeCodes'] : null,
-            ];
-            foreach ($this->valuesFilters as $filter) {
-                $filteredValues = $filter->filter($values, $context);
-            }
-
-            return $filteredValues;
+        foreach ($this->valuesFilters as $filter) {
+            $values = $filter->filter($values, $context);
         }
 
         return $values;
