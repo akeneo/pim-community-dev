@@ -2,9 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Pim\Bundle\CatalogBundle\Manager\MediaManager;
-use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 
 /**
  * Write data into a csv file on the filesystem
@@ -35,11 +34,6 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
     protected $withHeader = true;
 
     /**
-     * @param MediaManager $mediaManager
-     */
-    protected $mediaManager;
-
-    /**
      * @var array
      */
     protected $writtenFiles = array();
@@ -48,14 +42,6 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      * @var array
      */
     protected $items = [];
-
-    /**
-     * @param MediaManager $mediaManager
-     */
-    public function __construct(MediaManager $mediaManager)
-    {
-        $this->mediaManager = $mediaManager;
-    }
 
     /**
      * Set the csv delimiter character
@@ -144,7 +130,9 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
 
         foreach ($fullItems as $item) {
             fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
-            $this->stepExecution->incrementSummaryInfo('write');
+            if ($this->stepExecution) {
+                $this->stepExecution->incrementSummaryInfo('write');
+            }
         }
     }
 
@@ -185,46 +173,7 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
      */
     public function write(array $items)
     {
-        $products = [];
-
-        if (!is_dir(dirname($this->getPath()))) {
-            mkdir(dirname($this->getPath()), 0777, true);
-        }
-
-        foreach ($items as $item) {
-            $products[] = $item['product'];
-            foreach ($item['media'] as $media) {
-                if ($media) {
-                    $this->copyMedia($media);
-                }
-            }
-        }
-
-        $this->items = array_merge($this->items, $products);
-    }
-
-    /**
-     * @param AbstractProductMedia $media
-     *
-     * @return void
-     */
-    protected function copyMedia(AbstractProductMedia $media)
-    {
-        if (null === $media->getFilePath() || '' === $media->getFileName()) {
-            return;
-        }
-        $result = $this->mediaManager->copy($media, dirname($this->getPath()));
-        $exportPath = $this->mediaManager->getExportPath($media);
-        if (true === $result) {
-            $this->writtenFiles[sprintf('%s/%s', dirname($this->getPath()), $exportPath)] = $exportPath;
-        } else {
-            $this->stepExecution->addWarning(
-                $this->getName(),
-                sprintf('Copy of "%s" failed.', $media->getFilename()),
-                [],
-                $media
-            );
-        }
+        $this->items = array_merge($this->items, $items);
     }
 
     /**

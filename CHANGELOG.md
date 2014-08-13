@@ -1,8 +1,8 @@
 # 1.2.0-x
 
 ## Improvements
-
 - Killed export process are now detected and displayed as failed
+- CsvWriter can write files for any type of entity
 
 ## Bug fixes
 - Fixed Mass edit on a never fulfilled price attribute
@@ -11,8 +11,9 @@
 
 ## BC breaks
 - Remove `task` option from install command
-
 - JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
+- InvalidItemsCsvArchiver is not injected in the constructors of ProductCsvReader and ProductReader
+- CsvProductWriter should be used instead of CsvWriter for products
 
 # 1.2.0-RC2
 

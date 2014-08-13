@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Archiver;
 
-use Gaufrette\Filesystem;
 use Akeneo\Bundle\BatchBundle\Entity\JobExecution;
+use Gaufrette\Filesystem;
 use Pim\Bundle\BaseConnectorBundle\EventListener\InvalidItemsCollector;
-use Pim\Bundle\TransformBundle\Encoder\CsvEncoder;
+use Pim\Bundle\BaseConnectorBundle\Writer\File\CsvWriter;
 
 /**
  * Archiver of invalid items into a csv file
@@ -19,22 +19,30 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
     /** @var InvalidItemsCollector */
     protected $collector;
 
-    /** @var CsvEncoder */
-    protected $encoder;
+    /** @var CsvWriter */
+    protected $writer;
 
-    /** @var array */
-    protected $header = array();
+    /** @var string */
+    protected $archiveDir;
 
     /**
+     * Constructor
+     * 
      * @param InvalidItemsCollector $collector
-     * @param CsvEncoder            $encoder
+     * @param CsvWriter             $writer
      * @param Filesystem            $filesystem
+     * @param string                $archiveDir
      */
-    public function __construct(InvalidItemsCollector $collector, CsvEncoder $encoder, Filesystem $filesystem)
-    {
+    public function __construct(
+        InvalidItemsCollector $collector,
+        CsvWriter $writer,
+        Filesystem $filesystem,
+        $archiveDir
+    ) {
         $this->collector  = $collector;
-        $this->encoder    = $encoder;
+        $this->writer     = $writer;
         $this->filesystem = $filesystem;
+        $this->archiveDir = $archiveDir;
     }
 
     /**
@@ -45,30 +53,21 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
         if (!$this->collector->getInvalidItems()) {
             return;
         }
-        $content = $this->encoder->encode($this->header, 'csv');
-
-        foreach ($this->collector->getInvalidItems() as $item) {
-            $content .= $this->encoder->encode($item, 'csv');
-        }
-
-        $this->filesystem->write(
-            strtr(
-                $this->getRelativeArchivePath($jobExecution),
-                array('%filename%' => 'invalid_items.csv')
-            ),
-            $content,
-            true
+        $key =  strtr(
+            $this->getRelativeArchivePath($jobExecution),
+            array('%filename%' => 'invalid_items.csv')
         );
-    }
-
-    /**
-     * Set the header row
-     *
-     * @param array $header
-     */
-    public function setHeader(array $header)
-    {
-        $this->header = $header;
+        $this->filesystem->write($key, '', true);
+        $this->writer->setFilePath(
+            sprintf(
+                '%s/%s',
+                $this->archiveDir,
+                $key
+            )
+        );
+        $this->writer->initialize();
+        $this->writer->write($this->collector->getInvalidItems());
+        $this->writer->flush();
     }
 
     /**
