@@ -2,12 +2,16 @@
 
 ## Improvements
 
+- Killed export process are now detected and displayed as failed
+
 ## Bug fixes
 - Fixed Mass edit on a never fulfilled price attribute
 - Fix TinyMCE WYSIWYG editor generating 'fake' history due to html reformatting
 - Fixed flat product normalizer and filtered values (with many filters)
 
 ## BC breaks
+
+- JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
 
 # 1.2.0-RC2
 

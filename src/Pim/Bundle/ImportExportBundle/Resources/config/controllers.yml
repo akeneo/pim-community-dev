@@ -38,6 +38,7 @@ services:
             - '@pim_base_connector.event_listener.archivist'
             - export
             - '@pim_serializer'
+            - '@akeneo_batch.manager.job_execution'
 
     pim_import_export.controller.import_execution:
         parent: pim_enrich.controller.abstract_doctrine
@@ -48,3 +49,4 @@ services:
             - '@pim_base_connector.event_listener.archivist'
             - import
             - '@pim_serializer'
+            - '@akeneo_batch.manager.job_execution'

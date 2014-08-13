@@ -107,7 +107,7 @@
         <% _.each(jobExecution.failures, function (failure) { %>
             <tr class="error">
                 <td colspan="5">
-                    <span class="title"><%= label.toUpperCase() %></span>&nbsp;
+                    <span class="title"><%= jobExecution.label.toUpperCase() %></span>&nbsp;
                     <%= failure %>
                 </td>
             </tr>
