@@ -489,6 +489,10 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
      */
     public function iFilterBy($filterName, $value)
     {
+        if ($filterName === 'Channel') {
+            $this->wait();
+        }
+
         $operatorPattern = '/^(contains|does not contain|is equal to|(?:starts|ends) with|in list) ([^">=<]*)|^empty$/';
         $datePattern = '/^(more than|less than|between|not between) (\d{4}-\d{2}-\d{2})( and )?(\d{4}-\d{2}-\d{2})?$/';
         $operator = false;
