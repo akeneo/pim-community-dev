@@ -60,8 +60,9 @@ The following installation overview is for contributing to Akeneo PIM, not for p
 Note: using the "--prefer-dist" option on composer install can speed up
 the installation by looking into your local Composer cache.
 
-Note: The pim:install command can be executed several times if you need to reinit your db or redeploy your assets.
-You just have to use the `--force` option.
+Note: The pim:install command can be executed several times. You just have to use the `--force` option.
+If you want to reinit your db or redeploy your assets, you can launch specific installer commands:
+`pim:installer:db` and `pim:installer:assets`.
 By default, this script initializes the dev environment.
 
 ### Add translation packs (optional)
