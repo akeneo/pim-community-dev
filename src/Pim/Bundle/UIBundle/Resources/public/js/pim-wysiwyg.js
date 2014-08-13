@@ -17,7 +17,8 @@ define(
                     }
                     $el.trigger('change');
                 });
-            }
+            },
+            forced_root_block: false
         };
         var destroyEditor = function(id) {
             var instance = tinymce.get(id);
