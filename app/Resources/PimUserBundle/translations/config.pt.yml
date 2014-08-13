@@ -1,7 +1,0 @@
----
-entity.user.name: Usuário
-entity.user.description: Perfil de usuário
-entity.role.name: Função
-entity.role.description: função do usuário
-entity.group.name: Grupo
-entity.group.description: Grupo de funções

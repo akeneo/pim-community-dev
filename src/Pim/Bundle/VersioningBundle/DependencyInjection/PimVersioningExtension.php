@@ -5,7 +5,7 @@ namespace Pim\Bundle\VersioningBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
-use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\Yaml\Yaml;
 
 /**
@@ -20,14 +20,12 @@ class PimVersioningExtension extends Extension
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('entities.yml');
         $loader->load('guessers.yml');
         $loader->load('managers.yml');
         $loader->load('builders.yml');
-        $loader->load('persisters.yml');
         $loader->load('event_subscribers.yml');
-        $loader->load('serializers.yml');
 
         $storageDriver = $container->getParameter('pim_catalog.storage_driver');
         $storageConfig = sprintf('storage_driver/%s.yml', $storageDriver);
@@ -38,5 +36,21 @@ class PimVersioningExtension extends Extension
         $file = __DIR__.'/../Resources/config/pim_versioning_entities.yml';
         $entities = Yaml::parse(realpath($file));
         $container->setParameter('pim_versioning.versionable_entities', $entities['versionable']);
+
+        $this->loadSerializerConfig($configs, $container);
+    }
+
+    /**
+     * Load serializer related configuration
+     *
+     * @param array            $configs
+     * @param ContainerBuilder $container
+     */
+    protected function loadSerializerConfig(array $configs, ContainerBuilder $container)
+    {
+        $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/serializer'));
+        $loader->load('serializer.yml');
+        $loader->load('structured.yml');
+        $loader->load('flat.yml');
     }
 }

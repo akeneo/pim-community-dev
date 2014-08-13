@@ -1,4 +1,8 @@
-{% set form_tabs=['Attributes'] %}
+{% set form_tabs=[] %}
+
+{% if resource_granted('pim_enrich_product_edit_attributes') %}
+    {% set form_tabs = form_tabs|merge(['Attributes']) %}
+{% endif %}
 
 {% if resource_granted('pim_enrich_product_categories_view') %}
     {% set form_tabs = form_tabs|merge(['Categories']) %}

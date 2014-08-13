@@ -11,7 +11,7 @@ Feature: Switch product locale
     And I am logged in as "Mary"
     And I am on the "jacket" product page
 
-  Scenario: Succesfully display and edit a product in the default locale
+  Scenario: Successfully display and edit a product in the default locale
     Then the locale switcher should contain the following items:
       | language                 | label     |
       | English (United States)  | My jacket |

@@ -185,11 +185,15 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     {
         $filters = $this->getMainContext()->listToArray($filters);
         foreach ($filters as $filter) {
-            $filterNode = $this->datagrid->getFilter($filter);
-            if ($filterNode->isVisible()) {
-                throw $this->createExpectationException(
-                    sprintf('Filter "%s" should not be visible', $filter)
-                );
+            try {
+                $filterNode = $this->datagrid->getFilter($filter);
+                if ($filterNode->isVisible()) {
+                    throw $this->createExpectationException(
+                        sprintf('Filter "%s" should not be visible', $filter)
+                    );
+                }
+            } catch (\InvalidArgumentException $e) {
+                // Filter not rendered, all is good
             }
         }
     }
@@ -747,6 +751,29 @@ class DataGridContext extends RawMinkContext implements PageObjectAwareInterface
     public function iDeleteTheView()
     {
         $this->getCurrentPage()->find('css', '#remove-view')->click();
+        $this->wait();
+    }
+
+    /**
+     * @When /^I create the view:$/
+     */
+    public function iCreateTheView(TableNode $table)
+    {
+        $this->getCurrentPage()->find('css', '#create-view')->click();
+
+        return [
+            new Step\Then('I fill in the following information in the popin:', $table),
+            new Step\Then('I press the "OK" button')
+        ];
+    }
+
+    /**
+     * @When /^I update the view$/
+     */
+    public function iUpdateTheView()
+    {
+        $this->getCurrentPage()->find('css', '#update-view')->click();
+        $this->wait();
     }
 
     /**

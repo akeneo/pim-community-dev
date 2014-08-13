@@ -8,5 +8,9 @@ services:
         arguments:
             - '@pim_catalog.manager.product'
             - '@doctrine.odm.mongodb.document_manager'
-            - '@pim_versioning.doctrine.orm.pending_version_mass_persister'
+            - '@pim_versioning.doctrine.mongodb.pending_mass_persister'
             - '@pim_serializer'
+            - '@event_dispatcher'
+            - '@pim_catalog.mongodb.mongo_objects_factory'
+            - %pim_catalog.entity.product.class%
+            - '@pim_transform.cache.product_cache_clearer'

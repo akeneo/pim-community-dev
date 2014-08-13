@@ -22,10 +22,10 @@
         "knplabs/gaufrette": "0.1.8",
         "incenteev/composer-parameter-handler": "2.1.0",
         "symfony/icu": "1.1.0",
-        "akeneo/measure-bundle": "0.2.0",
+        "akeneo/measure-bundle": "0.2.*@stable",
         "akeneo/batch-bundle": "0.2.*@stable",
-        "oro/platform": "1.0.0-beta11",
-        "apy/jsfv-bundle": "2.1.x-dev#c7bcd7bbd52af55cfd7f6e9097e284d964ce0200"
+        "oro/platform": "1.0.0-beta12",
+        "apy/jsfv-bundle": "2.0.1"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
@@ -83,6 +83,7 @@
         "symfony-web-dir": "web",
         "symfony-assets-install": "symlink",
         "incenteev-parameters": {
+            "keep-outdated": true,
             "file": "app/config/parameters.yml",
             "env-map": {
                 "database_host": "PIM_DATABASE_HOST",

@@ -10,13 +10,13 @@ Feature: Export of metric values
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
     And I am logged in as "Julia"
 
-  Scenario: Succesfully display metric conversion configuration for a channel
+  Scenario: Successfully display metric conversion configuration for a channel
     Given I am on the "tablet" channel page
     Then I should see "Pick a conversion unit for each metric attribute that will be used during product export" fields:
       | Washing temperature |
       | Weight              |
 
-  Scenario: Succesfully convert metric values
+  Scenario: Successfully convert metric values
     Given the following channel "ecommerce" conversion options:
       | weight | GRAM |
     And the following products:

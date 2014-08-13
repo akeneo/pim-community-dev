@@ -152,8 +152,8 @@ define(
              * @return boolean
              */
             _isValueValid: function(value) {
-                return (value.unit && value.type && value.value) ||
-                       (!value.unit && !value.type && !value.value) ||
+                return (value.unit && value.type && !_.isUndefined(value.value)) ||
+                       (!value.unit && !value.type && _.isUndefined(value.value)) ||
                        value.type === 'empty';
             },
 

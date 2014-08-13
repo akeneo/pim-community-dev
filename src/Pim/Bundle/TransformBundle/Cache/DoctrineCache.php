@@ -77,10 +77,20 @@ class DoctrineCache
 
     /**
      * Clears the cache
+     *
+     * @param array $unclearableEntities
      */
-    public function clear()
+    public function clear(array $unclearableEntities = array())
     {
-        $this->cache = array();
+        if (empty($unclearableEntities)) {
+            $this->cache = array();
+        } else {
+            foreach (array_keys($this->cache) as $class) {
+                if (!in_array($class, $unclearableEntities)) {
+                    unset($this->cache[$class]);
+                }
+            }
+        }
     }
 
     /**

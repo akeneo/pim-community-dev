@@ -74,3 +74,5 @@ pim.grid.mass_action.mass_edit:            Mass Edit
 
 # Jstree context menu actions
 jstree.create: Create
+switch_on: Yes
+switch_off: No

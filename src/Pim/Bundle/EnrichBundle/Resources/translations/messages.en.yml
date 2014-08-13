@@ -98,6 +98,7 @@ btn:
 
 # Confirmation messages
 confirmation:
+    confirm:         Confirmation
     delete:          Delete confirmation
     leave:           Are you sure you want to leave this page?
     discard changes: You will lose changes to the %entity% if you leave the page.
@@ -296,8 +297,8 @@ default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
 Translate from:                Translate from
-Yes:                           Yes
-No:                            No
+switch_on:                     Yes
+switch_off:                    No
 Close:                         Close
 Choose a color:                Choose a color
 Search:                        Search
@@ -544,7 +545,7 @@ pim_enrich:
         product:
             index: List products
             create: Create a product
-            edit: Edit a product
+            edit_attributes: Edit attributes of a product
             remove: Remove a product
             add_attribute: Add an attribute to a product
             remove_attribute: Remove an attribute from a product
@@ -570,7 +571,7 @@ pim_enrich:
         family:
             index: List families
             create: Create a family
-            edit: Edit a family
+            edit_properties: Edit properties of a family
             remove: Remove a family
             add_attribute: Add attribute to a family
             remove_attribute: Remove attribute from a family

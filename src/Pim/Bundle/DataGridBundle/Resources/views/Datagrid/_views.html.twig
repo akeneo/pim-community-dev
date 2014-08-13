@@ -9,13 +9,17 @@
 {% endfor %}
 </select>
 
-<button id="update-view" class="view-button btn hide">{{ 'datagrid_view.save_changes'|trans }}</button>
+<a id="update-view" class="muted hide" href="javascript:void(0);">
+    <i class="icon-edit" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.save_changes'|trans }}"></i>
+</a>
 
-<a id="remove-view" class="muted hide">
+<a id="remove-view" class="muted hide" href="javascript:void(0);">
     <i class="icon-trash" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.remove'|trans }}"></i>
 </a>
 
-<button id="create-view" class="view-button btn btn-primary hide">{{ 'datagrid_view.create'|trans }}</button>
+<a id="create-view" class="muted" href="javascript:void(0);">
+    <i class="icon-plus" data-toggle="tooltip" data-placement="right" data-original-title="{{ 'datagrid_view.create'|trans }}"></i>
+</a>
 
 {{ form_start(form, { attr: { class: 'hide' } }) }}
     {{ form_widget(form.label) }}
@@ -139,8 +143,8 @@ require(
         }));
         $openButton.append($('<i>', { 'class': 'icon-caret-down', 'css': { 'position': 'absolute', 'top': '6px', 'right': '6px' } }));
 
-        var $updateButtton = $('#update-view');
-        $updateButtton.on('click', function() {
+        var $updateLink = $('#update-view');
+        $updateLink.removeClass('hide').on('click', function() {
             var state = DatagridState.get('{{ alias }}', ['view', 'columns', 'filters']);
             $('#{{ form.filters.vars.id }}').val(state.filters);
             $('#{{ form.order.vars.id }}').val(state.columns);
@@ -176,13 +180,13 @@ require(
             });
         };
 
-        var $createButton = $('#create-view').removeClass('hide').on('click', promptForLabel);
+        var $createLink = $('#create-view').on('click', promptForLabel);
 
         mediator.once('hash_navigation_request:start', function() {
             $selector.multiselect('destroy').hide();
-            $createButton.hide();
-            $updateButtton.hide();
-            $removeLink.hide();
+            $createLink.addClass('hide');
+            $updateLink.addClass('hide');
+            $removeLink.addClass('hide');
         });
 
         var setTitle = function(title, suffix) {
@@ -200,17 +204,18 @@ require(
         var handleStateChange = function() {
             var cleanState = { 'filters': $activeView.data('filters'), 'columns': $activeView.data('columns') };
             var currentState = DatagridState.get('{{ alias }}', ['filters', 'columns']);
+            var $updateLink = $('#update-view');
 
             if ((!currentState.filters || currentState.filters == cleanState.filters)
                 && (!currentState.columns || currentState.columns == cleanState.columns)
             ) {
                 setTitle(activeViewLabel);
-                $updateButtton.hide();
+                $updateLink.addClass('hide');
 
             } else {
                 setTitle(activeViewLabel, ' *');
                 if (!!$activeView.data('removable') || !$activeView.data('default')) {
-                    $updateButtton.show();
+                    $updateLink.removeClass('hide');
                 }
             }
         };

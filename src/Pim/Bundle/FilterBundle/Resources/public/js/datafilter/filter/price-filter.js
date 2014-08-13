@@ -146,8 +146,8 @@ define(
              * @return boolean
              */
             _isValueValid: function(value) {
-                return (value.currency && value.type && value.value) ||
-                       (!value.currency && !value.type && !value.value) ||
+                return (value.currency && value.type && !_.isUndefined(value.value)) ||
+                       (!value.currency && !value.type && _.isUndefined(value.value)) ||
                        (value.type === 'empty' && value.currency);
             },
 

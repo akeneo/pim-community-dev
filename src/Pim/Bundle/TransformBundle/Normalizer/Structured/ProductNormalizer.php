@@ -106,7 +106,6 @@ class ProductNormalizer extends SerializerAwareNormalizer implements
         }
 
         $data = [];
-
         foreach ($values as $value) {
             $data[$value->getAttribute()->getCode()][] = $this->serializer->normalize($value, $format, $context);
         }

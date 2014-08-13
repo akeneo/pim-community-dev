@@ -78,7 +78,7 @@ Feature: Edit common attributes of many products at once
     And I choose the "Edit attributes" operation
     Then I should see available attribute Sole in group "Other"
 
-  Scenario: Succesfully update many text values at once
+  Scenario: Successfully update many text values at once
     Given I mass-edit products boots, sandals and sneakers
     And I choose the "Edit attributes" operation
     And I display the Name attribute
@@ -88,7 +88,7 @@ Feature: Edit common attributes of many products at once
     And the english name of "sandals" should be "boots"
     And the english name of "sneakers" should be "boots"
 
-  Scenario: Succesfully update many price values at once
+  Scenario: Successfully update many price values at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Price attribute
@@ -100,7 +100,7 @@ Feature: Edit common attributes of many products at once
       | 100    | USD      |
       | 150    | EUR      |
 
-  Scenario: Succesfully update many file values at once
+  Scenario: Successfully update many file values at once
     Given I mass-edit products sandals and sneakers
     And I choose the "Edit attributes" operation
     And I display the Side view attribute
@@ -108,7 +108,7 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     Then the file "side_view" of products sandals and sneakers should be "SNKRS-1R.png"
 
-  Scenario: Succesfully update many multi-valued values at once
+  Scenario: Successfully update many multi-valued values at once
     Given I mass-edit products boots and sneakers
     And I choose the "Edit attributes" operation
     And I display the Weather conditions attribute
@@ -119,7 +119,7 @@ Feature: Edit common attributes of many products at once
       | dry   |
       | hot   |
 
-  Scenario: Succesfully update many metric values at once
+  Scenario: Successfully update many metric values at once
     Given I mass-edit products boots and sandals
     And I choose the "Edit attributes" operation
     And I display the Weight attribute
@@ -127,7 +127,7 @@ Feature: Edit common attributes of many products at once
     And I move on to the next step
     Then the metric "Weight" of products boots and sandals should be "600"
 
-  Scenario: Succesfully translate groups and labels
+  Scenario: Successfully translate groups and labels
     Given I add the "french" locale to the "mobile" channel
     And the following attribute label translations:
       | attribute | locale | label  |
@@ -147,7 +147,7 @@ Feature: Edit common attributes of many products at once
     And I should see "Taille"
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
-  Scenario: Succesfully mass edit product values that does not belong yet to the product
+  Scenario: Successfully mass edit product values that does not belong yet to the product
     Given I set product "pump" family to "sneakers"
     When I mass-edit products pump and sneakers
     And I choose the "Edit attributes" operation
@@ -158,7 +158,7 @@ Feature: Edit common attributes of many products at once
     And the english name of "sneakers" should be "boots"
 
   @info https://akeneo.atlassian.net/browse/PIM-2163
-  Scenario: Succesfully mass edit scoped product values
+  Scenario: Successfully mass edit scoped product values
     Given I set product "pump" family to "boots"
     When I mass-edit products boots and pump
     And I choose the "Edit attributes" operation
@@ -171,3 +171,22 @@ Feature: Edit common attributes of many products at once
     And the english tablet Description of "boots" should be "Bar"
     And the english mobile Description of "pump" should be "Foo"
     And the english tablet Description of "pump" should be "Bar"
+
+  @info https://akeneo.atlassian.net/browse/PIM-3070
+  Scenario: Successfully mass edit a price not added to the product
+    Given I create a new product
+    And I fill in the following information in the popin:
+      | SKU    | Shoes      |
+      | Family | high_heels |
+    And I press the "Save" button in the popin
+    And I am on the products page
+    When I mass-edit products Shoes
+    And I choose the "Edit attributes" operation
+    And I display the Price attribute
+    And I change the "$ Price" to "100"
+    And I change the "€ Price" to "150"
+    And I move on to the next step
+    Then the prices "Price" of products Shoes should be:
+      | amount | currency |
+      | 100    | USD      |
+      | 150    | EUR      |

@@ -4,7 +4,7 @@ Feature: Import categories
   As a product manager
   I need to be able to import categories
 
-  Scenario: Succesfully import categories
+  Scenario: Successfully import categories
     Given the "footwear" catalog configuration
     And I am logged in as "Julia"
     And the following file to import:

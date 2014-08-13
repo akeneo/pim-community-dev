@@ -6,6 +6,7 @@
                    execution.jobInstance.code ~ ']' %}
 
     {% set buttons %}
+        {{ elements.backLink(indexRoute) }}
         <span id="archives"></span>
         <span id="log"></span>
         {{ elements.link('Show profile', path(show_profile_route, { 'id': execution.jobInstance.id })) }}
@@ -106,7 +107,7 @@
         <% _.each(jobExecution.failures, function (failure) { %>
             <tr class="error">
                 <td colspan="5">
-                    <span class="title"><%= label.toUpperCase() %></span>&nbsp;
+                    <span class="title"><%= jobExecution.label.toUpperCase() %></span>&nbsp;
                     <%= failure %>
                 </td>
             </tr>

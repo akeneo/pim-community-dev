@@ -35,8 +35,8 @@ class SwitchType extends AbstractType
             array(
                 'attr' => array(
                     'size'           => 'small',
-                    'data-on-label'  => 'Yes',
-                    'data-off-label' => 'No',
+                    'data-on-label'  => 'switch_on',
+                    'data-off-label' => 'switch_off',
                 )
             )
         );

@@ -56,7 +56,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         Attribute $skuAttribute,
         AbstractProductValue $sku,
         Collection $values,
-        Family $family
+        Family $family,
+        SerializerInterface $serializer
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
@@ -74,6 +75,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([]);
         $product->getValues()->willReturn($values);
         $filter->filter(Argument::cetera())->willReturn([$sku]);
+
+        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -102,7 +105,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         AbstractProductValue $skuAssocProduct1,
         AbstractProductValue $skuAssocProduct2,
         Collection $values,
-        Family $family
+        Family $family,
+        SerializerInterface $serializer
     ) {
         $family->getCode()->willReturn('shoes');
         $skuAttribute->getCode()->willReturn('sku');
@@ -137,6 +141,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([$myCrossSell, $myUpSell]);
         $product->getValues()->willReturn($values);
         $filter->filter(Argument::cetera())->willReturn([$sku]);
+
+        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [
@@ -190,7 +196,8 @@ class ProductNormalizerSpec extends ObjectBehavior
         $filter->filter($values, ['identifier' => $sku, 'scopeCode' => null, 'localeCodes' => []])->willReturn([$sku, $colors]);
         $context =  ["scopeCode" => null, "localeCodes" => [], "field_name" => "colors", "metric_format" => "multiple_fields"];
 
-        $serializer->normalize(Argument::any(), 'flat', $context)->willReturn(['colors' => 'red, blue']);
+        $serializer->normalize($sku, 'flat', Argument::any())->willReturn(['sku' => 'sku-001']);
+        $serializer->normalize($colors, 'flat', Argument::any())->willReturn(['colors' => 'red, blue']);
 
         $this->normalize($product, 'flat', [])->shouldReturn(
             [

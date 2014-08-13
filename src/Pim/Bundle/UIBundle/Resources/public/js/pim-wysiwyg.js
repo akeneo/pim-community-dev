@@ -11,7 +11,11 @@ define(
             readonly:  false,
             setup:     function(ed) {
                 ed.on('change', function() {
-                    $('#' + ed.id).trigger('change');
+                    var $el = $('#' + ed.id);
+                    if (!_.isUndefined($el.data('disabled'))) {
+                        $el.prop('disabled', $el.data('disabled'));
+                    }
+                    $el.trigger('change');
                 });
             }
         };
@@ -28,24 +32,32 @@ define(
             }
         });
         return {
-            init: function(id, options) {
-                var settings = _.extend(_.clone(config), options, { selector: '#' + id });
+            init: function($el, options, forceSubmit) {
+                var disabled = $el.is('[disabled]');
+                if (!forceSubmit) {
+                    $el.data('disabled', disabled).prop('disabled', true);
+                }
+                var settings = _.extend(_.clone(config), { selector: '#' + $el.attr('id'), readonly: disabled }, options);
                 tinymce.init(settings);
 
                 return this;
             },
-            destroy: function(id) {
-                destroyEditor(id);
+            destroy: function($el) {
+                if (!_.isUndefined($el.data('disabled'))) {
+                    $el.prop('disabled', $el.data('disabled'));
+                }
+                destroyEditor($el.attr('id'));
 
                 return this;
             },
-            reinit: function(id) {
-                var settings = tinymce.editors[id] ? tinymce.editors[id].settings : { readonly: $('#' + id).is('[disabled]') };
+            reinit: function($el, forceSubmit) {
+                var id = $el.attr('id');
+                var settings = tinymce.editors[id] ? tinymce.editors[id].settings : {};
 
-                return this.destroy(id).init(id, settings);
+                return this.destroy($el).init($el, settings, forceSubmit);
             },
-            readonly: function(id, state) {
-                this.destroy(id).init(id, { readonly: state });
+            readonly: function($el, state, forceSubmit) {
+                this.destroy($el).init($el, { readonly: state }, forceSubmit);
 
                 return this;
             }

@@ -113,6 +113,9 @@ services:
         arguments:
             - '@pim_enrich.form.subscriber.attribute_requirements'
             - %pim_catalog.entity.attribute.class%
+            - '@pim_enrich.form.subscriber.family_disable_fields_subscriber'
+            - '@pim_enrich.form.subscriber.family_attribute_label_subscriber'
+
     pim_enrich.form.type.attribute_requirement:
         class: %pim_enrich.form.type.attribute_requirement.class%
         tags:

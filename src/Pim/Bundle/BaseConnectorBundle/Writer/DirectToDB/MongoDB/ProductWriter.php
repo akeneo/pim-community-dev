@@ -2,21 +2,21 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\DirectToDB\MongoDB;
 
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\GenericEvent;
+use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
+use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
+use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
+use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Doctrine\MongoDB\Collection;
+use Doctrine\ODM\MongoDB\DocumentManager;
 use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
-
-use Pim\Bundle\VersioningBundle\Doctrine\ORM\PendingVersionMassPersister;
-
+use Pim\Bundle\CatalogBundle\MongoDB\MongoObjectsFactory;
+use Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister;
 use Pim\Bundle\TransformBundle\Normalizer\MongoDB\ProductNormalizer;
-
-use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
-use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
-use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
-
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-
-use Doctrine\ODM\MongoDB\DocumentManager;
+use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 
 /**
  * Product writer using direct MongoDB method in order to
@@ -33,37 +33,103 @@ class ProductWriter extends AbstractConfigurableStepElement implements
     ItemWriterInterface,
     StepExecutionAwareInterface
 {
+    /**
+     * This event is thrown before converting products to documents, so
+     * products can still be modified before insertion.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_INSERT = 'pim_base_connector.direct_to_db_writer.pre_insert';
+
+    /**
+     * This event is thrown before converting products to documents, so
+     * products can still be modified before update.
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const PRE_UPDATE = 'pim_base_connector.direct_to_db_writer.pre_update';
+
+    /**
+     * This event is thrown after insertion of products to database
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_INSERT = 'pim_base_connector.direct_to_db_writer.post_insert';
+
+    /**
+     * This event is thrown after update of products to database
+     *
+     * The event listener receives an
+     * Symfony\Component\EventDispatcher\GenericEvent instance.
+     *
+     * @staticvar string
+     */
+    const POST_UPDATE = 'pim_base_connector.direct_to_db_writer.post_update';
+
     /** @var ProductManager */
-     protected $productManager;
+    protected $productManager;
 
     /** @var DocumentManager */
-     protected $documentManager;
+    protected $documentManager;
 
-    /**@var PendingVersionMassPersister */
-     protected $pendingPersister;
+    /**@var PendingMassPersister */
+    protected $pendingPersister;
 
     /** @var NormalizerInterface */
     protected $normalizer;
 
+    /** @var EventDispatcherInterface */
+    protected $eventDispatcher;
+
+    /** @var MongoObjectsFactory */
+    protected $mongoFactory;
+
+    /** @var string */
+    protected $productClass;
+
     /** @var Collection */
     protected $collection;
 
+    /** @var ProductCacheClearer */
+    protected $cacheClearer;
+
     /**
-     * @param ProductManager              $productManager
-     * @param DocumentManager             $documentManager
-     * @param PendingVersionMassPersister $pendingPersister
-     * @param NormalizerInterface         $normalizer
+     * @param ProductManager           $productManager
+     * @param DocumentManager          $documentManager
+     * @param PendingMassPersister     $pendingPersister
+     * @param NormalizerInterface      $normalizer
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param MongoObjectsFactory      $mongoFactory
+     * @param string                   $productClass:
+     * @param ProductCacheClearer      $cacheClearer
      */
     public function __construct(
         ProductManager $productManager,
         DocumentManager $documentManager,
-        PendingVersionMassPersister $pendingPersister,
-        NormalizerInterface $normalizer
+        PendingMassPersister $pendingPersister,
+        NormalizerInterface $normalizer,
+        EventDispatcherInterface $eventDispatcher,
+        MongoObjectsFactory $mongoFactory,
+        $productClass,
+        ProductCacheClearer $cacheClearer
     ) {
         $this->productManager   = $productManager;
         $this->documentManager  = $documentManager;
         $this->pendingPersister = $pendingPersister;
         $this->normalizer       = $normalizer;
+        $this->eventDispatcher  = $eventDispatcher;
+        $this->mongoFactory     = $mongoFactory;
+        $this->productClass     = $productClass;
+        $this->cacheClearer     = $cacheClearer;
     }
 
     /**
@@ -71,11 +137,25 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     public function write(array $products)
     {
+        $this->collection = $this->documentManager->getDocumentCollection($this->productClass);
+
+        $productsToInsert = array();
+        $productsToUpdate = array();
+        foreach ($products as $product) {
+            if (null === $product->getId()) {
+                $productsToInsert[] = $product;
+                $product->setId($this->mongoFactory->createMongoId());
+            } else {
+                $productsToUpdate[] = $product;
+            }
+        }
+
         $this->productManager->handleAllMedia($products);
 
-        $this->collection = $this->documentManager->getDocumentCollection(get_class(reset($products)));
-
-        list($insertDocs, $updateDocs) = $this->getDocsFromProducts($products);
+        $this->eventDispatcher->dispatch(self::PRE_INSERT, new GenericEvent($productsToInsert));
+        $this->eventDispatcher->dispatch(self::PRE_UPDATE, new GenericEvent($productsToUpdate));
+        $insertDocs = $this->getDocsFromProducts($productsToInsert);
+        $updateDocs = $this->getDocsFromProducts($productsToUpdate);
 
         if (count($insertDocs) > 0) {
             $this->insertDocuments($insertDocs);
@@ -86,12 +166,15 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         }
 
         $this->pendingPersister->persistPendingVersions($products);
+
+        $this->eventDispatcher->dispatch(self::POST_INSERT, new GenericEvent($productsToInsert));
+        $this->eventDispatcher->dispatch(self::POST_UPDATE, new GenericEvent($productsToUpdate));
         $this->documentManager->clear();
+        $this->cacheClearer->clear();
     }
 
     /**
-     * Normalize products into docs and generate an array
-     * with docs to insert and docs to updates
+     * Normalize products into their MongoDB document representation
      *
      * @param ProductInterface[] $products
      *
@@ -99,24 +182,14 @@ class ProductWriter extends AbstractConfigurableStepElement implements
      */
     protected function getDocsFromProducts(array $products)
     {
-        $context = array();
-        $context[ProductNormalizer::MONGO_COLLECTION_NAME] = $this->collection->getName();
+        $context = [ProductNormalizer::MONGO_COLLECTION_NAME => $this->collection->getName()];
 
-        $insertDocs = [];
-        $updateDocs = [];
-
+        $docs = [];
         foreach ($products as $product) {
-            $doc = $this->normalizer->normalize($product, ProductNormalizer::FORMAT, $context);
-
-            if (null === $product->getId()) {
-                $product->setId($doc['_id']);
-                $insertDocs[] = $doc;
-            } else {
-                $updateDocs[] = $doc;
-            }
+            $docs[] = $this->normalizer->normalize($product, ProductNormalizer::FORMAT, $context);
         }
 
-        return [$insertDocs, $updateDocs];
+        return $docs;
     }
 
     /**
@@ -130,7 +203,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
         $this->collection->batchInsert($docs);
         $productsCount = count($docs);
         for ($i = 0; $i < $productsCount; $i++) {
-            $this->stepExecution->incrementSummaryInfo('created');
+            $this->stepExecution->incrementSummaryInfo('create');
         }
     }
 
@@ -146,7 +219,7 @@ class ProductWriter extends AbstractConfigurableStepElement implements
                 '_id' => $doc['_id']
             ];
             $this->collection->update($criteria, $doc);
-            $this->stepExecution->incrementSummaryInfo('updated');
+            $this->stepExecution->incrementSummaryInfo('update');
         }
     }
 

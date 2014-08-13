@@ -1,7 +1,8 @@
 parameters:
-    pim_versioning.repository.version.class:                        Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
-    pim_versioning.update_guesser.contains_products.class:          Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
+    pim_versioning.repository.version.class:                          Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\VersionRepository
+    pim_versioning.update_guesser.contains_products.class:            Pim\Bundle\VersioningBundle\UpdateGuesser\MongoDBODM\ContainsProductsUpdateGuesser
     pim_versioning.event_subscriber.mongodb.product_addversion.class: Pim\Bundle\VersioningBundle\EventSubscriber\MongoDBODM\AddProductVersionSubscriber
+    pim_versioning.doctrine.mongodb.pending_mass_persister.class:     Pim\Bundle\VersioningBundle\Doctrine\MongoDBODM\PendingMassPersister
 
 services:
     pim_versioning.repository.version:
@@ -27,3 +28,12 @@ services:
             - '@pim_serializer'
         tags:
             - { name: doctrine_mongodb.odm.event_subscriber }
+
+    pim_versioning.doctrine.mongodb.pending_mass_persister:
+        class: %pim_versioning.doctrine.mongodb.pending_mass_persister.class%
+        arguments:
+            - '@pim_versioning.builder.version'
+            - '@pim_versioning.manager.version'
+            - '@pim_serializer'
+            - %pim_versioning.entity.version.class%
+            - '@doctrine.odm.mongodb.document_manager'
