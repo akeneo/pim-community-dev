@@ -25,7 +25,9 @@
         "akeneo/measure-bundle": "0.2.*@stable",
         "akeneo/batch-bundle": "0.2.*@stable",
         "oro/platform": "1.0.0-beta12",
-        "apy/jsfv-bundle": "2.0.1"
+        "apy/jsfv-bundle": "2.0.1",
+        "knplabs/knp-menu": "2.0.0-alpha2",
+        "knplabs/knp-menu-bundle": "2.0.0-alpha2"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
