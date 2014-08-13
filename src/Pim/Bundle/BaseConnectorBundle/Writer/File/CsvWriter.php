@@ -2,8 +2,8 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\File;
 
-use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Akeneo\Bundle\BatchBundle\Job\RuntimeErrorException;
 
 /**
  * Write data into a csv file on the filesystem
@@ -122,15 +122,17 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         $fullItems = $this->mergeKeys($uniqueKeys);
         $csvFile = fopen($this->getPath(), 'w');
 
-        if (true == $this->isWithHeader()) {
-            fputcsv($csvFile, $uniqueKeys, $this->delimiter);
-        } else {
-            fputcsv($csvFile, [], $this->delimiter);
+        $header = $this->isWithHeader() ? $uniqueKeys : [];
+        $result = fputcsv($csvFile, $header, $this->delimiter);
+        if (false === $result) {
+            throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 
         foreach ($fullItems as $item) {
-            fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
-            if ($this->stepExecution) {
+            $result = fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
+            if (false === $result) {
+                throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
+            } elseif ($this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');
             }
         }
