@@ -7,6 +7,7 @@ use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
 use Akeneo\Bundle\BatchBundle\Item\AbstractConfigurableStepElement;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Step\StepExecutionAwareInterface;
+use Pim\Bundle\ImportExportBundle\Validator\Constraints\WritableDirectory;
 
 /**
  * Write data into a file on the filesystem
@@ -21,6 +22,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
 {
     /**
      * @Assert\NotBlank(groups={"Execution"})
+     * @WritableDirectory(groups={"Execution"})
      */
     protected $filePath = '/tmp/export_%datetime%.csv';
 
