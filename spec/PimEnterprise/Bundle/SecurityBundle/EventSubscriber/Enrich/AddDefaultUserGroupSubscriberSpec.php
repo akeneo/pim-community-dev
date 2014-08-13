@@ -45,7 +45,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $category->isRoot()->willReturn(true);
 
         $groupRepository->getDefaultUserGroup()->willReturn($userGroup);
-        $catAccessManager->grantAccess($category, $userGroup, Attributes::EDIT_PRODUCTS, true)->shouldBeCalled();
+        $catAccessManager->grantAccess($category, $userGroup, Attributes::OWN_PRODUCTS, true)->shouldBeCalled();
 
         $this->addDefaultUserGroupForTree($event)->shouldReturn(null);
     }
@@ -80,7 +80,7 @@ class AddDefaultUserGroupSubscriberSpec extends ObjectBehavior
         $attGrpAccessManager->grantAccess(
             $attributeGroup,
             $userGroup,
-            Attributes::EDIT_PRODUCTS,
+            Attributes::EDIT_ATTRIBUTES,
             true
         )->shouldBeCalled();
 
