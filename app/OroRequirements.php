@@ -116,8 +116,6 @@ class OroRequirements extends SymfonyRequirements
             'web/bundles',
             'app/cache',
             'app/logs',
-            'app/import',
-            'app/export',
             'app/archive',
             'app/uploads/product'
         );

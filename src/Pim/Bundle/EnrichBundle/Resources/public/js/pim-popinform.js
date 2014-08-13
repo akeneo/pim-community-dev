@@ -1,6 +1,6 @@
 define(
-    ['jquery', 'underscore', 'jquery.multiselect', 'jquery.multiselect.filter'],
-    function ($, _) {
+    ['jquery', 'underscore', 'backbone', 'jquery.multiselect', 'jquery.multiselect.filter'],
+    function ($, _, Backbone) {
         'use strict';
 
         return function (elementId) {
@@ -41,6 +41,7 @@ define(
             var $saveButton = $('<a>').addClass('btn btn-small').html(saveButton).on('click', function () {
                 $select.multiselect('close');
                 if ($select.val() !== null) {
+                    Backbone.Router.prototype.trigger('route');
                     $el.submit();
                 }
             }).appendTo(footerContainer);

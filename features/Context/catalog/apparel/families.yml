@@ -167,3 +167,27 @@ families:
                 - country_of_manufacture
                 - weather_conditions
                 - material
+    sandals:
+        labels:
+            en_US: Sandals
+        attributes:
+            - sku
+            - name
+            - description
+            - price
+        attributeAsLabel: name
+        requirements:
+            ecommerce:
+                - sku
+                - name
+                - description
+                - price
+            tablet:
+                - sku
+                - name
+                - price
+            print:
+                - sku
+                - name
+                - description
+                - price
