@@ -266,6 +266,51 @@ measures_config:
             MILE_PER_HOUR:
                 convert: [{'mul': 1609.344}, {'div': 3600}]
                 symbol: midivh
+    ElectricCharge:
+        standard: AMPEREHOUR
+        units:
+            AMPEREHOUR:
+                convert: [{'mul': 1}]
+                symbol: Ah
+            MILLICOULOMB:
+                convert: [{'mul': 3600000}]
+                symbol: mC
+            DECICOULOMB:
+                convert: [{'mul': 360000}]
+                symbol: cC
+            DECICOULOMB:
+                convert: [{'mul': 36000}]
+                symbol: dC
+            COULOMB:
+                convert: [{'mul': 3600}]
+                symbol: C
+            DEKACOULOMB:
+                convert: [{'mul': 360}]
+                symbol: daC
+            HECTOCOULOMB:
+                convert: [{'mul': 36}]
+                symbol: hC
+            KILOCOULOMB:
+                convert: [{'mul': 3.6}]
+                symbol: kC
+    Duration:
+        standard: SECOND
+        units:
+            MILLISECOND:
+                convert: [{'mul': 0.001}]
+                symbol: ms
+            SECOND:
+                convert: [{'mul': 1}]
+                symbol: s
+            MINUTE:
+                convert: [{'mul': 60}]
+                symbol: m
+            HOUR:
+                convert: [{'mul': 3600}]
+                symbol: h
+            DAY:
+                convert: [{'mul': 86400}]
+                symbol: d
     Temperature:
         standard: KELVIN
         units:

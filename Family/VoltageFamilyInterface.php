@@ -26,12 +26,12 @@ interface VoltageFamilyInterface
      * @staticvar string
      */
     const CENTIVOLT = 'CENTIVOLT';
-    
+
     /**
      * @staticvar string
      */
     const DECIVOLT = 'DECIVOLT';
-    
+
     /**
      * @staticvar string
      */
@@ -41,12 +41,12 @@ interface VoltageFamilyInterface
      * @staticvar string
      */
     const DEKAVOLT = 'DEKAVOLT';
-    
+
     /**
      * @staticvar string
      */
     const HECTOVOLT = 'HECTOVOLT';
-    
+
     /**
      * @staticvar string
      */
