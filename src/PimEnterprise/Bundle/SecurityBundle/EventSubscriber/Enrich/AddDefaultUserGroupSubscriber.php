@@ -62,7 +62,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         $object = $event->getSubject();
         if ($object instanceof CategoryInterface && $object->isRoot()) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
-            $this->catAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_PRODUCTS, true);
+            $this->catAccessManager->grantAccess($object, $userGroup, Attributes::OWN_PRODUCTS, true);
         }
     }
 
@@ -76,7 +76,7 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
         $object = $event->getSubject();
         if ($object instanceof AttributeGroup) {
             $userGroup = $this->groupRepository->getDefaultUserGroup();
-            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_PRODUCTS, true);
+            $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
         }
     }
 
