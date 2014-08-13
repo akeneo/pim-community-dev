@@ -6,7 +6,7 @@ namespace Akeneo\Bundle\MeasureBundle\Family;
  * Duration constants
  *
  * @author    Antoine Guigan <antoine@akeneo.com>
- * @copyright 2012 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/MIT MIT
  */
 interface DurationFamilyInterface

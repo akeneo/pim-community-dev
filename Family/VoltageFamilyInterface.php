@@ -51,9 +51,4 @@ interface VoltageFamilyInterface
      * @staticvar string
      */
     const KILOVOLT = 'KILOVOLT';
-
-    /**
-     * @staticvar string
-     */
-    const MEGAVOLT = 'MEGAVOLT';
 }
