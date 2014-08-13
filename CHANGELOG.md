@@ -10,6 +10,7 @@
 - Fixed flat product normalizer and filtered values (with many filters)
 
 ## BC breaks
+- Remove `task` option from install command
 
 - JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
 
