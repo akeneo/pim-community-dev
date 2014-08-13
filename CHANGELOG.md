@@ -8,6 +8,8 @@
 
 ## BC breaks
 
+- JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
+
 # 1.2.0-RC2
 
 ## Improvements
