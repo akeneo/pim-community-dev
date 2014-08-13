@@ -4,7 +4,7 @@ Feature: Export products
   As a product manager
   I need to be able to export the products to several channels
 
-  Scenario: Successfully export products to multiple channels
+  Scenario: Successfully export products with heterogeneous data
     Given an "apparel" catalog configuration
     And the following job "ecommerce_product_export" configuration:
       | filePath | %tmp%/ecommerce_product_export/ecommerce_product_export.csv |
@@ -56,8 +56,8 @@ Feature: Export products
     And I wait for the "ecommerce_product_export" job to finish
     Then exported file of "ecommerce_product_export" should contain:
     """
-    sku;family;groups;categories;description-de_DE-ecommerce;description-de_DE-print;description-en_GB-ecommerce;description-en_GB-tablet;description-en_US-ecommerce;description-en_US-print;description-en_US-tablet;description-fr_FR-ecommerce;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD;enabled;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customer_rating-print;customer_rating-tablet;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;number_in_stock-ecommerce;number_in_stock-print;number_in_stock-tablet;release_date-ecommerce;release_date-print;release_date-tablet;size;thumbnail;washing_temperature;weight
-    my-sandal;sandals;;2013_collection,2014_collection,2015_collection;"Ein elegantes weißes Sandal";"Ein sehr elegantes weißes Sandal";"An elegant white sandal";;"A stylish white sandal";"A really stylish white sandal";;"Une sandale blanche élégante";"Weißes Sandal";"White sandal";"White sandal";"Sandale blanche";10.00;9.00;15.00;1;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    tshirt-white;tshirts;;2013_collection,2014_collection,2015_collection;"Ein elegantes weißes T-Shirt";"Ein sehr elegantes weißes T-Shirt";"An elegant white t-shirt";;"A stylish white t-shirt";"A really stylish white t-shirt";;"Un T-shirt blanc élégant";"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";10.00;9.00;15.00;1;;white;;;;usa;;;;;;;;;;;;;;american_apparel;cotton;;;;;;;size_M;;;
-    tshirt-black;tshirts;;2013_collection,2014_collection,2015_collection;"Ein elegantes schwarzes T-Shirt";"Ein sehr elegantes schwarzes T-Shirt";"An elegant black t-shirt";;"A stylish black t-shirt";"A really stylish black t-shirt";;"Un T-shirt noir élégant";"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";10.00;9.00;15.00;1;;black;;;;usa;;;;;;;;;;;;;;american_apparel;cotton;;;;;;;size_L;;;
-    """
+    sku;family;groups;categories;description-de_DE-ecommerce;description-en_GB-ecommerce;description-en_US-ecommerce;description-fr_FR-ecommerce;name-de_DE;name-en_GB;name-en_US;name-fr_FR;price-EUR;price-GBP;price-USD;enabled;additional_colors;color;cost-EUR;cost-GBP;cost-USD;country_of_manufacture;customer_rating-ecommerce;customs_tax-de_DE-EUR;customs_tax-de_DE-GBP;customs_tax-de_DE-USD;datasheet;handmade;image;legend-de_DE;legend-en_GB;legend-en_US;legend-fr_FR;manufacturer;material;number_in_stock-ecommerce;release_date-ecommerce;size;thumbnail;washing_temperature;weight
+    my-sandal;sandals;;2013_collection,2014_collection,2015_collection;"Ein elegantes weißes Sandal";"An elegant white sandal";"A stylish white sandal";"Une sandale blanche élégante";"Weißes Sandal";"White sandal";"White sandal";"Sandale blanche";10.00;9.00;15.00;1;;;;;;;;;;;;;;;;;;;;;;;;;
+    tshirt-white;tshirts;;2013_collection,2014_collection,2015_collection;"Ein elegantes weißes T-Shirt";"An elegant white t-shirt";"A stylish white t-shirt";"Un T-shirt blanc élégant";"Weißes T-Shirt";"White t-shirt";"White t-shirt";"T-shirt blanc";10.00;9.00;15.00;1;;white;;;;usa;;;;;;;;;;;;american_apparel;cotton;;;size_M;;;
+    tshirt-black;tshirts;;2013_collection,2014_collection,2015_collection;"Ein elegantes schwarzes T-Shirt";"An elegant black t-shirt";"A stylish black t-shirt";"Un T-shirt noir élégant";"Schwarzes T-Shirt";"Black t-shirt";"Black t-shirt";"T-shirt noir";10.00;9.00;15.00;1;;black;;;;usa;;;;;;;;;;;;american_apparel;cotton;;;size_L;;;
+       """
