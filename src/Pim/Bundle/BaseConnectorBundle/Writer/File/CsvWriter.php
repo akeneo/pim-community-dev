@@ -123,14 +123,12 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         $csvFile = fopen($this->getPath(), 'w');
 
         $header = $this->isWithHeader() ? $uniqueKeys : [];
-        $result = fputcsv($csvFile, $header, $this->delimiter);
-        if (false === $result) {
+        if (false === fputcsv($csvFile, $header, $this->delimiter)) {
             throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
         }
 
         foreach ($fullItems as $item) {
-            $result = fputcsv($csvFile, $item, $this->delimiter, $this->enclosure);
-            if (false === $result) {
+            if (false === fputcsv($csvFile, $item, $this->delimiter, $this->enclosure)) {
                 throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
             } elseif ($this->stepExecution) {
                 $this->stepExecution->incrementSummaryInfo('write');

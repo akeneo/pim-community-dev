@@ -94,8 +94,7 @@ class FileWriter extends AbstractConfigurableStepElement implements
         }
 
         foreach ($data as $entry) {
-            $result = fwrite($this->handler, $entry);
-            if (false === $result) {
+            if (false === fwrite($this->handler, $entry)) {
                 throw new RuntimeErrorException('Failed to write to file %path%', ['%path%' => $this->getPath()]);
             } else {
                 $this->stepExecution->incrementSummaryInfo('write');
