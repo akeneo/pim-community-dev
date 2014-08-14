@@ -1,6 +1,14 @@
 # 1.2.0-x
 
 ## Improvements
+
+## Bug fixes
+
+## BC breaks
+
+# 1.2.0-RC3
+
+## Improvements
 - Killed export process are now detected and displayed as failed
 - CsvWriter can write files for any type of entity
 
