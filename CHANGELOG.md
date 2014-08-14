@@ -4,6 +4,9 @@
 
 ## Bug fixes
 - Sort exported categories by tree and order inside the tree
+- Return to the family index page after cancelling family mass edit instead of product index
+- Fixed an error when all families are edited without any applied filters
+- Fixed a bug that allowed to mass edit only 10 families
 
 ## BC breaks
 - Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.
