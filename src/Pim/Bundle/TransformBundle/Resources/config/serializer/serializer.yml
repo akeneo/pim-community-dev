@@ -3,18 +3,10 @@ parameters:
     pim_serializer.encoder.xml.class:                       Symfony\Component\Serializer\Encoder\XmlEncoder
     pim_serializer.encoder.json.class:                      Symfony\Component\Serializer\Encoder\JsonEncoder
     pim_serializer.encoder.csv.class:                       Pim\Bundle\TransformBundle\Encoder\CsvEncoder
-    pim_serializer.normalizer.get_set_method.class:         Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
 
 services:
     pim_serializer:
         class: %pim_serializer.class%
-
-    # Normalizer
-    pim_serializer.normalizer.get_set_method:
-        public: false
-        class: %pim_serializer.normalizer.get_set_method.class%
-        tags:
-            - { name: pim_serializer.normalizer, priority: 20 }
 
     # Encoders
     pim_serializer.encoder.xml:
