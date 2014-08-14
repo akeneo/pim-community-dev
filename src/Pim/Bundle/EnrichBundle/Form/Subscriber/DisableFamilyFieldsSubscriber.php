@@ -22,7 +22,10 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
     protected $securityFacade;
 
     /** @var array */
-    protected $nonDisabledFields = ['attributes', 'attributeRequirements', 'attributeAsLabel', 'jsfv_identifier'];
+    protected $propertyFields = ['code', 'label'];
+
+    /** @var array */
+    protected $attributeFields = ['attributes', 'attributeRequirements'];
 
     /**
      * @param SecurityFacade $securityFacade
@@ -49,13 +52,18 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if ($event->getData() instanceof Family &&
-            null !== $event->getData()->getId() &&
-            false === $this->securityFacade->isGranted('pim_enrich_family_edit_properties')
-        ) {
+        if (!$event->getData() instanceof Family || null === $event->getData()->getId()) {
+            return;
+        }
+
+        $propertiesGranted = $this->securityFacade->isGranted('pim_enrich_family_edit_properties');
+        $attributesGranted = $this->securityFacade->isGranted('pim_enrich_family_edit_attributes');
+
+        if (!$propertiesGranted || !$attributesGranted) {
             $form = $event->getForm();
             foreach ($form as $field) {
-                if (!in_array($field->getName(), $this->nonDisabledFields)) {
+                if ((!$propertiesGranted && in_array($field->getName(), $this->propertyFields)) ||
+                    (!$attributesGranted && in_array($field->getName(), $this->attributeFields))) {
                     $this->disableField($field);
                 }
             }
@@ -78,7 +86,6 @@ class DisableFamilyFieldsSubscriber implements EventSubscriberInterface
                 $field->getName(),
                 $config->getType()->getInnerType(),
                 $options
-            )
-        ;
+            );
     }
 }

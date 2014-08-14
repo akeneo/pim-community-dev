@@ -4,7 +4,7 @@
 
 {% block content %}
 
-    {% if resource_granted('pim_enrich_family_add_attribute') %}
+    {% if resource_granted('pim_enrich_family_edit_attributes') %}
         {% include 'PimEnrichBundle:Attribute:_available-attributes-form.html.twig' with {
             'form': attributesForm,
             'action': path('pim_enrich_family_addattributes', {'id': form.vars.value.id})
@@ -78,6 +78,7 @@
                         $(this).find('i').toggleClass('icon-expand-alt icon-collapse-alt');
                     });
 
+                    {% if resource_granted('pim_enrich_family_edit_attributes') %}
                     $('.attribute-requirement:not(.identifier) i').on('click', function() {
                         $(this).toggleClass('icon-ok required').toggleClass('icon-circle non-required');
 
@@ -86,6 +87,7 @@
                         $(this).attr('data-original-title', $(this).parent().data((checked ? 'not-' : '') + 'required-title')).tooltip('show');
                         $input.prop('checked', !checked).trigger('change');
                     });
+                    {% endif %}
                 });
             }
         );

@@ -16,6 +16,7 @@
         </thead>
 
         {% set colspan = channels|length + 2 %}
+        {% set editGranted = resource_granted('pim_enrich_family_edit_attributes') %}
         {% for groupLabel, attributes in form.vars.value.groupedAttributes %}
         <tbody>
             <tr class="group">
@@ -36,7 +37,7 @@
                     </td>
                 {% endfor %}
                 <td>
-                    {% if attribute.attributeType != 'pim_catalog_identifier' and resource_granted('pim_enrich_family_remove_atribute') %}
+                    {% if attribute.attributeType != 'pim_catalog_identifier' and editGranted %}
                         <a {{ elements.deleteLinkAttributes(
                                 path('pim_enrich_family_removeattribute', {'familyId': form.vars.value.id, 'attributeId': attribute.id}),
                                 path('pim_enrich_family_edit', {'id': form.vars.value.id, 'boost': 'now'|date('U') }),
