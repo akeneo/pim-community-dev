@@ -14,6 +14,7 @@
 - JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
 - InvalidItemsCsvArchiver is not injected in the constructors of ProductCsvReader and ProductReader
 - CsvProductWriter should be used instead of CsvWriter for products
+- Remove `pim_serializer.normalizer.get_set_method` defined as fallback normalizer
 
 # 1.2.0-RC2
 
