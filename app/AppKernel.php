@@ -37,7 +37,6 @@ class AppKernel extends OroKernel
             'Oro\Bundle\NotificationBundle\OroNotificationBundle',
             'Oro\Bundle\CalendarBundle\OroCalendarBundle',
             'Oro\Bundle\CronBundle\OroCronBundle',
-            'Oro\Bundle\ImportExportBundle\OroImportExportBundle',
             'Oro\Bundle\SearchBundle\OroSearchBundle',
             'Oro\Bundle\TagBundle\OroTagBundle',
         );
