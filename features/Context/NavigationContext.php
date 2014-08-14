@@ -4,6 +4,7 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
+use WebDriver\Exception\UnknownError;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
 use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
@@ -86,9 +87,13 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
      */
     public function resetCurrentPage()
     {
-        $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
-        $this->getMainContext()->executeScript($script);
-        $this->currentPage = null;
+        try {
+            $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
+            $this->getMainContext()->executeScript($script);
+            $this->currentPage = null;
+        } catch (UnknownError $e) {
+            // The scenario probably has some undefined steps, no need for this exception
+        }
     }
 
     /**
