@@ -52,6 +52,7 @@ class FixturesContext extends RawMinkContext
         'multiselect'  => 'pim_catalog_multiselect',
         'simpleselect' => 'pim_catalog_simpleselect',
         'date'         => 'pim_catalog_date',
+        'boolean'      => 'pim_catalog_boolean',
     ];
 
     protected $entities = [

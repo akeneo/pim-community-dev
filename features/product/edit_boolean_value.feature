@@ -1,0 +1,35 @@
+@javascript
+Feature: Edit a boolean value
+  In order to enrich the catalog
+  As a regular user
+  I need to be able edit boolean values of a product
+
+  Background:
+    Given the "default" catalog configuration
+    And a "tshirt" product
+    And the following attributes:
+      | code             | label            | type    | scopable | localizable | default_value |
+      | boolean          | Boolean          | boolean | no       | no          | no            |
+      | scopable_boolean | Scopable boolean | boolean | yes      | yes         | yes           |
+    And I am logged in as "Mary"
+    And I am on the "tshirt" product page
+    And I add available attributes Boolean and Scopable boolean
+    And I save the product
+
+  Scenario: Successfully update a boolean value
+    Then attribute boolean of "tshirt" should be "false"
+    When I check the "Boolean" switch
+    And I press the "Save" button
+    Then attribute boolean of "tshirt" should be "true"
+    When I uncheck the "Boolean" switch
+    And I press the "Save" button
+    Then attribute boolean of "tshirt" should be "false"
+
+  Scenario: Successfully update a scopable boolean value
+    Then the english ecommerce scopable_boolean of "tshirt" should be "true"
+    When I uncheck the "ecommerce Scopable boolean" switch
+    And I press the "Save" button
+    Then the english ecommerce scopable_boolean of "tshirt" should be "false"
+    When I check the "ecommerce Scopable boolean" switch
+    And I press the "Save" button
+    Then the english ecommerce scopable_boolean of "tshirt" should be "true"
