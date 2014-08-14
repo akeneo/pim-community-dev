@@ -10,6 +10,7 @@
 - Fixed flat product normalizer and filtered values (with many filters)
 - Make sure that the file path of export profiles is writable before allowing to execute
 - Fixed bug with scopable boolean value not being saved
+- Use `pim_number` form type to replace the use of `number` and fix issue with javascript validation on numbers with different formats
 
 ## BC breaks
 - Remove `task` option from install command
