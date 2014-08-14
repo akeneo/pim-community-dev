@@ -26,7 +26,23 @@ Are you sure you want to do this?: 実行してもよろしいですか？
 Action performed.: アクションを実行しました。
 Action is not performed.: アクションは実行されません。
 Please, select item to perform action.: アクションを実行する項目を選択してください。
+View per page: 1ページあたりの表示
 oro.datagrid.entityHint: エンティティ
 oro.datagrid.noentities: レコードが見つかりません
 oro.datagrid.noresults: '検索条件に一致する {{ entityHint }} が見つかりませんでした。検索条件を変更してみてください.'
 oro.datagrid.nocolumns: このグリッドを構成する列がありません。
+oro.datagrid.pagination.label: ページ
+oro.datagrid.pagination.totalPages: '/ {{ totalPages }}'
+oro.datagrid.pagination.totalRecords: '{{ totalRecords }} 件'
+oro.datagrid.action.reset: リセット
+oro.datagrid.action.refresh: 更新
+oro_datagrid.select.all: すべて
+oro_datagrid.select.visible: すべて表示
+oro_datagrid.select.none: なし
+pim.grid.ajax_choice_filter.label_empty: 空
+Available Columns: 利用可能な列
+Displayed Columns: 表示する列
+datagrid_view.columns.min_message: 最低でも1つの表示する列を選択してください
+pim.grid.mass_action.quick_export.title: クイック エクスポート
+pim.grid.action.launch.title: 起動
+pim.grid.action.show.title: 表示
