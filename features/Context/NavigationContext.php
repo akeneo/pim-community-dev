@@ -4,7 +4,7 @@ namespace Context;
 
 use Behat\MinkExtension\Context\RawMinkContext;
 use Behat\Behat\Context\Step;
-use Behat\Behat\Event\ScenarioEvent;
+use Behat\Behat\Event\BaseScenarioEvent;
 use Behat\Behat\Event\StepEvent;
 use SensioLabs\Behat\PageObjectExtension\Context\PageObjectAwareInterface;
 use SensioLabs\Behat\PageObjectExtension\Context\PageFactory;
@@ -84,11 +84,11 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
-     * @param ScenarioEvent $event
+     * @param BaseScenarioEvent $event
      *
      * @AfterScenario
      */
-    public function resetCurrentPage(ScenarioEvent $event)
+    public function resetCurrentPage(BaseScenarioEvent $event)
     {
         if ($event->getResult() !== StepEvent::UNDEFINED) {
             $script = 'sessionStorage.clear(); typeof $ !== "undefined" && $(window).off("beforeunload");';
