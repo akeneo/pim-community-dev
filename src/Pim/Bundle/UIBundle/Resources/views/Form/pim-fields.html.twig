@@ -309,7 +309,7 @@
         function ($) {
             'use strict';
             $(function() {
-                $('#{{ switchId }}').on('switch-change', function (e, data) {
+                $('#{{ switchId }}').closest('form').on('switch-change', '#{{ switchId }}', function (e, data) {
                     $('#{{ id }}').val(+data.value);
                 });
             });
