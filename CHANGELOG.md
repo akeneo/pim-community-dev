@@ -8,6 +8,7 @@
 - Fixed Mass edit on a never fulfilled price attribute
 - Fix TinyMCE WYSIWYG editor generating 'fake' history due to html reformatting
 - Fixed flat product normalizer and filtered values (with many filters)
+- Make sure that the file path of export profiles is writable before allowing to execute
 
 ## BC breaks
 - Remove `task` option from install command
