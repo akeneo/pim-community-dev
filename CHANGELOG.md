@@ -8,12 +8,15 @@
 - Fixed Mass edit on a never fulfilled price attribute
 - Fix TinyMCE WYSIWYG editor generating 'fake' history due to html reformatting
 - Fixed flat product normalizer and filtered values (with many filters)
+- Make sure that the file path of export profiles is writable before allowing to execute
+- Fixed bug with scopable boolean value not being saved
 
 ## BC breaks
 - Remove `task` option from install command
 - JobExecutionController now require the Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager.
 - InvalidItemsCsvArchiver is not injected in the constructors of ProductCsvReader and ProductReader
 - CsvProductWriter should be used instead of CsvWriter for products
+- Remove `pim_serializer.normalizer.get_set_method` defined as fallback normalizer
 
 # 1.2.0-RC2
 

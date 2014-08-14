@@ -42,11 +42,11 @@ define(
                     field.id = null;
                     field.input = this.$el.find('.upload-zone').get(0).outerHTML;
                 } else if (this.$el.find('.switch').length) {
-                    field.id = null;
-
                     var $original = this.$el.find('.switch'),
                         $wrap = $original.clone().empty().removeClass('has-switch'),
                         $input = $original.find('input');
+
+                    field.id = $input.attr('id');
                     $input.appendTo($wrap);
 
                     field.input = $wrap.get(0).outerHTML;
