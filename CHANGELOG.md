@@ -5,6 +5,7 @@
 ## Bug fixes
 
 ## BC breaks
+- Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.
 
 # 1.2.0-RC3
 
