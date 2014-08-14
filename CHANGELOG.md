@@ -9,6 +9,7 @@
 - Fix TinyMCE WYSIWYG editor generating 'fake' history due to html reformatting
 - Fixed flat product normalizer and filtered values (with many filters)
 - Make sure that the file path of export profiles is writable before allowing to execute
+- Fixed bug with scopable boolean value not being saved
 
 ## BC breaks
 - Remove `task` option from install command
