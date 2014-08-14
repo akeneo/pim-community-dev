@@ -36,6 +36,14 @@ Based on a pim standard installation, execute the following command in your proj
     find ./src/ -type f -print0 | xargs -0 sed -i 's/LocalizableListener/LocalizableSubscriber/g'
 ```
 
+## Translations
+
+Has been moved from app/Resources to bundles
+
+## Configuration
+
+The app/config/config.yml and parameters.yml have been changed
+
 ## BatchBundle
 
 Please run the following commands against your database :
