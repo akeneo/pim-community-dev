@@ -40,7 +40,7 @@ class JobExecutionManager
     {
         if (BatchStatus::STARTING !== $jobExecution->getStatus()->getValue() &&
             (ExitStatus::UNKNOWN === $jobExecution->getExitStatus()->getExitCode() ||
-                ExitStatus::EXECUTING === $jobExecution->getExitStatus()->getExitCode())
+            ExitStatus::EXECUTING === $jobExecution->getExitStatus()->getExitCode())
         ) {
             return $this->processIsRunning($jobExecution);
         }

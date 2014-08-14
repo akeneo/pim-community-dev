@@ -4,6 +4,7 @@ namespace Akeneo\Bundle\BatchBundle\Tests\Unit\Manager;
 
 use Akeneo\Bundle\BatchBundle\Job\ExitStatus;
 use Akeneo\Bundle\BatchBundle\Manager\JobExecutionManager;
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 
 class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,6 +19,10 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
     {
         $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
 
+        $jobExecution->expects($this->once())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::COMPLETED)));
+
         $jobExecution->expects($this->exactly(2))
             ->method('getExitStatus')
             ->will($this->returnValue(new ExitStatus(ExitStatus::COMPLETED)));
@@ -30,6 +35,10 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
     public function testCheckRunningStatusRunning()
     {
         $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+
+        $jobExecution->expects($this->once())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
 
         $jobExecution->expects($this->once())
             ->method('getExitStatus')
@@ -47,6 +56,10 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
     public function testCheckRunningStatusKilled()
     {
         $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+
+        $jobExecution->expects($this->once())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::ABANDONED)));
 
         $jobExecution->expects($this->once())
             ->method('getExitStatus')
@@ -67,6 +80,10 @@ class JobExecutionManagerTest extends \PHPUnit_Framework_TestCase
     public function testCheckRunningStatusInvalidPid()
     {
         $jobExecution = $this->getMock('Akeneo\\Bundle\\BatchBundle\\Entity\\JobExecution');
+
+        $jobExecution->expects($this->once())
+            ->method('getStatus')
+            ->will($this->returnValue(new BatchStatus(BatchStatus::STARTED)));
 
         $jobExecution->expects($this->once())
             ->method('getExitStatus')
