@@ -35,12 +35,15 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
                     : $qb->expr()->notIn($rootAlias, $values);
                 $qb->andWhere($valueWhereCondition);
         }
-        $whereParts = $qb->getDQLPart('where')->getParts();
-        $qb->resetDQLPart('where');
 
-        foreach ($whereParts as $part) {
-            if (!is_string($part) || !strpos($part, 'entityIds')) {
-                $qb->andWhere($part);
+        if (null !== $qb->getDQLPart('where')) {
+            $whereParts = $qb->getDQLPart('where')->getParts();
+            $qb->resetDQLPart('where');
+
+            foreach ($whereParts as $part) {
+                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                    $qb->andWhere($part);
+                }
             }
         }
 
