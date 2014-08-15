@@ -3,6 +3,7 @@ define(
     function ($, Backbone, _) {
         'use strict';
         var interval;
+        var loading = false;
 
         var JobExecution = Backbone.Model.extend({
             path: null,
@@ -34,6 +35,7 @@ define(
             },
 
             ajaxStart: function () {
+                loading = true;
                 $(this.loadingImageSelector).removeClass('transparent');
             },
 
@@ -43,6 +45,7 @@ define(
                     clearInterval(interval);
                     interval = null;
                 }
+                loading = false;
             },
 
             ajaxError: function (model, resp, options) {
@@ -50,6 +53,7 @@ define(
                 clearInterval(interval);
                 interval = null;
                 this.$el.html('<tr><td colspan="5"><span class="label label-important">' + options.xhr.statusText + '</span></td></tr>');
+                loading = false;
             },
 
             events: {
@@ -195,6 +199,7 @@ define(
                 }
 
                 var jobExecution = new JobExecution(params);
+                loading = true;
                 jobExecution.fetch();
 
                 params.model = jobExecution;
@@ -210,7 +215,7 @@ define(
                 };
 
                 interval = setInterval(function () {
-                    jobExecution.fetch();
+                    loading || jobExecution.fetch();
                 }, 1000);
 
                 // Clear interval when changing page to prevent continuing to sync object on other pages
