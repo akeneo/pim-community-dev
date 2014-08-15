@@ -464,8 +464,9 @@ class ProductManager
     public function remove(ProductInterface $product, $flush = true)
     {
         $this->eventDispatcher->dispatch(ProductEvents::PRE_REMOVE, new GenericEvent($product));
-
         $this->objectManager->remove($product);
+        $this->eventDispatcher->dispatch(ProductEvents::POST_REMOVE, new GenericEvent($product));
+
         if (true === $flush) {
             $this->objectManager->flush();
         }
