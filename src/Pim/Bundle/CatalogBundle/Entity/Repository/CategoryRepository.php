@@ -99,7 +99,8 @@ class CategoryRepository extends NestedTreeRepository implements ReferableEntity
         $qb = $this->_em->createQueryBuilder();
         $qb->select('node')
             ->from($config['useObjectClass'], 'node')
-            ->where('node.id IN (:parentsIds) OR node.parent IN (:parentsIds)');
+            ->where('node.id IN (:parentsIds) OR node.parent IN (:parentsIds)')
+            ->orderBy('node.left');
 
         $qb->setParameter('parentsIds', $parentsIds);
 
