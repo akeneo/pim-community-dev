@@ -77,9 +77,11 @@ class JobExecutionArchivist implements EventSubscriberInterface
     {
         $result = array();
 
-        foreach ($this->archivers as $archiver) {
-            if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
-                $result[$archiver->getName()] = $archives;
+        if (!$jobExecution->isRunning()) {
+            foreach ($this->archivers as $archiver) {
+                if (count($archives = $archiver->getArchives($jobExecution)) > 0) {
+                    $result[$archiver->getName()] = $archives;
+                }
             }
         }
 
