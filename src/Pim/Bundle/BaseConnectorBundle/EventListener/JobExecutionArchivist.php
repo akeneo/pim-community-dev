@@ -26,7 +26,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
-            EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution',
+            EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade',
         );
     }
 
@@ -57,7 +57,7 @@ class JobExecutionArchivist implements EventSubscriberInterface
      *
      * @param JobExecutionEvent $event
      */
-    public function afterJobExecution(JobExecutionEvent $event)
+    public function beforeStatusUpgrade(JobExecutionEvent $event)
     {
         $jobExecution = $event->getJobExecution();
 
