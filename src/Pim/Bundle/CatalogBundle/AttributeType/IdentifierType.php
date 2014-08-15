@@ -21,7 +21,7 @@ class IdentifierType extends AbstractAttributeType
         return [
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
-                'fieldType' => 'integer'
+                'fieldType' => 'text'
             ],
             'validationRule' => [
                 'name'      => 'validationRule',

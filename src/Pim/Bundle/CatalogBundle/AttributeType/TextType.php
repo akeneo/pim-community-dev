@@ -24,7 +24,7 @@ class TextType extends AbstractAttributeType
             ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
-                'fieldType' => 'integer'
+                'fieldType' => 'text'
             ],
             'validationRule' => [
                 'name'      => 'validationRule',
