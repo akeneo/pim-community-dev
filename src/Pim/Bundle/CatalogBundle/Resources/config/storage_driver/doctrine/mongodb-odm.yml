@@ -352,5 +352,6 @@ services:
         class: %pim_catalog.event_subscriber.remove_outdated_products_from_associations.class%
         arguments:
             - '@pim_catalog.repository.product'
+            - '@pim_catalog.repository.association_type'
         tags:
             - { name: kernel.event_subscriber }
