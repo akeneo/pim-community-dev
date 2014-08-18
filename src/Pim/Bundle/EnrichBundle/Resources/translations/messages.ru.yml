@@ -254,8 +254,8 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-"Yes": true
-"No": false
+switch_on: true
+switch_off: false
 Close: Закрыть
 Choose a color: Выбрать цвет
 Create: Создать
@@ -367,7 +367,6 @@ pim_enrich:
     product:
       index: Список продуктов
       create: Создать продукт
-      edit: Редактировать продукт
       remove: Удалить продукт
       add_attribute: Добавить атрибут к продукту
       remove_attribute: Удалить атрибут из продукта
@@ -392,7 +391,6 @@ pim_enrich:
       remove: Удалить канал
     family:
       create: Создать семейство
-      edit: Редактировать семейство
       remove: Удалить семейство
       add_attribute: Добавить атрибут в семейство
       remove_attribute: Удалить атрибут из семейства

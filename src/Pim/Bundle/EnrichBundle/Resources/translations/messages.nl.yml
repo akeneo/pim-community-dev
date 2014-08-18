@@ -254,8 +254,8 @@ default: Standaard
 Axis: As
 Add attributes: Attributen toevoegen
 Translate from: Vertaal van
-"Yes": true
-"No": false
+switch_on: true
+switch_off: false
 Close: Sluiten
 Choose a color: Kies een kleur
 Create: Aanmaken
@@ -403,7 +403,6 @@ pim_enrich:
     product:
       index: Producten weergeven
       create: Product aanmaken
-      edit: Product wijzigen
       remove: Product verwijderen
       add_attribute: Voeg een attribuut toe aan een product
       remove_attribute: Verwijder een attribuut van een product
@@ -428,7 +427,6 @@ pim_enrich:
       remove: Kanaal verwijderen
     family:
       create: Familie aanmaken
-      edit: Familie wijzigen
       remove: Familie verwijderen
       add_attribute: Voeg attributen toe aan een familie
       remove_attribute: Verwijder attributen van een familie
