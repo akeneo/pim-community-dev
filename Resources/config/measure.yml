@@ -275,7 +275,7 @@ measures_config:
             MILLICOULOMB:
                 convert: [{'mul': 3600000}]
                 symbol: mC
-            DECICOULOMB:
+            CENTIOULOMB:
                 convert: [{'mul': 360000}]
                 symbol: cC
             DECICOULOMB:
