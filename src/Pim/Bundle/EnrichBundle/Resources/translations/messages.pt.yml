@@ -255,8 +255,8 @@ default: Padrão
 Axis: Eixo
 Add attributes: Adicionar atributos
 Translate from: Traduzir do
-"Yes": true
-"No": false
+switch_on: true
+switch_off: false
 Close: Fechar
 Choose a color: Escolha uma cor
 Create: Criar
@@ -408,7 +408,6 @@ pim_enrich:
     product:
       index: Listar produtos
       create: Criar um produto
-      edit: Editar um produto
       remove: Remover um produto
       add_attribute: Adicionar um atributo a um produto
       remove_attribute: Remover um atributo de um produto
@@ -433,7 +432,6 @@ pim_enrich:
       remove: Remover um canal
     family:
       create: Criar uma família
-      edit: Editar uma família
       remove: Remover uma família
       add_attribute: Adicionar atributo a uma família
       remove_attribute: Remover atributo de uma família

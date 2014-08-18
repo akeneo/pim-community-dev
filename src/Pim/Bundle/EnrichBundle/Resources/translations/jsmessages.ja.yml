@@ -66,3 +66,5 @@ pim.grid.mass_action.quick_export.csv_all: CSV (すべての属性)
 pim.grid.mass_action.delete: 削除
 pim.grid.mass_action.mass_edit: 一括編集
 jstree.create: 作成
+switch_on: true
+switch_off: false
