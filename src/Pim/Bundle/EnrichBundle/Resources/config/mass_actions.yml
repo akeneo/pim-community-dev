@@ -116,5 +116,5 @@ services:
             -
                 name: pim_enrich.mass_edit_action
                 alias: set-attribute-requirements
-                acl: pim_enrich_family_edit_properties
+                acl: pim_enrich_family_edit_attributes
                 operator: pim_enrich.mass_edit_action.operator.family

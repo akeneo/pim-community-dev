@@ -116,18 +116,13 @@ pim_enrich_family_edit_properties:
     type: action
     label: pim_enrich.acl.family.edit_properties
     group_name: pim_enrich.acl_group.family
+pim_enrich_family_edit_attributes:
+    type: action
+    label: pim_enrich.acl.family.edit_attributes
+    group_name: pim_enrich.acl_group.family
 pim_enrich_family_remove:
     type: action
     label: pim_enrich.acl.family.remove
-    group_name: pim_enrich.acl_group.family
-
-pim_enrich_family_add_attribute:
-    type: action
-    label: pim_enrich.acl.family.add_attribute
-    group_name: pim_enrich.acl_group.family
-pim_enrich_family_remove_atribute:
-    type: action
-    label: pim_enrich.acl.family.remove_attribute
     group_name: pim_enrich.acl_group.family
 
 # Attribute group
