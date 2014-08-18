@@ -24,7 +24,8 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
     protected $assocTypeRepository;
 
     /**
-     * @param ProductRepository $productRepository
+     * @param ProductRepository         $productRepository
+     * @param AssociationTypeRepository $assocTypeRepository
      */
     public function __construct(
         ProductRepository $productRepository,
