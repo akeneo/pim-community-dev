@@ -23,8 +23,8 @@ Feature: Export attributes
     pim_catalog_text;comment;Comment;other;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;marketing;0;1;1;;;;0;0
-    pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg;;;0;0
-    pim_catalog_image;top_view;"Top view";media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_image;side_view;"Side view";media;0;0;0;gif,png,jpeg,jpg;;;0;0
+    pim_catalog_image;top_view;"Top view";media;0;0;0;gif,png,jpeg,jpg;;;0;0
     pim_catalog_simpleselect;size;Size;sizes;0;1;1;;;;0;0
     pim_catalog_simpleselect;color;Color;colors;0;1;1;;;;0;0
     pim_catalog_simpleselect;lace_color;"Lace color";colors;0;0;1;;;;0;0
@@ -52,8 +52,8 @@ Feature: Export attributes
     pim_catalog_text;comment;Comment;other;;0;0;1;;;;0;0
     pim_catalog_price_collection;price;Price;;marketing;0;1;1;;;;0;0
     pim_catalog_simpleselect;rating;Rating;;marketing;0;1;1;;;;0;0
-    pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg;;;0;0
-    pim_catalog_image;top_view;"Top view";;media;0;0;0;gif,png,jpeg;;;0;0
+    pim_catalog_image;side_view;"Side view";;media;0;0;0;gif,png,jpeg,jpg;;;0;0
+    pim_catalog_image;top_view;"Top view";;media;0;0;0;gif,png,jpeg,jpg;;;0;0
     pim_catalog_simpleselect;size;Size;;sizes;0;1;1;;;;0;0
     pim_catalog_simpleselect;color;Color;;colors;0;1;1;;;;0;0
     pim_catalog_simpleselect;lace_color;"Lace color";;colors;0;0;1;;;;0;0
