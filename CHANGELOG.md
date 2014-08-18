@@ -4,6 +4,7 @@
 
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
+- PIM-2975: validation fails when a draft is submitted
 
 ## BC breaks
 
