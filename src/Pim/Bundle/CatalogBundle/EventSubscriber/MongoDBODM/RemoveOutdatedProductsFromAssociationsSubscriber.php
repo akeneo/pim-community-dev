@@ -41,11 +41,14 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
     public static function getSubscribedEvents()
     {
         return [
-            ProductEvents::POST_REMOVE => 'removeAssociatedProduct'
+            ProductEvents::POST_REMOVE      => 'removeAssociatedProduct',
+            ProductEvents::POST_MASS_REMOVE => 'removeAssociatedProducts'
         ];
     }
 
     /**
+     * Remove associated product from a single product
+     *
      * @param GenericEvent $event
      */
     public function removeAssociatedProduct(GenericEvent $event)
@@ -54,6 +57,21 @@ class RemoveOutdatedProductsFromAssociationsSubscriber implements EventSubscribe
         $product = $event->getSubject();
         $assocTypeCount = $this->assocTypeRepository->countAll();
 
-        $this->productRepository->removeAssociatedProduct($product, $assocTypeCount);
+        $this->productRepository->removeAssociatedProduct($product->getId(), $assocTypeCount);
+    }
+
+    /**
+     * Remove associated products from a list of product ids
+     *
+     * @param GenericEvent $event
+     */
+    public function removeAssociatedProducts(GenericEvent $event)
+    {
+        $productIds = $event->getSubject();
+        $assocTypeCount = $this->assocTypeRepository->countAll();
+
+        foreach ($productIds as $productId) {
+            $this->productRepository->removeAssociatedProduct($productId, $assocTypeCount);
+        }
     }
 }

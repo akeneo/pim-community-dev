@@ -15,13 +15,13 @@ use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvent;
 use Pim\Bundle\DataGridBundle\Extension\MassAction\Event\MassActionEvents;
 
 /**
- * Mass delete action handler
+ * Mass delete products action handler
  *
  * @author    Romain Monceau <romain@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class DeleteProductsMassActionHandler extends  DeleteMassActionHandler
+class DeleteProductsMassActionHandler extends DeleteMassActionHandler
 {
     /** @var ProductManager */
     protected $productManager;

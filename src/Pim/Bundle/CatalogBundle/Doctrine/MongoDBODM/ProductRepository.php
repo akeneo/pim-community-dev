@@ -3,7 +3,6 @@
 namespace Pim\Bundle\CatalogBundle\Doctrine\MongoDBODM;
 
 use Doctrine\ODM\MongoDB\DocumentRepository;
-use Doctrine\Common\Util\ClassUtils;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ODM\MongoDB\Query\Builder as QueryBuilder;
 use Pim\Bundle\CatalogBundle\Repository\ReferableEntityRepositoryInterface;
@@ -686,21 +685,20 @@ class ProductRepository extends DocumentRepository implements
     }
 
     /**
-     * @param ProductInterface $product
-     * @param integer          $assocTypeCount
+     * @param integer $productId
+     * @param integer $assocTypeCount
      *
      * @TODO: Make some refactoring with PublishedProductRepository
      */
-    public function removeAssociatedProduct(ProductInterface $product, $assocTypeCount)
+    public function removeAssociatedProduct($productId, $assocTypeCount)
     {
-        $productClass = ClassUtils::getClass($product);
         $mongoRef = [
-            '$ref' => $this->dm->getClassMetadata($productClass)->getCollection(),
-            '$id' => new \MongoId($product->getId()),
+            '$ref' => $this->dm->getClassMetadata($this->documentName)->getCollection(),
+            '$id' => new \MongoId($productId),
             '$db' => $this->dm->getConfiguration()->getDefaultDB(),
         ];
 
-        $collection = $this->dm->getDocumentCollection($productClass);
+        $collection = $this->dm->getDocumentCollection($this->documentName);
 
         // we iterate over the number of association types because the query removes only the product that
         // belongs to the first association (instead of removing it in existing associations)
