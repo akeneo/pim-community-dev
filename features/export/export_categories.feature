@@ -16,6 +16,6 @@ Feature: Export categories
     And the category order in the file "%tmp%/category_export/category_export.csv" should be following:
       | 2014_collection   |
       | summer_collection |
+      | sandals           |
       | winter_collection |
       | winter_boots      |
-      | sandals           |

@@ -3,6 +3,7 @@
 ## Improvements
 
 ## Bug fixes
+- Sort exported categories by tree and order inside the tree
 
 ## BC breaks
 
