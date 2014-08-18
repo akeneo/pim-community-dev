@@ -124,7 +124,7 @@ attributes:
         group: media
         maxFileSize: 1
         sortOrder:   1
-        allowedExtensions: gif,png,jpeg
+        allowedExtensions: gif,png,jpeg,jpg
     top_view:
         labels:
             en_US: Top view
@@ -132,7 +132,7 @@ attributes:
         group: media
         maxFileSize: 1
         sortOrder:   2
-        allowedExtensions: gif,png,jpeg
+        allowedExtensions: gif,png,jpeg,jpg
     size:
         labels:
             en_US: Size
