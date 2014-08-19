@@ -4,8 +4,7 @@
 
 {% block content %}
 
-    {% set resourceName = 'pimee_importexport_' ~ jobInstance.type ~ '_profile_edit_permissions' %}
-    {% if resource_granted(resourceName) %}
+    {% if form.permissions is defined %}
         <script type="text/javascript">
             require(
                 ['jquery', 'pimee/manage-permissions'],
@@ -60,7 +59,7 @@
         {{ elements.form_errors(form) }}
 
         {% set navbarTabs = ['General properties'] %}
-        {% if resource_granted(resourceName) %}
+        {% if form.permissions is defined %}
             {% set navbarTabs = navbarTabs|merge(['Permissions']) %}
         {% endif %}
         {% set navbarTabs = navbarTabs|merge(['History']) %}
@@ -86,7 +85,7 @@
                 {{ elements.accordion({ 'pane.accordion.global_settings': globalSettings }, 2) }}
             </div>
 
-            {% if resource_granted(resourceName) %}
+            {% if form.permissions is defined %}
             <div class="tab-pane buffer-top" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>

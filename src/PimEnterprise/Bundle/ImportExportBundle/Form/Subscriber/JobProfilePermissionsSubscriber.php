@@ -2,11 +2,12 @@
 
 namespace PimEnterprise\Bundle\ImportExportBundle\Form\Subscriber;
 
-use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Akeneo\Bundle\BatchBundle\Entity\JobInstance;
+use Pim\Bundle\UserBundle\Entity\Repository\GroupRepository;
 use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 
 /**
@@ -60,7 +61,9 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $event->getForm()->add('permissions', 'pimee_import_export_job_profile_permissions');
+        if (null !== $event->getData() && $this->isGranted($event->getData())) {
+            $event->getForm()->add('permissions', 'pimee_import_export_job_profile_permissions');
+        }
     }
 
     /**
@@ -73,7 +76,7 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
     public function postSetData(FormEvent $event)
     {
         $jobInstance = $event->getData();
-        if (null === $jobInstance || null === $jobInstance->getId()) {
+        if (null === $jobInstance || null === $jobInstance->getId() || !$this->isGranted($jobInstance)) {
             return;
         }
 
@@ -102,19 +105,31 @@ class JobProfilePermissionsSubscriber implements EventSubscriberInterface
 
         $form = $event->getForm();
         if ($form->isValid()) {
-            $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $jobInstance->getType());
-
-            if ($this->securityFacade->isGranted($resource) && null !== $jobInstance->getId()) {
-                $executeGroups = $form->get('permissions')->get('execute')->getData();
-                $editGroups    = $form->get('permissions')->get('edit')->getData();
-            } elseif (null === $jobInstance->getId()) {
+            if (null === $jobInstance->getId()) {
                 $editGroups    = $this->userGroupRepository->findAll();
                 $executeGroups = $editGroups;
+            } elseif ($this->isGranted($jobInstance)) {
+                $executeGroups = $form->get('permissions')->get('execute')->getData();
+                $editGroups    = $form->get('permissions')->get('edit')->getData();
             } else {
                 return;
             }
 
             $this->accessManager->setAccess($jobInstance, $executeGroups, $editGroups);
         }
+    }
+
+    /**
+     * Indicates whether the user has the rights to edit the permissions of this job instance type
+     *
+     * @param JobInstance $jobInstance
+     *
+     * @return boolean
+     */
+    protected function isGranted(JobInstance $jobInstance)
+    {
+        $resource = sprintf('pimee_importexport_%s_profile_edit_permissions', $jobInstance->getType());
+
+        return $this->securityFacade->isGranted($resource);
     }
 }
