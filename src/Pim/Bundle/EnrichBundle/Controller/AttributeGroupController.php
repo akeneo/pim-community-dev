@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Controller;
 
 use Pim\Bundle\EnrichBundle\Event\AttributeGroupEvents;
+use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 use Symfony\Component\HttpFoundation\Request;
@@ -215,7 +216,7 @@ class AttributeGroupController extends AbstractDoctrineController
      * @param Request        $request
      * @param AttributeGroup $group
      *
-     * @throws \LogicException
+     * @throws DeleteException
      *
      * @AclAncestor("pim_enrich_attribute_group_remove")
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -223,12 +224,12 @@ class AttributeGroupController extends AbstractDoctrineController
     public function removeAction(Request $request, AttributeGroup $group)
     {
         if ($group === $this->getDefaultGroup()) {
-            throw new \LogicException($this->translator->trans('flash.attribute group.not removed default'));
+            throw new DeleteException($this->translator->trans('flash.attribute group.not removed default'));
         }
 
         if (0 !== $group->getAttributes()->count()) {
             $this->addFlash('error', 'flash.attribute group.not removed attributes');
-            throw new \LogicException($this->translator->trans('flash.attribute group.not removed attributes'));
+            throw new DeleteException($this->translator->trans('flash.attribute group.not removed attributes'));
         }
 
         $this->remove($group);
