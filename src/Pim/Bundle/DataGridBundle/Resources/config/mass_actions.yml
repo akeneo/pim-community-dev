@@ -4,6 +4,7 @@ parameters:
     pim_datagrid.extension.mass_action.handler.edit.class:     Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\EditMassActionHandler
     pim_datagrid.extension.mass_action.handler.export.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\ExportMassActionHandler
     pim_datagrid.extension.mass_action.handler.delete.class:   Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteMassActionHandler
+    pim_datagrid.extension.mass_action.handler.product_delete.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Handler\DeleteProductsMassActionHandler
     pim_datagrid.extension.mass_action.dispatcher.class:       Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher
     pim_datagrid.extension.mass_action.handler.registry.class: Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionHandlerRegistry
     pim_datagrid.extension.mass_action.util.product_fields_builder.class: Pim\Bundle\DataGridBundle\Extension\MassAction\Util\ProductFieldsBuilder
@@ -59,6 +60,14 @@ services:
             - '@event_dispatcher'
         tags:
             - { name: pim_datagrid.extension.mass_action.handler, alias: mass_delete }
+
+    pim_datagrid.extension.mass_action.handler.product_delete:
+        class: %pim_datagrid.extension.mass_action.handler.product_delete.class%
+        parent: pim_datagrid.extension.mass_action.handler.delete
+        arguments:
+            - '@pim_catalog.manager.product'
+        tags:
+            - { name: pim_datagrid.extension.mass_action.handler, alias: product_mass_delete }
 
     # Mass actions
     pim_datagrid.extension.mass_action.type.export:
