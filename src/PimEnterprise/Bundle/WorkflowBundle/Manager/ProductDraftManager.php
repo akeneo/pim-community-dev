@@ -85,11 +85,12 @@ class ProductDraftManager
         $product = $productDraft->getProduct();
         $this->applier->apply($product, $productDraft);
 
+        $this->manager->handleMedia($product);
+
         $manager = $this->registry->getManagerForClass(get_class($productDraft));
         $manager->remove($productDraft);
         $manager->flush();
 
-        $this->manager->handleMedia($product);
         $this->manager->saveProduct($product, ['bypass_product_draft' => true]);
     }
 
