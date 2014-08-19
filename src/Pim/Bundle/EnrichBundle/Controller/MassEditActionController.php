@@ -111,13 +111,13 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function chooseAction()
     {
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
         $operator = $this->operatorRegistry->getOperator(
             $this->request->get('gridName')
         );
+
+        if ($this->isExecutable() === false) {
+            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
+        }
 
         $form = $this->getOperatorForm($operator);
 
@@ -148,10 +148,6 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function configureAction($operationAlias)
     {
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
         try {
             $operator = $this->operatorRegistry->getOperator(
                 $this->request->get('gridName')
@@ -162,6 +158,10 @@ class MassEditActionController extends AbstractDoctrineController
                 ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
+        }
+
+        if ($this->isExecutable() === false) {
+            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();
@@ -193,10 +193,6 @@ class MassEditActionController extends AbstractDoctrineController
      */
     public function performAction($operationAlias)
     {
-        if ($this->isExecutable() === false) {
-            return $this->redirectToRoute('pim_enrich_product_index');
-        }
-
         try {
             $operator = $this->operatorRegistry->getOperator(
                 $this->request->get('gridName')
@@ -207,6 +203,10 @@ class MassEditActionController extends AbstractDoctrineController
                 ->setObjectsToMassEdit($this->getObjects());
         } catch (\InvalidArgumentException $e) {
             throw $this->createNotFoundException($e->getMessage(), $e);
+        }
+
+        if ($this->isExecutable() === false) {
+            return $this->redirectToRoute($operator->getPerformedOperationRedirectionRoute());
         }
 
         $operator->initializeOperation();

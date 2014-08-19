@@ -35,12 +35,15 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
                     : $qb->expr()->notIn($rootAlias, $values);
                 $qb->andWhere($valueWhereCondition);
         }
-        $whereParts = $qb->getDQLPart('where')->getParts();
-        $qb->resetDQLPart('where');
 
-        foreach ($whereParts as $part) {
-            if (!is_string($part) || !strpos($part, 'entityIds')) {
-                $qb->andWhere($part);
+        if (null !== $qb->getDQLPart('where')) {
+            $whereParts = $qb->getDQLPart('where')->getParts();
+            $qb->resetDQLPart('where');
+
+            foreach ($whereParts as $part) {
+                if (!is_string($part) || !strpos($part, 'entityIds')) {
+                    $qb->andWhere($part);
+                }
             }
         }
 
@@ -55,6 +58,9 @@ class FamilyRepository extends ReferableEntityRepository implements ChoicesProvi
         // Allows hydration as object.
         // Family mass edit operation receives an array instead of a Family object
         $qb->select($qb->getRootAlias());
+
+        // remove limit of the query
+        $qb->setMaxResults(null);
     }
 
     /**

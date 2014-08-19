@@ -511,6 +511,14 @@ class NavigationContext extends RawMinkContext implements PageObjectAwareInterfa
     }
 
     /**
+     * @Given /^I should be on the families page$/
+     */
+    public function iShouldBeOnTheFamiliesPage()
+    {
+        $this->assertAddress($this->getPage('Family index')->getUrl());
+    }
+
+    /**
      * @param Category $category
      *
      * @Then /^I should be on the (category "([^"]*)") edit page$/

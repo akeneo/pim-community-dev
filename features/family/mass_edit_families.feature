@@ -37,3 +37,31 @@ Feature: Mass Edit Families
     But attribute "Name" should be optional in family "boots" for channel "Tablet"
     And attribute "Name" should be optional in family "sneakers" for channel "Tablet"
     And attribute "Name" should be optional in family "sandals" for channel "Tablet"
+
+  Scenario: Successfully return to the family page when cancelling family mass edit
+    Given the "footwear" catalog configuration
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I mass-edit families boots, sneakers and sandals
+    And I press the "Cancel" button
+    Then I should be on the families page
+
+  Scenario: Successfully mass edit more than 10 families
+    Given the "default" catalog configuration
+    And the following families:
+    | code     |
+    | first    |
+    | second   |
+    | third    |
+    | fourth   |
+    | fifth    |
+    | sixth    |
+    | seventh  |
+    | eigth    |
+    | ninth    |
+    | tenth    |
+    | eleventh |
+    And I am logged in as "Julia"
+    And I am on the families page
+    When I mass-edit families first, second, third, fourth, fifth, sixth, seventh, eigth, ninth, tenth and eleventh
+    Then I should see "Mass Edit (11 families)"
