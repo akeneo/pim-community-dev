@@ -3,6 +3,7 @@
 ## Improvements
 
 ## Bug fixes
+- Fixed disabled file input appearing as if it were enabled
 
 ## BC breaks
 
