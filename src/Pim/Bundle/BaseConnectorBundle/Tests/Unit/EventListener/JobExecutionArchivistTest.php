@@ -23,7 +23,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals(
             array(
-                EventInterface::AFTER_JOB_EXECUTION => 'afterJobExecution'
+                EventInterface::BEFORE_JOB_STATUS_UPGRADE => 'beforeStatusUpgrade'
             ),
             JobExecutionArchivist::getSubscribedEvents()
         );
@@ -70,7 +70,7 @@ class JobExecutionArchivistTest extends \PHPUnit_Framework_TestCase
         $bar->expects($this->once())->method('archive')->with($jobExecution);
 
         // Running the tested method
-        $this->archivist->afterJobExecution($event);
+        $this->archivist->beforeStatusUpgrade($event);
     }
 
     public function testGetArchives()
