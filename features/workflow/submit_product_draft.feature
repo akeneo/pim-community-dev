@@ -115,7 +115,6 @@ Feature: Submit a product changes product draft
     But the field Side view should contain "akeneo.jpg"
     And I should see that Side view is a modified value
 
-  @skip
   Scenario: Successfully propose a boolean attribute change
     When I check the "Handmade" switch
     And I save the product
