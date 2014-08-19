@@ -8,6 +8,7 @@ services:
         class: %pimee_enrich.form.subscriber.attribute_group_permissions.class%
         arguments:
             - '@pimee_security.manager.attribute_group_access'
+            - '@oro_security.security_facade'
 
     pimee_enrich.form.subscriber.category_permissions:
         class: %pimee_enrich.form.subscriber.category_permissions.class%
