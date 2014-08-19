@@ -25,7 +25,7 @@ class PublishedProductConsistencyException extends \Exception
      */
     public function __construct(
         $message = "",
-        $code = 0,
+        $code = 409,
         \Exception $previous = null,
         $route = null,
         $routeParams = array()
