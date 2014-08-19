@@ -38,7 +38,7 @@ class TextAreaType extends AbstractAttributeType
             ],
             'maxCharacters' => [
                 'name'      => 'maxCharacters',
-                'fieldType' => 'integer'
+                'fieldType' => 'text'
             ],
             'wysiwygEnabled' => [
                 'name'      => 'wysiwygEnabled',
