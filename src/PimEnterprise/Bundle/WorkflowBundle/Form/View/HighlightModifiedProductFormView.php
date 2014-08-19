@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Applier\ProductDraftChangesApplier;
  */
 class HighlightModifiedProductFormView implements ProductFormViewInterface
 {
-    /** @var ProductFormView */
+    /** @var ProductFormViewInterface */
     protected $productFormView;
 
     /** @var ProductDraftChangesApplier */
@@ -27,7 +27,7 @@ class HighlightModifiedProductFormView implements ProductFormViewInterface
     protected $urlGenerator;
 
     /**
-     * @param ProductFormView            $productFormView
+     * @param ProductFormViewInterface   $productFormView
      * @param ProductDraftChangesApplier $applier
      * @param UrlGeneratorInterface      $urlGenerator
      */

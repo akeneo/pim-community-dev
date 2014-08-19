@@ -218,7 +218,7 @@ class PublishedProductController extends AbstractController
      *
      * @param integer|string $id
      *
-     * @return Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function completenessAction($id)
     {
@@ -249,7 +249,7 @@ class PublishedProductController extends AbstractController
      *
      * @param integer|string $id
      *
-     * @return PublishedProduct
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
      *
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      */

@@ -13,7 +13,7 @@ class SortProductValuesHelper
     /**
      * Sorts the provided values by attribute group and sort order
      *
-     * @param AbstractProductValue[] $values
+     * @param \Pim\Bundle\CatalogBundle\Model\AbstractProductValue[] $values
      *
      * @return array
      */

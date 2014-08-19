@@ -18,7 +18,7 @@ interface ProductDraftOwnershipRepositoryInterface
      * @param UserInterface $user
      * @param integer       $limit
      *
-     * @return ProductDraft[]
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft[]
      */
     public function findApprovableByUser(UserInterface $user, $limit = null);
 }

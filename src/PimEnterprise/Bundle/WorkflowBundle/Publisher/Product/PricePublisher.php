@@ -3,7 +3,6 @@
 namespace PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
-use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 
 /**
@@ -30,8 +29,7 @@ class PricePublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        $copiedPrice = new $this->publishClassName();
-        $copiedPrice = new PublishedProductPrice();
+        $copiedPrice = $this->createNewPublishedProductPrice();
         $copiedPrice->setData($object->getData());
         $copiedPrice->setCurrency($object->getCurrency());
 
@@ -44,5 +42,13 @@ class PricePublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof AbstractProductPrice;
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
+     */
+    protected function createNewPublishedProductPrice()
+    {
+        return new $this->publishClassName();
     }
 }

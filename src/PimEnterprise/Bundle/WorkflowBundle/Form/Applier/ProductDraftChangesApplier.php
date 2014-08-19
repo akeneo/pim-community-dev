@@ -166,7 +166,7 @@ class ProductDraftChangesApplier
      * @param FormInterface $parent
      * @param array         &$errors
      *
-     * @return array
+     * @return \Symfony\Component\Form\FormError[]
      */
     protected function getFormErrors(FormInterface $form, FormInterface $parent = null, array &$errors = [])
     {

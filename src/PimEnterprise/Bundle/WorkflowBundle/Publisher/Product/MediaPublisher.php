@@ -46,7 +46,8 @@ class MediaPublisher implements PublisherInterface
         }
         $product = $options['product'];
         $value = $options['value'];
-        $copiedMedia = new $this->publishClassName();
+        $copiedMedia = $this->createNewPublishedProductMedia();
+
         if ($value->getData() && $value->getData()->getFilePath()) {
             $prefix = sprintf(
                 '%s-%s',
@@ -65,5 +66,13 @@ class MediaPublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof AbstractProductMedia;
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia
+     */
+    protected function createNewPublishedProductMedia()
+    {
+        return new $this->publishClassName();
     }
 }

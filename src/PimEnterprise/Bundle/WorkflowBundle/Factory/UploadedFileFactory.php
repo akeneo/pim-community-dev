@@ -30,6 +30,8 @@ class UploadedFileFactory
         try {
             return new UploadedFile($path, $originalName, $mimeType, $size, $error, $test);
         } catch (FileNotFoundException $e) {
+            //TODO: use a real logger...
+            error_log(sprintf('An error occured during the creation of the uploaded file: %s.', $e->getMessage()));
         }
     }
 }
