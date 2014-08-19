@@ -126,7 +126,7 @@ class LocaleAccessManager
      * @param Locale $locale
      * @param Group  $group
      *
-     * @return LocaleAccess
+     * @return \PimEnterprise\Bundle\SecurityBundle\Entity\LocaleAccess
      */
     protected function getLocaleAccess(Locale $locale, Group $group)
     {

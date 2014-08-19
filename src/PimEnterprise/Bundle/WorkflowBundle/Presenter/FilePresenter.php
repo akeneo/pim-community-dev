@@ -38,7 +38,7 @@ class FilePresenter implements PresenterInterface
     public function present($data, array $change)
     {
         $before = '';
-        if ($media = $data->getMedia()) {
+        if (null !== $media = $data->getMedia()) {
             if (null !== $media->getFilename() && null !== $media->getOriginalFilename()) {
                 $before = sprintf(
                     '<li class="base file">%s</li>',

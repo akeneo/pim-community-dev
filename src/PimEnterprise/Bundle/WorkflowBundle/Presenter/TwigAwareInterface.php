@@ -2,8 +2,6 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
-use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
-
 /**
  * Provides twig capabilities
  *
@@ -15,7 +13,7 @@ interface TwigAwareInterface
     /**
      * Set the twig environment
      *
-     * @param RendererInterface $twig
+     * @param \Twig_Environment $twig
      */
     public function setTwig(\Twig_Environment $twig);
 }

@@ -57,7 +57,7 @@ class ProductDraftOwnershipRepository implements ProductDraftOwnershipRepository
     /**
      * Get ids of categories the given user has ownership rights to
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return integer[]
      */

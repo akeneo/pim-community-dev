@@ -43,7 +43,7 @@ class PricesPresenter extends AbstractProductValuePresenter
     {
         $prices = [];
         foreach ($data as $price) {
-            if ($money = $price->getData()) {
+            if (null !== $money = $price->getData()) {
                 $prices[$price->getCurrency()] = sprintf('%s %s', $money, $price->getCurrency());
             }
         }

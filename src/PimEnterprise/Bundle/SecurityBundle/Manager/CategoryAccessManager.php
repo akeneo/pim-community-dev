@@ -119,9 +119,9 @@ class CategoryAccessManager
      * Grant access on a category to specified user groups, own implies edit which implies read
      *
      * @param CategoryInterface $category   the category
-     * @param Group[] $viewGroups the view user groups
-     * @param Group[] $editGroups the edit user groups
-     * @param Group[] $ownGroups  the own user groups
+     * @param Group[]           $viewGroups the view user groups
+     * @param Group[]           $editGroups the edit user groups
+     * @param Group[]           $ownGroups  the own user groups
      */
     public function setAccess(CategoryInterface $category, $viewGroups, $editGroups, $ownGroups)
     {

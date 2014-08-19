@@ -59,7 +59,7 @@ class ChainedComparator implements ComparatorInterface
     /**
      * Get the registered comparators
      *
-     * @return PresenterInterface[]
+     * @return ComparatorInterface[]
      */
     public function getComparators()
     {

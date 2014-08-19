@@ -40,7 +40,7 @@ class AssociationPublisher implements PublisherInterface
             throw new \LogicException('Published product must be known');
         }
         $published = $options['published'];
-        $copiedAssociation = new $this->publishClassName();
+        $copiedAssociation = $this->createNewPublishedAssociation();
         $copiedAssociation->setOwner($published);
         $copiedAssociation->setAssociationType($object->getAssociationType());
 
@@ -80,6 +80,14 @@ class AssociationPublisher implements PublisherInterface
         foreach ($object->getGroups() as $group) {
             $copiedAssociation->addGroup($group);
         }
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
+     */
+    protected function createNewPublishedAssociation()
+    {
+        return new $this->publishClassName();
     }
 
     /**

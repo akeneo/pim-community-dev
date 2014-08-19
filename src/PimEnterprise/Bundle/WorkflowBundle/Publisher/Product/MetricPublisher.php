@@ -29,7 +29,7 @@ class MetricPublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        $copiedMetric = new $this->publishClassName();
+        $copiedMetric = $this->createNewPublishedProductMetric();
         $copiedMetric->setData($object->getData());
         $copiedMetric->setBaseData($object->getBaseData());
         $copiedMetric->setUnit($object->getUnit());
@@ -45,5 +45,13 @@ class MetricPublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof AbstractMetric;
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
+     */
+    protected function createNewPublishedProductMetric()
+    {
+        return new $this->publishClassName();
     }
 }

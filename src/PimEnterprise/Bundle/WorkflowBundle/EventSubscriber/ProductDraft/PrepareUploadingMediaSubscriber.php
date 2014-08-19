@@ -52,7 +52,7 @@ class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
 
         foreach ($changes['values'] as $key => $change) {
             if (isset($change['media']) && $this->isUploadingMedia($change['media'])) {
-                if ($file = $this->factory->create(
+                if (null !== $file = $this->factory->create(
                     $change['media']['filePath'],
                     $change['media']['originalFilename'],
                     $change['media']['mimeType'],

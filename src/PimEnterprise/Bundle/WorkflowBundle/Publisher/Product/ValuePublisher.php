@@ -35,7 +35,7 @@ class ValuePublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        $publishedValue = new $this->publishClassName();
+        $publishedValue = $this->createNewPublishedProductValue();
         $publishedValue->setAttribute($object->getAttribute());
         $publishedValue->setLocale($object->getLocale());
         $publishedValue->setScope($object->getScope());
@@ -73,5 +73,13 @@ class ValuePublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof ProductValueInterface;
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
+     */
+    protected function createNewPublishedProductValue()
+    {
+        return new $this->publishClassName();
     }
 }

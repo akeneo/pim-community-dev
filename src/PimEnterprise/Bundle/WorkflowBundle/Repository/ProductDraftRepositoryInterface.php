@@ -16,15 +16,15 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     /**
      * Create the datagrid query builder
      *
-     * @return QueryBuilder
+     * @return \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder
      */
     public function createDatagridQueryBuilder();
 
     /**
      * Apply the context of the datagrid to the query
      *
-     * @param QueryBuilder   $qb
-     * @param integer|string $productId
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param integer|string                                                 $productId
      *
      * @return ProductDraftRepositoryInterface
      */
@@ -33,19 +33,19 @@ interface ProductDraftRepositoryInterface extends ObjectRepository
     /**
      * Apply filter for datagrid
      *
-     * @param QueryBuilder $qb
-     * @param string       $field
-     * @param string       $operator
-     * @param mixed        $value
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param string                                                         $field
+     * @param string                                                         $operator
+     * @param mixed                                                          $value
      */
     public function applyFilter($qb, $field, $operator, $value);
 
     /**
      * Apply filter for datagrid
      *
-     * @param QueryBuilder $qb
-     * @param string       $field
-     * @param string       $direction
+     * @param \Doctrine\ORM\QueryBuilder|\Doctrine\ODM\MongoDB\Query\Builder $qb
+     * @param string                                                         $field
+     * @param string                                                         $direction
      */
     public function applySorter($qb, $field, $direction);
 

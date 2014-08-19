@@ -51,7 +51,7 @@ class ProductPublisher implements PublisherInterface
      */
     public function publish($object, array $options = [])
     {
-        $published = new $this->publishClassName();
+        $published = $this->createNewPublishedProduct();
         $published->setOriginalProduct($object);
         $this->copyFamily($object, $published);
         $this->copyGroups($object, $published);
@@ -185,5 +185,13 @@ class ProductPublisher implements PublisherInterface
     public function supports($object)
     {
         return $object instanceof ProductInterface;
+    }
+
+    /**
+     * @return PublishedProductInterface
+     */
+    protected function createNewPublishedProduct()
+    {
+        return new $this->publishClassName();
     }
 }

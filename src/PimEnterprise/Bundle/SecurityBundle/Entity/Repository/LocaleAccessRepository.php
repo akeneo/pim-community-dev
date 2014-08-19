@@ -41,10 +41,10 @@ class LocaleAccessRepository extends EntityRepository
      * Revoke access to a locales
      * If excluded user groups are provided, access will not be revoked for these groups
      *
-     * @param Locale locale
-     * @param Group[] $excludedUserGroups
+     * @param Locale $locale
+     * @param array  $excludedUserGroups
      *
-     * @return integer
+     * @return mixed
      */
     public function revokeAccess(Locale $locale, array $excludedUserGroups = [])
     {
@@ -68,6 +68,7 @@ class LocaleAccessRepository extends EntityRepository
      *
      * @param string $accessLevel
      *
+     * @throws \LogicException
      * @return string
      */
     protected function getAccessField($accessLevel)

@@ -33,7 +33,7 @@ class CompletenessPublisher implements PublisherInterface
             throw new \LogicException('Published product must be known');
         }
         $published = $options['published'];
-        $copiedCompleteness = new $this->publishClassName();
+        $copiedCompleteness = $this->createNewPublishedProductCompleteness();
         $copiedCompleteness->setLocale($object->getLocale());
         $copiedCompleteness->setChannel($object->getChannel());
         $copiedCompleteness->setProduct($published);
@@ -42,6 +42,14 @@ class CompletenessPublisher implements PublisherInterface
         $copiedCompleteness->setRequiredCount($object->getRequiredCount());
 
         return $copiedCompleteness;
+    }
+
+    /**
+     * @return \PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+     */
+    protected function createNewPublishedProductCompleteness()
+    {
+        return new $this->publishClassName();
     }
 
     /**

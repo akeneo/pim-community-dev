@@ -28,8 +28,9 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
     protected $catAccessManager;
 
     /**
-     * @param GroupRepository       $groupRepository
-     * @param CategoryAccessManager $catAccessManager
+     * @param GroupRepository             $groupRepository
+     * @param CategoryAccessManager       $catAccessManager
+     * @param AttributeGroupAccessManager $attGrpAccessManager
      */
     public function __construct(
         GroupRepository $groupRepository,

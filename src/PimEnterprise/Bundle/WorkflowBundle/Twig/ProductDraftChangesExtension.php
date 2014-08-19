@@ -224,7 +224,7 @@ class ProductDraftChangesExtension extends \Twig_Extension
     /**
      * Create a fake value
      *
-     * @return ProductValue
+     * @return \Pim\Bundle\CatalogBundle\Model\ProductValueInterface
      */
     protected function createFakeValue()
     {

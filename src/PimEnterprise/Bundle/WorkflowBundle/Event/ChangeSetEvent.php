@@ -32,7 +32,7 @@ class ChangeSetEvent extends Event
     /**
      * Get the value
      *
-     * @return Value
+     * @return AbstractProductValue
      */
     public function getValue()
     {
