@@ -1,8 +1,8 @@
 @javascript
-Feature: Review a product changes product draft
+Feature: Review a product draft
   In order to control which data should be applied to a product
   As a product manager
-  I need to be able to review product changes product draft
+  I need to be able to review a product draft
 
   Background:
     Given a "clothing" catalog configuration
@@ -23,7 +23,7 @@ Feature: Review a product changes product draft
       | release_date-ecommerce    | 2014-05-14        |
       | length                    | 60 CENTIMETER     |
 
-  Scenario: Successfully accept an identifier attribute product changes product draft
+  Scenario: Successfully accept an identifier attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value        |
       | SKU   | your-jacket  |
@@ -35,7 +35,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     But the field SKU should contain "your-jacket"
 
-  Scenario: Successfully accept a text attribute product changes product draft
+  Scenario: Successfully accept a text attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field | value |
       | Name  | Coat  |
@@ -47,7 +47,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product Name should be "Coat"
 
-  Scenario: Successfully accept a textarea attribute product changes product draft
+  Scenario: Successfully accept a textarea attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field              | value           |
       | mobile Description | An awesome coat |
@@ -59,7 +59,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product mobile Description should be "An awesome coat"
 
-  Scenario: Successfully accept a number attribute product changes product draft
+  Scenario: Successfully accept a number attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | tab       | field                     | value |
       | Marketing | ecommerce Number in stock | 20    |
@@ -79,7 +79,7 @@ Feature: Review a product changes product draft
     And the product print Number in stock should be "50"
     And the product tablet Number in stock should be "200"
 
-  Scenario: Successfully accept a prices attribute product changes product draft
+  Scenario: Successfully accept a prices attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab       | field   | value |
       | Marketing | $ Price | 90    |
@@ -94,7 +94,7 @@ Feature: Review a product changes product draft
     Then the product Price in $ should be "90.00"
     Then the product Price in € should be "150.00"
 
-  Scenario: Successfully accept a simpleselect attribute product changes product draft
+  Scenario: Successfully accept a simpleselect attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field        | value |
       | Manufacturer | Nike  |
@@ -106,7 +106,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product Manufacturer should be "Nike"
 
-  Scenario: Successfully accept a multiselect attribute product changes product draft
+  Scenario: Successfully accept a multiselect attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field              | value     |
       | Weather conditions | Hot, Cold |
@@ -118,7 +118,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product Weather conditions should be "Cold, Dry, Hot and Wet"
 
-  Scenario: Successfully accept a file attribute product changes product draft
+  Scenario: Successfully accept a file attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab   | field     | value            |
       | Media | Datasheet | file(akeneo.txt) |
@@ -131,7 +131,7 @@ Feature: Review a product changes product draft
     And I visit the "Media" group
     Then I should see "akeneo.txt"
 
-  Scenario: Successfully accept an image attribute product changes product draft
+  Scenario: Successfully accept an image attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | tab   | field     | value            |
       | Media | Side view | file(akeneo.jpg) |
@@ -144,7 +144,7 @@ Feature: Review a product changes product draft
     And I visit the "Media" group
     Then I should see "akeneo.jpg"
 
-  Scenario: Successfully accept a boolean attribute product changes product draft
+  Scenario: Successfully accept a boolean attribute from a product draft
     Given Mary proposed the following change to "my-jacket":
       | field    | value      |
       | Handmade | state(yes) |
@@ -156,7 +156,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product Handmade should be "1"
 
-  Scenario: Successfully accept a date attribute product changes product draft
+  Scenario: Successfully accept a date attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | field                  | value      |
       | ecommerce Release date | 2014-05-20 |
@@ -168,7 +168,7 @@ Feature: Review a product changes product draft
     When I visit the "Attributes" tab
     Then the product ecommerce Release date should be "2014-05-20"
 
-  Scenario: Successfully accept a metric attribute product changes product draft
+  Scenario: Successfully accept a metric attribute from a product draft
     Given Mary proposed the following scopable change to "my-jacket":
       | tab   | field  | value |
       | Sizes | Length | 40    |

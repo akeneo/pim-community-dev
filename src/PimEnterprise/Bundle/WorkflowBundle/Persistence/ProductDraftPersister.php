@@ -154,6 +154,15 @@ class ProductDraftPersister implements ProductPersister
      */
     private function persistProductDraft(ObjectManager $manager, ProductInterface $product)
     {
+        // refresh the values of the product to not have the changes made by binding the request to the form
+        // this is hackish, but no elegant solution has been found
+        foreach ($product->getValues() as $value) {
+            $manager->refresh($value);
+            foreach ($value->getPrices() as $price) {
+                $manager->refresh($price);
+            }
+        }
+
         if (null === $submittedData = $this->collector->getData()) {
             throw new \LogicException('No product data were collected');
         }
@@ -190,7 +199,7 @@ class ProductDraftPersister implements ProductPersister
      *
      * @return \Symfony\Component\Security\Core\User\UserInterface
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     private function getUser()
     {
