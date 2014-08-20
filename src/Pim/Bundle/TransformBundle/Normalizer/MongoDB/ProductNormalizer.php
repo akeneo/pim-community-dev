@@ -89,6 +89,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
 
         $data['groupIds']       = $this->normalizeGroups($product->getGroups());
         $data['categoryIds']    = $this->normalizeCategories($product->getCategories());
+        $data['treeIds']        = $this->normalizeTrees($product->getCategories());
         $data['associations']   = $this->normalizeAssociations($product->getAssociations(), $context);
         $data['values']         = $this->normalizeValues($product->getValues(), $context);
         $data['normalizedData'] = $this->normalizer->normalize($product, 'mongodb_json');
@@ -164,7 +165,7 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
     /**
      * Normalize the categories of the product
      *
-     * @param Category[]|Collection $categories
+     * @param CategoryInterface[]|Collection $categories
      *
      * @return array
      */
@@ -177,5 +178,23 @@ class ProductNormalizer implements NormalizerInterface, SerializerAwareInterface
         }
 
         return $data;
+    }
+
+    /**
+     * Normalize the trees of the product
+     *
+     * @param CategoryInterface[]|Collection $categories
+     *
+     * @return array
+     */
+    protected function normalizeTrees($categories = [])
+    {
+        $data = [];
+
+        foreach ($categories as $category) {
+            $data[] = $category->getRoot();
+        }
+
+        return array_unique($data);
     }
 }

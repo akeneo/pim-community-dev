@@ -71,6 +71,8 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
 
     public $categoryIds = [];
 
+    public $treeIds = [];
+
     /**
      * @var boolean $enabled
      */
@@ -589,6 +591,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
         if (!$this->categories->contains($category)) {
             $this->categories->add($category);
             $category->addProduct($this);
+            $this->treeIds[] = $category->getRoot();
         }
 
         return $this;
@@ -603,6 +606,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     public function removeCategory(CategoryInterface $category)
     {
         $this->categories->removeElement($category);
+        unset($this->treeIds[array_search($category->getRoot(), $this->treeIds)]);
 
         return $this;
     }

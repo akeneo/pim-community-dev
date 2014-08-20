@@ -69,6 +69,8 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $category1->getId()->willReturn(12);
         $category2->getId()->willReturn(34);
+        $category1->getRoot()->willReturn(1);
+        $category2->getRoot()->willReturn(3);
 
         $group1->getId()->willReturn(56);
         $group2->getId()->willReturn(78);
@@ -82,7 +84,7 @@ class ProductNormalizerSpec extends ObjectBehavior
         $product->getAssociations()->willReturn([$assoc1, $assoc2]);
         $product->getValues()->willReturn([$value1, $value2]);
 
-        
+
         $context = ['_id' => $mongoId];
 
         $serializer->normalize($product, 'mongodb_json')->willReturn(['data' => 'data', 'completenesses' => 'completenesses']);
@@ -99,6 +101,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'enabled'        => true,
             'groupIds'       => [56, 78],
             'categoryIds'    => [12, 34],
+            'treeIds'        => [1, 3],
             'associations'   => ['my_assoc_1', 'my_assoc_2'],
             'values'         => ['my_value_1', 'my_value_2'],
             'normalizedData' => ['data' => 'data'],
@@ -129,6 +132,8 @@ class ProductNormalizerSpec extends ObjectBehavior
 
         $category1->getId()->willReturn(12);
         $category2->getId()->willReturn(34);
+        $category1->getRoot()->willReturn(1);
+        $category2->getRoot()->willReturn(3);
 
         $group1->getId()->willReturn(56);
         $group2->getId()->willReturn(78);
@@ -158,6 +163,7 @@ class ProductNormalizerSpec extends ObjectBehavior
             'enabled'        => true,
             'groupIds'       => [56, 78],
             'categoryIds'    => [12, 34],
+            'treeIds'        => [1, 3],
             'associations'   => ['my_assoc_1', 'my_assoc_2'],
             'values'         => ['my_value_1', 'my_value_2'],
             'normalizedData' => ['data' => 'data'],

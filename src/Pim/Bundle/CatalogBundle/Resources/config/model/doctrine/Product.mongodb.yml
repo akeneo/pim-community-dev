@@ -13,6 +13,11 @@ Pim\Bundle\CatalogBundle\Model\Product:
                 background: true
             keys:
                 categoryIds: 1
+        treeIds:
+            options:
+                background: true
+            keys:
+                treeIds: 1
         groupIds:
             options:
                 background: true
@@ -60,6 +65,8 @@ Pim\Bundle\CatalogBundle\Model\Product:
             targetEntity: Pim\Bundle\CatalogBundle\Entity\Category
             idsField: categoryIds
         categoryIds:
+            type: collection
+        treeIds:
             type: collection
         associations:
             embedded: true
