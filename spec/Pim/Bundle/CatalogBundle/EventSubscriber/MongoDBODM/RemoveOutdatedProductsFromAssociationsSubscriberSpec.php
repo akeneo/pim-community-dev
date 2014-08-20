@@ -9,6 +9,9 @@ use Pim\Bundle\CatalogBundle\Event\ProductEvents;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
 
+/**
+ * @require Doctrine\ODM\MongoDB\DocumentManager
+ */
 class RemoveOutdatedProductsFromAssociationsSubscriberSpec extends ObjectBehavior
 {
     function let(ProductRepository $productRepository, AssociationTypeRepository $assocTypeRepository)
