@@ -141,6 +141,11 @@ class ProductRepository extends DocumentRepository implements
             );
         }
 
+        $treeId = $channel->getCategory()->getId();
+        $qb->addAnd(
+            $qb->expr()->field('treeIds')->in([$treeId])
+        );
+
         return $qb;
     }
 
