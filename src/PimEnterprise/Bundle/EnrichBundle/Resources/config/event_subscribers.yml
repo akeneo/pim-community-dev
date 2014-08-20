@@ -20,3 +20,4 @@ services:
         class: %pimee_enrich.form.subscriber.locale_permissions.class%
         arguments:
             - '@pimee_security.manager.locale_access'
+            - '@oro_security.security_facade'

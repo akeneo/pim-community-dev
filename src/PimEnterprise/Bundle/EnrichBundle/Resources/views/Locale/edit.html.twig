@@ -4,6 +4,7 @@
 
 {% block head_script %}
     {{ parent() }}
+    {% if form.permissions is defined %}
     <script type="text/javascript">
         require(
             ['jquery', 'pimee/manage-permissions'],
@@ -29,6 +30,7 @@
                 });
             });
     </script>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -51,7 +53,12 @@
 
         {{ elements.page_header(title, buttons, null, null, elements.updated(form.vars.id)) }}
 
-        {{ elements.form_navbar(['Properties', 'Permissions']) }}
+        {% set tabs = ['Properties'] %}
+        {% if form.permissions is defined %}
+            {% set tabs = tabs|merge(['Permissions']) %}
+        {% endif %}
+
+        {{ elements.form_navbar(tabs) }}
 
         <div class="row-fluid tab-content">
             {{ elements.form_errors(form) }}
@@ -64,9 +71,11 @@
                     'pane.accordion.general_properties': generalProperties
                 }) }}
             </div>
+            {% if form.permissions is defined %}
             <div class="tab-pane" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
+            {% endif %}
         </div>
     {{ form_end(form) }}
 {% endblock %}
