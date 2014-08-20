@@ -87,7 +87,7 @@ class IsAssociatedFilter extends BooleanFilter
         }
 
         if (!$associationTypeId) {
-            throw new \LogicalException('The current association type must be configured');
+            throw new \LogicException('The current association type must be configured');
         }
 
         $associationType = $this->assocTypeRepository->findOneBy(['id' => $associationTypeId]);
@@ -102,7 +102,7 @@ class IsAssociatedFilter extends BooleanFilter
     {
         $productId = $this->extractor->getDatagridParameter('product');
         if (!$productId) {
-            throw new \LogicalException('The current product type must be configured');
+            throw new \LogicException('The current product type must be configured');
         }
         $product = $this->util->getProductManager()->find($productId);
 
