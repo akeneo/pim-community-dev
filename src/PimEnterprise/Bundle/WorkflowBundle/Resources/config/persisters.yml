@@ -13,3 +13,4 @@ services:
             - '@event_dispatcher'
             - '@pimee_workflow.collector.product_submitted_changes'
             - '@pimee_workflow.change_set_computer'
+            - %pim_catalog.storage_driver%

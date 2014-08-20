@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Persistence;
 
+use Pim\Bundle\CatalogBundle\DependencyInjection\PimCatalogExtension;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -50,6 +51,9 @@ class ProductDraftPersister implements ProductPersister
     /** @var ChangeSetComputerInterface */
     protected $changeSet;
 
+    /** @var string */
+    protected $storageDriver;
+
     /**
      * @param ManagerRegistry                 $registry
      * @param CompletenessManager             $completenessManager
@@ -59,6 +63,7 @@ class ProductDraftPersister implements ProductPersister
      * @param EventDispatcherInterface        $dispatcher
      * @param ChangesCollector                $collector
      * @param ChangeSetComputerInterface      $changeSet
+     * @param string                          $storageDriver
      */
     public function __construct(
         ManagerRegistry $registry,
@@ -68,7 +73,8 @@ class ProductDraftPersister implements ProductPersister
         ProductDraftRepositoryInterface $repository,
         EventDispatcherInterface $dispatcher,
         ChangesCollector $collector,
-        ChangeSetComputerInterface $changeSet
+        ChangeSetComputerInterface $changeSet,
+        $storageDriver
     ) {
         $this->registry = $registry;
         $this->completenessManager = $completenessManager;
@@ -78,6 +84,7 @@ class ProductDraftPersister implements ProductPersister
         $this->dispatcher = $dispatcher;
         $this->collector = $collector;
         $this->changeSet = $changeSet;
+        $this->storageDriver = $storageDriver;
     }
 
     /**
@@ -105,6 +112,7 @@ class ProductDraftPersister implements ProductPersister
         if ($isOwner || $options['bypass_product_draft'] || !$manager->contains($product)) {
             $this->persistProduct($manager, $product, $options);
         } else {
+            $this->refreshProductValues($manager, $product);
             $this->persistProductDraft($manager, $product);
         }
     }
@@ -116,7 +124,7 @@ class ProductDraftPersister implements ProductPersister
      * @param ProductInterface $product
      * @param array            $options
      */
-    private function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
+    protected function persistProduct(ObjectManager $manager, ProductInterface $product, array $options)
     {
         $options = array_merge(
             [
@@ -152,17 +160,8 @@ class ProductDraftPersister implements ProductPersister
      *
      * @throws \LogicException
      */
-    private function persistProductDraft(ObjectManager $manager, ProductInterface $product)
+    protected function persistProductDraft(ObjectManager $manager, ProductInterface $product)
     {
-        // refresh the values of the product to not have the changes made by binding the request to the form
-        // this is hackish, but no elegant solution has been found
-        foreach ($product->getValues() as $value) {
-            $manager->refresh($value);
-            foreach ($value->getPrices() as $price) {
-                $manager->refresh($price);
-            }
-        }
-
         if (null === $submittedData = $this->collector->getData()) {
             throw new \LogicException('No product data were collected');
         }
@@ -201,7 +200,7 @@ class ProductDraftPersister implements ProductPersister
      *
      * @throws \LogicException
      */
-    private function getUser()
+    protected function getUser()
     {
         if (null === $token = $this->securityContext->getToken()) {
             throw new \LogicException('No user logged in');
@@ -212,5 +211,41 @@ class ProductDraftPersister implements ProductPersister
         }
 
         return $user;
+    }
+
+    /**
+     * Refresh the values of the product to not have the changes made by binding the request to the form
+     * This is hackish, but no elegant solution has been found
+     *
+     * @param ObjectManager    $manager
+     * @param ProductInterface $product
+     */
+    protected function refreshProductValues(ObjectManager $manager, ProductInterface $product)
+    {
+        if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
+            foreach ($product->getValues() as $value) {
+                $manager->refresh($value);
+                foreach ($value->getPrices() as $price) {
+                    $manager->refresh($price);
+                }
+            }
+        } else {
+            // because of Mongo (values are embedded) we'll have to refresh the whole product instead
+            // of refreshing only the values
+            // so we'll have to store all other data that could have changed
+
+            $enabled = $product->isEnabled();
+            $categories = $product->getCategories();
+            $associations = $product->getAssociations();
+
+            $manager->refresh($product);
+
+            $product->setEnabled($enabled);
+            $product->getCategories()->clear();
+            foreach ($categories as $category) {
+                $product->addCategory($category);
+            }
+            $product->setAssociations($associations->toArray());
+        }
     }
 }
