@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Doctrine\Common\Collections\ArrayCollection;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
@@ -21,15 +22,20 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     /** @var CategoryAccessManager */
     protected $accessManager;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /** @var array store the previous roles to be able to do a diff of added/removed */
     protected $previousRoles = ['view' => [], 'edit' => [], 'own' => []];
 
     /**
      * @param CategoryAccessManager $accessManager
+     * @param SecurityFacade        $securityFacade
      */
-    public function __construct(CategoryAccessManager $accessManager)
+    public function __construct(CategoryAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager = $accessManager;
+        $this->accessManager  = $accessManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -51,7 +57,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        if (!$this->isValidTree($event)) {
+        if (!$this->isApplicable($event)) {
             return;
         }
 
@@ -67,7 +73,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (!$this->isValidTree($event)) {
+        if (!$this->isApplicable($event)) {
             return;
         }
 
@@ -93,7 +99,7 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        if (!$this->isValidTree($event)) {
+        if (!$this->isApplicable($event)) {
             return;
         }
 
@@ -150,14 +156,16 @@ class CategoryPermissionsSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Predicate to know form event contains valid tree
+     * Indicates whether the permissions should be added to the form
      *
      * @param FormEvent $event
      *
      * @return boolean
      */
-    protected function isValidTree(FormEvent $event)
+    protected function isApplicable(FormEvent $event)
     {
-        return null !== $event->getData() && null !== $event->getData()->getId();
+        return null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && $this->securityFacade->isGranted('pimee_enrich_category_edit_permissions');
     }
 }

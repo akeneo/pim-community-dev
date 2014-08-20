@@ -6,6 +6,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 
 /**
@@ -16,17 +17,20 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
  */
 class LocalePermissionsSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var LocaleAccessManager
-     */
+    /** @var LocaleAccessManager */
     protected $accessManager;
+
+    /** @var SecurityFacade */
+    protected $securityFacade;
 
     /**
      * @param LocaleAccessManager $accessManager
+     * @param SecurityFacade      $securityFacade
      */
-    public function __construct(LocaleAccessManager $accessManager)
+    public function __construct(LocaleAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager = $accessManager;
+        $this->accessManager  = $accessManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -35,9 +39,24 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return array(
+            FormEvents::PRE_SET_DATA  => 'preSetData',
             FormEvents::POST_SET_DATA => 'postSetData',
             FormEvents::POST_SUBMIT   => 'postSubmit'
         );
+    }
+
+    /**
+     * Add the permissions subform to the form
+     *
+     * @param FormEvent $event
+     */
+    public function preSetData(FormEvent $event)
+    {
+        if (!$this->isApplicable($event)) {
+            return;
+        }
+
+        $event->getForm()->add('permissions', 'pimee_enrich_locale_permissions');
     }
 
     /**
@@ -49,7 +68,7 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
+        if (!$this->isApplicable($event)) {
             return;
         }
 
@@ -65,7 +84,7 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
+        if (!$this->isApplicable($event)) {
             return;
         }
 
@@ -75,5 +94,19 @@ class LocalePermissionsSubscriber implements EventSubscriberInterface
             $editUserGroups = $form->get('permissions')->get('edit')->getData();
             $this->accessManager->setAccess($event->getData(), $viewUserGroups, $editUserGroups);
         }
+    }
+
+    /**
+     * Indicates whether the permissions should be added to the form
+     *
+     * @param FormEvent $event
+     *
+     * @return boolean
+     */
+    protected function isApplicable(FormEvent $event)
+    {
+        return null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && $this->securityFacade->isGranted('pimee_enrich_locale_edit_permissions');
     }
 }

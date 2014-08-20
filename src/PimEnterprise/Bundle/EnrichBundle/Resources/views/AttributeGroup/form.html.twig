@@ -4,7 +4,7 @@
 
 {% set editMode = form.vars.value.id ? true : false %}
 
-{% if editMode %}
+{% if form.permissions is defined %}
     <script type="text/javascript">
         require(
             ['jquery', 'pimee/manage-permissions'],
@@ -61,7 +61,7 @@
     {% set tabs = ['Properties'] %}
     {% if editMode %}
         {% set tabs = tabs|merge(['Attributes']) %}
-        {% if resource_granted('pimee_enrich_attribute_group_edit_permissions') %}
+        {% if form.permissions is defined %}
             {% set tabs = tabs|merge(['Permissions']) %}
         {% endif %}
         {% set tabs = tabs|merge(['History']) %}
@@ -80,9 +80,11 @@
         {% if editMode %}
             {% include 'PimEnrichBundle:AttributeGroup:_attributes.html.twig' %}
 
+            {% if form.permissions is defined %}
             <div class="tab-pane" id="permissions">
                 {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
             </div>
+            {% endif %}
 
             <div class="tab-pane" id="history">
                 {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}

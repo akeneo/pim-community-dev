@@ -6,6 +6,7 @@ use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 
 /**
@@ -21,12 +22,17 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     protected $accessManager;
 
+    /** @var SecurityFacade */
+    protected $securityFacade;
+
     /**
      * @param AttributeGroupAccessManager $accessManager
+     * @param SecurityFacade              $securityFacade
      */
-    public function __construct(AttributeGroupAccessManager $accessManager)
+    public function __construct(AttributeGroupAccessManager $accessManager, SecurityFacade $securityFacade)
     {
-        $this->accessManager = $accessManager;
+        $this->accessManager  = $accessManager;
+        $this->securityFacade = $securityFacade;
     }
 
     /**
@@ -48,7 +54,11 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     public function preSetData(FormEvent $event)
     {
-        $event->getForm()->add('permissions', 'pimee_enrich_attribute_group_permissions');
+        if (null !== $event->getData()
+            && $this->securityFacade->isGranted('pimee_enrich_attribute_group_edit_permissions')
+        ) {
+            $event->getForm()->add('permissions', 'pimee_enrich_attribute_group_permissions');
+        }
     }
 
     /**
@@ -60,13 +70,14 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSetData(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
-            return;
+        if (null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && $this->securityFacade->isGranted('pimee_enrich_attribute_group_edit_permissions')
+        ) {
+            $form = $event->getForm()->get('permissions');
+            $form->get('view')->setData($this->accessManager->getViewUserGroups($event->getData()));
+            $form->get('edit')->setData($this->accessManager->getEditUserGroups($event->getData()));
         }
-
-        $form = $event->getForm()->get('permissions');
-        $form->get('view')->setData($this->accessManager->getViewUserGroups($event->getData()));
-        $form->get('edit')->setData($this->accessManager->getEditUserGroups($event->getData()));
     }
 
     /**
@@ -76,15 +87,16 @@ class AttributeGroupPermissionsSubscriber implements EventSubscriberInterface
      */
     public function postSubmit(FormEvent $event)
     {
-        if (null === $event->getData() || null === $event->getData()->getId()) {
-            return;
-        }
-
-        $form = $event->getForm();
-        if ($form->isValid()) {
-            $viewRoles = $form->get('permissions')->get('view')->getData();
-            $editRoles = $form->get('permissions')->get('edit')->getData();
-            $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+        if (null !== $event->getData()
+            && null !== $event->getData()->getId()
+            && $this->securityFacade->isGranted('pimee_enrich_attribute_group_edit_permissions')
+        ) {
+            $form = $event->getForm();
+            if ($form->isValid()) {
+                $viewRoles = $form->get('permissions')->get('view')->getData();
+                $editRoles = $form->get('permissions')->get('edit')->getData();
+                $this->accessManager->setAccess($event->getData(), $viewRoles, $editRoles);
+            }
         }
     }
 }

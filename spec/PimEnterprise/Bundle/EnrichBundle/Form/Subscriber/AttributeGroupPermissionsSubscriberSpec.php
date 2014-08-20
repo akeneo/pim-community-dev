@@ -7,14 +7,34 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
 use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 
 class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
 {
-    function let(AttributeGroupAccessManager $accessManager)
-    {
-        $this->beConstructedWith($accessManager);
+    function let(
+        AttributeGroupAccessManager $manager,
+        SecurityFacade $securityFacade,
+        FormEvent $event,
+        Form $form,
+        AttributeGroup $group,
+        Form $viewForm,
+        Form $editForm
+    ) {
+        $event->getForm()->willReturn($form);
+        $event->getData()->willReturn($group);
+
+        $form->isValid()->willReturn(true);
+        $form->get('permissions')->willReturn($form);
+        $form->get('view')->willReturn($viewForm);
+        $form->get('edit')->willReturn($editForm);
+
+        $group->getId()->willReturn(1);
+
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
+
+        $this->beConstructedWith($manager, $securityFacade);
     }
 
     function it_is_an_event_subscriber()
@@ -22,7 +42,7 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
-    function it_subscribes_to_post_set_data_and_post_submit_form_events()
+    function it_subscribes_to_pre_and_post_set_data_and_post_submit_form_events()
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
@@ -33,32 +53,17 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_permissions_to_the_form(FormEvent $event, Form $form)
+    function it_adds_permissions_to_the_form($event, $form)
     {
-        $event->getForm()->willReturn($form);
         $form->add('permissions', 'pimee_enrich_attribute_group_permissions')->shouldBeCalled();
 
         $this->preSetData($event);
     }
 
-    function it_injects_defined_user_groups_in_the_form_data(
-        FormEvent $event,
-        AttributeGroup $group,
-        Form $form,
-        Form $viewForm,
-        Form $editForm,
-        $accessManager
-    ) {
-        $event->getData()->willReturn($group);
-        $group->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
-        $form->get('permissions')->willReturn($form);
-        $form->get('view')->willReturn($viewForm);
-        $form->get('edit')->willReturn($editForm);
-
-        $accessManager->getViewUserGroups($group)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditUserGroups($group)->willReturn(['bar', 'baz']);
+    function it_injects_defined_user_groups_in_the_form_data($event, $group, $viewForm, $editForm, $manager)
+    {
+        $manager->getViewUserGroups($group)->willReturn(['foo', 'bar', 'baz']);
+        $manager->getEditUserGroups($group)->willReturn(['bar', 'baz']);
 
         $viewForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();
@@ -66,43 +71,20 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_persists_the_selected_permissions_if_the_form_is_valid(
-        FormEvent $event,
-        AttributeGroup $group,
-        Form $form,
-        Form $viewForm,
-        Form $editForm,
-        $accessManager
-    ) {
-        $event->getData()->willReturn($group);
-        $group->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
-        $form->get('permissions')->willReturn($form);
-        $form->get('view')->willReturn($viewForm);
-        $form->get('edit')->willReturn($editForm);
-
+    function it_persists_the_selected_permissions_if_the_form_is_valid($event, $group, $viewForm, $editForm, $manager)
+    {
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
 
-        $accessManager->setAccess($group, ['one', 'two'], ['three'])->shouldBeCalled();
+        $manager->setAccess($group, ['one', 'two'], ['three'])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
 
-    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
-        FormEvent $event,
-        AttributeGroup $group,
-        Form $form,
-        $accessManager
-    ) {
-        $event->getData()->willReturn($group);
-
-        $event->getForm()->willReturn($form);
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager) {
         $form->isValid()->willReturn(false);
 
-        $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
+        $manager->setAccess(Argument::cetera())->shouldNotBeCalled();
 
         $this->postSubmit($event);
     }

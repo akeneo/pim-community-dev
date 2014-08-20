@@ -5,8 +5,10 @@
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
 - PIM-2975: validation fails when a draft is submitted
+- Don't allow users without corresponding rights to edit entity permissions
 
 ## BC breaks
+- Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/AttributeGroupPermissionsSubscriber`, `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/CategoryPermissionsSubscriber` and `src/PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/LocalePermissionsSubscriber` to inject `Oro\Bundle\SecurityBundle\SecurityFacade` as the second argument
 
 # 1.0.0-RC2
 

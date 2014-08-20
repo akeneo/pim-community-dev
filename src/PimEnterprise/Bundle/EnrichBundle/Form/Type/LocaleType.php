@@ -23,7 +23,6 @@ class LocaleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('code', 'text', ['disabled' => true]);
-        $builder->add('permissions', 'pimee_enrich_locale_permissions');
 
         foreach ($this->subscribers as $subscriber) {
             $builder->addEventSubscriber($subscriber);

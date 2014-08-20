@@ -15,7 +15,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\JobProfileAccessManager;
 class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
 {
     function let(
-        JobProfileAccessManager $accessManager,
+        JobProfileAccessManager $manager,
         SecurityFacade $securityFacade,
         GroupRepository $userGroupRepository,
         FormEvent $event,
@@ -24,11 +24,17 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         Form $executeForm,
         Form $editForm
     ) {
-        $this->beConstructedWith($accessManager, $securityFacade, $userGroupRepository);
+        $this->beConstructedWith($manager, $securityFacade, $userGroupRepository);
+
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
+
+        $jobInstance->getId()->willReturn(1);
+        $jobInstance->getType()->willReturn('import');
 
         $event->getData()->willReturn($jobInstance);
         $event->getForm()->willReturn($form);
 
+        $form->isValid()->willReturn(true);
         $form->get('permissions')->willReturn($form);
         $form->get('execute')->willReturn($executeForm);
         $form->get('edit')->willReturn($editForm);
@@ -39,7 +45,7 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->shouldImplement('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
-    function it_subscribes_to_post_set_data_and_post_submit_form_events()
+    function it_subscribes_to_pre_and_post_set_data_and_post_submit_form_events()
     {
         $this->getSubscribedEvents()->shouldReturn(
             [
@@ -50,25 +56,17 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_permissions_to_the_form(FormEvent $event, Form $form)
+    function it_adds_permissions_to_the_form($event, $form)
     {
-        $event->getForm()->willReturn($form);
         $form->add('permissions', 'pimee_import_export_job_profile_permissions')->shouldBeCalled();
 
         $this->preSetData($event);
     }
 
-    function it_injects_defined_user_groups_in_the_form_data(
-        $event,
-        $jobInstance,
-        $executeForm,
-        $editForm,
-        $accessManager
-    ) {
-        $jobInstance->getId()->willReturn(1);
-
-        $accessManager->getExecuteUserGroups($jobInstance)->willReturn(['foo', 'bar', 'baz']);
-        $accessManager->getEditUserGroups($jobInstance)->willReturn(['bar', 'baz']);
+    function it_injects_defined_user_groups_in_the_form_data($event, $jobInstance, $executeForm, $editForm, $manager)
+    {
+        $manager->getExecuteUserGroups($jobInstance)->willReturn(['foo', 'bar', 'baz']);
+        $manager->getEditUserGroups($jobInstance)->willReturn(['bar', 'baz']);
 
         $executeForm->setData(['foo', 'bar', 'baz'])->shouldBeCalled();
         $editForm->setData(['bar', 'baz'])->shouldBeCalled();
@@ -76,75 +74,49 @@ class JobProfilePermissionsSubscriberSpec extends ObjectBehavior
         $this->postSetData($event);
     }
 
-    function it_persists_all_user_groups_on_creation(
-        $event,
-        $form,
-        $jobInstance,
-        $userGroupRepository,
-        $accessManager
-    ) {
-        $form->isValid()->willReturn(true);
+    function it_persists_all_user_groups_on_creation($event, $form, $jobInstance, $userGroupRepository, $manager)
+    {
         $jobInstance->getId()->willReturn(null);
-        $jobInstance->getType()->willReturn('import');
         $userGroupRepository->findAll()->willReturn(['foo']);
 
-        $accessManager->setAccess($jobInstance, ['foo'], ['foo'])->shouldBeCalled();
+        $manager->setAccess($jobInstance, ['foo'], ['foo'])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
 
     function it_persists_the_selected_permissions_if_the_form_is_valid(
         $event,
-        $form,
         $jobInstance,
         $executeForm,
         $editForm,
-        $accessManager,
-        $securityFacade
+        $manager
     ) {
-        $jobInstance->getType()->willReturn('import');
-        $jobInstance->getId()->willReturn(1);
-
-        $form->isValid()->willReturn(true);
-        $securityFacade->isGranted(Argument::any())->willReturn(true);
-
         $executeForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
 
-        $accessManager->setAccess($jobInstance, ['one', 'two'], ['three'])->shouldBeCalled();
+        $manager->setAccess($jobInstance, ['one', 'two'], ['three'])->shouldBeCalled();
 
         $this->postSubmit($event);
     }
 
-    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
-        FormEvent $event,
-        JobInstance $jobInstance,
-        $form,
-        $accessManager
-    ) {
-        $jobInstance->getType()->willReturn('import');
-        $jobInstance->getId()->willReturn(1);
-
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager)
+    {
         $form->isValid()->willReturn(false);
-        $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
+        $manager->setAccess(Argument::cetera())->shouldNotBeCalled();
 
         $this->postSubmit($event);
     }
 
     function it_does_not_persist_the_selected_permissions_if_user_has_not_permissions_to_do_it(
         $event,
-        $jobInstance,
         $form,
-        $accessManager,
+        $manager,
         $securityFacade
     ) {
-        $jobInstance->getType()->willReturn('import');
-        $jobInstance->getId()->willReturn(1);
-
         $securityFacade->isGranted(Argument::any())->willReturn(false);
         $form->isValid()->willReturn(true);
 
-        $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();
+        $manager->setAccess(Argument::cetera())->shouldNotBeCalled();
 
         $this->postSubmit($event);
     }
