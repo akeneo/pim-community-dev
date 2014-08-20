@@ -48,6 +48,7 @@ class IsAssociatedFilterSpec extends ObjectBehavior
         AbstractProduct $productAssociatedOne,
         AbstractProduct $productAssociatedTwo
     ) {
+        $extractor->getDatagridParameter('_parameters', [])->willReturn([]);
         $extractor->getDatagridParameter('associationType')->willReturn(1);
         $assocRepository->findOneBy(Argument::any())->willReturn($assocType);
 
