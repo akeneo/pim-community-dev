@@ -1,6 +1,7 @@
 # 1.2.0-x
 
 ## Improvements
+- Add treeIds in AbstractProduct for MongoDB
 
 ## Bug fixes
 - Sort exported categories by tree and order inside the tree
@@ -10,6 +11,7 @@
 - Fixed category order in the categories tab of products
 - Incomplete archives no longer appear as downloadable in the export execution details page
 - Fixed Cascade delete on associations for MongoDB impl
+- Fixed apply filter on channel tree on MongoDB ProductRepository::buildByChannelAndCompleteness
 
 ## BC breaks
 - Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.
