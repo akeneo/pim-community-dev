@@ -36,7 +36,7 @@ class BaseFilterSpec extends ObjectBehavior
         $sku->isLocalizable()->willReturn(false);
         $sku->isScopable()->willReturn(false);
         $queryBuilder->field('normalizedData.sku')->willReturn($queryBuilder);
-        $queryBuilder->equals('my-sku')->willReturn($queryBuilder);
+        $queryBuilder->equals('my\-sku')->willReturn($queryBuilder);
 
         $this->addAttributeFilter($sku, 'LIKE', 'my-sku');
     }
