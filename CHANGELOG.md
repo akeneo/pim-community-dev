@@ -5,6 +5,7 @@
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
 - PIM-2975: validation fails when a draft is submitted
+- Don't allow users without corresponding rights to edit entity permissions
 
 ## BC breaks
 
