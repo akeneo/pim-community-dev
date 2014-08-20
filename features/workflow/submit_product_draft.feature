@@ -119,7 +119,7 @@ Feature: Submit a product changes product draft
     When I check the "Handmade" switch
     And I save the product
     Then attribute handmade of "my-jacket" should be "false"
-    But the field Handmade should contain "true"
+    But the "Handmade" checkbox should be checked
     And I should see that Handmade is a modified value
 
   @skip
