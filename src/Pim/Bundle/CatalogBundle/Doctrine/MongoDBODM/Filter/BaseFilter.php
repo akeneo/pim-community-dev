@@ -50,6 +50,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
+        $value = preg_quote($value);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         if ('EMPTY' === $operator) {
