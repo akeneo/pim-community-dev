@@ -49,4 +49,12 @@ class BaseFilterSpec extends ObjectBehavior
         $this->addFieldFilter('field', 'LIKE', 'test');
     }
 
+    function it_allows_to_filer_with_special_characters(Builder $queryBuilder)
+    {
+        $queryBuilder->field('normalizedData.name')->willReturn($queryBuilder);
+        $queryBuilder->equals('HP LA2206xc \+ WF722A')->shouldBeCalled();
+
+        $this->addFieldFilter('name', '', 'HP LA2206xc + WF722A');
+    }
+
 }
