@@ -14,6 +14,7 @@ services:
         class: %pimee_enrich.form.subscriber.category_permissions.class%
         arguments:
             - '@pimee_security.manager.category_access'
+            - '@oro_security.security_facade'
 
     pimee_enrich.form.subscriber.locale_permissions:
         class: %pimee_enrich.form.subscriber.locale_permissions.class%

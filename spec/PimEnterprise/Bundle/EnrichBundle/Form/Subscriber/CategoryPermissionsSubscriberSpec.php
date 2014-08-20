@@ -2,19 +2,44 @@
 
 namespace spec\PimEnterprise\Bundle\EnrichBundle\Form\Subscriber;
 
-use Pim\Bundle\CatalogBundle\Entity\Category;
-use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
+use Oro\Bundle\SecurityBundle\SecurityFacade;
+use Pim\Bundle\CatalogBundle\Entity\Category;
+use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 
 class CategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
-    function let(CategoryAccessManager $accessManager)
-    {
-        $this->beConstructedWith($accessManager);
+    function let(
+        CategoryAccessManager $accessManager,
+        SecurityFacade $securityFacade,
+        FormEvent $event,
+        Category $category,
+        Form $form,
+        Form $viewForm,
+        Form $editForm,
+        Form $ownForm,
+        Form $applyForm
+    ) {
+        $securityFacade->isGranted(Argument::any())->willReturn(true);
+
+        $event->getForm()->willReturn($form);
+        $event->getData()->willReturn($category);
+
+        $form->isValid()->willReturn(true);
+        $form->get('permissions')->willReturn($form);
+        $form->get('view')->willReturn($viewForm);
+        $form->get('edit')->willReturn($editForm);
+        $form->get('own')->willReturn($ownForm);
+        $form->get('apply_on_children')->willReturn($applyForm);
+
+        $category->isRoot()->willReturn(true);
+        $category->getId()->willReturn(1);
+
+        $this->beConstructedWith($accessManager, $securityFacade);
     }
 
     function it_is_an_event_subscriber()
@@ -33,37 +58,21 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         );
     }
 
-    function it_adds_permissions_to_the_form(FormEvent $event, Form $form, Category $category)
+    function it_adds_permissions_to_the_form($event, $form)
     {
-        $event->getForm()->willReturn($form);
-        $event->getData()->willReturn($category);
-        $category->isRoot()->willReturn(true);
-        $category->getId()->willReturn(1);
-
         $form->add('permissions', 'pimee_enrich_category_permissions')->shouldBeCalled();
 
         $this->preSetData($event);
     }
 
     function it_injects_defined_user_groups_in_the_form_data(
-        FormEvent $event,
-        Category $category,
-        Form $form,
-        Form $viewForm,
-        Form $editForm,
-        Form $ownForm,
+        $event,
+        $category,
+        $viewForm,
+        $editForm,
+        $ownForm,
         $accessManager
     ) {
-        $event->getData()->willReturn($category);
-        $category->isRoot()->willReturn(true);
-        $category->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
-        $form->get('permissions')->willReturn($form);
-        $form->get('view')->willReturn($viewForm);
-        $form->get('edit')->willReturn($editForm);
-        $form->get('own')->willReturn($ownForm);
-
         $accessManager->getViewUserGroups($category)->willReturn(['foo', 'bar', 'baz']);
         $accessManager->getEditUserGroups($category)->willReturn(['bar', 'baz']);
         $accessManager->getOwnUserGroups($category)->willReturn(['bar', 'baz']);
@@ -76,27 +85,14 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
     }
 
     function it_persists_the_selected_permissions_if_the_form_is_valid(
-        FormEvent $event,
-        Category $category,
-        Form $form,
-        Form $viewForm,
-        Form $editForm,
-        Form $ownForm,
-        Form $applyForm,
+        $event,
+        $category,
+        $viewForm,
+        $editForm,
+        $ownForm,
+        $applyForm,
         $accessManager
     ) {
-        $event->getData()->willReturn($category);
-        $category->isRoot()->willReturn(true);
-        $category->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
-        $form->get('permissions')->willReturn($form);
-        $form->get('view')->willReturn($viewForm);
-        $form->get('edit')->willReturn($editForm);
-        $form->get('own')->willReturn($ownForm);
-        $form->get('apply_on_children')->willReturn($applyForm);
-
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
         $ownForm->getData()->willReturn(['three']);
@@ -108,27 +104,14 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
     }
 
     function it_applies_the_new_permissions_on_children(
-        FormEvent $event,
-        Category $category,
-        Form $form,
-        Form $viewForm,
-        Form $editForm,
-        Form $ownForm,
-        Form $applyForm,
+        $event,
+        $category,
+        $viewForm,
+        $editForm,
+        $ownForm,
+        $applyForm,
         $accessManager
     ) {
-        $event->getData()->willReturn($category);
-        $category->isRoot()->willReturn(true);
-        $category->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
-        $form->isValid()->willReturn(true);
-        $form->get('permissions')->willReturn($form);
-        $form->get('view')->willReturn($viewForm);
-        $form->get('edit')->willReturn($editForm);
-        $form->get('own')->willReturn($ownForm);
-        $form->get('apply_on_children')->willReturn($applyForm);
-
         $viewForm->getData()->willReturn(['one', 'two']);
         $editForm->getData()->willReturn(['three']);
         $ownForm->getData()->willReturn(['three']);
@@ -140,17 +123,8 @@ class CategoryPermissionsSubscriberSpec extends ObjectBehavior
         $this->postSubmit($event);
     }
 
-    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid(
-        FormEvent $event,
-        Category $category,
-        Form $form,
-        $accessManager
-    ) {
-        $event->getData()->willReturn($category);
-        $category->isRoot()->willReturn(true);
-        $category->getId()->willReturn(1);
-
-        $event->getForm()->willReturn($form);
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $accessManager)
+    {
         $form->isValid()->willReturn(false);
 
         $accessManager->setAccess(Argument::cetera())->shouldNotBeCalled();

@@ -1,4 +1,4 @@
-{% if form.vars.value.id %}
+{% if form.permissions is defined %}
 <script type="text/javascript">
     require(
         ['jquery', 'pimee/manage-permissions'],
@@ -44,12 +44,13 @@
     {{ elements.accordion({ 'pane.accordion.general_properties': generalProperties, 'pane.accordion.node_values': nodeValues }) }}
 </div>
 
-{% if form.vars.value.id %}
-
+{% if form.permissions is defined %}
     <div class="tab-pane" id="permissions">
         {{ elements.accordion({ 'pane.accordion.permissions': form_widget(form.permissions) }) }}
     </div>
+{% endif %}
 
+{% if form.vars.value.id %}
     <div class="tab-pane" id="history">
         {% import 'PimDataGridBundle::macros.html.twig' as dataGrid %}
         {{ dataGrid.renderHistoryGrid(form.vars.value) }}
