@@ -8,6 +8,29 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
+  Scenario: Successfully filter products with special characters value for localizable text attribute
+    Given the following attributes:
+      | label       | type     | localizable | scopable | useable as grid filter | useable as grid column |
+      | name        | text     | no          | no       | yes                    | yes                    |
+      | description | textarea | no          | no       | yes                    | no                     |
+    And the following products:
+      | sku      | name-en_US                                      | name-en_US                                      |
+      | 11026270 | HP LA2206xc + WF722A                            | HP LA2206xc + WF722A                            |
+      | 13605290 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
+      | 13378171 | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM |
+      | 13572541 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
+      | book     | book                                            | book                                            |
+
+    And I am on the products page
+    And I display the columns sku, name, family, release, complete, created and updated
+    Then the grid should contain 5 elements
+    And I should see products "HP LA2206xc + WF722A", "Canon EOS 5D Mark III + EF 24-105 F4L IS USM", "Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM", "Canon EOS 5D Mark III + EF 24-105 F4L IS USM" and book
+    When I show the filter "name"
+    And I should be able to use the following filters:
+      | filter | value                             | result                          |
+      | name   | HP LA2206xc + WF722A              | HP LA2206xc + WF722A                        |
+      | name   | Canon EOS 5D Mark III + EF 24-105 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM, Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM and Canon EOS 5D Mark III + EF 24-105 F4L IS USM |
+
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
       | label       | type     | localizable | scopable | useable as grid filter |
