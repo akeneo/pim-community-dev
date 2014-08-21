@@ -50,7 +50,6 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
      */
     public function addFieldFilter($field, $operator, $value)
     {
-        $value = preg_quote($value);
         $field = sprintf('%s.%s', ProductQueryUtility::NORMALIZED_FIELD, $field);
 
         if ('EMPTY' === $operator) {
@@ -59,7 +58,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $this->qb->field($field)->in($value);
         } else {
             if (strpos($value, '/') !== false) {
-                $value = new \MongoRegex($value);
+                $value = new \MongoRegex(preg_quote($value));
             }
             $this->qb->field($field)->equals($value);
         }
