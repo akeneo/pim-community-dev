@@ -14,13 +14,12 @@ Feature: Filter products by text field
       | name        | text     | no          | no       | yes                    | yes                    |
       | description | textarea | no          | no       | yes                    | no                     |
     And the following products:
-      | sku      | name-en_US                                      | name-en_US                                      |
-      | 11026270 | HP LA2206xc + WF722A                            | HP LA2206xc + WF722A                            |
-      | 13605290 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
-      | 13378171 | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM |
-      | 13572541 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
-      | book     | book                                            | book                                            |
-
+      | sku      | name-en_US                                      |
+      | 11026270 | HP LA2206xc + WF722A                            |
+      | 13605290 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
+      | 13378171 | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM |
+      | 13572541 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
+      | book     | book                                            |
     And I am on the products page
     And I display the columns sku, name, family, release, complete, created and updated
     Then the grid should contain 5 elements
