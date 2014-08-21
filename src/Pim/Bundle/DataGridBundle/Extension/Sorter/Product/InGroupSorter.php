@@ -45,7 +45,7 @@ class InGroupSorter implements SorterInterface
 
         $groupId = $this->requestParams->get('currentGroup', null);
         if (!$groupId) {
-            throw new \LogicalException('The current product group must be configured');
+            throw new \LogicException('The current product group must be configured');
         }
 
         $field = 'in_group_'.$groupId;
