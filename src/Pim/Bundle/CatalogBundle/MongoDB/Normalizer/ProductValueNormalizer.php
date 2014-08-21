@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
+use Pim\Bundle\CatalogBundle\AttributeType\AbstractAttributeType;
 
 /**
  * Normalize a product value to store it as mongodb_json
@@ -31,13 +32,19 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         if ($object->getData() instanceof Collection) {
             $normalized = $this->normalizeCollection($object->getData(), $format, $context);
         } elseif ($object->getData() !== null) {
-            $normalized = $this->serializer->normalize($object->getData(), $format, $context);
+            if (AbstractAttributeType::BACKEND_TYPE_DECIMAL === $object->getAttribute()->getBackendType()) {
+                $normalized = $this->normalizeDecimal($object->getData(), $format, $context);
+            } else {
+                $normalized = $this->serializer->normalize($object->getData(), $format, $context);
+            }
         }
 
         return ($normalized === null) ? $normalized : [$valueKey => $normalized];
     }
 
     /**
+     * Normalize a collection attribute value
+     *
      * @param Collection $collection
      * @param string     $format
      * @param array      $context
@@ -59,6 +66,24 @@ class ProductValueNormalizer implements NormalizerInterface, SerializerAwareInte
         }
 
         return (count($normalized) > 0) ? $normalized : null;
+    }
+
+    /**
+     * Normalize a decimal attribute value
+     *
+     * @param mixed  $data
+     * @param string $format
+     * @param array  $context
+     *
+     * @return mixed|null
+     */
+    protected function normalizeDecimal($data, $format, $context)
+    {
+        if (false === is_numeric($data)) {
+            return $this->serializer->normalize($data, $format, $context);
+        }
+
+        return floatval($data);
     }
 
     /**
