@@ -58,7 +58,7 @@ class BaseFilter implements AttributeFilterInterface, FieldFilterInterface
             $this->qb->field($field)->in($value);
         } else {
             if (strpos($value, '/') !== false) {
-                $value = new \MongoRegex(preg_quote($value));
+                $value = new \MongoRegex($value);
             }
             $this->qb->field($field)->equals($value);
         }

@@ -52,6 +52,7 @@ class StringFilter extends OroStringFilter
             || (!$data['value'] && FilterType::TYPE_EMPTY !== $data['type'])) {
             return false;
         }
+        $data['value'] = preg_quote($data['value']);
 
         $data['type']  = isset($data['type']) ? $data['type'] : null;
 
