@@ -27,7 +27,6 @@ Requirements
  - PHP memory_limit at least at 256 MB on Apache side and 728 MB on CLI side (needed for installation, can be lowered to 512MB after installation for PHP-CLI)
  - MySQL 5.1 or above
  - Apache mod rewrite enabled
- - Java JRE (for compressing the JavaScript via YUI Compressor)
 
 ## Web browsers
  - tested: Chrome & Firefox

@@ -23,7 +23,7 @@
         "symfony/icu": "1.1.0",
         "akeneo/measure-bundle": "0.2.*@stable",
         "akeneo/batch-bundle": "0.2.*@stable",
-        "oro/platform": "1.0.0-beta12",
+        "oro/platform": "dev-pim-1.2#2e7ae166440ee7697300967ee7a231745c1f359b",
         "apy/jsfv-bundle": "2.0.1"
     },
     "require-dev": {
