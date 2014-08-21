@@ -8,7 +8,7 @@ Feature: Filter products by text field
     Given the "default" catalog configuration
     And I am logged in as "Mary"
 
-  Scenario: Successfully filter products with special characters value for localizable text attribute
+  Scenario: Successfully filter products with special characters value for text attribute
     Given the following attributes:
       | label       | type     | localizable | scopable | useable as grid filter | useable as grid column |
       | name        | text     | no          | no       | yes                    | yes                    |
