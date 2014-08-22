@@ -102,7 +102,7 @@ class ProductImportValidator extends ImportValidator
                 $value = $this->getProductValue($entity, $columnInfo);
                 if ($value->getAttribute()->isUnique()) {
                     $code      = $value->getAttribute()->getCode();
-                    $valueData = (string) $value->getData();
+                    $valueData = (string) $value;
                     if ($valueData !== '') {
                         $this->uniqueValues[$code] =
                             isset($this->uniqueValues[$code]) ? $this->uniqueValues[$code] : [];
