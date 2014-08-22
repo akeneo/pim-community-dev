@@ -180,6 +180,7 @@ services:
             - [setEntityManager, ['@doctrine.orm.entity_manager']]
             - [setAttributeRepository, ['@pim_catalog.repository.attribute']]
             - [setFamilyRepository, ['@pim_catalog.repository.family']]
+            - [setCategoryRepository, ['@pim_catalog.repository.category']]
         tags:
             - { name: 'pim_repository' }
 
