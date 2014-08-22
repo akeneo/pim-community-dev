@@ -48,5 +48,4 @@ class BaseFilterSpec extends ObjectBehavior
 
         $this->addFieldFilter('field', 'LIKE', 'test');
     }
-
 }
