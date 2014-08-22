@@ -9,26 +9,24 @@ Feature: Filter products by text field
     And I am logged in as "Mary"
 
   Scenario: Successfully filter products with special characters value for text attribute
-    Given the following attributes:
-      | label       | type     | localizable | scopable | useable as grid filter | useable as grid column |
-      | name        | text     | no          | no       | yes                    | yes                    |
-      | description | textarea | no          | no       | yes                    | no                     |
+    Given the following attribute:
+      | label | type | useable as grid filter | useable as grid column |
+      | name  | text | yes                    | yes                    |
     And the following products:
-      | sku      | name-en_US                                      |
-      | 11026270 | HP LA2206xc + WF722A                            |
-      | 13605290 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
-      | 13378171 | Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM |
-      | 13572541 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM    |
-      | book     | book                                            |
-    And I am on the products page
-    And I display the columns sku, name, family, release, complete, created and updated
-    Then the grid should contain 5 elements
-    And I should see products "HP LA2206xc + WF722A", "Canon EOS 5D Mark III + EF 24-105 F4L IS USM", "Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM", "Canon EOS 5D Mark III + EF 24-105 F4L IS USM" and book
-    When I show the filter "name"
+      | sku      | name-en_US                     |
+      | 11026270 | HP LA2206xc + WF722A           |
+      | 13605290 | Canon 5D + EF 24-105 F4L IS    |
+      | 13378171 | Canon 5D + EF 24-105mm f/4L IS |
+      | 13572541 | Canon 5D + EF 24-105 F5L IS    |
+    When I am on the products page
+    And I display the columns sku, name, family, complete, created and updated
+    Then the grid should contain 4 elements
+    And I should see products "HP LA2206xc + WF722A", "Canon 5D + EF 24-105 F4L IS", "Canon 5D + EF 24-105mm f/4L IS" and "Canon 5D + EF 24-105 F5L IS"
     And I should be able to use the following filters:
-      | filter | value                             | result                          |
-      | name   | HP LA2206xc + WF722A              | HP LA2206xc + WF722A                        |
-      | name   | Canon EOS 5D Mark III + EF 24-105 | Canon EOS 5D Mark III + EF 24-105 F4L IS USM, Canon EOS 5D MARK III + EF 24-105mm f/4L IS USM and Canon EOS 5D Mark III + EF 24-105 F4L IS USM |
+      | filter | value                | result                                                                                      |
+      | name   | HP LA2206xc + WF722A | HP LA2206xc + WF722A                                                                        |
+      | name   | Canon 5D + EF 24-105 | Canon 5D + EF 24-105 F4L IS, Canon 5D + EF 24-105mm f/4L IS and Canon 5D + EF 24-105 F5L IS |
+      | name   | f/4L                 | Canon 5D + EF 24-105mm f/4L IS                                                              |
 
   Scenario: Successfully filter products by empty value for text and textarea attributes
     Given the following attributes:
