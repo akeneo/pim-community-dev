@@ -120,7 +120,9 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
 
         $uniqueKeys = $this->getAllKeys($this->items);
         $fullItems = $this->mergeKeys($uniqueKeys);
-        $csvFile = fopen($this->getPath(), 'w');
+        if (false === $csvFile = fopen($this->getPath(), 'w')) {
+            throw new RuntimeErrorException('Failed to open file %path%', ['%path%' => $this->getPath()]);
+        }
 
         $header = $this->isWithHeader() ? $uniqueKeys : [];
         if (false === fputcsv($csvFile, $header, $this->delimiter)) {
@@ -189,6 +191,11 @@ class CsvWriter extends FileWriter implements ArchivableWriterInterface
         foreach ($items as $item) {
             $intKeys[] = array_keys($item);
         }
+
+        if (0 === count($intKeys)) {
+            return [];
+        }
+
         $mergedKeys = call_user_func_array('array_merge', $intKeys);
 
         return array_unique($mergedKeys);

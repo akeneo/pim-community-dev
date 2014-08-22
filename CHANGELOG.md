@@ -15,6 +15,7 @@
 - Fixed a bug where special characters were not well handled in product grid filter
 - Fixed unique value validation for date attributes during import
 - Fixed apply filter on channel tree on MongoDB implementation
+- Fixed a bug on ProductCsvWriter
 
 ## BC breaks
 - Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.
