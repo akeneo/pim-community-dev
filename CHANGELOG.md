@@ -12,7 +12,6 @@
 - Fixed Cascade delete on associations for MongoDB impl
 - Fixed a bug on normalization of decimal attributes for MongoDB impl
 - Fixed the 'Is associated' filter in the product association grids
-- Special characters are not well handled in product grid filter
 - Fixed a bug where special characters were not well handled in product grid filter
 
 ## BC breaks
