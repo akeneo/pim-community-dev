@@ -3,7 +3,6 @@
 namespace Pim\Bundle\BaseConnectorBundle\Reader\File;
 
 use Doctrine\ORM\EntityManager;
-use Pim\Bundle\BaseConnectorBundle\Archiver\InvalidItemsCsvArchiver;
 
 /**
  * Product csv reader
@@ -25,8 +24,8 @@ class CsvProductReader extends CsvReader
     /**
      * Constructor
      *
-     * @param EntityManager           $entityManager
-     * @param string                  $attributeClass
+     * @param EntityManager $entityManager
+     * @param string        $attributeClass
      */
     public function __construct(EntityManager $entityManager, $attributeClass)
     {
