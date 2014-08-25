@@ -1,4 +1,9 @@
 # 1.2.0-x
+## Improvements
+## Bug fixes
+## BC breaks
+
+# 1.2.0-RC4
 
 ## Improvements
 - Java dependency has been removed
