@@ -254,8 +254,6 @@ default: По умолчанию
 Axis: Ось
 Add attributes: Добавить атрибуты
 Translate from: Перевести с
-switch_on: true
-switch_off: false
 Close: Закрыть
 Choose a color: Выбрать цвет
 Create: Создать
@@ -392,8 +390,6 @@ pim_enrich:
     family:
       create: Создать семейство
       remove: Удалить семейство
-      add_attribute: Добавить атрибут в семейство
-      remove_attribute: Удалить атрибут из семейства
     attribute_group:
       create: Создать группу атрибутов
       edit: Редактировать группу атрибутов

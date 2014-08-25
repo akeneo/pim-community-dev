@@ -278,8 +278,8 @@ default: Défaut
 Axis: Axes
 Add attributes: Ajouter des attributs
 Translate from: Traduire depuis
-switch_on: true
-switch_off: false
+switch_on: Oui
+switch_off: Non
 Close: Fermer
 Choose a color: Choisir une couleur
 Search: Recherche
@@ -493,8 +493,6 @@ pim_enrich:
       index: Liste des familles
       create: Créer une famille
       remove: Supprimer une famille
-      add_attribute: "Ajouter l'attribut à une famille"
-      remove_attribute: "Retirer l'attribut de la famille"
     attribute_group:
       create: "Créer un groupe d'attributs"
       edit: "Modifier un groupe d'attributs"
