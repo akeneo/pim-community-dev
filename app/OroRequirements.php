@@ -19,19 +19,10 @@ class OroRequirements extends SymfonyRequirements
     {
         parent::__construct();
 
-        $jreExists = new ProcessBuilder(array('java', '-version'));
-        $jreExists = $jreExists->getProcess();
-
-        $jreExists->run();
-        while ($jreExists->isRunning()) {
-            // waiting for process to finish
-        }
-
         $phpVersion  = phpversion();
         $gdVersion   = defined('GD_VERSION') ? GD_VERSION : null;
         $curlVersion = function_exists('curl_version') ? curl_version() : null;
         $icuVersion  = Intl::getIcuVersion();
-        $jreExists   = strpos($jreExists->getErrorOutput(), 'java version') !== false;
 
         $this->addOroRequirement(
             version_compare($phpVersion, self::REQUIRED_PHP_VERSION, '>='),
@@ -104,12 +95,6 @@ class OroRequirements extends SymfonyRequirements
             false,
             'memory_limit should be at least 256M',
             'Set the "<strong>memory_limit</strong>" setting in php.ini<a href="#phpini">*</a> to at least "256M".'
-        );
-
-        $this->addOroRequirement(
-            $jreExists,
-            'Java Runtime Environment must be installed',
-            'Install the <strong>JRE</strong>.'
         );
 
         $directories = array(

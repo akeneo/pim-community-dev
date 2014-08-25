@@ -1,6 +1,7 @@
 # 1.0.0-x
 
 ## Improvements
+- Java dependency has been removed
 
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
@@ -9,6 +10,7 @@
 
 ## BC breaks
 - Change constructor of `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/AttributeGroupPermissionsSubscriber`, `PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/CategoryPermissionsSubscriber` and `src/PimEnterprise/Bundle/EnrichBundle/Form/Subscriber/LocalePermissionsSubscriber` to inject `Oro\Bundle\SecurityBundle\SecurityFacade` as the second argument
+- JS and CSS are not minified anymore. We advise to use server side compression for bandwidth savings.
 
 # 1.0.0-RC2
 
