@@ -281,8 +281,6 @@ default: デフォルト
 Axis: 軸
 Add attributes: 属性を追加
 Translate from: 言語の選択
-switch_on: true
-switch_off: false
 Close: 閉じる
 Choose a color: 色を選択
 Search: 検索
@@ -497,8 +495,6 @@ pim_enrich:
       index: ファミリーのリスト
       create: ファミリーを作成
       remove: ファミリー削除
-      add_attribute: ファミリーに属性を追加
-      remove_attribute: 属性をファミリーから削除
     attribute_group:
       create: 属性グループを作成
       edit: 属性グループを編集
