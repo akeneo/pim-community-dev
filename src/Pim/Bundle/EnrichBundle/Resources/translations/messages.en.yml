@@ -297,8 +297,8 @@ default:                       Default
 Axis:                          Axis
 Add attributes:                Add attributes
 Translate from:                Translate from
-switch_on:                     Yes
-switch_off:                    No
+switch_on:                     "Yes"
+switch_off:                    "No"
 Close:                         Close
 Choose a color:                Choose a color
 Search:                        Search
