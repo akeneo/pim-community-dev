@@ -418,38 +418,4 @@ class EnterpriseFixturesContext extends BaseFixturesContext
             ->getManagerForClass(sprintf('PimEnterprise\Bundle\SecurityBundle\Entity\%sAccess', $accessClass));
         $registry->flush();
     }
-
-    /**
-     * Determine if a product has at least one root category
-     *
-     * @param Product $product
-     *
-     * @return bool
-     */
-    protected function productHasARootCategory(Product $product)
-    {
-        foreach ($product->getCategories() as $category) {
-            if ($category->isRoot()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Add the first root category to all created products so that they can be edited
-     *
-     * @param Product $product
-     */
-    protected function addRootCategoryToProduct(Product $product)
-    {
-        $categories = $this->getCategoryRepository()->findAll();
-        foreach ($categories as $category) {
-            if ($category->isRoot()) {
-                $product->addCategory($category);
-                break;
-            }
-        }
-    }
 }
