@@ -2,10 +2,10 @@
 
 namespace Pim\Bundle\UIBundle\Form\Type;
 
-use Pim\Bundle\UIBundle\Form\Transformer\IntegerTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Pim\Bundle\UIBundle\Form\Transformer\NumberTransformer;
 
 /**
  * PIM number type
@@ -21,9 +21,7 @@ class NumberType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if (false === $options['decimals_allowed']) {
-            $builder->addViewTransformer(new IntegerTransformer());
-        }
+        $builder->addViewTransformer(new NumberTransformer());
     }
 
     /**
