@@ -1,5 +1,7 @@
 # 1.2.0-x
 ## Improvements
+- Add fallback to en_US locale
+
 ## Bug fixes
 ## BC breaks
 
