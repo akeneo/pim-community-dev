@@ -5,6 +5,7 @@ parameters:
     pimee_security.event_subscriber.enrich.add_owner_groups_parameter.class: PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddOwnerGroupsParameterSubscriber
     pimee_security.event_subscriber.enrich.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddCategoryPermissionsSubscriber
     pimee_security.event_subscriber.enrich.add_default_user_group.class:     PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich\AddDefaultUserGroupSubscriber
+    pimee_security.event_subscriber.import_export.add_category_permissions.class:   PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport\AddCategoryPermissionsSubscriber
 
 services:
     pimee_security.event_subscriber.enrich.disable_product_value_form:
@@ -43,6 +44,13 @@ services:
             - '@pimee_security.manager.category_access'
         tags:
             - { name: kernel.event_subscriber }
+
+    pimee_security.event_subscriber.import_export.add_category_permissions:
+        class: %pimee_security.event_subscriber.import_export.add_category_permissions.class%
+        arguments:
+            - '@pimee_security.manager.category_access'
+        tags:
+            - { name: doctrine.event_subscriber }
 
     pimee_security.event_subscriber.enrich.add_default_user_group:
         class: %pimee_security.event_subscriber.enrich.add_default_user_group.class%

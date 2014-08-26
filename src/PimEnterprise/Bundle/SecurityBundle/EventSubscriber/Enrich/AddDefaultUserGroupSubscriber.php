@@ -80,14 +80,4 @@ class AddDefaultUserGroupSubscriber implements EventSubscriberInterface
             $this->attGrpAccessManager->grantAccess($object, $userGroup, Attributes::EDIT_ATTRIBUTES, true);
         }
     }
-
-    /**
-     * Get the default user group
-     *
-     * @return \Oro\Bundle\UserBundle\Entity\Group
-     */
-    protected function getDefaultUserGroup()
-    {
-        return $this->groupRepository->getDefaultUserGroup();
-    }
 }

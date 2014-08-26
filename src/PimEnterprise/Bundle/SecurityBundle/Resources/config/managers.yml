@@ -18,6 +18,7 @@ services:
             - '@pim_catalog.doctrine.smart_manager_registry'
             - %pimee_security.entity.category_access.class%
             - %pim_catalog.entity.category.class%
+            - %pim_user.entity.group.class%
 
     pimee_security.manager.job_profile_access:
         class: %pimee_security.manager.job_profile_access.class%
