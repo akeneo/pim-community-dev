@@ -7,6 +7,7 @@
 
 ## Improvements
 - Java dependency has been removed
+- Add fallback to en_US locale
 
 ## Bug fixes
 - Sort exported categories by tree and order inside the tree
