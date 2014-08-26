@@ -2,6 +2,7 @@
 
 ## Improvements
 - Java dependency has been removed
+- Add fallback to en_US locale
 
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
