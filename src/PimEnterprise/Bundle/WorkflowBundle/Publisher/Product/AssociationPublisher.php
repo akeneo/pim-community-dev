@@ -41,8 +41,8 @@ class AssociationPublisher implements PublisherInterface
         }
         $published = $options['published'];
         $copiedAssociation = $this->createNewPublishedAssociation();
-        $copiedAssociation->setOwner($published);
         $copiedAssociation->setAssociationType($object->getAssociationType());
+        $copiedAssociation->setOwner($published);
 
         $this->copyProducts($object, $copiedAssociation);
         $this->copyGroups($object, $copiedAssociation);
