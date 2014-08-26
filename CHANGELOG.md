@@ -1,7 +1,5 @@
 # 1.2.0-x
 ## Improvements
-- Add fallback to en_US locale
-
 ## Bug fixes
 ## BC breaks
 
@@ -9,6 +7,7 @@
 
 ## Improvements
 - Java dependency has been removed
+- Add fallback to en_US locale
 
 ## Bug fixes
 - Sort exported categories by tree and order inside the tree
