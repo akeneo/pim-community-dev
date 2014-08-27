@@ -2,6 +2,7 @@
 
 namespace Context;
 
+use Behat\Behat\Context\Step;
 use Context\WebUser as BaseWebUser;
 
 /**
@@ -25,5 +26,32 @@ class EnterpriseWebUser extends BaseWebUser
             ->next();
 
         $this->wait();
+    }
+
+    /**
+     * @Given /^I should not see a single form input$/
+     */
+    public function iShouldNotSeeASingleFormInput()
+    {
+        new Step\Given('I should not see an "input" element');
+    }
+    /**
+    * @Then /^the view mode field (.*) should contain "([^"]*)"$/
+     */
+    public function theProductViewModeFieldValueShouldBe($fieldName, $expected = '')
+    {
+        $field = $this->getCurrentPage()->findField($fieldName);
+        $actual = trim($field->getHtml());
+
+        if ($expected != $actual) {
+            throw $this->createExpectationException(
+                sprintf(
+                    'Expected product view mode field "%s" to contain "%s", but got "%s".',
+                    $fieldName,
+                    $expected,
+                    $actual
+                )
+            );
+        }
     }
 }
