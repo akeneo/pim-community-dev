@@ -19,6 +19,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Entity\Repository\FamilyRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Product repository
@@ -379,6 +380,38 @@ class ProductRepository extends DocumentRepository implements
         }
 
         return $products;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttribute(AbstractAttribute $attribute)
+    {
+        return $this->createQueryBuilder('p')
+            ->field('values.attribute')->equals((int) $attribute->getId())
+            ->getQuery()
+            ->execute()
+            ->toArray();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttributeOption(AttributeOption $option)
+    {
+        $id = (int) $option->getId();
+        $qb = $this->createQueryBuilder('p');
+
+        if ('options' === $option->getAttribute()->getBackendType()) {
+            $qb->field('values.optionIds')->in([$id]);
+        } else {
+            $qb->field('values.option')->equals($id);
+        }
+
+        return $qb
+            ->getQuery()
+            ->execute()
+            ->toArray();
     }
 
     /**

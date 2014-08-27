@@ -12,6 +12,7 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Product repository
@@ -172,6 +173,47 @@ class ProductRepository extends EntityRepository implements
         }
 
         return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttribute(AbstractAttribute $attribute)
+    {
+        return $this
+            ->createQueryBuilder('p')
+            ->leftJoin('p.values', 'value')
+            ->leftJoin('value.attribute', 'attribute')
+            ->where('attribute=:attribute')
+            ->setParameter('attribute', $attribute)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function findAllWithAttributeOption(AttributeOption $option)
+    {
+        $backendType = $option->getAttribute()->getBackendType();
+
+        $qb = $this
+            ->createQueryBuilder('p')
+            ->leftJoin('p.values', 'value')
+            ->leftJoin(sprintf('value.%s', $backendType), 'option');
+
+        if ('options' === $backendType) {
+            $qb->where(
+                $qb->expr()->in('option', ':option')
+            );
+        } else {
+            $qb->where('option=:option');
+        }
+
+        return $qb
+            ->setParameter('option', $option)
+            ->getQuery()
+            ->getResult();
     }
 
     /**
