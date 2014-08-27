@@ -18,6 +18,10 @@ class NumberTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value)
     {
+        if ('' === $value) {
+            return null;
+        }
+
         return $value == (int) $value ? (int) $value : (double) $value;
     }
 
@@ -30,6 +34,10 @@ class NumberTransformer implements DataTransformerInterface
      */
     public function transform($value)
     {
+        if (null === $value) {
+            return '';
+        }
+
         return (is_numeric($value) && $value == floor($value))
             ? floor($value)
             : $value;
