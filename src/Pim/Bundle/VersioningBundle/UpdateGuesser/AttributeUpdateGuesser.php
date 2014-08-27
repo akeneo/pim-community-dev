@@ -46,6 +46,7 @@ class AttributeUpdateGuesser implements UpdateGuesserInterface
     {
         $pendings = array();
         if ($entity instanceof AbstractAttribute) {
+            set_time_limit(0);
             $products = $this
                 ->registry
                 ->getRepository($this->productClass)

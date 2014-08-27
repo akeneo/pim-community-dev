@@ -53,6 +53,7 @@ class AttributeOptionUpdateGuesser implements UpdateGuesserInterface
             $pendings[] = $entity->getAttribute();
 
             if ($action === UpdateGuesserInterface::ACTION_DELETE) {
+                set_time_limit(0);
                 $products = $this
                     ->registry
                     ->getRepository($this->productClass)
