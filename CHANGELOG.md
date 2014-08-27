@@ -1,7 +1,11 @@
 # 1.2.0-x
 ## Improvements
 ## Bug fixes
+ - large memory leak fixed for non product import (association, product group, attribute, categories, etc...)
+
 ## BC breaks
+ - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
+ If you need it, override the write method, call the parent and add your code there.
 
 # 1.2.0-RC4
 

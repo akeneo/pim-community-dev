@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\TransformBundle\Cache;
 
-use Symfony\Bridge\Doctrine\RegistryInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 
 /**
  * Clears doctrine UOW and caches for the product imports
@@ -33,10 +33,10 @@ class ProductCacheClearer
     /**
      * Constructor
      *
-     * @param DoctrineCache     $doctrineCache
-     * @param RegistryInterface $managerRegistry
+     * @param DoctrineCache   $doctrineCache
+     * @param ManagerRegistry $managerRegistry
      */
-    public function __construct(DoctrineCache $doctrineCache, RegistryInterface $managerRegistry)
+    public function __construct(DoctrineCache $doctrineCache, ManagerRegistry $managerRegistry)
     {
         $this->doctrineCache = $doctrineCache;
         $this->managerRegistry = $managerRegistry;
