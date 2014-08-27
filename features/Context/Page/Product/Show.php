@@ -2,6 +2,8 @@
 
 namespace Context\Page\Product;
 
+use Behat\Mink\Element\NodeElement;
+use Behat\Mink\Exception\ElementNotFoundException;
 use Context\Page\Base\Form;
 
 /**
@@ -16,4 +18,37 @@ class Show extends Form
      * @var string $path
      */
     protected $path = '/enrich/product/{id}/show';
+
+    /**
+     * @param string $name
+     *
+     * @return NodeElement
+     */
+    public function findField($name)
+    {
+        $currency = null;
+        if (1 === preg_match('/in ((?:.){1,3})$/', $name)) {
+            // Price in EUR
+            list($name, $currency) = explode(' in ', $name);
+
+            return $this->findPriceField($name, $currency);
+        } elseif (1 < str_word_count($name)) {
+            // mobile Description
+            $words = explode(' ', $name);
+            $name = implode(' ', $words);
+        }
+        $label = $this->find('css', sprintf('label:contains("%s")', $name));
+
+        if (!$label) {
+            throw new ElementNotFoundException($this->getSession(), 'label ', 'value', $name);
+        }
+
+        $field = $label->getParent()->find('css', 'div.value-field');
+
+        if (!$field) {
+            throw new ElementNotFoundException($this->getSession(), 'field ', 'value-field', $name);
+        }
+
+        return $field;
+    }
 }

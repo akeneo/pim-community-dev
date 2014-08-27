@@ -2,6 +2,7 @@
 
 namespace PimEnterprise\Bundle\WorkflowBundle\Twig;
 
+use Doctrine\Common\Collections\Collection;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\FilterProductValuesHelper;
 use PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper;
 
@@ -53,13 +54,14 @@ class GroupProductValuesExtension extends \Twig_Extension
     /**
      * Group product values
      *
-     * @param \Pim\Bundle\CatalogBundle\Model\ProductValueInterface[] $values
-     * @param string                                                  $locale
+     * @param Collection|\Pim\Bundle\CatalogBundle\Model\AbstractProductValue[] $values
+     * @param string                                                            $locale
      *
      * @return array
      */
-    public function groupValues($values, $locale = null)
+    public function groupValues(Collection $values, $locale = null)
     {
+        $values = $values->toArray();
         $values = $this->filterHelper->filter($values, $locale);
         $values = $this->sortHelper->sort($values);
 

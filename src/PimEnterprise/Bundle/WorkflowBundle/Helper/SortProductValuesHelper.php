@@ -17,7 +17,7 @@ class SortProductValuesHelper
      *
      * @return array
      */
-    public function sort($values)
+    public function sort(array $values)
     {
         usort(
             $values,

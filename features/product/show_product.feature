@@ -8,21 +8,18 @@ Feature: Show a product
     Given a "clothing" catalog configuration
     And I am logged in as "Julia"
     And the following categories:
-      | code    | label-en_US | parent |
-      | shoes   | Shoes       |        |
-      | vintage | Vintage     | shoes  |
-      | trendy  | Trendy      | shoes  |
-      | classy  | Classy      | shoes  |
-      | boots   | Boots       |        |
+      | code    | label-en_US |
+      | shoes   | Shoes       |
+      | boots   | Boots       |
     And the following category accesses:
       | category        | user group | access |
       | 2014_collection | Manager    |        |
       | shoes           | Manager    | edit   |
       | boots           | Manager    | view   |
     And the following products:
-      | sku     | categories | name-en |
-      | rangers | shoes      | rangers |
-      | boots   | boots      | boots   |
+      | sku     | categories | name-en_US      | price            | size | main_color |
+      | rangers | shoes      | Classic rangers | 120 EUR, 125 USD | L    | black      |
+      | boots   | boots      | Party boots     | 80 EUR, 90 USD   | M    | blue       |
 
   Scenario: Seeing the view actions on the product grid
     Given I am on the products page
@@ -38,3 +35,11 @@ Feature: Show a product
     Then I should not be able to access the edit "boots" product page
     And I should be able to access the edit "rangers" product page
 
+  Scenario: View a product in read only mode
+    When I am on the "boots" product show page
+    Then the view mode field SKU should contain "boots"
+    And the view mode field Name should contain "Party boots"
+    And the view mode field Price should contain "80.00 EUR, 90.00 USD"
+    And the view mode field Size should contain "M"
+    And the view mode field Main color should contain "Blue"
+    And I should not see a single form input
