@@ -22,7 +22,11 @@ class NumberTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $value == (int) $value ? (int) $value : (double) $value;
+        if (is_numeric($value)) {
+            return $value == (int) $value ? (int) $value : (double) $value;
+        }
+
+        return $value;
     }
 
     /**
