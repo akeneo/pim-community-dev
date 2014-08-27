@@ -224,9 +224,13 @@ class ProductDraftPersister implements ProductPersister
     {
         if (PimCatalogExtension::DOCTRINE_ORM === $this->storageDriver) {
             foreach ($product->getValues() as $value) {
-                $manager->refresh($value);
-                foreach ($value->getPrices() as $price) {
-                    $manager->refresh($price);
+                if (true === $manager->contains($value)) {
+                    $manager->refresh($value);
+                    foreach ($value->getPrices() as $price) {
+                        if (true === $manager->contains($price)) {
+                            $manager->refresh($price);
+                        }
+                    }
                 }
             }
         } else {

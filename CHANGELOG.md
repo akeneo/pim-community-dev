@@ -3,6 +3,7 @@
 
 ## Bug fixes
 - Fixed read only mode of products page
+- Fixed a regression on product draft submission
 
 ## BC breaks
 
