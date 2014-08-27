@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Presenter\ProductValue;
 
 use PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface;
@@ -10,7 +19,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * Present a boolean value
  *
  * @author    Filips Alpe <filips@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class BooleanPresenter implements ProductValuePresenterInterface, TranslatorAwareInterface
 {

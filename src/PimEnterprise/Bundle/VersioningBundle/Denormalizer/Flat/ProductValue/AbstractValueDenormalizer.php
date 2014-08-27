@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
@@ -8,7 +17,6 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
  * Abstract value flat denormalizer
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 abstract class AbstractValueDenormalizer implements DenormalizerInterface
 {
