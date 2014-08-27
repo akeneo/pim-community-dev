@@ -5,6 +5,7 @@ namespace spec\PimEnterprise\Bundle\SecurityBundle\Manager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Oro\Bundle\UserBundle\Entity\Group;
 use PhpSpec\ObjectBehavior;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Doctrine\SmartManagerRegistry;
 use Pim\Bundle\CatalogBundle\Entity\Category;
@@ -21,10 +22,11 @@ class CategoryAccessManagerSpec extends ObjectBehavior
 
         $accessClass = 'PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess';
         $categoryClass = 'Pim\Bundle\CatalogBundle\Entity\Category';
+        $userGroupClass = 'Pim\Bundle\SecurityBundle\Entity\Group';
         $registry->getRepository($accessClass)->willReturn($accessRepository);
         $registry->getRepository($categoryClass)->willReturn($categoryRepository);
 
-        $this->beConstructedWith($registry, $accessClass, $categoryClass);
+        $this->beConstructedWith($registry, $accessClass, $categoryClass, $userGroupClass);
     }
 
     function it_provides_user_groups_that_have_access_to_a_category(Category $category, $accessRepository)
@@ -45,6 +47,7 @@ class CategoryAccessManagerSpec extends ObjectBehavior
         Group $user,
         Group $admin
     ) {
+        $category->getId()->willReturn(1);
         $accessRepository->findOneBy(Argument::any())->willReturn(array());
         $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
 
@@ -53,7 +56,42 @@ class CategoryAccessManagerSpec extends ObjectBehavior
             ->shouldBeCalledTimes(2);
         $objectManager->flush()->shouldBeCalled();
 
-        $this->setAccess($category, [$user, $admin], [$admin], [$admin]);
+        $this->setAccess($category, [$user, $admin], [$admin], [$admin], true);
+    }
+
+    function it_grants_access_on_a_category_for_the_provided_user_groups_and_does_not_flush(
+        Category $category,
+        $accessRepository,
+        $objectManager,
+        Group $user,
+        Group $admin
+    ) {
+        $category->getId()->willReturn(1);
+        $accessRepository->findOneBy(Argument::any())->willReturn(array());
+        $accessRepository->revokeAccess($category, [$admin, $user])->shouldBeCalled();
+
+        $objectManager
+            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess'))
+            ->shouldBeCalledTimes(2);
+
+        $this->setAccess($category, [$user, $admin], [$admin], [$admin], false);
+    }
+
+    function it_grants_access_on_a_new_category_for_the_provided_user_groups(
+        Category $category,
+        $accessRepository,
+        $objectManager,
+        Group $user,
+        Group $admin
+    ) {
+        $accessRepository->findOneBy(Argument::any())->willReturn(array());
+
+        $objectManager
+            ->persist(Argument::type('PimEnterprise\Bundle\SecurityBundle\Entity\CategoryAccess'))
+            ->shouldBeCalledTimes(2);
+        $objectManager->flush()->shouldBeCalled();
+
+        $this->setAccess($category, [$user, $admin], [$admin], [$admin], true);
     }
 
     function it_adds_accesses_on_a_category_children_for_the_provided_user_groups(

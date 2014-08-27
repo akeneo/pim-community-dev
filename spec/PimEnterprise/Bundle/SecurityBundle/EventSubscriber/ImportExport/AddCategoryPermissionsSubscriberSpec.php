@@ -1,13 +1,13 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\Enrich;
+namespace spec\PimEnterprise\Bundle\SecurityBundle\EventSubscriber\ImportExport;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Symfony\Component\EventDispatcher\GenericEvent;
 use PimEnterprise\Bundle\SecurityBundle\Manager\CategoryAccessManager;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
-use Pim\Bundle\EnrichBundle\Event\CategoryEvents;
+use Doctrine\ORM\Event\LifecycleEventArgs;
+use Doctrine\ORM\Events as DoctrineEvents;
 
 class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
 {
@@ -19,14 +19,14 @@ class AddCategoryPermissionsSubscriberSpec extends ObjectBehavior
     function it_subscribes_events()
     {
         $this->getSubscribedEvents()->shouldReturn([
-            CategoryEvents::POST_CREATE => 'addNewCategoryPermissions'
+            DoctrineEvents::prePersist
         ]);
     }
 
-    function it_adds_parent_permissions_to_new_category(GenericEvent $event, CategoryInterface $category, CategoryAccessManager $accessManager)
+    function it_adds_parent_permissions_to_new_category(LifecycleEventArgs $event, CategoryInterface $category, CategoryAccessManager $accessManager)
     {
-        $event->getSubject()->willReturn($category);
+        $event->getEntity()->willReturn($category);
         $accessManager->setAccessLikeParent($category)->shouldBeCalled();
-        $this->addNewCategoryPermissions($event);
+        $this->prePersist($event);
     }
 }
