@@ -7,6 +7,8 @@ use Pim\Bundle\CatalogBundle\Entity\Channel;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 /**
  * Product repository interface
@@ -83,6 +85,24 @@ interface ProductRepositoryInterface
      * @return array
      */
     public function findAllForVariantGroup(Group $variantGroup, array $criteria = array());
+
+    /**
+     * Returns all products that have the given attribute
+     *
+     * @param AbstractAttribute $attribute
+     *
+     * @return ProductInterface[]
+     */
+    public function findAllWithAttribute(AbstractAttribute $attribute);
+
+    /**
+     * Returns all products that have the given attribute option
+     *
+     * @param AttributeOption $option
+     *
+     * @return ProductInterface[]
+     */
+    public function findAllWithAttributeOption(AttributeOption $option);
 
     /**
      * Returns a full product with all relations

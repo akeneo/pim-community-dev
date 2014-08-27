@@ -49,7 +49,7 @@ class AttributeUpdateGuesser implements UpdateGuesserInterface
             $products = $this
                 ->registry
                 ->getRepository($this->productClass)
-                ->findAllByAttributes([$entity]);
+                ->findAllWithAttribute($entity);
 
             foreach ($products as $product) {
                 $pendings[] = $product;
