@@ -304,8 +304,8 @@ class ProductRepository extends DocumentRepository implements
         $this->createQueryBuilder('p')
             ->update()
             ->multiple(true)
-            ->field('values.options')->in([$id])
-            ->field('values.$.options')->pull($id)
+            ->field('values.optionIds')->in([$id])
+            ->field('values.$.optionIds')->pull($id)
             ->getQuery()
             ->execute();
     }
