@@ -769,7 +769,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     {
         if (!$this->associations->contains($association)) {
             $associationType = $association->getAssociationType();
-            if (null !== $this->getAssociationForType($associationType)) {
+            if (null !== $associationType && null !== $this->getAssociationForType($associationType)) {
                 throw new \LogicException(
                     sprintf(
                         'Can not add an association of type %s because the product already has one',
