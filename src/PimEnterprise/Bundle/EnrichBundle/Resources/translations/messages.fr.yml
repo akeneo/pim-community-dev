@@ -1,0 +1,52 @@
+Permissions: Permissions
+pane.accordion.permissions: Permissions
+attribute group.permissions:
+  view.label: Autorisé à voir les attributs
+  view.help: "Autoriser à voir les attributs dans ce groupe d'attributs"
+  edit.help: "Autoriser à éditer les attributs dans ce groupe d'attributs"
+  no_access_to_attributes: "Vous n'avez accès à aucun des attributs de ce produit. Contactez votre administrateur pour résoudre le problème."
+category.permissions:
+  view.label: Autorisé à voir les produits
+  view.help: Permet de voir les produits dans cette catégorie
+  edit.label: Autorisé à modifier les produits
+  edit.help: "Permet d'éditer les produits dans cette catégorie (sous-entend les droits de lecture)"
+  own.label: Autorisé à gérer les produits
+  own.help: "Permet de passer en revue, publier, dépublier, catégoriser, associer les produits de cette catégorie (sous entend l'autorisation de modification)"
+  no_access_to_products: "Vous n'avez accès à aucun produit dans aucune arborescence, contactez votre administrateur pour résoudre le problème"
+  apply_on_children.label: Appliquer les changements aux sous-catégories
+  apply_on_children.help: Appliquer les changements de permissions à toutes les sous-catégories, les permissions existantes sur les sous-catégories sont conservées
+locale.permissions:
+  view.label: Autorisé à voir les informations produits
+  view.help: Permet de voir les informations produits dans cette locale
+  edit.label: Autorisé à éditer les informations produits
+  edit.help: "Permet d'éditer les informations produits dans cette locale (sous entend les droits de lecture)"
+  no_access_to_products: "Vous n'avez accès à aucune information produit dans aucune locale, contactez votre administrateur pour résoudre le problème"
+pimee_enrich:
+  groups:
+    empty: aucun
+btn:
+  save working copy: Enregistrer la version de travail
+  save draft: Enregistrer le brouillon
+  send for approval: Soumettre pour validation
+  sent for approval: Soumis à la validation
+pim_enrich:
+  mass_edit_action:
+    publish:
+      label: Publier les produits
+    published_product:
+      page_title: Produits publiés
+      title: Choisissez une action
+    unpublish:
+      success_flash: Les produits sélectionnés ont bien été dépubliés.
+      not_editable: |-
+        Vous n'avez pas la permission d'éditer les produits "%identifiers%".
+pim_enrich.mass_edit_action:
+  limit_exceeded: 'Veuillez sélectionner moins de %limit% produits à éditer'
+  product:
+    page_title: Produits
+    title: Choisissez une opération
+    steps:
+      fourth: Confirmation
+flash.product.updated: La copie de travail a bien été mise à jour
+flash.product_draft.updated: Le brouillon a bien été enregistré
+flash.locale.updated: Les locales et les permissions ont bien étés mises à jour
