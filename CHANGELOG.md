@@ -1,12 +1,18 @@
 # 1.0.0-x
+## Improvements
+## Bug fixes
+## BC breaks
+
+# 1.0.0-RC3
 
 ## Improvements
 - Java dependency has been removed
 - Add fallback to en_US locale
+- Application is partially translated in French
 
 ## Bug fixes
 - Fixed disabled file input appearing as if it were enabled
-- PIM-2975: validation fails when a draft is submitted
+- Fixed product draft validation
 - Don't allow users without corresponding rights to edit entity permissions
 - Imported categories now have the permissions of their parent
 
