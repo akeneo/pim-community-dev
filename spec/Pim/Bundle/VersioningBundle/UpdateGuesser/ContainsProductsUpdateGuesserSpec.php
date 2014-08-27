@@ -1,0 +1,49 @@
+<?php
+
+namespace spec\Pim\Bundle\VersioningBundle\UpdateGuesser;
+
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
+use Doctrine\ORM\EntityManager;
+use Pim\Bundle\CatalogBundle\Entity\Group;
+use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
+use Pim\Bundle\CatalogBundle\Model\ProductInterface;
+use Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface;
+
+class ContainsProductsUpdateGuesserSpec extends ObjectBehavior
+{
+    function it_is_an_update_guesser()
+    {
+        $this->shouldImplement('Pim\Bundle\VersioningBundle\UpdateGuesser\UpdateGuesserInterface');
+    }
+
+    function it_supports_entity_updates_and_deletion()
+    {
+        $this->supportAction(UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn(true);
+        $this->supportAction(UpdateGuesserInterface::ACTION_DELETE)->shouldReturn(true);
+        $this->supportAction(UpdateGuesserInterface::ACTION_UPDATE_COLLECTION)->shouldReturn(false);
+        $this->supportAction('foo')->shouldReturn(false);
+    }
+
+    function it_marks_products_as_updated_when_a_group_is_removed_or_updated(
+        EntityManager $em,
+        ProductInterface $foo,
+        ProductInterface $bar,
+        Group $group
+    ) {
+        $group->getProducts()->willReturn([$foo, $bar]);
+        $this->guessUpdates($em, $group, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([$foo, $bar]);
+        $this->guessUpdates($em, $group, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$foo, $bar]);
+    }
+
+    function it_marks_products_as_updated_when_a_category_is_removed(
+        EntityManager $em,
+        ProductInterface $foo,
+        ProductInterface $bar,
+        CategoryInterface $category
+    ) {
+        $category->getProducts()->willReturn([$foo, $bar]);
+        $this->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_UPDATE_ENTITY)->shouldReturn([]);
+        $this->guessUpdates($em, $category, UpdateGuesserInterface::ACTION_DELETE)->shouldReturn([$foo, $bar]);
+    }
+}
