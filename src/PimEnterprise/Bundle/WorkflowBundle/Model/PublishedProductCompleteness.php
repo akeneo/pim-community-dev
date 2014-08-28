@@ -20,6 +20,6 @@ use JMS\Serializer\Annotation\ExclusionPolicy;
  * @author Nicolas Dupont <nicolas@akeneo.com>
  * @ExclusionPolicy("all")
  */
-class PublishedProductCompleteness extends AbstractCompleteness
+class PublishedProductCompleteness extends AbstractCompleteness implements PublishedProductCompletenessInterface
 {
 }
