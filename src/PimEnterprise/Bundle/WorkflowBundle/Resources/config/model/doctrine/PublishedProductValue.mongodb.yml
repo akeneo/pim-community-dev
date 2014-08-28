@@ -28,7 +28,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         entity:
             reference: true
             type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface
             inversedBy: values
         option:
             type: entity
@@ -43,12 +43,12 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue:
         metric:
             embedded: true
             type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetricInterface
         prices:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPriceInterface
         media:
             embedded: true
             type: one
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMediaInterface

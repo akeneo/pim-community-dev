@@ -33,15 +33,15 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProduct:
         associations:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociation
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductAssociationInterface
         completenesses:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompleteness
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductCompletenessInterface
         values:
             embedded: true
             type: many
-            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            targetDocument: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
             mappedBy: entity
         originalProduct:
             reference: true

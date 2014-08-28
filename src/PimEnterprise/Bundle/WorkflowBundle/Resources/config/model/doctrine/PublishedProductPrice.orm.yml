@@ -22,7 +22,7 @@ PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice:
             column: currency_code
     manyToOne:
         value:
-            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValue
+            targetEntity: PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductValueInterface
             inversedBy: prices
             joinColumns:
                 value_id:

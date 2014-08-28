@@ -13,6 +13,7 @@
 ## Bug fixes
 
 ## Improvements
+- Setup relationships of published products with interfaces in order to ease overriding
 
 ## BC breaks
 
