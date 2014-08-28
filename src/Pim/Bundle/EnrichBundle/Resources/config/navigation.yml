@@ -149,6 +149,7 @@ oro_titles:
     pim_enrich_attribute_edit:             pim_title.attribute.edit
     pim_enrich_product_index:              pim_title.product.index
     pim_enrich_product_edit:               pim_title.product.edit
+    pim_enrich_product_update:             pim_title.product.edit
     pim_enrich_family_index:               pim_title.family.index
     pim_enrich_family_edit:                pim_title.family.edit
     pim_enrich_channel_index:              pim_title.channel.index
@@ -166,3 +167,4 @@ oro_titles:
     pim_enrich_group_type_edit:            pim_title.group_type.edit
     pim_enrich_mass_edit_action_choose:    pim_title.mass_edit_action.choose
     pim_enrich_mass_edit_action_configure: pim_title.mass_edit_action.configure
+    pim_enrich_mass_edit_action_perform:   pim_title.mass_edit_action.configure
