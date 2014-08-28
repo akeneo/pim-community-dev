@@ -24,6 +24,7 @@
 - Fixed apply filter on channel tree on MongoDB implementation
 - Fixed a bug on ProductCsvWriter
 - Fixed a bug that causes product associations to be stored twice in MongoDB implementation
+- Fixed page titles on product edit and mass edit pages when forms are submitted with errors
 
 ## BC breaks
 - Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.
