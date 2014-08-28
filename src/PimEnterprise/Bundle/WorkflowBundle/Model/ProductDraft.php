@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Model;
 
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
@@ -8,7 +17,6 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
  * Product draft
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProductDraft
 {

@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\EventSubscriber\Enrich;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -12,7 +21,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
  * Add the product draft form view to the product edit template parameters
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInterface
 {

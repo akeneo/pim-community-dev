@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\DataGridBundle\Extension\MassAction\Util;
 
 use Symfony\Component\Security\Core\SecurityContextInterface;
@@ -16,7 +25,6 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Override to apply permissions on attribute groups
  *
  * @author    Nicolas Dupont <nicolas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProductFieldsBuilder extends BaseProductFieldsBuilder
 {

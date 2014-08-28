@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\SecurityBundle\Voter;
 
 use Pim\Bundle\DataGridBundle\Entity\DatagridView;
@@ -12,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
  * Datagrid view voter, allows to know if a datagrid view is usable by the current user.
  *
  * @author    Julien Janvier <julien.janvier@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class DatagridViewVoter implements VoterInterface
 {

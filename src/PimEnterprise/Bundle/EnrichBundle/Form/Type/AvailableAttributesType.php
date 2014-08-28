@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\EnrichBundle\Form\Type;
 
 use Symfony\Component\Form\FormBuilderInterface;
@@ -14,7 +23,6 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Override available attributes type to remove attributes where permissions are revoked
  *
  * @author    Romain Monceau <romain@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class AvailableAttributesType extends BaseAvailableAttributesType
 {

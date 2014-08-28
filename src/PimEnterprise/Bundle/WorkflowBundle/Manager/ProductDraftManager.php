@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Akeneo PIM Enterprise Edition.
+ *
+ * (c) 2014 Akeneo SAS (http://www.akeneo.com)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace PimEnterprise\Bundle\WorkflowBundle\Manager;
 
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -18,7 +27,6 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
  * Manage product product drafts
  *
  * @author    Gildas Quemener <gildas@akeneo.com>
- * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  */
 class ProductDraftManager
 {
