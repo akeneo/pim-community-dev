@@ -1,6 +1,10 @@
-# 1.2.0-x
+# 1.2.0
+
 ## Improvements
+
 ## Bug fixes
+- Fix a bug on entity `Pim/Bundle/CatalogBundle/Model/AbstractProduct`
+
 ## BC breaks
 
 # 1.2.0-RC4
