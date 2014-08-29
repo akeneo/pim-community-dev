@@ -1,0 +1,78 @@
+options:
+    not_visible:
+        code: not_visible
+        attribute: visibility
+        labels: { fr_FR: 'Non visible individuellement', en_US: 'Not visible individually' }
+    catalog:
+        code: catalog
+        attribute: visibility
+        labels: { fr_FR: 'Catalogue', en_US: 'Catalog' }
+    search:
+        code: search
+        attribute: visibility
+        labels: { fr_FR: 'Recherche', en_US: 'Search' }
+    catalog_search:
+        code: catalog_search
+        attribute: visibility
+        labels: { fr_FR: 'Catalogue et recherche', en_US: 'Catalog and search' }
+    Red:
+        code: Red
+        attribute: color
+        labels: { fr_FR: 'Rouge', en_US: 'Red' }
+    Blue:
+        code: Blue
+        attribute: color
+        labels: { fr_FR: 'Bleu', en_US: 'Blue' }
+    XS:
+        code: XS
+        attribute: size
+        labels: { fr_FR: 'XS', en_US: 'XS' }
+    S:
+        code: S
+        attribute: size
+        labels: { fr_FR: 'S', en_US: 'S' }
+    M:
+        code: M
+        attribute: size
+        labels: { fr_FR: 'M', en_US: 'M' }
+    L:
+        code: L
+        attribute: size
+        labels: { fr_FR: 'L', en_US: 'L' }
+    XL:
+        code: XL
+        attribute: size
+        labels: { fr_FR: 'XL', en_US: 'XL' }
+    uc_black:
+        code: uc_black
+        attribute: unique_color
+        labels: { fr_FR: 'Noir', en_US: 'Black' }
+    uc_blue:
+        code: uc_blue
+        attribute: unique_color
+        labels: { fr_FR: 'Bleu', en_US: 'Blue' }
+    uc_green:
+        code: uc_green
+        attribute: unique_color
+        labels: { fr_FR: 'Vert', en_US: 'Green' }
+    uc_orange:
+        code: uc_orange
+        attribute: unique_color
+        labels: { fr_FR: 'Orange', en_US: 'Orange' }
+    uc_purple:
+        code: uc_purple
+        attribute: unique_color
+        labels: { fr_FR: 'Violet', en_US: 'Purple' }
+    uc_red:
+        code: uc_red
+        attribute: unique_color
+        labels: { fr_FR: 'Rouge', en_US: 'Red' }
+    uc_yellow:
+        code: uc_yellow
+        attribute: unique_color
+        labels: { fr_FR: 'Jaune', en_US: 'Yellow' }
+    uc_white:
+        code: uc_white
+        attribute: unique_color
+        labels: { fr_FR: 'Blanc', en_US: 'White' }
+

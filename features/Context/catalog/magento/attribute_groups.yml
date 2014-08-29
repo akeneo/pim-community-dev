@@ -1,0 +1,21 @@
+attribute_groups:
+    general:
+        labels:
+            en_US: General
+            fr_FR: Général
+    seo:
+        labels:
+            en_US: SEO
+            fr_FR: SEO
+    marketing:
+        labels:
+            en_US: Marketing
+            fr_FR: Commercial
+    sizes:
+        labels:
+            en_US: Sizes
+            fr_FR: Tailles
+    colors:
+        labels:
+            en_US: Colors
+            fr_FR: Couleurs

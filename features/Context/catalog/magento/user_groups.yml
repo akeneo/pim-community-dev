@@ -1,0 +1,11 @@
+user_groups:
+    it_support:
+        name: IT support
+    manager:
+        name: Manager
+    redactor:
+        name: Redactor
+    english_translator:
+        name: English translator
+    all:
+        name: All
