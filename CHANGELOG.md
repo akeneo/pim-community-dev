@@ -1,5 +1,11 @@
 # 1.0.0-x
 ## Improvements
+## Bug fixes
+## BC breaks
+
+# 1.0.0
+
+## Improvements
 
 ## Bug fixes
 - Fixed read only mode of products page
