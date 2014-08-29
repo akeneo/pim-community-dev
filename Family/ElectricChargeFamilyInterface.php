@@ -19,6 +19,11 @@ class ElectricChargeFamilyInterface
     /**
      * @staticvar string
      */
+    const MILLIAMPEREHOUR = 'MILLIAMPEREHOUR';
+
+    /**
+     * @staticvar string
+     */
     const MILLICOULOMB = 'MILLICOULOMB';
 
     /**
