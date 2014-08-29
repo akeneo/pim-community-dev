@@ -3,6 +3,8 @@ channels:
         label: Tablet
         locales:
             - en_US
+            - fr_FR
+            - de_DE
         currencies:
             - EUR
             - USD
@@ -11,6 +13,8 @@ channels:
         label: Mobile
         locales:
             - en_US
+            - fr_FR
+            - de_DE
         currencies:
             - EUR
         tree: 2014_collection

@@ -12,6 +12,7 @@ attributes:
     name:
         labels:
             en_US: Name
+            fr_FR: Nom
         type:  pim_catalog_text
         group: info
         localizable:         true
@@ -66,6 +67,7 @@ attributes:
     description:
         labels:
             en_US: Description
+            fr_FR: Description
         type:  pim_catalog_textarea
         group: info
         localizable:         true

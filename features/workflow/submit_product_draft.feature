@@ -1,5 +1,5 @@
 @javascript
-Feature: Submit a product changes product draft
+Feature: Submit a modification on a product draft
   In order to prevent changes on product when I am not allowed to
   As a contributor
   I need to be able to propose values without changing actual product values
@@ -11,7 +11,9 @@ Feature: Submit a product changes product draft
       | categories                | winter_top        |
       | sku                       | my-jacket         |
       | name-en_US                | Jacket            |
+      | name-fr_FR                | Veste             |
       | description-en_US-mobile  | An awesome jacket |
+      | description-fr_FR-mobile  | Une superbe veste |
       | number_in_stock-ecommerce | 2                 |
       | number_in_stock-mobile    | 4                 |
       | number_in_stock-print     | 5                 |
@@ -123,17 +125,33 @@ Feature: Submit a product changes product draft
     And I should see that Handmade is a modified value
 
   @skip
-  Scenario: Successfully accept a date attribute product changes product draft
+  Scenario: Successfully accept a date attribute modification on a product draft
     When I change the "ecommerce Release date" to "2014-05-20"
     And I save the product
     Then the english ecommerce release_date of "my-jacket" should be "2014-05-14"
     But the field ecommerce Release date should contain "May 20, 2014"
     And I should see that ecommerce Release date is a modified value
 
-  Scenario: Successfully accept a metric attribute product changes product draft
+  Scenario: Successfully accept a metric attribute modification on a product draft
     When I visit the "Sizes" group
     And I change the "Length" to "40"
     And I save the product
     Then the metric "length" of product my-jacket should be "60"
     But the field Length should contain "40"
     And I should see that Length is a modified value
+
+  Scenario: Successfully propose a localized attribute change
+    Given I switch the locale to "French (France)"
+    When I change the "Nom" to "Tricot"
+    And I save the product
+    Then the french name of "my-jacket" should be "Veste"
+    But the field Nom should contain "Tricot"
+    And I should see that Nom is a modified value
+
+  Scenario: Successfully propose a localized and scoped attribute change
+    Given I switch the locale to "French (France)"
+    When I change the "mobile Description" to "Un beau tricot"
+    And I save the product
+    Then the french mobile description of "my-jacket" should be "Une superbe veste"
+    But the field mobile Description should contain "Un beau tricot"
+    And I should see that mobile Description is a modified value
