@@ -19,7 +19,9 @@
     "require": {
         "php": ">=5.4.4",
         "akeneo/pim-community-dev": "1.2.0",
-        "phpspec/php-diff": "1.0.2"
+        "phpspec/php-diff": "1.0.2",
+        "akeneo/measure-bundle": "0.2.*@stable",
+        "akeneo/batch-bundle": "0.2.*@stable"
     },
     "require-dev": {
         "behat/behat":  "2.5.*@stable",
