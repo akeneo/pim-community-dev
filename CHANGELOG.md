@@ -1,3 +1,9 @@
+# 0.2.3 (2014-08-29)
+ - Added MILLICOULOMBHOUR
+
+# 0.2.2 (2014-08-18)
+ -  Corrected missing definition for CENTICOULOMB
+
 # 0.2.1 (2014-08-13)
  - Added Intensity, Electric charge, Duration and Voltage families
 

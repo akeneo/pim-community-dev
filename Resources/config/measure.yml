@@ -269,6 +269,9 @@ measures_config:
     ElectricCharge:
         standard: AMPEREHOUR
         units:
+            MILLIAMPEREHOUR:
+                convert: [{'mul': 0.001}]
+                symbol: mAh
             AMPEREHOUR:
                 convert: [{'mul': 1}]
                 symbol: Ah

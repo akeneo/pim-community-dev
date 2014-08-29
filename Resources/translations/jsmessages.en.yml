@@ -88,15 +88,16 @@ HECTOAMPERE: Hectoampere
 KILOAMPERE:  Kiloampere
 MEGAAMPERE:  Megaampere
 
-ElectricCharge: Electric charge
-AMPEREHOUR:     Ampere hour
-MILLICOULOMB:   Millicoulomb
-CENTICOULOMB:   Centicoulomb
-DECICOULOMB:    Decicoulomb
-COULOMB:        Coulomb
-DEKACOULOMB:    Dekacoulomb
-HECTOCOULOMB:   Hectocoulomb
-KILOCOULOMB:    Kilocoulomb
+ElectricCharge:  Electric charge
+MILLIAMPEREHOUR: Milliampere hour
+AMPEREHOUR:      Ampere hour
+MILLICOULOMB:    Millicoulomb
+CENTICOULOMB:    Centicoulomb
+DECICOULOMB:     Decicoulomb
+COULOMB:         Coulomb
+DEKACOULOMB:     Dekacoulomb
+HECTOCOULOMB:    Hectocoulomb
+KILOCOULOMB:     Kilocoulomb
 
 Duration:    Duration
 MILLISECOND: Millisecond
