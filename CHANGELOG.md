@@ -1,5 +1,5 @@
 # 0.2.3 (2014-08-29)
- - Added MILLICOULOMBHOUR
+ - Added MILLIAMPEREHOUR
 
 # 0.2.2 (2014-08-18)
  -  Corrected missing definition for CENTICOULOMB
