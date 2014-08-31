@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\FilterBundle\Filter\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Symfony\Component\Form\FormFactoryInterface;
 use Doctrine\Common\Collections\Collection;
 use Oro\Bundle\FilterBundle\Datasource\FilterDatasourceAdapterInterface;
@@ -12,7 +11,7 @@ use Pim\Bundle\FilterBundle\Filter\ProductFilterUtility;
 use Symfony\Component\Form\Form;
 use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository;
 use Pim\Bundle\CatalogBundle\Model\AbstractAttribute;
-Use Pim\Bundle\UserBundle\Context\UserContext;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 class ChoiceFilterSpec extends ObjectBehavior
 {
