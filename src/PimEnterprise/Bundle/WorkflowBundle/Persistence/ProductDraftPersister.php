@@ -175,9 +175,8 @@ class ProductDraftPersister implements ProductPersister
         }
 
         $username = $this->getUser()->getUsername();
-        $locale = $product->getLocale();
-        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username, $locale)) {
-            $productDraft = $this->factory->createProductDraft($product, $username, $locale);
+        if (null === $productDraft = $this->repository->findUserProductDraft($product, $username)) {
+            $productDraft = $this->factory->createProductDraft($product, $username);
             $manager->persist($productDraft);
         }
 
