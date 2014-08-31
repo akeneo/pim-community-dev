@@ -39,10 +39,10 @@ class ProductReverter
     protected $validator;
 
     /**
-     * @param ManagerRegistry     $registry
-     * @param SerializerInterface $serializer
-     * @param ProductManager      $productManager
-     * @param ValidatorInterface  $validator
+     * @param ManagerRegistry       $registry
+     * @param DenormalizerInterface $denormalizer
+     * @param ProductManager        $productManager
+     * @param ValidatorInterface    $validator
      */
     public function __construct(
         ManagerRegistry $registry,

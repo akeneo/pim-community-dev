@@ -284,7 +284,7 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get the access field depending of access level sent
      *
-     * @param $accessLevel
+     * @param string $accessLevel
      *
      * @return string
      *

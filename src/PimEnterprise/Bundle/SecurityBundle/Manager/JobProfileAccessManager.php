@@ -134,8 +134,7 @@ class JobProfileAccessManager
             $access = new $this->objectAccessClass();
             $access
                 ->setJobProfile($jobProfile)
-                ->setUserGroup($group)
-            ;
+                ->setUserGroup($group);
         }
 
         return $access;

@@ -84,7 +84,7 @@ class ProductVersionController extends AbstractDoctrineController
     /**
      * Revert the entity to the current version
      *
-     * @param Version $version
+     * @param string|integer $id
      *
      * @return RedirectResponse
      *

@@ -150,7 +150,7 @@ class ProductDenormalizer extends AbstractEntityDenormalizer
      *
      * @param string           $data
      * @param string           $format
-     * @oaram array            $context
+     * @param array            $context
      * @param ProductInterface $product
      */
     protected function denormalizeCategories($data, $format, array $context, ProductInterface $product)

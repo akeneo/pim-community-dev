@@ -41,6 +41,7 @@ class EditCommonAttributes extends BaseEditCommonAttributes
      * @param ProductBuilder           $productBuilder
      * @param ProductMassActionManager $massActionManager
      * @param MetricFactory            $metricFactory
+     * @param array                    $classes
      * @param SecurityContextInterface $securityContext
      */
     public function __construct(

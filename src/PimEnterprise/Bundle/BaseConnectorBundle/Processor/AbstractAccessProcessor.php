@@ -56,7 +56,7 @@ abstract class AbstractAccessProcessor extends TransformerProcessor
      *      'userGroup': 'group B',
      *      'permission1': true,
      * ]
-     * @param $data
+     * @param array $data
      *
      * @return array usable items
      */
