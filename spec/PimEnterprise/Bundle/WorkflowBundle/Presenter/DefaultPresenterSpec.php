@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Presenter;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 use PimEnterprise\Bundle\WorkflowBundle\Rendering\RendererInterface;
 

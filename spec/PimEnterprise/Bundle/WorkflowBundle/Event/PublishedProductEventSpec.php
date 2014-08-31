@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Event;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
-use Prophecy\Argument;
 
 class PublishedProductEventSpec extends ObjectBehavior
 {

@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Twig;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Symfony\Component\Translation\TranslatorInterface;
 use Pim\Bundle\CatalogBundle\Manager\AttributeManager;
@@ -27,7 +26,14 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         ProductManager $productManager,
         AttributeManager $attributeManager
     ) {
-        $this->beConstructedWith($valueRepository, $attributeRepository, $renderer, $translator, $productManager, $attributeManager);
+        $this->beConstructedWith(
+            $valueRepository,
+            $attributeRepository,
+            $renderer,
+            $translator,
+            $productManager,
+            $attributeManager
+        );
 
         $this->addPresenter($attributePresenter, 0);
         $this->addPresenter($valuePresenter, 1);

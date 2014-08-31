@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class DateTimePublisherSpec extends ObjectBehavior
 {

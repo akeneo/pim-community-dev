@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductPrice;
 
 class PricePublisherSpec extends ObjectBehavior
@@ -25,6 +24,8 @@ class PricePublisherSpec extends ObjectBehavior
 
     function it_publishes_price(AbstractProductPrice $value)
     {
-        $this->publish($value)->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice');
+        $this
+            ->publish($value)
+            ->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductPrice');
     }
 }

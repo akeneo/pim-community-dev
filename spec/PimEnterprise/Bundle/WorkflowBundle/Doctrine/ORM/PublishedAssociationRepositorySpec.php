@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Doctrine\ORM;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\ClassMetadata;
 
@@ -22,6 +21,7 @@ class PublishedAssociationRepositorySpec extends ObjectBehavior
 
     function it_is_a_published_association_repository()
     {
-        $this->shouldImplement('PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface');
+        $this
+            ->shouldImplement('PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedAssociationRepositoryInterface');
     }
 }

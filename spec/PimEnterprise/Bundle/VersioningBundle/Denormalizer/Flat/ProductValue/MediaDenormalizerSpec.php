@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat\ProductValue;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use PimEnterprise\Bundle\CatalogBundle\Manager\MediaManager;
 

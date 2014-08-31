@@ -10,7 +10,6 @@ use Pim\Bundle\DataGridBundle\Datagrid\Product\FiltersConfigurator;
 use Pim\Bundle\DataGridBundle\Datagrid\Product\SortersConfigurator;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\ContextConfigurator;
 use PimEnterprise\Bundle\DataGridBundle\Datagrid\Product\RowActionsConfigurator;
-use Prophecy\Argument;
 
 class ConfigureProductGridListenerSpec extends ObjectBehavior
 {

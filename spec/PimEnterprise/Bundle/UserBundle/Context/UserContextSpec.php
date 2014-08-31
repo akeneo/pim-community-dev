@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\UserBundle\Context;
 
 use Oro\Bundle\UserBundle\Entity\User;
-use Prophecy\Argument;
 use PhpSpec\ObjectBehavior;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;

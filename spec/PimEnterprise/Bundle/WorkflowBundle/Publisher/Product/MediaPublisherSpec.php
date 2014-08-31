@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductMedia;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
@@ -29,6 +28,8 @@ class MediaPublisherSpec extends ObjectBehavior
     function it_publishes_media(AbstractProductMedia $media, ProductInterface $product, AbstractProductValue $value)
     {
         $options = ['product' => $product, 'value' => $value];
-        $this->publish($media, $options)->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia');
+        $this
+            ->publish($media, $options)
+            ->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMedia');
     }
 }

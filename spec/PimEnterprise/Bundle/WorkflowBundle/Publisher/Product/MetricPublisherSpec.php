@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model\AbstractMetric;
 
 class MetricPublisherSpec extends ObjectBehavior
@@ -25,6 +24,8 @@ class MetricPublisherSpec extends ObjectBehavior
 
     function it_publishes_metric(AbstractMetric $value)
     {
-        $this->publish($value)->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric');
+        $this
+            ->publish($value)
+            ->shouldReturnAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductMetric');
     }
 }

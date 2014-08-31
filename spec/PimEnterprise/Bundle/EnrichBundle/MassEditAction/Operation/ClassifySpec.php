@@ -5,7 +5,6 @@ namespace spec\PimEnterprise\Bundle\EnrichBundle\MassEditAction\Operation;
 use Oro\Bundle\UserBundle\Entity\User;
 use PhpSpec\ObjectBehavior;
 use PimEnterprise\Bundle\CatalogBundle\Manager\CategoryManager;
-use Prophecy\Argument;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 

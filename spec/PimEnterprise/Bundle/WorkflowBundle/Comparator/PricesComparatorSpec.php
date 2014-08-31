@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Collections\Collection;
 use Pim\Bundle\CatalogBundle\Model;
 

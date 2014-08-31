@@ -3,7 +3,6 @@
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Comparator;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Pim\Bundle\CatalogBundle\Model;
 use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 use Doctrine\Common\Collections\ArrayCollection;
