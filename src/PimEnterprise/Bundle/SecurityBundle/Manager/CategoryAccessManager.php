@@ -24,7 +24,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 /**
  * Category access manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessManager
 {

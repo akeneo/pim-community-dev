@@ -16,9 +16,9 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Comparator which calculate change set for options
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  *
- * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class OptionComparator implements ComparatorInterface
 {

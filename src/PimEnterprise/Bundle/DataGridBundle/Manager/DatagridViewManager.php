@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 /**
  * Datagrid view manager
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatagridViewManager extends BaseDatagridViewManager
 {

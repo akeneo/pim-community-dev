@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 /**
  * Association flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AssociationDenormalizer extends AbstractEntityDenormalizer
 {

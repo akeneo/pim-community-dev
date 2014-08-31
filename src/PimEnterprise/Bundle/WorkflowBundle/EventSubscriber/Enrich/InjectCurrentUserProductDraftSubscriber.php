@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Exception\ValidatorException;
 /**
  * Inject current user product draft in a product before editing a product
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class InjectCurrentUserProductDraftSubscriber implements EventSubscriberInterface
 {

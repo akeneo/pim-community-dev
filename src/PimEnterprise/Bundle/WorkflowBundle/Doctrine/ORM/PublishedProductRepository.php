@@ -25,7 +25,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 /**
  * Published products repository
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductRepository extends ProductRepository implements PublishedProductRepositoryInterface
 {

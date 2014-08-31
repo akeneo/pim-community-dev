@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Attribute group voter, allows to know if attributes of a group can be edited or consulted by a
  * user depending on his user groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AttributeGroupVoter implements VoterInterface
 {

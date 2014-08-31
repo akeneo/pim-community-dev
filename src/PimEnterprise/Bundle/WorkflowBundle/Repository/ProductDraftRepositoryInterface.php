@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 /**
  * ProductDraft repository interface
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 interface ProductDraftRepositoryInterface extends ObjectRepository
 {

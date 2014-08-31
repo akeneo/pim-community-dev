@@ -16,7 +16,7 @@ use PimEnterprise\Bundle\CatalogBundle\Version;
 /**
  * Extension to display version of the Akeneo
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class VersionExtension extends \Twig_Extension
 {

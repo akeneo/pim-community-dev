@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
  * Attribute option flat denormalizer used for following attribute types:
  * - pim_catalog_simpleselect
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeOptionDenormalizer extends AbstractValueDenormalizer
 {

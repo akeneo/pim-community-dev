@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Repository\PublishedProductRepositoryInt
 /**
  * Check some pre remove events and forbid deletion if the entity is linked to a published product
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class CheckPublishedProductOnRemovalSubscriber implements EventSubscriberInterface
 {

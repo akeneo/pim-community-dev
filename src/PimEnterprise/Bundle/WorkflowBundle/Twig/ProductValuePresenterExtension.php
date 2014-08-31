@@ -20,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Twig extension to present a product value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductValuePresenterExtension extends \Twig_Extension
 {

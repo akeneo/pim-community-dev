@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Present two files information side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class FilePresenter implements PresenterInterface
 {

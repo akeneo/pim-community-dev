@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvents;
 /**
  * Product change set computer during product draft workflow
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ChangeSetComputer implements ChangeSetComputerInterface
 {

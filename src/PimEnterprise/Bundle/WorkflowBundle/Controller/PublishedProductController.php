@@ -34,7 +34,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\PublishedProductManager;
 /**
  * Published product controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PublishedProductController extends AbstractController
 {

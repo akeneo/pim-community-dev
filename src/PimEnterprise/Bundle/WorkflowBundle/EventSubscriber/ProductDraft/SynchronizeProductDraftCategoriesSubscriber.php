@@ -33,7 +33,7 @@ use Doctrine\ODM\MongoDB\UnitOfWork;
  *
  * This subscriber is only registered when the mongodb support is activated
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class SynchronizeProductDraftCategoriesSubscriber implements EventSubscriber
 {

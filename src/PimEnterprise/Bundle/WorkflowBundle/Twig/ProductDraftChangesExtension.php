@@ -26,7 +26,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * Twig extension to present product draft changes
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftChangesExtension extends \Twig_Extension
 {

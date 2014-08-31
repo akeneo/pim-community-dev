@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * ProductDraft event
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftEvent extends Event
 {

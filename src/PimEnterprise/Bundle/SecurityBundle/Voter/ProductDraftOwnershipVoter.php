@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * Voter of the product draft ownership attribute
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftOwnershipVoter implements VoterInterface
 {

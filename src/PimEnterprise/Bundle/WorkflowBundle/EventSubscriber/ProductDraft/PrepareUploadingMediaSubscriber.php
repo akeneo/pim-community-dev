@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Factory\UploadedFileFactory;
 /**
  * Prepare the data before submitting them to the form
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PrepareUploadingMediaSubscriber implements EventSubscriberInterface
 {

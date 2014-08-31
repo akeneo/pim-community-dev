@@ -22,7 +22,7 @@ use Symfony\Component\Validator\ValidatorInterface;
 /**
  * Product version reverter that allow to revert a product to a previous snapshot
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductReverter
 {

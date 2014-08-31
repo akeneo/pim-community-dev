@@ -20,7 +20,7 @@ use Pim\Bundle\TransformBundle\Builder\FieldNameBuilder;
 /**
  * Product flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductDenormalizer extends AbstractEntityDenormalizer
 {

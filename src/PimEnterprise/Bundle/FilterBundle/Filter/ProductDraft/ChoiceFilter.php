@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\FilterBundle\Filter\ProductDraftFilterUtility;
 /**
  * Choice filter for product draft
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ChoiceFilter extends OroChoiceFilter
 {

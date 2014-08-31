@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Form\Subscriber\CollectProductMassEditVa
  * Form type of the EditCommonAttributes operation
  * configured with a data collector subscriber
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributesType extends BaseEditCommonAttributesType
 {

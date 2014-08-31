@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Allow to know if current user can review/publish, edit or view products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PermissionFilter extends OroChoiceFilter
 {

@@ -16,7 +16,7 @@ use Pim\Bundle\BaseConnectorBundle\Processor\TransformerProcessor;
 /**
  * Allows to bind data into an access and validate them
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 abstract class AbstractAccessProcessor extends TransformerProcessor
 {

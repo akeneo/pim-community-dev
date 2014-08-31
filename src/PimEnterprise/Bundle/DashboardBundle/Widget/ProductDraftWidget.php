@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessReposito
 /**
  * Widget to display product product drafts
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ProductDraftWidget implements WidgetInterface
 {

@@ -17,7 +17,7 @@ use Symfony\Component\Form\AbstractType;
 /**
  * Form type that provides a choice of available user groups
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GroupsType extends AbstractType
 {

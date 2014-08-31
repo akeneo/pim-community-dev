@@ -26,7 +26,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Edit common attributes of given products
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class EditCommonAttributes extends BaseEditCommonAttributes
 {

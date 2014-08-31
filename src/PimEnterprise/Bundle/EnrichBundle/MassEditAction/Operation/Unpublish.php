@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Batch operation to unpublish products
  *
- * @author    Julien Janvier <nicolas@akeneo.com>
+ * @author Julien Janvier <nicolas@akeneo.com>
  */
 class Unpublish extends PublishedProductMassEditOperation
 {

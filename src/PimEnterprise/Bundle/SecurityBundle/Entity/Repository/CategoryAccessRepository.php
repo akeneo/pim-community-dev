@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Category access repository
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessRepository extends EntityRepository
 {

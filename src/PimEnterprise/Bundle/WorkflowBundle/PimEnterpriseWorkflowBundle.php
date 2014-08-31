@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\DependencyInjection\Compiler;
 /**
  * PIM Enterprise Workflow Bundle
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class PimEnterpriseWorkflowBundle extends Bundle
 {

@@ -23,7 +23,7 @@ use Pim\Bundle\EnrichBundle\Flash\Message;
 /**
  * Replace "product updated" flash by "product draft updated" if necessary
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ReplaceProductUpdatedFlashMessageSubscriber implements EventSubscriberInterface
 {

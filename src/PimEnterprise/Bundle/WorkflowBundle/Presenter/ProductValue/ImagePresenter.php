@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Present an image value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class ImagePresenter extends FilePresenter
 {

@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Exception\PublishedProductConsistencyExc
 /**
  * Subscriber when PublishedProductConsistencyException is thrown as response
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PublishedProductConsistencyExceptionSubscriber implements EventSubscriberInterface
 {

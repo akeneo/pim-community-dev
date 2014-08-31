@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Job profile listener used to handle permissions
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class JobPermissionsSubscriber implements EventSubscriberInterface
 {
