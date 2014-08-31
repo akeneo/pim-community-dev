@@ -21,7 +21,8 @@ class PricesComparatorSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface');
     }
 
-    function it_supports_prices_collection_type($value, $attribute) {
+    function it_supports_prices_collection_type($value, $attribute)
+    {
         $attribute->getAttributeType()->willReturn('pim_catalog_price_collection');
 
         $this->supportsComparison($value)->shouldBe(true);

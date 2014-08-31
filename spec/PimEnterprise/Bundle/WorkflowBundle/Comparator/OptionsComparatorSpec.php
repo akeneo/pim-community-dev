@@ -38,7 +38,7 @@ class OptionsComparatorSpec extends ObjectBehavior
         AttributeOption $blue,
         AttributeOption $yellow,
         AttributeOption $green
-    ){
+    ) {
         $submittedData = [
             'options' => '42,24,76',
         ];

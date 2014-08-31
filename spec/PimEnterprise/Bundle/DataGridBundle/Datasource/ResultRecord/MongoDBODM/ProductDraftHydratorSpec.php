@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDbOdm;
+namespace spec\PimEnterprise\Bundle\DataGridBundle\Datasource\ResultRecord\MongoDBODM;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;

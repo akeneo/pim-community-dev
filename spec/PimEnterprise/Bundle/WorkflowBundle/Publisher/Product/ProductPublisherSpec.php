@@ -2,7 +2,6 @@
 
 namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher\Product;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ObjectManager;
 use PhpSpec\ObjectBehavior;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;

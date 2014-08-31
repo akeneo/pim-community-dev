@@ -12,7 +12,7 @@ class MetricPresenterSpec extends ObjectBehavior
 {
     function let(TranslatorInterface $translator)
     {
-        $translator->trans(Argument::type('string'))->will(function($args) {
+        $translator->trans(Argument::type('string'))->will(function ($args) {
             return 'trans_'.strtolower($args[0]);
         });
     }

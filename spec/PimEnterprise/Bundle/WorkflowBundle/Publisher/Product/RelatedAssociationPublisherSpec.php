@@ -20,7 +20,7 @@ class RelatedAssociationPublisherSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Publisher\Product\RelatedAssociationPublisher');
     }
 
-    function it_should_be_a_publisher()
+    function it_is_a_publisher()
     {
         $this->shouldImplement('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }

@@ -2,20 +2,17 @@
 
 namespace spec\PimEnterprise\Bundle\CatalogBundle\Manager;
 
+use PhpSpec\ObjectBehavior;
+use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\SecurityContextInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\Collections\ArrayCollection;
 use Oro\Bundle\UserBundle\Entity\User;
-use PhpSpec\ObjectBehavior;
-use Pim\Bundle\CatalogBundle\Entity\Category;
 use Pim\Bundle\CatalogBundle\Entity\Repository\CategoryRepository;
 use Pim\Bundle\CatalogBundle\Model\CategoryInterface;
 use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\CategoryAccessRepository;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Prophecy\Argument;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\SecurityContextInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class CategoryManagerSpec extends ObjectBehavior
 {
@@ -44,9 +41,9 @@ class CategoryManagerSpec extends ObjectBehavior
     function it_gets_accessible_trees_for_display(
         $categoryAccessRepository,
         $categoryRepository,
-        Category $firstTree,
-        Category $secondTree,
-        Category $thirdTree,
+        CategoryInterface $firstTree,
+        CategoryInterface $secondTree,
+        CategoryInterface $thirdTree,
         User $user
     ) {
         $firstTree->getId()->willReturn(1);
@@ -69,9 +66,9 @@ class CategoryManagerSpec extends ObjectBehavior
     function it_gets_accessible_trees_for_edition(
         $categoryAccessRepository,
         $categoryRepository,
-        Category $firstTree,
-        Category $secondTree,
-        Category $thirdTree,
+        CategoryInterface $firstTree,
+        CategoryInterface $secondTree,
+        CategoryInterface $thirdTree,
         User $user
     ) {
         $firstTree->getId()->willReturn(1);
@@ -93,8 +90,8 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_gets_granted_children(
         $categoryRepository,
-        Category $childOne,
-        Category $childTwo,
+        CategoryInterface $childOne,
+        CategoryInterface $childTwo,
         $context
     ) {
         $categoryRepository->getChildrenByParentId(42)->willReturn([$childOne, $childTwo]);
@@ -105,9 +102,9 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_gets_granted_filled_tree_when_path_is_not_granted(
         $categoryRepository,
-        Category $parent,
-        Category $childOne,
-        Category $childTwo,
+        CategoryInterface $parent,
+        CategoryInterface $childOne,
+        CategoryInterface $childTwo,
         $context
     ) {
 
@@ -123,9 +120,9 @@ class CategoryManagerSpec extends ObjectBehavior
 
     function it_gets_granted_filled_tree_when_path_is_granted(
         $categoryRepository,
-        Category $parent,
-        Category $childOne,
-        Category $childTwo,
+        CategoryInterface $parent,
+        CategoryInterface $childOne,
+        CategoryInterface $childTwo,
         $context
     ) {
         $categoryRepository->getPath($childTwo)->willReturn(

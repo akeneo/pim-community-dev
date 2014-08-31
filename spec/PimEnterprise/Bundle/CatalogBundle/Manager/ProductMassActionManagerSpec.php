@@ -28,7 +28,7 @@ class ProductMassActionManagerSpec extends ObjectBehavior
         $this->beConstructedWith($massActionRepo, $attRepo, $attGroupAccessRepo, $securityContext);
     }
 
-    function it_should_find_attribute_with_groups_with_sub_query(
+    function it_finds_attributes_with_groups_with_sub_query(
         $massActionRepo,
         $attRepo,
         $attGroupAccessRepo,

@@ -10,10 +10,8 @@ use PimEnterprise\Bundle\WorkflowBundle\Comparator\ComparatorInterface;
 
 class ChainedComparatorSpec extends ObjectBehavior
 {
-    public function let(
-        ComparatorInterface $comparator1,
-        ComparatorInterface $comparator2
-    ) {
+    function let(ComparatorInterface $comparator1, ComparatorInterface $comparator2)
+    {
         $this->addComparator($comparator1, 0);
         $this->addComparator($comparator2, 100);
     }

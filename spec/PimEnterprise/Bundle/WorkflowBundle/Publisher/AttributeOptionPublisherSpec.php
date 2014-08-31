@@ -4,7 +4,7 @@ namespace spec\PimEnterprise\Bundle\WorkflowBundle\Publisher;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\CatalogBundle\Entity;
+use Pim\Bundle\CatalogBundle\Entity\AttributeOption;
 
 class AttributeOptionPublisherSpec extends ObjectBehavior
 {
@@ -13,11 +13,13 @@ class AttributeOptionPublisherSpec extends ObjectBehavior
         $this->shouldBeAnInstanceOf('PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface');
     }
 
-    function it_supports_attribute_option(Entity\AttributeOption $value) {
+    function it_supports_attribute_option(AttributeOption $value)
+    {
         $this->supports($value)->shouldBe(true);
     }
 
-    function it_publishes_attribute_option(Entity\AttributeOption $value) {
+    function it_publishes_attribute_option(AttributeOption $value)
+    {
         $this->publish($value)->shouldReturnAnInstanceOf('Pim\Bundle\CatalogBundle\Entity\AttributeOption');
     }
 }

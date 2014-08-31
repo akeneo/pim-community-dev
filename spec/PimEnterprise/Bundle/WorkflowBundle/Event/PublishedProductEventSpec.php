@@ -14,7 +14,7 @@ class PublishedProductEventSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvent');
     }
 
-    function it_should_be_an_event()
+    function it_is_an_event()
     {
         $this->shouldHaveType('Symfony\Component\EventDispatcher\Event');
     }
@@ -24,13 +24,13 @@ class PublishedProductEventSpec extends ObjectBehavior
         $this->beConstructedWith($product, $published);
     }
 
-    function its_product_should_be_mutable($product)
+    function its_product_is_be_mutable($product)
     {
         $this->setProduct($product);
         $this->getProduct()->shouldReturn($product);
     }
 
-    function its_published_product_should_be_mutable($published)
+    function its_published_product_is_be_mutable($published)
     {
         $this->setPublishedProduct($published);
         $this->getPublishedProduct()->shouldReturn($published);

@@ -114,7 +114,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TranslatorAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
@@ -147,7 +147,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         Model\ProductInterface $product,
         PresenterInterface $presenter,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\RendererAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);
@@ -181,7 +181,7 @@ class ProductDraftChangesExtensionSpec extends ObjectBehavior
         PresenterInterface $presenter,
         \Twig_Environment $twig,
         ProductDraft $productDraft
-    ){
+    ) {
         $presenter->implement('PimEnterprise\Bundle\WorkflowBundle\Presenter\TwigAwareInterface');
         $productDraft->getProduct()->willReturn($product);
         $product->getValue('description', 'en_US', 'ecommerce')->willReturn($value);

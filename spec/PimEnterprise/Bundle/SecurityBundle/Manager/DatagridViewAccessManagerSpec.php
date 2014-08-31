@@ -22,7 +22,7 @@ class DatagridViewAccessManagerSpec extends ObjectBehavior
         $this->shouldHaveType('PimEnterprise\Bundle\SecurityBundle\Manager\DatagridViewAccessManager');
     }
 
-    public function let(
+    function let(
         AttributeRepository $attributeRepository,
         CategoryRepository $categoryRepository,
         AttributeGroupAccessManager $attributeGroupAccessManager,

@@ -35,10 +35,8 @@ class ConfigureProductGridListenerSpec extends ObjectBehavior
         );
     }
 
-    public function it_builds_the_datagrid(
-        BuildBefore $event,
-        DatagridConfiguration $dataGridConfiguration
-    ) {
+    function it_builds_the_datagrid(BuildBefore $event, DatagridConfiguration $dataGridConfiguration)
+    {
         $event->getConfig()->willReturn($dataGridConfiguration);
 
         $this->buildBefore($event);

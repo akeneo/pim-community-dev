@@ -33,7 +33,7 @@ class MetricComparatorSpec extends ObjectBehavior
     function it_detects_changes_when_changing_metric_data(
         $value,
         Model\Metric $metric
-    ){
+    ) {
         $submittedData = [
             'metric' => [
                 'data' => '100',
@@ -57,7 +57,7 @@ class MetricComparatorSpec extends ObjectBehavior
     function it_detects_changes_when_changing_metric_unit(
         $value,
         Model\Metric $metric
-    ){
+    ) {
         $submittedData = [
             'metric' => [
                 'data' => '100',

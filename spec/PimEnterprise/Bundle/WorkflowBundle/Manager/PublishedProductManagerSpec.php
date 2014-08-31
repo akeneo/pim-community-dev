@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Manager\ProductManager;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 use Pim\Bundle\CatalogBundle\Model\ProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Event\PublishedProductEvents;
-use PimEnterprise\Bundle\WorkflowBundle\Factory\PublishedProductFactory;
 use PimEnterprise\Bundle\WorkflowBundle\Model\PublishedProductInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 use PimEnterprise\Bundle\WorkflowBundle\Publisher\UnpublisherInterface;
