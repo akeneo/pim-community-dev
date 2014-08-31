@@ -46,8 +46,8 @@ class MongoObjectsFactory
     /**
      * Create a MongoDBRef
      *
-     * @param string $id
      * @param string $collection
+     * @param string $id
      *
      * @return MongoDBRef
      */

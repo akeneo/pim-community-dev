@@ -161,7 +161,7 @@ class InstallCommand extends ContainerAwareCommand
     /**
      * Remove directory and all subcontent
      *
-     * @param string $directory
+     * @param string $folder
      */
     protected function cleanDirectory($folder)
     {
