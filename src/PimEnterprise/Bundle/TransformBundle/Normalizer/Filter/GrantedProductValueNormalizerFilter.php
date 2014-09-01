@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Filter the granted product value objects.
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class GrantedProductValueNormalizerFilter implements NormalizerFilterInterface
 {

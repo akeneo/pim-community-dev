@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 /**
  * Form type for Category permissions
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryPermissionsType extends AbstractType
 {

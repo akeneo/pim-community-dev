@@ -17,7 +17,7 @@ use Doctrine\Common\Collections\ArrayCollection;
  * Attribute options collection flat denormalizer used for following attribute types:
  * - pim_catalog_multiselect
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeOptionsDenormalizer extends AttributeOptionDenormalizer
 {

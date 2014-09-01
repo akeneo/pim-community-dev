@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * Mark a product draft as in progress before updating it
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class MarkInProgressSubscriber implements EventSubscriberInterface
 {

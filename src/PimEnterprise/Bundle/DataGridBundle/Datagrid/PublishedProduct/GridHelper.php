@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Helper for published datagrid
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class GridHelper
 {

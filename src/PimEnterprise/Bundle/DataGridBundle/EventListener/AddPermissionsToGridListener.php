@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\SecurityBundle\Entity\Repository\AccessRepositoryInterf
 /**
  * Add permissions to datagrid listener
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AddPermissionsToGridListener
 {

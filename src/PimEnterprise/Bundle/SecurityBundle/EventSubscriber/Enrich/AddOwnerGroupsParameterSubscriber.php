@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Add the owner groups parameter to the product edit template parameters
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class AddOwnerGroupsParameterSubscriber implements EventSubscriberInterface
 {

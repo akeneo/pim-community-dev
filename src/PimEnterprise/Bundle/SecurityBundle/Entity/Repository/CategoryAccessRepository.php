@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Category access repository
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryAccessRepository extends EntityRepository
 {
@@ -284,7 +284,7 @@ class CategoryAccessRepository extends EntityRepository
     /**
      * Get the access field depending of access level sent
      *
-     * @param $accessLevel
+     * @param string $accessLevel
      *
      * @return string
      *

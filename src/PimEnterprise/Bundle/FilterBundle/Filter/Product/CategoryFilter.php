@@ -24,7 +24,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Override category filter to apply permissions on categories
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class CategoryFilter extends BaseCategoryFilter
 {

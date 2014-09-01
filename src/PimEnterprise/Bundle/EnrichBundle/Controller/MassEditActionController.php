@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Mass edit operation controller
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MassEditActionController extends BaseMassEditActionController
 {

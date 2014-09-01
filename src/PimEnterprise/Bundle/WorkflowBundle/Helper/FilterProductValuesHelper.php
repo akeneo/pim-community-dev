@@ -17,7 +17,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Helper for filtering product values
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class FilterProductValuesHelper
 {

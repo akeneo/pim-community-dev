@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Publisher\PublisherInterface;
 /**
  * Product media publisher
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class MediaPublisher implements PublisherInterface
 {

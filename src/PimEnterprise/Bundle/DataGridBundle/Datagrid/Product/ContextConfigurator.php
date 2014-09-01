@@ -23,7 +23,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Override context configurator to apply permissions on attribute groups
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ContextConfigurator extends BaseContextConfigurator
 {

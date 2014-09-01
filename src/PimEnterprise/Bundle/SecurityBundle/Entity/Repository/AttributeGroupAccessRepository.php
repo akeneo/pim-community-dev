@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Attribute group access repository
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class AttributeGroupAccessRepository extends EntityRepository
 {

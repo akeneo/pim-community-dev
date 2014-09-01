@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Override product mass action manager
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class ProductMassActionManager extends BaseProductMassActionManager
 {

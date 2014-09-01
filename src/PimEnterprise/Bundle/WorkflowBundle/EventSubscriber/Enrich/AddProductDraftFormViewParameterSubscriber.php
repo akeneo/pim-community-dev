@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Manager\ProductDraftManager;
 /**
  * Add the product draft form view to the product edit template parameters
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class AddProductDraftFormViewParameterSubscriber implements EventSubscriberInterface
 {

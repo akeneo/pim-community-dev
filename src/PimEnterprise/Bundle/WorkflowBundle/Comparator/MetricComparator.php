@@ -17,9 +17,9 @@ use Pim\Bundle\CatalogBundle\Model\Metric;
 /**
  * Comparator which calculate change set for metrics
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  *
- * @see       PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
+ * @see    PimEnterprise\Bundle\WorkflowBundle\Form\ComparatorInterface
  */
 class MetricComparator implements ComparatorInterface
 {

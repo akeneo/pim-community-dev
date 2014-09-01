@@ -16,7 +16,7 @@ use Pim\Bundle\EnrichBundle\MassEditAction\Operation\ChangeStatus as BaseChangeS
 /**
  * Batch operation to change products status
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class ChangeStatus extends BaseChangeStatus
 {

@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
  * Merge values to keep previous product draft changes that
  * are not sent in the current request (like localized attributes or files)
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class PrepareProductDraftChangesSubscriber implements EventSubscriberInterface
 {

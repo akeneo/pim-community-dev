@@ -81,7 +81,8 @@ class AttributeGroupPermissionsSubscriberSpec extends ObjectBehavior
         $this->postSubmit($event);
     }
 
-    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager) {
+    function it_does_not_persist_the_selected_permissions_if_the_form_is_invalid($event, $form, $manager)
+    {
         $form->isValid()->willReturn(false);
 
         $manager->setAccess(Argument::cetera())->shouldNotBeCalled();

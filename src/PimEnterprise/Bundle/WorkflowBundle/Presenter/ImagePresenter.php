@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Present images side by side
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ImagePresenter implements PresenterInterface
 {

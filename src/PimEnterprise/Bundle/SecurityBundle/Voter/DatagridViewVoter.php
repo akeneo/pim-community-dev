@@ -20,7 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 /**
  * Datagrid view voter, allows to know if a datagrid view is usable by the current user.
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class DatagridViewVoter implements VoterInterface
 {

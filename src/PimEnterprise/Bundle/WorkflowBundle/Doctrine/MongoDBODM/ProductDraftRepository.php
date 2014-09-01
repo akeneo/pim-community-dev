@@ -19,7 +19,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Model\ProductDraft;
 /**
  * ProductDraft ODM repository
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftRepository extends DocumentRepository implements ProductDraftRepositoryInterface
 {

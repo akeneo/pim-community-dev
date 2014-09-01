@@ -32,7 +32,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * ProductDraft controller
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftController extends AbstractController
 {

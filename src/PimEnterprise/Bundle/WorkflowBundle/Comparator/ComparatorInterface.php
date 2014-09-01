@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Model\AbstractProductValue;
 /**
  * Compare and get changes between a supported value and its relative submitted data
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 interface ComparatorInterface
 {

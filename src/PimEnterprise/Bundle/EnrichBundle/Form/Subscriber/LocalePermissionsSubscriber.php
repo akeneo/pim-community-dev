@@ -21,7 +21,7 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\LocaleAccessManager;
 /**
  * Subscriber to manage permissions on locales
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocalePermissionsSubscriber implements EventSubscriberInterface
 {

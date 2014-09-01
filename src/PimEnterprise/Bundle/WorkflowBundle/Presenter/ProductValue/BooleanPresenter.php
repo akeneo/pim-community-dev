@@ -18,7 +18,7 @@ use Pim\Bundle\CatalogBundle\Model\ProductValueInterface;
 /**
  * Present a boolean value
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class BooleanPresenter implements ProductValuePresenterInterface, TranslatorAwareInterface
 {

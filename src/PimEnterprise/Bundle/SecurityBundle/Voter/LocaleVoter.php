@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
  * Locale voter, allows to know if products of a category can be edited or consulted by a
  * user depending on his groups
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class LocaleVoter implements VoterInterface
 {

@@ -10,7 +10,6 @@ use PimEnterprise\Bundle\SecurityBundle\Manager\AttributeGroupAccessManager;
 use PimEnterprise\Bundle\SecurityBundle\Voter\AttributeGroupVoter;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use PimEnterprise\Bundle\SecurityBundle\Attributes;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 class AttributeGroupVoterSpec extends ObjectBehavior
 {

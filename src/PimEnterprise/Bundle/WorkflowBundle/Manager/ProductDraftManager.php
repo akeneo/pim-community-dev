@@ -26,7 +26,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ProductDraftEvent;
 /**
  * Manage product product drafts
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class ProductDraftManager
 {

@@ -22,7 +22,7 @@ use PimEnterprise\Bundle\WorkflowBundle\ProductDraft\ChangesCollector;
 /**
  * A collector of changes that a client is sending to a product edit form
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class CollectProductValuesSubscriber implements EventSubscriberInterface
 {

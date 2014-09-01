@@ -17,7 +17,7 @@ use Pim\Bundle\CatalogBundle\Builder\ProductBuilder;
  * Price collection flat denormalizer used for attribute type:
  * - pim_catalog_price_collection
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class PricesDenormalizer extends AbstractValueDenormalizer
 {
@@ -25,6 +25,7 @@ class PricesDenormalizer extends AbstractValueDenormalizer
     protected $productBuilder;
 
     /**
+     * @param string[]       $supportedTypes
      * @param ProductBuilder $productBuilder
      */
     public function __construct(array $supportedTypes, ProductBuilder $productBuilder)

@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Event\ChangeSetEvent;
 /**
  * Subscriber that handle product values changeset metadata
  *
- * @author    Gildas Quemener <gildas@akeneo.com>
+ * @author Gildas Quemener <gildas@akeneo.com>
  */
 class MetadataSubscriber implements EventSubscriberInterface
 {

@@ -18,7 +18,7 @@ use PimEnterprise\Bundle\WorkflowBundle\Helper\SortProductValuesHelper;
 /**
  * Twig extension to group and sort product values to prepare them for display
  *
- * @author    Filips Alpe <filips@akeneo.com>
+ * @author Filips Alpe <filips@akeneo.com>
  */
 class GroupProductValuesExtension extends \Twig_Extension
 {

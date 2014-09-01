@@ -14,7 +14,7 @@ namespace PimEnterprise\Bundle\VersioningBundle\Denormalizer\Flat;
 /**
  * Family flat denormalizer
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class FamilyDenormalizer extends AbstractEntityDenormalizer
 {

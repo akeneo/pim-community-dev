@@ -20,7 +20,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Batch operation to publish products
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class Publish extends ProductMassEditOperation
 {

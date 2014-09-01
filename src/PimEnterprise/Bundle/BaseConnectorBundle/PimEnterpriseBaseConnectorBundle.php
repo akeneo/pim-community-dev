@@ -16,7 +16,7 @@ use Akeneo\Bundle\BatchBundle\Connector\Connector;
 /**
  * Enterprise BaseConnectorBundle
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class PimEnterpriseBaseConnectorBundle extends Connector
 {

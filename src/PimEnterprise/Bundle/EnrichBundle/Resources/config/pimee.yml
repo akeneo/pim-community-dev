@@ -1,5 +1,5 @@
 imports:
-    - { resource: @PimEnrichBundle/Resources/config/pim.yml }
+    - { resource: '@PimEnrichBundle/Resources/config/pim.yml' }
 
 twig:
     form:

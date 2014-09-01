@@ -27,7 +27,7 @@ use PimEnterprise\Bundle\SecurityBundle\Attributes;
 /**
  * Overriden category controller
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class CategoryTreeController extends BaseCategoryTreeController
 {

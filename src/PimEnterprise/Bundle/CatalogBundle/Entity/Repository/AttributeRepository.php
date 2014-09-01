@@ -16,7 +16,7 @@ use Pim\Bundle\CatalogBundle\Entity\Repository\AttributeRepository as BaseAttrib
 /**
  * Override attribute repository
  *
- * @author    Romain Monceau <romain@akeneo.com>
+ * @author Romain Monceau <romain@akeneo.com>
  */
 class AttributeRepository extends BaseAttributeRepository
 {

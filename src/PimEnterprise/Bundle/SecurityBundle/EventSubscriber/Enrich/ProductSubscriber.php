@@ -22,7 +22,7 @@ use Pim\Bundle\EnrichBundle\Event\ProductEvents;
 /**
  * Product listener used to handle permissions.
  *
- * @author    Julien Janvier <julien.janvier@akeneo.com>
+ * @author Julien Janvier <julien.janvier@akeneo.com>
  */
 class ProductSubscriber implements EventSubscriberInterface
 {

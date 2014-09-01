@@ -18,7 +18,7 @@ use Symfony\Component\Form\AbstractType;
 /**
  * Form type for Locale permissions
  *
- * @author    Nicolas Dupont <nicolas@akeneo.com>
+ * @author Nicolas Dupont <nicolas@akeneo.com>
  */
 class LocalePermissionsType extends AbstractType
 {
