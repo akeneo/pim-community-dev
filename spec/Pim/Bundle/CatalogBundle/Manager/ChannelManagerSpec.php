@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\CatalogBundle\Manager;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\SecurityContext;
 use Pim\Bundle\CatalogBundle\Entity\Repository\ChannelRepository;

@@ -3,7 +3,6 @@
 namespace spec\Pim\Bundle\DashboardBundle\Widget;
 
 use PhpSpec\ObjectBehavior;
-use Prophecy\Argument;
 
 class LinksWidgetSpec extends ObjectBehavior
 {

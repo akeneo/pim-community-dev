@@ -42,5 +42,5 @@ services:
     pim_datagrid.datasource.adapter_resolver:
         class: %pim_datagrid.datasource.adapter_resolver.class%
         arguments:
-            - @pim_datagrid.datasource.support_resolver
+            - '@pim_datagrid.datasource.support_resolver'
             - %pim_filter.datasource.orm_adapter.class%
