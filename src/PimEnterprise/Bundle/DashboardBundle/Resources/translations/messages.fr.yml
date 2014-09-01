@@ -1,0 +1,9 @@
+pimee_dashboard:
+  widget:
+    product_drafts:
+      title: Propositions à revoir
+      date: Date
+      author: Auteur
+      product: Produit
+      review: Revoir
+      empty: Aucune proposition à revoir
