@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\BaseConnectorBundle\Writer\Doctrine;
 
+use Pim\Bundle\TransformBundle\Cache\ProductCacheClearer;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Akeneo\Bundle\BatchBundle\Entity\StepExecution;
 use Akeneo\Bundle\BatchBundle\Item\ItemWriterInterface;
@@ -22,15 +23,22 @@ class Writer extends AbstractConfigurableStepElement implements
     /** @var ManagerRegistry */
     protected $registry;
 
+    /**@var ProductCacheClearer */
+    protected $cacheClearer;
+
     /** @var StepExecution */
     protected $stepExecution;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry     $registry
+     * @param ProductCacheClearer $cacheClearer
      */
-    public function __construct(ManagerRegistry $registry)
-    {
-        $this->registry = $registry;
+    public function __construct(
+        ManagerRegistry $registry,
+        ProductCacheClearer $cacheClearer
+    ) {
+        $this->registry     = $registry;
+        $this->cacheClearer = $cacheClearer;
     }
 
     /**
@@ -66,14 +74,7 @@ class Writer extends AbstractConfigurableStepElement implements
             $manager->flush();
         }
 
-        $this->postWrite();
-    }
-
-    /**
-     * Post write method
-     */
-    protected function postWrite()
-    {
+        $this->cacheClearer->clear();
     }
 
     /**
