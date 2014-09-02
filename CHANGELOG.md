@@ -7,7 +7,7 @@
  - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
  If you need it, override the write method, call the parent and add your code there.
 
-# 1.2.0
+# 1.2.0  (2014-08-28)
 
 ## Improvements
 
