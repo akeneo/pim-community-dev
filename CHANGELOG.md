@@ -1,5 +1,5 @@
-# 1.2.0-x
-## Improvements
+# 1.2.1
+
 ## Bug fixes
  - large memory leak fixed for non product import (association, product group, attribute, categories, etc...)
 
@@ -7,10 +7,18 @@
  - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
  If you need it, override the write method, call the parent and add your code there.
 
+# 1.2.0
+
+## Improvements
+
+## Bug fixes
+- Fix a bug on entity `Pim/Bundle/CatalogBundle/Model/AbstractProduct`
+
 # 1.2.0-RC4
 
 ## Improvements
 - Java dependency has been removed
+- Add locale fallback to en_US
 
 ## Bug fixes
 - Sort exported categories by tree and order inside the tree
@@ -26,6 +34,7 @@
 - Fixed unique value validation for date attributes during import
 - Fixed apply filter on channel tree on MongoDB implementation
 - Fixed a bug on ProductCsvWriter
+- Fixed a bug that causes product associations to be stored twice in MongoDB implementation
 
 ## BC breaks
 - Replace ACLs `pim_enrich_family_add_atribute` and `pim_enrich_family_remove_atribute` with `pim_enrich_family_edit_attributes`. This ACL also enforces rights to edit attribute requirements.

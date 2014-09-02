@@ -27,7 +27,7 @@ class InvalidItemsCsvArchiver extends AbstractFilesystemArchiver
 
     /**
      * Constructor
-     * 
+     *
      * @param InvalidItemsCollector $collector
      * @param CsvWriter             $writer
      * @param Filesystem            $filesystem

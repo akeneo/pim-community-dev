@@ -24,6 +24,16 @@ class GroupRepository extends BaseGroupRepository implements ReferableEntityRepo
     }
 
     /**
+     * Find all groups but the default one
+     *
+     * @return array
+     */
+    public function findAllButDefault()
+    {
+        return $this->getAllButDefaultQB()->getQuery()->getResult();
+    }
+
+    /**
      * Create a QB to find all groups but the default one
      *
      * @return \Doctrine\ORM\QueryBuilder
