@@ -96,7 +96,6 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator = $validator;
         $this->operatorRegistry = $operatorRegistry;
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
