@@ -8,13 +8,17 @@ Pim\Bundle\CatalogBundle\Entity\SequentialEdit:
             id: true
             generator:
                 strategy: AUTO
-        productset:
+        productSet:
             type: array
-    oneToMany:
-        users:
+    manyToMany:
+        user:
             targetEntity: Symfony\Component\Security\Core\User\UserInterface
             joinTable:
-                name: pim_catalog_sequential_edit
+                name: pim_catalog_sequential_edit_user
                 joinColumns:
+                    sequential_edit:
+                        referencedColumnName: id
+                inverseJoinColumns:
                     user_id:
                         referencedColumnName: id
+                        unique: true
