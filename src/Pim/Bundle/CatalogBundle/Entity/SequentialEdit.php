@@ -20,12 +20,12 @@ class SequentialEdit
     protected $id;
 
     /**
-     * @var array
+     * @var integer[]
      */
-    protected $productset;
+    protected $productSet;
     
     /** 
-     * @var String $id 
+     * @var UserInterface $user
      */
     protected $user;
 
@@ -34,7 +34,7 @@ class SequentialEdit
      */
     public function __construct()
     {
-        $this->productset = new ArrayCollection();
+        $this->productSet = new ArrayCollection();
     }
 
     /**
@@ -86,25 +86,25 @@ class SequentialEdit
     }
     
     /**
-     * Get productset
+     * Get product set
      *
-     * @return array
+     * @return integer[]
      */
-    public function getProductset()
+    public function getProductSet()
     {
-        return $this->productset;
+        return $this->productSet;
     }
 
     /**
-     * Set productset
+     * Set product set
      *
-     * @param array productset
+     * @param integer[] $productSet
      *
      * @return SequentialEdit
      */
-    public function setProductset(array $productset)
+    public function setProductSet(array $productSet)
     {
-        $this->productset = $productset;
+        $this->productSet = $productSet;
 
         return $this;
     }

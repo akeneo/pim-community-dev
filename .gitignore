@@ -25,4 +25,3 @@ web/log
 uploads_test/
 .phpspec/*.tpl
 composer.lock
-/nbproject/private/

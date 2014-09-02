@@ -18,6 +18,4 @@ Pim\Bundle\CatalogBundle\Entity\SequentialEdit:
                 joinColumns:
                     user_id:
                         referencedColumnName: id
-        
-                        
               
