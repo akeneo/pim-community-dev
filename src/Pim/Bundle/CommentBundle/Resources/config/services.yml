@@ -1,0 +1,7 @@
+parameters:
+#    pim_comment.example.class: Pim\Bundle\CommentBundle\Example
+
+services:
+#    pim_comment.example:
+#        class: %pim_comment.example.class%
+#        arguments: [@service_id, "plain_value", %parameter%]
