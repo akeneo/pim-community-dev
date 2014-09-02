@@ -1,0 +1,10 @@
+parameters:
+    pim_comment.controller.comment.class: Pim\Bundle\CommentBundle\Controller\CommentController
+
+services:
+    pim_comment.controller.comment:
+        scope: request
+        class: %pim_comment.controller.comment.class%
+        parent: pim_enrich.controller.abstract_doctrine
+        arguments:
+            - '@oro_security.security_facade'
