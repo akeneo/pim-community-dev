@@ -127,6 +127,7 @@ datagrid:
                 type: edit
                 label: pim.grid.mass_action.sequential_edit
                 handler: product_mass_edit
+                route: pim_enrich_mass_edit_action_sequential_edit
                 icon: sort-by-attributes
         sorters:
             columns:
