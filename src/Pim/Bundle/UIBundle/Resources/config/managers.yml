@@ -1,0 +1,10 @@
+parameters:
+    pim_ui.manager.notification.class: Pim\Bundle\UIBundle\Manager\NotificationManager
+
+services:
+    pim_ui.manager.notification:
+        class: %pim_ui.manager.notification.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@pim_ui.repository.notification'
+            - '@pim_ui.factory.notification'

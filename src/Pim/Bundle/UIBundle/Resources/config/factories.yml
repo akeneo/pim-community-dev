@@ -1,0 +1,6 @@
+parameters:
+    pim_ui.factory.notification.class: Pim\Bundle\UIBundle\Factory\NotificationFactory
+
+services:
+    pim_ui.factory.notification:
+        class: %pim_ui.factory.notification.class%

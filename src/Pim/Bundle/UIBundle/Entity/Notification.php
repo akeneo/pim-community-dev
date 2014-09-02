@@ -26,6 +26,16 @@ class Notification
     protected $user;
 
     /**
+     * @param NotificationEvent $event
+     * @param User              $user
+     */
+    public function __construct(NotificationEvent $event, User $user)
+    {
+        $this->notificationEvent = $event;
+        $this->user = $user;
+    }
+
+    /**
      * Get id
      *
      * @return integer

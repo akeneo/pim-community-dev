@@ -37,9 +37,14 @@ class NotificationEvent
 
     /**
      * Constructor
+     *
+     * @param string $message
+     * @param string $type
      */
-    public function __construct()
+    public function __construct($message = null, $type = null)
     {
+        $this->message = $message;
+        $this->type    = $type;
         $this->created = new \DateTime('now');
     }
 
