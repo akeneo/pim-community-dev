@@ -13,12 +13,13 @@ interface PdfGeneratorInterface
 {
     /**
      * Generate a pdf for the given entity
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $format
+     * @param array  $context
      *
      * @return string
      */
-    public function generate($object, $format);
+    public function generate($object, $format, array $context = []);
 
     /**
      * Test if the given generator support given object and format generation

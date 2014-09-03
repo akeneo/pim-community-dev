@@ -186,7 +186,10 @@ class ProductController extends AbstractDoctrineController
         $product = $this->findProductOr404($id);
         $locale  = $this->userContext->getCurrentLocale();
 
-        return new Response($this->pdfGeneratorRegistry->generate($product, 'full'));
+        return new Response($this->pdfGeneratorRegistry->generate($product, 'full', [
+            'locale' => $locale,
+            'channel' => ''
+        ]));
     }
 
     /**

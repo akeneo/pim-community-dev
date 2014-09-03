@@ -3,6 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Generator;
 
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
+use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
 /**
  * PDF Generator used to generate PDF for a Product
@@ -36,9 +37,22 @@ class ProductPdfGenerator implements PdfGeneratorInterface
     /**
      * {@inheritdoc}
      */
-    public function generate($object, $format)
+    public function generate($object, $format, array $context = [])
     {
-        return $this->templating->render($this->template, array('product' => $object));
+        $params = array_merge(
+            $context,
+            [
+                'product'        => $object,
+                'generationDate' => $this->getGenerationDate()
+            ]
+        );
+
+        return $this->templating->render($this->template, $params);
+    }
+
+    protected function getGenerationDate()
+    {
+        return new \DateTime('now');
     }
 
     /**
@@ -46,6 +60,6 @@ class ProductPdfGenerator implements PdfGeneratorInterface
      */
     public function supports($object, $format)
     {
-        return true;
+        return $object instanceof AbstractProduct;
     }
 }

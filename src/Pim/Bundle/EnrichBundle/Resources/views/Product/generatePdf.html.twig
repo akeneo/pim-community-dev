@@ -1,2 +1,111 @@
-<h1>{{ product.label }}</h1>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Bootstrap 101 Template</title>
+        <style type="text/css">
+            * {
+                font-family: Helvetica;
+                font-weight: 100;
+            }
 
+            .header {
+                margin-bottom: 20px;
+            }
+
+            .header h1 {
+                margin-bottom: 5px;
+            }
+
+            .header {
+                margin-bottom: 20px;
+                width: 100%;
+            }
+
+            .header .generation-date {
+                font-size: 13px;
+            }
+
+            .header .context {
+                width: 100px;
+            }
+
+            .header .context .label {
+                text-align: right;
+            }
+
+            .header .context .label:after {
+                content: ' :';
+            }
+
+            .header .context .value {
+                font-weight: bold;
+            }
+
+            .attribute-group table {
+                width: 100%;
+                border: 1px solid #aaa;
+                border-radius: 5px;
+                margin-top: 0px;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+
+            .attribute-group table h2 {
+                width: 100%;
+                background: #7887AB;
+                color: white;
+                padding: 2.5px 5px;
+                font-size: 15px;
+                text-transform: uppercase;
+                margin: 0px;
+            }
+
+            .attribute-group table tr {
+                border-bottom: 1px solid #aaa;
+            }
+
+            .attribute-group table th {
+                padding: 0px;
+                text-align: left;
+            }
+
+            .attribute-group table td {
+                padding: 5px;
+                text-align: left;
+            }
+
+            table .attribute {
+                width: 300px;
+            }
+
+            /*
+             date de génération
+             */
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>{{ product.label }} {{ product.identifier != product.label ? '(' ~ product.identifier ~ ')' : '' }}</h1>
+            <span class="generation-date">{{ generationDate|date }}</span>
+        </div>
+        <div class="attribute-group">
+            {% for groupLabel, attributes in product.family.groupedAttributes %}
+            <table>
+                <thead>
+                    <tr class="group">
+                        <th colspan="2"><h2>{{ groupLabel }}</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attribute in attributes %}
+                    <tr>
+                        <td class="attribute">{{ attribute.label }}</td>
+                        <td class="value">{{ product.hasAttribute(attribute) ? product.getValue(attribute.code) : '' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
+        </div>
+    </body>
+</html>

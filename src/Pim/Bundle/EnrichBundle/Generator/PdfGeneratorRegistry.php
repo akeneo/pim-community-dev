@@ -27,16 +27,17 @@ class PdfGeneratorRegistry
 
     /**
      * Generate a pdf with the right generator
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $format
+     * @param array  $context
      *
      * @return string
      */
-    public function generate($object, $format)
+    public function generate($object, $format, $context)
     {
         foreach ($this->generators as $generator) {
             if ($generator->supports($object, $format)) {
-                return $generator->generate($object, $format);
+                return $generator->generate($object, $format, $context);
             }
         }
 
