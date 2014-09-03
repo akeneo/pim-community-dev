@@ -60,6 +60,13 @@ class JobExecution
     private $pid;
 
     /**
+     * @var string The user who launched the job
+     *
+     * @ORM\Column(name="user", type="string", nullable=true)
+     */
+    private $user;
+
+    /**
      * @var integer
      *
      * @ORM\Column(name="status", type="integer")
@@ -302,6 +309,30 @@ class JobExecution
     public function setPid($pid)
     {
         $this->pid = $pid;
+
+        return $this;
+    }
+
+    /**
+     * Returns the user who launched the job
+     *
+     * @return string|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Sets the user who launched the job
+     *
+     * @param string $user
+     *
+     * @return JobExecution
+     */
+    public function seUser($user)
+    {
+        $this->user = $user;
 
         return $this;
     }
