@@ -8,6 +8,7 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
+use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -19,7 +20,7 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
- TimestampableInterface, VersionableInterface
+ TimestampableInterface, VersionableInterface, CommentSubjectInterface
 {
     /** @staticvar string */
     const IDENTIFIER_TYPE = 'pim_catalog_identifier';
@@ -27,10 +28,10 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /** @var mixed $id */
     protected $id;
 
-    /** @var datetime $created */
+    /** @var \Datetime $created */
     protected $created;
 
-    /** @var datetime $updated */
+    /** @var \Datetime $updated */
     protected $updated;
 
     /**
@@ -134,7 +135,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get created datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getCreated()
     {
@@ -158,7 +159,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Get updated datetime
      *
-     * @return datetime
+     * @return \Datetime
      */
     public function getUpdated()
     {
@@ -168,7 +169,7 @@ abstract class AbstractProduct implements ProductInterface, LocalizableInterface
     /**
      * Set updated datetime
      *
-     * @param datetime $updated
+     * @param \Datetime $updated
      *
      * @return TimestampableInterface
      */

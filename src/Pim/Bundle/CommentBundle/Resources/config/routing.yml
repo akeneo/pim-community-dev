@@ -1,10 +1,3 @@
-pim_comment_index:
-    path: /comment/.{_format}
-    defaults: { _controller: pim_comment.controller.comment:indexAction, _format: html }
-    requirements:
-        _format: html|json
-    methods: [GET]
-
 pim_comment_create:
     pattern:  /comment/create
     defaults: { _controller: pim_comment.controller.comment:createAction }
