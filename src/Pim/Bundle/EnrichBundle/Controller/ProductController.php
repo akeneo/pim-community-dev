@@ -166,11 +166,7 @@ class ProductController extends AbstractDoctrineController
      */
     public function indexAction(Request $request)
     {
-        if (!$request->isXmlHttpRequest()) {
-            $this->seqEditManager->removeFromUser(
-                $this->userContext->getUser()
-            );
-        }
+        $this->seqEditManager->removeFromUser($this->userContext->getUser());
 
         return array(
             'locales'    => $this->getUserLocales(),
