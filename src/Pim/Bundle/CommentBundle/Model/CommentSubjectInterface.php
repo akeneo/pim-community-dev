@@ -2,8 +2,6 @@
 
 namespace Pim\Bundle\CommentBundle\Model;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 /**
  * Comment subject interface
  *
@@ -18,37 +16,4 @@ interface CommentSubjectInterface
      * @return string|int
      */
     public function getId();
-
-    /**
-     * @param CommentInterface $comment
-     *
-     * @return CommentSubjectInterface
-     */
-    //public function hasComment(CommentInterface $comment);
-
-    /**
-     * @param CommentInterface $comment
-     *
-     * @return CommentSubjectInterface
-     */
-    //public function addComment(CommentInterface $comment);
-
-    /**
-     * @param CommentInterface $comment
-     *
-     * @return CommentSubjectInterface
-     */
-    //public function removeComment(CommentInterface $comment);
-
-    /**
-     * @param ArrayCollection $comments
-     *
-     * @return CommentSubjectInterface
-     */
-    //public function setComments(ArrayCollection $comments);
-
-    /**
-     * @return ArrayCollection|CommentInterface[]
-     */
-    //public function getComments();
 }
