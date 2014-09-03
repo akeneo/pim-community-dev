@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -79,6 +80,11 @@ class ProductController extends AbstractDoctrineController
     protected $securityFacade;
 
     /**
+     * @var CommentManager
+     */
+    protected $commentManager;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -108,6 +114,7 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param CommentManager           $commentManager
      */
     public function __construct(
         Request $request,
@@ -124,7 +131,8 @@ class ProductController extends AbstractDoctrineController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager
+        ProductCategoryManager $prodCatManager,
+        CommentManager $commentManager
     ) {
         parent::__construct(
             $request,
@@ -144,6 +152,7 @@ class ProductController extends AbstractDoctrineController
         $this->versionManager    = $versionManager;
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
+        $this->commentManager    = $commentManager;
     }
 
     /**
@@ -468,6 +477,26 @@ class ProductController extends AbstractDoctrineController
         $trees = $this->getFilledTree($parent, $categories);
 
         return array('trees' => $trees, 'categories' => $categories);
+    }
+
+    /**
+     * List comments made on a product
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return Response
+     */
+    public function listCommentsAction(Request $request, $id)
+    {
+        $product = $this->findProductOr404($id);
+
+        return $this->render(
+            'PimCommentBundle:Comment:_commentList.html.twig',
+            array(
+                'comments' => $this->commentManager->getComments($product),
+            )
+        );
     }
 
     /**
