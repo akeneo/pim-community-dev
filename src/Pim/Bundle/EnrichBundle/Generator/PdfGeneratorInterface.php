@@ -23,7 +23,7 @@ interface PdfGeneratorInterface
 
     /**
      * Test if the given generator support given object and format generation
-     * @param mixed $object
+     * @param mixed  $object
      * @param string $format
      *
      * @return boolean

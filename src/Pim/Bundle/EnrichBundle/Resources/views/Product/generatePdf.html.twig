@@ -89,23 +89,25 @@
             <span class="generation-date">{{ generationDate|date }}</span>
         </div>
         <div class="attribute-group">
-            {% for groupLabel, attributes in product.family.groupedAttributes %}
-            <table>
-                <thead>
-                    <tr class="group">
-                        <th colspan="2"><h2>{{ groupLabel }}</h2></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for attribute in attributes %}
-                    <tr>
-                        <td class="attribute">{{ attribute.label }}</td>
-                        <td class="value">{{ product.hasAttribute(attribute) ? product.getValue(attribute.code) : '' }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% endfor %}
+            {% if product.family is not empty %}
+                {% for groupLabel, attributes in product.family.groupedAttributes %}
+                <table>
+                    <thead>
+                        <tr class="group">
+                            <th colspan="2"><h2>{{ groupLabel }}</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attribute in attributes %}
+                        <tr>
+                            <td class="attribute">{{ attribute.label }}</td>
+                            <td class="value">{{ product.hasAttribute(attribute) ? product.getValue(attribute.code) : '' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endfor %}
+            {% endif %}
         </div>
     </body>
 </html>

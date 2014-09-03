@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\EnrichBundle\Generator;
 
+use Pim\Bundle\EnrichBundle\Generator\PdfBuilder\PdfBuilderInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Pim\Bundle\CatalogBundle\Model\AbstractProduct;
 
@@ -25,13 +26,20 @@ class ProductPdfGenerator implements PdfGeneratorInterface
     protected $template;
 
     /**
-     * @param EngineInterface $templating
-     * @param string          $template
+     * @var PdfBuilderInterface
      */
-    public function __construct(EngineInterface $templating, $template)
+    protected $pdfBuilder;
+
+    /**
+     * @param EngineInterface     $templating
+     * @param string              $template
+     * @param PdfBuilderInterface $pdfBuilder
+     */
+    public function __construct(EngineInterface $templating, $template, PdfBuilderInterface $pdfBuilder)
     {
         $this->templating = $templating;
         $this->template   = $template;
+        $this->pdfBuilder = $pdfBuilder;
     }
 
     /**
@@ -47,7 +55,9 @@ class ProductPdfGenerator implements PdfGeneratorInterface
             ]
         );
 
-        return $this->templating->render($this->template, $params);
+        return $this->pdfBuilder->buildPdfOutput(
+            $this->templating->render($this->template, $params)
+        );
     }
 
     protected function getGenerationDate()

@@ -1,6 +1,7 @@
 parameters:
     pim_enrich.generator.product_pdf.class: Pim\Bundle\EnrichBundle\Generator\ProductPdfGenerator
     pim_enrich.generator.pdf_registry.class: Pim\Bundle\EnrichBundle\Generator\PdfGeneratorRegistry
+    pim_enrich.generator.dompdf_builder.class: Pim\Bundle\EnrichBundle\Generator\PdfBuilder\DompdfBuilder
 
 services:
     pim_enrich.generator.product_pdf:
@@ -8,8 +9,14 @@ services:
         arguments:
             - '@templating'
             - 'PimEnrichBundle:Product:generatePdf.html.twig'
+            - '@pim_enrich.generator.pdf_builder'
         tags:
             - { name: pim_enrich.pdf_generator, priority: 80 }
 
     pim_enrich.generator.pdf_registry:
         class: %pim_enrich.generator.pdf_registry.class%
+
+    pim_enrich.generator.pdf_builder:
+        class: %pim_enrich.generator.dompdf_builder.class%
+        arguments:
+            - '@slik_dompdf'
