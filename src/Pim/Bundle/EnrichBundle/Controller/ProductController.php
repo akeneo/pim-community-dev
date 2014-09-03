@@ -178,7 +178,6 @@ class ProductController extends AbstractDoctrineController
      * @param Request $request
      * @param integer $id
      *
-     * @Template
      * @AclAncestor("pim_enrich_product_index")
      * @return array
      */
@@ -187,9 +186,7 @@ class ProductController extends AbstractDoctrineController
         $product = $this->findProductOr404($id);
         $locale  = $this->userContext->getCurrentLocale();
 
-        return [
-            'product' => $product,
-        ];
+        return new Response($this->pdfGeneratorRegistry->generate($product, 'full'));
     }
 
     /**

@@ -14,17 +14,22 @@ use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 class ProductPdfGenerator implements PdfGeneratorInterface
 {
     /**
-     * Templating engine
      * @var EngineInterface
      */
     protected $templating;
 
     /**
+     * @var string
+     */
+    protected $template;
+
+    /**
      * @param EngineInterface $templating
      */
-    public function __construct(EngineInterface $templating)
+    public function __construct(EngineInterface $templating, $template)
     {
         $this->templating = $templating;
+        $this->template   = $template;
     }
 
     /**
@@ -32,7 +37,7 @@ class ProductPdfGenerator implements PdfGeneratorInterface
      */
     public function generate($object, $format)
     {
-        return '';
+        return $this->templating->render($this->template, array('product' => $object));
     }
 
     /**

@@ -7,6 +7,7 @@ services:
         class: %pim_enrich.generator.product_pdf.class%
         arguments:
             - '@templating'
+            - 'PimEnrichBundle:Product:generatePdf.html.twig'
         tags:
             - { name: pim_enrich.pdf_generator, priority: 80 }
 
