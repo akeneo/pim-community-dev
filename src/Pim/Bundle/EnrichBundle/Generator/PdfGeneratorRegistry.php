@@ -3,7 +3,7 @@
 namespace Pim\Bundle\EnrichBundle\Generator;
 
 /**
- * Sort helper defines a set of static methods to reorder your arrays
+ * Registry used to generate PDF using registered generators
  *
  * @author    Charles Pourcel <charles.pourcel@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)

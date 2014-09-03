@@ -5,10 +5,10 @@ namespace Pim\Bundle\EnrichBundle\Generator;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
 /**
- * Sort helper defines a set of static methods to reorder your arrays
+ * PDF Generator used to generate PDF for a Product
  *
  * @author    Charles Pourcel <charles.pourcel@akeneo.com>
- * @copyright 2013 Akeneo SAS (http://www.akeneo.com)
+ * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class ProductPdfGenerator implements PdfGeneratorInterface
@@ -25,6 +25,7 @@ class ProductPdfGenerator implements PdfGeneratorInterface
 
     /**
      * @param EngineInterface $templating
+     * @param string          $template
      */
     public function __construct(EngineInterface $templating, $template)
     {
