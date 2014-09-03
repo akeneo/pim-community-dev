@@ -43,7 +43,7 @@ class SequentialEditController extends AbstractDoctrineController
     protected $objects;
 
     /** @var SequentialEditManager */
-    protected $sequentialEditManager;
+    protected $seqEditManager;
 
     /** @var UserContext */
     protected $userContext;
@@ -63,7 +63,7 @@ class SequentialEditController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param integer                    $massEditLimit
-     * @param SequentialEditManager      $sequentialEditManager
+     * @param SequentialEditManager      $seqEditManager
      * @param UserContext                $userContext
      */
     public function __construct(
@@ -79,7 +79,7 @@ class SequentialEditController extends AbstractDoctrineController
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
         $massEditLimit,
-        SequentialEditManager $sequentialEditManager,
+        SequentialEditManager $seqEditManager,
         UserContext $userContext
     ) {
         parent::__construct(
@@ -97,7 +97,7 @@ class SequentialEditController extends AbstractDoctrineController
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->massEditLimit = $massEditLimit;
-        $this->sequentialEditManager = $sequentialEditManager;
+        $this->seqEditManager = $seqEditManager;
         $this->userContext = $userContext;
     }
 
@@ -110,12 +110,12 @@ class SequentialEditController extends AbstractDoctrineController
      */
     public function sequentialEditAction()
     {
-        $sequentialEdit = $this->sequentialEditManager->createEntity(
+        $sequentialEdit = $this->seqEditManager->createEntity(
             $this->getObjects(),
             $this->userContext->getUser()
         );
 
-        $this->sequentialEditManager->save($sequentialEdit);
+        $this->seqEditManager->save($sequentialEdit);
 
         // TODO: Redirect on edit view
     }
