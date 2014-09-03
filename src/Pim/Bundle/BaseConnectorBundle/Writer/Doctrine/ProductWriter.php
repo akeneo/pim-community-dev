@@ -135,4 +135,12 @@ class ProductWriter extends AbstractConfigurableStepElement implements
             $this->stepExecution->incrementSummaryInfo('create');
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function flush()
+    {
+        $this->cacheClearer->clear(true);
+    }
 }
