@@ -14,6 +14,13 @@
     {% set activeTab = true %}
 {% endif %}
 
+{% if resource_granted("pim_enrich_product_categories_view") %}
+    <div class="tab-pane{% if not activeTab %} active{% endif %}" id="comments">
+        {% include 'PimCommentBundle:Comment:_commentList.html.twig' %}
+    </div>
+    {% set activeTab = true %}
+{% endif %}
+
 {% if resource_granted("pim_enrich_associations_view") %}
     {{ form_widget(form.associations, { 'attr': { 'class': 'hide' }}) }}
     <div class="tab-pane{% if not activeTab %} active{% endif %}" id="associations" data-url="{{ path('pim_enrich_associations', { id: product.id , dataLocale: dataLocale}) }}">
