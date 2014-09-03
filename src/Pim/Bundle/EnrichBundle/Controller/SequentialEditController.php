@@ -18,6 +18,8 @@ use Oro\Bundle\DataGridBundle\Extension\MassAction\MassActionParametersParser;
 
 use Pim\Bundle\DataGridBundle\Extension\MassAction\MassActionDispatcher;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
+use Pim\Bundle\CatalogBundle\Manager\SequentialEditManager;
+use Pim\Bundle\UserBundle\Context\UserContext;
 
 /**
  * Sequential edit action controller for products
@@ -40,6 +42,12 @@ class SequentialEditController extends AbstractDoctrineController
     /** @var array */
     protected $objects;
 
+    /** @var SequentialEditManager */
+    protected $sequentialEditManager;
+
+    /** @var UserContext */
+    protected $userContext;
+
     /**
      * Constructor
      *
@@ -55,6 +63,8 @@ class SequentialEditController extends AbstractDoctrineController
      * @param MassActionParametersParser $parametersParser
      * @param MassActionDispatcher       $massActionDispatcher
      * @param integer                    $massEditLimit
+     * @param SequentialEditManager      $sequentialEditManager
+     * @param UserContext                $userContext
      */
     public function __construct(
         Request $request,
@@ -68,7 +78,9 @@ class SequentialEditController extends AbstractDoctrineController
         ManagerRegistry $doctrine,
         MassActionParametersParser $parametersParser,
         MassActionDispatcher $massActionDispatcher,
-        $massEditLimit
+        $massEditLimit,
+        SequentialEditManager $sequentialEditManager,
+        UserContext $userContext
     ) {
         parent::__construct(
             $request,
@@ -85,6 +97,8 @@ class SequentialEditController extends AbstractDoctrineController
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
         $this->massEditLimit = $massEditLimit;
+        $this->sequentialEditManager = $sequentialEditManager;
+        $this->userContext = $userContext;
     }
 
     /**
@@ -96,7 +110,14 @@ class SequentialEditController extends AbstractDoctrineController
      */
     public function sequentialEditAction()
     {
-        // TODO: Store in backend sequential edition and redirect to product edit view
+        $sequentialEdit = $this->sequentialEditManager->createEntity(
+            $this->getObjects(),
+            $this->userContext->getUser()
+        );
+
+        $this->sequentialEditManager->save($sequentialEdit);
+
+        // TODO: Redirect on edit view
     }
 
     /**

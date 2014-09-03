@@ -4,6 +4,9 @@ namespace Pim\Bundle\CatalogBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Pim\Bundle\CatalogBundle\Entity\Repository\SequentialEditRepository;
+use Pim\Bundle\CatalogBundle\Entity\SequentialEdit;
+use Pim\Bundle\CatalogBundle\Factory\SequentialEditFactory;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Sequential edit manager
@@ -20,38 +23,47 @@ class SequentialEditManager
     /** @var SequentialEditRepository */
     protected $repository;
 
-    /** @var string */
-    protected $entityClass;
+    /** @var SequentialEditFactory */
+    protected $factory;
 
     /**
      * Constructor
      *
-     * @param ObjectManager $om
+     * @param ObjectManager            $om
      * @param SequentialEditRepository $repository
-     * @param string        $entityClass
+     * @param SequentialEditFactory    $factory
      */
-    public function __construct(ObjectManager $om, SequentialEditRepository $repository, $entityClass)
-    {
-        $this->om          = $om;
-        $this->repository  = $repository;
-        $this->entityClass = $entityClass;
+    public function __construct(
+        ObjectManager $om,
+        SequentialEditRepository $repository,
+        SequentialEditFactory $factory
+    ) {
+        $this->om         = $om;
+        $this->repository = $repository;
+        $this->factory    = $factory;
     }
 
     /**
      * Save a sequential edit entity
+     *
+     * @param SequentialEdit $sequentialEdit
      */
-    public function save()
+    public function save(SequentialEdit $sequentialEdit)
     {
-
+        $this->om->persist($sequentialEdit);
+        $this->om->flush();
     }
 
     /**
      * Returns a sequential edit entity
      *
-     * @return \Pim\Bundle\CatalogBundle\Entity\SequentialEdit
+     * @param array         $productSet
+     * @param UserInterface $user
+     *
+     * @return SequentialEdit
      */
-    public function createEntity()
+    public function createEntity(array $productSet, UserInterface $user)
     {
-        return new $this->entityClass;
+        return $this->factory->create($productSet, $user);
     }
 }

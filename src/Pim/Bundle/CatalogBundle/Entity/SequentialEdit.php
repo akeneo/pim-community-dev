@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\CatalogBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -20,22 +19,14 @@ class SequentialEdit
     protected $id;
 
     /**
-     * @var integer[]
+     * @var integer[] $productSet
      */
-    protected $productSet;
-    
-    /** 
+    protected $productSet = [];
+
+    /**
      * @var UserInterface $user
      */
     protected $user;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->productSet = new ArrayCollection();
-    }
 
     /**
      * Get id
@@ -60,31 +51,31 @@ class SequentialEdit
 
         return $this;
     }
-    
+
     /**
      * Set user
-     * 
+     *
      * @param UserInterface $user
-     * 
+     *
      * @return SequentialEdit
      */
     public function setUser(UserInterface $user)
     {
         $this->user = $user;
-        
+
         return $this;
     }
-    
+
     /**
      * Get user
-     * 
+     *
      * @return UserInterface
      */
     public function getUser()
     {
         return $this->user;
     }
-    
+
     /**
      * Get product set
      *

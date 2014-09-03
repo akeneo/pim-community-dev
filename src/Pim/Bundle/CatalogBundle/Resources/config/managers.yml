@@ -133,4 +133,4 @@ services:
         arguments:
             - '@doctrine.orm.entity_manager'
             - '@pim_catalog.repository.sequential_edit'
-            - %pim_catalog.entity.sequential_edit.class%
+            - '@pim_catalog.factory.sequential_edit'
