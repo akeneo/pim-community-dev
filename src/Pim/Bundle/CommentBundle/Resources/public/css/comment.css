@@ -1,0 +1,29 @@
+ol.comment-thread{
+    /*border: 1px solid #000000;*/
+    margin-top: 10px;
+    box-shadow: 1px 1px 5px #b4b4b4;
+
+}
+ol.comment-thread li{
+    padding: 15px;
+    border-top: 1px solid rgb(221, 221, 221);
+    border-left: 1px solid rgb(221, 221, 221);
+    border-right: 1px solid rgb(221, 221, 221);
+}
+ol.comment-thread > :first-child{
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+ol.comment-thread > :last-child{
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+li.comment-reply:last-child{
+    border-bottom: 1px solid rgb(221, 221, 221);
+}
+li.comment-topic{
+    background-color: #f6f6f6;
+}
+li.comment-answer{
+    background-color: #eeeeee;
+}

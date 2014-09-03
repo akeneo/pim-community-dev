@@ -1,7 +1,0 @@
-{% set fullname = app.user|oro_format_name|default('N/A') %}
-
-<div class="span5 well">
-    <div><strong>{{ fullname }}</strong></div>
-    <div><img src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/></div>
-</div>
-
