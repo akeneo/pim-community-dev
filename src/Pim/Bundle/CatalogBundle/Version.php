@@ -24,7 +24,7 @@ class Version
     const MINOR_VERSION = '2';
 
     /** @staticvar string */
-    const PATCH_VERSION = '0';
+    const PATCH_VERSION = '1';
 
     /** @staticvar string */
     const EXTRA_VERSION = '';
