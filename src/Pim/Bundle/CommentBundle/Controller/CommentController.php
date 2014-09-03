@@ -12,9 +12,6 @@ use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
  */
 class CommentController extends AbstractDoctrineController
 {
-    public function indexAction($name)
-    {
-    }
     public function createAction($name)
     {
     }
