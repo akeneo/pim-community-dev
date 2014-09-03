@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Factory;
+namespace Pim\Bundle\EnrichBundle\Factory;
 
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -27,7 +27,7 @@ class SequentialEditFactory
     /**
      * Create and configure a sequential edit instance
      *
-     * @param array         $productSet
+     * @param integer[]     $productSet
      * @param UserInterface $user
      *
      * @return SequentialEdit

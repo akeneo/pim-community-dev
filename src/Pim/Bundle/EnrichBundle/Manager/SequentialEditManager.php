@@ -1,11 +1,11 @@
 <?php
 
-namespace Pim\Bundle\CatalogBundle\Manager;
+namespace Pim\Bundle\EnrichBundle\Manager;
 
 use Doctrine\Common\Persistence\ObjectManager;
-use Pim\Bundle\CatalogBundle\Entity\Repository\SequentialEditRepository;
-use Pim\Bundle\CatalogBundle\Entity\SequentialEdit;
-use Pim\Bundle\CatalogBundle\Factory\SequentialEditFactory;
+use Pim\Bundle\EnrichBundle\Entity\Repository\SequentialEditRepository;
+use Pim\Bundle\EnrichBundle\Entity\SequentialEdit;
+use Pim\Bundle\EnrichBundle\Factory\SequentialEditFactory;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
