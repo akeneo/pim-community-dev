@@ -25,20 +25,26 @@
     {% set ipsumProduct = 'consectetur adipiscing eli' %}
     {% set ratio = 70 %}
 
-    <div id="sequentialEdit">
+    <div class="row-fluid buffer-top" id="sequentialEdit">
+        <span class="span3 right-aligned">
         <a href="#" data-original-title="Skip back to {{ loremProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="left">
             <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ loremProduct|length > 25 ? loremProduct|slice(0, 22) ~ '...' }}
         </a>
-        <a href="#" data-original-title="Skip to {{ ipsumProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="right">
-            {{ ipsumProduct|length > 25 ? ipsumProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
-        </a>
+        </span>
+                 <span class="span6">
         <div class="progress progress-bar">
             <div class="bar" style="width: {{ ratio }}%;">
                 3 / 11 {{ 'Products'|trans }}
             </div>
         </div>
+        </span>
+             <span class="span3">
+        <a href="#" data-original-title="Skip to {{ ipsumProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="right">
+            {{ ipsumProduct|length > 25 ? ipsumProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
+        </a>
+             </span>
     </div>
-    <hr />
+    <hr class="small" />
 
     {{ JSFV(form) }}
     {{ form_start(form, {
