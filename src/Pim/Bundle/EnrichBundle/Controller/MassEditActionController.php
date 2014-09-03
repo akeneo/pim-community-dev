@@ -247,18 +247,6 @@ class MassEditActionController extends AbstractDoctrineController
     }
 
     /**
-     * Action for product sequential edition
-     *
-     * @AclAncestor("pim_enrich_product_edit_attributes")
-     *
-     * @return RedirectResponse
-     */
-    public function sequentialEditAction()
-    {
-        // TODO: Store in backend sequential edition and redirect to product edit view
-    }
-
-    /**
      * Check if the mass action is executable
      *
      * @return boolean
