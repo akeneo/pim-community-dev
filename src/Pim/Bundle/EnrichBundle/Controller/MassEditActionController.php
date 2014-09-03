@@ -249,7 +249,7 @@ class MassEditActionController extends AbstractDoctrineController
     /**
      * Action for product sequential edition
      *
-     * @AclAncestor("pim_enrich_mass_edit")
+     * @AclAncestor("pim_enrich_product_edit_attributes")
      *
      * @return RedirectResponse
      */
