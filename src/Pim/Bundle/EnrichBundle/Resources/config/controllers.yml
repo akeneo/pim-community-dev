@@ -110,6 +110,7 @@ services:
             - '@pim_versioning.manager.version'
             - '@oro_security.security_facade'
             - '@pim_catalog.manager.product_category'
+            - '@pim_enrich.generator.pdf_registry'
 
     pim_enrich.controller.association:
         class: %pim_enrich.controller.association.class%

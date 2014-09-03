@@ -38,6 +38,7 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\EnrichBundle\Generator\PdfGeneratorRegistry;
 
 /**
  * Product Controller
@@ -62,6 +63,11 @@ class ProductController extends AbstractDoctrineController
      * @var ProductCategoryManager
      */
     protected $productCatManager;
+
+    /**
+     * @var PdfGeneratorRegistry
+     */
+    protected $pdfGeneratorRegistry;
 
     /**
      * @var UserContext
@@ -108,6 +114,7 @@ class ProductController extends AbstractDoctrineController
      * @param VersionManager           $versionManager
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
+     * @param PdfGeneratorRegistry     $pdfGeneratorRegistry
      */
     public function __construct(
         Request $request,
@@ -124,7 +131,8 @@ class ProductController extends AbstractDoctrineController
         UserContext $userContext,
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
-        ProductCategoryManager $prodCatManager
+        ProductCategoryManager $prodCatManager,
+        PdfGeneratorRegistry $pdfGeneratorRegistry
     ) {
         parent::__construct(
             $request,
@@ -138,12 +146,13 @@ class ProductController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->productManager    = $productManager;
-        $this->categoryManager   = $categoryManager;
-        $this->userContext       = $userContext;
-        $this->versionManager    = $versionManager;
-        $this->securityFacade    = $securityFacade;
-        $this->productCatManager = $prodCatManager;
+        $this->productManager       = $productManager;
+        $this->categoryManager      = $categoryManager;
+        $this->userContext          = $userContext;
+        $this->versionManager       = $versionManager;
+        $this->securityFacade       = $securityFacade;
+        $this->productCatManager    = $prodCatManager;
+        $this->pdfGeneratorRegistry = $pdfGeneratorRegistry;
     }
 
     /**
