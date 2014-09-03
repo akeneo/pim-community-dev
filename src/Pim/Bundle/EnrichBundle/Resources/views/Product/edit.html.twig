@@ -26,10 +26,10 @@
     {% set ratio = 70 %}
 
     <div id="sequentialEdit">
-        <a href="#" data-original-title="Skip to {{ loremProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="left">
+        <a href="#" data-original-title="Skip back to {{ loremProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="left">
             <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ loremProduct|length > 25 ? loremProduct|slice(0, 22) ~ '...' }}
         </a>
-        <a href="#" data-original-title="Skip back to {{ ipsumProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="right">
+        <a href="#" data-original-title="Skip to {{ ipsumProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="right">
             {{ ipsumProduct|length > 25 ? ipsumProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
         </a>
         <div class="progress progress-bar">
