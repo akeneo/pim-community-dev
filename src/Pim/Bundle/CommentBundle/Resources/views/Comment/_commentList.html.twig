@@ -1,9 +1,22 @@
-<div class="row">
+<div class="row span10" >
+    <ol class="unstyled">
+        {% for comment in comments %}
+            <li>
+                {% include 'PimCommentBundle:Comment:_thread.html.twig' with {'comment':comment} %}
+            </li>
+        {% endfor %}
+    </ol>
+</div>
+
+
+
+
+<div class="row-fluid">
         {% include 'PimCommentBundle:Comment:_postComment.html.twig' %}
 </div>
 
-<div class="row">
-    <div>{% include 'PimCommentBundle:Comment:_comment.html.twig' %}</div>
+<div class="row well">
+    <div></div>
 </div>
 
 
