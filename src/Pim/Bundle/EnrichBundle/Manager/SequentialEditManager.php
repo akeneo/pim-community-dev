@@ -66,4 +66,28 @@ class SequentialEditManager
     {
         return $this->factory->create($productSet, $user);
     }
+
+    /**
+     * Remove a sequential edit entity
+     *
+     * @param SequentialEdit $sequentialEdit
+     */
+    public function remove(SequentialEdit $sequentialEdit)
+    {
+        $this->om->remove($sequentialEdit);
+        $this->om->flush();
+    }
+
+    /**
+     * Remove a sequential edit for a specific user
+     *
+     * @param UserInterface $user
+     */
+    public function removeFromUser(UserInterface $user)
+    {
+        $sequentialEdit = $this->repository->findOneBy(['user' => $user]);
+        if ($sequentialEdit) {
+            $this->remove($sequentialEdit);
+        }
+    }
 }
