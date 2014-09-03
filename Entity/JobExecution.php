@@ -330,7 +330,7 @@ class JobExecution
      *
      * @return JobExecution
      */
-    public function seUser($user)
+    public function setUser($user)
     {
         $this->user = $user;
 
