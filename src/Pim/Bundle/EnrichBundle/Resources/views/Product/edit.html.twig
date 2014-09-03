@@ -21,28 +21,28 @@
     {% endif %}
 
 
-    {% set loremProduct = 'Lorem Ipsum dolor sit amet Product' %}
-    {% set ipsumProduct = 'consectetur adipiscing eli' %}
+    {% set previousProduct = 'Lorem Ipsum dolor sit amet Product' %}
+    {% set nextProduct = 'consectetur adipiscing eli' %}
     {% set ratio = 70 %}
 
     <div class="row-fluid buffer-top" id="sequentialEdit">
         <span class="span3 right-aligned">
-        <a href="#" data-original-title="Skip back to {{ loremProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="left">
-            <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ loremProduct|length > 25 ? loremProduct|slice(0, 22) ~ '...' }}
-        </a>
+            <a href="#" data-original-title="{{ 'pim_enrich.sequential_edit_action.product.previous'|trans({ '%product%': previousProduct }) }}" data-toggle="tooltip" data-placement="bottom" class="left">
+                <i class="icon-chevron-left"></i>&nbsp;&nbsp;{{ previousProduct|length > 25 ? previousProduct|slice(0, 22) ~ '...' }}
+            </a>
         </span>
-                 <span class="span6">
-        <div class="progress progress-bar">
-            <div class="bar" style="width: {{ ratio }}%;">
-                3 / 11 {{ 'Products'|trans }}
+        <span class="span6">
+            <div class="progress progress-bar">
+                <div class="bar" style="width: {{ ratio }}%;">
+                    3 / 11 {{ 'Products'|trans }}
+                </div>
             </div>
-        </div>
         </span>
-             <span class="span3">
-        <a href="#" data-original-title="Skip to {{ ipsumProduct }} without saving." data-toggle="tooltip" data-placement="bottom" class="right">
-            {{ ipsumProduct|length > 25 ? ipsumProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
-        </a>
-             </span>
+        <span class="span3">
+            <a href="#" data-original-title="{{ 'pim_enrich.sequential_edit_action.product.next'|trans({ '%product%': nextProduct }) }}" data-toggle="tooltip" data-placement="bottom" class="right">
+                {{ nextProduct|length > 25 ? nextProduct|slice(0, 22) ~ '...' }}&nbsp;&nbsp;<i class="icon-chevron-right"></i>
+            </a>
+        </span>
     </div>
     <hr class="small" />
 

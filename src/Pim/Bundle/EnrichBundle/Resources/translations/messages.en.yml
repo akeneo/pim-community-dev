@@ -438,6 +438,12 @@ Activated: Activated
 Edit:      Edit
 Disable:   Disable
 
+# Sequential edit operations
+pim_enrich.sequential_edit_action:
+    product:
+        previous: Skip back to %product% without saving.
+        next: Skip to %product% without saving.
+
 # Mass edit operations
 pim_enrich.mass_edit_action:
     limit_exceeded: Please choose less than %limit% items to edit
