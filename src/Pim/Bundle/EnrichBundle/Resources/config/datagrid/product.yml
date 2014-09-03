@@ -127,7 +127,7 @@ datagrid:
                 type: edit
                 acl_resource: pim_enrich_product_edit_attributes
                 label: pim.grid.mass_action.sequential_edit
-                handler: product_mass_edit
+                handler: product_quick_export
                 route: pim_enrich_mass_edit_action_sequential_edit
                 icon: sort-by-attributes
         sorters:

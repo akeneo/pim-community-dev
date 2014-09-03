@@ -96,7 +96,6 @@ class MassEditActionController extends AbstractDoctrineController
             $doctrine
         );
 
-        $this->validator = $validator;
         $this->operatorRegistry = $operatorRegistry;
         $this->parametersParser = $parametersParser;
         $this->massActionDispatcher = $massActionDispatcher;
@@ -245,18 +244,6 @@ class MassEditActionController extends AbstractDoctrineController
                 'queryParams'  => $this->getQueryParams()
             )
         );
-    }
-
-    /**
-     * Action for product sequential edition
-     *
-     * @AclAncestor("pim_enrich_product_edit_attributes")
-     *
-     * @return RedirectResponse
-     */
-    public function sequentialEditAction()
-    {
-        // TODO: Store in backend sequential edition and redirect to product edit view
     }
 
     /**

@@ -53,3 +53,7 @@ media:
 grouptype:
     resource: '@PimEnrichBundle/Resources/config/routing/grouptype.yml'
     prefix: /configuration/group-type
+
+sequential_edit:
+    resource: '@PimEnrichBundle/Resources/config/routing/sequential_edit.yml'
+    prefix: /enrich/sequential_edit
