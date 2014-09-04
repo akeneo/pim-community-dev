@@ -50,14 +50,32 @@ class ProductPdfGenerator implements PdfGeneratorInterface
         $params = array_merge(
             $context,
             [
-                'product'        => $object,
-                'generationDate' => $this->getGenerationDate()
+                'product'           => $object,
+                'generationDate'    => $this->getGenerationDate(),
+                'groupedAttributes' => $this->getGroupedAttributes($object),
+                'locale'            => 'en_US',
+                'scope'             => 'ecommerce',
             ]
         );
 
         return $this->pdfBuilder->buildPdfOutput(
             $this->templating->render($this->template, $params)
         );
+    }
+
+    protected function getGroupedAttributes(AbstractProduct $product)
+    {
+        $groups = [];
+
+        foreach ($product->getAttributes() as $attribute) {
+            if (!isset($groups[$attribute->getGroup()->getLabel()])) {
+                $groups[$attribute->getGroup()->getLabel()] = [];
+            }
+
+            $groups[$attribute->getGroup()->getLabel()][$attribute->getCode()] = $attribute;
+        }
+
+        return $groups;
     }
 
     protected function getGenerationDate()

@@ -78,9 +78,15 @@
                 width: 300px;
             }
 
-            /*
-             date de génération
-             */
+            .locale, .scope {
+                color: white;
+                background: #aaa;
+                border-radius: 3px;
+                font-size: 15px;
+                text-transform: uppercase;
+                padding: 0px 10px;
+                line-height: 20px;
+            }
         </style>
     </head>
     <body>
@@ -89,25 +95,25 @@
             <span class="generation-date">{{ generationDate|date }}</span>
         </div>
         <div class="attribute-group">
-            {% if product.family is not empty %}
-                {% for groupLabel, attributes in product.family.groupedAttributes %}
-                <table>
-                    <thead>
-                        <tr class="group">
-                            <th colspan="2"><h2>{{ groupLabel }}</h2></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for attribute in attributes %}
-                        <tr>
-                            <td class="attribute">{{ attribute.label }}</td>
-                            <td class="value">{{ product.hasAttribute(attribute) ? product.getValue(attribute.code) : '' }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% endfor %}
-            {% endif %}
+            {% for group, attributes in groupedAttributes %}
+            <table>
+                <thead>
+                    <tr class="group">
+                        <th colspan="2"><h2>{{ group }}</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for attribute in attributes if product.hasAttribute(attribute) %}
+                    <tr>
+                        <td class="attribute">
+                            {{ attribute.label }}
+                        </td>
+                        <td class="value">{{ product.getValue(attribute.code, locale, scope) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endfor %}
         </div>
     </body>
 </html>
