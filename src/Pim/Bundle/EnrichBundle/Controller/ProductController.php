@@ -2,7 +2,6 @@
 
 namespace Pim\Bundle\EnrichBundle\Controller;
 
-use Pim\Bundle\CommentBundle\Manager\CommentManager;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\EventDispatcher\GenericEvent;
@@ -39,6 +38,8 @@ use Pim\Bundle\VersioningBundle\Manager\VersionManager;
 use Pim\Bundle\EnrichBundle\AbstractController\AbstractDoctrineController;
 use Pim\Bundle\EnrichBundle\Exception\DeleteException;
 use Pim\Bundle\EnrichBundle\Event\ProductEvents;
+use Pim\Bundle\CommentBundle\Builder\CommentBuilder;
+use Pim\Bundle\CommentBundle\Manager\CommentManager;
 
 /**
  * Product Controller
@@ -85,6 +86,11 @@ class ProductController extends AbstractDoctrineController
     protected $commentManager;
 
     /**
+     * @var CommentBuilder
+     */
+    protected $commentBuilder;
+
+    /**
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
@@ -115,6 +121,7 @@ class ProductController extends AbstractDoctrineController
      * @param SecurityFacade           $securityFacade
      * @param ProductCategoryManager   $prodCatManager
      * @param CommentManager           $commentManager
+     * @param CommentBuilder           $commentBuilder
      */
     public function __construct(
         Request $request,
@@ -132,7 +139,8 @@ class ProductController extends AbstractDoctrineController
         VersionManager $versionManager,
         SecurityFacade $securityFacade,
         ProductCategoryManager $prodCatManager,
-        CommentManager $commentManager
+        CommentManager $commentManager,
+        CommentBuilder $commentBuilder
     ) {
         parent::__construct(
             $request,
@@ -153,6 +161,7 @@ class ProductController extends AbstractDoctrineController
         $this->securityFacade    = $securityFacade;
         $this->productCatManager = $prodCatManager;
         $this->commentManager    = $commentManager;
+        $this->commentBuilder    = $commentBuilder;
     }
 
     /**
@@ -490,12 +499,15 @@ class ProductController extends AbstractDoctrineController
     public function listCommentsAction(Request $request, $id)
     {
         $product = $this->findProductOr404($id);
+        $comment = $this->commentBuilder->buildComment($product, $this->getUser());
+        $form = $this->createForm('pim_comment_comment', $comment);
 
         return $this->render(
             'PimCommentBundle:Comment:_commentList.html.twig',
-            array(
+            [
+                'form' => $form->createView(),
                 'comments' => $this->commentManager->getComments($product),
-            )
+            ]
         );
     }
 

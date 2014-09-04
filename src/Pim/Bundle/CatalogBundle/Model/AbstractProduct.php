@@ -8,7 +8,6 @@ use Pim\Bundle\CatalogBundle\Entity\Family;
 use Pim\Bundle\CatalogBundle\Entity\Group;
 use Pim\Bundle\CatalogBundle\Entity\AttributeGroup;
 use Pim\Bundle\CatalogBundle\Entity\AssociationType;
-use Pim\Bundle\CommentBundle\Model\CommentSubjectInterface;
 use Pim\Bundle\VersioningBundle\Model\VersionableInterface;
 use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
 
@@ -20,7 +19,7 @@ use Pim\Bundle\CatalogBundle\Util\ProductValueKeyGenerator;
  * @license   http://opensource.org/licenses/osl-3.0.php Open Software License (OSL 3.0)
  */
 abstract class AbstractProduct implements ProductInterface, LocalizableInterface, ScopableInterface,
- TimestampableInterface, VersionableInterface, CommentSubjectInterface
+ TimestampableInterface, VersionableInterface
 {
     /** @staticvar string */
     const IDENTIFIER_TYPE = 'pim_catalog_identifier';
