@@ -188,9 +188,9 @@ class ProductController extends AbstractDoctrineController
 
         return new Response(
             $this->rendererRegistry->render($product, 'full', [
-                'locale'        => $request->get('dataLocale', $this->userContext->getCurrentLocale()),
+                'locale'        => $request->get('dataLocale', null),
                 'renderingDate' => $renderingDate,
-                'scope'         => '',
+                'scope'         => 'ecommerce',
             ]),
             200,
             array(
