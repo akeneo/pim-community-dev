@@ -88,13 +88,19 @@ class ProductController extends AbstractDoctrineController
      * Constant used to redirect to the datagrid when save edit form
      * @staticvar string
      */
-    const BACK_TO_GRID = 'BackGrid';
+    const BACK_TO_GRID  = 'BackGrid';
 
     /**
      * Constant used to redirect to create popin when save edit form
      * @staticvar string
      */
-    const CREATE       = 'Create';
+    const CREATE        = 'Create';
+
+    /**
+     * Constant used to redirect to next product in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_NEXT = 'SaveAndNext';
 
     /**
      * Constructor
@@ -348,6 +354,11 @@ class ProductController extends AbstractDoctrineController
             case self::CREATE:
                 $route = 'pim_enrich_product_edit';
                 $params['create_popin'] = true;
+                break;
+            case self::SAVE_AND_NEXT:
+                $route = 'pim_enrich_product_edit';
+                $sequentialEdit = $this->seqEditManager->findByUser($this->getUser());
+                $params['id'] = $sequentialEdit->getNextId($params['id']);
                 break;
             default:
                 $route = 'pim_enrich_product_edit';

@@ -186,4 +186,10 @@ class SequentialEdit
     {
         return array_search($product->getId(), $this->productSet) + 1;
     }
+
+    public function getNextId($productId)
+    {
+        $nextKey = array_search($productId, $this->productSet) + 1;
+        return $this->productSet[$nextKey];
+    }
 }
