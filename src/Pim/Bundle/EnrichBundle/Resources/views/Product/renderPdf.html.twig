@@ -131,7 +131,15 @@
                         <td class="attribute">
                             {{ attribute.label }}
                         </td>
-                        <td class="value">{{ attribute.code not in imageAttributes|keys ? product.getValue(attribute.code, locale, scope) : product.getValue(attribute.code, locale, scope).media.originalFilename }}</td>
+                        <td class="value">
+                        {% if attribute.attributeType == 'pim_catalog_image' %}
+                            {{ product.getValue(attribute.code, locale, scope).media.originalFilename }}
+                        {% elseif attribute.attributeType == 'pim_catalog_textarea' and attribute.isWysiwygEnabled %}
+                            {{ product.getValue(attribute.code, locale, scope)|raw }}
+                        {% else %}
+                            {{ product.getValue(attribute.code, locale, scope) }}
+                        {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
