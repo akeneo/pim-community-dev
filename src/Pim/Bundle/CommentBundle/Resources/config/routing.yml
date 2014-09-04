@@ -9,7 +9,7 @@ pim_comment_comment_reply:
     methods: [GET, POST]
 
 pim_comment_comment_delete:
-    path: /{id}/remove
+    path: /comment/{id}/remove
     defaults: { _controller: pim_comment.controller.comment:deleteAction }
     requirements:
         id: \d+
