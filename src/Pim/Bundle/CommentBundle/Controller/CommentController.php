@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -109,6 +110,7 @@ class CommentController extends AbstractDoctrineController
      * @param Request $request
      * @param $id
      *
+     * @throws \Symfony\Component\Security\Core\Exception\AccessDeniedException
      * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
@@ -120,6 +122,10 @@ class CommentController extends AbstractDoctrineController
 
         if (null === $comment) {
             throw new NotFoundHttpException(sprintf('Comment with id %s not found', $id));
+        }
+
+        if ($comment->getAuthor() !== $this->getUser()) {
+            throw new AccessDeniedException('You are not allowed to delete this comment');
         }
 
         $manager->remove($comment);

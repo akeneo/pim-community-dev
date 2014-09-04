@@ -5,24 +5,23 @@
 {% endspaceless %}
 
 {% set fullname = app.user|oro_format_name|default('N/A') %}
-
 <div class="span2 image-reply-action">
     <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
 </div>
 <div class="span10">
     {{ form_start(replyForms[comment.id], {
     'action': path('pim_comment_comment_reply', {'id': comment.id}),
-    'class': 'form-inline'
     }) }}
     {{ JSFV(replyForms[comment.id]) }}
 
     {{ elements.form_errors(replyForms[comment.id]) }}
 
-    <div class="row-fluid">
-        {{ form_row(replyForms[comment.id].body) }}
-        {{ form_row(replyForms[comment.id].resourceName) }}
-        {{ form_row(replyForms[comment.id].resourceId) }}
-        <button class="btn">{{ 'btn.post'|trans|capitalize }}</button>
-    </div>
+    {{ form_row(replyForms[comment.id].body) }}
+    {{ form_row(replyForms[comment.id].resourceName) }}
+    {{ form_row(replyForms[comment.id].resourceId) }}
+    <button class="btn toggle-active pull-right">{{ 'btn.post'|trans|capitalize }}</button>
     {{ form_end(replyForms[comment.id]) }}
 </div>
+<script type="text/javascript">
+    $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
+</script>
