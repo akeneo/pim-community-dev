@@ -25,7 +25,7 @@
             ['jquery', 'oro/mediator'],
             function ($, mediator) {
                 var initialScope = '{{ product.scope }}',
-                    url = '{{ path('pim_pdf_generator_generate_product_pdf', { id: form.vars.value.id, dataLocale: dataLocale }) }}' + '&dataScope=',
+                    url = '{{ path('pim_pdf_generator_generate_product_pdf', { id: product.id, dataLocale: dataLocale }) }}' + '&dataScope=',
                     button = $('#download-btn');
 
                 button.attr('href', url + initialScope);
