@@ -1,6 +1,6 @@
 <?php
 
-namespace Pim\Bundle\NotificationBundle\EventListener;
+namespace Pim\Bundle\NotificationBundle\EventSubscriber;
 
 use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
