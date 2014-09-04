@@ -36,3 +36,19 @@
         'BackGrid': { 'text': 'btn.save and back' }
     }
 ) }}
+
+<script type="text/javascript">
+    require(
+            ['jquery', 'oro/mediator'],
+            function ($, mediator) {
+                var initialScope = '{{ product.scope }}',
+                    url = '{{ path('pim_enrich_product_generate_pdf', { id: form.vars.value.id, dataLocale: dataLocale }) }}' + '&dataScope=',
+                    button = $('#download-btn');
+
+                button.attr('href', url + initialScope);
+                mediator.on('scopablefield:changescope', function (scope) {
+                    button.attr('href', url + scope);
+                }, this);
+            }
+    );
+</script>
