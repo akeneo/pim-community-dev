@@ -3,6 +3,7 @@
 namespace Pim\Bundle\UIBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Oro\Bundle\UserBundle\Entity\User;
 
 /**
  * Notification entity repository
@@ -13,4 +14,25 @@ use Doctrine\ORM\EntityRepository;
  */
 class NotificationRepository extends EntityRepository
 {
+    /**
+     * Returns the number of notifications the user hasn't viewed
+     *
+     * @param User $user
+     *
+     * @return integer
+     */
+    public function countUnreadForUser(User $user)
+    {
+        $qb = $this->createQueryBuilder('n');
+
+        return $qb
+            ->select(
+                $qb->expr()->countDistinct('n.id')
+            )
+            ->where('n.user = :user')
+            ->andWhere('n.viewed = false')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

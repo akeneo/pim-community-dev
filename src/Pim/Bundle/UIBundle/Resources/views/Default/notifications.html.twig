@@ -1,0 +1,106 @@
+{% set unreadCount = notification_count() %}
+
+<li class="dropdown" id="notifications">
+    <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="icon-bullhorn"></i>
+        <span class="badge{{ unreadCount ? ' badge-important' : '' }}">{{ unreadCount }}</span>
+    </a>
+    <ul class="dropdown-menu scroll-menu">
+        <p class="text-center unspaced">
+            <img src="{{ asset('bundles/pimimportexport/images/loading.gif') }}" alt="{{ 'Loading ...'|trans }}" class="hide" />
+            <span class="hide">{{ 'No new notifications'|trans }}</span>
+            {% if unreadCount %}
+               <button class="btn btn-mini pull-right">{{ 'Mark all as read'|trans }}</button>
+            {% endif %}
+        </p>
+    </ul>
+</li>
+
+<script type="text/javascript">
+    require(
+        ['jquery', 'routing'],
+        function($, Routing) {
+            var loading = false;
+            var hasContent = true;
+            var localItemCount = 0;
+
+            var $loader = $('#notifications .dropdown-menu p img');
+            var $readBtn = $('#notifications .dropdown-menu button');
+
+            var addContent = function(content) {
+                localItemCount += $(content).filter('li').length;
+                hasContent = $(content).filter('li').length > 0;
+                if (hasContent) {
+                    $(content).insertBefore($loader.parent());
+                    $readBtn.show();
+                } else {
+                    $loader.siblings('span').removeClass('hide');
+                    if (!localItemCount) {
+                        $readBtn.hide();
+                    }
+                }
+            };
+
+            var initScroll = function() {
+                $('#notifications .dropdown-menu').bind('scroll', function() {
+                    if($(this).scrollTop() + $(this).innerHeight() >= this.scrollHeight) {
+                        if (!loading && hasContent) {
+                            loading = true;
+                            $loader.removeClass('hide');
+                            $.ajax({
+                                url: '{{ path('pim_ui_notification_list', { id: app.user.id }) }}&skip=' + localItemCount,
+                                type: 'GET',
+                                async: true,
+                                success: function(data) {
+                                    addContent(data);
+                                    $loader.addClass('hide');
+                                    loading = false;
+                                }
+                            });
+                        }
+                    }
+                });
+            };
+
+            $('#notifications>a').on('click', function() {
+                if (!loading) {
+                    loading = true;
+                    $readBtn.hide();
+                    $loader.removeClass('hide');
+                    $.ajax({
+                        url: '{{ path('pim_ui_notification_list', { id: app.user.id }) }}',
+                        type: 'GET',
+                        async: true,
+                        success: function(data) {
+                            addContent(data);
+                            $loader.addClass('hide');
+                            $('#notifications>a').off('click');
+                            loading = false;
+                            initScroll();
+                        }
+                    });
+                }
+            });
+
+            $('#notifications').on('click', 'i.icon-trash', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                markAsRead($(this).data('id'));
+            });
+
+            $readBtn.on('click', function() {
+                markAsRead('all');
+            });
+
+            var markAsRead = function (id, cb) {
+                // $.ajax({
+                //     url: Routing.generate('', { id: id }),
+                //     type: 'POST',
+                //     headers: { accept:'application/json' },
+                //     data: { _method: 'DELETE' },
+                //     success: cb || $.noop
+                // });
+            }
+        }
+    );
+</script>
