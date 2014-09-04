@@ -115,6 +115,12 @@ class SequentialEditController extends AbstractDoctrineController
             $this->userContext->getUser()
         );
 
+        if ($this->seqEditManager->findByUser($this->getUser())) {
+            return $this->redirectToRoute(
+                'pim_enrich_product_index',
+                ['dataLocale' => $this->request->get('dataLocale')]
+            );
+        }
         $this->seqEditManager->save($sequentialEdit);
 
         return $this->redirectToRoute(
