@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\User;
 use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
 
-class NotificationSpec extends ObjectBehavior
+class UserNotificationSpec extends ObjectBehavior
 {
     function let(NotificationEvent $event, User $user)
     {
@@ -16,7 +16,7 @@ class NotificationSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
     }
 
     function it_can_be_marked_as_viewed()

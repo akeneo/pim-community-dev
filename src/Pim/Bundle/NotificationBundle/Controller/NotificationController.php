@@ -6,7 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 
 /**
  * Notification controller
@@ -17,34 +17,34 @@ use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
  */
 class NotificationController
 {
-    /** @var NotificationManager */
+    /** @var UserNotificationManager */
     protected $manager;
 
     /**
-     * @param NotificationManager $manager
+     * @param UserNotificationManager $manager
      */
-    public function __construct(NotificationManager $manager)
+    public function __construct(UserNotificationManager $manager)
     {
         $this->manager = $manager;
     }
 
     /**
-     * It lists notifications for a given user
+     * It lists user notifications for a given user
      *
      * @param User    $user
      * @param Request $request
      *
      * @Template
      *
-     * @return array ['notification' => Notification[]]
+     * @return array ['notification' => UserNotification[]]
      */
     public function listAction(User $user, Request $request)
     {
-        return ['notifications' => $this->manager->getNotifications($user, $request->get('skip', 0))];
+        return ['notifications' => $this->manager->getUserNotifications($user, $request->get('skip', 0))];
     }
 
     /**
-     * It marks given notifications as viewed for a user
+     * It marks given user notifications as viewed
      *
      * @param string $userId User id
      * @param string $ids    Has to be numeric or 'all'
@@ -53,7 +53,7 @@ class NotificationController
      */
     public function markAsViewedAction($userId, $ids)
     {
-        $this->manager->markNotificationsAsViewed($userId, $ids);
+        $this->manager->markAsViewed($userId, $ids);
 
         return new Response();
     }

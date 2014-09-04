@@ -6,16 +6,16 @@ use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Notification entity repository
+ * UserNotification entity repository
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotificationRepository extends EntityRepository
+class UserNotificationRepository extends EntityRepository
 {
     /**
-     * Returns the number of notifications the user hasn't viewed
+     * Returns the number of user notifications the user hasn't viewed
      *
      * @param User $user
      *

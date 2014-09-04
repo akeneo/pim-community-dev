@@ -3,7 +3,7 @@
 namespace Pim\Bundle\NotificationBundle\Twig;
 
 use Pim\Bundle\UserBundle\Context\UserContext;
-use Pim\Bundle\NotificationBundle\Entity\Repository\NotificationRepository;
+use Pim\Bundle\NotificationBundle\Entity\Repository\UserNotificationRepository;
 
 /**
  * Twig extension to provide the number of unread notifications
@@ -14,7 +14,7 @@ use Pim\Bundle\NotificationBundle\Entity\Repository\NotificationRepository;
  */
 class NotificationExtension extends \Twig_Extension
 {
-    /** @var NotificationRepository */
+    /** @var UserNotificationRepository */
     protected $repository;
 
     /** @var UserContext */
@@ -23,10 +23,10 @@ class NotificationExtension extends \Twig_Extension
     /**
      * Constructor
      *
-     * @param NotificationRepository $repository
-     * @param UserContext            $userContext
+     * @param UserNotificationRepository $repository
+     * @param UserContext                $userContext
      */
-    public function __construct(NotificationRepository $repository, UserContext $userContext)
+    public function __construct(UserNotificationRepository $repository, UserContext $userContext)
     {
         $this->repository  = $repository;
         $this->userContext = $userContext;

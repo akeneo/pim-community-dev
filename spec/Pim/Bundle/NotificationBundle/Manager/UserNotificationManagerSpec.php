@@ -8,11 +8,11 @@ use Prophecy\Argument;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
 
-class NotificationManagerSpec extends ObjectBehavior
+class UserNotificationManagerSpec extends ObjectBehavior
 {
     function let(EntityManager $em, EntityRepository $repository, NotificationFactory $factory, UserManager $userManager)
     {
@@ -21,13 +21,13 @@ class NotificationManagerSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\NotificationManager');
+        $this->shouldHaveType('Pim\Bundle\NotificationBundle\Manager\UserNotificationManager');
     }
 
     function it_can_create_a_notification(
         User $user,
         NotificationEvent $event,
-        Notification $notification,
+        UserNotification $userNotification,
         $em,
         $factory
     ) {
@@ -35,11 +35,11 @@ class NotificationManagerSpec extends ObjectBehavior
             ->createNotificationEvent('Some message', 'success', Argument::any())
             ->shouldBeCalled()
             ->willReturn($event);
-        $factory->createNotification($event, $user)
+        $factory->createUserNotification($event, $user)
             ->shouldBeCalled()
-            ->willReturn($notification);
+            ->willReturn($userNotification);
         $em->persist($event)->shouldBeCalled();
-        $em->persist($notification)->shouldBeCalled();
+        $em->persist($userNotification)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
         $this->notify([$user], 'Some message')->shouldReturn($this);
@@ -49,7 +49,7 @@ class NotificationManagerSpec extends ObjectBehavior
         User $user,
         User $user2,
         NotificationEvent $event,
-        Notification $notification,
+        UserNotification $userNotification,
         $em,
         $factory
     ) {
@@ -57,39 +57,39 @@ class NotificationManagerSpec extends ObjectBehavior
             ->createNotificationEvent('Some message', 'success', Argument::any())
             ->shouldBeCalled()
             ->willReturn($event);
-        $factory->createNotification($event, Argument::type('Oro\Bundle\UserBundle\Entity\User'))
+        $factory->createUserNotification($event, Argument::type('Oro\Bundle\UserBundle\Entity\User'))
             ->shouldBeCalledTimes(2)
-            ->willReturn($notification);
+            ->willReturn($userNotification);
 
         $em->persist($event)->shouldBeCalled();
-        $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\Notification'))->shouldBeCalledTimes(2);
+        $em->persist(Argument::type('Pim\Bundle\NotificationBundle\Entity\UserNotification'))->shouldBeCalledTimes(2);
         $em->flush()->shouldBeCalled();
 
         $this->notify([$user, $user2], 'Some message')->shouldReturn($this);
     }
 
-    function it_can_return_all_notifications_for_a_user(Notification $notification, User $user, $repository)
+    function it_can_return_all_notifications_for_a_user(UserNotification $userNotification, User $user, $repository)
     {
-        $repository->findBy(['user' => $user])->willReturn([$notification]);
-        $this->getNotifications($user)->shouldReturn([$notification]);
+        $repository->findBy(['user' => $user], ['id' => 'DESC'], 10, 15)->willReturn([$userNotification]);
+        $this->getUserNotifications($user, 15)->shouldReturn([$userNotification]);
     }
 
-    function it_marks_a_notification_as_viewed(Notification $notification, $repository, $em)
+    function it_marks_a_notification_as_viewed(UserNotification $userNotification, $repository, $em)
     {
         $userId = '2';
         $notificationId = '1';
-        $repository->findBy(['user' => $userId, 'id' => $notificationId])->shouldBeCalled()->willReturn([$notification]);
-        $notification->setViewed(true)->shouldBeCalled()->willReturn($notification);
+        $repository->findBy(['user' => $userId, 'id' => $notificationId])->shouldBeCalled()->willReturn([$userNotification]);
+        $userNotification->setViewed(true)->shouldBeCalled()->willReturn($userNotification);
 
-        $em->persist($notification)->shouldBeCalled();
+        $em->persist($userNotification)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
-        $this->markNotificationsAsViewed($userId, $notificationId);
+        $this->markAsViewed($userId, $notificationId);
     }
 
     function it_marks_all_notifications_as_viewed(
-        Notification $notification1,
-        Notification $notification2,
+        UserNotification $userNotification1,
+        UserNotification $userNotification2,
         $repository,
         $em
     ) {
@@ -97,15 +97,15 @@ class NotificationManagerSpec extends ObjectBehavior
         $repository
             ->findBy(['user' => $userId, 'viewed' => false])
             ->shouldBeCalled()
-            ->willReturn([$notification1, $notification2]);
+            ->willReturn([$userNotification1, $userNotification2]);
 
-        $notification1->setViewed(true)->shouldBeCalled()->willReturn($notification1);
-        $notification2->setViewed(true)->shouldBeCalled()->willReturn($notification2);
+        $userNotification1->setViewed(true)->shouldBeCalled()->willReturn($userNotification1);
+        $userNotification2->setViewed(true)->shouldBeCalled()->willReturn($userNotification2);
 
-        $em->persist($notification1)->shouldBeCalled();
-        $em->persist($notification2)->shouldBeCalled();
+        $em->persist($userNotification1)->shouldBeCalled();
+        $em->persist($userNotification2)->shouldBeCalled();
         $em->flush()->shouldBeCalled();
 
-        $this->markNotificationsAsViewed($userId, 'all');
+        $this->markAsViewed($userId, 'all');
     }
 }

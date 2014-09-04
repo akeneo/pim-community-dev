@@ -5,13 +5,13 @@ namespace Pim\Bundle\NotificationBundle\Entity;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
- * Notification entity
+ * UserNotification entity
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Notification
+class UserNotification
 {
     /** @var integer */
     protected $id;
@@ -50,7 +50,7 @@ class Notification
      *
      * @param boolean $viewed
      *
-     * @return Notification
+     * @return UserNotification
      */
     public function setViewed($viewed)
     {
@@ -74,7 +74,7 @@ class Notification
      *
      * @param NotificationEvent $event
      *
-     * @return Notification
+     * @return UserNotification
      */
     public function setEvent(NotificationEvent $event)
     {
@@ -98,7 +98,7 @@ class Notification
      *
      * @param User $user
      *
-     * @return Notification
+     * @return UserNotification
      */
     public function setUser(User $user)
     {

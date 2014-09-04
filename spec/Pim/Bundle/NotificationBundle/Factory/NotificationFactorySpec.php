@@ -37,9 +37,9 @@ class NotificationFactorySpec extends ObjectBehavior
 
     function it_creates_notifications(NotificationEvent $event, User $user)
     {
-        $notification = $this->createNotification($event, $user);
+        $notification = $this->createUserNotification($event, $user);
 
-        $notification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\Notification');
+        $notification->shouldHaveType('Pim\Bundle\NotificationBundle\Entity\UserNotification');
         $notification->getEvent()->shouldReturn($event);
         $notification->getUser()->shouldReturn($user);
     }

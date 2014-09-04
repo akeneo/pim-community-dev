@@ -6,17 +6,17 @@ use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
 use Oro\Bundle\UserBundle\Entity\UserManager;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Pim\Bundle\NotificationBundle\Factory\NotificationFactory;
 
 /**
- * Notification manager
+ * User notification manager
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
  * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class NotificationManager
+class UserNotificationManager
 {
     /** @var EntityManager */
     protected $entityManager;
@@ -49,7 +49,7 @@ class NotificationManager
     }
 
     /**
-     * Send a notification to given users
+     * Send a user notification to given users
      *
      * @param array  $users   Users which have to be notified
      *                        ['userName', ...] or [Oro\Bundle\UserBundle\Entity\User, ...]
@@ -57,7 +57,7 @@ class NotificationManager
      * @param string $type    Success by default
      * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
      *
-     * @return NotificationManager
+     * @return UserNotificationManager
      */
     public function notify(array $users, $message, $type = 'success', array $options = [])
     {
@@ -65,7 +65,7 @@ class NotificationManager
 
         foreach ($users as $user) {
             $userEntity = is_string($user) ? $this->userManager->findUserByUsername($user) : $user;
-            $notification = $this->factory->createNotification($notificationEvent, $userEntity);
+            $notification = $this->factory->createUserNotification($notificationEvent, $userEntity);
             $this->entityManager->persist($notification);
         }
 
@@ -76,28 +76,28 @@ class NotificationManager
     }
 
     /**
-     * It returns notifications for the given user
+     * It returns user notifications for the given user
      *
      * @param User $user
      * @param int  $offset
      * @param int  $limit
      *
-     * @return Notification[]
+     * @return UserNotification[]
      */
-    public function getNotifications(User $user, $offset, $limit = 10)
+    public function getUserNotifications(User $user, $offset, $limit = 10)
     {
         return $this->repository->findBy(['user' => $user], ['id' => 'DESC'], $limit, $offset);
     }
 
     /**
-     * It marks given notifications as viewed for the given user
+     * It marks given user notifications as viewed
      *
      * @param string $userId User id
      * @param string $ids    Can be numeric or 'all'
      *
      * @return void
      */
-    public function markNotificationsAsViewed($userId, $ids)
+    public function markAsViewed($userId, $ids)
     {
         // TODO: use a direct query in repository to mark notifications as viewed directly can be faster
         if (is_numeric($ids)) {

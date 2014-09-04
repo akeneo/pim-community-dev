@@ -4,12 +4,12 @@ namespace spec\Pim\Bundle\NotificationBundle\EventListener;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Pim\Bundle\UserBundle\Context\UserContext;
 
 class JobExecutionNotifierSpec extends ObjectBehavior
 {
-    function let(NotificationManager $manager, UserContext $context)
+    function let(UserNotificationManager $manager, UserContext $context)
     {
         $this->beConstructedWith($manager, $context);
     }

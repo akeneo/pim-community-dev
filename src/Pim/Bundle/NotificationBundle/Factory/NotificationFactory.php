@@ -3,7 +3,7 @@
 namespace Pim\Bundle\NotificationBundle\Factory;
 
 use Pim\Bundle\NotificationBundle\Entity\NotificationEvent;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
+use Pim\Bundle\NotificationBundle\Entity\UserNotification;
 use Oro\Bundle\UserBundle\Entity\User;
 
 /**
@@ -16,7 +16,7 @@ use Oro\Bundle\UserBundle\Entity\User;
 class NotificationFactory
 {
     /**
-     * It creates a notification event
+     * It creates a notification
      *
      * @param string $message
      * @param string $type
@@ -45,15 +45,15 @@ class NotificationFactory
     }
 
     /**
-     * It creates a notification
+     * It creates a user notification
      *
      * @param NotificationEvent $event
      * @param User              $user
      *
-     * @return Notification
+     * @return UserNotification
      */
-    public function createNotification(NotificationEvent $event, User $user)
+    public function createUserNotification(NotificationEvent $event, User $user)
     {
-        return new Notification($event, $user);
+        return new UserNotification($event, $user);
     }
 }

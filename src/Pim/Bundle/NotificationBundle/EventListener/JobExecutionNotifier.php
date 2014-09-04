@@ -2,7 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\EventListener;
 
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
@@ -16,13 +16,13 @@ use Akeneo\Bundle\BatchBundle\Event\EventInterface;
  */
 class JobExecutionNotifier implements EventSubscriberInterface
 {
-    /** @var NotificationManager */
+    /** @var UserNotificationManager */
     protected $manager;
 
     /**
-     * @param NotificationManager $manager
+     * @param UserNotificationManager $manager
      */
-    public function __construct(NotificationManager $manager)
+    public function __construct(UserNotificationManager $manager)
     {
         $this->manager = $manager;
     }

@@ -5,12 +5,13 @@ namespace spec\Pim\Bundle\NotificationBundle\Controller;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 use Oro\Bundle\UserBundle\Entity\User;
-use Pim\Bundle\NotificationBundle\Entity\Notification;
-use Pim\Bundle\NotificationBundle\Manager\NotificationManager;
+use Pim\Bundle\NotificationBundle\Entity\UserNotification;
+use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
+use Symfony\Component\HttpFoundation\Request;
 
 class NotificationControllerSpec extends ObjectBehavior
 {
-    function let(NotificationManager $manager)
+    function let(UserNotificationManager $manager)
     {
         $this->beConstructedWith($manager);
     }
@@ -22,18 +23,19 @@ class NotificationControllerSpec extends ObjectBehavior
 
     function it_lists_notifications_linked_to_a_user(
         User $user,
-        Notification $notification,
+        UserNotification $notification,
+        Request $request,
         $manager
     ) {
-        $manager->getNotifications($user)->shouldBeCalled()->willReturn([$notification]);
-        $this->listAction($user)->shouldReturn(['notifications' => [$notification]]);
+        $manager->getUserNotifications($user, Argument::cetera())->shouldBeCalled()->willReturn([$notification]);
+        $this->listAction($user, $request)->shouldReturn(['notifications' => [$notification]]);
     }
 
     function it_marks_a_notification_as_viewed_for_a_user($manager)
     {
         $user = '1';
         $notifsToMark = '3';
-        $manager->markNotificationsAsViewed($user, $notifsToMark)->shouldBeCalled();
+        $manager->markAsViewed($user, $notifsToMark)->shouldBeCalled();
 
         $this
             ->markAsViewedAction($user, $notifsToMark)
@@ -44,7 +46,7 @@ class NotificationControllerSpec extends ObjectBehavior
     {
         $user = '1';
         $notifsToMark = '3';
-        $manager->markNotificationsAsViewed($user, $notifsToMark)->shouldBeCalled();
+        $manager->markAsViewed($user, $notifsToMark)->shouldBeCalled();
 
         $this
             ->markAsViewedAction($user, $notifsToMark)
