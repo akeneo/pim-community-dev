@@ -3,7 +3,7 @@
 namespace Pim\Bundle\CommentBundle\Model;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Oro\Bundle\UserBundle\Entity\User;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Comment model interface
@@ -45,14 +45,14 @@ interface CommentInterface
     public function getResourceName();
 
     /**
-     * @param User $author
+     * @param UserInterface $author
      *
      * return CommentInterface
      */
-    public function setAuthor(User $author);
+    public function setAuthor(UserInterface $author);
 
     /**
-     * @return User
+     * @return UserInterface
      */
     public function getAuthor();
 
