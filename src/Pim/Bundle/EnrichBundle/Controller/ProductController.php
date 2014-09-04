@@ -190,11 +190,11 @@ class ProductController extends AbstractDoctrineController
             $this->rendererRegistry->render($product, 'full', [
                 'locale'        => $request->get('dataLocale', null),
                 'renderingDate' => $renderingDate,
-                'scope'         => 'ecommerce',
+                'scope'         => $request->get('dataScope', null),
             ]),
             200,
             array(
-                'content-type' => 'application/pdf',
+                'content-type'        => 'application/pdf',
                 'content-disposition' => sprintf('attachment; filename=%s-%s.pdf', $product->getIdentifier(), $renderingDate->format('Y-m-d_H-i-s')),
             )
         );
