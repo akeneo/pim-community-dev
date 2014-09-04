@@ -2,6 +2,7 @@
 
 namespace Pim\Bundle\NotificationBundle\EventListener;
 
+use Akeneo\Bundle\BatchBundle\Job\BatchStatus;
 use Pim\Bundle\NotificationBundle\Manager\UserNotificationManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
@@ -67,7 +68,7 @@ class JobExecutionNotifier implements EventSubscriberInterface
 
         if ($hasWarnings) {
             $status = 'warning';
-        } elseif ($jobExecution->getExitStatus()->getExitCode() > 4) {
+        } elseif ($jobExecution->getExitStatus()->getExitCode() > BatchStatus::STOPPING) {
             $status = 'error';
         } else {
             $status = 'success';
