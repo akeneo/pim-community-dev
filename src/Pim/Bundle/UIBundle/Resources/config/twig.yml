@@ -1,0 +1,11 @@
+parameters:
+    pim_ui.twig.notification_extension.class: Pim\Bundle\UIBundle\Twig\NotificationExtension
+
+services:
+    pim_ui.twig.notification_extension:
+        class: %pim_ui.twig.notification_extension.class%
+        arguments:
+            - '@pim_ui.repository.notification'
+            - '@pim_user.context.user'
+        tags:
+            - { name: twig.extension }

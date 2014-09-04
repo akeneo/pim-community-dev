@@ -3,7 +3,13 @@ placeholders:
         items:
             require_js_config:
                 order: 110
+    user_menu:
+        items:
+            notifications:
+                order: 50
 
 items:
-   require_js_config:
-       template: PimUIBundle::pim.requirejs.config.js.twig
+    require_js_config:
+        template: PimUIBundle::pim.requirejs.config.js.twig
+    notifications:
+        template: PimUIBundle:Default:notifications.html.twig

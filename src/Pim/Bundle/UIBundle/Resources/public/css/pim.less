@@ -312,3 +312,49 @@ span.link-label {
     text-decoration: none;
   }
 }
+
+/** Notifications *****************************************************************************************************/
+.nav.pull-right #notifications {
+  i.icon-bullhorn {
+    font-size: 16px;
+    padding-top: 2px;
+  }
+  ul.dropdown-menu.scroll-menu {
+    width: auto;
+    margin-right: 17px;
+    padding-top: 1px;
+    height: auto;
+    max-height: 200px;
+    overflow-x: hidden;
+    li > a {
+      padding-right: 18px;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      &.new {
+        background: @color-light_grey;
+      }
+      i.icon-ok { color: green; }
+      i.icon-warning-sign { color: orange; }
+      i.icon-remove { color: red; }
+      i.icon-trash {
+        .border-radius(3px);
+        padding: 6px;
+        border: 1px solid @textColor + #888;
+        &:hover {
+          background-color: @textColor + #888;
+        }
+      }
+    }
+    li.divider {
+      margin: 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid @backgroundColor-white;
+    }
+    button {
+      margin: 0 5px;
+    }
+    p {
+      padding: 5px 0;
+    }
+  }
+}

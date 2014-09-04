@@ -1,22 +1,11 @@
-{% set unreadCount = 0 %}
-{% for notification in notifications if not notification.viewed %}
-    {% set unreadCount = unreadCount + 1 %}
+{% for notification in notifications %}
+    <li>
+        <a href="{{ notification.event.route ? path(notification.event.route, notification.event.routeParams) : 'javascript:void(0);'}}"{{ notification.viewed ? '' : ' class="new"' }}>
+            {% set icon = notification.event.type == 'success' ? 'ok' : (notification.event.type == 'warning' ? 'warning-sign' : 'remove') %}
+            <i class="icon-{{ icon }}"></i>
+            {{ notification.event.message|trans(notification.event.messageParams) }}
+            <i class="icon-trash" data-id="{{ notification.id }}"></i>
+        </a>
+    </li>
+    <li class="divider"></li>
 {% endfor %}
-
-<ul class="dropdown-menu">
-    {% for notification in notifications %}
-        <li{% if loop.first %} class="first"{% elseif loop.last%} class="last"{% endif %}>
-            <a href="{% if notification.event.route %}{{ path(notification.event.route, notification.event.routeParams) }}{% else %}javascript:void(0);{% endif %}"{{ notification.viewed ? '' : ' class="new"' }}>
-                {% set icon = notification.event.type == 'success' ? 'ok' : (notification.event.type == 'warning' ? 'warning-sign' : 'remove') %}
-                <i class="icon-{{ icon }}"></i>
-                {{ notification.event.message|trans(notification.event.messageParams) }}
-            </a>
-        </li>
-        {% if not loop.last %}
-            <li class="divider"></li>
-        {% endif %}
-    {% endfor %}
-    {% if unreadCount %}
-        <button class="btn btn-mini pull-right">{{ 'Mark all as read'|trans }}</button>
-    {% endif %}
-</ul>
