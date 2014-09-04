@@ -28,5 +28,6 @@ class PimUIExtension extends Extension
         $loader->load('repositories.yml');
         $loader->load('managers.yml');
         $loader->load('factories.yml');
+        $loader->load('event_listeners.yml');
     }
 }

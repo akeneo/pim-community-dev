@@ -2,14 +2,14 @@
 
 namespace Pim\Bundle\UIBundle\EventListener;
 
+use Pim\Bundle\ImportExportBundle\Entity\Repository\JobExecutionRepository;
 use Pim\Bundle\UIBundle\Manager\NotificationManager;
-use Pim\Bundle\UserBundle\Context\UserContext;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Akeneo\Bundle\BatchBundle\Event\JobExecutionEvent;
 use Akeneo\Bundle\BatchBundle\Event\EventInterface;
 
 /**
- *
+ * Job execution notifier
  *
  * @author    Willy Mesnage <willy.mesnage@akeneo.com>
  * @copyright 2014 Akeneo SAS (http://www.akeneo.com)
@@ -20,17 +20,16 @@ class JobExecutionNotifier implements EventSubscriberInterface
     /** @var NotificationManager */
     protected $manager;
 
-    /** @var UserContext */
-    protected $context;
+    /** @var JobExecutionRepository */
+    //protected $repository;
 
     /**
      * @param NotificationManager $manager
-     * @param UserContext         $context
      */
-    public function __construct(NotificationManager $manager, UserContext $context)
+    public function __construct(NotificationManager $manager/*, JobExecutionRepository $repository*/)
     {
-        $this->manager = $manager;
-        $this->context = $context;
+        $this->manager    = $manager;
+        //$this->repository = $repository;
     }
 
     /**
@@ -44,18 +43,37 @@ class JobExecutionNotifier implements EventSubscriberInterface
     }
 
     /**
-     *
      * @param JobExecutionEvent $event
      */
     public function afterJobExecution(JobExecutionEvent $event)
     {
-        $user = $this->context->getUser();
         $jobExecution = $event->getJobExecution();
+        $user = $jobExecution->getUser();
 
-//        if (null === $user) {
-//            return;
-//        }
+        if (null === $user) {
+            return;
+        }
 
-        $this->manager->notify([$user], 'Some message');
+        //$this->repository->hasWarnings($jobExecution->getId());
+
+        if ($jobExecution->getExitStatus()->getExitCode() > 4) {
+            $status = 'error';
+        } else {
+            $status = 'success';
+        }
+
+        $options = [
+            'route' => sprintf('pim_importexport_%s_execution_show', $jobExecution->getJobInstance()->getType()),
+            'routeParams' => [
+                'id' => $jobExecution->getId()
+            ]
+        ];
+
+        $this->manager->notify(
+            [$user],
+            sprintf('pim_import_export.notification.%s.complete', $jobExecution->getJobInstance()->getType()),
+            $jobExecution->getExitStatus(),
+            $options
+        );
     }
 }

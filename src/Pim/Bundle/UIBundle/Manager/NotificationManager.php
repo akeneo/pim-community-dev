@@ -5,6 +5,7 @@ namespace Pim\Bundle\UIBundle\Manager;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Oro\Bundle\UserBundle\Entity\User;
+use Oro\Bundle\UserBundle\Entity\UserManager;
 use Pim\Bundle\UIBundle\Entity\Notification;
 use Pim\Bundle\UIBundle\Entity\NotificationEvent;
 use Pim\Bundle\UIBundle\Factory\NotificationFactory;
@@ -27,25 +28,32 @@ class NotificationManager
     /** @var NotificationFactory  */
     protected $factory;
 
+    /** @var UserManager */
+    protected $userManager;
+
     /**
      * @param EntityManager       $entityManager
      * @param EntityRepository    $repository
      * @param NotificationFactory $factory
+     * @param UserManager         $userManager
      */
     public function __construct(
         EntityManager $entityManager,
         EntityRepository $repository,
-        NotificationFactory $factory
+        NotificationFactory $factory,
+        UserManager $userManager
     ) {
         $this->entityManager = $entityManager;
         $this->repository    = $repository;
         $this->factory       = $factory;
+        $this->userManager   = $userManager;
     }
 
     /**
      * Send a notification to given users
      *
-     * @param User[] $users   Users which have to be notified
+     * @param array  $users   Users which have to be notified
+     *                        ['userName', ...] or [Oro\Bundle\UserBundle\Entity\User, ...]
      * @param string $message Message which has to be sent
      * @param string $type    Success by default
      * @param array  $options ['route' => '', 'routeParams' => [], 'messageParams' => [], 'context => '']
@@ -57,7 +65,8 @@ class NotificationManager
         $notificationEvent = $this->factory->createNotificationEvent($message, $type, $options);
 
         foreach ($users as $user) {
-            $notification = $this->factory->createNotification($notificationEvent, $user);
+            $userEntity = is_string($user) ? $this->userManager->findUserByUsername($user) : $user;
+            $notification = $this->factory->createNotification($notificationEvent, $userEntity);
             $this->entityManager->persist($notification);
         }
 

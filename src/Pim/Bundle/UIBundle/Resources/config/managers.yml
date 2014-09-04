@@ -8,3 +8,4 @@ services:
             - '@doctrine.orm.entity_manager'
             - '@pim_ui.repository.notification'
             - '@pim_ui.factory.notification'
+            - '@oro_user.manager'

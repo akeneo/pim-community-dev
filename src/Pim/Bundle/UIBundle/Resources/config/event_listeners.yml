@@ -6,6 +6,6 @@ services:
         class: %pim_ui.event_listener.job_execution_notifier.class%
         arguments:
             - '@pim_ui.manager.notification'
-            - '@pim_user.context.user'
+#            - '@pim_import_export.repository.job_execution'
         tags:
             - { name: kernel.event_subscriber }
