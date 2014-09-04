@@ -2,6 +2,7 @@
 
 ## Bug fixes
  - large memory leak fixed for non product import (association, product group, attribute, categories, etc...)
+ - new associations were created at each import
 
 ## BC breaks
  - protected postWrite method not called anymore from BaseConnectorBundle\\Writer\\Doctrine\\Writer.
