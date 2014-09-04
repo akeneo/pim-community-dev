@@ -76,13 +76,17 @@ class CommentController extends AbstractDoctrineController
         }
 
         $comment = $this->commentBuilder->buildCommentWithoutSubject($this->getUser());
-        $form = $this->createForm(
+        $createForm = $this->createForm(
+            'pim_comment_comment',
+            $comment
+        );
+        $replyForm = $this->createForm(
             'pim_comment_comment',
             $comment
         );
 
-        $form->submit($this->request);
-        if ($form->isValid()) {
+        $createForm->submit($this->request);
+        if ($createForm->isValid()) {
             $manager = $this->getManagerForClass(ClassUtils::getClass($comment));
             $manager->persist($comment);
             $manager->flush();
@@ -95,17 +99,59 @@ class CommentController extends AbstractDoctrineController
 
         return $this->render(
             'PimCommentBundle:Comment:_thread.html.twig',
-            ['comment' => $comment]
+            [
+                'replyForms' => [$comment->getId() => $replyForm->createView()],
+                'comment' => $comment,
+            ]
         );
     }
 
+    /**
+     * Reply to a comment
+     *
+     * @param Request $request
+     * @param         $id
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \LogicException
+     */
     public function replyAction(Request $request, $id)
     {
-        die($id);
+        if (true !== $request->isXmlHttpRequest()) {
+            throw new \LogicException('The request should be an Xml Http request.');
+        }
+
+        $manager = $this->getManagerForClass($this->commentClassName);
+        $comment = $manager->find($this->commentClassName, $id);
+        $reply = $this->commentBuilder->buildReply($comment, $this->getUser());
+
+        $replyForm = $this->createForm(
+            'pim_comment_comment',
+            $reply
+        );
+
+        $replyForm->submit($this->request);
+        if ($replyForm->isValid()) {
+            $manager->persist($reply);
+            $manager->flush();
+            //TODO: change this
+            $this->addFlash('success', 'flash.comment.reply.success');
+        } else {
+            //TODO: change this
+            $this->addFlash('error', 'flash.comment.reply.error');
+        }
+
+        return $this->render(
+            'PimCommentBundle:Comment:_thread.html.twig',
+            [
+                'replyForms' => [$comment->getId() => $replyForm->createView()],
+                'comment' => $comment,
+            ]
+        );
     }
 
     /**
-     * Delete a comment with his children
+     * Delete a comment with its children
      *
      * @param Request $request
      * @param $id
@@ -117,7 +163,6 @@ class CommentController extends AbstractDoctrineController
     public function deleteAction(Request $request, $id)
     {
         $manager = $this->getManagerForClass($this->commentClassName);
-
         $comment = $manager->find($this->commentClassName, $id);
 
         if (null === $comment) {
@@ -131,6 +176,7 @@ class CommentController extends AbstractDoctrineController
         $manager->remove($comment);
         $manager->flush();
 
+        //TODO: change this
         return new JsonResponse('OK');
     }
 }

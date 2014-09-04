@@ -10,8 +10,8 @@
                     success: function(data) {
                         $('#comment_threads > li:first-child').after('<li>' + data + '</li>');
                         $('#pim_comment_comment_body_create').val('');
-                        if (0 < $('div.no-data').length) {
-                            $('div.no-data').remove();
+                        if (0 < $('li.no-data').length) {
+                            $('li.no-data').remove();
                         }
                     }
                 });

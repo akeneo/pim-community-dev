@@ -1,26 +1,28 @@
-{% spaceless %}
-    {% if elements is not defined %}
-        {% import 'PimUIBundle:Default:page_elements.html.twig' as elements %}
-    {% endif %}
-{% endspaceless %}
+<script type="text/javascript">
+    require(['jquery'], function($) {
+        $(function() {
+            $('#pim_comment_comment_reply_{{ comment.id }}').on('submit', function(e) {
+                e.preventDefault();
+                $.ajax({
+                    url: '{{ path('pim_comment_comment_reply', {'id': comment.id})}}',
+                    type: 'POST',
+                    data: $('#pim_comment_comment_reply_{{ comment.id }}').serialize(),
+                    success: function(data) {
+                        $('#comment{{ comment.id }}').html(data);
+                    }
+                });
+            });
+        });
+    });
+</script>
 
 {% set fullname = app.user|oro_format_name|default('N/A') %}
+
 <div class="span2 image-reply-action">
     <img width="45" class="img-polaroid" src="{{ app.user.imagePath ? app.user.imagePath | imagine_filter('avatar_med') : asset('bundles/oroui/img/info-user.png') }}" alt="{{ fullname }}"/>
 </div>
 <div class="span10">
-    {{ form_start(replyForms[comment.id], {
-    'action': path('pim_comment_comment_reply', {'id': comment.id}),
-    }) }}
-    {{ JSFV(replyForms[comment.id]) }}
-
-    {{ elements.form_errors(replyForms[comment.id]) }}
-
-    {{ form_row(replyForms[comment.id].body) }}
-    {{ form_row(replyForms[comment.id].resourceName) }}
-    {{ form_row(replyForms[comment.id].resourceId) }}
-    <button class="btn toggle-active pull-right">{{ 'btn.post'|trans|capitalize }}</button>
-    {{ form_end(replyForms[comment.id]) }}
+    {% include 'PimCommentBundle:Comment:reply.html.twig' %}
 </div>
 <script type="text/javascript">
     $("#comments .comment-thread, .comment-create").on("click", function(){ $("#comments .active").removeClass("active"); $(this).addClass("active"); })
