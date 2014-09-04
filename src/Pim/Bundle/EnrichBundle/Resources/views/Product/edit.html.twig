@@ -24,7 +24,9 @@
 
     {% set formAction = path('pim_enrich_product_update', { id: form.vars.value.id, dataLocale: dataLocale, compareWith: comparisonLocale }) %}
     {% if sequentialEdit and sequentialEdit.next is not null %}
-         {% set formAction = formAction ~ '&action=SaveAndNext' %}
+        {% set formAction = formAction ~ '&action=SaveAndNext' %}
+    {% elseif sequentialEdit and sequentialEdit.next is null %}
+        {% set formAction = formAction ~ '&action=SaveAndFinish' %}
     {% endif %}
 
     {{ JSFV(form) }}

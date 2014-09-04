@@ -19,6 +19,9 @@
 {% if sequentialEdit and sequentialEdit.next is not null %}
     {% set saveAndNextOption = {'SaveAndNext': {'text': 'btn.save and next' }} %}
     {% set saveOptions = saveAndNextOption|merge(saveOptions) %}
+{% elseif sequentialEdit and sequentialEdit.next is null %}
+    {% set saveAndNextOption = {'SaveAndFinish': {'text': 'btn.save and finish' }} %}
+    {% set saveOptions = saveAndNextOption|merge(saveOptions) %}
 {% endif %}
 
 {{ elements.submitDropdownBtn(saveOptions) }}

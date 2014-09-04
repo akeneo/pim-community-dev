@@ -103,6 +103,12 @@ class ProductController extends AbstractDoctrineController
     const SAVE_AND_NEXT = 'SaveAndNext';
 
     /**
+     * Constant used to redirect to the grid once all products are edited in a sequential edition
+     * @staticvar string
+     */
+    const SAVE_AND_FINISH = 'SaveAndFinish';
+
+    /**
      * Constructor
      *
      * @param Request                  $request
@@ -347,6 +353,8 @@ class ProductController extends AbstractDoctrineController
     protected function redirectAfterEdit($params)
     {
         switch ($this->getRequest()->get('action')) {
+            case self::SAVE_AND_FINISH:
+                $this->seqEditManager->removeFromUser($this->getUser());
             case self::BACK_TO_GRID:
                 $route = 'pim_enrich_product_index';
                 $params = array();
