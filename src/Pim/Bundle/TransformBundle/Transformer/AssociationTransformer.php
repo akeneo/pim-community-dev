@@ -2,10 +2,12 @@
 
 namespace Pim\Bundle\TransformBundle\Transformer;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Akeneo\Bundle\BatchBundle\Item\InvalidItemException;
 use Pim\Bundle\TransformBundle\Exception\MissingIdentifierException;
 use Pim\Bundle\TransformBundle\Transformer\ColumnInfo\ColumnInfoTransformerInterface;
+use Pim\Bundle\TransformBundle\Transformer\EntityTransformer;
 use Pim\Bundle\TransformBundle\Transformer\Guesser\GuesserInterface;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 
@@ -52,7 +54,11 @@ class AssociationTransformer extends EntityTransformer
         $productRepository = $this->doctrine->getManagerForClass($this->productClass)->getRepository($this->productClass);
         $product = $productRepository->findByReference($data['owner']);
         if (!$product) {
-            throw new \InvalidArgumentException(sprintf('No product with identifier %s', $data['owner']));
+            throw new InvalidItemException(
+                'No product with identifier %identifier%', 
+                $data,
+                ['%identifier%' => $data['owner']]
+            );
         }
 
         return $product->getAssociationForTypeCode($data['association_type']);
